@@ -1,0 +1,95 @@
+% choose document class (book / exam / article / beamer)
+% BOOK
+% \documentclass[a4paper,11pt,openany,titlepage,svgnames]{book}
+% \documentclass[a4paper,11pt,oneside,svgnames]{book}
+
+% ARTICLE
+% \documentclass[svgnames]{article}
+
+% EXAM
+% \documentclass[11pt,addpoints,svgnames]{exam} 
+%\documentclass[11pt,addpoints,answers,svgnames]{exam}
+
+% BEAMER
+\documentclass[xcolor={svgnames,table}]{beamer}
+
+% e-TeX tools for LaTeX
+\usepackage{etoolbox}
+
+% set toggles (switches) for the document class
+\newtoggle{book} \newtoggle{article} \newtoggle{exam} \newtoggle{beamer} % default value is 'false'
+% set document class: book <-> 0, article <-> 1, exam <-> 2, beamer <-> 3
+% this shall be regarded as a switch statement
+
+\def\documentToggle{3} % <---- choose number
+
+\ifnumequal{\documentToggle}{0}{\settoggle{book}{true}}{}     % book
+\ifnumequal{\documentToggle}{1}{\settoggle{article}{true}}{}  % article
+\ifnumequal{\documentToggle}{2}{\settoggle{exam}{true}}{}     % exam
+\ifnumequal{\documentToggle}{3}{\settoggle{beamer}{true}}{}   % beamer
+
+% does the document contain at least one citation? (true / false)
+\newtoggle{citations} \settoggle{citations}{false}
+
+\input{preamble_0} % general preamble
+\input{preamble_1} % settings and various options for packages
+\input{preamble_2} % macros
+\input{preamble_3} % custom environments [in desperate need of severe polishing!]
+
+\begin{document}
+	% BOOK
+	\iftoggle{book} {
+	    \frontmatter
+		%\include{titlepage}
+		%\include{vorwort}
+		\tableofcontents
+        %\markright{}
+        %\cleardoublepage
+		\mainmatter
+		% main content (book)
+		%\part{Lektion 1}
+        \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Kapitel01}
+
+        %\part{Lektion 2}
+        \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Kapitel02}
+
+		\appendix
+		% \input{appendix.tex} % Appendix: Prinzip der rekursiven Definition
+        
+        %\printbibliography
+		%\printindex
+		
+		%\backmatter
+		%\bibliographystyle{plain}
+        %\bibliography{refs}
+	} {}
+
+	% ARTICLE
+	\iftoggle{article} {
+        \input{article}
+	} {}
+
+	% EXAM
+	\iftoggle{exam} {
+        \input{GrundlagenInfo/DataScience/ExamQuestions/Questions}
+	} {}
+	
+	% BEAMER
+	\iftoggle{beamer} {
+        % \input{GrundlagenInfo/DataScience/01_Zahlensysteme/Zahlensysteme_L01}
+        % \input{GrundlagenInfo/DataScience/01_Zahlensysteme/Zahlensysteme_L02}
+        % \input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L01}
+         \input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L02}
+        %\input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L03}
+        % \input{GrundlagenInfo/DataScience/02_Graphen/Graphen_L01}
+        % \input{GrundlagenInfo/DataScience/02_Graphen/Graphen_L02}
+        
+        % \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01}
+        % \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel02}
+
+        % \input{GrundlagenInfo/Programmieren/Examples_Exam}
+        % \input{GrundlagenInfo/Programmieren/Lektion07}
+        % \input{GrundlagenInfo/Programmieren/Lektion08}
+        % \input{GrundlagenInfo/Programmieren/Lektion10}
+	} {}
+\end{document}

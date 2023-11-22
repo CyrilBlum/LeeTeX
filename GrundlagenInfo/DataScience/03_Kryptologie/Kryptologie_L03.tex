@@ -1,0 +1,366 @@
+\begin{frame}[label=title]
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+    \end{figure}
+    Informatik: Data Science und Sicherheit\\
+    \textbf{Public-Key Kryptologie} \emoji{old-key}\emoji{open-file-folder}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {}             ;
+  \node[state] (B) [right of=A] {};
+  \node[state] (C) [below right of=A] {};
+  \node[state] (D) [below left of=A] {};
+  \node[state] (E) [right of=C] {};
+  \node[state] (F) [below of=D] {};
+  \node[state] (G) [below right of=C] {};
+
+  \path (A) edge (B)
+  (A) edge (D)
+  (A) edge (C)
+  (B) edge (C)
+  (B) edge (E)
+  (C) edge (E)
+  (D) edge (F)
+  (F) edge (G)
+  (E) edge (G)
+;
+\end{tikzpicture}
+} %
+% \caption*{(a)}
+% \label{fig:Knobel}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+Alice möchte die geheime Botschaft (Zahl) \green{31} an Bob übermitteln.
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {5}             ;
+  \node[state] (B) [right of=A] {17};
+  \node[state] (C) [below right of=A] {-11};
+  \node[state] (D) [below left of=A] {3};
+  \node[state] (E) [right of=C] {14};
+  \node[state] (F) [below of=D] {-2};
+  \node[state] (G) [below right of=C] {5};
+
+  \path (A) edge (B)
+  (A) edge (D)
+  (A) edge (C)
+  (B) edge (C)
+  (B) edge (E)
+  (C) edge (E)
+  (D) edge (F)
+  (F) edge (G)
+  (E) edge (G)
+;
+\end{tikzpicture}
+} %
+% \caption*{(a)}
+% \label{fig:Knobel}
+\end{figure}
+\begin{align*}
+    5 + 17 + 3 - 11 + 14 - 2 + 5  = \green{31}
+\end{align*}
+\end{frame}
+
+
+\begin{frame}[fragile]
+Alice möchte die geheime Botschaft (Zahl) \green{31} an Bob übermitteln.
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state,align=center] (A) {$5$\\$\red{(14)}$}             ;
+  \node[state,align=center] (B) [right of=A] {$17$\\$\red{(25)}$};
+  \node[state,align=center] (C) [below right of=A] {$-11$\\$\red{(25)}$};
+  \node[state,align=center] (D) [below left of=A] {$3$\\$\red{(6)}$};
+  \node[state,align=center] (E) [right of=C] {$14$\\$\red{(25)}$};
+  \node[state,align=center] (F) [below of=D] {$-2$\\$\red{(6)}$};
+  \node[state,align=center] (G) [below right of=C] {$5$\\$\red{(17)}$};
+
+  \path (A) edge (B)
+  (A) edge (D)
+  (A) edge (C)
+  (B) edge (C)
+  (B) edge (E)
+  (C) edge (E)
+  (D) edge (F)
+  (F) edge (G)
+  (E) edge (G)
+;
+\end{tikzpicture}
+} %
+% \caption*{(a)}
+% \label{fig:Knobel}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+Alice möchte die geheime Botschaft (Zahl) \green{31} an Bob übermitteln.
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state,align=center] (A) {$\red{14}$}             ;
+  \node[state,align=center] (B) [right of=A] {$\red{25}$};
+  \node[state,align=center] (C) [below right of=A] {$\red{25}$};
+  \node[state,align=center] (D) [below left of=A] {$\red{6}$};
+  \node[state,align=center] (E) [right of=C] {$\red{25}$};
+  \node[state,align=center] (F) [below of=D] {$\red{6}$};
+  \node[state,align=center] (G) [below right of=C] {$\red{17}$};
+
+  \path (A) edge (B)
+  (A) edge (D)
+  (A) edge (C)
+  (B) edge (C)
+  (B) edge (E)
+  (C) edge (E)
+  (D) edge (F)
+  (F) edge (G)
+  (E) edge (G)
+;
+\end{tikzpicture}
+} %
+% \caption*{(a)}
+% \label{fig:Knobel}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[label=repetition]
+\begin{figure}[fragile]
+\begin{myDefinition}[Dominating Set]{myDefinition:DominatingSet}
+Sei $G = (V, E)$ ein Graph.
+\begin{itemize}
+    \item Ein Knoten $i$ \tib{dominiert} einen Knoten $j$ falls $i = j$ (ein Knoten dominiert sich selbst) oder eine Kante von $i$ nach $j$ existiert.
+    \item Eine Teilmenge $S\subseteq V$ heisst heisst \tib{Dominating Set} (DS) von $G$, falls jeder Knoten von $G$ von mindestens einem Knoten in $S$ dominiert wird.
+    \item Ein Domininating Set wird \tib{pefect} (PDS) genannt, falls jeder Knoten von $G$ von genau einem Knoten in $S$ dominiert wird.
+\end{itemize}
+\end{myDefinition}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.3\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {}             ;
+  \node[state,fill=Red,draw=Red] (B) [below right of=A] {};
+  \node[state,fill=Red,draw=Red] (C) [above right of=A] {};
+  \node[state,fill=Red,draw=Red] (D) [right of=C] {};
+  \node[state] (E) [right of=B] {};
+  \node[state] (F) [right of=D] {};
+
+  \path (A) edge (C)
+        (A) edge (B)
+        (B) edge (C)
+        (B) edge (E)
+        (C) edge (D)
+        (D) edge (E)
+        (D) edge (F)
+;
+\end{tikzpicture}
+} %
+\caption*{(a)}
+\label{fig:aDominatingSets}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.3\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {}             ;
+  \node[state] (B) [below right of=A] {};
+  \node[state,fill=Red,draw=Red] (C) [above right of=A] {};
+  \node[state,fill=Red,draw=Red] (D) [right of=C] {};
+  \node[state] (E) [right of=B] {};
+  \node[state] (F) [right of=D] {};
+
+  \path (A) edge (C)
+        (A) edge (B)
+        (B) edge (C)
+        (B) edge (E)
+        (C) edge (D)
+        (D) edge (E)
+        (D) edge (F)
+;
+\end{tikzpicture}
+} %
+\caption*{(b)}
+\label{fig:bDominatingSets}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.3\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {}             ;
+  \node[state,fill=Red,draw=Red] (B) [below right of=A] {};
+  \node[state] (C) [above right of=A] {};
+  \node[state] (D) [right of=C] {};
+  \node[state] (E) [right of=B] {};
+  \node[state,fill=Red,draw=Red] (F) [right of=D] {};
+
+  \path (A) edge (C)
+        (A) edge (B)
+        (B) edge (C)
+        (B) edge (E)
+        (C) edge (D)
+        (D) edge (E)
+        (D) edge (F)
+;
+\end{tikzpicture}
+} %
+\caption*{(c)}
+\label{fig:cDominatingSets}
+\end{subfigure}
+\caption{(a) und (b) zeigen je ein Dominating Set, (c) zeigt ein perfekt Dominating Set}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Schritt 1}
+Beginne mit einigen Knoten.
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {}             ;
+  \node[state] (B) [right of=A] {};
+  \node[state] (C) [below right of=A] {};
+  \node[state] (D) [below left of=A] {};
+  \node[state] (E) [right of=C] {};
+  \node[state] (F) [below of=D] {};
+  \node[state] (G) [below right of=C] {};
+
+%   \path (A) edge (B)
+%   (A) edge (D)
+%   (A) edge (C)
+%   (B) edge (C)
+%   (B) edge (E)
+%   (D) edge (F)
+%   (F) edge (G)
+%   (E) edge (G)
+% ;
+\end{tikzpicture}
+} %
+% \caption*{(a)}
+% \label{fig:Knobel}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]{Schritt 2}
+Wähle die Knoten, welche zum pefekten DS gehören sollen.
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {}             ;
+  \node[state] (B) [right of=A] {};
+  \node[state] (C) [below right of=A] {};
+  \node[state,fill=Red,draw=Red] (D) [below left of=A] {};
+  \node[state,fill=Red,draw=Red] (E) [right of=C] {};
+  \node[state] (F) [below of=D] {};
+  \node[state] (G) [below right of=C] {};
+
+%   \path (A) edge (B)
+%   (A) edge (D)
+%   (A) edge (C)
+%   (B) edge (C)
+%   (B) edge (E)
+%   (D) edge (F)
+%   (F) edge (G)
+%   (E) edge (G)
+% ;
+\end{tikzpicture}
+} %
+% \caption*{(a)}
+% \label{fig:Knobel}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Schritt 3}
+Verbinde jeden Knoten, der nicht im DS liegt mit genau einem Knoten aus dem DS.
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {}             ;
+  \node[state] (B) [right of=A] {};
+  \node[state] (C) [below right of=A] {};
+  \node[state,fill=Red,draw=Red] (D) [below left of=A] {};
+  \node[state,fill=Red,draw=Red] (E) [right of=C] {};
+  \node[state] (F) [below of=D] {};
+  \node[state] (G) [below right of=C] {};
+
+  \path %(A) edge (B)
+  (A) edge (D)
+%   (A) edge (C)
+%   (B) edge (C)
+  (B) edge (E)
+  (C) edge (E)
+  (D) edge (F)
+%   (F) edge (G)
+  (E) edge (G)
+;
+\end{tikzpicture}
+} %
+% \caption*{(a)}
+% \label{fig:Knobel}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Schritt 4}
+Füge zur Verschleierung weitere Kanten zwischen den Knoten, welche nicht zum PDS gehören, hinzu. Zeichne also keine weiteren Kanten, welche in den roten Knoten beginnen / enden!
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[text=black]
+  \node[state] (A) {}             ;
+  \node[state] (B) [right of=A] {};
+  \node[state] (C) [below right of=A] {};
+  \node[state,fill=Red,draw=Red] (D) [below left of=A] {};
+  \node[state,fill=Red,draw=Red] (E) [right of=C] {};
+  \node[state] (F) [below of=D] {};
+  \node[state] (G) [below right of=C] {};
+
+  \path (A) edge (B)
+  (A) edge (D)
+  (A) edge (C)
+  (B) edge (C)
+  (B) edge (E)
+  (C) edge (E)
+  (D) edge (F)
+  (F) edge (G)
+  (E) edge (G)
+;
+\end{tikzpicture}
+} %
+% \caption*{(a)}
+% \label{fig:Knobel}
+\end{figure}
+\end{frame}
