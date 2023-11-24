@@ -7,6 +7,45 @@
     \textbf{Public-Key Kryptologie} \emoji{old-key}\emoji{open-file-folder}
 \end{frame}
 
+\begin{frame}[fragile]{Schwäche von VIGENÈRE}
+Angenommen wir haben einen Klartext, der aus genau 1000 Buchstaben besteht.
+\begin{itemize}
+  \item VIGENÈRE-Schlüssel der Länge 5: Bilde 5 \texit{Gruppen}, bestehend aus jeweils 200 Buchstaben. Führe innerhalb jeder Gruppe eine Häufigkeitsanalyse (wie bei CAESAR) durch. (sehr einfach angreifbar)
+  \item VIGENÈRE-Schlüssel der Länge 50: Bilde 50 \texit{Gruppen}, bestehend aus jeweils 20 Buchstaben. Eine Häufigkeitsanalye innerhalb der Gruppen wird hier höchst unzuverlässig. (Kryptoanalyse wenig realistisch)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{vom VIGENÈRE zum One-Time-Pad}
+  Idee \emoji{light-bulb}:
+  \begin{itemize}
+    \item Verwende einen Schlüssel, der (mindestens) so lange ist wie der Klartext!
+    \item Wähle jeden Buchstaben des Schlüssels vollkommen zufällig!
+    \item Verwende diesen Schlüssel nur einmal (Begründung: siehe weiter unten).
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{One-Time-Pad}
+ \begin{myBox}[Kryptosystem ONE-TIME-PAD, Frank Miller (1882)]{mybox:onetime}
+\begin{enumerate}
+  \item Erzeuge einen Schlüssel der (mindestens) so lange ist wie der Klartext. Jeder einzelne Buchstabe des Schlüssels muss vollkommen zufällig gewählt werden. 
+  \item Der Schlüssel darf nicht mehrfach verwendet werden (nicht einmal Teile des Schlüssels).
+  \item Der Schlüssel muss von den kommunizierenden Parteien geheim gehalten werden.
+\end{enumerate}
+\end{myBox}
+\end{frame}
+
+
+\begin{frame}{Sicht des Angreifers}
+  Ein Angreifer fängt den Kryptotext ab. Was lernt dieser Angreifer aus dem Kryptotext?
+  \begin{itemize}
+    \item Jeder Buchstabe des Kryptotexts entsteht durch eine zufällige Verschiebung des entsprechenden Buchstabens im Klartext.
+    \item Damit ist der Kryptotext nichts anderes als eine zufällige Folge von Buchstaben.
+    \item Der Angreifer lernt lediglich eine obere Schranke für die Länge des Klartextes. (ist der Kryptotext $n$ Zeichen lang, kann der Klartext offensichtlich höchstens aus $n$ Zeichen bestehen)
+  \end{itemize}
+\end{frame}
+
+
 \begin{frame}[fragile]
 \begin{figure}[H]
 \centering
