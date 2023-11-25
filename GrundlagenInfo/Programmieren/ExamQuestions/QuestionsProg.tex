@@ -1,0 +1,324 @@
+\newtoggle{withbonus} \toggletrue{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Grundlagenfach Informatik}
+% name of the class
+\newcommand{\myclass}{2. Klassen}
+% set date
+\newcommand{\mydate}{09. November 2023}
+
+\title{\textbf{Aufgabensammlung}}
+\author{Autoren: Patrick Hnilicka, Michael Anderegg, Cyril Wendl, Thomas Graf\\
+\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}		
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $45$ Minuten.
+				%\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item Erlaubte Hilfsmittel:
+				\begin{itemize}
+				    \item Schreibzeug
+				    \item Taschenrechner
+				\end{itemize}
+	\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note: 
+	\vspace{10mm}
+	
+	\rule{8mm}{1.2pt}
+\end{center}
+%\thispagestyle{empty}
+\clearpage
+
+\begin{questions}
+\section*{Listen}
+\question{\emoji{nerd-face} \textbf{Programmier-Aufgaben optimal lösen}}
+
+Herr Wendl hat ein eigenes Programmier-Lehrmittel entwickelt. Die darin enthaltenen Aufgaben enthalten jeweils eine Zeitangabe (benötigte Zeit um die Aufgabe zu lösen). Herr Wendl lässt Sie aus dem Buch die Aufgaben A.1 (5'), A.2 (15'), A.3 (15') und A.4 (10') daraus lösen. Die Lektion dauert 60 Minuten.\\
+
+Aus eigener Erfahrung wissen Sie, dass Sie, wenn Sie nicht ausgeschlafen sind, etwa doppelt so lange brauchen wie im Buch angegeben. Ebenso wissen Sie, dass Sie doppelt so lange brauchen, wenn Sie die Aufgabe nicht genau lesen. 
+
+Sie sind zwar ausgeschlafen, haben aber nur die ersten beiden Fragen genau durchgelesen, die letzten beiden haben Sie nur überflogen und haben somit doppelt solange gebraucht, um sie zu lösen. 
+
+\begin{parts}
+	\part[2] Haben Sie es geschafft, alle Aufgaben zu lösen? Berechnen Sie die Antwort in Python, indem Sie eine \pythoninline{repeat}-Schleife verwenden und reichen Sie Ihren Code ein.
+	\begin{solution}
+		Nein, um alle Aufgaben zu lösen, benötigen Sie 63 Minuten.
+\begin{lstlisting}[style=TigerJython, basicstyle=\scriptsize]
+zeit_aufgaben = [5, 15, 15, 10]
+ausgeschlafen = True
+genau_gelesen=[True, True, False, False]
+zeit = 0
+i=0
+repeat len(zeit_aufgaben):
+zeit_aufgabe=zeit_aufgaben[i]
+if not ausgeschlafen:
+zeit_aufgabe*=2
+
+if not genau_gelesen[i]:
+zeit_aufgabe*=2
+
+zeit+=zeit_aufgabe
+i+=1
+
+
+print(zeit)
+\end{lstlisting}
+	\end{solution}
+	\part[2] Welche Aufgaben können Sie lediglich überfliegen, um alle Aufgaben noch in 60 Minuten zu lösen? Reichen Sie Ihren Code ein.
+	\begin{solution}
+		Um alle Aufgaben optimal zu lösen reichen 45 Minuten. Daher könnte man entweder Aufgabe 2 oder 3, oder Aufgaben 1 sowie 4 ungenau lesen und alle Aufgaben noch in der vorgegebenen Zeit abschliessen.		
+	\end{solution}
+\end{parts}
+
+\question{\emoji{deciduous-tree} \textbf{Den Regenwald retten}}
+
+Sie haben durch einen Zufall eine Million Dollar gewonnen. Da Sie etwas gutes für die Umwelt tun möchten, entscheiden Sie sich, ein Stück Regenwald im Amazonas unter Schutz zu stellen, um es vor Abholzung zu schützen. Sie erfahren, dass es für gewisse Bäume mehr kostet als für andere, um sie unter Schutz zu stellen, da diese im Raubbau (Abholzung) mehr Profit abwerfen würden. Zudem erfahren Sie auch, wie viele Bäume von jeder Art es gibt. Die Bäume im Amazonas werden in vier Klassen unterteilt:
+\begin{itemize}
+	\item Teure Bäume: 230\$ pro Baum, bei insgesamt 1'140 Bäumen 
+	\item Mittel-teure Bäume: 39\$ pro Baum, bei insgesamt 23'345 Bäumen
+	\item Preiswerte Bäume: 10\$ pro Baum, bei insgesamt 334 Bäumen
+	\item Günstige Bäume: 2\$ pro Baum, bei insgesamt 21'042 Bäumen
+\end{itemize}
+
+\begin{parts}
+	\part[2] Berechnen Sie, wie viel Geld insgesamt benötigt würde, um alle Bäume unter Schutz zu stellen. Reicht das Geld, um alle Bäume unter Schutz zu stellen?
+	\begin{solution}
+		1'218'079\$, das Geld reicht also nicht für alle Bäume (s. Python-Lösung von Teil 2)
+	\end{solution}
+	\part[2] Wie viel \% vom Regenwald können Sie unter Schutz stellen mit Ihrem Geld? Jeder Baum bedeckt dieselbe Fläche (5 $m^2$) und wir wollen eine möglichst grosse Fläche unter Schutz stellen.
+	\begin{solution}
+		Man kann 97.9\% des Waldes unter Schutz stellen, indem man die günstigeren Bäume zuerst ``kauft''.
+		\begin{lstlisting}[style=TigerJython, basicstyle=\scriptsize]
+baeume_kosten=[2,10,39,230]
+baeume_anzahl=[21042, 334, 23345, 1140]
+i = 0 # Index für die beiden obigen Listen
+gesamtkosten=0 # kosten, um alle Bäume im Urwald zu retten
+geld=1000000 # Gesamtes Geld, das investiert werden kann
+gesamtflaeche=0 # Gesamte Urwaldfläche
+flaeche_gerettet=0 # Fläche, die gerettet wird
+geld_aufgebraucht=False 
+
+repeat len(baeume_kosten):
+	kosten_i=baeume_kosten[i] # kosten für einen Baum der Art i
+	anzahl_i=baeume_anzahl[i] # Anzahl Bäume der Art i
+	
+	gesamtflaeche += 5*anzahl_i # Fläche, die durch ALLE Bäume der ART i besetzt ist
+	gesamtkosten += anzahl_i*kosten_i # Kosten, um ALLE Bäume der ART i zu retten
+	
+	# berechne, 
+	anzahl_baeume_art_gerettet=0
+	
+	repeat:
+		if anzahl_baeume_art_gerettet == anzahl_i:
+			break
+		if geld < kosten_i:
+			break
+		flaeche_gerettet+=5
+		geld -= kosten_i
+		anzahl_baeume_art_gerettet += 1
+		if geld < kosten_i:
+			geld_aufgebraucht=True
+	
+	i+=1
+
+print(gesamtflaeche)
+print(flaeche_gerettet)
+print(flaeche_gerettet/gesamtflaeche*100)
+print(gesamtkosten)    
+		\end{lstlisting}
+	\end{solution}
+\end{parts}
+
+\question{\emoji{heart-with-arrow} \textbf{Unromantische Dating-App}}
+
+Sie entwickeln eine Dating-App, die sich an wissenschaftlichen Prinzipien orientiert. Sie funktioniert folgendermassen: Statt wie bei Tinder zu swipen, geben Sie jedem Kandidaten eine Note zwischen 1 und 10. Die Person gibt Ihnen ebenfalls eine Note zwischen 1 und 10. Sobald 10 Personen sich bewertet haben, werden Sie mit der passendsten Person ``gematched'' und Sie können sich schreiben. Um die passendste Person zu finden, wird folgendes betrachtet
+\begin{itemize}
+	\item Die 10 Noten, die Sie abgegeben haben (\pythoninline{noten_von_mir=[...]})
+	\item Die 10 Noten, die die anderen Personen für Sie abgegeben haben (\pythoninline{noten_von_anderen=[...]})
+	\item Der Score, um zu bestimmen, ob jemand ein Match sein könnte:\\
+	 \pythoninline{match=note_von_mir+note_von_person - abs(note_von_mir-note_von_person)}
+\end{itemize}
+
+\begin{parts}
+	\part[2] Berechnen Sie den Match für jede Person und bestimmen Sie, wer den höchsten Match hat, für folgende Daten:
+		\begin{lstlisting}[style=TigerJython, basicstyle=\scriptsize]
+dating_person = ["James", "Johannes", "Adam", "Ian", "Wilson", "Karl", "Bob", "Chris", "Charles"]
+noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
+noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
+\end{lstlisting}
+		Diese Daten bedeuten beispielsweise, dass Johannes Ihnen eine 3 gegeben hat, währenddem Sie ihm eine 2 gegeben haben. Verwenden Sie in Ihrem Code eine Repeat-Schleife und eine Index-Variable. Reichen Sie Ihren Code ein.
+	\begin{solution}
+		Wilson ist der beste Match, mit einem Score von 14. 
+\begin{lstlisting}[style=TigerJython, basicstyle=\scriptsize]
+# Unromantische Dating-App
+dating_mann = ["James", "Johannes", "Adam", "Ian", "Wilson", "Karl", "Bob", "Chris", "Charles"]
+noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
+noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
+
+bester_match=0
+person_am_besten=""
+
+i=0
+
+repeat len(noten_von_mir):
+	ich = noten_von_mir[i]
+	er = noten_von_anderen[i]
+	match=(ich+er)-abs(ich-er)
+	if match>bester_match:
+		bester_match=match
+		person_am_besten=dating_mann[i]
+
+	i+=1
+
+print(person_am_besten, "score", bester_match)	
+\end{lstlisting}
+	\end{solution}
+	\part[2] Wie Sie vermutlich wissen, sind Frauen selektiver auf Dating-Plattformen als Männer. Diesen Effekt wollen wir korrigieren, indem wir zuerst den Mittelwert aller erhaltenen Noten sowie aller gegebenen Noten berechnen. Danach berechnen wir die Differenz beider Schnitte als \pythoninline{differenz = abs(schnitt_von_anderen - schnitt_von_mir)} und addieren die Differenz zu jeder erhaltenen Note. Wer ist nun der beste Match?
+	\begin{solution}
+		Der beste Match ist nun Charles mit einer Note von 20.
+\begin{lstlisting}[style=TigerJython, basicstyle=\scriptsize]
+# Unromantische Dating-App
+dating_mann = ["James", "Johannes", "Adam", "Ian", "Wilson", "Karl", "Bob", "Chris", "Charles"]
+noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
+noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
+
+
+bester_match=0
+person_am_besten=""
+
+durchschnitt_ajustieren=True
+if durchschnitt_ajustieren:
+	# Durchschnitt berechnen
+	i=0
+	summe_er = 0
+	summe_ich = 0
+	repeat len(noten_von_mir):
+		summe_er += noten_von_anderen[i]
+		summe_ich += noten_von_mir[i]
+		
+	schnitt_ich = summe_ich/len(noten_von_mir)
+	schnitt_er = summe_er/len(noten_von_anderen)
+	differenz = schnitt_er-schnitt_ich
+	
+	# Daten ajustieren
+	i=0
+	repeat len(noten_von_mir):
+		noten_von_mir[i] += differenz
+		i+=1
+
+# Match berechnen
+i=0
+repeat len(noten_von_mir):
+	ich = noten_von_mir[i]
+	er = noten_von_anderen[i]
+	match=(ich+er)-abs(ich-er)
+	if match>bester_match:
+		bester_match=match
+		person_am_besten=dating_mann[i]
+
+	i+=1
+
+print(person_am_besten, "score", bester_match)
+
+\end{lstlisting}
+	\end{solution}
+	
+\end{parts}
+
+\question{\emoji{money-bag} Taschengeld}\\
+
+Ihre Eltern geben Ihnen jeden Monat ein Taschengeld. Einen Teil dieses Gelds geben Sie jeweils für Essen, Schulbücher und weitere notwendige Gegenstände aus. Am Ende jedes Monats können Sie sich vom übriggebliebenen Geld einen (nicht dringend benötigten) Wunschgegenstand kaufen.
+
+Sie wünschen Sich folgende Gegenstände: Ein Buch (20.-), spezielle Kleider (50.-), eine neue Lese-Lampe (11.-), einen Licht-Wecker (25.-), ein neues Game (32.-), einen Mini-Roboter (35.-) und Comics (10.-).
+
+Im letzten Jahr blieb Ihnen am Ende jedes Monats folgende Beträge übrig: Jan: 20.-, Feb: 50.-, März: 33.-, April: 0.-, Mai: 7.-, Juni: 6.-, Juli: 10.-, Aug: 13.-, Sept: 20.-, Okt: 4.-, Nov: 8.-, Dez: 5.-.
+
+Ihre Strategie ist folgende: Sie schauen sich jeden Monat Ihre gewünschten Gegenstände an. Falls Sie genügend Geld haben, kaufen Sie den Gegenstand und fügen ihn Ihrem Inventar hinzu. Ebenfalls entfernen Sie den Gegenstand von Ihrer Wunschliste mit dem Befehl \pythoninline{liste.remove(gegenstand)}.
+
+\begin{parts}
+	\part[2] Wie sieht Ihr Inventar am Ende des Jahres aus? Verwenden Sie eine Schleife, um an jedem Monatsende Gegenstände zu kaufen, sowie den Befehl \pythoninline{.append}, um Gegenstände, die Sie sich leisten können, Ihrem Inventar hinzuzufügen. Können Sie sich innerhalb eines Jahres alle Gegenstände kaufen?
+	\begin{solution}
+		Es reicht für das Buch, Kleider, den Wecker und die Comics.
+		
+\begin{lstlisting}[style=TigerJython, basicstyle=\scriptsize]
+# finanzen, taschengeld
+wunsch_objekte=["Buch","Kleider", "Lese-Lampe", "Wecker", "Games", "Roboter", "Comics"]
+wunsch_kosten = [20,50, 50, 25, 32, 35, 10]
+geld_monat=[20,50,33,0,7,6,10,13,20,4,8,5]
+meine_objekte=[]
+
+for geld in geld_monat:
+	kann_kaufen=True
+	while kann_kaufen and len(wunsch_objekte)>0:
+		kann_kaufen=False
+		i=0
+		repeat len(wunsch_objekte):
+			if wunsch_kosten[i] <= geld:
+				meine_objekte.append(wunsch_objekte[i])
+				geld-=wunsch_kosten[i]
+				wunsch_objekte.remove(wunsch_objekte[i])
+				wunsch_kosten.remove(wunsch_kosten[i])
+				kann_kaufen=True
+				break
+			i+=1
+		
+print(meine_objekte)
+\end{lstlisting}
+
+
+
+	\end{solution}
+\end{parts}
+
+\question{\emoji{pirate-flag} \textbf{Black Friday Shopping}}
+
+Sie waren am Black Friday im Manor shoppen. Als Sie an der Kasse ankommen, gibt es leider ein Problem: weil im Python-Code für die Manor-Kassen ein Stück fehlt, werden die Rabatte nicht angewandt. Statt dem reduzierten Preis sollten Sie angeblich den richtigen Preis zahlen! Zum Glück sind Sie ein(e) professionelle(r) Programmierer(in) und können das Problem schnell lösen: die Preis- und Rabattliste existieren im System bereits, nur sind die richtigen Preise nicht berechnet, weil ein Stück Code verloren gegangen ist:
+\begin{lstlisting}[style=TigerJython, basicstyle=\scriptsize]
+preise_normal = [39.95,65.95,66.95,76.95,9.95,10.95,13.95]
+rabatte_blackfriday_prozent = [30,40,30,35,20,15,35]
+preise_blackfriday = ... ??
+\end{lstlisting}
+\begin{parts}
+	\part[1] Berechnen Sie die Black-Friday-Preise für alle Elemente im Laden. Der rabattierte Preis wird folgendermassen berechnet:\\
+	\pythoninline{preis_bf = preis_original*(1-rabatt_prozent/100)}
+	\begin{solution}
+		\begin{lstlisting}[style=TigerJython, basicstyle=\scriptsize]
+preise_normal = [39.95,65.95,66.95,76.95,9.95,10.95,13.95]
+rabatte_blackfriday_prozent = [30,40,30,35,20,15,35]
+preise_blackfriday = []
+
+i=0
+repeat len(preise_normal):
+	preise_blackfriday.append(preise_normal[i]*(1-rabatte_blackfriday_prozent[i]/100))
+	i+=1
+
+print(preise_blackfriday)
+\end{lstlisting}
+		
+	\end{solution}
+\end{parts}
+
+\droptotalpoints
+
+\end{questions}
