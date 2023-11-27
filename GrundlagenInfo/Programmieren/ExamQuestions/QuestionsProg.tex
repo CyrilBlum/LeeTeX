@@ -54,7 +54,7 @@
 \section*{Listen}
 \question{\emoji{nerd-face} \textbf{Programmier-Aufgaben optimal lösen}}
 
-Ihr Lehrer hat ein eigenes Programmier-Lehrmittel entwickelt. Die darin enthaltenen Aufgaben enthalten jeweils eine Zeitangabe (benötigte Zeit um die Aufgabe zu lösen). Herr Wendl lässt Sie aus dem Buch die Aufgaben A.1 (5'), A.2 (15'), A.3 (15') und A.4 (10') daraus lösen. Die Lektion dauert 60 Minuten.\\
+Ihr Lehrer hat ein eigenes Programmier-Buch entwickelt. Die darin enthaltenen Aufgaben enthalten jeweils eine Zeitangabe (benötigte Zeit um die Aufgabe zu lösen). Ihr Lehrer lässt Sie aus dem Buch die Aufgaben A.1 (5'), A.2 (15'), A.3 (15') und A.4 (10') daraus lösen. Die Lektion dauert 60 Minuten.\\
 
 Aus eigener Erfahrung wissen Sie, dass Sie, wenn Sie nicht ausgeschlafen sind, etwa doppelt so lange brauchen wie im Buch angegeben. Ebenso wissen Sie, dass Sie doppelt so lange brauchen, wenn Sie die Aufgabe nicht genau lesen. 
 
@@ -71,16 +71,15 @@ genau_gelesen=[True, True, False, False]
 zeit = 0
 i=0
 repeat len(zeit_aufgaben):
-zeit_aufgabe=zeit_aufgaben[i]
-if not ausgeschlafen:
-zeit_aufgabe*=2
-
-if not genau_gelesen[i]:
-zeit_aufgabe*=2
-
-zeit+=zeit_aufgabe
-i+=1
-
+	zeit_aufgabe=zeit_aufgaben[i]
+	if not ausgeschlafen:
+		zeit_aufgabe*=2
+	
+	if not genau_gelesen[i]:
+		zeit_aufgabe*=2
+	
+	zeit+=zeit_aufgabe
+	i+=1
 
 print(zeit)
 \end{lstlisting}
@@ -91,9 +90,9 @@ print(zeit)
 	\end{solution}
 \end{parts}
 
-\question{\emoji{deciduous-tree} \textbf{Den Regenwald retten}}
+\question{\emoji{deciduous-tree} \textbf{Den Amazonas-Regenwald retten}}
 
-Sie haben durch einen Zufall eine Million Dollar gewonnen. Da Sie etwas gutes für die Umwelt tun möchten, entscheiden Sie sich, ein Stück Regenwald im Amazonas unter Schutz zu stellen, um es vor Abholzung zu schützen. Sie erfahren, dass es für gewisse Bäume mehr kostet als für andere, um sie unter Schutz zu stellen, da diese im Raubbau (Abholzung) mehr Profit abwerfen würden. Zudem erfahren Sie auch, wie viele Bäume von jeder Art es gibt. Die Bäume im Amazonas werden in vier Klassen unterteilt:
+Sie haben durch einen Zufall eine Million Dollar gewonnen. Da Sie etwas gutes für die Umwelt tun möchten, entscheiden Sie sich, ein Stück Regenwald im Amazonas unter Schutz zu stellen, um es vor Abholzung zu schützen. Da gewisse Hölzer teurer sind als andere, müssen Sie für gewisse Baumarten mehr zahlen als für andere, um sie unter Schutz zu stellen. Innerhalb des Gebiets, das Sie schützen möchten, gibt es folgende Baumarten:
 \begin{itemize}
 	\item Teure Bäume: 230\$ pro Baum, bei insgesamt 1'140 Bäumen 
 	\item Mittel-teure Bäume: 39\$ pro Baum, bei insgesamt 23'345 Bäumen
@@ -102,68 +101,71 @@ Sie haben durch einen Zufall eine Million Dollar gewonnen. Da Sie etwas gutes f�
 \end{itemize}
 
 \begin{parts}
-	\part[2] Berechnen Sie, wie viel Geld insgesamt benötigt würde, um alle Bäume unter Schutz zu stellen. Reicht das Geld, um alle Bäume unter Schutz zu stellen?
+	\part[2] Berechnen Sie mit einer \pythoninline{repeat}-Schleife, wie viel Geld insgesamt benötigt würde, um alle Bäume unter Schutz zu stellen. Reicht das Geld, um alle Bäume unter Schutz zu stellen?
 	\begin{solution}
-		1'218'079\$, das Geld reicht also nicht für alle Bäume (s. Python-Lösung von Teil 2)
+		Es würden 1'218'079\$ benötigt, um alle Bäume unter Schutz zu stellen. Da wir nun eine Million Dollar besitzen, reicht das Geld also nicht, um alle Bäume zu schützen (s. Python-Lösung von Teil 2).
 	\end{solution}
-	\part[2] Wie viel \% vom Regenwald können Sie unter Schutz stellen mit Ihrem Geld? Jeder Baum bedeckt dieselbe Fläche (5 $m^2$) und wir wollen eine möglichst grosse Fläche unter Schutz stellen.
+	\part[2] Welchen Prozentsatz vom Regenwald-Gebiet können Sie maximal mit Ihrem Geld unter Schutz stellen? Jeder Baum bedeckt dieselbe Fläche (5 $m^2$).
 	\begin{solution}
 		Man kann 97.9\% des Waldes unter Schutz stellen, indem man die günstigeren Bäume zuerst ``kauft''.
 		\begin{lstlisting}[style=TigerJython]
-baeume_kosten=[2,10,39,230]
-baeume_anzahl=[21042, 334, 23345, 1140]
-i = 0 # Index für die beiden obigen Listen
-gesamtkosten=0 # kosten, um alle Bäume im Urwald zu retten
-geld=1000000 # Gesamtes Geld, das investiert werden kann
-gesamtflaeche=0 # Gesamte Urwaldfläche
-flaeche_gerettet=0 # Fläche, die gerettet wird
-geld_aufgebraucht=False 
+# Kosten und Anzahl Bäume pro Kategorie (billig, preiswert, mittel-teuer, teuer)
+baeume_kosten = [2, 10, 39, 230]
+baeume_anzahl = [21042, 334, 23345, 1140]
+
+gesamtkosten = 0  # Kosten, um alle Bäume im Urwald zu retten
+geld = 1000000  # Gesamtes Geld, das investiert werden kann
+gesamtflaeche = 0  # Gesamte Urwaldfläche
+flaeche_gerettet = 0  # Fläche, die gerettet wird
+geld_aufgebraucht = False
+i = 0  # Index
 
 repeat len(baeume_kosten):
-	kosten_i=baeume_kosten[i] # kosten für einen Baum der ART i
-	anzahl_i=baeume_anzahl[i] # Anzahl Bäume der ART i
-	
-	gesamtflaeche += 5*anzahl_i # Fläche, die durch ALLE Bäume der ART i besetzt ist
-	gesamtkosten += anzahl_i*kosten_i # Kosten, um ALLE Bäume der ART i zu retten
-	
-	# berechne, wie viele Bäume der ART i gerettet werden können
-	anzahl_baeume_art_gerettet=0
-	
-	repeat:
-		if anzahl_baeume_art_gerettet == anzahl_i:
-			break
-		if geld < kosten_i:
-			break
-		flaeche_gerettet+=5
-		geld -= kosten_i
-		anzahl_baeume_art_gerettet += 1
-		if geld < kosten_i:
-			geld_aufgebraucht=True
-	
-	i+=1
+    kosten_art = baeume_kosten[i]  # kosten für einen Baum der ART i
+    anzahl_art = baeume_anzahl[i]  # Anzahl Bäume der ART i
+
+    gesamtflaeche += 5*anzahl_art  # Fläche, die durch ALLE Bäume der ART i besetzt ist
+    # Kosten, um ALLE Bäume der ART i zu retten
+    gesamtkosten += anzahl_art*kosten_art
+
+    # berechne, wie viele Bäume der ART i gerettet werden können
+    anzahl_baeume_art_gerettet = 0
+    repeat:
+        if anzahl_baeume_art_gerettet == anzahl_art:
+            break
+        if geld < kosten_art:
+            break
+        flaeche_gerettet += 5
+        geld -= kosten_art
+        anzahl_baeume_art_gerettet += 1
+    i += 1
+
 
 print(gesamtflaeche)
 print(flaeche_gerettet)
 print(flaeche_gerettet/gesamtflaeche*100)
-print(gesamtkosten)    
+print(gesamtkosten)
+  
 \end{lstlisting}
 	\end{solution}
 \end{parts}
 
 \question{\emoji{heart-with-arrow} \textbf{Unromantische Dating-App}}
 
-Sie entwickeln eine Dating-App, die sich an wissenschaftlichen Prinzipien orientiert. Sie funktioniert folgendermassen: Statt wie bei Tinder zu swipen, geben Sie jedem Kandidaten eine Note zwischen 1 und 10. Die Person gibt Ihnen ebenfalls eine Note zwischen 1 und 10. Sobald 10 Personen sich bewertet haben, werden Sie mit der passendsten Person ``gematched'' und Sie können sich schreiben. Um die passendste Person zu finden, wird folgendes betrachtet
+Sie entwickeln eine Dating-App, die sich an wissenschaftlichen Prinzipien orientiert. Sie funktioniert folgendermassen: Statt wie bei Tinder zu swipen, geben Sie jedem Kandidaten eine Note zwischen 1 und 10. Die Person gibt Ihnen ebenfalls eine Note zwischen 1 und 10. Sobald 10 Personen sich bewertet haben, werden Sie mit der passendsten Person ``gematched'' und Sie können sich schreiben. Um die passendste Person zu finden, wird folgendes betrachtet:
 \begin{itemize}
-	\item Die 10 Noten, die Sie abgegeben haben (\tjinline{noten_von_mir=[...]})
+	\item Die 10 Noten, die Sie abgegeben haben (\tjinline{noten_von_mir = [...]})
 	\item Die 10 Noten, die die anderen Personen für Sie abgegeben haben (\tjinline{noten_von_anderen=[...]})
-	\item Der Score, um zu bestimmen, ob jemand ein Match sein könnte:\\
-	 \tjinline{match=note_von_mir+note_von_person - abs(note_von_mir-note_von_person)}
+	\item Der Score, um zu bestimmen, ob eine Person ein Match sein könnte:\\
+	 \tjinline{match=note_von_mir + note_von_person - abs(note_von_mir - note_von_person)}
 \end{itemize}
 
 \begin{parts}
-	\part[2] Berechnen Sie den Match für jede Person und bestimmen Sie, wer den höchsten Match hat, für folgende Daten:
-		\begin{lstlisting}[style=TigerJython]
-dating_person = ["James", "Johannes", "Adam", "Ian", "Wilson", "Karl", "Bob", "Chris", "Charles"]
+	\part[2] Berechnen Sie den Match für jede Person und bestimmen Sie, wer den höchsten Match hat, für folgende Noten:
+	
+\begin{lstlisting}[style=TigerJython]
+dating_mann = ["James", "Johannes", "Adam", "Ian",
+               "Wilson", "Karl", "Bob", "Chris", "Charles"]
 noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
 noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
 \end{lstlisting}
@@ -172,75 +174,76 @@ noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
 		Wilson ist der beste Match, mit einem Score von 14. 
 \begin{lstlisting}[style=TigerJython]
 # Unromantische Dating-App
-dating_mann = ["James", "Johannes", "Adam", "Ian", "Wilson", "Karl", "Bob", "Chris", "Charles"]
+dating_mann = ["James", "Johannes", "Adam", "Ian",
+               "Wilson", "Karl", "Bob", "Chris", "Charles"]
 noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
 noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
 
-bester_match=0
-person_am_besten=""
+bester_match = 0
+person_am_besten = ""
 
-i=0
+i = 0
 
 repeat len(noten_von_mir):
-	ich = noten_von_mir[i]
-	er = noten_von_anderen[i]
-	match=(ich+er)-abs(ich-er)
-	if match>bester_match:
-		bester_match=match
-		person_am_besten=dating_mann[i]
+    ich = noten_von_mir[i]
+    er = noten_von_anderen[i]
+    match = (ich+er)-abs(ich-er)
+    if match > bester_match:
+        bester_match = match
+        person_am_besten = dating_mann[i]
 
-	i+=1
+    i += 1
 
-print(person_am_besten, "score", bester_match)	
+print(person_am_besten, "score", bester_match)
 \end{lstlisting}
 	\end{solution}
-	\part[2] Wie Sie vermutlich wissen, sind Frauen selektiver auf Dating-Plattformen als Männer. Diesen Effekt wollen wir korrigieren, indem wir zuerst den Mittelwert aller erhaltenen Noten sowie aller gegebenen Noten berechnen. Danach berechnen wir die Differenz beider Schnitte als \tjinline{differenz = abs(schnitt_von_anderen - schnitt_von_mir)} und addieren die Differenz zu jeder erhaltenen Note. Wer ist nun der beste Match?
+	\part[2] Wie Sie vermutlich wissen, sind Frauen selektiver auf Dating-Plattformen als Männer. Diesen Effekt wollen wir korrigieren, indem wir zuerst den Mittelwert aller erhaltenen Noten sowie aller gegebenen Noten berechnen. Danach berechnen wir die Differenz beider Schnitte als \tjinline{differenz = schnitt_von_anderen - schnitt_von_mir}. Danach addieren wir diese Differenz zu jeder erhaltenen Note, so dass am Ende der Durchschnitt der gegebenen und erhaltenen Noten derselbe ist. Wer ist nun der beste Match?
 	\begin{solution}
 		Der beste Match ist nun Charles mit einer Note von 20.
 \begin{lstlisting}[style=TigerJython]
 # Unromantische Dating-App
-dating_mann = ["James", "Johannes", "Adam", "Ian", "Wilson", "Karl", "Bob", "Chris", "Charles"]
+dating_mann = ["James", "Johannes", "Adam", "Ian",
+               "Wilson", "Karl", "Bob", "Chris", "Charles"]
 noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
 noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
 
+bester_match = 0
+person_am_besten = ""
 
-bester_match=0
-person_am_besten=""
-
-durchschnitt_ajustieren=True
+durchschnitt_ajustieren = True
 if durchschnitt_ajustieren:
-	# Durchschnitt berechnen
-	i=0
-	summe_er = 0
-	summe_ich = 0
-	repeat len(noten_von_mir):
-		summe_er += noten_von_anderen[i]
-		summe_ich += noten_von_mir[i]
-		
-	schnitt_ich = summe_ich/len(noten_von_mir)
-	schnitt_er = summe_er/len(noten_von_anderen)
-	differenz = schnitt_er-schnitt_ich
-	
-	# Daten ajustieren
-	i=0
-	repeat len(noten_von_mir):
-		noten_von_mir[i] += differenz
-		i+=1
+    # Durchschnitt berechnen
+    i = 0
+    summe_er = 0
+    summe_ich = 0
+    repeat len(noten_von_mir):
+        summe_er += noten_von_anderen[i]
+        summe_ich += noten_von_mir[i]
+
+    schnitt_von_mir = summe_ich/len(noten_von_mir)
+    schnitt_von_anderen = summe_er/len(noten_von_anderen)
+    print(schnitt_von_mir, schnitt_von_anderen)
+    differenz = schnitt_von_anderen-schnitt_von_mir
+
+    # Daten ajustieren
+    i = 0
+    repeat len(noten_von_mir):
+        noten_von_mir[i] += differenz
+        i += 1
 
 # Match berechnen
-i=0
+i = 0
 repeat len(noten_von_mir):
-	ich = noten_von_mir[i]
-	er = noten_von_anderen[i]
-	match=(ich+er)-abs(ich-er)
-	if match>bester_match:
-		bester_match=match
-		person_am_besten=dating_mann[i]
+    ich = noten_von_mir[i]
+    er = noten_von_anderen[i]
+    match = (ich+er)-abs(ich-er)
+    if match > bester_match:
+        bester_match = match
+        person_am_besten = dating_mann[i]
 
-	i+=1
+    i += 1
 
 print(person_am_besten, "score", bester_match)
-
 \end{lstlisting}
 	\end{solution}
 	
@@ -250,11 +253,27 @@ print(person_am_besten, "score", bester_match)
 
 Ihre Eltern geben Ihnen jeden Monat ein Taschengeld. Einen Teil dieses Gelds geben Sie jeweils für Essen, Schulbücher und weitere notwendige Gegenstände aus. Am Ende jedes Monats können Sie sich vom übriggebliebenen Geld einen (nicht dringend benötigten) Wunschgegenstand kaufen.
 
-Sie wünschen Sich folgende Gegenstände: Ein Buch (20.-), spezielle Kleider (50.-), eine neue Lese-Lampe (11.-), einen Licht-Wecker (25.-), ein neues Game (32.-), einen Mini-Roboter (35.-) und Comics (10.-).
+Sie haben folgende Wunschliste: 
+\begin{itemize}
+	\item Ein Buch (20.-)
+	\item Marken-Kleider (50.-)
+	\item Lese-Lampe (11.-)
+	\item Licht-Wecker (25.-)
+	\item Ein Game (32.-)
+	\item Mini-Roboter (35.-)
+	\item Comics (10.-)
+\end{itemize}
 
-Im letzten Jahr blieb Ihnen am Ende jedes Monats folgende Beträge übrig: Jan: 20.-, Feb: 50.-, März: 33.-, April: 0.-, Mai: 7.-, Juni: 6.-, Juli: 10.-, Aug: 13.-, Sept: 20.-, Okt: 4.-, Nov: 8.-, Dez: 5.-.
+Im letzten Jahr blieb Ihnen am Ende jedes Monats folgende Beträge übrig: 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+	Jan & Feb & Mar & Apr & Mai & Jun & Jul & Aug & Sep & Okt & Nov & Dez \\\hline
+	20.- & 50.- & 33.- & 0.- & 7.- & 6.- & 10.- & 13.- & 20.- & 4.- & 8.- & 5.-
+	\end{tabular}
+\end{table}
 
-Ihre Strategie ist folgende: Sie schauen sich jeden Monat Ihre gewünschten Gegenstände an. Falls Sie genügend Geld haben, kaufen Sie den Gegenstand und fügen ihn Ihrem Inventar hinzu. Ebenfalls entfernen Sie den Gegenstand von Ihrer Wunschliste mit dem Befehl \tjinline{liste.remove(gegenstand)}.
+Ihre Strategie ist folgende: Sie schauen sich jeden Monat Ihre gewünschten Gegenstände an. Falls Sie genügend Geld haben, kaufen Sie den erstbesten Gegenstand und fügen ihn Ihrem Inventar hinzu. Sie dürfen maximal einen Gegenstand pro Monat kaufen. Ebenfalls entfernen Sie den Gegenstand von Ihrer Wunschliste mit dem Befehl \tjinline{liste.remove(gegenstand)}.
 
 \begin{parts}
 	\part[2] Wie sieht Ihr Inventar am Ende des Jahres aus? Verwenden Sie eine Schleife, um an jedem Monatsende Gegenstände zu kaufen, sowie den Befehl \tjinline{.append}, um Gegenstände, die Sie sich leisten können, Ihrem Inventar hinzuzufügen. Können Sie sich innerhalb eines Jahres alle Gegenstände kaufen?
@@ -262,28 +281,29 @@ Ihre Strategie ist folgende: Sie schauen sich jeden Monat Ihre gewünschten Gege
 		Es reicht für das Buch, Kleider, den Wecker und die Comics.
 		
 \begin{lstlisting}[style=TigerJython]
-# finanzen, taschengeld
-wunsch_objekte=["Buch","Kleider", "Lese-Lampe", "Wecker", "Games", "Roboter", "Comics"]
-wunsch_kosten = [20,50, 50, 25, 32, 35, 10]
-geld_monat=[20,50,33,0,7,6,10,13,20,4,8,5]
-meine_objekte=[]
+wunsch_objekte = ["Buch", "Kleider", "Lese-Lampe",
+                  "Wecker", "Game", "Roboter", "Comics"]
+wunsch_kosten = [20, 50, 50, 25, 32, 35, 10]
+geld_monat = [20, 50, 33, 0, 7, 6, 10, 13, 20, 4, 8, 5]
+meine_objekte = []
 
 for geld in geld_monat:
-	kann_kaufen=True
-	while kann_kaufen and len(wunsch_objekte)>0:
-		kann_kaufen=False
-		i=0
-		repeat len(wunsch_objekte):
-			if wunsch_kosten[i] <= geld:
-				meine_objekte.append(wunsch_objekte[i])
-				geld-=wunsch_kosten[i]
-				wunsch_objekte.remove(wunsch_objekte[i])
-				wunsch_kosten.remove(wunsch_kosten[i])
-				kann_kaufen=True
-				break
-			i+=1
-		
+    kann_kaufen = True
+    while kann_kaufen and len(wunsch_objekte) > 0:
+        kann_kaufen = False
+        i = 0
+        repeat len(wunsch_objekte):
+            if wunsch_kosten[i] <= geld:
+                meine_objekte.append(wunsch_objekte[i])
+                geld -= wunsch_kosten[i]
+                wunsch_objekte.remove(wunsch_objekte[i])
+                wunsch_kosten.remove(wunsch_kosten[i])
+                kann_kaufen = True
+                break
+            i += 1
+
 print(meine_objekte)
+
 \end{lstlisting}
 
 
@@ -293,25 +313,26 @@ print(meine_objekte)
 
 \question{\emoji{pirate-flag} \textbf{Black Friday Shopping}}
 
-Sie waren am Black Friday im Manor shoppen. Als Sie an der Kasse ankommen, gibt es leider ein Problem: weil im Python-Code für die Manor-Kassen ein Stück fehlt, werden die Rabatte nicht angewandt. Statt dem reduzierten Preis sollten Sie angeblich den richtigen Preis zahlen! Zum Glück sind Sie ein(e) professionelle(r) Programmierer(in) und können das Problem schnell lösen: die Preis- und Rabattliste existieren im System bereits, nur sind die richtigen Preise nicht berechnet, weil ein Stück Code verloren gegangen ist:
+Sie waren am Black Friday im Supermarkt shoppen. Als Sie an der Kasse ankommen, gibt es leider ein Problem: weil im Python-Code für die Manor-Kassen ein Stück Code fehlt, werden die Rabatte nicht angewandt. Statt dem reduzierten Preis sollten Sie angeblich den richtigen Preis zahlen! Zum Glück sind Sie ein(e) professionelle(r) Programmierer(in) und können das Problem schnell lösen: die Preis- und Rabattliste existieren im System bereits, nur sind die richtigen Preise nicht berechnet, weil ein Stück Code verloren gegangen ist:
 \begin{lstlisting}[style=TigerJython]
-preise_normal = [39.95,65.95,66.95,76.95,9.95,10.95,13.95]
-rabatte_blackfriday_prozent = [30,40,30,35,20,15,35]
-preise_blackfriday = ... ??
+preise_normal = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95]
+rabatte_blackfriday_prozent = [30, 40, 30, 35, 20, 15, 35]
+preise_blackfriday = [] # hier sollte der rabattierte Preis berechnet werden!
 \end{lstlisting}
 \begin{parts}
 	\part[1] Berechnen Sie die Black-Friday-Preise für alle Elemente im Laden. Der rabattierte Preis wird folgendermassen berechnet:\\
-	\tjinline{preis_bf = preis_original*(1-rabatt_prozent/100)}
+	\tjinline{preis_blackfriday = preis_normal * (1 - rabatt_prozent / 100)}
 	\begin{solution}
 		\begin{lstlisting}[style=TigerJython]
-preise_normal = [39.95,65.95,66.95,76.95,9.95,10.95,13.95]
-rabatte_blackfriday_prozent = [30,40,30,35,20,15,35]
+preise_normal = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95]
+rabatte_blackfriday_prozent = [30, 40, 30, 35, 20, 15, 35]
 preise_blackfriday = []
 
-i=0
+i = 0
 repeat len(preise_normal):
-	preise_blackfriday.append(preise_normal[i]*(1-rabatte_blackfriday_prozent[i]/100))
-	i+=1
+    preise_blackfriday.append(
+        preise_normal[i]*(1-rabatte_blackfriday_prozent[i]/100))
+    i += 1
 
 print(preise_blackfriday)
 \end{lstlisting}
@@ -319,9 +340,9 @@ print(preise_blackfriday)
 	\end{solution}
 \end{parts}
 
-\question{\emoji{desert-island} \textbf{Schatzsuche auf einer einsamen Insel}}\\
+\question[2]{\emoji{desert-island} \textbf{Schatzsuche auf einer einsamen Insel}}\\
 
-Sie sind auf einer einsamen Insel gestrandet und suchen verzweifelt nach Nahrung. Nachdem Sie sich erkundigt haben, merken Sie, dass Ihre Insel nicht aus einer, sondern aus drei über einen engen Landkanal miteinander verbundenen Inseln besteht:
+Sie sind auf einer einsamen Insel gestrandet und suchen verzweifelt nach Nahrung. Nachdem Sie etwas herumgelaufen sind, haben Sie bemerkt, dass Ihr Strandungsort nicht aus einer Insel, sondern aus drei über einen engen Landkanal miteinander verbundenen Inseln besteht:
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -332,9 +353,39 @@ Sie sind auf einer einsamen Insel gestrandet und suchen verzweifelt nach Nahrung
 		child[concept color=orange] { node[concept] {Insel 3} };
 	\end{tikzpicture}
 \end{figure}
-Als ob das noch nicht merkwürdig genug wäre, finden Sie auch noch dutzende Schatzkisten verstreut über die Inseln. Währenddem alle Kisten auf Inseln 1 und 2 verschlossen sind, finden Sie auf Insel 3 10 offene Schatztruhen. In jeder Schatztruhe ist liegt ein Zettel mit einer Zahl. In einer Kiste finden Sie zudem einen weiteren Zettel, der Ihnen erklärt, was zu tun ist, um die restlichen Schatztruhen zu öffenen:
-``Auf Insel 2 können Sie''
+Als ob das noch nicht merkwürdig genug wäre, finden Sie auch noch dutzende Schatzkisten verstreut über die Inseln. Währenddem alle Kisten auf Inseln 1 und 2 verschlossen sind, finden Sie auf Insel 3 zehn offene Schatztruhen. In jeder Schatztruhe ist liegt ein Zettel mit einer Zahl, der Ihnen erlaubt, die anderen Schatzkisten (mit Zahlencode) zu öffnen. Als Sie die Zahlen ausprobieren, merken Sie jedoch, dass diese lediglich für die Kisten auf Insel 2 funktionieren. In den Kisten auf Insel 2 sind wiederum mehrere Zettel. In einer Kiste finden Sie jedoch einen weiteren Zettel, auf dem steht:\\
 
+``\textit{Die Schatzkisten auf Insel 3 lassen sich öffnen mit der Summe zweier Zettel: Ein Zettel muss von Insel 1 kommen und einer von Insel 2. Bilden Sie die Produkte von jedem Zettel aus Insel 1 mit jedem Zettel von Insel 2. Von allen möglichen Produkten zweier Zettel sind diejenigen Zahlen Schlüssel für die Schatzkisten, die sich durch 7 teilen lassen. Hier einige Beispiele:\\
+Zettel 1: 14, Zettel 2: 3 $\rightarrow$ Produkt = 42, ist durch 7 teilbar und somit ein Schlüssel.\\
+Zettel 1: 11, Zettel 2: 2 $\rightarrow$ Produkt = 22, ist nicht durch 7 teilbar und somit kein Schlüssel.}''\\
+
+Da Sie glücklicherweise auch noch Ihren Computer auf der Insel haben, berechnen Sie in Python alle möglichen Produkte zweier Zettel und geben die Summen aus, die durch 7 teilbar sind. Sie haben auf Inseln 3 und 2 folgende Zettel gefunden:
+\begin{lstlisting}[style=TigerJython]
+schluessel_i3 = [99, 5, 23, 5, 66, 88, 133, 344, 345, 354, 33]
+schluessel_i2 = [44, 33, 526, 131, 30, 103, 44, 97, 193, 10]
+\end{lstlisting}
+Finden Sie alle 10 Schlüssel, die durch 7 teilbar sind.
+
+\begin{solution}
+\begin{lstlisting}[style=TigerJython]
+schluessel_i3 = [99, 5, 23, 5, 66, 88, 133, 344, 345, 354, 33]
+schluessel_i2 = [44, 33, 526, 131, 30, 103, 44, 97, 193, 10]
+summen = []
+for s_i3 in schluessel_i3:
+    for s_i2 in schluessel_i2:
+        summen.append(s_i3*s_i2)
+
+print(summen)
+
+summen_teilbar_durch_sieben = []
+for s in summen:
+    if s % 7 == 0:
+        summen_teilbar_durch_sieben.append(s)
+
+print(summen_teilbar_durch_sieben)
+print(len(summen_teilbar_durch_sieben))
+\end{lstlisting}
+\end{solution}
 
 
 
@@ -347,7 +398,7 @@ Der Mikrocontroller einer R2-D2 Roboter-Einheit wurde beschädigt. Der Roboter k
 \noindent
 Schreiben Sie eine Python-Funktion \tjinline{def r2d2(bewegung)}, welche für eine gegebene beliebige Be\-we\-gungs\-an\-wei\-sung \tjinline{bewegung} entscheidet, ob sich der Roboter nach den Bewegungen wieder im Ursprung befindet (\tjinline{return True}) oder nicht (\tjinline{return False}). Hinweis: Auf die einzelnen Buchstaben eines Strings kann ebenso zugegriffen werden wie auf Listenelemente. Falls zum Beispiel \tjinline{wort = "Hallo"}, dann ist \tjinline{wort[0] == "H", wort[1], == "a"} und so weiter. Wie auch bei Listen, kann mit dem Befehl \tjinline{len(wort)} die Länge (Anzahl Buchstaben) eines Worts bestimmt werden.
 
-\begin{lstlisting}[style=TigerJython]
+\begin{lstlisting}[numbers=none]
 Beispiel 1:
 Input: bewegung = 'uurol'
 Output: False
@@ -362,16 +413,17 @@ Output: True
 def count_symbol(symbol, word):
     count = 0
     for buchstabe in word:
-        if buchstabe == symbol
+        if buchstabe == symbol:
             count += 1
     return(count)
 
-def r2d2(bewegung):
+
+def r2d2(move):
     l = count_symbol('l', move)
     r = count_symbol('r', move)
     o = count_symbol('o', move)
     u = count_symbol('u', move)
-    if ( l-r == 0 and o-u == 0):
+    if (l-r == 0 and o-u == 0):
         return True
     else:
         return False
@@ -382,7 +434,7 @@ def r2d2(bewegung):
 \question{\emoji{plus} \textbf{Summanden}}
 
 Gegeben sei eine Liste \tjinline{A} von ganzen Zahlen der Länge $n$ und eine angestrebte Zahl \mbox{\tjinline{target}.} Schreiben Sie eine Python-Funktion \tjinline{target_sum(A,target)}, die zwei Zahlen \tjinline{a} und \tjinline{b} in \tjinline{A} ermittelt, welche sich zu \tjinline{target} addieren. Die Python-Funktion soll die Indizes von \tjinline{a} und \tjinline{b} zurück geben. Es kann davon ausgegangen werden, dass jede Eingabe genau eine solche Lösung zulässt (es existiert eine Lösung und sie ist eindeutig). Jedes Element der Liste darf nur einmal in der Summe verwendet werden: Das heisst \tjinline{[i,j]} mit \tjinline{target == A[i] + A[j]} für \tjinline{i} $\neq$ \tjinline{j} wäre eine gültige Lösung des Problems, aber \tjinline{[i,i]} mit \tjinline{target == A[i] + A[i]} nicht.
-\begin{lstlisting}[style=TigerJython]
+\begin{lstlisting}[numbers=none]
 Beispiel 1
 Input: A = [8,3,5,9,11,-2], target = 1
 
@@ -401,12 +453,12 @@ Output: [0,4], da die Summe von A[0] = 2 und
 \begin{solution}
 Wir betrachten jedes Element in der Liste und schauen, ob es ein weiteres Element gibt, sodass die Summe der Zwei Elemente dem \tjinline{target} entspricht.
 \begin{lstlisting}[style=TigerJython]
-def target_sum(A,target):
+ef target_sum(A, target):
     n = len(A)
     for i in range(n-1):
-        for j in range(i+1,n):
+        for j in range(i+1, n):
             if (A[i] + A[j] == target):
-                return([i,j])
+                return([i, j])
 \end{lstlisting}
 \end{solution}
 
