@@ -54,5 +54,6 @@ def draw_friedmann(i, fc, turtle=True):
             setPos(i*40-xshift, fc[i-1]*1000+40)
             label(i)
     else:
-            plt.plot(i, fc, 'o')
-            plt.show()
+        fig, ax = plt.subplots()
+        ax.plot(i, fc, 'o')
+        return fig, ax

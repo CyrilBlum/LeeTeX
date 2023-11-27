@@ -75,3 +75,50 @@
 % coins
 \newcommand{\coin}[1]{\textcolor{Goldenrod}{\textcircled{\tiny{\bfseries #1}}}}
 %% some colors
+
+
+% command "colorstring" for coloring a string in alternating colors
+\ExplSyntaxOn
+
+\seq_new:N \l_kaddon_colors_seq
+\int_new:N \l_kaddon_color_int
+
+\cs_new_protected:Nn \kaddon_color_string:nn
+ {
+  \seq_set_from_clist:Nn \l_kaddon_colors_seq { #1 }
+  \int_zero:N \l_kaddon_color_int
+  \tl_map_inline:nn { #2 } { \kaddon_color:n { ##1 } }
+ }
+\cs_generate_variant:Nn \kaddon_color_string:nn { nV }
+
+\cs_new_protected:Nn \kaddon_color:n
+ {
+  \int_incr:N \l_kaddon_color_int
+  \int_compare:nT { \l_kaddon_color_int > \seq_count:N \l_kaddon_colors_seq }
+   { % exhausted colors, restart
+    \int_set:Nn \l_kaddon_color_int { 1 }
+   }
+  \str_if_eq:nnTF { #1 } { \par }
+   {
+    \int_decr:N \l_kaddon_color_int
+    \par
+   }
+   {
+    \textcolor{\seq_item:Nn \l_kaddon_colors_seq { \l_kaddon_color_int } } { #1 }
+    \hspace{0pt plus 0.1pt }
+   }
+ }
+
+\NewDocumentCommand{\colorstring}{ O{red,blue} m }
+ {
+  \kaddon_color_string:nn { #1 } { #2 }
+  \unskip % remove the last \hspace
+ }
+
+\NewEnviron{colorpar}[1][red,blue]
+ {
+  \begin{quote}
+  \kaddon_color_string:nV { #1 } \BODY
+  \end{quote}
+ }
+\ExplSyntaxOff
