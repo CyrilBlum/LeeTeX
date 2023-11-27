@@ -3,14 +3,12 @@
 from encryption.viginere import *
 from encryption.friedmann import *
 from encryption.findkey import *
-from encryption.helpers import *
 
 def main():
     # 1. Text hier einfügen
     text_viginere=open('./encryption/text.txt', ).read()
-    print("-",text_viginere)
     # 2. Schlüssel hier einfügen
-    key = "YES"
+    key = "IMLEE"
 
     # folgender code VERschlüsselt den Text
     text_viginere_enc = viginere(text_viginere, key)
@@ -39,17 +37,17 @@ def main():
 
     fig.savefig ("friedmann2.pdf",bbox_inches='tight')
 
-    display_text_in_groups(text_viginere_enc, 33, 1)
-    
-    display_text_in_groups(text_viginere_enc, 3, 11)
-    
-    #fig.show()
     
     letters_most_common, shifts = findkey(text_viginere_enc, len(key))
     print(letters_most_common, shifts)
     
+    # the function below shows the crypto text in blocks
+    display_text_in_groups(text_viginere_enc, len(key), 11)
     
+    # the function below shows the cleartext, key and cryptotext in a readable format
+    display_viginere_all(text_viginere_dec, text_viginere_enc, key, n_chars=30,with_delim=True)
         
 
 if __name__ == '__main__':
     main()
+
