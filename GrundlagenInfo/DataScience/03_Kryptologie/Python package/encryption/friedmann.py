@@ -35,7 +35,7 @@ def friedmann_slice(text, keylength):
     
     return fc_avg
     
-def draw_friedmann(i, fc, turtle=True):
+def draw_friedmann(i, fc, turtle=False):
     if turtle:
         xshift=150
         setPos(-xshift+50, 150)

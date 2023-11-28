@@ -32,7 +32,7 @@
 		\centering
 		\raisebox{-0.5\height}{\includegraphics[width=.35\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/skytale.png}}
 		\raisebox{-0.5\height}{$\rightarrow$ Tabellengrössen ausprobieren}
-		\raisebox{-0.5\height}{\includegraphics[width=.35\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/caesar.png}}
+		\raisebox{-0.5\height}{\resizebox{.35\linewidth}{!}{\Ceasar[2]}}
 		\raisebox{-0.5\height}{$\rightarrow$ 25 Verschiebungen ausprobieren}
 		\includegraphics[width=\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/multikey.png}
 		$\rightarrow$ \textbf{Wie knacken wir so etwas?}
@@ -151,32 +151,46 @@ NENNE|DREI|ANTIKE|GEHEIMSCHRIFTEN|DIE|DIR|GEFALLEN
 	\end{center}    
 \end{frame}
 
-\begin{frame}[label=jv]{Jules Verne \emoji{scroll}}
-	\begin{figure}[H]
-	        \centering
-	        \includegraphics[width=\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/julesverne2.png}
-	\end{figure}
-	\begin{itemize}[<+->]
-	    \item \emoji{check-mark-button} Vorteil: nicht mehr monoalphabetische, sondern polyalphabetische Verschlüsselung
-	    \item \emoji{check-mark-button} Ein ``E'' kann nun beispielsweise um 1 (F), 2 (G), 3 (H), 4 (I) oder 5 (J) Positionen verschoben sein.
-	    \item \emoji{thinking-face} Problem: Nur 9 Schlüssel, einfach zu knacken bei bekannter Schlüssellänge...
+\begin{frame}[label=vigenere, fragile]{Vigenère \emoji{fleur-de-lis}}
+\begin{verbatim}
+  Klartext: JEMAN|DMUSS|TEJOS|EFKVE|RLEUM|...
+ Schlüssel: IMLEE|IMLEE|IMLEE|IMLEE|IMLEE|...
+Geheimtext: RQXER|LYFWW|BQUSW|MRVZI|ZXPYQ|...
+\end{verbatim}
+	
+	\begin{itemize}
+	    \item B=Verschiebung um 1 Position, C=Verschiebung um 2 Positionen, usw.
+	    \item Allgemein: Verschiebung = $\text{Ord}(\square)$, wobei $\text{Ord}(A)=0$
+	    \item 25 mögliche Schlüssel
+	    \item nicht \textbf{monoalphabetisch} sondern \textbf{polyalphabetisch}
+	    \item Galt über 300 Jahre lang als sicher!
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[label=vigenere]{Vigenère \emoji{fleur-de-lis}}
+\begin{frame}{Viginère-Tabelle}
 \begin{figure}[H]
-        \centering
-        \includegraphics[width=\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/vigenere1.png}
+\centering
+\resizebox{.75\linewidth}{!}{\begin{tikzpicture}
+\foreach \i in {0,...,25} {
+    \node at (-0.5,-\i*0.5) {\textcolor{Blue}{\strut\symbol{\numexpr`A+\i\relax}}};
+    \node at (\i*0.5,0.5) {\textcolor{Red}{\strut\symbol{\numexpr`A+\i\relax}}};
+  \foreach \j in {0,...,25} {
+    \edef\k{\ifnum\numexpr\i+\j\relax>25
+        \the\numexpr\i+\j-26\relax
+      \else
+        \the\numexpr\i+\j\relax
+      \fi}
+  \node[draw,minimum size=0.5cm,inner sep=0pt]
+    at (\i*0.5,-\j*0.5) {\strut\symbol{\numexpr`A+\k\relax}};
+  }
+}
+\node[draw,minimum size=0.5cm,inner sep=0pt,fill=Green!20] at (5.0,-2.0) {\textcolor{Green}{O}};
+\node at (6.5,1.2) {\textcolor{Red}{Schlüsselbuchstabe}};
+\node[rotate = 90] at (-1.2,-6.5)  {\textcolor{Blue}{Klartextbuchstabe}};
+\end{tikzpicture}}
 \end{figure}
-\begin{itemize}[<+->]
-	\item Verallgemeinerung von Jules Verne
-    \item B=Verschiebung um 1 Position, C=Verschiebung um 2 Positionen, usw.
-    \item Allgemein: Verschiebung = $\text{Ord}(\square)$, wobei $\text{Ord}(A)=0$
-    \item 25 mögliche Schlüssel
-    \item nicht \textbf{monoalphabetisch} sondern \textbf{polyalphabetisch}
-    \item Galt über 300 Jahre lang als sicher!
-\end{itemize}
 \end{frame}
+
 
 \begin{frame}[label=vigenere2]{Vigenère \emoji{fleur-de-lis}}
 \begin{figure}[H]
@@ -189,7 +203,8 @@ NENNE|DREI|ANTIKE|GEHEIMSCHRIFTEN|DIE|DIR|GEFALLEN
 	\end{align*}
 	$\rightarrow$ Die Häufigkeiten der Buchstaben entsprechen nun nicht mehr direkt einer Häufigkeit eines anderen Buchstabens im Originaltext!
 \end{frame}
-\begin{frame}[label=kasiskiKeyFixed]{Angriff auf Vigenère: Bekannte Schlüssellänge}
+
+\begin{frame}[label=keyFixed]{Angriff auf Vigenère: Bekannte Schlüssellänge}
 	\textbf{Beispiel}: Geheimtext mit Schlüssellänge 3
 	\only<1>{
 	\begin{figure}[H]
@@ -213,105 +228,51 @@ NENNE|DREI|ANTIKE|GEHEIMSCHRIFTEN|DIE|DIR|GEFALLEN
 	\end{figure}}
 \end{frame}
 
-
-
-\begin{frame}[label=kasiski]{Angriff auf Vigenère: Unbekannte Schlüssellänge}{\textbf{Kasiski-Test}}
-\emoji{key} Schlüssellänge unbekannt!\\[1cm]
-\texttt{DER KLAR\textbf{TEXT} WERDE GEHEIM\textbf{TEXT}\\
-PLU TOPL\textbf{UTOP} LUTOP LUTOPL\textbf{UTOP}\\
-SPL DZPC\textbf{NXLI} HYKRT RYASXX\textbf{NXLI}}\\[1cm]
-
-\begin{itemize}
-    \item ``\texttt{NXLI}'' kommt zweimal im Geheimtext vor
-    \item Distanz zwischen \texttt{NXLI} = Vielfaches der Schlüssellänge
-\end{itemize}
-\end{frame}
-\begin{frame}[label=kasiski2]{Angriff auf Vigenère: \textbf{Kasiski-Test}}
-\only<1>{
-Angenommen, wir haben folgenden Text, verschlüsselt mit dem Wort ``BALMER'':
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/Kasiski1.png}
-\end{figure}
-}
-\only<2>{
-Wir suchen nun zuerst im Geheimtext nach Trigrammen, die mehrmals vorkommen:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/Kasiski2.png}
-\end{figure}
-}
-\only<3>{
-Wir notieren die Anfangs-Positionen der Trigramme:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/Kasiski3.png}
-\end{figure}
-}
-\only<4->{
-Wir notieren die Anfangs-Positionen der Trigramme:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/Kasiski4.png}
-\end{figure}
-}
-\only<5->{
-Nun können wir die Abstände zwischen den mehrfach vorkommenden Trigrammen berechnen:
-\begin{align*}
-62 - 14 = 48 = 2^4\cdot 3\\
-62 - 32 = 30 = 2 \cdot 3 \cdot 5\\
-32 - 14 = 18 = 2 \cdot 3^2
-\end{align*}
-GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
-}
-\end{frame}
-
-
-
 \begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
-\only<1>{
-$h_\square (T)$ im deutschen Alphabet:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/friedmann1-klartext.png}
-\end{figure}
-$h_\square (T)$ in einem monoalphabetisch verschlüsselten Text:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/friedmann1-geheimtext.png}
-\end{figure}
-}
-\only<2-3>{
-Durchschnittliche Abweichung vom Mittelwert:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/friedmann2.png}
-\end{figure}
+	Durchschnittliche Abweichung vom Mittelwert:
+	\begin{figure}[H]
+	        \centering
+	        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/friedmann2.png}
+	\end{figure}
+	\only<2>{
+	\begin{align*}
+	    FC(T)&=\big(h_A(T)-\frac{1}{26}\big)^2+\big(h_B(T)-\frac{1}{26}\big)^2+\ldots+\big(h_Z(T)-\frac{1}{26}\big)^2\\
+	    &=\sum_{\Delta\in \text{Alphabet}}\big(h_\Delta(T)-\frac{1}{26}\big)^2
+	\end{align*}
+	\emoji{flag-germany} $FC(T)\sim 0.0388$ für deutsche Texte 
+	}
+\end{frame}
 
-}
-\only<3>{
-\begin{align*}
-    FC(T)&=\big(h_A(T)-\frac{1}{26}\big)^2+\big(h_B(T)-\frac{1}{26}\big)^2+\ldots+\big(h_Z(T)-\frac{1}{26}\big)^2\\
-    &=\sum_{\Delta\in \text{Alphabet}}\big(h_\Delta(T)-\frac{1}{26}\big)^2
-\end{align*}
-\emoji{flag-germany} $FC(T)\sim 0.0388$ für deutsche Texte 
-}
-
-\only<4>{
-\textit{Brute force}-Ansatz, um Wortlänge von Vigenère zu berechnen: 
-\begin{enumerate}
-    \item Alle möglichen Wortlängen von 1 bis $n$ ausprobieren
-    \item Buchstaben jeweils in Gruppen unterteilen
-    \item Durchschnittliche $FC(T)$ für alle Gruppen berechnen. 
-    \item Wenn die richtige Länge gewählt wurde, sollte $FC(T)\sim 0.0388$ sein. Falls nicht, mit nächstgrösserer Wortlänge weitermachen.
-\end{enumerate}
-    
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/friedmann3.png}
-\end{figure}
-$\rightarrow$ Hier sehen wir visuell, dass die Wortlänge 5 sein muss.
-}
+\begin{frame}{Friedmann'sche Charakteristik: Beispiel}
+\texttt{MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIP\\
+		CQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB}\\[.2cm]
+	\only<2-9>{
+		\textit{Brute force}-Ansatz, um Wortlänge von Vigenère zu berechnen: 
+	\begin{enumerate}[<+->]
+		    \item Alle möglichen Schlüsselwortlängen von 1 bis $n$ ausprobieren
+		    \item Buchstaben jeweils in Gruppen unterteilen
+		    \begin{itemize}
+		   		\scriptsize
+		   		\item 2 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
+		   						MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 
+		   						PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		   		\item 3 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
+		   		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ
+		   		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		   		\item 4 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson,LightSlateBlue]{MUZ KJL QPA WJU MHY IILLCZ AUP MRL ZHL SVC MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		   		\item ...
+		   	\end{itemize}
+		    \item Durchschnittliche $FC(T)$ für alle Gruppen pro Schlüssellänge berechnen. 
+		    \item Wenn die richtige Schlüssellänge gewählt wurde, sollte $FC(T)\sim 0.0388$ sein.
+		\end{enumerate}}
+	    
+\only<10>{	
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=.75\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/friedmann-ex3}
+		\end{figure}
+	$\rightarrow$ Zeigt, wie ungleich die Buchstaben verteilt sind, wenn wir sie in 1, 2, 3, 4, ... Gruppen aufteilen.\\
+	$\rightarrow$ Hier sehen wir visuell, dass die Wortlänge 3 sein muss.}
 \end{frame}
 
 \begin{frame}[label=auftrag]{Auftrag}

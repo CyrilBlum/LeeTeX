@@ -9,7 +9,7 @@ def main():
     # 1. Text hier einfügen
     text_viginere = open('./encryption/text.txt', ).read()
     # 2. Schlüssel hier einfügen
-    key = "IMLEE"
+    key = "KEY"
 
     # folgender code VERschlüsselt den Text
     text_viginere_enc = viginere(text_viginere, key)
@@ -21,6 +21,7 @@ def main():
 
     n = range(1, 10)
     fc = []
+    
     for i in n:
         fc.append(friedmann_slice(text_viginere_enc, i))
     plt.style.use('ggplot')
@@ -47,6 +48,11 @@ def main():
     # the function below shows the cleartext, key and cryptotext in a readable format
     display_viginere_all(text_viginere_dec, text_viginere_enc,
                          key, n_chars=30, with_delim=True)
+    
+    letters_most_common, shifts = findkey(text_viginere_enc[:30], len(key))
+    print(letters_most_common, shifts)
+    letters_most_common, shifts = findkey(text_viginere_dec[:30], len(key))
+    print(letters_most_common, shifts)
 
 
 if __name__ == '__main__':
