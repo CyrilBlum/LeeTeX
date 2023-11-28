@@ -5,11 +5,20 @@ from encryption.friedmann import *
 from encryption.findkey import *
 
 
+def set_aspect_ratio(ax, ratio=.3):
+    #get x and y limits
+    x_left, x_right = ax.get_xlim()
+    y_low, y_high = ax.get_ylim()
+
+    #set aspect ratio
+    ax.set_aspect(abs((x_right-x_left)/(y_low-y_high))*ratio)
+    return(ax)
+
 def main():
     # 1. Text hier einfügen
     text_viginere = open('./encryption/text.txt', ).read()
     # 2. Schlüssel hier einfügen
-    key = "KEY"
+    key = "ICH"
 
     # folgender code VERschlüsselt den Text
     text_viginere_enc = viginere(text_viginere, key)
@@ -27,17 +36,9 @@ def main():
     plt.style.use('ggplot')
 
     fig, ax = draw_friedmann(n, fc, turtle=False)
-    #define y-unit to x-unit ratio
-    ratio = 0.3
+    ax = set_aspect_ratio(ax)
 
-    #get x and y limits
-    x_left, x_right = ax.get_xlim()
-    y_low, y_high = ax.get_ylim()
-
-    #set aspect ratio
-    ax.set_aspect(abs((x_right-x_left)/(y_low-y_high))*ratio)
-
-    fig.savefig("friedmann2.pdf", bbox_inches='tight')
+    fig.savefig("friedmann.pdf", bbox_inches='tight')
 
     letters_most_common, shifts = findkey(text_viginere_enc, len(key))
     print(letters_most_common, shifts)
@@ -53,7 +54,24 @@ def main():
     print(letters_most_common, shifts)
     letters_most_common, shifts = findkey(text_viginere_dec[:30], len(key))
     print(letters_most_common, shifts)
-
+    
+    
+    
+    fig, ax=show_letter_freq(text_viginere_enc[1::len(key)])
+    ax = set_aspect_ratio(ax)
+    fig.savefig("letterfreq_enc.pdf", bbox_inches='tight')
+    fig, ax=show_letter_freq(text_viginere_dec)
+    ax = set_aspect_ratio(ax)
+    fig.savefig("letterfreq_dec.pdf", bbox_inches='tight')
+    
+    for i in range(3):
+        fig, ax=show_letter_freq_multiple(text_viginere_enc[i::len(key)], text_viginere_dec)
+        ax = set_aspect_ratio(ax,ratio=.4)
+        fig.savefig("letterfreq_end_dec"+str(i)+".pdf", bbox_inches='tight')
+        
+    fig, ax=show_letter_freq_multiple(text_viginere_enc, text_viginere_dec)
+    ax = set_aspect_ratio(ax,ratio=.4)
+    fig.savefig("letterfreq_end_dec_alletters.pdf", bbox_inches='tight')
 
 if __name__ == '__main__':
     main()

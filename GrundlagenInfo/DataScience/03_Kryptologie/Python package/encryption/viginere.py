@@ -1,4 +1,8 @@
 ﻿import numpy as np
+import string  
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
+from collections import Counter    
 
 def viginere(text, key, encrypt=True):
     text = text.upper()
@@ -57,3 +61,38 @@ def display_viginere_all(vigi_dec, vigi_enc, vigi_key, n_chars=10, with_delim=Fa
     
     for name, value in zip(["Klartext", "Schlüssel", "Geheimtext"], [p_vigi_dec, p_vigi_key, p_vigi_enc]):
         print(f'{name:>10}: {value}...')
+
+def show_letter_freq(text):
+    fig, ax = plt.subplots()
+    c = Counter(text)
+    freq_perc = [(i, c[i] / len(text)) for i in c]
+    freq_perc = np.array(freq_perc)[np.argsort([i[0] for i in freq_perc])]
+                                               
+    ax.bar(freq_perc[:,0], freq_perc[:,1].astype(float), width=.5, color='g')
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter())
+    return fig, ax
+
+def show_letter_freq_multiple(text_enc, text_dec, add_hline=True):
+    fig, ax = plt.subplots()
+    c_enc= Counter(text_enc)
+    c_enc = {k: c_enc.get(k, 0)/len(text_enc)*100 for k in string.ascii_uppercase}
+    
+    c_dec= Counter(text_dec)
+    c_dec = {k: c_dec.get(k, 0)/len(text_dec)*100 for k in string.ascii_uppercase}
+
+    print(c_dec)
+    
+
+    x_axis = np.arange(len(c_dec.keys())) 
+                        
+    ax.bar(x_axis-.2, c_dec.values(), width=.5, color='cornflowerblue', label='Klartext')
+    ax.bar(x_axis+.2, c_enc.values(), width=.5, color='coral', label='Geheimtext')
+    ax.set_xticks(x_axis, c_enc.keys()) 
+    
+    if add_hline:
+        plt.axhline(y=1/26*100, color='r', linestyle='-', label=r'$\frac{1}{26}$', linewidth=.75)
+    
+    ax.legend()
+    ax.set_ylim(0,25)
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter())
+    return fig, ax

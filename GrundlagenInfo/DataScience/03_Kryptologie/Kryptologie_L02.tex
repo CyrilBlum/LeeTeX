@@ -26,18 +26,59 @@
 	\end{multicols}
 \end{frame}
 
-\begin{frame}[label=repetition2]
-	{Wiederholung letztes Mal}
+\begin{frame}[label=repetition2]{Wiederholung letztes Mal}
 	\begin{figure}[H]
 		\centering
 		\raisebox{-0.5\height}{\includegraphics[width=.35\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/skytale.png}}
 		\raisebox{-0.5\height}{$\rightarrow$ Tabellengrössen ausprobieren}
-		\raisebox{-0.5\height}{\resizebox{.35\linewidth}{!}{\Ceasar[2]}}
+		\raisebox{-0.5\height}{\resizebox{.35\linewidth}{!}{\caesar[6]}}
 		\raisebox{-0.5\height}{$\rightarrow$ 25 Verschiebungen ausprobieren}
 		\includegraphics[width=\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/multikey.png}
-		$\rightarrow$ \textbf{Wie knacken wir so etwas?}
 	\end{figure}
 
+\end{frame}
+
+\begin{frame}[label=caesarex, fragile]{Wiederholung letztes Mal: Angriff auf Caesar}
+	\centering
+	Wie würden Sie folgenden Text knacken?\\[.5cm]
+	    \defverbatim{\verbOne}{
+\small\begin{verbatim}
+Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+\end{verbatim}
+	        }
+ \defverbatim{\verbTwo}{
+	      \small\begin{verbatim}
+  Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
+ Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
+Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+	      \end{verbatim}
+	      }
+	    \only<1-5>{\verbOne}
+	    \only<2-4>{
+	    Häufigster Buchstabe im obigen Geheimtext: \texttt{K}\\
+	    Häufigster Buchstabe im deutschen Alphabet: \texttt{E}
+	    }
+	    
+	 \only<3-5>{
+	 \begin{itemize}
+	   \item<3-5> \texttt{E} = Buchstabe 5
+	   \item<4-5> \texttt{K} = Buchstabe 11
+	   \item<5> Schlüssel = Verschiebung von 11-5 = 6 = Buchstabe \texttt{G}
+	 \end{itemize}	 
+	 }
+	 \only<5-6>{
+	 \centering\scalebox{.7}{\caesar[6]}
+	 }
+	 
+	 \only<6>{\verbTwo}	
+\end{frame}
+
+\begin{frame}[fragile]{Häufigkeitsverteilung}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/multikey.png}
+			$\rightarrow$ \textbf{Wie knacken wir so etwas?}
+		\end{figure}
 \end{frame}
 
 \begin{frame}[fragile, label=hauefigkeit]{Häufigkeitsverteilung}
@@ -152,12 +193,28 @@ NENNE|DREI|ANTIKE|GEHEIMSCHRIFTEN|DIE|DIR|GEFALLEN
 \end{frame}
 
 \begin{frame}[label=vigenere, fragile]{Vigenère \emoji{fleur-de-lis}}
+\defverbatim{\verbOne}{
+Von Caesar...
 \begin{verbatim}
-  Klartext: JEMAN|DMUSS|TEJOS|EFKVE|RLEUM|...
- Schlüssel: IMLEE|IMLEE|IMLEE|IMLEE|IMLEE|...
-Geheimtext: RQXER|LYFWW|BQUSW|MRVZI|ZXPYQ|...
+  Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
+ Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
+Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 \end{verbatim}
+}
+    
+\only<1>{\verbOne}
+\defverbatim{\verbTwo}{
+\begin{verbatim}
+  Klartext: JEM|AND|MUS|STE|JOS|EFK|VER|LE...
+ Schlüssel: KEY|KEY|KEY|KEY|KEY|KEY|KEY|KE...
+Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
+\end{verbatim}
+    }
+
+    \only<2>{...zu Viginère}
+    \only<2->{\verbTwo}
 	
+\only<3>{
 	\begin{itemize}
 	    \item B=Verschiebung um 1 Position, C=Verschiebung um 2 Positionen, usw.
 	    \item Allgemein: Verschiebung = $\text{Ord}(\square)$, wobei $\text{Ord}(A)=0$
@@ -165,6 +222,11 @@ Geheimtext: RQXER|LYFWW|BQUSW|MRVZI|ZXPYQ|...
 	    \item nicht \textbf{monoalphabetisch} sondern \textbf{polyalphabetisch}
 	    \item Galt über 300 Jahre lang als sicher!
 	\end{itemize}
+	\begin{figure}[H]
+	      \centering
+	      \includegraphics[width=.6\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/vigenere2.png}
+	\end{figure}
+	}
 \end{frame}
 
 \begin{frame}{Viginère-Tabelle}
@@ -203,30 +265,45 @@ Geheimtext: RQXER|LYFWW|BQUSW|MRVZI|ZXPYQ|...
 	\end{align*}
 	$\rightarrow$ Die Häufigkeiten der Buchstaben entsprechen nun nicht mehr direkt einer Häufigkeit eines anderen Buchstabens im Originaltext!
 \end{frame}
-
 \begin{frame}[label=keyFixed]{Angriff auf Vigenère: Bekannte Schlüssellänge}
-	\textbf{Beispiel}: Geheimtext mit Schlüssellänge 3
-	\only<1>{
+	\texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{RGTIPKUWZAVLRQZMHRDGYTGBUFLBJHJGULGUVQOVGKIUZMTLBYHADAAGZOGAIPOJVAMYBZFLMTLQPLAOVZILVUCMTOIHAMVZEKLMKUPWULWJACNBGLZGZEC...}}
+			
+\foreach \cae/\fignum/\i/\colorgroup/\lettergroup in {8/0/1/ForestGreen/M,2/1/2/RoyalBlue/G,7/2/3/Crimson/L} {
+	\only<\i>{
+	$\rightarrow$ Häufigster Buchstaben in Gruppe \i: \textcolor{\colorgroup}{\lettergroup}
 	\begin{figure}[H]
-	        \centering
-	        \includegraphics[width=\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/vigenereKeyFixed1.png}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=.75\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/letterfreq_end_dec\fignum}}
+		\raisebox{-0.5\height}{\resizebox{.23\textwidth}{!}{\caesar[\cae]}}
 	\end{figure}
 	}
-	
-	\only<2->{
-	\begin{figure}[H]
-	        \centering
-	        \includegraphics[width=\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/vigenereKeyFixed2.png}
-	\end{figure}
-	}
-	\only<3>{\textbf{Häufigkeitsanalyse} pro Gruppe (rot, grün, blau):\\
-	\begin{figure}[H]
-	        \centering
-	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/friedmann1-geheimtext.png}}
-	        \raisebox{-0.5\height}{$\rightarrow$}
-	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/friedmann1-klartext.png}}
-	\end{figure}}
+}
 \end{frame}
+
+\begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
+Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\rightarrow$ \textbf{Idee:}
+	\begin{itemize}\only<1>{
+	
+	\item<1> Die Häufigkeit der Buchstaben in einem Viginère-Geheimtext ist wegen der \textit{polyalphabetischen} Verschlüsselung relativ \textit{gleichmässig}...
+		\begin{figure}[H]
+				\centering
+				\raisebox{-0.5\height}{\includegraphics[width=.85\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/letterfreq_end_dec_alletters}}
+				\raisebox{-0.5\height}{\includegraphics[width=.6\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/vigenere2.png}}
+			\end{figure}}
+			\only<2->{
+	\item<2-> ...ausser wir schauen die Buchstaben eben in \colorstring[ForestGreen,RoyalBlue,Crimson]{Gruppen} an!
+		\begin{figure}[H]
+			\centering
+			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/letterfreq_end_dec0}}
+			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/letterfreq_end_dec1}}
+			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/DataScience/03_Kryptologie/Figures/letterfreq_end_dec2}}\\
+			(Schrittgrösse=3)
+		\end{figure}
+		
+	\item<3> Kann man für die ``(Un-)Gleichmässigkeit'' der Verteilung eine einzige ``Zahl'' erfinden?}
+		\end{itemize}
+\end{frame}
+
 
 \begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
 	Durchschnittliche Abweichung vom Mittelwert:
@@ -236,14 +313,14 @@ Geheimtext: RQXER|LYFWW|BQUSW|MRVZI|ZXPYQ|...
 	\end{figure}
 	\only<2>{
 	\begin{align*}
-	    FC(T)&=\big(h_A(T)-\frac{1}{26}\big)^2+\big(h_B(T)-\frac{1}{26}\big)^2+\ldots+\big(h_Z(T)-\frac{1}{26}\big)^2\\
-	    &=\sum_{\Delta\in \text{Alphabet}}\big(h_\Delta(T)-\frac{1}{26}\big)^2
+	    FC(T)&=\Big(h_A(T)-\frac{1}{26}\big)^2+\Big(h_B(T)-\frac{1}{26}\Big)^2+\ldots+\Big(h_Z(T)-\frac{1}{26}\Big)^2\\
+	    &=\sum_{\Delta\in \text{Alphabet}}\Big(h_\Delta(T)-\frac{1}{26}\Big)^2
 	\end{align*}
 	\emoji{flag-germany} $FC(T)\sim 0.0388$ für deutsche Texte 
 	}
 \end{frame}
 
-\begin{frame}{Friedmann'sche Charakteristik: Beispiel}
+\begin{frame}{Angriff auf Vigenère: Beispiel}{Friedmann'sche Charakteristik + Häufigkeitsanalyse}
 \texttt{MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIP\\
 		CQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB}\\[.2cm]
 	\only<2-9>{
@@ -273,6 +350,19 @@ Geheimtext: RQXER|LYFWW|BQUSW|MRVZI|ZXPYQ|...
 		\end{figure}
 	$\rightarrow$ Zeigt, wie ungleich die Buchstaben verteilt sind, wenn wir sie in 1, 2, 3, 4, ... Gruppen aufteilen.\\
 	$\rightarrow$ Hier sehen wir visuell, dass die Wortlänge 3 sein muss.}
+\end{frame}
+
+\begin{frame}{Angriff auf Vigenère: Beispiel}{Friedmann'sche Charakteristik + Häufigkeitsanalyse}
+\texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
+		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 
+		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		
+		$\rightarrow$ Häufigster Buchstaben pro Gruppe: \textcolor{ForestGreen}{M}, \textcolor{RoyalBlue}{G}, \textcolor{Crimson}{L}
+		
+		\begin{figure}[H]
+			\centering
+			\resizebox{.75\textwidth}{!}{\caesar[8] \caesar[2] \caesar[7]}
+		\end{figure}
 \end{frame}
 
 \begin{frame}[label=auftrag]{Auftrag}
