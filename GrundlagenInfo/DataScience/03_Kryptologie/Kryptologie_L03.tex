@@ -46,7 +46,27 @@
 % \end{frame}
 
 
+
+
 \begin{frame}[fragile]
+  \begin{itemize}
+    \item Alice generiert ein Paar von Schlüsseln: einen öffentlichen Schlüsel und einen privaten Schlüssel (Geheimnis), welche miteinander in einem Zusammenhang stehen.
+    \item Den öffentliche Schlüssel macht sie öffentlich bekannt. Den privaten Schlüssel muss sie für sich behalten.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{itemize}
+    \item Bob möchte eine verschlüsselte Nachricht an Alice senden.
+    \item Dazu nimmt er sich (eine Kopie) ihres öffentlichen Schlüssels und verwendet diesen um die Nachricht zu verschlüsseln.
+    \item Die (mit Hilfe von ihrem öffentlichen Schlüssel) verschlüsselte Nachricht sendet er dann Alice.
+    \item Diese verschlüsselte Nachricht kann Alice mit Hilfe ihres privaten Schlüssels (Geheimnises) sehr einfach entschlüsseln. 
+    \item Ein Angreifer (Abhörer) müsste für die Entschlüsslung einen astronomischen Aufwand betreiben.
+  \end{itemize}
+  \end{frame}
+
+\begin{frame}[fragile]
+In unserem Beispiel ist der öffentliche Schlüssel von Alice der folgende Graph:
 \begin{figure}[H]
 \centering
 \adjustbox{width=0.8\textwidth}{%
@@ -72,17 +92,16 @@
 ;
 \end{tikzpicture}
 } %
-% \caption*{(a)}
+  \caption*{Alice's öffentlicher Schlüssel (pulbic key)}
 % \label{fig:Knobel}
 \end{figure}
 \end{frame}
 
-
-\begin{frame}[fragile]
-Alice möchte die geheime Botschaft (Zahl) \green{31} an Bob übermitteln.
+\begin{frame}[fragile]{Schritt 1 von 2 der Verschlüsselung durch Bob}
+Bob möchte die Nachricht (Klartext, geheime Zahl) \green{31} an Alice übermitteln. Dazu verwendet er ihren öffentlichen Schlüssel (Graphen). Er wählt die schwarzen Zahlen in den Knoten so, dass deren Summe genau der Nachricht \green{31} entspricht. Diese schwarzen Zahlen muss Bob geheim behalten.
 \begin{figure}[H]
-\centering
-\adjustbox{width=0.8\textwidth}{%
+  \centering
+\adjustbox{width=0.6\textwidth}{%
 \begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
   \tikzstyle{every state}=[text=black]
   \node[state] (A) {5}             ;
@@ -114,11 +133,11 @@ Alice möchte die geheime Botschaft (Zahl) \green{31} an Bob übermitteln.
 \end{frame}
 
 
-\begin{frame}[fragile]
-Alice möchte die geheime Botschaft (Zahl) \green{31} an Bob übermitteln.
+\begin{frame}[fragile]{Schritt 2 von 2 der Verschlüsselung durch Bob}
+Bob berechnet die \red{roten} Zahlen. Die rote Zahl in dem Knoten $i$ ist die Summe der schwarzen Zahlen des Knoten $i$ selbst und aller seiner Nachbarn. Bob muss nun dies schwarzen Zahlen aus dem Graphen löschen.
 \begin{figure}[H]
 \centering
-\adjustbox{width=0.8\textwidth}{%
+\adjustbox{width=0.6\textwidth}{%
 \begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
   \tikzstyle{every state}=[text=black]
   \node[state,align=center] (A) {$5$\\$\red{(14)}$}             ;
@@ -147,8 +166,8 @@ Alice möchte die geheime Botschaft (Zahl) \green{31} an Bob übermitteln.
 \end{frame}
 
 
-\begin{frame}[fragile]
-Alice möchte die geheime Botschaft (Zahl) \green{31} an Bob übermitteln.
+\begin{frame}[fragile]{Schritt 2 von 2 der Verschlüsselung durch Bob}
+Der folgende Graph mit den roten Zahlen ist nun die verschlüsselte Nachricht, welche Bob an Alice (über einen unsicheren Kanal) senden darf:
 \begin{figure}[H]
 \centering
 \adjustbox{width=0.8\textwidth}{%
@@ -277,7 +296,7 @@ Sei $G = (V, E)$ ein Graph.
 
 
 
-\begin{frame}[fragile]{Schritt 1}
+\begin{frame}[fragile]{Schlüsselgenerierung durch Alice (Schritt 1 von 4)}
 Beginne mit einigen Knoten.
 \begin{figure}[H]
 \centering
@@ -309,7 +328,7 @@ Beginne mit einigen Knoten.
 \end{frame}
 
 
-\begin{frame}[fragile]{Schritt 2}
+\begin{frame}[fragile]{Schlüsselgenerierung durch Alice (Schritt 2 von 4)}
 Wähle die Knoten, welche zum PDS gehören sollen.
 \begin{figure}[H]
 \centering
@@ -340,7 +359,7 @@ Wähle die Knoten, welche zum PDS gehören sollen.
 \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Schritt 3}
+\begin{frame}[fragile]{Schlüsselgenerierung durch Alice (Schritt 3 von 4)}
 Verbinde jeden Knoten, der nicht im PDS liegt mit genau einem Knoten aus dem PDS.
 \begin{figure}[H]
 \centering
@@ -372,11 +391,11 @@ Verbinde jeden Knoten, der nicht im PDS liegt mit genau einem Knoten aus dem PDS
 \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Schritt 4}
-Füge zur Verschleierung weitere Kanten zwischen den Knoten, welche nicht zum PDS gehören, hinzu. Zeichne also keine weiteren Kanten, welche in den roten Knoten beginnen / enden!
+\begin{frame}[fragile]{Schlüsselgenerierung durch Alice (Schritt 4 von 4)}
+  Füge zur Verschleierung weitere Kanten zwischen den Knoten, welche nicht zum PDS gehören, hinzu. Zeichne also keine weiteren Kanten, welche in den roten Knoten beginnen / enden! Der Graph ist ihr öffentlicher Schlüssel. Die beiden roten Knoten (perfect dominating set) ist ihr privater Schlüssel. 
 \begin{figure}[H]
 \centering
-\adjustbox{width=0.8\textwidth}{%
+\adjustbox{width=0.6\textwidth}{%
 \begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
   \tikzstyle{every state}=[text=black]
   \node[state] (A) {}             ;
