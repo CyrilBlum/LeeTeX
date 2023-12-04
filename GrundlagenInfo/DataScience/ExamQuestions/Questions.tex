@@ -336,6 +336,28 @@ Bestimmen Sie, welche der folgenden Graphen auch Bäume sind:}
 	\node[c, left=1cm of I](VI){VI} edge (II) edge (III);
 \end{tikzpicture}
 }
+
+\newcommand{\tikzThurgau}{
+\begin{tikzpicture}[node distance=2cm]
+	\tikzstyle{c} = [draw, shape=circle, anchor=center, minimum width=.7cm]
+  % Bezirke
+  \node[c] (f) at (0,3) {F};
+  \node[c] (m) at (0,0) {M};
+  \node[c] (k) at (3,3) {K};
+  \node[c] (w) at (3,0) {W}; 
+  \node[c] (a) at (6,3) {A};
+
+  % Verbindungen
+  \draw (f) -- (k);
+  \draw (f) -- (w);
+  \draw (f) -- (m);
+  \draw (m) -- (w);
+  \draw (k) -- (w);
+  \draw (k) -- (a);
+  \draw (w) -- (a);
+\end{tikzpicture}
+
+}
 \newcommand{\matrixBern}{
 \begin{tabular}{c|c|c|c|c|c|c}
 &\textbf{I}&\textbf{II}&\textbf{III}&\textbf{IV}&\textbf{V}&\textbf{VI}\\\midrule
@@ -361,22 +383,38 @@ Bestimmen Sie, welche der folgenden Graphen auch Bäume sind:}
 \end{tabular}
 }
 
-\foreach \stadt/\bspnummer/\bspname/\filestadt/\fgwdth/\tikzStadt/\solB/\solC/\solD in {Winterthur/6/Wülflingen/Winterthur/.75/\tikzWinti/{Ja, es gibt einen Euler'schen Weg, beispielsweise 1-6-5-1-2-3-7-1-4-6. Es gibt viele Hamilton'sche Kreise, beispielsweise 7-3-2-1-4-6-5-1.}/{Der Grad des Grafen ist 5.}/\matrixWinti, Bern/I/Innere Stadt/Bern/.95/\tikzBern/{Ja, der Graph enthält den Euler'schen Weg IV-I-V-IV-III-I-II-III-VI-II-V. Der Graph enthält viele Hamilton'sche Wege, beispielsweise VI-II-III-I-V-IV.}/{Der Grad des Grafen ist 4.}/\matrixBern}{
-\question{\textbf{Stadtteile von \stadt}}\\
-Sie betrachten folgende Karte der Stadtteile von \stadt.\\
+\newcommand{\matrixThurgau}{
+\begin{tabular}{c|c|c|c|c|c}
+&\textbf{F}&\textbf{M}&\textbf{K}&\textbf{W}&\textbf{A}\\\midrule
+\textbf{F}&0&1&1&1&0\\
+\textbf{M}&1&0&0&1&0\\
+\textbf{K}&1&0&0&1&1\\
+\textbf{W}&1&1&1&0&1\\
+\textbf{A}&0&0&1&1&0\\
+\end{tabular}
+}
+
+\foreach \ort/\einheitPl/\bspnummer/\bspname/\fgwdth/\tikzStadt/\solB/\solC/\solD in {
+Winterthur/Stadtkreise/6/Wülflingen/.75/\tikzWinti/{Ja, es gibt einen Euler'schen Weg, beispielsweise 1-6-5-1-2-3-7-1-4-6. Es gibt viele Hamilton'sche Wege, beispielsweise 7-3-2-1-4-6-5-1, aber keinen Hamilton'schen Kreis.}/{Der Grad des Grafen ist 5 (von Knoten 1).}/\matrixWinti, 
+Bern/Stadtteile/I/Innere Stadt/.95/\tikzBern/{Ja, der Graph enthält den Euler'schen Weg IV-I-V-IV-III-I-II-III-VI-II-V. Der Graph enthält viele Hamilton'sche Wege, beispielsweise VI-II-V-I-IV-III-VI.}/{Der Grad des Grafen ist 4 (von Knoten I).}/\matrixBern,
+Thurgau/Bezirke/M/Münchenwilen/.95/\tikzThurgau/{Ja, der Graph enthält Euler'sche Wege, beispielsweise F-M-W-F-K-W-A-K. Der Graph enthält viele Hamilton'sche Kreise, beispielsweise W-M-F-K-A-W.}/{Der Grad des Grafen ist 4 (von Knoten W).}/\matrixThurgau
+%
+}{
+\question{\textbf{\einheitPl{} von \ort}}\\
+Sie betrachten folgende Karte der \einheitPl{} von \ort.\\
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\fgwdth\textwidth]{GrundlagenInfo/DataScience/ExamQuestions/Figures/Karte_\filestadt_Stadtkreise}
+	\includegraphics[width=\fgwdth\textwidth]{GrundlagenInfo/DataScience/ExamQuestions/Figures/Karte \ort\einheitPl}
 \end{figure}
 \begin{parts}
-\part[2] Zeichnen Sie die Karte als Graphen, wobei jeder Stadtteil ein Knoten sein soll und zwischen zwei Knoten jeweils eine Kante besteht, sofern es die zwei Stadtteile aneinandergrenzen. Als Namen der Knoten können Sie einfach die Kreis-Zahl eintragen (also z.B. ``\bspnummer'' für \bspname).
+\part[2] Zeichnen Sie die Karte als Graphen, wobei jeder der \einheitPl{} ein Knoten sein soll und zwischen zwei Knoten jeweils eine Kante besteht, sofern zwei \einheitPl{} von \ort{} aneinandergrenzen. Als Namen der Knoten können Sie eine Abkürzung wählen (also z.B. ``\bspnummer'' für \bspname).
 \begin{solution}
 \begin{figure}[H]
 \centering
 \tikzStadt
 \end{figure}
 \end{solution}
-\part[2] Gibt es  auf diesem Graphen einen Euler'schen Weg? Gibt es einen Hamilton'schen Kries?
+\part[2] Gibt es  auf diesem Graphen einen Euler'schen Weg? Gibt es einen Hamilton'schen Kreis?
 \begin{solution}
 \solB
 \end{solution}
