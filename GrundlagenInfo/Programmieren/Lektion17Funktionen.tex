@@ -9,7 +9,7 @@
 
 \begin{frame}[fragile]{Funktionen}{Beispiel mit Turtle \emoji{turtle}}
 \begin{minipage}{.65\textwidth}
-\begin{lstlisting}[style=TigerJython, basicstyle=\ttfamily\scriptsize, escapeinside={(*@}{@*)}]
+\begin{lstlisting}[style=TigerJython, basicstyle=\ttfamily\tiny, escapeinside={(*@}{@*)}]
 from gturtle import *
 makeTurtle()
 hideTurtle()
@@ -20,18 +20,37 @@ def vieleck(umfang, ecken):
         fd(umfang/ecken)
         rt(360/ecken)
 
-def vieleck_muster(umfang, ecken):
+def vieleck_muster(umfang, ecken(*@\only<3->{\colorbox{CornflowerBlue}{, gesamtdistanz}}@*)):
     while umfang>50:
         vieleck(umfang, ecken)
-        (*@\only<3->{\colorbox{CornflowerBlue}{gesamtdistanz+=umfang}}@*)
+        (*@\only<4->{\colorbox{CornflowerBlue}{gesamtdistanz+=umfang}}@*)
         umfang-=10
         rt(10)
     
-    (*@\only<4->{\colorbox{CornflowerBlue}{return gesamtdistanz}}@*)
+    (*@\only<5->{\colorbox{CornflowerBlue}{return gesamtdistanz}}@*)
     
-(*@\only<5->{\colorbox{CornflowerBlue}{gesamtdistanz = }}@*)vieleck_muster(500,35)
-(*@\only<6->{\colorbox{CornflowerBlue}{print(gesamtdistanz)}}@*)
+(*@\only<6->{\colorbox{CornflowerBlue}{gesamtdistanz = }}@*)vieleck_muster(500,35(*@\only<3->{\colorbox{CornflowerBlue}{, gesamtdistanz}}@*))
+(*@\only<7->{\colorbox{CornflowerBlue}{print(gesamtdistanz)}}@*)
 \end{lstlisting}
+% Clean code
+%from gturtle import * 
+%makeTurtle() 
+%hideTurtle()
+%gesamtdistanz=0
+%def vieleck(umfang, ecken): 
+%    repeat ecken:
+%        fd(umfang/ecken)
+%        rt(360/ecken)
+%
+%def vieleck_muster(umfang, ecken , gesamtdistanz ):
+%    while umfang>50: 
+%        vieleck(umfang, ecken)
+%        gesamtdistanz+=umfang
+%        umfang-=10 
+%        rt(10)
+%    return gesamtdistanz
+%
+%gesamtdistanz = vieleck_muster(500,35 , gesamtdistanz )
 
 \end{minipage}
 \begin{minipage}{.33\textwidth}
@@ -153,7 +172,7 @@ else:
 % lower door coordinate
  \coordinate (llD\x#1) at (\llCord,0,1);
  % Draw doors
-   \fill[Apricot] (llD\x#1) -- ++(0,0.5,0) -- ++(0.2,0,0)node[pos=0.5, below](in#1\x){\textcolor{black}{\tiny\texttt{x\x}\normalsize}} -- ++(0,-0.5,0);
+   \fill[Apricot] (llD\x#1) -- ++(0,0.5,0) -- ++(0.2,0,0)node[pos=0.5, below](in#1\x){\textcolor{blue}{\tiny\texttt{x\x}\normalsize}} -- ++(0,-0.5,0);
 }
 
 % coordinate for result door
@@ -163,7 +182,7 @@ else:
 	% Draw a 2D rectangle around the cube
 	  \node[fit=(E#1) (C#1), inner sep=4pt, red, dotted, draw, line width=1pt](dottedRect#1) {};
 	  % annotate the two-d rect
-	  \node[above=5pt of dottedRect#1.north west, anchor=west, align=left]{\textcolor{red}{\tiny\texttt{def a#1(\foreach\x in {1,...,#3}{x\x,}...)}\normalsize}};
+	  \node[above=5pt of dottedRect#1.north west, anchor=west, align=left]{\textcolor{red}{\tiny\texttt{def a#1(\textcolor{blue}{\foreach\x in {1,...,#3}{x\x, }...})}\normalsize}};
 
 }
 \begin{frame}[fragile]{Modularität durch Funktionen}
