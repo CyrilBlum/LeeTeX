@@ -85,6 +85,41 @@ else:
 	\end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Modularität durch Funktionen}{Beispiel mit Turtle \emoji{turtle}}
+\begin{minipage}{.65\textwidth}
+\begin{lstlisting}[style=TigerJython, basicstyle=\ttfamily\scriptsize, escapeinside={(*@}{@*)}]
+from gturtle import *
+makeTurtle()
+hideTurtle()
+(*@\only<2>{\colorbox{CornflowerBlue}{gesamtdistanz=0}}@*)
+
+def vieleck(umfang, ecken):
+    repeat ecken:
+        fd(umfang/ecken)
+        rt(360/ecken)
+
+def vieleck_muster(umfang, ecken):
+    while umfang>50:
+        vieleck(umfang, ecken)
+        umfang-=10
+        rt(10)
+        (*@\only<2>{\colorbox{CornflowerBlue}{gesamtdistanz+=umfang}}@*)
+    (*@\only<2>{\colorbox{CornflowerBlue}{return gesamtdistanz}}@*)
+    
+(*@\only<2>{\colorbox{CornflowerBlue}{gesamtdistanz = }}@*)vieleck_muster(500,35)
+(*@\only<2>{\colorbox{CornflowerBlue}{print(gesamtdistanz)}}@*)
+\end{lstlisting}
+
+\end{minipage}
+\begin{minipage}{.33\textwidth}
+\begin{figure}[H]
+	\centering
+    \includegraphics[keepaspectratio, width=.9\textwidth]{GrundlagenInfo/Programmieren/Figures/spirale.png}
+\end{figure}
+
+\end{minipage}
+\end{frame}
+
 % Define a macro for drawing a 3D cube
 % first argument: cube ID
 % second argument: x shift
