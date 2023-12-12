@@ -413,4 +413,55 @@ def target_sum(A, target):
                 return([i, j])
 \end{lstlisting}
 \end{solution}
+
+\question[2]{\textbf{\emoji{turtle} Gesamtlänge der Spirale}\\}
+Wir wollen mit \tjinline{gturtle} eine Vieleck-Spirale zeichnen, die sich \textit{n} Umdrehungen macht. Die Anzahl Ecken (\tjinline{n_ecken}) , die Länge des ersten Strichs (\tjinline{laenge}) , die Vergrösserung (\tjinline{vergroesserung}) sowie die Anzahl Umdrehungen (\tjinline{n_spiralen}) sollen frei wählbar sein. Für \tjinline{ecken=5} und \tjinline{n_spiralen=3} soll folgendes Bild entstehen:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.3\textwidth]{GrundlagenInfo/Programmieren/ExamQuestions/Figures/spirale53}
+\end{figure}
+
+Die Gesamtdistanz, welche durch die Turtle insgesamt zurückgelegt wurde, soll dabei berechnet, zurückgegeben und in einer Variable gespeichert werden. Der Wert der Variable soll nach dem Aufruf der Funktion gedruckt werden.
+
+\emoji{trophy} \textbf{Challenge}:
+\begin{itemize}
+	\item Falls \tjinline{n_ecken} 1 oder 2 ist, soll eine Fehlermeldung ausgegeben werden und nichts gezeichnet werden.
+	\item Vergrössern Sie jede Linie um einen unterschiedlichen Faktor. Falls Sie z.B. eine Dreieck-Spirale haben, soll sich Linie 1 um 1.2, Linie 2 um 1.5 und Linie 3 um 1.1 vergrössern. Dieses Muster soll sich bei jeder Umdrehung wiederholen.
+\end{itemize}
+\begin{solution}
+Folgende Lösung enthält alle Bonus-Elemente:
+\begin{lstlisting}[style=TigerJython]
+from gturtle import *
+makeTurtle()
+hideTurtle()
+
+
+def vieleck_spirale(n_ecken, laenge, vergroesserung, n_spiralen, inc_liste=None):
+    if n_ecken == 1 or n_ecken == 2:
+        return "n_ecken muss grösser als 2 sein"
+    gesamtdistanz = 0
+
+    repeat n_spiralen:
+        i = 0
+        repeat n_ecken:
+            fd(laenge)
+            gesamtdistanz += laenge
+            rt(360/n_ecken)
+            if inc_liste is not None:
+                if len(inc_liste) != n_ecken:
+                    return "Liste muss so lange wie n_ecken sein"
+                laenge *= inc_liste[i]
+                i += 1
+            else:
+                laenge += vergroesserung
+
+    return(gesamtdistanz)
+
+
+#gesamtdistanz = vieleck_spirale(5,10,10,3, [1,1.2,1.1,2.1,1.2])
+gesamtdistanz = vieleck_spirale(5, 10, 10, 3)
+print(gesamtdistanz)
+\end{lstlisting}
+\end{solution}
 \end{questions}
