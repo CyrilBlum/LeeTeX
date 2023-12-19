@@ -1,10 +1,13 @@
-\begin{frame}[fragile]{Lektion 2}
-\begin{figure}
+\begin{frame}
     \centering
-    \includegraphics[width=1\textwidth]{LeeLogo.pdf}
-    \caption*{kürzeste Wege}
-\end{figure}
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+    \end{figure}
+    Informatik: Data Science und Sicherheit\\
+    % \textbf{Lektion 4}/
+    \emoji{station}: \textbf{Kürzeste Wege mit Graphen}
 \end{frame}
+
 
 
 % slide 4 (IU)
@@ -268,11 +271,68 @@ every edge/.style = {draw, -Triangle, bend angle=15},
 \end{itemize}
 \end{frame}
 
+\newcommand{\convexpath}[2]{
+[   
+    create hullnodes/.code={
+        \global\edef\namelist{#1}
+        \foreach [count=\counter] \nodename in \namelist {
+            \global\edef\numberofnodes{\counter}
+            \node at (\nodename) [draw=none,name=hullnode\counter] {};
+        }
+        \node at (hullnode\numberofnodes) [name=hullnode0,draw=none] {};
+        \pgfmathtruncatemacro\lastnumber{\numberofnodes+1}
+        \node at (hullnode1) [name=hullnode\lastnumber,draw=none] {};
+    },
+    create hullnodes
+]
+($(hullnode1)!#2!-90:(hullnode0)$)
+\foreach [
+    evaluate=\currentnode as \previousnode using \currentnode-1,
+    evaluate=\currentnode as \nextnode using \currentnode+1
+    ] \currentnode in {1,...,\numberofnodes} {
+-- ($(hullnode\currentnode)!#2!-90:(hullnode\previousnode)$)
+  let \p1 = ($(hullnode\currentnode)!#2!-90:(hullnode\previousnode) - (hullnode\currentnode)$),
+    \n1 = {atan2(\y1,\x1)},
+    \p2 = ($(hullnode\currentnode)!#2!90:(hullnode\nextnode) - (hullnode\currentnode)$),
+    \n2 = {atan2(\y2,\x2)},
+    \n{delta} = {-Mod(\n1-\n2,360)}
+  in 
+    {arc [start angle=\n1, delta angle=\n{delta}, radius=#2]}
+}
+-- cycle
+}
 
 \begin{frame}[fragile]{Grundidee}
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Figures/DScrop.pdf}
+\centering
+\begin{tikzpicture}[scale=1.5]
+\tikzstyle{n} = [circle, draw,minimum size=.7cm]
+\node[n, Maroon] (s) at (0,1) {s};
+\node[n, Maroon] (l11) at (1,2) {};
+\node[n, Maroon] (l12) at (1,1) {};
+\node[n, Blue] (l13) at (1,0) {};
+\node[n, Blue] (l21) at (2,2) {};
+\node[n, Blue] (l22) at (2,1) {};
+\node[n, Dandelion] (l31) at (2.5,0) {};
+\node[n, Dandelion] (l32) at (3,1) {};
+	  
+\draw[->] (s) --node [midway,above]{2} (l11);
+\draw[->] (s) --node [midway,above]{2} (l12);
+\draw[->] (s) --node [midway,above]{5} (l13);
+\draw[->] (l11) --node [midway,above]{3} (l21);
+\draw[->] (l12) --node [midway,above]{5} (l22);
+\draw[->] (l22) --node [midway,above]{2} (l32);
+\draw[->] (l13) --node [midway,above]{1} (l31);
+\draw[->] (l31) --node [midway,above]{2} (l32);
+
+% Draw the colored shadow using pgfonlayer and custom convexpath function
+\begin{pgfonlayer}{background}
+\fill[fill=yellow!20] \convexpath{s,l11,l21,l32,l31,l13}{.3cm};
+\fill[fill=blue!20] \convexpath{s,l11,l21, l22, l13}{.3cm};
+\fill[fill=red!20] \convexpath{s,l11,l12}{.3cm};
+\end{pgfonlayer}
+
+\end{tikzpicture}
 \end{figure}
 \begin{itemize}[<+->]
     \item Die Distanzen der roten Knoten sind bereits optimal und werden sich nicht mehr ändern (nicht offensichtlich).
@@ -280,219 +340,225 @@ every edge/.style = {draw, -Triangle, bend angle=15},
 \end{itemize}
 \end{frame}
 
-
-\begin{frame}[fragile]{}
-\begin{figure}[H]
-\centering
-\begin{subfigure}[b]{0.46\textwidth}
-\adjustbox{width=0.8\textwidth}{%
-\begin{tikzpicture}[
-node distance = 22mm and 24mm,
-every state/.append style = {inner sep=0pt, fill=gray!10,
-                             minimum size=11mm},
-every edge/.style = {draw, -Triangle, bend angle=15},
-                auto=right,
-                        ]
-\node (s) [state, fill=Yellow!50, align=center]         {$s$\\$0$};
-\node (t) [state, fill=Yellow!20, above right=of s,align=center]   {$t$\\$\infty$};
-\node (y) [state, fill=Yellow!20, below right=of s,align=center]         {$y$\\$\infty$};
-\node (x) [state, fill=Yellow!20, right=of t,align=center]   {$x$\\$\infty$};
-\node (z) [state, fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
-% %
-% \draw[gray!30, line width=5pt]
-%         (s1) to                     (s2)
-%         (s1) to [bend right=15]     (s6);
-% %
-\draw   (s) edge ["10"]             (t)
-        (s) edge ["5"]              (y)
-        (t) edge ["1"]              (x)
-        (t) edge [bend right,"2"]    (y)
-        (y) edge [bend right,"3"]   (t)
-        (y) edge ["9"]  (x)
-        (y) edge ["2"]             (z)
-        (x) edge [bend right,"4"]  (z)
-        (z) edge [very near end,"7"]  (s)
-        (z) edge [bend right,"6"]    (x);
-\end{tikzpicture}
-}%
-\caption*{(a)}
-\end{subfigure}
-\begin{subfigure}[b]{0.46\textwidth}
-\adjustbox{width=0.8\textwidth}{%
-\begin{tikzpicture}[
-node distance = 22mm and 24mm,
-every state/.append style = {inner sep=0pt, fill=gray!10,
-                             minimum size=11mm},
-every edge/.style = {draw, -Triangle, bend angle=15},
-                auto=right,
-                        ]
-\node (s) [state,fill=Red!20, align=center]         {$s$\\$0$};
-\node (t) [state,fill=Blue!20, above right=of s,align=center]   {$t$\\$10$};
-\node (y) [state,fill=Blue!20, below right=of s,align=center]         {$y$\\$5$};
-\node (x) [state,fill=Yellow!20, right=of t,align=center]   {$x$\\$\infty$};
-\node (z) [state,fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
-% %
-% \draw[gray!30, line width=5pt]
-%         (s1) to                     (s2)
-%         (s1) to [bend right=15]     (s6);
-% %
-\draw   (s) edge ["10"]             (t)
-        (s) edge ["5"]              (y)
-        (t) edge ["1"]              (x)
-        (t) edge [bend right,"2"]    (y)
-        (y) edge [bend right,"3"]   (t)
-        (y) edge ["9"]  (x)
-        (y) edge ["2"]             (z)
-        (x) edge [bend right,"4"]  (z)
-        (z) edge [very near end,"7"]  (s)
-        (z) edge [bend right,"6"]    (x);
-\end{tikzpicture}
-}%
-\caption*{(b)}
-\end{subfigure}
-
-
-
-\begin{subfigure}[b]{0.46\textwidth}
-\adjustbox{width=0.8\textwidth}{%
-\begin{tikzpicture}[
-node distance = 22mm and 24mm,
-every state/.append style = {inner sep=0pt, fill=gray!10,
-                             minimum size=11mm},
-every edge/.style = {draw, -Triangle, bend angle=15},
-                auto=right,
-                        ]
-\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
-\node (t) [state, fill=Blue!20, above right=of s,align=center]   {$t$\\$8$};
-\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
-\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$14$};
-\node (z) [state, fill=Blue!20, right=of y,align=center]   {$z$\\$7$};
-% %
-% \draw[gray!30, line width=5pt]
-%         (s1) to                     (s2)
-%         (s1) to [bend right=15]     (s6);
-% %
-\draw   (s) edge ["10"]             (t)
-        (s) edge ["5"]              (y)
-        (t) edge ["1"]              (x)
-        (t) edge [bend right,"2"]    (y)
-        (y) edge [bend right,"3"]   (t)
-        (y) edge ["9"]  (x)
-        (y) edge ["2"]             (z)
-        (x) edge [bend right,"4"]  (z)
-        (z) edge [very near end,"7"]  (s)
-        (z) edge [bend right,"6"]    (x);
-\end{tikzpicture}
-}%
-\caption*{(c)}
-\end{subfigure}
-\begin{subfigure}[b]{0.46\textwidth}
-\adjustbox{width=0.8\textwidth}{%
-\begin{tikzpicture}[
-node distance = 22mm and 24mm,
-every state/.append style = {inner sep=0pt, fill=gray!10,
-                             minimum size=11mm},
-every edge/.style = {draw, -Triangle, bend angle=15},
-                auto=right,
-                        ]
-\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
-\node (t) [state, fill=Blue!20, above right=of s,align=center]   {$t$\\$8$};
-\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
-\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$13$};
-\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
-% %
-% \draw[gray!30, line width=5pt]
-%         (s1) to                     (s2)
-%         (s1) to [bend right=15]     (s6);
-% %
-\draw   (s) edge ["10"]             (t)
-        (s) edge ["5"]              (y)
-        (t) edge ["1"]              (x)
-        (t) edge [bend right,"2"]    (y)
-        (y) edge [bend right,"3"]   (t)
-        (y) edge ["9"]  (x)
-        (y) edge ["2"]             (z)
-        (x) edge [bend right,"4"]  (z)
-        (z) edge [very near end,"7"]  (s)
-        (z) edge [bend right,"6"]    (x);
-\end{tikzpicture}
-}%
-\caption*{(d)}
-\end{subfigure}
-\end{figure}
+\begin{frame}[fragile]{Djkstra: \textit{step by step}}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[
+		node distance = 22mm and 24mm,
+		every state/.append style = {inner sep=0pt, fill=gray!10,
+		                             minimum size=11mm},
+		every edge/.style = {draw, -Triangle, bend angle=15},
+		                auto=right,
+		                        ]
+		\node (s) [state, fill=Yellow!50, align=center]         {$s$\\$0$};
+		\node (t) [state, fill=Yellow!20, above right=of s,align=center]   {$t$\\$\infty$};
+		\node (y) [state, fill=Yellow!20, below right=of s,align=center]         {$y$\\$\infty$};
+		\node (x) [state, fill=Yellow!20, right=of t,align=center]   {$x$\\$\infty$};
+		\node (z) [state, fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
+		
+		\draw[Green!20, line width=5pt]
+		        (s) to                     (t)
+		        (s) to					   (y);
+		        
+		\draw   (s) edge ["10"]             (t)
+		        (s) edge ["5"]              (y)
+		        (t) edge ["1"]              (x)
+		        (t) edge [bend right,"2"]    (y)
+		        (y) edge [bend right,"3"]   (t)
+		        (y) edge ["9"]  (x)
+		        (y) edge ["2"]             (z)
+		        (x) edge [bend right,"4"]  (z)
+		        (z) edge [very near end,"7"]  (s)
+		        (z) edge [bend right,"6"]    (x);
+		\end{tikzpicture}
+		\caption*{Schritt 1}
+	\end{figure}  
 \end{frame}
 
-\begin{frame}[fragile]{}
-\begin{figure}[H]
-    \centering
-\begin{subfigure}[b]{0.46\textwidth}
-\adjustbox{width=0.8\textwidth}{%
-\begin{tikzpicture}[
-node distance = 22mm and 24mm,
-every state/.append style = {inner sep=0pt, fill=gray!10,
-                             minimum size=11mm},
-every edge/.style = {draw, -Triangle, bend angle=15},
-                auto=right,
-                        ]
-\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
-\node (t) [state, fill=Red!20, above right=of s,align=center]   {$t$\\$8$};
-\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
-\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$9$};
-\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
-% %
-% \draw[gray!30, line width=5pt]
-%         (s1) to                     (s2)
-%         (s1) to [bend right=15]     (s6);
-% %
-\draw   (s) edge ["10"]             (t)
-        (s) edge ["5"]              (y)
-        (t) edge ["1"]              (x)
-        (t) edge [bend right,"2"]    (y)
-        (y) edge [bend right,"3"]   (t)
-        (y) edge ["9"]  (x)
-        (y) edge ["2"]             (z)
-        (x) edge [bend right,"4"]  (z)
-        (z) edge [very near end,"7"]  (s)
-        (z) edge [bend right,"6"]    (x);
-\end{tikzpicture}
-}%
-\caption*{(e)}
-\end{subfigure}
-\begin{subfigure}[b]{0.46\textwidth}
-\adjustbox{width=0.8\textwidth}{%
-\begin{tikzpicture}[
-node distance = 22mm and 24mm,
-every state/.append style = {inner sep=0pt, fill=gray!10,
-                             minimum size=11mm},
-every edge/.style = {draw, -Triangle, bend angle=15},
-                auto=right,
-                        ]
-\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
-\node (t) [state, fill=Red!20, above right=of s,align=center]   {$t$\\$8$};
-\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
-\node (x) [state, fill=Red!20, right=of t,align=center]   {$x$\\$9$};
-\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
-% %
-% \draw[gray!30, line width=5pt]
-%         (s1) to                     (s2)
-%         (s1) to [bend right=15]     (s6);
-% %
-\draw   (s) edge ["10"]             (t)
-        (s) edge ["5"]              (y)
-        (t) edge ["1"]              (x)
-        (t) edge [bend right,"2"]    (y)
-        (y) edge [bend right,"3"]   (t)
-        (y) edge ["9"]  (x)
-        (y) edge ["2"]             (z)
-        (x) edge [bend right,"4"]  (z)
-        (z) edge [very near end,"7"]  (s)
-        (z) edge [bend right,"6"]    (x);
-\end{tikzpicture}
-}%
-\caption*{(f)}
-\end{subfigure}
-\end{figure}  
+\begin{frame}[fragile]{Djkstra: \textit{step by step}}
+	\begin{figure}[H]
+		\centering
+			\begin{tikzpicture}[
+			node distance = 22mm and 24mm,
+			every state/.append style = {inner sep=0pt, fill=gray!10,
+			                             minimum size=11mm},
+			every edge/.style = {draw, -Triangle, bend angle=15},
+			                auto=right,
+			                        ]
+			\node (s) [state,fill=Red!20, align=center]         {$s$\\$0$};
+			\node (t) [state,fill=Blue!20, above right=of s,align=center]   {$t$\\$10$};
+			\node (y) [state,fill=Blue!20, below right=of s,align=center]         {$y$\\$5$};
+			\node (x) [state,fill=Yellow!20, right=of t,align=center]   {$x$\\$\infty$};
+			\node (z) [state,fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
+			
+			\draw[Green!20, line width=5pt]
+			        (s) to                     (t)
+			        (s) to					   (y);
+			
+			\draw   (s) edge ["10"]             (t)
+			        (s) edge ["5"]              (y)
+			        (t) edge ["1"]              (x)
+			        (t) edge [bend right,"2"]    (y)
+			        (y) edge [bend right,"3"]   (t)
+			        (y) edge ["9"]  (x)
+			        (y) edge ["2"]             (z)
+			        (x) edge [bend right,"4"]  (z)
+			        (z) edge [very near end,"7"]  (s)
+			        (z) edge [bend right,"6"]    (x);
+			\end{tikzpicture}
+		\caption*{Schritt 2}
+	\end{figure}  
 \end{frame}
+
+\begin{frame}[fragile]{Djkstra: \textit{step by step}}
+	\begin{figure}[H]
+		\centering
+				\begin{tikzpicture}[
+				node distance = 22mm and 24mm,
+				every state/.append style = {inner sep=0pt, fill=gray!10,
+				                             minimum size=11mm},
+				every edge/.style = {draw, -Triangle, bend angle=15},
+				                auto=right,
+				                        ]
+				\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
+				\node (t) [state, fill=Blue!20, above right=of s,align=center]   {$t$\\$8$};
+				\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+				\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$14$};
+				\node (z) [state, fill=Blue!20, right=of y,align=center]   {$z$\\$7$};
+				
+				\draw[Green!20, line width=5pt]
+				        (s) to					   (y)
+				        (y) to					   (x)
+				        (y) to					   (z)
+				        (y) to	[bend right=15]    (t);
+				
+				\draw   (s) edge ["10"]             (t)
+				        (s) edge ["5"]              (y)
+				        (t) edge ["1"]              (x)
+				        (t) edge [bend right,"2"]    (y)
+				        (y) edge [bend right,"3"]   (t)
+				        (y) edge ["9"]  (x)
+				        (y) edge ["2"]             (z)
+				        (x) edge [bend right,"4"]  (z)
+				        (z) edge [very near end,"7"]  (s)
+				        (z) edge [bend right,"6"]    (x);
+				\end{tikzpicture}
+		\caption*{Schritt 3}
+	\end{figure}  
+\end{frame}
+
+\begin{frame}[fragile]{Djkstra: \textit{step by step}}
+	\begin{figure}[H]
+		\centering
+				\begin{tikzpicture}[
+				node distance = 22mm and 24mm,
+				every state/.append style = {inner sep=0pt, fill=gray!10,
+				                             minimum size=11mm},
+				every edge/.style = {draw, -Triangle, bend angle=15},
+				                auto=right,
+				                        ]
+				\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
+				\node (t) [state, fill=Blue!20, above right=of s,align=center]   {$t$\\$8$};
+				\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+				\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$13$};
+				\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
+				
+				\draw[Green!20, line width=5pt]
+				        (s) to					   (y)
+				        (y) to					   (z)
+				        (y) to	[bend right=15]    (t)
+				        (z) to	[bend right=15]    (x);
+				
+				\draw   (s) edge ["10"]             (t)
+				        (s) edge ["5"]              (y)
+				        (t) edge ["1"]              (x)
+				        (t) edge [bend right,"2"]    (y)
+				        (y) edge [bend right,"3"]   (t)
+				        (y) edge ["9"]  (x)
+				        (y) edge ["2"]             (z)
+				        (x) edge [bend right,"4"]  (z)
+				        (z) edge [very near end,"7"]  (s)
+				        (z) edge [bend right,"6"]    (x);
+				\end{tikzpicture}
+		\caption*{Schritt 4}
+	\end{figure}  
+\end{frame}
+
+\begin{frame}[fragile]{Djkstra: \textit{step by step}}
+	\begin{figure}[H]
+		\centering
+			\begin{tikzpicture}[
+				node distance = 22mm and 24mm,
+				every state/.append style = {inner sep=0pt, fill=gray!10,
+				                             minimum size=11mm},
+				every edge/.style = {draw, -Triangle, bend angle=15},
+				                auto=right,
+				                        ]
+				\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
+				\node (t) [state, fill=Red!20, above right=of s,align=center]   {$t$\\$8$};
+				\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+				\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$9$};
+				\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
+				
+				\draw[Green!20, line width=5pt]
+				        (s) to					   (y)
+				        (y) to					   (z)
+				        (t) to					   (x)
+				        (y) to	[bend right=15]    (t);
+				
+				\draw   (s) edge ["10"]             (t)
+				        (s) edge ["5"]              (y)
+				        (t) edge ["1"]              (x)
+				        (t) edge [bend right,"2"]    (y)
+				        (y) edge [bend right,"3"]   (t)
+				        (y) edge ["9"]  (x)
+				        (y) edge ["2"]             (z)
+				        (x) edge [bend right,"4"]  (z)
+				        (z) edge [very near end,"7"]  (s)
+				        (z) edge [bend right,"6"]    (x);
+				\end{tikzpicture}
+		\caption*{Schritt 5}
+	\end{figure}  
+\end{frame}
+
+\begin{frame}[fragile]{Djkstra: \textit{step by step}}
+	\begin{figure}[H]
+		\centering
+			\begin{tikzpicture}[
+				node distance = 22mm and 24mm,
+				every state/.append style = {inner sep=0pt, fill=gray!10,
+				                             minimum size=11mm},
+				every edge/.style = {draw, -Triangle, bend angle=15},
+				                auto=right,
+				                        ]
+				\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
+				\node (t) [state, fill=Red!20, above right=of s,align=center]   {$t$\\$8$};
+				\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+				\node (x) [state, fill=Red!20, right=of t,align=center]   {$x$\\$9$};
+				\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
+				
+				\draw[Green!20, line width=5pt]
+				        (s) to					   (y)
+				        (y) to					   (z)
+				        (t) to					   (x)
+				        (y) to	[bend right=15]    (t);
+				        
+				\draw   (s) edge ["10"]             (t)
+				        (s) edge ["5"]              (y)
+				        (t) edge ["1"]              (x)
+				        (t) edge [bend right,"2"]    (y)
+				        (y) edge [bend right,"3"]   (t)
+				        (y) edge ["9"]  (x)
+				        (y) edge ["2"]             (z)
+				        (x) edge [bend right,"4"]  (z)
+				        (z) edge [very near end,"7"]  (s)
+				        (z) edge [bend right,"6"]    (x);
+				\end{tikzpicture}
+		\caption*{Schritt 6}
+	\end{figure}  
+\end{frame}
+
+
 
 \begin{frame}[fragile]{Initialisierung (Startbedingungen)}
 Wir bezeichnen mit $d_s\lrs{v}$ die Länge des kürzesten \textbf{bisher} gefunden Weges vom Startknoten $s$ zum Knoten $v$. Mit $c(u,v)$ bezeichnen wir das Gewicht (cost) der Kante von Knoten $u$ zum Knoten $v$.
