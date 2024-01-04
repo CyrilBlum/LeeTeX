@@ -1,10 +1,12 @@
 <div align="center">
-  <h3>LeeTeX</h3>
-
-  free educational resources
-  [Discord][discord-link]
-  [![Website][website-link]
-  [![Discord][discord-badge]][discord-link]
+    <h3>LeeTeX</h3>
+    <br>
+    free educational resources
+    <br>
+    <br>
+    [Discord][discord-link]
+    [![Website][website-link]
+    [![Discord][discord-link]
 
 </div>
 
@@ -18,7 +20,7 @@ LeeTeX collects educational resources sharing a common typesetting setup.
 
 ## Compiling LeeTeX
 
-Compile using $\LaTeX$.
+Compile using $\LuaLaTeX$.
 
 
 ## Terms of use
