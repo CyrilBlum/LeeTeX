@@ -465,4 +465,107 @@ gesamtdistanz = vieleck_spirale(5, 10, 10, 3)
 print(gesamtdistanz)
 \end{lstlisting}
 \end{solution}
+
+\clearpage
+\question[2]{\emoji{window} \textbf{Dreierfenster}}
+
+Gegeben sei eine Liste \tjinline{A} von ganzen Zahlen mit mindestens drei Elementen. Schreiben Sie eine
+TigerJython-Funktion \tjinline{def dreierfenster(A)}, die stets jeweils Gruppen (\enquote{Dreierfenster}) von drei
+benachbarten Elementen von \tjinline{A} summiert und diese Summen in einer Liste \tjinline{dreiersummen} abspeichert.
+Diese Liste \tjinline{dreiersummen} soll schliesslich durch einen \tjinline{print} ausgegeben werden. Für die gegebene
+Liste \tjinline{A = [3, 4, 1, 6, -2]} zum Beispiel, existieren genau die folgenden drei Dreierfenster:
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (leftb) at (-3,1);
+      \coordinate (n0) at (-2,1);
+      \coordinate (n1) at (-1,1);
+      \coordinate (n2) at (0,1);
+      \coordinate (n3) at (1,1);
+      \coordinate (n4) at (2,1);
+      \coordinate (rightb) at (3,1);
+
+      \node at (leftb) {\verb|[|};
+      \node at (n0) {$3$,};
+      \node at (n1) {$4$,};
+      \node at (n2) {$1$,};
+      \node at (n3) {$6$,};
+      \node at (n4) {$-2$};
+      \node at (rightb) {\verb|]|};
+
+      \node[fit=(n0)(n2), draw=Blue, inner sep=10pt, label={below:$= \blue{8}$}] {};
+    \end{tikzpicture}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (leftb) at (-3,1);
+      \coordinate (n0) at (-2,1);
+      \coordinate (n1) at (-1,1);
+      \coordinate (n2) at (0,1);
+      \coordinate (n3) at (1,1);
+      \coordinate (n4) at (2,1);
+      \coordinate (rightb) at (3,1);
+
+      \node at (leftb) {\verb|[|};
+      \node at (n0) {$3$,};
+      \node at (n1) {$4$,};
+      \node at (n2) {$1$,};
+      \node at (n3) {$6$,};
+      \node at (n4) {$-2$};
+      \node at (rightb) {\verb|]|};
+
+      \node[fit=(n1)(n3), draw=Blue, inner sep=10pt, label={below:$= \blue{11}$}] {};
+    \end{tikzpicture}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (leftb) at (-3,1);
+      \coordinate (n0) at (-2,1);
+      \coordinate (n1) at (-1,1);
+      \coordinate (n2) at (0,1);
+      \coordinate (n3) at (1,1);
+      \coordinate (n4) at (2,1);
+      \coordinate (rightb) at (3,1);
+
+      \node at (leftb) {\verb|[|};
+      \node at (n0) {$3$,};
+      \node at (n1) {$4$,};
+      \node at (n2) {$1$,};
+      \node at (n3) {$6$,};
+      \node at (n4) {$-2$};
+      \node at (rightb) {\verb|]|};
+
+      \node[fit=(n2)(n4), draw=Blue, inner sep=10pt, label={below:$= \blue{5}$}] {};
+    \end{tikzpicture}
+\end{figure}
+
+\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
+Beispiel 1
+Input: A = [3, 4, 1, 6, -2]
+Output: [8, 11, 5]
+
+Beispiel 2
+Input: A = [4, 1, 9]
+Output: [14]
+
+Beispiel 3
+Input: A = [7, 6, 5, 4, 3, 2, 1, 0]
+Output: [18, 15, 12, 9, 6, 3]
+\end{lstlisting}
+
+\begin{solution}
+\begin{lstlisting}[style=TigerJython]
+def dreierfenster(A):
+    dreiersummen = []
+    i = 0
+    while i < len(A)-2:
+        wert = A[i] + A[i+1] + A[i+2]
+        dreiersummen.append(wert)
+        i += 1
+    dreiersummen.sort()
+    print(dreiersummen)
+\end{lstlisting}
+\end{solution}
 \end{questions}
