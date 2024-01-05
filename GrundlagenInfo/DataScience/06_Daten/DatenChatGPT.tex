@@ -1,0 +1,123 @@
+\begin{frame}
+  \frametitle{Einführung in SQL}
+  \begin{itemize}
+    \item SQL: Structured Query Language
+    \item Bedeutung von Datenbanken
+    \item Motivation für den Einsatz von SQL
+  \end{itemize}
+\end{frame}
+
+\section{Grundlagen von SQL}
+\begin{frame}[fragile]
+  \frametitle{Grundlagen von SQL}
+  \begin{itemize}
+    \item SQL-Befehle für Tabellenerstellung
+  \end{itemize}
+  
+  \begin{lstlisting}[language=SQL]
+  CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Age INT
+  );
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Einfache SELECT-Anfrage}
+  
+  \begin{lstlisting}[language=SQL]
+  SELECT FirstName, LastName
+  FROM Students
+  WHERE Age > 18;
+  \end{lstlisting}
+  
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      FirstName & LastName \\
+      \hline
+      John & Doe \\
+      Jane & Smith \\
+      \hline
+    \end{tabular}
+    \caption{Ergebnis der SELECT-Anfrage}
+  \end{table}
+\end{frame}
+
+
+% Fortsetzung der Präsentation
+\begin{frame}[fragile]
+  \frametitle{Daten einfügen (INSERT)}
+  
+  \begin{lstlisting}[language=SQL]
+  INSERT INTO Students (FirstName, LastName, Age)
+  VALUES ('Alice', 'Johnson', 20);
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Daten aktualisieren (UPDATE)}
+  
+  \begin{lstlisting}[language=SQL]
+  UPDATE Students
+  SET Age = 21
+  WHERE LastName = 'Johnson';
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Daten löschen (DELETE)}
+  
+  \begin{lstlisting}[language=SQL]
+  DELETE FROM Students
+  WHERE Age < 20;
+  \end{lstlisting}
+\end{frame}
+
+\section{Fortgeschrittene SQL-Abfragen}
+\begin{frame}[fragile]
+  \frametitle{JOIN-Operationen}
+  
+  \begin{lstlisting}[language=SQL]
+  SELECT Students.FirstName, Students.LastName, Courses.CourseName
+  FROM Students
+  INNER JOIN Enrollments ON Students.StudentID = Enrollments.StudentID
+  INNER JOIN Courses ON Enrollments.CourseID = Courses.CourseID;
+  \end{lstlisting}
+\end{frame}
+
+\section{Datensicherheit}
+\begin{frame}[fragile]
+  \frametitle{Datensicherheit und SQL Injection}
+  \begin{itemize}
+    \item Parameterisierte Abfragen verwenden
+  \end{itemize}
+  
+  \begin{lstlisting}[language=SQL]
+  $sql = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ss", $username, $password);
+  $stmt->execute();
+  \end{lstlisting}
+\end{frame}
+
+\section{Zusammenfassung}
+\begin{frame}
+  \frametitle{Zusammenfassung}
+  \begin{itemize}
+    \item Wichtige SQL-Befehle
+    \item SELECT, INSERT, UPDATE, DELETE
+    \item Fortgeschrittene Abfragen mit JOIN
+    \item Datensicherheit und SQL Injection-Prävention
+  \end{itemize}
+\end{frame}
+
+\section{Fragen}
+\begin{frame}
+  \frametitle{Fragen und Diskussion}
+  Vielen Dank für Ihre Aufmerksamkeit! \\
+  Haben Sie Fragen oder möchten Sie etwas diskutieren?
+\end{frame}
