@@ -7,6 +7,14 @@
     \emoji{floppy-disk} \textbf{Daten und Tabellen}
 \end{frame}
 
+\begin{frame}{Inhalte}
+    \begin{itemize}
+    	\item Daten und Tabellen: Übersicht
+    	\item Einführung in SQL
+    	\item Erstellung eines eigenen sozialen Netzwerks mit InstaHub
+    \end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{Was sind \textit{Daten}?}
 \textbf{``Daten''} = Plural von \textit{Datum}
 \begin{itemize}[<+->]
@@ -131,10 +139,13 @@ Wie können wir mit den riesigen Datenmengen umgehen und sinnvolle Einsichten da
 \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{Beispiel-Datenbank: \textit{Central Intelligence Agency} (CIA)}
-\only<1->{
+\newcommand{\ciascheme}[1]{
+% args: horizonatal and vertical resizing (1 for no rescale)
+%
+
 \begin{figure}[H]
 \centering
+\scalebox{#1}{
 \begin{tikzpicture}[>=latex',node distance=2cm, every edge/.style={draw}, every node/.style={fill=blue!20}]
 	\scriptsize
     % Entities
@@ -147,13 +158,11 @@ Wie können wir mit den riesigen Datenmengen umgehen und sinnvolle Einsichten da
     \node[attribute] (einwohner) at (1.5,1.5) {Einwohner} edge (cia);
     \node[attribute] (bip) at (1.5,0) {BIP} edge (cia);
 \end{tikzpicture}
-\end{figure}}
-\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
-SELECT *
-FROM cia;
-\end{lstlisting}
+}
+\end{figure}
+}
 
-\only<2->{
+\begin{frame}[fragile]{Beispiel-Datenbank: \textit{Central Intelligence Agency} (CIA)}
 \begin{table}
   \centering
   \tiny
@@ -176,8 +185,9 @@ FROM cia;
     \bottomrule
   \end{tabular}
 \end{table}
-}
+\ciascheme{1}
 \end{frame}
+
 
 \newcommand{\highlightTable}[3]{
 % first argument: number of rows
@@ -192,7 +202,7 @@ FROM cia;
 
   % Draw the table
   \foreach \row in {1,...,6} {
-    \foreach \col/\ctitle in {1/Name,2/Region,3/Fläche,4/Einwohner,5/BIP} {
+    \foreach \col/\ctitle in {1/\underline{Name},2/Region,3/Fläche,4/Einwohner,5/BIP} {
       \node(\col\row)[cell] at (\col*2, -\row) {
       \ifnum\row=1 
       	\scriptsize\textbf{\ctitle}\normalsize
@@ -210,11 +220,222 @@ FROM cia;
   \draw [blue,ultra thick,rounded corners]
     (1,-2.5) rectangle (11,-3.5);
     
-  \node[above] at (4,-0.5){\textcolor{red}{Spalte \tiny(=Kolonne)\normalsize}};
+  \node[above] at (4,-0.5){\textcolor{red}{Spalte \tiny(=Kolonne, Attribut)\normalsize}};
   \node[left] at (1,-3){\textcolor{blue}{Zeile}};
+  
+  \node(label) at (2,.5) {\small Schlüsselattribut \tiny(eindeutig!)};
+  \path[->] (1.5,-1) edge[bend left] node [left] {} (label); 
 \end{tikzpicture}
 }
 
 \begin{frame}[fragile]{Typische Tabellenstruktur}
 \highlightTable{1}{1}{1}
+\end{frame}
+
+\begin{frame}[fragile]{SQL-Befehle}{\lstinline[language=SQL]|SELECT [columns] FROM [tablename]|}
+\ciascheme{.7}
+\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+SELECT *
+FROM cia;
+\end{lstlisting}
+
+\begin{table}
+  \centering
+  \tiny
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Name} & \textbf{Region} & \textbf{Fläche} & \textbf{Einwohner} & \textbf{BIP} \\
+    \midrule
+    Afghanistan & Asien & 652 & 25.8M & 21.0B \\
+    Albanien & Europa & 28.7 & 3.49M & 5.6B \\
+    Algerien & Afrika & 2,381.7 & 31.2M & 147.6B \\
+    Amerikanische... & Ozeanien & 0.199 & 65.4K & 0.15B \\
+    Andorra & Europa & 0.468 & 66.8K & 1.2B \\
+    Angola & Afrika & 1,246.7 & 10.1M & 11.6B \\
+    Anguilla & Mittelamerika & 0.091 & 11.8K & 0.088B \\
+    Antarktik & Antarktis & 14M & 0 & 0 \\
+    Antigua und... & Mittelamerika & 0.442 & 66.4K & 0.524B \\
+    Argentinien & Südamerika & 2,766.9 & 36.9M & 367B \\
+    \midrule
+    ... & ... & ... & ... & ... \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}[fragile]{SQL-Befehle}{\lstinline[language=SQL]|SELECT [columns] FROM [tablename]|}
+\ciascheme{.7}
+\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+SELECT Name, Region
+FROM cia;
+\end{lstlisting}
+
+\begin{table}
+  \centering
+  \tiny
+  \begin{tabular}{lc}
+    \toprule
+    \textbf{Name} & \textbf{Region} \\
+    \midrule
+    Afghanistan & Asien \\
+    Albanien & Europa \\
+    Algerien & Afrika \\
+    Amerikanische... & Ozeanien \\
+    Andorra & Europa \\
+    Angola & Afrika \\
+    Anguilla & Mittelamerika \\
+    Antarktik & Antarktis \\
+    Antigua und... & Mittelamerika \\
+    Argentinien & Südamerika \\
+    \midrule
+    ... & ... \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}[fragile]{SQL-Befehle}{\lstinline[language=SQL]|SELECT [columns] FROM [tablename] WHERE [conditions]|}
+\ciascheme{.7}
+\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+SELECT Name, Region
+FROM cia
+WHERE Region = "Afrika";
+\end{lstlisting}
+
+\begin{columns}[c]
+\centering
+\begin{column}{.3\textwidth}
+\begin{table}
+  \centering
+  \tiny
+  \begin{tabular}{lc}
+    \toprule
+    \textbf{Name} & \textbf{Region} \\
+    \midrule
+    Afghanistan & Asien \\
+    Albanien & Europa \\
+    \rowcolor[gray]{.8} Algerien & Afrika \\
+    Amerikanische... & Ozeanien \\
+    Andorra & Europa \\
+    \rowcolor[gray]{.8} Angola & Afrika \\
+    Anguilla & Mittelamerika \\
+    Antarktik & Antarktis \\
+    Antigua und... & Mittelamerika \\
+    Argentinien & Südamerika \\
+    \midrule
+    ... & ... \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{column}
+\begin{column}{.01\textwidth}
+$\rightarrow$
+\end{column}
+\begin{column}{.3\textwidth}
+\begin{table}
+  \centering
+  \tiny
+  \begin{tabular}{lc}
+    \toprule
+    \textbf{Name} & \textbf{Region} \\
+    \midrule
+    Algerien & Afrika \\
+    Angola & Afrika \\
+    Benin & Afrika \\
+    Botswana & Afrika \\
+    Burkina Faso & Afrika \\
+    \midrule
+    ... & ... \\
+    \midrule
+    Sudan & Afrika \\
+    Swaziland & Afrika \\
+    Tanzania & Afrika \\
+    Togo & Afrika \\
+    Tunesien & Afrika \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{SQL-Befehle}{Vergleichsoperatoren}
+	\begin{columns}[c]
+	\centering
+	\begin{column}{.35\textwidth}
+	\begin{table}[H]
+	        \centering
+	        \tiny
+	        \begin{tabular}{l|l}
+	        \makecell{\textbf{Operator}\\\textbf{in SQL}} & \makecell{\textbf{Mathematische}\\\textbf{Bedeutung}} \\\midrule 
+	             \texttt{=} & gleich ($=$)\\
+	             \texttt{<>} & ungleich ($\neq$) \\
+	             \texttt{<} & kleiner als ($<$)\\
+	             \texttt{<=} & kleiner oder gleich ($\leq$) \\
+	             \texttt{>} & grösser als ($>$) \\
+	             \texttt{>=} & grösser oder gleich ($\geq$)
+	        \end{tabular}
+	    \end{table}
+	\end{column}
+	\begin{column}{.6\textwidth}
+	\scriptsize
+	Selektiere Länder mit mehr als 100 Millionen EinwohnerInnen:
+	\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+SELECT Name 
+FROM cia
+WHERE Einwohner > 1E8
+\end{lstlisting}
+	\centering$\downarrow$
+	\begin{table}
+	  \centering\tiny
+	  \begin{tabular}{lr}
+	    \toprule
+	    \textbf{Name} & \textbf{Einwohner} \\
+	    \midrule
+	    Bangladesh & 129'194'224 \\
+	    Brasilien & 172'860'370 \\
+	    China & 1'261'832'482 \\
+	    Indien & 1'014'003'817 \\
+	    Indonesien & 224'784'210 \\
+	    Japan & 126'549'976 \\
+	    Mexiko & 100'349'766 \\
+	    Nigeria & 123'337'822 \\
+	    Pakistan & 141'553'775 \\
+	    Russland & 146'001'176 \\
+	    Vereinigte Staaten von Amerika & 275'562'673 \\
+	    \bottomrule
+	  \end{tabular}
+	\end{table}
+	
+	\end{column}
+	\end{columns}
+\end{frame}
+
+\fboxsep=.6pt
+\newcommand{\cfbox}[2]{%
+    \colorlet{currentcolor}{.}%
+    {\color{#1}%
+    \fbox{\color{currentcolor}#2}}%
+}
+\begin{frame}[fragile]{SQL-Befehle}{Weitere Abfrage-Möglichkeiten}
+\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize, escapeinside={(*@}{@*)}]
+SELECT Name, BIP
+FROM cia
+WHERE BIP (*@\cfbox{red}{\textcolor{green!40!black}{BETWEEN}}@*) 1E6 (*@\cfbox{red}{\textcolor{green!40!black}{AND}}@*) 1E8
+\end{lstlisting}
+\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize, escapeinside={(*@}{@*)}]
+SELECT Name
+FROM cia
+WHERE Name (*@\cfbox{red}{\textcolor{green!40!black}{LIKE}}@*) "%Vereinigte%"
+\end{lstlisting}
+
+\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize, escapeinside={(*@}{@*)}]
+SELECT Name, Einwohner
+FROM cia
+WHERE Name (*@\cfbox{red}{\textcolor{green!40!black}{IN}}@*) ("Deutschland","Frankreich","Polen")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag: InstaHub \emoji{camera-with-flash}}
+Demo & Arbeitsblätter
 \end{frame}
