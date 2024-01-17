@@ -1,3 +1,6 @@
+
+\maketitlepage{\thetopic}{}
+\tableofcontents
 \chapter{Daten \& SQL}\label{ch:Lektion}
 \section{Einführung}
 
@@ -11,6 +14,8 @@ Der Begriff ``Daten'' ist der Plural von \textit{Datum} und kommt aus dem Lateni
 	\item ``Das Logo der KLW besteht aus blauen und roten Farben''
 	\item ...
 \end{itemize}
+Anhand des letzten Beispiel sieht man, dass Fakten nicht unbedingt wahr sein müssen, um als Fakten zu gelten.
+
 In der \textbf{Informatik} sind Daten so gut wie immer durch Nullen und Einsen repräsentiert. Also zum Beispiel:
 \begin{itemize}
 	\item \verb|10100010101111011101001001...|
@@ -26,15 +31,15 @@ Seit etwa einem guten halben Jahrhundert nehmen die Datenmengen stets zu. Tabell
 \centering
 \begin{tabular}{@{}l|rr|l@{}}
 \toprule
-\textbf{Masseinheit} & \multicolumn{2}{l|}{\textbf{Dezimalsystem}}  & Grössenordnung                     \\ \midrule
-KB (Kilobyte)        & $10^3$ B(yte)       & 1’000 B           & Eine Text-Datei                    \\
-MB (Megabyte)        & $10^6$ B       & 1’000’000 B                 & Eine Musik-Datei                   \\
-GB (Gigabyte)        & $10^9$ B       & 1'000'000'000 B             & Eine Video-Datei                   \\
-TB (Terabyte)        & $10^{12}$ B      & 1'000'000'000'000 B       & Kleiner Firmen-Server			    \\
-PB (Petabyte)        & $10^{15}$ B      & ...      					& Facebook-Server                    \\
-EB (Exabyte)         & $10^{18}$ B      & ...                       & Alle CERN-Daten                    \\
+\textbf{Masseinheit} & \multicolumn{2}{l|}{\textbf{Dezimalsystem}}  & Grössenordnung                           \\ \midrule
+KB (Kilobyte)        & $10^3$ B(yte)       & 1’000 B                & Eine Text-Datei                          \\
+MB (Megabyte)        & $10^6$ B       & 1’000’000 B                 & Eine Musik-Datei                         \\
+GB (Gigabyte)        & $10^9$ B       & 1'000'000'000 B             & Eine Video-Datei                         \\
+TB (Terabyte)        & $10^{12}$ B      & 1'000'000'000'000 B       & Kleiner Firmen-Server			           \\
+PB (Petabyte)        & $10^{15}$ B      & ...      					& Facebook-Server                          \\
+EB (Exabyte)         & $10^{18}$ B      & ...                       & Alle CERN-Daten                          \\
 ZB (Zettabyte)       & $10^{21}$ B      & ...                       & Alle Daten ($\sim$ 100 ZB)               \\
-YB (Yottabyte)       & $10^{24}$ B      & ...                       & $\sim$ 2030?                               \\ \bottomrule
+YB (Yottabyte)       & $10^{24}$ B      & ...                       & $\sim$ 2030?                             \\ \bottomrule
 \end{tabular}
 \caption{Gängige Daten-Grössenordnungen in der Informatik (ein \textbf{B}yte = 8 \textbf{b}it)}
 \label{table:groessenordnungen}
@@ -164,7 +169,7 @@ Eine der verbreitetsten Arten, Tabellen und Datenbanken zu erstellen, zu veränd
 
 Alle Beispiele können direkt auf InstaHub ausgeführt werden. Die \textcolor{red}{\textbf{Abgaben}} sind rot markiert und befinden sich auf Moodle unter ``Quiz SQL''.
 
-
+\clearpage
 \begin{aufgabe}[Einrichtung von Instahub \emoji{camera-with-flash}]{instahub-setup}
 	\begin{table}[H]
 	\centering
@@ -229,7 +234,22 @@ Alle Beispiele können direkt auf InstaHub ausgeführt werden. Die \textcolor{re
 \end{aufgabe}
 
 \newpage
-\section{SQL-Abfragen}
+\section{SQL}
+
+\subsection{Syntax}
+Die Sprache SQL besteht, wie wir sehen werden, aus verschiedenen Schlüsselwörtern, wie etwa \lstinline[style=sql]|SELECT|, \lstinline[style=sql]|WHERE|, \lstinline[style=sql]|GROUP BY|, \lstinline[style=sql]|ORDER BY| usw. Dazu gibt es Folgendes zu beachten:
+\begin{itemize}
+	\item Ob wir diese Schlüsselwörter gross oder klein schreiben, spielt keine Rolle. Allerdings wird empfohlen, die Schlüsselwörter immer in Grossbuchstaben zu schreiben, um sie von Kolonnen-Namen, Tabellen-Namen usw. abzugrenzen.
+	\item Wir können alle SQL-Befehle auf einer einzigen Zeile schreiben, dadurch wird der Code aber deutlich weniger lesbar. Stattdessen empfiehlt es sich, vor gewissen Schlüsselwörtern wie \lstinline[style=sql]|SELECT|, \lstinline[style=sql]|WHERE| oder \lstinline[style=sql]|GROUP BY| eine neue Zeile zu erstellen. Dazu lohnt es sich, die Beispiele genau anzuschauen.
+\end{itemize}
+
+\textbf{Kommentare} können in SQL auf zwei Arten geschrieben werden:
+
+\begin{lstlisting}[style=sql]
+-- 1. Kommentar auf einer Zeile
+/* 2. Kommentar über
+mehrere Zeilen */
+\end{lstlisting}
 
 \subsection{Einfache Selektion: \lstinline[style=sql]|SELECT|}
 
@@ -237,15 +257,18 @@ Mit dem Befehl ``\lstinline[style=sql]|SELECT col1,col2,... FROM tablename|'' k�
 
 
 
-Geben Sie auf InstaHub den folgenden Befehl ein:
+Geben Sie auf InstaHub den folgenden Befehl ein (der \textcolor{blue}{Kommentar} muss nicht kopiert werden, er dient lediglich zur Erklärung des Codes):
 
 \begin{lstlisting}[style=sql]
+-- Pseudocode: wähle alle Spalten aus der Tabelle users aus
 SELECT *
 FROM users
 \end{lstlisting}
+
 	
 Mit diesem Befehl wählen wir alle Spalten (\lstinline[style=sql]|*|) der Tabelle \lstinline[style=sql]|users| aus. 
 Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
+
 
 \begin{aufgabe}{}
 \begin{itemize}
@@ -255,12 +278,14 @@ Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
 \end{itemize}
 \end{aufgabe}
 
+
 \subsection{Selektion mit Filter: \lstinline[style=sql]|WHERE|}
 Fügen wir zu einer SQL-Abfrage den Befehl ``\lstinline[style=sql]|WHERE conditions|'' hinzu, können wir können wir das erhaltene Resultat nach gewissen Bedingungen (\texttt{conditions}) filtern. 
 
 Geben Sie folgendes Beispiel in Instahub ein:
 
 \begin{lstlisting}[style=sql]
+/* Pseudocode: wähle den Namen, die Stadt und das Geschlecht aller Mitglieder aus der Tabelle users aus und filtere nach Mitgliedern, die männlich sind */
 SELECT name, city, gender
 FROM users
 WHERE gender="male"
@@ -276,15 +301,16 @@ Nebst dem Gleich-Zeichen (im obigen Beispiel) haben folgende Filter-Operatoren z
       \texttt{<} & kleiner als ($<$)\\
       \texttt{<=} & kleiner oder gleich ($\leq$) \\
       \texttt{>} & grösser als ($>$) \\
-      \texttt{>=} & grösser oder gleich ($\geq$)
+      \texttt{>=} & grösser oder gleich ($\geq$)\\
+      \lstinline[style=sql]|BETWEEN x AND y| & Wert zwischen \texttt{x} und \texttt{y}\\
  \end{tabular}
 \end{table}
 Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|AND NOT| sowie \lstinline[style=sql]|OR| verwenden.
 
 \begin{aufgabe}{}
 \begin{itemize}
-\item Geben Sie alle Mitglieder aus, die über 1,85 Meter gross und männlich sind.
-\item \textbf{Challenge}: Überprüfen Sie, ob es minderjährige Mitglieder gibt (mit der Spalte \texttt{birthday}).
+	\item Geben Sie alle Mitglieder aus, die über 1,85 Meter gross und männlich sind.
+	\item \textbf{Challenge}: Überprüfen Sie, ob es Mitglieder zwischen 20 und 30 gibt (mit der Spalte \texttt{birthday}).
 \end{itemize}
 \end{aufgabe}
 
@@ -387,13 +413,20 @@ LIMIT 5
 
 \subsection{Zählen: \lstinline[style=sql]|COUNT|}
 
-Mit dem Befehl \lstinline[style=sql]|COUNT| kann man die Anzahl Resultate zählen:
+Mit dem Befehl \lstinline[style=sql]|COUNT| kann man die Anzahl Resultate zählen. 
 
+\begin{lstlisting}[style=sql]
+SELECT COUNT(*)
+FROM users
+\end{lstlisting}
+
+Wir können den berechneten Wert zudem zur besseren Lesbarkeit umbenennen, indem wir den Befehl \lstinline[style=sql]|AS| verwenden:
 
 \begin{lstlisting}[style=sql]
 SELECT COUNT(*) AS "Registrierte Mitglieder" 
 FROM users
 \end{lstlisting}
+
 Ermitteln Sie mithilfe des obigen Befehls, wie viele Mitglieder dein InstaHub hat.
 
 
@@ -416,7 +449,7 @@ FROM users
 \end{itemize}
 \end{aufgabe}
 
-\subsection{Gruppieren: \lstinline[style=sql]|MIN|/\lstinline[style=sql]|GROUP BY|}
+\subsection{Gruppieren: \lstinline[style=sql]|GROUP BY|}
 Um die Resultate einer Anfrage pro Untergruppen zu sehen, kann der Befehl \lstinline[style=sql]|GROUP BY| verwendet werden:
 \begin{lstlisting}[style=sql]
 SELECT city, COUNT(*) AS "Mitglieder je Stadt" 

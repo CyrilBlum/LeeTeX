@@ -17,5 +17,12 @@ LeeTeX collects educational resources sharing a common typesetting setup.
 
 Compile using LuaLaTeX.
 
+## Add git hash to documents
+
+If you wish to add a git hash to the document, execute the following steps:
+
+- Navigate to the LeeTeX root directory
+- `cp -a Git\ Internal\ Files .git/hooks`
+- In main.tex, change the `showgitinfo2` toggle to `true`
 
 ## Terms of use
