@@ -22,7 +22,9 @@ Compile using LuaLaTeX.
 If you wish to add a git hash to the document, execute the following steps:
 
 - Navigate to the LeeTeX root directory
-- `cp -a Git\ Internal\ Files .git/hooks`
+- `cp -a Git\ Internal\ Files/. .git/hooks`
+- `cd .git/hooks/`
+- `chmod +x post-checkout post-commit post-merge`
 - In main.tex, change the `showgitinfo2` toggle to `true`
 
 ## Terms of use
