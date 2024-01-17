@@ -197,24 +197,13 @@
 \newenvironment{aufgabe}[2][]
     {
         \refstepcounter{ccaufgabe}
+        \tcbset{enhanced jigsaw,colback=DarkSeaGreen!15,colframe=DarkSeaGreen!50!black,breakable}
         \ifblank{#1} {
             % if no title is given (#1 blank)
-        	\mdfsetup{
-            	frametitle={
-            	\tikz[baseline=(current bounding box.east),outer sep=0pt]
-            	\node[anchor=east,rectangle,fill=DarkSeaGreen]{\strut Aufgabe~\thecc};},
-            	innertopmargin=0pt, linecolor=DarkSeaGreen,
-            	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
-            }
+        	\begin{tcolorbox}[title=Aufgabe~\thecc]
         } {	
             % if a title is given (#1 not blank)
-        	\mdfsetup{
-            	frametitle={
-            	\tikz[baseline=(current bounding box.east),outer sep=0pt]
-            	\node[anchor=east,rectangle,fill=DarkSeaGreen]{\strut Aufgabe~\thecc~#1};},
-            	innertopmargin=0pt, linecolor=DarkSeaGreen,
-            	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
-            }
+        	\begin{tcolorbox}[title=Aufgabe~\thecc~#1]
         }
         \mdfsetup{
         	innertopmargin=0pt, linecolor=DarkSeaGreen,
@@ -228,11 +217,11 @@
         	% #2 is an actual user-defined label
         	\renewcommand{\mylabel}{#2}
         }
-        \begin{mdframed}[backgroundcolor=DarkSeaGreen!15]\relax%
+        
         \label{\mylabel}
     } %%
     {
-        \end{mdframed}
+        \end{tcolorbox}
     }
 
 \newenvironment{antwort}[1]
@@ -288,6 +277,11 @@
     % do not reference to this if label "-" is given
     \label{\mylabel}\par\smallskip\noindent\textbf{Beispiel~\thecc}\quad #2 ~$_\blacktriangle$\smallskip
 }
+
+% Define our numbered environment within the preamble
+\newcounter{example}[section]
+\newenvironment{example}[1][]{\refstepcounter{example}\par\medskip
+   \noindent \textbf{Beispiel~\theexample. #1} \rmfamily}{\medskip}
 
 % Beweis
 \newcommand{\beweis}[1]{\smallskip\noindent\textbf{Beweis:}\quad #1 ~$_\blacksquare$\smallskip}
