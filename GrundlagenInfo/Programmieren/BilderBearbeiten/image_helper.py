@@ -103,3 +103,11 @@ def new_rgb_image(w, h, pixels=None):
 # Misc:
 def random_pixel_value():
     return random.randint(0, 255)
+
+
+# Display Helper:
+def show_images_vertically(im1, im2):
+    dst = Image.new("RGB", (im1.width + im2.width, im1.height))
+    dst.paste(im1, (0, 0))
+    dst.paste(im2, (im1.width, 0))
+    dst.show()
