@@ -5,14 +5,14 @@
 \documentclass[a4paper,11pt,oneside,svgnames]{book}
 
 % ARTICLE
-%\documentclass[svgnames,hyphens]{article}
+% \documentclass[svgnames,hyphens]{article}
 
 % EXAM
-%\documentclass[11pt,addpoints,svgnames]{exam} 
-%\documentclass[11pt,addpoints,answers,svgnames]{exam}
+% \documentclass[11pt,addpoints,svgnames]{exam} 
+% \documentclass[11pt,addpoints,answers,svgnames]{exam}
 
 % BEAMER
-%\documentclass[xcolor={svgnames,table,dvipsnames},hyphens]{beamer}
+% \documentclass[xcolor={svgnames,table,dvipsnames},hyphens]{beamer}
 
 % e-TeX tools for LaTeX
 \usepackage{etoolbox}
@@ -21,9 +21,7 @@
 \newtoggle{book} \newtoggle{article} \newtoggle{exam} \newtoggle{beamer} % default value is 'false'
 % set document class: book <-> 0, article <-> 1, exam <-> 2, beamer <-> 3
 % this shall be regarded as a switch statement
-
 \def\documentToggle{0} % <---- choose number
-
 \ifnumequal{\documentToggle}{0}{\settoggle{book}{true}}{}     % book
 \ifnumequal{\documentToggle}{1}{\settoggle{article}{true}}{}  % article
 \ifnumequal{\documentToggle}{2}{\settoggle{exam}{true}}{}     % exam
@@ -36,6 +34,12 @@
 % this requires a local installation / modification <-- TODO: document this in README.MD on GitHub
 \newtoggle{showgitinfo2} \settoggle{showgitinfo2}{true}
 
+% language toggle
+\newtoggle{german} \newtoggle{english}
+\def\languageToggle{0}
+\ifnumequal{\languageToggle}{0}{\settoggle{german}{true}}{} % german
+\ifnumequal{\languageToggle}{1}{\settoggle{english}{true}}{} % english
+
 \input{Preambles/pre_0_packages} % loading packages
 \input{Preambles/pre_1_options} % settings and various options for packages
 \input{Preambles/pre_2_macros} % macros
@@ -47,67 +51,66 @@
 \begin{document}
 	% BOOK
 	\iftoggle{book} {
-		\newcommand{\thetopic}{Daten \& SQL}
-		
-		\maketitlepage{\thetopic}{}
-		\tableofcontents
-		
-	    \frontmatter
-		%\include{titlepage}
-		%\include{vorwort}
-        %\markright{}
-        %\cleardoublepage
-		\mainmatter
-		% main content (book)
-		%\part{Lektion 1}
-        %\input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Kapitel01}
+    \newcommand{\thetopic}{Daten \& SQL}
 
-        %\part{Lektion 2}
-        %\input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Kapitel02}
-	    \input{GrundlagenInfo/DataScience/06_Daten/Instahub Aufgaben 1}
-		\appendix
-		% \input{appendix.tex} % Appendix: Prinzip der rekursiven Definition
-        
-        %\printbibliography
-		%\printindex
-		
-		%\backmatter
-		%\bibliographystyle{plain}
-        %\bibliography{refs}
+    \frontmatter
+      \maketitlepage{\thetopic}{}
+      % \include{titlepage}
+      % \include{vorwort}
+      \tableofcontents
+      \markright{}
+      \cleardoublepage
+
+    \mainmatter
+      \part{Environments}
+      \input{LaTeX_related/example_file}
+      % \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Kapitel01}
+
+      % \part{Lektion 2}
+      % \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Kapitel02}
+      % \input{GrundlagenInfo/DataScience/06_Daten/Instahub Aufgaben 1}
+      % \appendix
+      % \input{appendix.tex}  
+
+    \backmatter
+      % \printbibliography
+      % \printindex
+      % \bibliographystyle{plain}
+      % \bibliography{refs}
 	} {}
 
 	% ARTICLE
 	\iftoggle{article} {
-        %\input{Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee}
+    \input{Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee}
 	} {}
 
 	% EXAM
 	\iftoggle{exam} {
-       % \input{GrundlagenInfo/DataScience/ExamQuestions/Questions}
-       \input{GrundlagenInfo/Programmieren/ExamQuestions/QuestionsProg}
+     % \input{GrundlagenInfo/DataScience/ExamQuestions/Questions}
+     \input{GrundlagenInfo/Programmieren/ExamQuestions/QuestionsProg}
 	} {}
 	
 	% BEAMER
 	\iftoggle{beamer} {
-        % \input{GrundlagenInfo/DataScience/01_Zahlensysteme/Zahlensysteme_L01}
-        % \input{GrundlagenInfo/DataScience/01_Zahlensysteme/Zahlensysteme_L02}
-        %\input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L01}
-        % \input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L02}
-		%\input{GrundlagenInfo/DataScience/03_Kryptologie/Appendix}
-        % \input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L03}
-        % \input{GrundlagenInfo/DataScience/02_Graphen/Graphen_L01}
-        % \input{GrundlagenInfo/DataScience/02_Graphen/Graphen_L02}
-      
-        % \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01}
-        % \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel02}
-		%\input{GrundlagenInfo/DataScience/04_Kompression/Kompression_L01}
-		%\input{GrundlagenInfo/DataScience/05_ErrorChecking/ErrorChecking}
-		\input{GrundlagenInfo/DataScience/06_Daten/Daten}
+    % \input{GrundlagenInfo/DataScience/01_Zahlensysteme/Zahlensysteme_L01}
+    % \input{GrundlagenInfo/DataScience/01_Zahlensysteme/Zahlensysteme_L02}
+    % \input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L01}
+    % \input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L02}
+    % \input{GrundlagenInfo/DataScience/03_Kryptologie/Appendix}
+    % \input{GrundlagenInfo/DataScience/03_Kryptologie/Kryptologie_L03}
+    % \input{GrundlagenInfo/DataScience/02_Graphen/Graphen_L01}
+    % \input{GrundlagenInfo/DataScience/02_Graphen/Graphen_L02}
 
-        % \input{GrundlagenInfo/Programmieren/Examples_Exam}
-        % \input{GrundlagenInfo/Programmieren/Lektion07Speicherinhalte}
-        % \input{GrundlagenInfo/Programmieren/Lektion08ZeitTabellen}
-        % \input{GrundlagenInfo/Programmieren/Lektion10IfElifElse}
-        %\input{GrundlagenInfo/Programmieren/Lektion17Funktionen}
+    % \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01}
+    % \input{GrundlagenInfo/DataScience/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel02}
+    % \input{GrundlagenInfo/DataScience/04_Kompression/Kompression_L01}
+    % \input{GrundlagenInfo/DataScience/05_ErrorChecking/ErrorChecking}
+    \input{GrundlagenInfo/DataScience/06_Daten/Daten}
+
+    % \input{GrundlagenInfo/Programmieren/Examples_Exam}
+    % \input{GrundlagenInfo/Programmieren/Lektion07Speicherinhalte}
+    % \input{GrundlagenInfo/Programmieren/Lektion08ZeitTabellen}
+    % \input{GrundlagenInfo/Programmieren/Lektion10IfElifElse}
+    % \input{GrundlagenInfo/Programmieren/Lektion17Funktionen}
 	} {}
 \end{document}
