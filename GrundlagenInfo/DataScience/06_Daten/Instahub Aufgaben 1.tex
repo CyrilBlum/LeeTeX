@@ -166,6 +166,89 @@ Eine der verbreitetsten Arten, Tabellen und Datenbanken zu erstellen, zu veränd
 
 Alle Beispiele können direkt auf InstaHub ausgeführt werden. Die \textcolor{red}{\textbf{Abgaben}} sind rot markiert und befinden sich auf Moodle unter ``Quiz \gls{SQL} ''.
 
+\section{\acrshort{ERM}}
+
+
+Ein \acrfull{ERM} ist eine abstrakte Darstellung der Tabellen (Entities), die in einer Datenbank angelegt sind, sowie der Beziehungen (Relationships) zwischen den Tabellen. Jede Tabelle kann mehrere Kolonnen (=Attribute) haben. 
+
+Wenn man eine Datenbank erstellt, kann es nützlich sein, zuerst ein \gls{ERM} aufzuzeichnen, um sich zu überlegen, welche Tabellen es braucht.
+
+Das \gls{ERM} des sozialen Netzwerks InstaHub ist in \cref{fig:erm-instahub} abgebildet.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[auto]
+  % Nodes
+  \node[entity] (user) at (0,0) {users};
+  \node[relationship] (follows) at (-4,0) {follows};
+  \node[relationship] (owns) at (2.5,2.5) {owns};
+  \node[entity] (photo) at (5,0) {photos};
+  \node[relationship] (has) at (7,0) {has};ff
+  \node[entity] (tag) at (9,0) {tags};
+  \node[relationship] (comments) at (2.5,0) {comments};
+  \node[relationship] (likes) at (2.5,-2.5) {likes};
+  \node[relationship] (haspw) at (0,-2) {has};
+  \node[entity] (pwreset) at (-4,-2) {password\_resets};
+  
+  % Edges
+  \draw (user) -- (follows) node[midway, above] {m};
+  \draw (follows) -- (user) node[midway, below] {n};
+  \draw (user) -- (owns) node[midway, above] {1};
+  \draw (owns) -- (photo) node[midway, above] {n};
+  \draw (photo) -- (has) node[midway, above] {n};
+  \draw (has) -- (tag) node[midway, above] {m};
+  \draw (user) -- (comments) node[midway, above] {n};
+  \draw (comments) -- (photo) node[midway, above] {m};
+  \draw (user) -- (likes) node[midway, left] {n};
+  \draw (likes) -- (photo) node[midway, right] {m};
+  \draw (user) -- (haspw) node[midway, left] {1};
+  \draw (haspw) -- (pwreset) node[midway, above] {0:1};
+\end{tikzpicture}
+\caption{\gls{ERM} von InstaHub}
+\label{fig:erm-instahub}
+\end{figure}
+
+\cref{fig:erm-components} zeigt die Darstellung der Komponenten eines ERM in der sogenannten Chen-Notation.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1cm]
+
+  % Entity
+  \node[entity] (entity1) {Entity};
+  \node[attribute] (attr1) [above left=of entity1] {Attribute} edge (entity1);
+  \node[attribute] (attr2) [below left=of entity1] {Attribute} edge (entity1);
+
+  % Relationship
+  \node[relationship] (rel1) [right=3cm of entity1] {Relationship} edge node[auto,swap] {n} (entity1);
+  \node[entity] (entity2) [right=3cm of rel1] {Entity} edge node[auto,swap] {m} (rel1);
+  \node[attribute] (attr3) [above=of rel1] {Attribute} edge (rel1);
+
+  % Legend
+  \node[draw,thick,fit=(entity1) (attr1) (attr2),inner sep=0.5cm, rounded corners, dotted, red] (box1) {};
+  \node[anchor=south, red] at (box1.north) {Entities and Attributes};
+
+  \node[draw,thick,fit=(rel1) (entity2) (attr3),inner sep=0.5cm, rounded corners, dotted, blue] (box2) {};
+  \node[anchor=south, blue] at (box2.north) {Relationships};
+
+\end{tikzpicture}
+\caption{\gls{ERM}-Komponenten in der sogenannten Chen-Notation}
+\label{fig:erm-components}
+\end{figure}
+
+Die Entitäten, die meistens einer Tabelle entsprechen, werden als Rechtecke angegeben. Beziehungen stellen ``Verknüpfungen'' zwischen verschiedenen Tabellen dar und sind meist als Raute dargestellt. Die Attribute werden typischerweise als Kreise angegeben. In \cref{fig:erm-instahub} sind die Attribute einfachheitshalber nicht angegeben.
+
+Die Zahlen über den Strichen bezeichnen die \textbf{Kardinalität} der Beziehungen: Mit der Kardinalität wird ausgedrückt, wie viele Entitäten mit einer anderen Entität in Verbindung stehen können oder müssen. Die Zahlen \texttt{n} und \texttt{m} stehen dabei typischerweise für eine natürliche Zahl grösser als 1. 
+
+Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} abgelesen werden:
+\begin{itemize}
+\item Jeder User kann \texttt{n} comments schreiben.
+\item Jeder User kann \texttt{m} anderen Usern followen und von m Usern gefollowt werden.
+\item Jedes Foto kann \texttt{m} Tags haben. Jeder Tag kann auf \texttt{n} Fotos angewandt werden.
+\item Jedes Fotos gehört genau zu einem Benutzerprofil (\texttt{owns}). Jedes Benutzerprofil kann \texttt{n} Fotos veröffentlichen.
+\item Jedes Passwort-Reset kann genau 0 oder 1 User betreffen. 
+\end{itemize}
+
 \clearpage
 \begin{aufgabe}[Einrichtung von Instahub \emoji{camera-with-flash}]{instahub-setup}
 	\begin{table}[H]
@@ -226,12 +309,15 @@ Alle Beispiele können direkt auf InstaHub ausgeführt werden. Die \textcolor{re
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=.9\textwidth]{GrundlagenInfo/DataScience/06_Daten/Figures/instahub-tables}
+		\caption{Die Tabellen von InstaHub und deren Attribute}
+		\label{fig:tables-instahub}
 	\end{figure}
 
 \end{aufgabe}
 
 \newpage
-\section{\acrlong{SQL}}
+
+\section{Daten abfragen mit \acrlong{SQL}}
 
 \subsection{Syntax}
 Die Sprache \gls{SQL} besteht, wie wir sehen werden, aus verschiedenen Schlüsselwörtern, wie etwa \lstinline[style=sql]|SELECT|, \lstinline[style=sql]|WHERE|, \lstinline[style=sql]|GROUP BY|, \lstinline[style=sql]|ORDER BY| usw. Dazu gibt es Folgendes zu beachten:
@@ -305,7 +391,7 @@ Nebst dem Gleich-Zeichen (im obigen Beispiel) haben folgende Filter-Operatoren z
       \lstinline[style=sql]|BETWEEN x AND y| & Wert zwischen \texttt{x} und \texttt{y}\\
  \end{tabular}
 \end{table}
-Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|AND NOT| sowie \lstinline[style=sql]|OR| verwenden.
+Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|NOT| sowie \lstinline[style=sql]|OR| verwenden.
 
 \begin{myexample}
 Folgender Code gibt alle Mitglieder aus, die zwischen 172 und 174 gross sind.
@@ -413,25 +499,6 @@ ORDER BY city DESC
 \end{lstlisting}
 \end{aufgabe}
 
-\subsection{Erste \textit{n} Zeilen: \lstinline[style=sql]|LIMIT|}
-
-Mit dem Befehl \lstinline[style=sql]|LIMIT| kann das Resultat einer SQL-Abfrage auf eine gewisse Anzahl Zeilen beschränkt werden.
-
-Beobachten Sie das Resultat folgender Abfrage:
-
-\begin{lstlisting}[style=sql]
-SELECT DISTINCT city
-FROM users
-LIMIT 5
-\end{lstlisting}
-
-\begin{aufgabe}{}
-\begin{itemize}
-\item Zeigen Sie nur 3 Mitglieder an.
-\item Zeigen Sie nur die 5 grössten Mitglieder an.
-\end{itemize}
-\end{aufgabe}
-
 \subsection{Aggregatsfunktionen: \lstinline[style=sql]|COUNT|, \lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|, \lstinline[style=sql]|SUM|, \lstinline[style=sql]|AVG|}
 \subsubsection{\lstinline[style=sql]|COUNT|}
 
@@ -439,7 +506,7 @@ Mit dem Befehl \lstinline[style=sql]|COUNT| kann man die Anzahl Resultate zähle
 
 \begin{lstlisting}[style=sql]
 SELECT COUNT(*)
-FROM users
+FROM usersw
 \end{lstlisting}
 
 Wir können den berechneten Wert zudem zur besseren Lesbarkeit umbenennen, indem wir den Befehl \lstinline[style=sql]|AS| verwenden:
@@ -514,11 +581,51 @@ FROM users
 GROUP BY city
 \end{lstlisting}
 \end{myexample}
+
+Zudem ist es möglich, Daten auch in Untergruppen zusammenzufassen. 
+
+\begin{myexample}
+Folgender Code gibt die Anzahl männlicher und weiblicher Mitglieder pro Stadt aus:
+\begin{lstlisting}[style=sql]
+SELECT city, gender, COUNT(*) 
+FROM users 
+GROUP by city, gender
+\end{lstlisting}
+\end{myexample}
+
 \begin{aufgabe}{a1}
-\emoji{up-arrow} \textcolor{red}{\textbf{Abgabe}}: Geben Sie das grösste Mitglied in jeder Stadt aus
+\begin{itemize}
+\item \emoji{up-arrow} \textcolor{red}{\textbf{Abgabe}}: Geben Sie das grösste Mitglied in jeder Stadt aus
+\item \textbf{Challenge}: Geben Sie die maximale Körpergrösse aus, gruppiert nach Stadt und Geschlecht.
+\end{itemize}
 
 % TODO make answers appear as an option in book class?
 
+\end{aufgabe}
+
+
+\subsection{Erste \textit{n} Zeilen: \lstinline[style=sql]|LIMIT|}
+Mit dem Befehl \lstinline[style=sql]|LIMIT| kann das Resultat einer SQL-Abfrage auf eine gewisse Anzahl Zeilen beschränkt werden.
+
+Beobachten Sie das Resultat folgender Abfrage:
+
+
+
+\begin{aufgabe}{}
+\begin{itemize}
+\item Zeigen Sie nur 3 Mitglieder an.
+\item Zeigen Sie nur die 5 grössten Mitglieder an.
+\item Geben Sie die drei Städte mit den meisten Mitgliedern an.
+\item \textcolor{red}{\textbf{Abgabe}} Geben Sie die Stadtnamen aus, wo die meisten Mitglieder mit einem ``a'' im Namen wohnen (nur die ersten drei Zeilen).
+\begin{lstlisting}[style=sql]
+SELECT city, COUNT(*) 
+FROM users 
+WHERE name LIKE "%a%" 
+GROUP by city 
+ORDER BY COUNT(*) 
+DESC LIMIT 3
+\end{lstlisting}
+\end{itemize}
 \end{aufgabe}
 
 
@@ -534,6 +641,28 @@ Lösen Sie folgende Abschnitte:
 \end{itemize} 
 
 \pagebreak
+
+\section{Daten bearbeiten mit \gls{SQL}}
+Mit SQL kann man Daten nicht nur abfragen, sondern auch erstellen, verändern und löschen. Im folgenden Schauen wir uns dafür nötigen Befehle an.
+
+\subsection{Daten einfügen: \lstinline[style=sql]|INSERT INTO|}
+
+Mit \lstinline[style=sql]|INSERT INTO| können neue Zeilen in eine bestehende Tabelle eingefügt werden.
+
+\begin{myexample}
+Folgender Code fügt eine neue Person in die Tabelle \texttt{users} ein:
+\begin{lstlisting}[style=sql]
+INSERT INTO users (username, email, password, name, bio, gender, birthday, city, country, centimeters, avatar, role, is_active, remember_token, created_at, updated_at) 
+VALUES ('guenther37', 'guenther@instahub.test', '12345', 'Günther Müller', 'Günther mag Kartoffelsalat.', 'male', '2006-06-06 00:00:00', 'Leipzig', 'Deutschland', '173', 'avatar.png', 'user', '0', NULL, now(), now());
+\end{lstlisting}
+Wie Sie sehen, wird zuerst die Tabelle (\texttt{users}) aufgelistet, danach die Kolonnen und schliesslich die Werte.
+\end{myexample}
+
+
+\subsection{Daten verändern: \lstinline[style=sql]|UPDATE|}
+...
+\subsection{Daten löschen: \lstinline[style=sql]|DROP|}
+...
 
 \section{Gemeinsam ein soziales Netzwerk verwalten}
 
@@ -556,3 +685,26 @@ Lösen Sie folgende Abschnitte:
 \end{itemize}
 \end{aufgabe}
 
+
+
+
+
+
+\begin{aufgabe}[Gemeinsam ein soziales Netzwerk verwalten (optional)]{}
+\begin{table}[H]
+\centering
+\begin{tabular}{r|l}
+ \emoji{chequered-flag} & Gemeinsam ein soziales Netzwerk verwalten \\\hline
+ \emoji{family-man-woman-girl-boy} & 3er- bis 4er-Gruppen \\\hline
+ \emoji{stopwatch} & ca. 25 min.
+\end{tabular}
+\end{table}
+
+(Optional) Um sich ein Konto auf einer Seite einer anderen Person zu erstellen:
+\begin{itemize}
+	\item Bestimmen Sie jemanden als \textcolor{RoyalBlue}{AdministratorIn} und verwenden Sie nur die Webseite dieser Person, also z.B. \url{https://purpurrot21.instahub.org}. Die anderen Personen sind  \textcolor{ForestGreen}{BenutzerInnen}.
+	\item \textcolor{ForestGreen}{BenutzerInnen}: Gehen Sie auf die von der Administratorin erstellte Webseite (\url{https://namedesnetzwerks.instahub.org}, wobei ``\texttt{namedesnetzwerks}'' ersetzt werden muss) und erstellen Sie ein neues Konto für sich.
+	\item \textcolor{RoyalBlue}{AdministratorIn}: Die neuen Accounts der \textcolor{ForestGreen}{BenutzerInnen} muss dann von Ihnen als \textcolor{RoyalBlue}{AdministratorIn} aktiviert werden, indem Sie den User suchen, auf ``Bearbeiten'' und dann ganz unten auf ``Account ist freigeschaltet'' klicken. 
+	\item \textcolor{RoyalBlue}{AdministratorIn} und \textcolor{ForestGreen}{BenutzerIn}: Posten Sie nun falls Sie möchten Bilder in den sozialen Netzwerken Ihrer Kollegen, vergeben Sie Likes, folgen Sie anderen und kommentieren Sie fleissig in den anderen Netzwerken (max. 5 Minuten).
+\end{itemize}
+\end{aufgabe}
