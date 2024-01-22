@@ -1,3 +1,149 @@
+\section{\acrshort{ERM}}
+
+
+Ein \acrfull{ERM} ist eine abstrakte Darstellung der Tabellen (Entities), die in einer Datenbank angelegt sind, sowie der Beziehungen (Relationships) zwischen den Tabellen. Jede Tabelle kann mehrere Kolonnen (=Attribute) haben. 
+
+Wenn man eine Datenbank erstellt, kann es nützlich sein, zuerst ein \gls{ERM} aufzuzeichnen, um sich zu überlegen, welche Tabellen es braucht.
+
+Das \gls{ERM} des sozialen Netzwerks InstaHub ist in \cref{fig:erm-instahub} abgebildet.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[auto]
+  % Nodes
+  \node[entity] (user) at (0,0) {users};
+  \node[relationship] (follows) at (-4,0) {follows};
+  \node[relationship] (owns) at (2.5,2.5) {owns};
+  \node[entity] (photo) at (5,0) {photos};
+  \node[relationship] (has) at (7,0) {has};ff
+  \node[entity] (tag) at (9,0) {tags};
+  \node[relationship] (comments) at (2.5,0) {comments};
+  \node[relationship] (likes) at (2.5,-2.5) {likes};
+  \node[relationship] (haspw) at (0,-2) {has};
+  \node[entity] (pwreset) at (-4,-2) {password\_resets};
+  
+  % Edges
+  \draw (user) -- (follows) node[midway, above] {m};
+  \draw (follows) -- (user) node[midway, below] {n};
+  \draw (user) -- (owns) node[midway, above] {1};
+  \draw (owns) -- (photo) node[midway, above] {n};
+  \draw (photo) -- (has) node[midway, above] {n};
+  \draw (has) -- (tag) node[midway, above] {m};
+  \draw (user) -- (comments) node[midway, above] {n};
+  \draw (comments) -- (photo) node[midway, above] {m};
+  \draw (user) -- (likes) node[midway, left] {n};
+  \draw (likes) -- (photo) node[midway, right] {m};
+  \draw (user) -- (haspw) node[midway, left] {1};
+  \draw (haspw) -- (pwreset) node[midway, above] {0:1};
+\end{tikzpicture}
+\caption{\gls{ERM} von InstaHub}
+\label{fig:erm-instahub}
+\end{figure}
+
+\cref{fig:erm-components} zeigt die Darstellung der Komponenten eines ERM in der sogenannten Chen-Notation.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1cm]
+
+  % Entity
+  \node[entity] (entity1) {Entity};
+  \node[attribute] (attr1) [above left=of entity1] {Attribute} edge (entity1);
+  \node[attribute] (attr2) [below left=of entity1] {Attribute} edge (entity1);
+
+  % Relationship
+  \node[relationship] (rel1) [right=3cm of entity1] {Relationship} edge node[auto,swap] {n} (entity1);
+  \node[entity] (entity2) [right=3cm of rel1] {Entity} edge node[auto,swap] {m} (rel1);
+  \node[attribute] (attr3) [above=of rel1] {Attribute} edge (rel1);
+
+  % Legend
+  \node[draw,thick,fit=(entity1) (attr1) (attr2),inner sep=0.5cm, rounded corners, dotted, red] (box1) {};
+  \node[anchor=south, red] at (box1.north) {Entities and Attributes};
+
+  \node[draw,thick,fit=(rel1) (entity2) (attr3),inner sep=0.5cm, rounded corners, dotted, blue] (box2) {};
+  \node[anchor=south, blue] at (box2.north) {Relationships};
+
+\end{tikzpicture}
+\caption{\gls{ERM}-Komponenten in der sogenannten Chen-Notation}
+\label{fig:erm-components}
+\end{figure}
+
+Die Entitäten, die meistens einer Tabelle entsprechen, werden als Rechtecke angegeben. Beziehungen stellen ``Verknüpfungen'' zwischen verschiedenen Tabellen dar und sind meist als Raute dargestellt. Die Attribute werden typischerweise als Kreise angegeben. In \cref{fig:erm-instahub} sind die Attribute einfachheitshalber nicht angegeben.
+
+Die Zahlen über den Strichen bezeichnen die \textbf{Kardinalität} der Beziehungen: Mit der Kardinalität wird ausgedrückt, wie viele Entitäten mit einer anderen Entität in Verbindung stehen können oder müssen. Die Zahlen \texttt{n} und \texttt{m} stehen dabei typischerweise für eine natürliche Zahl grösser als 1. 
+
+Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} abgelesen werden:
+\begin{itemize}
+\item Jeder User kann \texttt{n} comments schreiben.
+\item Jeder User kann \texttt{m} anderen Usern followen und von m Usern gefollowt werden.
+\item Jedes Foto kann \texttt{m} Tags haben. Jeder Tag kann auf \texttt{n} Fotos angewandt werden.
+\item Jedes Fotos gehört genau zu einem Benutzerprofil (\texttt{owns}). Jedes Benutzerprofil kann \texttt{n} Fotos veröffentlichen.
+\item Jedes Passwort-Reset kann genau 0 oder 1 User betreffen. 
+\end{itemize}
+
+
+\begin{aufgabe}{}
+Eine Schule möchte ihre Datenbankstruktur neu organisieren, um Informationen über Lehrer, Schüler und Klassen besser verwalten zu können. Die Schule hat entschieden, ein Entity-Relationship-Modell (ERM) zu entwerfen, um die Beziehungen zwischen diesen Entitäten klar darzustellen (s. \cref{fig:erm-school}).
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+  % Entitäten
+  \node[entity] (lehrer) at (0,0) {Lehrer};
+  \node[entity] (schueler) at (14,0) {Schüler};
+  \node[entity] (klasse) at (7,0) {Klasse};
+
+  % Beziehungen
+  \node[relationship] (unterrichtet) at (3.5,0) {unterrichtet};
+  \node[relationship] (gehoert_zu) at (10.5,0) {gehört zu};
+
+  % Kanten
+  \draw (lehrer) -- (unterrichtet) node[midway,above]{n};
+  \draw (unterrichtet) -- (klasse) node[midway,above]{0:1};
+  \draw (schueler) -- (gehoert_zu) node[midway,above]{1};
+  \draw (gehoert_zu) -- (klasse) node[midway,above]{m};
+
+\end{tikzpicture}
+\caption{\gls{ERM} einer Schul-Datenbank}
+\label{fig:erm-school}
+\end{figure}
+Was fällt Ihnen in diesem ERM auf? Stimmen die Kardinalitäten?
+\begin{myantwort}
+Ein Lehrer kann in diesem \gls{ERM} nur 0 oder 1 Klasse unterrichten. In Realität ergibt es keinen Sinn, dass ein Lehrer keine Klasse unterrichtet, und auch die Beschränkung auf maximal eine Klasse ergibt keinen Sinn. Statt \texttt{0:1} sollte also \texttt{m} stehen zwischen ``unterrichtet'' und ``Klasse''.
+\end{myantwort}
+\end{aufgabe}
+
+\begin{aufgabe}{}
+Ein Krankenhaus möchte seine Datenbankstruktur neu organisieren, um Informationen über Ärzte, Patienten und Behandlungen effizienter zu verwalten. Das Krankenhaus hat sich entschieden, ein Entity-Relationship-Modell (ERM) zu entwerfen, um die Beziehungen zwischen diesen Entitäten klar darzustellen (s. \cref{fig:erm-hospital}).
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+  % Entitäten
+  \node[entity] (aerzte) at (0,0) {Ärzte};
+  \node[entity] (patienten) at (0,-3) {Patienten};
+  \node[entity] (behandlungen) at (7,-1.5) {Behandlungen};
+
+  % Beziehungen
+  \node[relationship] (behandelt) at (2.5,-1.5) {behandelt};
+
+  % Kanten
+  \draw (aerzte) -- (behandelt) node[midway,above]{n};
+  \draw (behandelt) -- (behandlungen) node[midway,above]{m};
+  \draw (patienten) -- (behandelt) node[midway,below]{1};
+
+\end{tikzpicture}
+\caption{ERM eines Krankenhaus-Datenbanksystems}
+\label{fig:erm-hospital}
+\end{figure}
+Bewerten Sie das dargestellte ERM. Sind die Kardinalitäten korrekt angegeben?
+\begin{myantwort}
+In dem dargestellten ERM wird angenommen, dass ein Arzt mehrere Behandlungen durchführen kann (n:m-Beziehung) und dass jeder Patient genau eine Behandlung erhält (1:m-Beziehung). Diese Annahme ist jedoch nicht ganz realistisch, da ein Patient mehrere Behandlungen erhalten könnte. Die Kardinalität zwischen ``Patienten'' und ``behandelt'' sollte daher m sein, um anzugeben, dass ein Patient mehrere Behandlungen erhalten kann.
+\end{myantwort}
+\end{aufgabe}
+
+
+\clearpage
+
+
 \section{Mehrere Tabellen abfragen: SQL}
 Häufig kann es nützlich sein, mehrere Tabellen miteinander zu verbinden, um neue Einsichten in die Daten zu gewinnen. Verschiedene Tabellen-Verbindungen sind schematisch in \cref{fig:venn-joins} abgebildet. Die Bedeutung dieser Abbildungen wird in den folgenden Abschnitten erklärt.
 

@@ -1,0 +1,318 @@
+\begin{frame}[label=title]
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+    \end{figure}
+    Informatik: Data Science und Sicherheit\\
+    \emoji{floppy-disk} \textbf{SQL-Abfragen mit InstaHub}
+\end{frame}
+
+\begin{frame}{Inhalte}
+\begin{itemize}
+\item Einfache Abfragen mit \gls{SQL}
+\item Verwendung von InstaHub
+\item Verzweigungen in SQL
+\item Personalisierte Werbung auf sozialen Netzwerken
+\end{itemize}
+\begin{myachtung}
+Nummerierung von Aufgaben in dieser Präsentation nicht genau gleich wie im Skript.
+\end{myachtung}
+\end{frame}
+
+
+\begin{frame}[fragile]{Einfache Selektion: \lstinline[style=sql]|SELECT|}
+
+\begin{lstlisting}[style=sql]
+-- bestimmte Kolonnen auswählen
+SELECT kolonne1, kolonne2, ...
+FROM users
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+-- alle Kolonnen auswählen
+SELECT *
+FROM users
+\end{lstlisting}
+
+\begin{aufgabe}{}
+\begin{itemize}
+\item Geben Sie alle Benutzernamen (\texttt{username}) aus \texttt{users} aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie alle Benutzernamen (\texttt{username}) und echten Namen (\texttt{name}) aller Einträge aus \texttt{users} aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username, name
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie die Namen und Wohnorte aller Mitglieder aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username, city
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Selektion mit Filter: \lstinline[style=sql]|WHERE|}
+\begin{lstlisting}[style=sql]
+SELECT name, city, gender
+FROM users
+WHERE gender="male"
+\end{lstlisting}
+
+\begin{aufgabe}{}
+\begin{itemize}
+	\item Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
+	\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, gender, centimeters
+FROM users
+WHERE gender="female"
+AND centimeters between 150 and 155
+\end{lstlisting}
+	\end{myantwort}
+\item Zeigen Sie den Namen, das Geburtsdatum sowie die Grösse aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, birthday, centimeters
+FROM users
+WHERE centimeters <= 160
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Eindeutige Selektion: \lstinline[style=sql]|SELECT DISTINCT|}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users
+\end{lstlisting}
+\begin{aufgabe}{}
+\begin{itemize}
+\item Geben Sie jeden Wohnort nur einmal aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie jede Benutzerrolle nur einmal aus. \texttt{dba} bedeutet ``Database Administrator'', also Datenbank-AdministratorIn.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT role
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Ungefähre Matches: \lstinline[style=sql]|LIKE|}
+\begin{aufgabe}{}
+\begin{itemize}
+\item Finden Sie alle Berliner die Marc heissen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE city="Berlin" AND name LIKE "Marc%"
+\end{lstlisting}
+\end{myantwort}
+\item Finden Sie alle Linas und Lorenas.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE name LIKE "Lina%"
+OR name LIKE "Lorena%"
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+\begin{mychallenge}
+Überprüfen Sie, welche Mitglieder im Jahr 2001 geboren sind (mit der Spalte \texttt{birthday}).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, birthday
+FROM users
+WHERE birthday LIKE "2001%"
+\end{lstlisting}
+\end{myantwort}
+\end{mychallenge}
+\begin{myabgabe}
+Wählen Sie alle Naomi aus, die nicht aus Berlin kommen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE name LIKE "Naomi%"
+AND city <> "Berlin"
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Sortieren: \lstinline[style=sql]|ORDER BY|}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users 
+ORDER BY city DESC
+\end{lstlisting}
+\begin{aufgabe}{}
+Geben Sie alle Benutzernamen in sortierter Reihenfolge aus (a $\rightarrow$ z).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username
+FROM users
+ORDER BY username ASC
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregatsfunktionen: \lstinline[style=sql]|COUNT|, \lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|, \lstinline[style=sql]|SUM|, \lstinline[style=sql]|AVG|, \lstinline[style=sql]|LENGTH|}
+
+\begin{lstlisting}[style=sql]
+SELECT COUNT(*)
+FROM users
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+SELECT AVG(centimeters) 
+FROM users 
+WHERE name LIKE "Felix%"
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+...
+\end{lstlisting}
+
+\begin{aufgabe}{}
+Geben Sie die Anzahl registrierten Mitglieder in Berlin aus. Die resultierende Spalte soll ``Registrierte Mitglieder in Berlin'' heissen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT COUNT(*) AS "Registrierte Mitglieder in Berlin" 
+FROM users
+WHERE city="Berlin"
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+\end{frame}
+
+
+\begin{frame}[fragile]{Gruppieren: \lstinline[style=sql]|GROUP BY|}
+
+\begin{lstlisting}[style=sql]
+SELECT city, gender, COUNT(*) 
+FROM users 
+GROUP by city, gender
+\end{lstlisting}
+
+\begin{myabgabe}
+Geben Sie die durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt aus. Zeigen Sie nur die Städte, in denen die Menschen im Durchschnitt zwischen 150 und 155 gross sind.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
+FROM users
+GROUP BY city
+HAVING `Durchschnittliche Körpergrösse` BETWEEN 150 AND 155
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+
+\begin{mychallenge}
+Geben Sie die maximale Körpergrösse aus, gruppiert nach Stadt und Geschlecht, für alle Städte, die mit dem Buchstaben "B" beginnen
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, gender, MAX(centimeters) AS "Grösste Körpergrösse"
+FROM users
+WHERE city LIKE "B%"
+GROUP BY city, gender
+\end{lstlisting}
+\end{myantwort}
+\end{mychallenge}
+\end{frame}
+
+\begin{frame}[fragile]{Erste \textit{n} Zeilen: \lstinline[style=sql]|LIMIT|}
+\begin{aufgabe}{}
+\begin{itemize}
+\item Zeigen Sie nur 3 Mitglieder (nur deren Namen) an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name
+FROM users
+LIMIT 3
+\end{lstlisting}
+\end{myantwort}
+\item Zeigen Sie die Namen und Körpergrösse der 5 grössten Mitglieder an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters
+FROM users
+ORDER BY centimeters DESC
+LIMIT 5
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie die drei Städte mit den meisten Mitgliedern an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, COUNT(*) AS "Anzahl Mitglieder"
+FROM users
+GROUP BY city
+ORDER BY `Anzahl Mitglieder` DESC
+LIMIT 3
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+
+\end{frame}
+
+\begin{frame}[fragile]{Verzweigungen: \lstinline[style=sql]|CASE WHEN|}
+
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters,
+CASE 
+	WHEN centimeters > 179 THEN 'Gross'
+    WHEN centimeters < 179 THEN 'Klein'
+    ELSE 'Genau im Durchschnitt'
+END AS Durchschnittlich
+FROM users
+WHERE gender="male"
+\end{lstlisting}
+
+\begin{myabgabe}
+Berechnen Sie eine neue Kolonne, die den Text ``langer Name'' enthält, falls ein Name länger als 20 Zeichen lang ist, und ansonsten ``kurzer Name''. BenutzerInnen mit langem Namen sollen zuoberst stehen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, LENGTH(name),
+CASE
+	WHEN LENGTH(name)>17 THEN "Langer Name"
+    ELSE "Kurzer Name"
+END AS "Langer oder kurzer Name"
+FROM users
+ORDER BY `Langer oder kurzer Name` DESC
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+
+\end{frame}
+
+\begin{frame}[fragile]{Anwendung: Personifizierte Werbung auf InstaHub}
+Skript
+\begin{itemize}
+\item Lesen Sie Abschnitt 2.2.11
+\item Lösen Sie Aufgabe 2.31
+\item \emoji{trophy} Challenge: Aufgaben 2.32, 2.33
+\end{itemize}
+\end{frame}
+
