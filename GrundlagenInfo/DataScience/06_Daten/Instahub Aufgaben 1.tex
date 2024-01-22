@@ -357,8 +357,26 @@ Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
 \begin{aufgabe}{}
 \begin{itemize}
 \item Geben Sie alle Benutzernamen (\texttt{username}) aus \texttt{users} aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username
+FROM users
+\end{lstlisting}
+\end{myantwort}
 \item Geben Sie alle Benutzernamen (\texttt{username}) und echten Namen (\texttt{name}) aller Einträge aus \texttt{users} aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username, name
+FROM users
+\end{lstlisting}
+\end{myantwort}
 \item Geben Sie die Namen und Wohnorte aller Mitglieder aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username, city
+FROM users
+\end{lstlisting}
+\end{myantwort}
 \end{itemize}
 \end{aufgabe}
 
@@ -406,7 +424,22 @@ WHERE centimeters BETWEEN 172 and 174
 \begin{aufgabe}{}
 \begin{itemize}
 	\item Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
-	\item \textbf{Challenge}: Überprüfen Sie, ob es Mitglieder zwischen 20 und 30 gibt (mit der Spalte \texttt{birthday}).
+	\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, gender, centimeters
+FROM users
+WHERE gender="female"
+AND centimeters between 150 and 155
+\end{lstlisting}
+	\end{myantwort}
+\item Zeigen Sie den Namen, das Geburtsdatum sowie die Grösse aller Frauen an, die kleiner oder gleich 1,60 Meter sind.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, birthday, centimeters
+FROM users
+WHERE centimeters <= 160
+\end{lstlisting}
+\end{myantwort}
 \end{itemize}
 \end{aufgabe}
 
@@ -431,7 +464,19 @@ FROM users
 \begin{aufgabe}{}
 \begin{itemize}
 \item Geben Sie jeden Wohnort nur einmal aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users
+\end{lstlisting}
+\end{myantwort}
 \item Geben Sie jede Benutzerrolle nur einmal aus. \texttt{dba} bedeutet ``Database Administrator'', also Datenbank-AdministratorIn.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT role
+FROM users
+\end{lstlisting}
+\end{myantwort}
 \end{itemize}
 \end{aufgabe}
 
@@ -453,8 +498,8 @@ Das ``\%''-Zeichen dient hier als Platzhalter und bedeutet ``es kann noch weiter
 
 \end{myexample}
 
-\begin{aufgabe}{}
-Geben Sie folgende Befehle in InstaHub ein und beobachten Sie das Resultat:
+\begin{myexample}
+Geben Sie folgende Befehle in InstaHub ein und beobachten Sie die Unterschiede:
 
 \begin{lstlisting}[style=sql]
 SELECT username, city 
@@ -473,15 +518,44 @@ SELECT username, city
 FROM users 
 WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
 \end{lstlisting}
-\end{aufgabe}
+\end{myexample}
 
 \begin{aufgabe}{}
 \begin{itemize}
 \item Finden Sie alle Berliner die Marc heissen.
+\begin{myantwort}
+\begin{tcblisting}{listing only,listing options={style=sql}}
+SELECT name, city
+FROM users
+WHERE city="Berlin" AND name LIKE "Marc%"
+\end{tcblisting}
+\end{myantwort}
 \item Finden Sie alle Linas und Lorenas.
-\item Zeigen Sie das Geburtsdatum und den Benutzernamen aller Frauen an, die kleiner als 1,60 Meter sind.
-\item \emoji{up-arrow} \textcolor{red}{\textbf{Abgabe}}: Wählen Sie alle Felix aus, die nicht aus Berlin kommen.
-\item \textbf{Challenge}: Sortieren Sie alle Männer, welche mindestens 16-jährig sind, nach ihrer Körpergrösse.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE name LIKE "Lina%"
+OR name LIKE "Lorena%"
+\end{lstlisting}
+\end{myantwort}
+\item \emoji{up-arrow} \textcolor{red}{\textbf{Abgabe}}: Wählen Sie alle Naomi aus, die nicht aus Berlin kommen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE name LIKE "Naomi%"
+AND city <> "Berlin"
+\end{lstlisting}
+\end{myantwort}
+\item \textbf{Challenge}: Überprüfen Sie, welche Mitglieder im Jahr 2001 geboren sind (mit der Spalte \texttt{birthday}).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, birthday
+FROM users
+WHERE birthday LIKE "2001%"
+\end{lstlisting}
+\end{myantwort}
 \end{itemize}
 \end{aufgabe}
 
@@ -489,7 +563,7 @@ WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
 
 Mit dem Befehl \lstinline[style=sql]|ORDER BY col ASC| oder \lstinline[style=sql]|ORDER BY col DESC| kann das Resultat einer \gls{SQL} -Abfrage nach einer bestimmten Kolonne \lstinline[style=sql]|col| sortiert werden. Mit \lstinline[style=sql]|ASC| wird das Resultat aufsteigend und mit \lstinline[style=sql]|DESC| absteigend sortiert.
 
-\begin{aufgabe}{}
+\begin{myexample}
 Beobachten Sie das Resultat folgender Abfrage:
 
 \begin{lstlisting}[style=sql]
@@ -497,6 +571,17 @@ SELECT DISTINCT city
 FROM users 
 ORDER BY city DESC
 \end{lstlisting}
+\end{myexample}
+
+\begin{aufgabe}{}
+Geben Sie alle Benutzernamen in sortierter Reihenfolge aus (a $\rightarrow$ z).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username
+FROM users
+ORDER BY username ASC
+\end{lstlisting}
+\end{myantwort}
 \end{aufgabe}
 
 \subsection{Aggregatsfunktionen: \lstinline[style=sql]|COUNT|, \lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|, \lstinline[style=sql]|SUM|, \lstinline[style=sql]|AVG|}
@@ -506,7 +591,7 @@ Mit dem Befehl \lstinline[style=sql]|COUNT| kann man die Anzahl Resultate zähle
 
 \begin{lstlisting}[style=sql]
 SELECT COUNT(*)
-FROM usersw
+FROM users
 \end{lstlisting}
 
 Wir können den berechneten Wert zudem zur besseren Lesbarkeit umbenennen, indem wir den Befehl \lstinline[style=sql]|AS| verwenden:
@@ -517,7 +602,14 @@ FROM users
 \end{lstlisting}
 
 \begin{aufgabe}{}
-Ermitteln Sie mithilfe des obigen Befehls, wie viele Mitglieder Ihr InstaHub hat.
+Geben Sie die Anzahl registrierten Mitglieder in Berlin aus. Die Resultierende Spalte soll ``Registrierte Mitglieder in Berlin'' heissen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT COUNT(*) AS "Registrierte Mitglieder in Berlin" 
+FROM users
+WHERE city="Berlin"
+\end{lstlisting}
+\end{myantwort}
 \end{aufgabe}
 
 \subsubsection{\lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|}
@@ -536,8 +628,19 @@ FROM users
 \begin{aufgabe}{}
 \begin{itemize}
 \item Zeigen Sie, wie gross das kleinste Mitglied ist.
-\item Zeigen Sie, wie alt als das älteste Mitglied ist.
-\item \textbf{Challenge}: Zeigen Sie, wann sich zuletzt ein Mitglied registriert hat.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT MIN(centimeters) AS "Kleinste Körpergrösse"
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\item Zeigen Sie, wann sich zuletzt ein Mitglied registriert hat.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT max(created_at) AS "Zuletzt Registriert"
+FROM users
+\end{lstlisting}
+\end{myantwort}
 \end{itemize}
 \end{aufgabe}
 
@@ -593,9 +696,17 @@ GROUP by city, gender
 \end{lstlisting}
 \end{myexample}
 
+
 \begin{aufgabe}{a1}
 \begin{itemize}
-\item \emoji{up-arrow} \textcolor{red}{\textbf{Abgabe}}: Geben Sie das grösste Mitglied in jeder Stadt aus
+\item \emoji{up-arrow} \textcolor{red}{\textbf{Abgabe}}: Geben Sie die durchschnittliche Körpergrésse aller Mitglieder in jeder Stadt aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
+FROM users
+GROUP BY city
+\end{lstlisting}
+\end{myantwort}
 \item \textbf{Challenge}: Geben Sie die maximale Körpergrösse aus, gruppiert nach Stadt und Geschlecht.
 \end{itemize}
 
@@ -613,18 +724,44 @@ Beobachten Sie das Resultat folgender Abfrage:
 
 \begin{aufgabe}{}
 \begin{itemize}
-\item Zeigen Sie nur 3 Mitglieder an.
-\item Zeigen Sie nur die 5 grössten Mitglieder an.
-\item Geben Sie die drei Städte mit den meisten Mitgliedern an.
-\item \textcolor{red}{\textbf{Abgabe}} Geben Sie die Stadtnamen aus, wo die meisten Mitglieder mit einem ``a'' im Namen wohnen (nur die ersten drei Zeilen).
+\item Zeigen Sie nur 3 Mitglieder (nur deren Namen) an.
+\begin{myantwort}
 \begin{lstlisting}[style=sql]
-SELECT city, COUNT(*) 
+SELECT name
+FROM users
+LIMIT 3
+\end{lstlisting}
+\end{myantwort}
+\item Zeigen Sie die Namen und Körpergrösse der 5 grössten Mitglieder an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters
+FROM users
+ORDER BY centimeters DESC
+LIMIT 5
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie die drei Städte mit den meisten Mitgliedern an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, COUNT(*) AS "Anzahl Mitglieder"
+FROM users
+GROUP BY city
+ORDER BY `Anzahl Mitglieder` DESC
+LIMIT 3
+\end{lstlisting}
+\end{myantwort}
+\item \textcolor{red}{\textbf{Abgabe}} Geben Sie die Stadtnamen aus, wo die meisten Mitglieder mit einem ``b'' im Namen wohnen (nur die ersten drei Zeilen).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, COUNT(*) AS "Mitglieder"
 FROM users 
-WHERE name LIKE "%a%" 
+WHERE name LIKE "%b%" 
 GROUP by city 
-ORDER BY COUNT(*) 
+ORDER BY Mitglieder
 DESC LIMIT 3
 \end{lstlisting}
+\end{myantwort}
 \end{itemize}
 \end{aufgabe}
 
@@ -645,9 +782,68 @@ Lösen Sie folgende Abschnitte:
 \section{Daten bearbeiten mit \gls{SQL}}
 Mit SQL kann man Daten nicht nur abfragen, sondern auch erstellen, verändern und löschen. Im folgenden Schauen wir uns dafür nötigen Befehle an.
 
-\subsection{Daten einfügen: \lstinline[style=sql]|INSERT INTO|}
+\subsection{Eine neue Tabelle erstellen: \lstinline[style=sql]|CREATE TABLE|}
+Eine neue Tabelle kann innerhalb einer Datenbank mit dem Befehl \lstinline[style=sql]|CREATE TABLE| angelegt werden:
 
-Mit \lstinline[style=sql]|INSERT INTO| können neue Zeilen in eine bestehende Tabelle eingefügt werden.
+\begin{lstlisting}[style=sql]
+CREATE TABLE tabellenname(
+  kolonne1 eigenschaften1,
+  kolonne2 eigenschaften2,
+  ...
+);
+\end{lstlisting}
+
+Die Tabelle \texttt{users} wurde beispielsweise mit folgendem Befehl erstellt:
+
+\begin{lstlisting}[style=sql]
+CREATE TABLE `users` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `username` varchar(191) NOT NULL UNIQUE,
+  `email` varchar(191)NOT NULL UNIQUE,
+  `password` varchar(191) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `bio` varchar(191) DEFAULT NULL,
+  `gender` enum('male','female') DEFAULT NULL,
+  `birthday` datetime DEFAULT NULL,
+  `city` varchar(191) DEFAULT NULL,
+  `country` varchar(191) DEFAULT NULL,
+  `centimeters` int(11) DEFAULT NULL,
+  `avatar` varchar(191) NOT NULL DEFAULT 'avatar.png',
+  `role` enum('user','dba','teacher','admin') NOT NULL DEFAULT 'user',
+  `is_active` tinyint(1) NOT NULL DEFAULT 0,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+);
+\end{lstlisting}
+
+Nach dem Kolonnennamen folgt zuerst der \textbf{Kolonnentyp}, d.h., die Angabe, welche Art von Daten in der Kolonne gespeichert werden. Einige der häufigsten Datentypen sind:
+\begin{itemize}
+\item \lstinline[style=sql]|INT(laenge)| bezeichnet eine Ganzzahl, für die \texttt{laenge} bytes zur Verfügung stehen. Beispielsweise speichert die Kolonne \texttt{centimeters} eine Zahl von 0 bis $2^{11}$, d.h. 2048.
+\item \lstinline[style=sql]|TINYINT(1)| speichert den Wert 0 oder 1, wobei 0 typischerweise ``falsch'' und 1 ``wahr'' bedeuten.
+\item \lstinline[style=sql]|DATETIME| ist ein Datum mit einer Uhrzeit
+\item \lstinline[style=sql]|VARCHAR(laenge)| bezeichnet eine Zeichenkette, d.h. ein Text, der mit maximal \texttt{laenge} vielen Bit kodiert wird.
+\item \lstinline[style=sql]|ENUM('wert1', 'wert2',...)| bezeichnet eine Auflistung (engl. \textit{enumeration}) möglicher Werte. Beispielsweise können nur ``male'' und ``female'' im Feld \texttt{gender} eingetragen werden.
+\end{itemize}
+
+Zudem können folgende Eingeschaften für Kolonnen angegeben werden:
+\begin{itemize}
+	\item \lstinline[style=sql]|NOT NULL|: Feld darf nicht leer sein.
+	\item \lstinline[style=sql]|AUTO_INCREMENT|: Zahl, die bei jedem neuen Eintrag automatisch immer um 1 grösser wird
+	\item \lstinline[style=sql]|PRIMARY KEY|: Schlüsselattribut (s. \cref{table:table-cia}).
+	\item \lstinline[style=sql]|UNIQUE|: Darf keine doppelten Werte enthalten
+\end{itemize}
+
+\subsection{Daten einfügen: \lstinline[style=sql]|INSERT|}
+
+Mit \lstinline[style=sql]|INSERT| können neue Zeilen in eine bestehende Tabelle eingefügt werden.
+
+Die Syntax von \lstinline[style=sql]|INSERT| sieht wie folgt aus:
+
+\begin{lstlisting}[style=sql]
+INSERT INTO tabelle_name (kolonne1, kolonne2, kolonne3, ...)
+VALUES (wert1, wert2, wert3, ...);
+\end{lstlisting}
 
 \begin{myexample}
 Folgender Code fügt eine neue Person in die Tabelle \texttt{users} ein:
@@ -658,8 +854,42 @@ VALUES ('guenther37', 'guenther@instahub.test', '12345', 'Günther Müller', 'G�
 Wie Sie sehen, wird zuerst die Tabelle (\texttt{users}) aufgelistet, danach die Kolonnen und schliesslich die Werte.
 \end{myexample}
 
+\begin{aufgabe}{}
+Erstellen Sie einen neuen Eintrag für eine Person mit folgenden Eigenschaften:... 
+\end{aufgabe}
 
 \subsection{Daten verändern: \lstinline[style=sql]|UPDATE|}
+
+Mit \lstinline[style=sql]|UPDATE| können Werte einer Tabelle aktualisiert werden. Die Syntax von \lstinline[style=sql]|UPDATE| sieht wie folgt aus:
+
+\begin{lstlisting}[style=sql]
+UPDATE tabelle_name
+SET kolonne1 = wert1, kolonne2=wert2, ...
+WHERE bedingung(en);
+\end{lstlisting}
+
+\begin{aufgabe}{aufgabe:evalPoly}
+\begin{itemize}
+\item Ersetzen Sie die Stadt ``Berlin'' überall durch ``Bern''
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+UPDATE users
+SET city="Bern"
+WHERE city="Berlin"
+\end{lstlisting}
+\end{myantwort}
+\item \textcolor{red}{\textbf{Abgabe}}: Setzen Sie die Körpergrössen aller männlichen Mitglieder auf 190.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+UPDATE users 
+SET centimeters=190 
+WHERE gender="male"
+\end{lstlisting}
+\end{myantwort}
+
+\end{itemize}
+\end{aufgabe}
+
 ...
 \subsection{Daten löschen: \lstinline[style=sql]|DROP|}
 ...
@@ -708,3 +938,5 @@ Wie Sie sehen, wird zuerst die Tabelle (\texttt{users}) aufgelistet, danach die 
 	\item \textcolor{RoyalBlue}{AdministratorIn} und \textcolor{ForestGreen}{BenutzerIn}: Posten Sie nun falls Sie möchten Bilder in den sozialen Netzwerken Ihrer Kollegen, vergeben Sie Likes, folgen Sie anderen und kommentieren Sie fleissig in den anderen Netzwerken (max. 5 Minuten).
 \end{itemize}
 \end{aufgabe}
+
+\shipoutAnswer
