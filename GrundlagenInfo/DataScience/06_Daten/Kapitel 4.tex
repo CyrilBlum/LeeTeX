@@ -1,0 +1,235 @@
+\section{Daten bearbeiten mit \gls{SQL}}
+Mit SQL kann man Daten nicht nur abfragen, sondern auch erstellen, verändern und löschen. Im folgenden Schauen wir uns dafür nötigen Befehle an.
+
+\subsection{Eine neue Tabelle erstellen: \lstinline[style=sql]|CREATE table|}
+\label{subsec:create-table}
+Eine neue Tabelle kann innerhalb einer Datenbank mit dem Befehl \lstinline[style=sql]|CREATE TABLE| angelegt werden:
+
+\begin{lstlisting}[style=sql]
+CREATE TABLE tabellenname(
+  kolonne1 eigenschaften1,
+  kolonne2 eigenschaften2,
+  ...
+)
+\end{lstlisting}
+
+\begin{myexample}
+\label{ex:sql-create}
+Die Tabelle \texttt{users} wurde mit folgendem Befehl erstellt:
+
+\begin{lstlisting}[style=sql]
+CREATE TABLE users (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `username` varchar(191) NOT NULL UNIQUE,
+  `email` varchar(191) NOT NULL UNIQUE,
+  `password` varchar(191) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `bio` varchar(191) DEFAULT NULL,
+  `gender` enum('male','female') DEFAULT NULL,
+  `birthday` datetime DEFAULT NULL,
+  `city` varchar(191) DEFAULT NULL,
+  `country` varchar(191) DEFAULT NULL,
+  `centimeters` int(11) DEFAULT NULL,
+  `avatar` varchar(191) NOT NULL DEFAULT 'avatar.png',
+  `role` enum('user','dba','teacher','admin') NOT NULL DEFAULT 'user',
+  `is_active` tinyint(1) NOT NULL DEFAULT 0,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+)
+\end{lstlisting}
+\end{myexample}
+
+Nach dem Kolonnennamen folgt zuerst der \textbf{Kolonnentyp}, d.h., die Angabe, welche Art von Daten in der Kolonne gespeichert werden. Einige der häufigsten Datentypen sind:
+\begin{itemize}
+\item \lstinline[style=sql]|INT(laenge)| bezeichnet eine Ganzzahl, für die \texttt{laenge} bytes zur Verfügung stehen. Beispielsweise speichert die Kolonne \texttt{centimeters} eine Zahl von 0 bis $2^{11}$, d.h. 2048.
+\item \lstinline[style=sql]|TINYINT(1)| speichert den Wert 0 oder 1, wobei 0 typischerweise ``falsch'' und 1 ``wahr'' bedeuten.
+\item \lstinline[style=sql]|DATETIME| ist ein Datum mit einer Uhrzeit
+\item \lstinline[style=sql]|VARCHAR(laenge)| bezeichnet eine Zeichenkette, d.h. ein Text, der mit maximal \texttt{laenge} vielen Bit kodiert wird.
+\item \lstinline[style=sql]|ENUM('wert1', 'wert2',...)| bezeichnet eine Auflistung (engl. \textit{enumeration}) möglicher Werte. Beispielsweise können nur ``male'' und ``female'' im Feld \texttt{gender} eingetragen werden.
+\end{itemize}
+
+Zudem können folgende Eingeschaften für Kolonnen angegeben werden:
+\begin{itemize}
+	\item \lstinline[style=sql]|DEFAULT [wert]|: Standard-Wert, falls nichts anderes angegeben wird. Das Benutzerbild (\texttt{avatar}) ist beispielsweise \texttt{avatar.png}, falls kein anderes Bild hochgeladen wird.
+	\item \lstinline[style=sql]|NOT NULL|: Feld darf nicht leer sein. Falls kein \lstinline[style=sql]|DEFAULT|-Wert angegeben wird, muss, der Wert für diese Kolonne beim Erstellen eines neuen Benutzerkontos immer mitgeliefert werden.
+	\item \lstinline[style=sql]|AUTO_INCREMENT|: Zahl, die bei jedem neuen Eintrag automatisch immer um 1 grösser wird
+	\item \lstinline[style=sql]|PRIMARY KEY|: Schlüsselattribut (s. \cref{table:table-cia}).
+	\item \lstinline[style=sql]|UNIQUE|: Darf keine doppelten Werte enthalten
+\end{itemize}
+
+\subsection{Tabellen löschen: \lstinline[style=sql]|DROP table|}
+Mit dem Befehl \lstinline[style=sql]|DROP TABLE tabellenname| kann eine Tabelle komplett löschen. 
+
+\begin{myachtung}
+Dieser Schritt ist irreversibel. Falls Sie eine Tabelle irrtümlich löschen, geben Sie mir Bescheid, damit ich Ihre Datenbank zurücksetzen kann.
+\end{myachtung}
+
+\begin{aufgabe}{aufg:sql-insert}
+\begin{itemize}
+\item Erstellen Sie eine Tabelle \texttt{users2} mit denselben Eigenschaften wie \texttt{users} (s. Beispiel \ref{ex:sql-create})
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+CREATE TABLE users2 (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `username` varchar(191) NOT NULL UNIQUE,
+  `email` varchar(191) NOT NULL UNIQUE,
+  `password` varchar(191) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `bio` varchar(191) DEFAULT NULL,
+  `gender` enum('male','female') DEFAULT NULL,
+  `birthday` datetime DEFAULT NULL,
+  `city` varchar(191) DEFAULT NULL,
+  `country` varchar(191) DEFAULT NULL,
+  `centimeters` int(11) DEFAULT NULL,
+  `avatar` varchar(191) NOT NULL DEFAULT 'avatar.png',
+  `role` enum('user','dba','teacher','admin') NOT NULL DEFAULT 'user',
+  `is_active` tinyint(1) NOT NULL DEFAULT 0,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+)
+\end{lstlisting}
+\end{myantwort}
+\item Löschen Sie danach die Tabelle \texttt{users2} wieder.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+DROP TABLE users2
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+
+
+\subsection{Daten einfügen: \lstinline[style=sql]|INSERT|}
+
+Mit \lstinline[style=sql]|INSERT| können neue Zeilen in eine bestehende Tabelle eingefügt werden.
+
+Die Syntax von \lstinline[style=sql]|INSERT| sieht wie folgt aus:
+
+\begin{lstlisting}[style=sql]
+INSERT INTO tabelle_name (kolonne1, kolonne2, kolonne3, ...)
+VALUES (wert1, wert2, wert3, ...)
+\end{lstlisting}
+
+\begin{myexample}\label{ex:sql-insert}
+Folgender Code fügt eine neue Person in die Tabelle \texttt{users} ein:
+\begin{lstlisting}[style=sql]
+INSERT INTO users (username, email, password, name, bio, gender, birthday, city, country, centimeters, avatar, role, is_active, remember_token, created_at, updated_at) 
+VALUES ('guenther37', 'guenther@instahub.test', '12345', 'Günther Müller', 'Günther mag Kartoffelsalat.', 'male', '2006-06-06 00:00:00', 'Leipzig', 'Deutschland', '173', 'avatar.png', 'user', '0', NULL, now(), now())
+\end{lstlisting}
+Wie Sie sehen, wird zuerst die Tabelle (\texttt{users}) aufgelistet, danach die Kolonnen und schliesslich die Werte.
+\end{myexample}
+
+\begin{aufgabe}{aufg:sql-insert}
+\begin{itemize}
+\item Für welche Kolonnen müssen für einen neuen Benutzer immer die Werte mitgegeben werden? S. die Erklärungen zu \lstinline[style=sql]|NOT NULL| und \lstinline[style=sql]|DEFAULT| in \cref{subsec:create-table}.
+\begin{myantwort}
+\begin{verbatim}
+username, email, password, name, role, is_active
+\end{verbatim}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+\begin{myabgabe}
+Erstellen Sie einen neuen Eintrag in der Tabelle \texttt{users} mit folgenden Eigenschaften:
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+\textbf{Kolonne} & \textbf{Wert} \\\midrule
+\texttt{username} & \texttt{testuser}\\
+\texttt{email} & \texttt{test@test.com} \\
+\texttt{passwort}& \texttt{test123}\\
+\texttt{name}& \texttt{Test-Vorname Test-Nachname}\\
+\texttt{role} & \texttt{user}\\
+\texttt{is\_active} & \texttt{1}\\
+\end{tabular}
+\end{table}
+Überprüfen Sie danach, ob der Eintrag korrekt erstellt worden ist, indem Sie  \lstinline[style=sql]|SELECT * FROM users| ausführen.
+Ihr(e) Tisch-Nachbar(in) soll nun versuchen, sich mit diesen Angaben auf Ihrer InstaHub-Seite einzuloggen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+INSERT INTO users (username, email, password, name, role, is_active) 
+VALUES ('testuser', 'test@test.com', 'test123', 'Test-Vorname Test-Nachname', 'user', '1')
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+
+\subsection{Daten verändern: \lstinline[style=sql]|UPDATE|}
+
+Mit \lstinline[style=sql]|UPDATE| können Werte einer Tabelle aktualisiert werden. Die Syntax von \lstinline[style=sql]|UPDATE| sieht wie folgt aus:
+
+\begin{lstlisting}[style=sql]
+UPDATE tabelle_name
+SET kolonne1 = wert1, kolonne2=wert2, ...
+WHERE bedingung(en)
+\end{lstlisting}
+
+\begin{aufgabe}{aufgabe:evalPoly}
+
+Ersetzen Sie die Stadt ``Berlin'' überall durch ``Bern''
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+UPDATE users
+SET city="Bern"
+WHERE city="Berlin"
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+
+\begin{myabgabe}
+ Setzen Sie die Körpergrössen aller männlichen Mitglieder auf 190.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+UPDATE users 
+SET centimeters=190 
+WHERE gender="male"
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+
+\subsection{Einträge löschen: \lstinline[style=sql]|DELETE FROM|}
+Mit dem Befehl \lstinline[style=sql]|DELETE FROM| können Einträge aus einer Tabelle gelöscht werden.
+\begin{lstlisting}[style=sql]
+DELETE FROM tabellenname
+WHERE bedingungen
+\end{lstlisting}
+
+\begin{myexample}
+Folgender Code löscht den Eintrag für user \texttt{guenther37}:
+\begin{lstlisting}[style=sql]
+DELETE FROM users
+WHERE username="guenther37"
+\end{lstlisting}
+\end{myexample}
+
+\begin{aufgabe}{}
+Löschen Sie den Eintrag, den Sie in \cref{aufg:sql-insert} erstellt haben. Überprüfen Sie, ob der Eintrag verschwunden ist, indem Sie danach \lstinline[style=sql]|SELECT * FROM users| ausführen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+DELETE FROM users
+WHERE username="testuser"
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+
+\section{Gemeinsam ein soziales Netzwerk verwalten}
+
+\begin{aufgabe}[Gemeinsam ein soziales Netzwerk verwalten (optional)]{}
+\begin{table}[H]
+\centering
+\begin{tabular}{r|l}
+ \emoji{chequered-flag} & Gemeinsam ein soziales Netzwerk verwalten \\\hline
+ \emoji{family-man-woman-girl-boy} & 3er- bis 4er-Gruppen \\\hline
+ \emoji{stopwatch} & ca. 25 min.
+\end{tabular}
+\end{table}
+
+(Optional) Um sich ein Konto auf einer Seite einer anderen Person zu erstellen:
+\begin{itemize}
+	\item Bestimmen Sie jemanden als \textcolor{RoyalBlue}{AdministratorIn} und verwenden Sie nur die Webseite dieser Person, also z.B. \url{https://purpurrot21.instahub.org}. Die anderen Personen sind  \textcolor{ForestGreen}{BenutzerInnen}.
+	\item \textcolor{ForestGreen}{BenutzerInnen}: Gehen Sie auf die von der Administratorin erstellte Webseite (\url{https://namedesnetzwerks.instahub.org}, wobei ``\texttt{namedesnetzwerks}'' ersetzt werden muss) und erstellen Sie ein neues Konto für sich.
+	\item \textcolor{RoyalBlue}{AdministratorIn}: Die neuen Accounts der \textcolor{ForestGreen}{BenutzerInnen} muss dann von Ihnen als \textcolor{RoyalBlue}{AdministratorIn} aktiviert werden, indem Sie den User suchen, auf ``Bearbeiten'' und dann ganz unten auf ``Account ist freigeschaltet'' klicken. 
+	\item \textcolor{RoyalBlue}{AdministratorIn} und \textcolor{ForestGreen}{BenutzerIn}: Posten Sie nun falls Sie möchten Bilder in den sozialen Netzwerken Ihrer Kollegen, vergeben Sie Likes, folgen Sie anderen und kommentieren Sie fleissig in den anderen Netzwerken (max. 5 Minuten).
+\end{itemize}
+\end{aufgabe}

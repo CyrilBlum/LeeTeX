@@ -1,0 +1,319 @@
+\chapter{Daten \& SQL}\label{ch:Lektion}
+\section{Einführung}
+
+\subsection{Was sind Daten?}
+
+Der Begriff ``Daten'' ist der Plural von \textit{Datum} und kommt aus dem Latenischen \textit{datum} = gegeben, bzw, \textit{dare} = geben). ``Daten'' bedeuten also weitesten Sinne etwas ``\textbf{Gegebenes}'', bzw. ein Faktum. Dies wiederum wirft die philosophische Frage auf, was ein Faktum ist. Beispiele von Fakten sind:
+\begin{itemize}
+	\item ``Mein Nachbar heisst Marco Odermatt.''
+	\item ``Aktuell findet an der KLW Unterricht statt.''
+	\item ``Das Billett von Zürich nach Winterthur kostet CHF 6.80.''
+	\item ``Das Logo der KLW besteht aus blauen und roten Farben.''
+	\item ...
+\end{itemize}
+Anhand des letzten Beispiel sieht man, dass Fakten nicht unbedingt wahr sein müssen, um als Fakten zu gelten.
+
+In der \textbf{Informatik} sind Daten so gut wie immer durch Nullen und Einsen repräsentiert. Also zum Beispiel:
+\begin{itemize}
+	\item \ldots\verb|10100010101111011101001001|\ldots
+	\item \ldots\verb|11101110110000111011010111|\ldots
+	\item \ldots
+\end{itemize}
+Die Nullen und Einsen können beliebige Informationen darstellen, also beispielsweise Bilder, Texte, Videos oder Zahlen.
+
+\subsection{Datenmengen}
+Seit etwa einem guten halben Jahrhundert nehmen die Datenmengen stets zu. \cref{table:groessenordnungen} zeigt die gängigen Grössenordnungen von Datenmengen auf.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}l|rr|l@{}}
+\toprule
+\textbf{Masseinheit} & \multicolumn{2}{l|}{\textbf{Dezimalsystem}}  & Grössenordnung                           \\ \midrule
+KB (Kilobyte)        & $10^3$ B(yte)       & 1’000 B                & Eine Text-Datei                          \\
+MB (Megabyte)        & $10^6$ B       & 1’000’000 B                 & Eine Musik-Datei                         \\
+GB (Gigabyte)        & $10^9$ B       & 1'000'000'000 B             & Eine Video-Datei                         \\
+TB (Terabyte)        & $10^{12}$ B      & 1'000'000'000'000 B       & Kleiner Firmen-Server			           \\
+PB (Petabyte)        & $10^{15}$ B      & ...      					& Facebook-Server                          \\
+EB (Exabyte)         & $10^{18}$ B      & ...                       & Alle CERN-Daten                          \\
+ZB (Zettabyte)       & $10^{21}$ B      & ...                       & Alle Daten ($\sim$ 100 ZB)               \\
+YB (Yottabyte)       & $10^{24}$ B      & ...                       & $\sim$ 2030?                             \\ \bottomrule
+\end{tabular}
+\caption{Gängige Daten-Grössenordnungen in der Informatik (ein \textbf{B}yte = 8 \textbf{b}it)}
+\label{table:groessenordnungen}
+\end{table}
+
+Die gesamten weltweis vorhandenen Daten machen aktuell ca. 100 Zettabyte aus. Es wird erwartet, dass das erste Yottabyte gegen 2030 erreicht wird (s. \cref{fig:daten-global}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/06_Daten/Figures/total_data}
+\caption{Entwicklung der globalen Datenmenge}
+\label{fig:daten-global}
+\end{figure}
+
+Dies hat zur Folge, dass Datenzentren immer grösser und deren Energie-intensiver werden, wie folgendes Video zeigt: \url{https://youtu.be/_r97qdyQtIk?t=2m14s}
+
+\subsection{Tabellen}
+Der allergrösste Teil der oben erwähnten Daten befindet sich in sogenannten Datenbanken. Datenbanken bestehen im Wesentlichen aus Tabellen, weshalb wir im Folgenden zunächst anschauen, wie eine Tabelle aufgebaut ist. Eine Beispiel einer Tabelle ist gegeben in \cref{table:cia-values}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Name} & \textbf{Region} & \textbf{Fläche} & \textbf{Einwohner} & \textbf{BIP} \\
+    \midrule
+    Afghanistan & Asien & 652 & 25.8M & 21.0B \\
+    Albanien & Europa & 28.7 & 3.49M & 5.6B \\
+    Algerien & Afrika & 2,381.7 & 31.2M & 147.6B \\
+    Amerikanische... & Ozeanien & 0.199 & 65.4K & 0.15B \\
+    Andorra & Europa & 0.468 & 66.8K & 1.2B \\
+    Angola & Afrika & 1,246.7 & 10.1M & 11.6B \\
+    Anguilla & Mittelamerika & 0.091 & 11.8K & 0.088B \\
+    Antarktik & Antarktis & 14M & 0 & 0 \\
+    Antigua und... & Mittelamerika & 0.442 & 66.4K & 0.524B \\
+    Argentinien & Südamerika & 2,766.9 & 36.9M & 367B \\
+    \midrule
+    ... & ... & ... & ... & ... \\
+    \bottomrule
+  \end{tabular}
+  \caption{Länder-Tabelle}
+  \label{table:cia-values}
+\end{table}
+
+Eine Tabelle besteht aus Zeilen und Spalten, wie in \cref{table:table-cia} gezeigt.
+
+
+\begin{table}[H]
+  \centering
+  \tiny
+  \begin{tikzpicture}
+    % Define style for cell
+    \tikzstyle{cell} = [draw, rectangle, minimum width=1.6cm, minimum height=.6cm, fill=gray!10, rounded corners]
+    \tikzstyle{cellcdot} = [draw, rectangle, minimum width=1.6cm, minimum height=.6cm, fill=gray!0, rounded corners]
+  
+    % Draw the table
+    \foreach \row in {1,...,6} {
+      \foreach \col/\ctitle in {1/\underline{Name},2/Region,3/Fläche,4/Einwohner,5/BIP} {
+        \node(\col\row)[cell] at (\col*2, -\row) {
+        \ifnum\row=1 
+        	\scriptsize\textbf{\ctitle}\normalsize
+        \else 
+        	$\cdots$ 
+        \fi
+        };
+      }
+    }
+    \draw[black, thick] (1,-1.5) -- (11,-1.5);
+    
+    \draw [red,ultra thick,rounded corners]
+      (3,-.5) rectangle (5,-6.5);
+  
+    \draw [blue,ultra thick,rounded corners]
+      (1,-2.5) rectangle (11,-3.5);
+      
+    \node[above] at (4,-0.5){\textcolor{red}{Spalte \tiny(=Kolonne, Attribut)\normalsize}};
+    \node[left] at (1,-3){\textcolor{blue}{Zeile}};
+    
+    \node(label) at (2,.5) {\small Schlüsselattribut \tiny(eindeutig!)};
+    \path[->] (1.5,-1) edge[bend left] node [left] {} (label); 
+  \end{tikzpicture}
+  \caption{Typische Tabellenstruktur Anhand einer Tabelle mit Informationen zu Ländern}
+  \label{table:table-cia}
+\end{table}
+In \cref{table:table-cia} enthält jede \textcolor{blue}{Zeile} Informationen zu einem Land: dessen Name, die Region (=Kontinent), Fläche, die Einwohner und das Bruttoinlandprodukt (BIP). Jede \textcolor{red}{Spalte} enthält Informationen eines selben Typs, beispielsweise die Regionen aller Länder, die Fläche oder die Einwohner. In einer Spalte sollten also alle Werte denselben Typ haben, beispielsweise ``Zahl'' (Einwohner, BIP, Fläche) oder ``Text'' (Name, Region). Nicht zuletzt gibt es in gewissen Tabellen (genau) ein Schlüsselattribut, dessen Werte eindeutig sein sollte. Dies heisst in \cref{table:table-cia} beispielsweise, dass kein Ländername zweimal vorkommen darf. Weshalb dies so ist, werden wir später sehen.
+
+Eine Datenbank ist vereinfacht gesagt eine Sammlung aus mehreren Tabellen, auf die mehrere Geräte zugreifen können (lesen und schreiben), wie in \cref{fig:db-schema} gezeigt.
+
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\tikzstyle{c} = [draw, shape=circle, draw=black!20, fill=black!10]
+\Large
+%\draw[step=1cm,gray,very thin] (-4,-4) grid (4,4);
+\node [circle, draw=black!20, fill=black!10, minimum size=.5cm](db) at (0,0) {\faTable};
+\node [c](l1) at (-3,0) {\emoji{laptop}};
+\node [c](l2) at (-2,-2) {\emoji{desktop-computer}};
+\node [c](l3) at (0,-3) {\emoji{laptop}};
+\node [c](l4) at (2,2) {\emoji{desktop-computer}};
+\node [c](l5) at (0,3) {\emoji{laptop}};
+\node [c](l6) at (3,0) {...};
+\node [c](mp1) at (2,-2) {\emoji{mobile-phone}};
+\node [c](mp2) at (-2,2) {\emoji{mobile-phone}};
+
+
+\foreach \nodeN in {l1,l2,l3,l4,l5,l6,mp1,mp2}{
+	\path[->, red] (db) edge[bend right=10] node [left] {} (\nodeN);
+	\path[->, blue] (\nodeN) edge[bend right=10] node [left] {} (db);
+}
+
+\end{tikzpicture}
+\caption{Geräte können Daten zu Datenbank	 \textcolor{blue}{senden} / \textcolor{red}{empfangen}}
+\label{fig:db-schema}
+\end{figure}
+
+Datenbanken und Tabellen befinden sich in allen möglichen Bereichen des täglichen Lebens:
+\begin{itemize}
+	\item \textbf{Social Media}: Instagram, TikTok, LinkedIn, etc.
+	\item \textbf{Shopping}: Galaxus, AliExpress, etc.
+	\item \textbf{Netzwerke}: SBB, swissgrid (Strom-Netzwerk), etc.
+\end{itemize}
+
+Wie können wir mit den riesigen Datenmengen umgehen und sinnvolle Einsichten daraus gewinnen?
+
+Eine der verbreitetsten Arten, Tabellen und Datenbanken zu erstellen, zu verändern und zu analysieren ist die Programmiersprache \gls{SQL} . Im Folgenden verwenden wir die Datenbanken aus der Lern-Plattform InstaHub, um uns mit \gls{SQL}  vertraut zu machen.
+
+Alle Beispiele können direkt auf InstaHub ausgeführt werden. Die \textcolor{Plum}{\textbf{Abgaben}} sind rot markiert und befinden sich auf Moodle unter ``Quiz \gls{SQL} ''.
+
+\section{\acrshort{ERM}}
+
+
+Ein \acrfull{ERM} ist eine abstrakte Darstellung der Tabellen (Entities), die in einer Datenbank angelegt sind, sowie der Beziehungen (Relationships) zwischen den Tabellen. Jede Tabelle kann mehrere Kolonnen (=Attribute) haben. 
+
+Wenn man eine Datenbank erstellt, kann es nützlich sein, zuerst ein \gls{ERM} aufzuzeichnen, um sich zu überlegen, welche Tabellen es braucht.
+
+Das \gls{ERM} des sozialen Netzwerks InstaHub ist in \cref{fig:erm-instahub} abgebildet.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[auto]
+  % Nodes
+  \node[entity] (user) at (0,0) {users};
+  \node[relationship] (follows) at (-4,0) {follows};
+  \node[relationship] (owns) at (2.5,2.5) {owns};
+  \node[entity] (photo) at (5,0) {photos};
+  \node[relationship] (has) at (7,0) {has};ff
+  \node[entity] (tag) at (9,0) {tags};
+  \node[relationship] (comments) at (2.5,0) {comments};
+  \node[relationship] (likes) at (2.5,-2.5) {likes};
+  \node[relationship] (haspw) at (0,-2) {has};
+  \node[entity] (pwreset) at (-4,-2) {password\_resets};
+  
+  % Edges
+  \draw (user) -- (follows) node[midway, above] {m};
+  \draw (follows) -- (user) node[midway, below] {n};
+  \draw (user) -- (owns) node[midway, above] {1};
+  \draw (owns) -- (photo) node[midway, above] {n};
+  \draw (photo) -- (has) node[midway, above] {n};
+  \draw (has) -- (tag) node[midway, above] {m};
+  \draw (user) -- (comments) node[midway, above] {n};
+  \draw (comments) -- (photo) node[midway, above] {m};
+  \draw (user) -- (likes) node[midway, left] {n};
+  \draw (likes) -- (photo) node[midway, right] {m};
+  \draw (user) -- (haspw) node[midway, left] {1};
+  \draw (haspw) -- (pwreset) node[midway, above] {0:1};
+\end{tikzpicture}
+\caption{\gls{ERM} von InstaHub}
+\label{fig:erm-instahub}
+\end{figure}
+
+\cref{fig:erm-components} zeigt die Darstellung der Komponenten eines ERM in der sogenannten Chen-Notation.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1cm]
+
+  % Entity
+  \node[entity] (entity1) {Entity};
+  \node[attribute] (attr1) [above left=of entity1] {Attribute} edge (entity1);
+  \node[attribute] (attr2) [below left=of entity1] {Attribute} edge (entity1);
+
+  % Relationship
+  \node[relationship] (rel1) [right=3cm of entity1] {Relationship} edge node[auto,swap] {n} (entity1);
+  \node[entity] (entity2) [right=3cm of rel1] {Entity} edge node[auto,swap] {m} (rel1);
+  \node[attribute] (attr3) [above=of rel1] {Attribute} edge (rel1);
+
+  % Legend
+  \node[draw,thick,fit=(entity1) (attr1) (attr2),inner sep=0.5cm, rounded corners, dotted, red] (box1) {};
+  \node[anchor=south, red] at (box1.north) {Entities and Attributes};
+
+  \node[draw,thick,fit=(rel1) (entity2) (attr3),inner sep=0.5cm, rounded corners, dotted, blue] (box2) {};
+  \node[anchor=south, blue] at (box2.north) {Relationships};
+
+\end{tikzpicture}
+\caption{\gls{ERM}-Komponenten in der sogenannten Chen-Notation}
+\label{fig:erm-components}
+\end{figure}
+
+Die Entitäten, die meistens einer Tabelle entsprechen, werden als Rechtecke angegeben. Beziehungen stellen ``Verknüpfungen'' zwischen verschiedenen Tabellen dar und sind meist als Raute dargestellt. Die Attribute werden typischerweise als Kreise angegeben. In \cref{fig:erm-instahub} sind die Attribute einfachheitshalber nicht angegeben.
+
+Die Zahlen über den Strichen bezeichnen die \textbf{Kardinalität} der Beziehungen: Mit der Kardinalität wird ausgedrückt, wie viele Entitäten mit einer anderen Entität in Verbindung stehen können oder müssen. Die Zahlen \texttt{n} und \texttt{m} stehen dabei typischerweise für eine natürliche Zahl grösser als 1. 
+
+Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} abgelesen werden:
+\begin{itemize}
+\item Jeder User kann \texttt{n} comments schreiben.
+\item Jeder User kann \texttt{m} anderen Usern followen und von m Usern gefollowt werden.
+\item Jedes Foto kann \texttt{m} Tags haben. Jeder Tag kann auf \texttt{n} Fotos angewandt werden.
+\item Jedes Fotos gehört genau zu einem Benutzerprofil (\texttt{owns}). Jedes Benutzerprofil kann \texttt{n} Fotos veröffentlichen.
+\item Jedes Passwort-Reset kann genau 0 oder 1 User betreffen. 
+\end{itemize}
+
+\clearpage
+\begin{aufgabe}[Einrichtung von Instahub \emoji{camera-with-flash}]{instahub-setup}
+	\begin{table}[H]
+	\centering
+	\begin{tabular}{r|l}
+	 \emoji{chequered-flag} & Selber eine Datenbank administrieren \\\hline
+	 %\emoji{family-man-woman-girl-boy} & 3er- bis 4er-Gruppen \\\hline
+	 \emoji{student} & Einzelarbeit\\\hline
+	 \emoji{stopwatch} & ca. 25 min.
+	\end{tabular}
+	\end{table}
+	
+	Führen Sie folgende Schritte aus:\par
+	
+	\begin{enumerate}
+		\item Auf \url{https://instahub.org} gehen 
+		\item Auf Hub erstellen (rechts oben) klicken und einen Hub erstellen. 
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=1.5cm]{GrundlagenInfo/DataScience/06_Daten/Figures/tutorial-instahub-1}
+		\end{figure}
+		\item Geben Sie folgende Angaben ein (s. Bild unten):
+		\begin{itemize}
+			\item Lehrername: \texttt{cyrilwendl}
+			\item Username ist \texttt{admin} und kann nicht geändert werden.
+			\item Ihren Namen und Ihr Passwort können Sie frei setzen. Das Passwort sollten Sie sich irgendwo notieren.
+			\item Sie können entweder eine echte Email-Adresse angeben oder die generierte Emailadresse so lassen. Dann können Sie jedoch ihr Passwort nicht mehr per Mail zurücksetzen, falls Sie dieses je verlieren sollten.
+		\end{itemize} 
+		Geben Sie mir mündlich Bescheid, dass Sie die Seite erstellt haben. Ich muss nun Ihren Hub (=ihre Webseite) manuell aktivieren. Dies dauert nur wenige Sekunden.
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=.8\textwidth]{GrundlagenInfo/DataScience/06_Daten/Figures/tutorial-instahub-2}
+		\end{figure}	
+		\item Sie können sich nun auf der von Ihnen gewählten Webseite (z.B. \url{https://purpurrot21.instahub.org}) mit dem Benutzername \texttt{admin} und dem von Ihnen zuvor gewählten Passwort anmelden. Sie sind nun \textcolor{RoyalBlue}{AdministratorIn} Ihres eigenen sozialen Netzwerks.
+	\end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}[Inbetriebnahme von Instahub]{}
+	\begin{table}[H]
+	\centering
+	\begin{tabular}{r|l}
+	 \emoji{chequered-flag} & Lernen, mithilfe von \gls{SQL}  eigene Abfragen zu machen \\\hline
+	 \emoji{family-man-woman-girl} & 2er- bis 3er-Gruppen \\\hline
+	 \emoji{stopwatch} & ca. 60 min.
+	\end{tabular}
+	\end{table}
+	
+	
+	Bestimmen Sie eine Person pro Gruppe, die sich auf Ihrer eigenen Webseite (z.B. \url{https://purpurrot21.instahub.org}) mit dem Benutzername \texttt{admin} und dem von Ihnen zuvor gewählten Passwort anmeldet. Die zwei anderen Personen sollen folgendes Kapitel aus diesem Skript lesen und der ersten Person dabei helfen, die \gls{SQL} -Befehle zu schreiben.
+	
+	Sie können nun unter folgendem Link Ihre eigene Datenbank administrieren:
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.9\textwidth]{GrundlagenInfo/DataScience/06_Daten/Figures/instahub-SQL}
+	\end{figure}
+	Als erstes sehen Sie eine Liste der verfügbaren Tabellen sowie den Spaltennamen (s. Bild unten). Tabellennamen sind in \textcolor{orange}{orange}, Spaltennamen in \textcolor{ForestGreen}{grün} markiert.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.9\textwidth]{GrundlagenInfo/DataScience/06_Daten/Figures/instahub-tables}
+		\caption{Die Tabellen von InstaHub und deren Attribute}
+		\label{fig:tables-instahub}
+	\end{figure}
+
+\end{aufgabe}
+
+\newpage
+

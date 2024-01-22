@@ -1,0 +1,512 @@
+\section{Einzelne Tabellen abfragen mit \acrshort{SQL}}
+
+\subsection{Syntax}
+Die Sprache \acrfull{SQL} besteht, wie wir sehen werden, aus verschiedenen Schlüsselwörtern, wie etwa \lstinline[style=sql]|SELECT|, \lstinline[style=sql]|WHERE|, \lstinline[style=sql]|GROUP BY|, \lstinline[style=sql]|ORDER BY| usw. Dazu gibt es Folgendes zu beachten:
+\begin{itemize}
+	\item Ob wir diese Schlüsselwörter gross oder klein schreiben, spielt keine Rolle. Allerdings wird empfohlen, die Schlüsselwörter immer in Grossbuchstaben zu schreiben, um sie von Kolonnen-Namen, Tabellen-Namen usw. abzugrenzen.
+	\item Wir können alle \gls{SQL} -Befehle auf einer einzigen Zeile schreiben, dadurch wird der Code aber deutlich weniger lesbar. Stattdessen empfiehlt es sich, vor gewissen Schlüsselwörtern wie \lstinline[style=sql]|SELECT|, \lstinline[style=sql]|WHERE| oder \lstinline[style=sql]|GROUP BY| eine neue Zeile zu erstellen. Dazu lohnt es sich, die Beispiele genau anzuschauen.
+\end{itemize}
+
+\textbf{Kommentare} können in \gls{SQL}  auf zwei Arten geschrieben werden:
+
+\begin{lstlisting}[style=sql]
+-- 1. Kommentar auf einer Zeile
+/* 2. Kommentar über
+mehrere Zeilen */
+\end{lstlisting}
+
+\subsection{Einfache Selektion: \lstinline[style=sql]|SELECT|}
+
+Mit dem Befehl ``\lstinline[style=sql]|SELECT col1,col2,... FROM tablename|'' können wir gewisse Spalten (=Kolonnen) \lstinline[style=sql]|col1,col2,...| aus einer Tabelle mit dem Namen \lstinline[style=sql]|tablename| auswählen. Wir können statt den Spaltennamen auch einfach einen Stern (\texttt{*}) tippen, um alle Kolonnen einer Tabelle zu erhalten, d.h. die gesamte Tabelle.
+
+
+\begin{myexample}
+Geben Sie auf InstaHub den folgenden Befehl ein (der \textcolor{blue}{Kommentar} muss nicht kopiert werden, er dient lediglich zur Erklärung des Codes):
+
+\begin{lstlisting}[style=sql]
+-- wähle alle Spalten aus der Tabelle users aus
+SELECT *
+FROM users
+\end{lstlisting}
+
+	
+Mit diesem Befehl wählen wir alle Spalten (\lstinline[style=sql]|*|) der Tabelle \lstinline[style=sql]|users| aus. 
+Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
+\end{myexample}
+
+
+\begin{aufgabe}{}
+\begin{itemize}
+\item Geben Sie alle Benutzernamen (\texttt{username}) aus \texttt{users} aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie alle Benutzernamen (\texttt{username}) und echten Namen (\texttt{name}) aller Einträge aus \texttt{users} aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username, name
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie die Namen und Wohnorte aller Mitglieder aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username, city
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+
+
+\subsection{Selektion mit Filter: \lstinline[style=sql]|WHERE|}
+Fügen wir zu einer \gls{SQL} -Abfrage den Befehl ``\lstinline[style=sql]|WHERE conditions|'' hinzu, können wir können wir das erhaltene Resultat nach gewissen Bedingungen (\texttt{conditions}) filtern. 
+
+\begin{myexample}
+Geben Sie folgendes Beispiel in Instahub ein:
+
+\begin{lstlisting}[style=sql]
+/* Pseudocode: wähle den Namen, die Stadt und das Geschlecht aller Mitglieder aus der Tabelle users aus und filtere nach Mitgliedern, die männlich sind */
+SELECT name, city, gender
+FROM users
+WHERE gender="male"
+\end{lstlisting}
+\end{myexample}
+
+Nebst dem Gleich-Zeichen (im obigen Beispiel) haben folgende Filter-Operatoren zur Verfügung:
+\begin{table}[H]
+ \centering
+ \begin{tabular}{c|l}
+ \makecell{\textbf{Operator}\\\textbf{in \gls{SQL}}} & \makecell{\textbf{Mathematische}\\\textbf{Bedeutung}} \\\midrule 
+      \texttt{=} & gleich ($=$)\\
+      \texttt{<>} & ungleich ($\neq$) \\
+      \texttt{<} & kleiner als ($<$)\\
+      \texttt{<=} & kleiner oder gleich ($\leq$) \\
+      \texttt{>} & grösser als ($>$) \\
+      \texttt{>=} & grösser oder gleich ($\geq$)\\
+      \lstinline[style=sql]|BETWEEN x AND y| & Wert zwischen \texttt{x} und \texttt{y}\\
+ \end{tabular}
+\end{table}
+Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|NOT| sowie \lstinline[style=sql]|OR| verwenden.
+
+\begin{myexample}
+Folgender Code gibt alle Mitglieder aus, die zwischen 172 und 174 gross sind.
+
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters, gender 
+FROM users 
+WHERE centimeters BETWEEN 172 and 174 
+\end{lstlisting}
+
+\end{myexample}
+
+\begin{aufgabe}{}
+\begin{itemize}
+	\item Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
+	\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, gender, centimeters
+FROM users
+WHERE gender="female"
+AND centimeters between 150 and 155
+\end{lstlisting}
+	\end{myantwort}
+\item Zeigen Sie den Namen, das Geburtsdatum sowie die Grösse aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, birthday, centimeters
+FROM users
+WHERE centimeters <= 160
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+
+
+\subsection{Eindeutige Selektion: \lstinline[style=sql]|SELECT DISTINCT|}
+
+Der Befehl \lstinline[style=sql]|DISTINCT| nach einem \lstinline[style=sql]|SELECT| führt dazu, dass jeder mögliche Wert nur einmal ausgegeben wird, d.h. Duplikate werden entfernt. 
+
+\begin{aufgabe}{}
+Vergleichen Sie folgende zwei Befehle. Überlegen Sie sich zuerst, was der Code ausgeben sollte, bevor sie die Befehle in InstaHub ausführen.
+
+\begin{lstlisting}[style=sql]
+SELECT gender
+FROM users
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT gender
+FROM users
+\end{lstlisting}
+\end{aufgabe}
+
+\begin{aufgabe}{}
+\begin{itemize}
+\item Geben Sie jeden Wohnort nur einmal aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie jede Benutzerrolle nur einmal aus. \texttt{dba} bedeutet ``Database Administrator'', also Datenbank-AdministratorIn.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT role
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+
+
+\subsection{Ungefähre Matches: \lstinline[style=sql]|LIKE|}
+
+Mit dem Befehl \lstinline[style=sql]|LIKE| können wir die Tabelle nach Spalten zu filtern, welche ein bestimmtes Wort enthalten. 
+
+\begin{myexample}
+Mit folgendem Befehl erhalten wir alle Städte, die mit ``Be...'' beginnen:
+
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users 
+WHERE city LIKE "Be%"
+\end{lstlisting}
+
+Das ``\%''-Zeichen dient hier als Platzhalter und bedeutet ``es kann noch weiterer Text an dieser Stelle stehen, muss aber nicht''.
+
+\end{myexample}
+
+\begin{aufgabe}{}
+Vergleichen Sie folgende drei Befehle. Überlegen Sie sich zuerst, was der Code ausgeben sollte, bevor sie die Befehle in InstaHub ausführen.
+
+\begin{lstlisting}[style=sql]
+SELECT username, city 
+FROM users 
+WHERE city = "Berlin" AND name LIKE "Fabian%"
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+SELECT username, city 
+FROM users 
+WHERE city = "Berlin" OR name LIKE "Fabian%"
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql]
+SELECT username, city 
+FROM users 
+WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
+\end{lstlisting}
+\end{aufgabe}
+
+\begin{aufgabe}{}
+\begin{itemize}
+\item Finden Sie alle Berliner die Marc heissen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE city="Berlin" AND name LIKE "Marc%"
+\end{lstlisting}
+\end{myantwort}
+\item Finden Sie alle Linas und Lorenas.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE name LIKE "Lina%"
+OR name LIKE "Lorena%"
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+\begin{mychallenge}
+Überprüfen Sie, welche Mitglieder im Jahr 2001 geboren sind (mit der Spalte \texttt{birthday}).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, birthday
+FROM users
+WHERE birthday LIKE "2001%"
+\end{lstlisting}
+\end{myantwort}
+\end{mychallenge}
+\begin{myabgabe}
+Wählen Sie alle Naomi aus, die nicht aus Berlin kommen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE name LIKE "Naomi%"
+AND city <> "Berlin"
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+
+\subsection{Sortieren: \lstinline[style=sql]|ORDER BY|}
+
+Mit dem Befehl \lstinline[style=sql]|ORDER BY col ASC| oder \lstinline[style=sql]|ORDER BY col DESC| kann das Resultat einer \gls{SQL} -Abfrage nach einer bestimmten Kolonne \lstinline[style=sql]|col| sortiert werden. Mit \lstinline[style=sql]|ASC| wird das Resultat aufsteigend und mit \lstinline[style=sql]|DESC| absteigend sortiert.
+
+\begin{myexample}
+Beobachten Sie das Resultat folgender Abfrage:
+
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users 
+ORDER BY city DESC
+\end{lstlisting}
+\end{myexample}
+
+\begin{aufgabe}{}
+Geben Sie alle Benutzernamen in sortierter Reihenfolge aus (a $\rightarrow$ z).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username
+FROM users
+ORDER BY username ASC
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+
+\subsection{Aggregatsfunktionen: \lstinline[style=sql]|COUNT|, \lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|, \lstinline[style=sql]|SUM|, \lstinline[style=sql]|AVG|, \lstinline[style=sql]|LENGTH|}
+\subsubsection{\lstinline[style=sql]|COUNT|}
+
+Mit dem Befehl \lstinline[style=sql]|COUNT| kann man die Anzahl Resultate zählen. 
+
+\begin{lstlisting}[style=sql]
+SELECT COUNT(*)
+FROM users
+\end{lstlisting}
+
+Wir können den berechneten Wert zudem zur besseren Lesbarkeit umbenennen, indem wir den Befehl \lstinline[style=sql]|AS| verwenden:
+
+\begin{lstlisting}[style=sql]
+SELECT COUNT(*) AS "Registrierte Mitglieder" 
+FROM users
+\end{lstlisting}
+
+\begin{aufgabe}{}
+Geben Sie die Anzahl registrierten Mitglieder in Berlin aus. Die Resultierende Spalte soll ``Registrierte Mitglieder in Berlin'' heissen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT COUNT(*) AS "Registrierte Mitglieder in Berlin" 
+FROM users
+WHERE city="Berlin"
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+
+\subsubsection{\lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|}
+
+Um die höchsten, bzw. tiefsten Werte einer Kolonne zu erhalten, können die Befehle \lstinline[style=sql]|MIN| und \lstinline[style=sql]|MAX| verwendet werden:
+
+\begin{myexample}
+Beobachten Sie das Resultat folgender Abfrage:
+
+\begin{lstlisting}[style=sql]
+SELECT MAX(centimeters) AS "Maximale Körpergrösse" 
+FROM users
+\end{lstlisting}
+\end{myexample}
+
+\begin{aufgabe}{}
+\begin{itemize}
+\item Zeigen Sie, wie gross das kleinste Mitglied ist.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT MIN(centimeters) AS "Kleinste Körpergrösse"
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\item Zeigen Sie, wann sich zuletzt ein Mitglied registriert hat.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT max(created_at) AS "Zuletzt Registriert"
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+
+
+\subsubsection{\lstinline[style=sql]|SUM|}
+
+Mit \lstinline[style=sql]|SUM| kann die Summe einer Datenserie ausgegeben werden. 
+
+\begin{myexample}
+Folgender Code berechnet die Summe der Körpergrössen aller Personen, die Felix heissen:
+
+\begin{lstlisting}[style=sql]
+SELECT SUM(centimeters) 
+FROM users 
+WHERE name LIKE "Felix%"
+\end{lstlisting}
+\end{myexample}
+
+\subsubsection{\lstinline[style=sql]|AVG|}
+
+Mit \lstinline[style=sql]|AVG| kann der Durchschnitt einer Datenserie ausgegeben werden. 
+
+\begin{myexample}
+Folgender Code berechnet die durchschnittliche Körpergrössen aller Personen, die Felix heissen:
+
+\begin{lstlisting}[style=sql]
+SELECT AVG(centimeters) 
+FROM users 
+WHERE name LIKE "Felix%"
+\end{lstlisting}
+\end{myexample}
+
+\subsubsection{\lstinline[style=sql]|LENGTH|}
+
+Mit \lstinline[style=sql]|LENGTH| gibt die Anzahl Zeichen eines Texts zurück. 
+
+\begin{myexample}
+Folgender Code berechnet die Länge aller Namen:
+
+\begin{lstlisting}[style=sql]
+SELECT name, LENGTH(name) 
+FROM users
+\end{lstlisting}
+\end{myexample}
+
+\subsection{Verzweigungen: \lstinline[style=sql]|CASE WHEN|}
+
+Der SQL-Befehl \lstinline[style=sql]|CASE WHEN| kann helfen, Ausdrücke basierend auf Bedingungen zu schreiben, also ähnlich wie if-elif-else-Verzweigungen in Python.
+
+\begin{myexample}
+Die durchschnittliche Körpergrösse in Deutschland beträgt 179 cm für Männer. Folgender Code berechnet für alle Männer, ob sie grösser, kleiner oder gleich dem Durchschnitt sind, und gibt das Resultat in einer neuen Kolonne aus.
+
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters,
+CASE 
+	WHEN centimeters > 179 THEN 'Gross'
+    WHEN centimeters < 179 THEN 'Klein'
+    ELSE 'Genau im Durchschnitt'
+END AS Durchschnittlich
+FROM users
+WHERE gender="male"
+\end{lstlisting}
+\end{myexample}
+
+\begin{myabgabe}
+Berechnen Sie eine neue Kolonne, die den Text ``langer Name'' enthält, falls ein Name länger als 20 Zeichen lang ist, und ansonsten ``kurzer Name''. BenutzerInnen mit langem Namen sollen zuoberst stehen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, LENGTH(name),
+CASE
+	WHEN LENGTH(name)>17 THEN "Langer Name"
+    ELSE "Kurzer Name"
+END AS "Langer oder kurzer Name"
+FROM users
+ORDER BY `Langer oder kurzer Name` DESC
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+
+\subsection{Gruppieren: \lstinline[style=sql]|GROUP BY|}
+Um die Resultate einer Anfrage pro Untergruppen zu sehen, kann der Befehl \lstinline[style=sql]|GROUP BY| verwendet werden.
+
+\begin{myexample}
+Folgender Code gibt die Anzahl Mitglieder pro Stadt aus:
+\begin{lstlisting}[style=sql]
+SELECT city, COUNT(*) AS "Mitglieder pro Stadt" 
+FROM users 
+GROUP BY city
+\end{lstlisting}
+\end{myexample}
+
+Zudem ist es möglich, Daten auch in Untergruppen zusammenzufassen. 
+
+\begin{myexample}
+Folgender Code gibt die Anzahl männlicher und weiblicher Mitglieder pro Stadt aus:
+\begin{lstlisting}[style=sql]
+SELECT city, gender, COUNT(*) 
+FROM users 
+GROUP by city, gender
+\end{lstlisting}
+\end{myexample}
+
+\begin{myachtung}
+Falls nach einem \lstinline[style=sql]|GROUP BY| die Resultate noch weiter eingegrenzt werden soll, muss statt \lstinline[style=sql]|WHERE| der Befehl \lstinline[style=sql]|HAVING| verwendet werden.
+\end{myachtung}
+
+\begin{myabgabe}
+Geben Sie die durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt aus. Zeigen Sie nur die Städte, in denen die Menschen im Durchschnitt zwischen 150 und 155 gross sind.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
+FROM users
+GROUP BY city
+HAVING `Durchschnittliche Körpergrösse` BETWEEN 150 AND 155
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+
+\begin{mychallenge}
+Geben Sie die maximale Körpergrösse aus, gruppiert nach Stadt und Geschlecht, für alle Städte, die mit dem Buchstaben "B" beginnen
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, gender, MAX(centimeters) AS "Grösste Körpergrösse"
+FROM users
+WHERE city LIKE "B%"
+GROUP BY city, gender
+\end{lstlisting}
+\end{myantwort}
+\end{mychallenge}
+
+\subsection{Erste \textit{n} Zeilen: \lstinline[style=sql]|LIMIT|}
+Mit dem Befehl \lstinline[style=sql]|LIMIT| kann das Resultat einer SQL-Abfrage auf eine gewisse Anzahl Zeilen beschränkt werden.
+
+Beobachten Sie das Resultat folgender Abfrage:
+
+
+
+\begin{aufgabe}{}
+\begin{itemize}
+\item Zeigen Sie nur 3 Mitglieder (nur deren Namen) an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name
+FROM users
+LIMIT 3
+\end{lstlisting}
+\end{myantwort}
+\item Zeigen Sie die Namen und Körpergrösse der 5 grössten Mitglieder an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters
+FROM users
+ORDER BY centimeters DESC
+LIMIT 5
+\end{lstlisting}
+\end{myantwort}
+\item Geben Sie die drei Städte mit den meisten Mitgliedern an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, COUNT(*) AS "Anzahl Mitglieder"
+FROM users
+GROUP BY city
+ORDER BY `Anzahl Mitglieder` DESC
+LIMIT 3
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+\begin{myabgabe}
+Geben Sie die Stadtnamen aus, wo die meisten Mitglieder mit einem ``b'' im Namen wohnen (nur die ersten drei Zeilen).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, COUNT(*) AS "Mitglieder"
+FROM users 
+WHERE name LIKE "%b%" 
+GROUP by city 
+ORDER BY Mitglieder
+DESC LIMIT 3
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+
