@@ -782,7 +782,8 @@ Lösen Sie folgende Abschnitte:
 \section{Daten bearbeiten mit \gls{SQL}}
 Mit SQL kann man Daten nicht nur abfragen, sondern auch erstellen, verändern und löschen. Im folgenden Schauen wir uns dafür nötigen Befehle an.
 
-\subsection{Eine neue Tabelle erstellen: \lstinline[style=sql]|CREATE TABLE|}
+\subsection{Eine neue Tabelle erstellen: \lstinline[style=sql]|CREATE table|}
+\label{subsec:create-table}
 Eine neue Tabelle kann innerhalb einer Datenbank mit dem Befehl \lstinline[style=sql]|CREATE TABLE| angelegt werden:
 
 \begin{lstlisting}[style=sql]
@@ -790,16 +791,18 @@ CREATE TABLE tabellenname(
   kolonne1 eigenschaften1,
   kolonne2 eigenschaften2,
   ...
-);
+)
 \end{lstlisting}
 
-Die Tabelle \texttt{users} wurde beispielsweise mit folgendem Befehl erstellt:
+\begin{myexample}
+\label{ex:sql-create}
+Die Tabelle \texttt{users} wurde mit folgendem Befehl erstellt:
 
 \begin{lstlisting}[style=sql]
-CREATE TABLE `users` (
+CREATE TABLE users (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `username` varchar(191) NOT NULL UNIQUE,
-  `email` varchar(191)NOT NULL UNIQUE,
+  `email` varchar(191) NOT NULL UNIQUE,
   `password` varchar(191) NOT NULL,
   `name` varchar(191) NOT NULL,
   `bio` varchar(191) DEFAULT NULL,
@@ -814,8 +817,9 @@ CREATE TABLE `users` (
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-);
+)
 \end{lstlisting}
+\end{myexample}
 
 Nach dem Kolonnennamen folgt zuerst der \textbf{Kolonnentyp}, d.h., die Angabe, welche Art von Daten in der Kolonne gespeichert werden. Einige der häufigsten Datentypen sind:
 \begin{itemize}
@@ -828,11 +832,51 @@ Nach dem Kolonnennamen folgt zuerst der \textbf{Kolonnentyp}, d.h., die Angabe, 
 
 Zudem können folgende Eingeschaften für Kolonnen angegeben werden:
 \begin{itemize}
-	\item \lstinline[style=sql]|NOT NULL|: Feld darf nicht leer sein.
+	\item \lstinline[style=sql]|DEFAULT [wert]|: Standard-Wert, falls nichts anderes angegeben wird. Das Benutzerbild (\texttt{avatar}) ist beispielsweise \texttt{avatar.png}, falls kein anderes Bild hochgeladen wird.
+	\item \lstinline[style=sql]|NOT NULL|: Feld darf nicht leer sein. Falls kein \lstinline[style=sql]|DEFAULT|-Wert angegeben wird, muss, der Wert für diese Kolonne beim Erstellen eines neuen Benutzerkontos immer mitgeliefert werden.
 	\item \lstinline[style=sql]|AUTO_INCREMENT|: Zahl, die bei jedem neuen Eintrag automatisch immer um 1 grösser wird
 	\item \lstinline[style=sql]|PRIMARY KEY|: Schlüsselattribut (s. \cref{table:table-cia}).
 	\item \lstinline[style=sql]|UNIQUE|: Darf keine doppelten Werte enthalten
 \end{itemize}
+
+\subsection{Tabellen löschen: \lstinline[style=sql]|DROP table|}
+Mit dem Befehl \lstinline[style=sql]|DROP TABLE tabellenname| kann eine Tabelle komplett löschen. Achtung! Dieser Schritt ist irreversibel. Falls Sie eine Tabelle irrtümlich löschen, geben Sie mir Bescheid, damit ich Ihre Datenbank zurücksetze.
+
+\begin{aufgabe}{aufg:sql-insert}
+\begin{itemize}
+\item Erstellen Sie eine Tabelle \texttt{users2} mit denselben Eigenschaften wie \texttt{users} (s. Beispiel \ref{ex:sql-create})
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+CREATE TABLE users2 (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `username` varchar(191) NOT NULL UNIQUE,
+  `email` varchar(191) NOT NULL UNIQUE,
+  `password` varchar(191) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `bio` varchar(191) DEFAULT NULL,
+  `gender` enum('male','female') DEFAULT NULL,
+  `birthday` datetime DEFAULT NULL,
+  `city` varchar(191) DEFAULT NULL,
+  `country` varchar(191) DEFAULT NULL,
+  `centimeters` int(11) DEFAULT NULL,
+  `avatar` varchar(191) NOT NULL DEFAULT 'avatar.png',
+  `role` enum('user','dba','teacher','admin') NOT NULL DEFAULT 'user',
+  `is_active` tinyint(1) NOT NULL DEFAULT 0,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+)
+\end{lstlisting}
+\end{myantwort}
+\item Löschen Sie danach die Tabelle \texttt{users2} wieder.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+DROP TABLE users2
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+
 
 \subsection{Daten einfügen: \lstinline[style=sql]|INSERT|}
 
@@ -842,20 +886,48 @@ Die Syntax von \lstinline[style=sql]|INSERT| sieht wie folgt aus:
 
 \begin{lstlisting}[style=sql]
 INSERT INTO tabelle_name (kolonne1, kolonne2, kolonne3, ...)
-VALUES (wert1, wert2, wert3, ...);
+VALUES (wert1, wert2, wert3, ...)
 \end{lstlisting}
 
-\begin{myexample}
+\begin{myexample}\label{ex:sql-insert}
 Folgender Code fügt eine neue Person in die Tabelle \texttt{users} ein:
 \begin{lstlisting}[style=sql]
 INSERT INTO users (username, email, password, name, bio, gender, birthday, city, country, centimeters, avatar, role, is_active, remember_token, created_at, updated_at) 
-VALUES ('guenther37', 'guenther@instahub.test', '12345', 'Günther Müller', 'Günther mag Kartoffelsalat.', 'male', '2006-06-06 00:00:00', 'Leipzig', 'Deutschland', '173', 'avatar.png', 'user', '0', NULL, now(), now());
+VALUES ('guenther37', 'guenther@instahub.test', '12345', 'Günther Müller', 'Günther mag Kartoffelsalat.', 'male', '2006-06-06 00:00:00', 'Leipzig', 'Deutschland', '173', 'avatar.png', 'user', '0', NULL, now(), now())
 \end{lstlisting}
 Wie Sie sehen, wird zuerst die Tabelle (\texttt{users}) aufgelistet, danach die Kolonnen und schliesslich die Werte.
 \end{myexample}
 
-\begin{aufgabe}{}
-Erstellen Sie einen neuen Eintrag für eine Person mit folgenden Eigenschaften:... 
+\begin{aufgabe}{aufg:sql-insert}
+\begin{itemize}
+\item Für welche Kolonnen müssen für einen neuen Benutzer immer die Werte mitgegeben werden? S. die Erklärungen zu \lstinline[style=sql]|NOT NULL| und \lstinline[style=sql]|DEFAULT| in \cref{subsec:create-table}.
+\begin{myantwort}
+\begin{verbatim}
+username, email, password, name, role, is_active
+\end{verbatim}
+\end{myantwort}
+\item \textcolor{red}{Abgabe}: Erstellen Sie einen neuen Eintrag in der Tabelle \texttt{users} mit folgenden Eigenschaften:
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+\textbf{Kolonne} & \textbf{Wert} \\\midrule
+\texttt{username} & \texttt{testuser}\\
+\texttt{email} & \texttt{test@test.com} \\
+\texttt{passwort}& \texttt{test123}\\
+\texttt{name}& \texttt{Test-Vorname Test-Nachname}\\
+\texttt{role} & \texttt{user}\\
+\texttt{is\_active} & \texttt{1}\\
+\end{tabular}
+\end{table}
+Überprüfen Sie danach, ob der Eintrag korrekt erstellt worden ist, indem Sie  \lstinline[style=sql]|SELECT * FROM users| ausführen.
+Ihr(e) Tisch-Nachbar(in) soll nun versuchen, sich mit diesen Angaben auf Ihrer InstaHub-Seite einzuloggen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+INSERT INTO users (username, email, password, name, role, is_active) 
+VALUES ('testuser', 'test@test.com', 'test123', 'Test-Vorname Test-Nachname', 'user', '1')
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
 \end{aufgabe}
 
 \subsection{Daten verändern: \lstinline[style=sql]|UPDATE|}
@@ -865,7 +937,7 @@ Mit \lstinline[style=sql]|UPDATE| können Werte einer Tabelle aktualisiert werde
 \begin{lstlisting}[style=sql]
 UPDATE tabelle_name
 SET kolonne1 = wert1, kolonne2=wert2, ...
-WHERE bedingung(en);
+WHERE bedingung(en)
 \end{lstlisting}
 
 \begin{aufgabe}{aufgabe:evalPoly}
@@ -886,12 +958,175 @@ SET centimeters=190
 WHERE gender="male"
 \end{lstlisting}
 \end{myantwort}
-
 \end{itemize}
 \end{aufgabe}
 
+\subsection{Einträge löschen: \lstinline[style=sql]|DELETE FROM|}
+Mit dem Befehl \lstinline[style=sql]|DELETE FROM| können Einträge aus einer Tabelle gelöscht werden.
+\begin{lstlisting}[style=sql]
+DELETE FROM tabellenname
+WHERE bedingungen
+\end{lstlisting}
+
+\begin{myexample}
+Folgender Code löscht den Eintrag für user `guenther37`:
+\begin{lstlisting}[style=sql]
+DELETE FROM users
+WHERE username="guenther37"
+\end{lstlisting}
+\end{myexample}
+
+\begin{aufgabe}{}
+Löschen Sie den Eintrag, den Sie in \cref{aufg:sql-insert} erstellt haben. Überprüfen Sie, ob der Eintrag verschwunden ist, indem Sie danach \lstinline[style=sql]|SELECT * FROM users| ausführen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+DELETE FROM users
+WHERE username="testuser"
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+
+\section{Tabellenverbindungen}
+Häufig kann es nützlich sein, mehrere Tabellen miteinander zu verbinden, um neue Einsichten in die Daten zu gewinnen. Verschiedene Tabellen-Verbindungen sind schematisch in \cref{fig:venn-joins} abgebildet.
+
+
+\begin{figure}[htbp]
+\centering
+
+% INNER JOIN
+\begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}
+        \tikzset{circle node/.style={circle,draw=black, fill=none, minimum size=25mm, inner sep=0pt}}
+        \node[circle node] (left) at (0,0) {};
+        \node[circle node] (right) at (1.5,0) {};
+        \begin{scope}
+            \clip (0,0) circle (1.25cm);
+            \fill[gray] (1.5,0) circle (1.25cm);
+        \end{scope}
+    \end{tikzpicture}
+    \caption{\lstinline[style=sql]|INNER JOIN|}
+\end{subfigure}
+\hfill
+% LEFT OUTER JOIN
+\begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}
+        \tikzset{circle node/.style={circle,draw=black, fill=none, minimum size=25mm, inner sep=0pt}}
+        \node[circle node] (left) at (0,0) {};
+        \node[circle node] (right) at (1.5,0) {};
+        \begin{scope}
+            \clip (-1.5,-1.25) rectangle (1.25,1.25);
+            \fill[gray] (0,0) circle (1.25cm);
+        \end{scope}
+        \begin{scope}
+            \clip (0,0) circle (1.25cm);
+            \fill[gray] (1.5,0) circle (1.25cm);
+        \end{scope}
+    \end{tikzpicture}
+    \caption{\lstinline[style=sql]|LEFT OUTER JOIN|}
+\end{subfigure}
+
+\bigskip
+
+% RIGHT OUTER JOIN
+\begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}
+        \tikzset{circle node/.style={circle,draw=black, fill=none, minimum size=25mm, inner sep=0pt}}
+        \node[circle node] (left) at (0,0) {};
+        \node[circle node] (right) at (1.5,0) {};
+        \begin{scope}
+            \clip (0,-1.25) rectangle (4,1.25);
+            \fill[gray] (1.5,0) circle (1.25cm);
+        \end{scope}
+        \begin{scope}
+            \clip (1.5,0) circle (1.25cm);
+            \fill[gray] (0,0) circle (1.25cm);
+        \end{scope}
+    \end{tikzpicture}
+    \caption{\lstinline[style=sql]|RIGHT OUTER JOIN|}
+\end{subfigure}
+\hfill
+% FULL OUTER JOIN
+\begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}
+        \tikzset{circle node/.style={circle,draw=black, fill=none, minimum size=25mm, inner sep=0pt}}
+        \node[circle node] (left) at (0,0) {};
+        \node[circle node] (right) at (1.5,0) {};
+        \fill[gray] (0,0) circle (1.25cm);
+        \fill[gray] (1.5,0) circle (1.25cm);
+    \end{tikzpicture}
+    \caption{\lstinline[style=sql]|FULL OUTER JOIN|}
+\end{subfigure}
+\caption{Venn-Diagramme unterschiedlicher SQL-Joins}
+\label{fig:venn-joins}
+\end{figure}
+
+
+\subsection{\lstinline[style=sql]|INNER JOIN| (=\lstinline[style=sql]|JOIN|)}
+Die Syntax eines \lstinline[style=sql]|INNER JOIN|-, oder auch einfach \lstinline[style=sql]|JOIN|-Befehls sieht wie folgt aus:
+
+\begin{lstlisting}[style=sql]
+SELECT kolonne1, kolonne2, ...
+FROM tabelle1
+INNER JOIN tabelle2
+ON tabelle1.kolonne_id1 = tabelle2.kolonne_id2
+\end{lstlisting}
+Hier verbinden wir zwei Tabellen, indem wir zwei Kolonnen \texttt{kolonne\_id1} und \texttt{kolonne\_id2}, die derselben Information entsprechen (beispielsweise die user-ID), miteinander abgleichen. Beim \lstinline[style=sql]|INNER JOIN| werden nur die Zeilen aus \texttt{tabelle1} retourniert, für die es einen entsprechenden Wert in \texttt{kolonne\_id2} in \texttt{tabelle2} gibt. 
+
+Wichtig zu wissen ist zudem, dass \texttt{kolonne1, kolonne2} usw. auf der ersten Zeile nun sowohl von \texttt{tabelle1} wie auch \texttt{tabelle2} stammen können.
+
+\begin{myexample}
+Folgender Code gibt die ids aller user zurück, denen der user Mika Kaufmann folgt: 
+\begin{lstlisting}[style=sql]
+SELECT following_id, follower_id, name 
+FROM follows 
+JOIN users 
+ON follows.follower_id = users.id 
+WHERE name="Mika Kaufmann"
+\end{lstlisting}
+
+\end{myexample}
+
+\begin{aufgabe}{}
+\begin{itemize}
+\item Geben Sie die ids aller Fotos in der Tabelle \texttt{likes} and, die der user Mika Kaufmann gelikt hat.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT photo_id, user_id, name 
+FROM likes 
+INNER JOIN users 
+ON likes.user_id=users.id 
+WHERE name="Mika Kaufmann"
+\end{lstlisting}
+\end{myantwort}
+\item Challenge: Erstellen Sie eine Liste, wo für jedes Hamburger Mitglied die Anzahl seiner Fotos aufgeführt ist. Die Liste soll in absteigender Reihenfolge die Anzahl Fotos pro Mitglieder auflisten.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT city, username, COUNT(*) AS "Anzahl Fotos" 
+FROM photos 
+JOIN users ON photos.user_id = users.id 
+WHERE city="Hamburg" 
+GROUP BY username 
+ORDER BY `Anzahl Fotos` DESC
+\end{lstlisting}
+\end{myantwort}
+\item Es soll Werbung an alle Strandurlauber verschickt werden. Finden Sie alle Photos die den Hashtag \texttt{meer} enthalten. Geben Sie den Namen, die Emailadresse, den Geburtstag und die Stadt der zugehörigen Benutzer aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT description, name, email, birthday, city  FROM photos JOIN users on photos.user_id = users.id WHERE description LIKE "%#meer%"
+\end{lstlisting}
+\end{myantwort}
+\end{itemize}
+\end{aufgabe}
+
+\subsection{\lstinline[style=sql]|FULL JOIN| (=\lstinline[style=sql]|FULL OUTER JOIN|)}
 ...
-\subsection{Daten löschen: \lstinline[style=sql]|DROP|}
+\subsection{\lstinline[style=sql]|LEFT JOIN| (=\lstinline[style=sql]|LEFT OUTER JOIN|)}
+...
+\subsection{\lstinline[style=sql]|RIGHT JOIN| (=\lstinline[style=sql]|RIGHT OUTER|)}
 ...
 
 \section{Gemeinsam ein soziales Netzwerk verwalten}
