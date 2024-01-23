@@ -194,26 +194,32 @@
   \end{mdframed}
 } %
 
+% generic tcolorbox template for aufgabe, myantwort, myexample and myachtung
+\newtcolorbox{mybox}[1][]{
+	enhanced jigsaw,
+    lines before break=9,
+    breakable,
+    attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+    #1
+}
+
 % exercises and answers
 \newaliascnt{ccaufgabe}{cc}
 \aliascntresetthe{ccaufgabe}
 \newenvironment{aufgabe}[2][]
 {
   \refstepcounter{ccaufgabe}
-  \tcbset{enhanced jigsaw,
+  \tcbset{
   colback=RoyalBlue!10,
   colframe=RoyalBlue,
   colbacktitle=RoyalBlue,
-  lines before break=9,
-  breakable,
-  attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm}
   }
   \ifblank{#1}{
     % if no title is given (#1 blank)
-    \begin{tcolorbox}[title=\faPencilSquareO{} Aufgabe~\thecc]
+    \begin{mybox}[title=\faPencilSquareO{} Aufgabe~\thecc]
   }{
     % if a title is given (#1 not blank)
-    \begin{tcolorbox}[title=\faPencilSquareO{} Aufgabe~\thecc~#1]
+    \begin{mybox}[title=\faPencilSquareO{} Aufgabe~\thecc~#1]
       }
       \mdfsetup{
         innertopmargin=0pt, linecolor=DarkSeaGreen,
@@ -231,21 +237,18 @@
       \label{\mylabel}
       } %%
       {
-    \end{tcolorbox}
+    \end{mybox}
   }
 
 	\newenvironment{myachtung}
 		{
-	 \begin{tcolorbox}[enhanced jigsaw,
-	 colback=Red!10, % Background color
+	 \begin{mybox}[
+	  colback=Red!10, % Background color
 	  coltitle=white,
 	  colframe=Red!50!black,
 	  colbacktitle=Red!50!black,
-	  breakable,
-	  lines before break=9,
-	  attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm}, 
 	  title=\faWarning{} Achtung!]} %%
-	  {\end{tcolorbox}}
+	  {\end{mybox}}
 
   \newenvironment{myantwort}
   {
@@ -253,18 +256,15 @@
     \renewcommand{\AnswerHeader}{}
 	
     \begin{Answer}
-    \begin{tcolorbox}[enhanced jigsaw,
-	  colback=white, % Background color
-      opacityback=.5, % Opacity of the background
+    \begin{mybox}[
+	  colback=white,
+      opacityback=.5,
       coltitle=white,
       colframe=ForestGreen,
       colbacktitle=ForestGreen,
-      breakable, 
       opacityback=0,
-      lines before break=9,
-      attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm}, 
       title=\faCheckSquareO{} Lösungsvorschlag]} %%
-      {\end{tcolorbox}\end{Answer}}
+      {\end{mybox}\end{Answer}}
       
 	
   
@@ -272,19 +272,14 @@
   \aliascntresetthe{ccabgabe}
   \newenvironment{myabgabe}
     {
-    	  \refstepcounter{ccabgabe}
-      \begin{tcolorbox}[enhanced jigsaw,
+    \refstepcounter{ccabgabe}
+      \begin{mybox}[
       colback=Purple!10,
       colframe=Purple,
       colbacktitle=Purple,
-      breakable, 
-      lines before break=9,
-      title=\faArrowUp{} Aufgabe (Abgabe)~\thecc,
-      attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm}]
+      title=\faArrowUp{} Aufgabe (Abgabe)~\thecc]
         } %%
-        {
-      \end{tcolorbox}      
-    }
+        {\end{mybox}}
     
   \newaliascnt{ccchallenge}{cc}
   \aliascntresetthe{ccchallenge}
