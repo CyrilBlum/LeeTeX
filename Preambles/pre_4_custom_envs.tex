@@ -270,16 +270,34 @@
   
   \newaliascnt{ccabgabe}{cc}
   \aliascntresetthe{ccabgabe}
-  \newenvironment{myabgabe}
-    {
-    \refstepcounter{ccabgabe}
-      \begin{mybox}[
-      colback=Purple!10,
-      colframe=Purple,
-      colbacktitle=Purple,
-      title=\faArrowUp{} Aufgabe (Abgabe)~\thecc]
-        } %%
-        {\end{mybox}}
+  \newenvironment{myabgabe}[1][]
+  {
+      \ifblank{#1}{
+      % Default behavior: Show the counter
+            \refstepcounter{ccabgabe}
+            \begin{tcolorbox}[enhanced jigsaw,
+            colback=Purple!10,
+            colframe=Purple,
+            colbacktitle=Purple,
+            breakable, 
+            lines before break=9,
+            title=\faArrowUp{} Aufgabe (Abgabe)~\theccabgabe,
+            attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm}]
+      }{
+      % Hide the counter
+            \begin{tcolorbox}[enhanced jigsaw,
+            colback=Purple!10,
+            colframe=Purple,
+            colbacktitle=Purple,
+            breakable, 
+            lines before break=9,
+            title=\faArrowUp{} Aufgabe (Abgabe),
+            attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm}]
+      }
+  }
+  {
+      \end{tcolorbox}      
+  }
     
   \newaliascnt{ccchallenge}{cc}
   \aliascntresetthe{ccchallenge}
