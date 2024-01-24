@@ -36,29 +36,33 @@ Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
 
 
 \begin{aufgabe}{}
-\begin{itemize}
-\item Geben Sie alle Benutzernamen (\texttt{username}) aus \texttt{users} aus.
+Geben Sie alle Benutzernamen (\texttt{username}) aus \texttt{users} aus.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT username
 FROM users
 \end{lstlisting}
 \end{myantwort}
-\item Geben Sie die Benutzernamen (\texttt{username}) und echten Namen (\texttt{name}) aller Einträge aus \texttt{users} aus.
+\end{aufgabe}
+
+\begin{aufgabe}{}
+Geben Sie die Benutzernamen (\texttt{username}) und echten Namen (\texttt{name}) aller Einträge aus \texttt{users} aus.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT username, name
 FROM users
 \end{lstlisting}
 \end{myantwort}
-\item Geben Sie die Namen und Wohnorte aller Mitglieder aus.
+\end{aufgabe}
+
+\begin{aufgabe}{}
+Geben Sie die Namen und Wohnorte aller Mitglieder aus.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT username, city
 FROM users
 \end{lstlisting}
 \end{myantwort}
-\end{itemize}
 \end{aufgabe}
 
 
@@ -87,12 +91,13 @@ Nebst dem Gleich-Zeichen (im obigen Beispiel) stehen folgende Filter-Operatoren 
       \texttt{>} & grösser als ($>$) \\
       \texttt{>=} & grösser oder gleich ($\geq$)\\
       \lstinline[style=sql]|BETWEEN x AND y| & Wert zwischen \texttt{x} und \texttt{y}\\
+      \lstinline[style=sql]|IN (wert1, wert2, wert3, ...)| & Einer von mehreren möglichen Werten\\
  \end{tabular}
 \end{table}
 Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|NOT| sowie \lstinline[style=sql]|OR| verwenden. 
 %TODO: braucht es eine Erklärung zu Klammern für die richtige Verknüpfung von mehreren Bedingungen?
 
-\begin{myexample}
+\begin{myexample}\label{ex:between}
 Folgender Code gibt alle Mitglieder aus, die zwischen 172 und 174 cm gross sind.
 
 \begin{lstlisting}[style=sql]
@@ -100,12 +105,24 @@ SELECT name, centimeters, gender
 FROM users 
 WHERE centimeters BETWEEN 172 and 174 
 \end{lstlisting}
-
 \end{myexample}
 
+\begin{myexample}\label{ex:in}
+Folgender Code gibt alle den Namen und die Stadt aller Mitglieder aus, die entweder in Leipzig, Berlin oder Hamburg wohnen.
+
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users 
+WHERE city in ("Leipzig", "Berlin", "Hamburg")
+\end{lstlisting}
+\end{myexample}
+
+\begin{myachtung}
+Wie Sie anhand der Beispiele \ref{ex:in} und \ref{ex:between} sehen, spielt es in SQL eine Rolle, ob  wir Zahlen oder Text filtern. Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B. \lstinline[style=sql]|"Berlin"|). Bei Zahlen ist dies nicht nötig.
+\end{myachtung}
+
 \begin{aufgabe}{}
-\begin{itemize}
-	\item Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
+Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
 	\begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT name, gender, centimeters
@@ -114,15 +131,28 @@ WHERE gender="female"
 AND centimeters between 150 and 155
 \end{lstlisting}
 	\end{myantwort}
-\item Zeigen Sie den Namen, das Geburtsdatum sowie die Grösse aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
+	\end{aufgabe}
+	\begin{aufgabe}{}
+Zeigen Sie den Namen, das Geburtsdatum sowie die Grösse aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT name, birthday, centimeters
 FROM users
-WHERE centimeters <= 160
+WHERE gender="female"
+AND centimeters <= 160
 \end{lstlisting}
 \end{myantwort}
-\end{itemize}
+\end{aufgabe}
+
+\begin{aufgabe}{}
+Verwenden Sie die Tabelle \texttt{comments}. und geben Sie alle Kommentare aus, die Entweder vom user mit der ID 10 oder vom user mit der ID 38 stammen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT user_id, body 
+FROM comments 
+WHERE user_id IN (38, 10)
+\end{lstlisting}
+\end{myantwort}
 \end{aufgabe}
 
 
@@ -145,22 +175,22 @@ FROM users
 \end{aufgabe}
 
 \begin{aufgabe}{}
-\begin{itemize}
-\item Geben Sie jeden Wohnort nur einmal aus.
+Geben Sie jeden Wohnort nur einmal aus.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT DISTINCT city 
 FROM users
 \end{lstlisting}
 \end{myantwort}
-\item Geben Sie jede Benutzerrolle nur einmal aus. \texttt{dba} bedeutet ``Database Administrator'', also Datenbank-AdministratorIn.
+\end{aufgabe}
+\begin{aufgabe}{}
+Geben Sie jede Benutzerrolle nur einmal aus. \texttt{dba} bedeutet ``Database Administrator'', also Datenbank-AdministratorIn.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT DISTINCT role
 FROM users
 \end{lstlisting}
 \end{myantwort}
-\end{itemize}
 \end{aufgabe}
 
 
@@ -204,8 +234,7 @@ WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
 \end{aufgabe}
 
 \begin{aufgabe}{}
-\begin{itemize}
-\item Finden Sie alle Berliner die Marc heissen.
+Finden Sie alle Berliner die Marc heissen.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT name, city
@@ -213,7 +242,10 @@ FROM users
 WHERE city="Berlin" AND name LIKE "Marc%"
 \end{lstlisting}
 \end{myantwort}
-\item Finden Sie alle Linas und Lorenas.
+\end{aufgabe}
+
+\begin{aufgabe}{}
+Finden Sie alle Linas und Lorenas.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT name, city
@@ -222,8 +254,8 @@ WHERE name LIKE "Lina%"
 OR name LIKE "Lorena%"
 \end{lstlisting}
 \end{myantwort}
-\end{itemize}
 \end{aufgabe}
+
 \begin{mychallenge}
 Überprüfen Sie, welche Mitglieder im Jahr 2001 geboren sind (mit der Spalte \texttt{birthday}).
 \begin{myantwort}
@@ -313,22 +345,22 @@ FROM users
 \end{myexample}
 
 \begin{aufgabe}{}
-\begin{itemize}
-\item Zeigen Sie, wie gross das kleinste Mitglied ist.
+Zeigen Sie, wie gross das kleinste Mitglied ist.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT MIN(centimeters) AS "Kleinste Körpergrösse"
 FROM users
 \end{lstlisting}
 \end{myantwort}
-\item Zeigen Sie, wann sich zuletzt ein Mitglied registriert hat.
+\end{aufgabe}
+\begin{aufgabe}{}
+Zeigen Sie, wann sich zuletzt ein Mitglied registriert hat.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT max(created_at) AS "Zuletzt Registriert"
 FROM users
 \end{lstlisting}
 \end{myantwort}
-\end{itemize}
 \end{aufgabe}
 
 
@@ -432,8 +464,7 @@ Beobachten Sie das Resultat folgender Abfrage:
 
 
 \begin{aufgabe}{}
-\begin{itemize}
-\item Zeigen Sie nur 3 Mitglieder (nur deren Namen) an.
+Zeigen Sie nur 3 Mitglieder (nur deren Namen) an.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT name
@@ -441,7 +472,10 @@ FROM users
 LIMIT 3
 \end{lstlisting}
 \end{myantwort}
-\item Geben Sie die drei Städte mit den meisten Mitgliedern an.
+\end{aufgabe}
+
+\begin{aufgabe}{}
+Geben Sie die drei Städte mit den meisten Mitgliedern an.
 \begin{myantwort}
 \begin{lstlisting}[style=sql]
 SELECT city, COUNT(*) AS "Anzahl Mitglieder"
@@ -451,7 +485,6 @@ ORDER BY `Anzahl Mitglieder` DESC
 LIMIT 3
 \end{lstlisting}
 \end{myantwort}
-\end{itemize}
 \end{aufgabe}
 
 \begin{myabgabe}
