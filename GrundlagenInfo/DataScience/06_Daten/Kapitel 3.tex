@@ -34,7 +34,7 @@ Das \gls{ERM} des sozialen Netzwerks InstaHub ist in \cref{fig:erm-instahub} abg
   \draw (user) -- (likes) node[midway, left] {n};
   \draw (likes) -- (photo) node[midway, right] {m};
   \draw (user) -- (haspw) node[midway, left] {1};
-  \draw (haspw) -- (pwreset) node[midway, above] {0:1};
+  \draw (haspw) -- (pwreset) node[midway, above] {n};
 \end{tikzpicture}
 \caption{\gls{ERM} von InstaHub}
 \label{fig:erm-instahub}
@@ -70,15 +70,20 @@ Das \gls{ERM} des sozialen Netzwerks InstaHub ist in \cref{fig:erm-instahub} abg
 
 Die Entitäten, die meistens einer Tabelle entsprechen, werden als Rechtecke angegeben. Beziehungen stellen ``Verknüpfungen'' zwischen verschiedenen Tabellen dar und sind meist als Raute dargestellt. Die Attribute werden typischerweise als Kreise angegeben. In \cref{fig:erm-instahub} sind die Attribute einfachheitshalber nicht angegeben.
 
-Die Zahlen über den Strichen bezeichnen die \textbf{Kardinalität} der Beziehungen: Mit der Kardinalität wird ausgedrückt, wie viele Entitäten mit einer anderen Entität in Verbindung stehen können oder müssen. Die Zahlen \texttt{n} und \texttt{m} stehen dabei typischerweise für eine natürliche Zahl grösser als 1. 
+Die Zahlen über den Strichen bezeichnen die \textbf{Kardinalität} der Beziehungen: Mit der Kardinalität wird ausgedrückt, wie viele Entitäten mit einer anderen Entität in Verbindung stehen können oder müssen:
+\begin{itemize}
+\item \textbf{Eins-zu-Eins (1:1)}: Dies wird normalerweise angezeigt, indem eine ``1'' in der Nähe beider Entitäten platziert wird, die durch eine Beziehung verbunden sind. Es bedeutet, dass eine Instanz einer Entität mit genau einer Instanz einer anderen Entität assoziiert ist.
+\item \textbf{Eins-zu-Viele (1:n)}: Dies wird dargestellt, indem eine ``1'' in der Nähe der Entität auf der 'eins'-Seite der Beziehung und ein ``n'' oder ``m'' (für ``\textit{many}''=viele) in der Nähe der Entität auf der ``viele''-Seite der Beziehung platziert wird. Es zeigt an, dass eine Instanz der ersten Entität mit null, einer oder mehreren Instanzen der zweiten Entität assoziiert sein kann, aber eine Instanz der zweiten Entität nur mit einer Instanz der ersten Entität assoziiert sein kann.
+\item \textbf{Viele-zu-Viele (m:n)}: Dies wird gezeigt, indem ein ``m'' oder ``n'' in der Nähe beider Entitäten platziert wird. Es zeigt an, dass Instanzen der ersten Entität mit null, einer oder mehreren Instanzen der zweiten Entität assoziiert sein können und umgekehrt.
+\end{itemize}
 
 Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} abgelesen werden:
 \begin{itemize}
-\item Jeder User kann \texttt{n} comments schreiben.
-\item Jeder User kann \texttt{m} anderen Usern followen und von m Usern gefollowt werden.
-\item Jedes Foto kann \texttt{m} Tags haben. Jeder Tag kann auf \texttt{n} Fotos angewandt werden.
-\item Jedes Fotos gehört genau zu einem Benutzerprofil (\texttt{owns}). Jedes Benutzerprofil kann \texttt{n} Fotos veröffentlichen.
-\item Jedes Passwort-Reset kann genau 0 oder 1 User betreffen. 
+\item Jeder \texttt{user} kann beliebig viele (oder 0) \texttt{comments} schreiben.
+\item Jeder \texttt{user} kann beliebig vielen (oder 0) anderen Usern followen und kann von beliebig vielen (oder 0) andern usern gefollowt werden.
+\item Jedes Foto kann beliebig viele (oder 0) Tags haben. Jeder Tag kann auf \texttt{n} Fotos angewandt werden.
+\item Jedes Fotos gehört genau zu einem Benutzerprofil (\texttt{owns}). Jedes Benutzerprofil kann beliebig viele (oder 0) Fotos veröffentlichen.
+\item Jeder \texttt{user} kann sein Passwort beliebig viele male (oder 0 mal) zurückgesetzt haben. Jedes des \texttt{password\_resets} kann aber nur einen \texttt{user} betreffen
 \end{itemize}
 
 
