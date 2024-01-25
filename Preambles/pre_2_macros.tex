@@ -71,6 +71,8 @@
 % C++ inline
 \newcommand{\cppinline}[1]{{\lstinline[language=C++,basicstyle=\ttfamily\normalsize]{#1}}}
 
+\pgfset{foreach/parallel foreach/.style args={#1in#2via#3}{evaluate=#3 as #1 using {{#2}[#3-1]}}}
+
 % macro for creating a title page
 \newcommand{\maketitlepage}[2]{
   % arg1: title
@@ -80,34 +82,41 @@
 	\begin{center}
 	
 	      % logo
-	      \begin{figure}[H]
-	        \centering
-	        \includegraphics[height=.15\textwidth]{LeeLogo}
-	      \end{figure}
+%	      \begin{figure}[H]
+%	        \centering
+%	        \includegraphics[height=.15\textwidth]{LeeLogo}
+%	      \end{figure}
 		  \textbf{Informatik}\\
 	      % title
 	      \newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
 	      \HRule \\[0.5cm]
 	      \ifblank{#2}{
 	      % if no subtitle is given (#2 blank)
-	      {\huge #1}\\[0.5cm]
+	      {\huge #1}\\[0.5cm]  
+	      
 	      \begin{tikzpicture}[remember picture,overlay]
+	      % logo
+	      % Define the desired (x, y) coordinate	          
+	          % Create a scope for the centered image
+	              % Insert your external image
+	              \node[draw=white!10,fill=white!20, opacity=0.3] at (0,4) {\includegraphics[width=.5\textwidth]{LeeLogo}};
+	      
+	      
 	      	     	  	      	\begin{scope}[on background layer]
 	      	     	  	      	    \begin{scope}[opacity=0.25]
 	      	     	  	        % Initialize a scaling factor for the emojis
 	      	     	  	        \newcommand{\scaleFactor}{4}
 	      	     	  	        \newcommand{\spacing}{0.3} % smaller number = emojis closer together
-	      	     	  	        \newcommand{\numberEmojis}{60}
+	      	     	  	        \newcommand{\numberEmojis}{70}
 	      	     	  	        \newcommand{\rotateAngle}{10}
 	      	     	  	        \newcommand{\numberSpirals}{7}
-	      	     	  	        \foreach \nSpiral/\theemoji in {
-	      	     	  	        1/grinning-face,
-	      	     	  	        2/bar-chart,
-	      	     	  	        3/laptop,
-	      	     	  	        4/technologist,
-	      	     	  	        5/robot,
-	      	     	  	        6/woman-student,
-	      	     	  	        7/hundred-points}{
+	      	     	  	        \def\arrayA{1,2,3,4,5,6,7}
+
+				\foreach \x [count=\c,
+				  parallel foreach=\nSpiral in \arrayA via \c,
+				  parallel foreach=\theemoji in \arrayB via \c]
+				  in \arrayA
+				  {
 	      	     	  	        	% calculate the starting angle for each spiral
 	      	     	  	        	\pgfmathsetmacro{\startAngle}{\nSpiral/\numberSpirals*360}
 	      	     	  	          \foreach \i in {0,1,...,\numberEmojis} { % Increase the number for a larger spiral
