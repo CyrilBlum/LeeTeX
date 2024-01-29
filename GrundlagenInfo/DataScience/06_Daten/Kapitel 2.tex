@@ -1,4 +1,4 @@
-\section{Einzelne Tabellen abfragen mit \acrshort{SQL}}
+\section{Einzelne Tabellen abfragen mit \texorpdfstring{\gls{SQL}}{SQL}}
 
 \subsection{Syntax}
 Die Sprache \acrfull{SQL} besteht, wie wir sehen werden, aus verschiedenen Schlüsselwörtern, wie etwa \lstinline[style=sql]|SELECT|, \lstinline[style=sql]|WHERE|, \lstinline[style=sql]|GROUP BY|, \lstinline[style=sql]|ORDER BY| usw. Dazu gibt es Folgendes zu beachten:
@@ -15,7 +15,8 @@ Die Sprache \acrfull{SQL} besteht, wie wir sehen werden, aus verschiedenen Schl�
 mehrere Zeilen */
 \end{lstlisting}
 
-\subsection{Einfache Selektion: \lstinline[style=sql]|SELECT|}
+% need to add "texorpdfstring" to avoid warnings
+\subsection{Einfache Selektion: \texorpdfstring{\lstinline[style=sql]|SELECT|}{SELECT}}
 
 Mit dem Befehl ``\lstinline[style=sql]|SELECT col1,col2,... FROM tablename|'' können wir gewisse Spalten (=Kolonnen) \lstinline[style=sql]|col1,col2,...| aus einer Tabelle mit dem Namen \lstinline[style=sql]|tablename| auswählen. Wir können statt den Spaltennamen auch einfach einen Stern (\texttt{*}) tippen, um alle Kolonnen einer Tabelle zu erhalten, d.h. die gesamte Tabelle.
 
@@ -66,7 +67,7 @@ FROM users
 \end{aufgabe}
 
 
-\subsection{Selektion mit Filter: \lstinline[style=sql]|WHERE|}
+\subsection{Selektion mit Filter: \texorpdfstring{\lstinline[style=sql]|WHERE|}{WHERE}}
 Fügen wir zu einer \gls{SQL}-Abfrage den Befehl ``\lstinline[style=sql]|WHERE conditions|'' hinzu, können wir das erhaltene Resultat nach gewissen Bedingungen (\texttt{conditions}) filtern. 
 
 \begin{myexample}
@@ -97,28 +98,28 @@ Nebst dem Gleich-Zeichen (im obigen Beispiel) stehen folgende Filter-Operatoren 
 Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|NOT| sowie \lstinline[style=sql]|OR| verwenden. 
 %TODO: braucht es eine Erklärung zu Klammern für die richtige Verknüpfung von mehreren Bedingungen?
 
-\begin{myexample}\label{ex:between}
+\begin{myexample}[between]
 Folgender Code gibt alle Mitglieder aus, die zwischen 172 und 174 cm gross sind.
 
 \begin{lstlisting}[style=sql]
 SELECT name, centimeters, gender 
 FROM users 
-WHERE centimeters BETWEEN 172 and 174 
+WHERE centimeters BETWEEN 172 AND 174 
 \end{lstlisting}
 \end{myexample}
 
-\begin{myexample}\label{ex:in}
+\begin{myexample}[in]
 Folgender Code gibt alle den Namen und die Stadt aller Mitglieder aus, die entweder in Leipzig, Berlin oder Hamburg wohnen.
 
 \begin{lstlisting}[style=sql]
 SELECT name, city
 FROM users 
-WHERE city in ("Leipzig", "Berlin", "Hamburg")
+WHERE city IN ("Leipzig", "Berlin", "Hamburg")
 \end{lstlisting}
 \end{myexample}
 
 \begin{myachtung}
-Wie Sie anhand der Beispiele \ref{ex:in} und \ref{ex:between} sehen, spielt es in SQL eine Rolle, ob  wir Zahlen oder Text filtern. Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B. \lstinline[style=sql]|"Berlin"|). Bei Zahlen ist dies nicht nötig.
+Wie Sie anhand von \cref{ex:in} und \cref{ex:between} sehen, spielt es in SQL eine Rolle, ob  wir Zahlen oder Text filtern: Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B. \lstinline[style=sql]|"Berlin"| in \cref{ex:in}). Bei Zahlen ist dies nicht nötig (s. z.B. die Zahl \lstinline[style=sql]|172| in \cref{ex:between}).
 \end{myachtung}
 
 \begin{aufgabe}{}
@@ -128,7 +129,7 @@ Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
 SELECT name, gender, centimeters
 FROM users
 WHERE gender="female"
-AND centimeters between 150 and 155
+AND centimeters BEWTWWEEN 150 AND 155
 \end{lstlisting}
 	\end{myantwort}
 	\end{aufgabe}
@@ -156,7 +157,7 @@ WHERE user_id IN (38, 10)
 \end{aufgabe}
 
 
-\subsection{Eindeutige Selektion: \lstinline[style=sql]|SELECT DISTINCT|}
+\subsection{Eindeutige Selektion: \texorpdfstring{\lstinline[style=sql]|SELECT DISTINCT|}{SELECT DISTINCT}}
 
 Der Befehl \lstinline[style=sql]|DISTINCT| nach einem \lstinline[style=sql]|SELECT| führt dazu, dass jeder mögliche Wert nur einmal ausgegeben wird, d.h. Duplikate werden entfernt. 
 
@@ -194,7 +195,7 @@ FROM users
 \end{aufgabe}
 
 
-\subsection{Ungefähre Treffer (Matches): \lstinline[style=sql]|LIKE|}
+\subsection{Ungefähre Treffer (Matches): \texorpdfstring{\lstinline[style=sql]|LIKE|}{LIKE}}
 
 Mit dem Befehl \lstinline[style=sql]|LIKE| können wir die Tabelle nach Zeilen filtern, welche in einer gewissen Spalte ein bestimmtes Wort enthalten. 
 
@@ -278,7 +279,7 @@ AND city <> "Berlin"
 \end{myantwort}
 \end{myabgabe}
 
-\subsection{Sortieren: \lstinline[style=sql]|ORDER BY|}
+\subsection{Sortieren: \texorpdfstring{\lstinline[style=sql]|ORDER BY|}{ORDER BY}}
 
 Mit dem Befehl \lstinline[style=sql]|ORDER BY col ASC| oder \lstinline[style=sql]|ORDER BY col DESC| kann das Resultat einer \gls{SQL} -Abfrage nach einer bestimmten Kolonne \lstinline[style=sql]|col| sortiert werden. Mit \lstinline[style=sql]|ASC| wird das Resultat aufsteigend und mit \lstinline[style=sql]|DESC| absteigend sortiert.
 
@@ -303,8 +304,9 @@ ORDER BY username ASC
 \end{myantwort}
 \end{aufgabe}
 
-\subsection{Aggregatsfunktionen: \lstinline[style=sql]|COUNT|, \lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|, \lstinline[style=sql]|SUM|, \lstinline[style=sql]|AVG|, \lstinline[style=sql]|LENGTH|}
-\subsubsection{\lstinline[style=sql]|COUNT|}
+\subsection{Aggregatsfunktionen}
+
+\subsubsection{\texorpdfstring{\lstinline[style=sql]|COUNT|}{COUNT}}
 
 Mit dem Befehl \lstinline[style=sql]|COUNT| kann man die Anzahl Resultate zählen. 
 
@@ -331,7 +333,7 @@ WHERE city="Berlin"
 \end{myantwort}
 \end{aufgabe}
 
-\subsubsection{\lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|}
+\subsubsection{\texorpdfstring{\lstinline[style=sql]|MAX, MIN|}{MAX, MIN}}
 
 Um die höchsten, bzw. tiefsten Werte einer Kolonne zu erhalten, können die Befehle \lstinline[style=sql]|MIN| und \lstinline[style=sql]|MAX| verwendet werden:
 
@@ -364,7 +366,7 @@ FROM users
 \end{aufgabe}
 
 
-\subsubsection{\lstinline[style=sql]|SUM|}
+\subsubsection{\texorpdfstring{\lstinline[style=sql]|SUM|}{SUM}}
 
 Mit \lstinline[style=sql]|SUM| kann die Summe einer Datenserie ausgegeben werden. 
 
@@ -378,7 +380,7 @@ WHERE name LIKE "Felix%"
 \end{lstlisting}
 \end{myexample}
 
-\subsubsection{\lstinline[style=sql]|AVG|}
+\subsubsection{\texorpdfstring{\lstinline[style=sql]|AVG|}{AVG}}
 
 Mit \lstinline[style=sql]|AVG| kann der Durchschnitt einer Datenserie ausgegeben werden. 
 
@@ -392,7 +394,7 @@ WHERE name LIKE "Felix%"
 \end{lstlisting}
 \end{myexample}
 
-\subsubsection{\lstinline[style=sql]|LENGTH|}
+\subsubsection{\texorpdfstring{\lstinline[style=sql]|LENGTH|}{LENGTH}}
 
 Mit \lstinline[style=sql]|LENGTH| gibt die Anzahl Zeichen eines Texts zurück. 
 
@@ -405,7 +407,7 @@ FROM users
 \end{lstlisting}
 \end{myexample}
 
-\subsection{Gruppieren: \lstinline[style=sql]|GROUP BY|}
+\subsection{Gruppieren: \texorpdfstring{\lstinline[style=sql]|GROUP BY|}{GROUP BY}}
 Um die Resultate einer Anfrage pro Untergruppen zu sehen, kann der Befehl \lstinline[style=sql]|GROUP BY| verwendet werden.
 
 \begin{myexample}
@@ -456,7 +458,7 @@ GROUP BY city, gender
 \end{myantwort}
 \end{mychallenge}
 
-\subsection{Erste \textit{n} Zeilen: \lstinline[style=sql]|LIMIT|}
+\subsection{Erste / Letzte Zeilen: \texorpdfstring{\lstinline[style=sql]|LIMIT|}{LIMIT}}
 Mit dem Befehl \lstinline[style=sql]|LIMIT| kann das Resultat einer SQL-Abfrage auf eine gewisse Anzahl Zeilen beschränkt werden.
 
 Beobachten Sie das Resultat folgender Abfrage:
@@ -522,7 +524,7 @@ DESC LIMIT 3
 \end{myantwort}
 \end{mychallenge}
 
-\subsection{Verzweigungen: \lstinline[style=sql]|CASE WHEN|}
+\subsection{Verzweigungen: \texorpdfstring{\lstinline[style=sql]|CASE WHEN|}{CASE WHEN}}
 
 Der SQL-Befehl \lstinline[style=sql]|CASE WHEN| kann helfen, Ausdrücke basierend auf Bedingungen zu schreiben, also ähnlich wie if-elif-else-Verzweigungen in Python.
 

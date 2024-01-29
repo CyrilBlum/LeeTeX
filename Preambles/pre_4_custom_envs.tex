@@ -252,10 +252,6 @@
 
   \newenvironment{myantwort}
   {
-  	
-    \renewcommand{\AnswerHeader}{}
-	
-    \begin{Answer}
     \begin{mybox}[
 	  colback=ForestGreen!10,
       opacityback=.5,
@@ -264,7 +260,7 @@
       colbacktitle=ForestGreen,
       opacityback=1,
       title=\faCheckSquareO{} Lösungsvorschlag]} %%
-      {\end{mybox}\end{Answer}}
+      {\end{mybox}}
       
 	
   
@@ -374,12 +370,18 @@
 % Define our numbered environment within the preamble
 \newaliascnt{ccmyexample}{cc}
 \aliascntresetthe{ccmyexample}
-%\newcounter{myexample}[section]
-\newenvironment{myexample}[1][]{
-	\refstepcounter{ccbeispiel}\par\medskip
-	\noindent \textbf{Beispiel~\thecc. #1} \rmfamily
-	}
-	{\medskip}
+\ExplSyntaxOn
+    \NewDocumentEnvironment{myexample} { o }
+     {
+      \refstepcounter{ccbeispiel}
+      \IfNoValueTF{#1} {
+       	\noindent \textbf{Beispiel~\thecc.} \rmfamily
+       }{
+         \noindent \textbf{Beispiel~\thecc.} \label{ex:#1} \rmfamily
+        }
+     }
+     {\medskip}
+\ExplSyntaxOff
 
 % Beweis
 \newcommand{\beweis}[1]{\smallskip\noindent\textbf{Beweis:}\quad #1 ~$_\blacksquare$\smallskip}
