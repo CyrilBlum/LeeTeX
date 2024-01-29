@@ -195,7 +195,7 @@ FROM users
 \end{aufgabe}
 
 
-\subsection{Ungefähre Treffer (Matches): \texorpdfstring{\lstinline[style=sql]|LIKE|}{LIKE}}
+\subsection{Ungefähre Treffer: \texorpdfstring{\lstinline[style=sql]|LIKE|}{LIKE}}
 
 Mit dem Befehl \lstinline[style=sql]|LIKE| können wir die Tabelle nach Zeilen filtern, welche in einer gewissen Spalte ein bestimmtes Wort enthalten. 
 
@@ -207,10 +207,32 @@ SELECT DISTINCT city
 FROM users 
 WHERE city LIKE "Be%"
 \end{lstlisting}
-
-Das ``\%''-Zeichen dient hier als Platzhalter und bedeutet ``es kann noch weiterer Text an dieser Stelle stehen, muss aber nicht''.
-
 \end{myexample}
+
+Das ``\%''-Zeichen ist eine sogenannte \textit{wildcard} und dient hier als Platzhalter, der Folgendes bedeutet: ``es \textit{kann} noch weiterer Text an dieser Stelle stehen, \textit{muss} aber nicht'' (s. \cref{table:wildcards}).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|l}
+\textbf{Symbol} & \textbf{Bedeutung} \\ \midrule
+\lstinline[style=sql]|"%"| & Stellt null oder mehrere, beliebige Zeichen dar \\ \hline
+\lstinline[style=sql]|"_"| & Stellt ein einzelnes, beliebiges Zeichen dar \\
+\end{tabular}
+\caption{\textit{wildcards} in \gls{SQL}}
+\label{table:wildcards}
+\end{table}
+
+\begin{myexample}
+Mit folgendem Befehl erhalten wir alle Städte, die mit ``H'' beginnen und ein ``m'' an dritter Stelle haben:
+
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users 
+WHERE city LIKE "H_m%"
+\end{lstlisting}
+\end{myexample}
+
+
 
 \begin{aufgabe}{}
 Vergleichen Sie folgende drei Befehle. Überlegen Sie sich zuerst, was der Code ausgeben sollte, bevor sie die Befehle in InstaHub ausführen.
@@ -278,6 +300,17 @@ AND city <> "Berlin"
 \end{lstlisting}
 \end{myantwort}
 \end{myabgabe}
+
+\begin{mychallenge}
+Geben Sie die Grösse und den Wohnort von Juliette Amsel sowie Juliette Unger aus. Sie sollten das Zeichen \lstinline[style=sql]|"%"| nicht verwenden.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters, city
+FROM users
+WHERE name LIKE "Juliette ___e_"
+\end{lstlisting}
+\end{myantwort}
+\end{mychallenge}
 
 \subsection{Sortieren: \texorpdfstring{\lstinline[style=sql]|ORDER BY|}{ORDER BY}}
 
@@ -459,7 +492,7 @@ GROUP BY city, gender
 \end{mychallenge}
 
 \subsection{Erste / Letzte Zeilen: \texorpdfstring{\lstinline[style=sql]|LIMIT|}{LIMIT}}
-Mit dem Befehl \lstinline[style=sql]|LIMIT| kann das Resultat einer SQL-Abfrage auf eine gewisse Anzahl Zeilen beschränkt werden.
+Mit dem Befehl \lstinline[style=sql]|LIMIT| kann das Resultat einer \gls{SQL}-Abfrage auf eine gewisse Anzahl Zeilen beschränkt werden.
 
 Beobachten Sie das Resultat folgender Abfrage:
 
