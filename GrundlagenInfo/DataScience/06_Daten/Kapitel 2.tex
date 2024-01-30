@@ -93,6 +93,7 @@ Nebst dem Gleich-Zeichen (im obigen Beispiel) stehen folgende Filter-Operatoren 
       \texttt{>=} & grösser oder gleich ($\geq$)\\
       \lstinline[style=sql]|BETWEEN x AND y| & ein Wert zwischen \texttt{x} und \texttt{y}\\
       \lstinline[style=sql]|IN (wert1, wert2, ...)| & einer von mehreren möglichen Werten\\
+      \lstinline[style=sql]|IS NULL| & Wert existiert nicht\\
  \end{tabular}
 \end{table}
 Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|NOT| sowie \lstinline[style=sql]|OR| verwenden. 
@@ -118,9 +119,23 @@ WHERE city IN ("Leipzig", "Berlin", "Hamburg")
 \end{lstlisting}
 \end{myexample}
 
+
 \begin{myachtung}
 Wie Sie anhand von \cref{ex:in} und \cref{ex:between} sehen, spielt es in SQL eine Rolle, ob  wir Zahlen oder Text filtern: Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B. \lstinline[style=sql]|"Berlin"| in \cref{ex:in}). Bei Zahlen ist dies nicht nötig (s. z.B. die Zahl \lstinline[style=sql]|172| in \cref{ex:between}).
 \end{myachtung}
+
+\lstinline[style=sql]|NULL| ist ein spezielles \gls{SQL}-Wort, welches bedeutet, dass ein Feld leer ist, bzw. keinen Wert hat. \lstinline[style=sql]|NULL| muss von ``0'' unterschieden werden: Beispielsweise könnte die Zahl 0 in einer Tabelle über Bankkonten bedeuten, dass jemand 0 Franken auf seinem Konto hat, während der Wert \lstinline[style=sql]|NULL| bedeuten würde, dass keine Informationen zum Kontostand vorhanden sind.
+
+\begin{myexample}
+Folgender Code gibt die Namen aller Mitglieder an, die ihre Grösse nicht angegeben haben.
+
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters
+FROM users 
+WHERE centimeters IS NULL
+\end{lstlisting}
+\end{myexample}
+
 
 \begin{aufgabe}{}
 Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
@@ -129,7 +144,7 @@ Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
 SELECT name, gender, centimeters
 FROM users
 WHERE gender="female"
-AND centimeters BEWTWWEEN 150 AND 155
+AND centimeters BETWEEN 150 AND 155
 \end{lstlisting}
 	\end{myantwort}
 	\end{aufgabe}
