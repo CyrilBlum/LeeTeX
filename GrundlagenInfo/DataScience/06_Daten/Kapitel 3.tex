@@ -265,11 +265,25 @@ ON follows.follower_id = users.id
 WHERE name="Mika Kaufmann"
 \end{lstlisting}
 
-Wie Sie sehen, kann es hilfreich sein, im \lstinline[style=sql]|SELECT|-Ausdruck explizit die Tabelle zu nennen, von welcher eine bestimmt Kolonne stammt.
-
-Zudem können auch mehr als zwei Tabellen miteinander verbunden werden.
-
+Wie Sie sehen, kann es hilfreich sein, im \lstinline[style=sql]|SELECT|-Ausdruck explizit die Tabelle zu nennen, von welcher eine bestimmt Kolonne stammt. 
 \end{myexample}
+
+Auch alle anderen SQL-Befehle wie beispielsweise \lstinline[style=sql]|GROUP BY| können nach einem \lstinline[style=sql]|JOIN|-Befehl verwendet werden.
+
+\begin{myexample}[join-group]
+Folgender Code gibt die Anzahl Fotos für alle Benutzer aus (und sortiert die Resultate absteigend):
+\begin{lstlisting}[style=sql]
+SELECT name, COUNT(*) AS "Anzahl Fotos"
+FROM users
+JOIN photos ON users.id = photos.user_id
+GROUP BY user_id
+ORDER BY `Anzahl Fotos` DESC
+\end{lstlisting}
+\end{myexample}
+
+\begin{myachtung}
+Wie Sie in \cref{ex:join-group} sehen, können Kolonnen jederzeit mit dem Befehl \lstinline[style=sql]|AS "Neuer Name"| umbenannt werden. Allerdings gilt es zu beachten, dass Abstände im Namen eher ungünstig sind: Falls der Name später wiederverwendet wird, wie etwa in einem \lstinline[style=sql]|ORDER BY|-Ausdruck, müssen sogenannte \textit{backticks} (\lstinline[style=sql]|`|) vor und nach dem Namen gesetzt werden.
+\end{myachtung}
 
 \begin{aufgabe}{}
 Geben Sie die ids aller Fotos in der Tabelle \texttt{likes} and, die der user Mika Kaufmann gelikt hat.
