@@ -1,0 +1,226 @@
+\begin{frame}[label=title]
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+    \end{figure}
+    Informatik: Data Science und Sicherheit\\
+    \emoji{floppy-disk} \textbf{\gls{SQL} und InstaHub}
+\end{frame}
+
+\begin{frame}{Inhalte}
+\begin{itemize}
+\item Wiederholung: \gls{SQL} und Instahub
+\item Verzweigungen in \gls{SQL}
+\item Personalisierte Werbung auf sozialen Netzwerken
+\end{itemize}
+\begin{myachtung}
+Nummerierung von Aufgaben in dieser Präsentation nicht genau gleich wie im Skript.
+\end{myachtung}
+\end{frame}
+
+
+\begin{frame}[fragile]{Einfache Selektion: \lstinline[style=sql]|SELECT|}
+\begin{aufgabe}{}
+Geben Sie die Namen und Wohnorte aller Mitglieder aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username, city
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Selektion mit Filter: \lstinline[style=sql]|WHERE|}
+\begin{aufgabe}{}
+	Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, gender, centimeters
+FROM users
+WHERE gender="female"
+AND centimeters between 150 and 155
+\end{lstlisting}
+	\end{myantwort}
+\end{aufgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Eindeutige Selektion: \lstinline[style=sql]|SELECT DISTINCT|}
+\small
+\begin{aufgabe}{}
+Geben Sie jeden Wohnort nur einmal aus.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT DISTINCT city 
+FROM users
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Ungefähre Matches: \lstinline[style=sql]|LIKE|}
+\begin{myabgabe}[-]
+Wählen Sie alle Personen mit dem Namen Naomi aus, die nicht aus Berlin kommen.
+\begin{myantwort}[hide]
+\begin{lstlisting}[style=sql]
+SELECT name, city
+FROM users
+WHERE name LIKE "Naomi%"
+AND city <> "Berlin"
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Sortieren: \lstinline[style=sql]|ORDER BY|}
+\begin{aufgabe}{}
+Geben Sie alle Benutzernamen in sortierter Reihenfolge aus (a $\rightarrow$ z).
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT username
+FROM users
+ORDER BY username ASC
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregatsfunktionen: \lstinline[style=sql]|COUNT|, \lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|, \lstinline[style=sql]|SUM|, \lstinline[style=sql]|AVG|, \lstinline[style=sql]|LENGTH|}
+
+\begin{aufgabe}{}
+Geben Sie die Anzahl registrierten Mitglieder in Berlin aus. Die resultierende Spalte soll ``Registrierte Mitglieder in Berlin'' heissen.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT COUNT(*) AS "Registrierte Mitglieder in Berlin" 
+FROM users
+WHERE city="Berlin"
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+\end{frame}
+
+
+\begin{frame}[fragile]{Gruppieren: \lstinline[style=sql]|GROUP BY|}
+\begin{myabgabe}[-]
+Geben Sie die durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt aus. Zeigen Sie nur die Städte, in denen die Menschen im Durchschnitt zwischen 150 und 155 gross sind.
+\begin{myantwort}[hide]
+\begin{lstlisting}[style=sql]
+SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
+FROM users
+GROUP BY city
+HAVING `Durchschnittliche Körpergrösse` BETWEEN 150 AND 155
+\end{lstlisting}
+\end{myantwort}
+\end{myabgabe}
+\end{frame}
+
+\begin{frame}[fragile]{Erste \textit{n} Zeilen: \lstinline[style=sql]|LIMIT|}
+\begin{aufgabe}{}
+Zeigen Sie die Namen und Körpergrösse der 5 grössten Mitglieder an.
+\begin{myantwort}
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters
+FROM users
+ORDER BY centimeters DESC
+LIMIT 5
+\end{lstlisting}
+\end{myantwort}
+\end{aufgabe}
+
+\end{frame}
+
+\begin{frame}[fragile]{Verzweigungen: \lstinline[style=sql]|CASE WHEN|}
+
+\begin{lstlisting}[style=sql]
+SELECT name, centimeters,
+CASE 
+	WHEN centimeters > 179 THEN 'Gross'
+    WHEN centimeters < 179 THEN 'Klein'
+    ELSE 'Genau im Durchschnitt'
+END AS Durchschnittlich
+FROM users
+WHERE gender="male"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Werbungs-Teil von InstaHub}{\gls{ERM}}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[auto]
+  % Style for the entities
+  \tikzstyle{entity} = [rectangle, draw, thick, minimum width=1cm, minimum height=0.5cm]
+
+  % Style for the relationships
+  \tikzstyle{relationship} = [diamond, draw, thick, aspect=2, minimum width=1.5cm, minimum height=0.5cm]
+
+  % Nodes
+  \node[entity] (ads) at (0,0) {ads};
+  \node[entity] (users) at (4,0) {users};
+  \node[entity] (photos) at (10,0) {photos};
+  \node[relationship] (analytics) at (7,0) {analytics};
+
+  % Edges
+  \draw (users) -- (analytics) node[midway, above] {n};
+  \draw (analytics) -- (photos) node[midway, above] {m};
+
+  % There are no visible connections to the 'ads' entity in the provided diagram.
+  % If 'ads' is supposed to be connected to 'users' or another entity, the code should be modified accordingly.
+
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Attribute von der Tabelle \texttt{analytics}}{Was wird alles erfasst beim Browsen?}
+\begin{table}[H]
+\centering
+\begin{tabular}{r|l}
+\textbf{Feld} & \textbf{Beschreibung} \\\midrule
+\commandbox|id| & Primärschlüssel, fortlaufende Nummer \\
+\hline
+\commandbox|ip| & Die ersten drei Blöcke der IPv4-Adresse \\
+\hline
+\commandbox|device| & Desktop, mobile, tablet oder bot \\
+\hline
+\commandbox|brand_family| & Z.B. Apple oder Samsung \\
+\hline
+\commandbox|brand_model| & Z.B. GALAXY S5 \\
+\hline
+\commandbox|browser_family| & Z.B. Firefox, Chrome, Safari \\
+\hline
+\commandbox|browser_version| & Die Versionsnummer des Browsers \\
+\hline
+\commandbox|platform_family| & Z.B. Windows, Mac, Linux, iOS, Android \\
+\hline
+\commandbox|platform_version| & Die Versionsnummer der Plattform \\
+\hline
+\commandbox|user_id| & Benutzer der sich das Foto angesehen hat \\
+\hline
+\commandbox|photo_id| & Angesehenes Foto \\
+\hline
+\commandbox|created_at| & Zeitpunkt, als das Foto sich angesehen wurde \\
+\hline
+\commandbox|updated_at| & I.d.R. = \commandbox|created_at| \\
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Personalisierte Werbung}
+\begin{center}
+\Large
+\faCamera{} Beispiel auf \href{https://instahub.org}{InstaHub}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Anwendung: Personalisierte Werbung auf InstaHub}
+\textbf{Skript}, Teil 1 (auf Moodle)
+\begin{itemize}
+\item \aufgabebox{Aufgabe 2.12}\\
+\item \abgabebox{Aufgabe 2.21 $\rightarrow$ Abgabe (Moodle, L02)}
+\item \aufgabebox{Aufgabe 2.27}
+\item \abgabebox{Aufgabe 2.33}
+\item \readbox{2.2.11}
+\item \aufgabebox{Aufgabe 2.41}
+\item \challengebox{Aufgaben 2.42, 2.43}
+\end{itemize}
+\end{frame}
+

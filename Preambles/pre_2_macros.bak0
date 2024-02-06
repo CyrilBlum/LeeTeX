@@ -79,79 +79,79 @@
   % arg2: subtitle
   \begin{titlepage}
     \vspace*{0.25\textheight}
-    \begin{center}
+	\begin{center}
+	
+	      % logo
+%	      \begin{figure}[H]
+%	        \centering
+%	        \includegraphics[height=.15\textwidth]{LeeLogo}
+%	      \end{figure}
+		  \textbf{Informatik}\\
+	      % title
+	      \newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+	      \HRule \\[0.5cm]
+	      \ifblank{#2}{
+	      % if no subtitle is given (#2 blank)
+	      {\huge #1}\\[0.5cm]  
+	      
+	      \begin{tikzpicture}[remember picture,overlay]
+	      % logo
+	      % Define the desired (x, y) coordinate	          
+	          % Create a scope for the centered image
+	              % Insert your external image
+	              \node[draw=white!10,fill=white!20, opacity=0.3] at (0,4) {\includegraphics[width=.5\textwidth]{LeeLogo}};
+	      
+	      
+	      	     	  	      	\begin{scope}[on background layer]
+	      	     	  	      	    \begin{scope}[opacity=0.25]
+	      	     	  	        % Initialize a scaling factor for the emojis
+	      	     	  	        \newcommand{\scaleFactor}{4}
+	      	     	  	        \newcommand{\spacing}{0.3} % smaller number = emojis closer together
+	      	     	  	        \newcommand{\numberEmojis}{70}
+	      	     	  	        \newcommand{\rotateAngle}{10}
+	      	     	  	        \newcommand{\numberSpirals}{7}
+	      	     	  	        \def\arrayA{1,2,3,4,5,6,7}
 
-      % logo
-      %	      \begin{figure}[H]
-      %	        \centering
-      %	        \includegraphics[height=.15\textwidth]{LeeLogo}
-      %	      \end{figure}
-      \textbf{Informatik}\\
-      % title
-      \newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
-      \HRule \\[0.5cm]
-      \ifblank{#2}{
-      % if no subtitle is given (#2 blank)
-      {\huge #1}\\[0.5cm]
-
-      \begin{tikzpicture}[remember picture,overlay]
-        % logo
-        % Define the desired (x, y) coordinate	          
-        % Create a scope for the centered image
-        % Insert your external image
-        \node[draw=white!10,fill=white!20, opacity=0.3] at (0,4) {\includegraphics[width=.5\textwidth]{LeeLogo}};
-
-
-        \begin{scope}[on background layer]
-          \begin{scope}[opacity=0.25]
-            % Initialize a scaling factor for the emojis
-            \newcommand{\scaleFactor}{4}
-            \newcommand{\spacing}{0.3} % smaller number = emojis closer together
-            \newcommand{\numberEmojis}{70}
-            \newcommand{\rotateAngle}{10}
-            \newcommand{\numberSpirals}{7}
-            \def\arrayA{1,2,3,4,5,6,7}
-
-            \foreach \x [count=\c,
-              parallel foreach=\nSpiral in \arrayA via \c,
-              parallel foreach=\theemoji in \arrayB via \c]
-            in \arrayA
-            {
-              % calculate the starting angle for each spiral
-              \pgfmathsetmacro{\startAngle}{\nSpiral/\numberSpirals*360}
-              \foreach \i in {0,1,...,\numberEmojis} { % Increase the number for a larger spiral
-                  % Calculate the angle, radius, and scale for each emoji
-                  \pgfmathsetmacro{\angle}{\startAngle + \i * \rotateAngle}
-                  \pgfmathsetmacro{\radius}{\spacing * \i}
-                  \pgfmathsetmacro{\scale}{\scaleFactor * (\i/\numberEmojis)} % Adjust the divisor for size variation
-                  % Increase spacing gradually
-                  \pgfmathsetmacro{\spacing}{\spacing + \i/\numberEmojis} % Adjust the divisor for spacing variation
-                  % Select the emoji to be placed in the spiral
-                  \node[scale=\scale] at (\angle:\radius) {\emoji{\theemoji}};
-                }
-            }
-          \end{scope}
-        \end{scope}
-      \end{tikzpicture}
-      {\large Skript}\\[0.2cm]
-      }{
-      % if #2 not blank
-      {\huge #1}\\[0.5cm]
-      {\large #2}\\[0.2cm]
-      }
-
-      \HRule \\[0.5cm]
-
+				\foreach \x [count=\c,
+				  parallel foreach=\nSpiral in \arrayA via \c,
+				  parallel foreach=\theemoji in \arrayB via \c]
+				  in \arrayA
+				  {
+	      	     	  	        	% calculate the starting angle for each spiral
+	      	     	  	        	\pgfmathsetmacro{\startAngle}{\nSpiral/\numberSpirals*360}
+	      	     	  	          \foreach \i in {0,1,...,\numberEmojis} { % Increase the number for a larger spiral
+	      	     	  	            % Calculate the angle, radius, and scale for each emoji
+	      	     	  	            \pgfmathsetmacro{\angle}{\startAngle + \i * \rotateAngle}
+	      	     	  	            \pgfmathsetmacro{\radius}{\spacing * \i}
+	      	     	  	            \pgfmathsetmacro{\scale}{\scaleFactor * (\i/\numberEmojis)} % Adjust the divisor for size variation
+	      	     	  	            % Increase spacing gradually
+	      	     	  	            \pgfmathsetmacro{\spacing}{\spacing + \i/\numberEmojis} % Adjust the divisor for spacing variation
+	      	     	  	            % Select the emoji to be placed in the spiral
+	      	     	  	            \node[scale=\scale] at (\angle:\radius) {\emoji{\theemoji}};
+	      	     	  	          }
+	      	     	  	        }
+	      	     	  	        \end{scope}
+	      	     	  	        \end{scope}
+	      	     	  	      \end{tikzpicture}
+	      {\large Skript}\\[0.2cm]
+	      }{
+	      % if #2 not blank
+	      {\huge #1}\\[0.5cm]
+	      {\large #2}\\[0.2cm]
+	      }
+	
+	      \HRule \\[0.5cm]
+     
       {\large \textcopyleft{} Winterthur, \today}
-
-      %      \tikz[remember picture,overlay] \node[opacity=0.3,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{LeeLogo}};
-
+      
+%      \tikz[remember picture,overlay] \node[opacity=0.3,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{LeeLogo}};
+      
     \end{center}
   \end{titlepage}
 }
 
 \NewTotalTCBox{\commandbox}{ s v } {verbatim,colupper=white,colback=black!75!white,colframe=black} {\IfBooleanT{#1}{\textcolor{red}{\ttfamily\bfseries > }}%
-  \lstinline[language=command.com,keywordstyle=\color{blue!35!white}\bfseries]^#2^}
+     \lstinline[language=command.com,keywordstyle=\color{blue!35!white}\bfseries]^#2^}
 
 
 % Boxen für Beamer-Aufgaben, -Abgaben, -Challenges und -Aufträge, in ähnlichem Farschema wie Skript
