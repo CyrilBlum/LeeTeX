@@ -95,8 +95,8 @@ Gegeben ist die Sprache
 
               (q00110) edge [loop above] node {$0, 1$} (q00110);
       \end{tikzpicture}
-      \caption{Endlicher Automat für die Sprache $L_1$}
-      \label{fig:00110}
+      \caption{Endlicher Automat (in Diagrammform) für die Sprache $L_1$}
+      \label{fig:L1}
       \end{figure}
     \end{solution}
 \end{parts}
@@ -113,35 +113,22 @@ Gegeben ist die Sprache
     \begin{solution}
       \begin{figure}[H]
       \centering
-      \begin{tikzpicture}[->,>=stealth',shorten >=1pt,node distance=2.2cm,semithick]
+      \begin{tikzpicture}[->,>=stealth',shorten >=1pt,node distance=3.2cm,semithick]
         \tikzstyle{every state}=[fill=blue!10,draw=black,text=black,minimum size=1.4cm]
 
         \node[initial,state] (qlambda) {$q_{\lambda}$};
-        \node[state] (q0) [right of=qlambda] {$q_0$};24
-        \node[state] (q00) [right of=q0] {$q_{00}$};
-        \node[state] (q001) [right of=q00] {$q_{001}$};
-        \node[state] (q0011) [right of=q001] {$q_{0011}$};
-        \node[state, accepting] (q00110) [right of=q0011] {$q_{00110}$};
+        \node[state] (q1) [right of=qlambda] {$q_1$};
+        \node[state,accepting] (q2) [right of=q1] {$q_{2}$};
 
-        \path (qlambda) edge [loop above] node {$1$} (qlambda)
-              (qlambda) edge [below] node {$0$} (q0)
+        \path (qlambda) edge [loop above] node {$0$} (qlambda)
+              (qlambda) edge [below] node {$1$} (q1)
               
-              (q0) edge [below] node {$0$} (q00)
-              (q0) edge [above, bend right] node {$1$} (qlambda)
-              
-              (q00) edge [below] node {$1$} (q001)
-              (q00) edge [loop above] node {$0$} (q00)
-              
-              (q001) edge [below, bend left] node {$0$} (q0)
-              (q001) edge [below] node {$1$} (q0011)
+              (q1) edge [below] node {$0, 1$} (q2)
 
-              (q0011) edge [below, bend left] node {$1$} (qlambda)
-              (q0011) edge [below] node {$0$} (q00110)
-
-              (q00110) edge [loop above] node {$0, 1$} (q00110);
+              (q2) edge [loop above] node {$0, 1$} (q2);
       \end{tikzpicture}
-      \caption{Endlicher Automat für die Sprache $L_1$}
-      \label{fig:00110}
+      \caption{Endlicher Automat (in Diagrammform) für die Sprache $L_2$}
+      \label{fig:L2}
       \end{figure}
     \end{solution}
 \end{parts}
@@ -162,6 +149,30 @@ Gegeben ist die Sprache
     \end{solution}
   \vspace{5cm}
   \part[3] Beweise, dass $L_3$ \green{regulär} ist.
+    \begin{solution}
+      Um zu beweisen, dass $L_3$ regulär ist, genügt es einen endlichen Automaten für $L_3$ anzugeben. Dieser endliche
+      Automat ist in \cref{fig:L3} angegeben.
+      \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[->,>=stealth',shorten >=1pt,node distance=3.2cm,semithick]
+        \tikzstyle{every state}=[fill=blue!10,draw=black,text=black,minimum size=1.4cm]
+
+        \node[initial,state,accepting] (q0) {$q_{0}$};
+        \node[state,accepting] (q01) [right of=q0] {$q_{01}$};
+        \node[state] (qt) [right of=q01] {$q_{t}$};
+
+        \path (q0) edge [loop above] node {$0$} (q0)
+              (q0) edge [below] node {$1$} (q01)
+              
+              (q01) edge [loop above] node {$1$} (q01)
+              (q01) edge [below] node {$1$} (qt)
+
+              (qt) edge [loop above] node {$0, 1$} (qt);
+      \end{tikzpicture}
+      \caption{Endlicher Automat (in Diagrammform) für die Sprache $L_3$}
+      \label{fig:L3}
+      \end{figure}
+    \end{solution}
 \end{parts}
 \droptotalpoints
 \clearpage
@@ -175,8 +186,39 @@ Gegeben ist die Sprache
 \end{align*}
 \begin{parts}
   \part[1] Nenne genau drei verschiedene Wörter, die in $L_4$ liegen. 
+  \begin{solution}
+    \begin{align*}
+     \#, a\#a, bbabaaaab\#bbabaaaab
+    \end{align*} 
+  \end{solution}
   \vspace{5cm}
   \part[3] Zeige, dass $L_4$ \red{nicht regulär} ist.
+  \begin{solution}
+    Angenommen, $L_4$ sei regulär. Dann existiert ein endlicher Automat
+    \begin{align*}
+      A = (Q, {a,b}, \delta, q_0, F) 
+    \end{align*}
+    und $A$ akzeptiert $L_4$. Sei nun $m := \abs{Q}$, also die Anzahl der verschiedenen Zustände des endlichen Automaten
+    $A$. Wir betrachten die $m+1$ verschiedenen Wörter
+    \begin{align*}
+      a^1\#, a^2\#, \ldots, a^{m+1}\#.
+    \end{align*}
+    Dies sind mehr Worte (genau ein Wort mehr), als $A$ Zustände hat. Nach dem Schubfachprinzip (pigeonhole principle) existieren
+    $i,j\in\lrc{1,2,\ldots,m+1}$ mit $i<j$, sodass
+    \begin{align*}
+      \hat{\delta}\lr{q_0,a^i\#} = \hat{\delta}\lr{q_0,a^j\#}. 
+    \end{align*}
+    Nach der im Unterricht bewiesenen Aussage gilt
+    \begin{align*}
+      a^i\#\in L_4 \iff a^j\#\in L_4 
+    \end{align*}
+    für alle $z\in\lrc{a,b}^*$. Doch dies gilt nicht, da zum Beispiel für die Wahl $z:=a^i$
+    \begin{align*}
+      a^i\# z = a^i\# a^i\in L_4 \quad\text{aber}\quad a^j\# z = a^j\# a^i\notin L_4
+    \end{align*}
+    gilt, da $i<j$ und somit insbesondere $i\neq j$. Damit war unsere ursprüngliche Annahme falsch und es existiert kein
+    endlicher Automat für die Sprache $L_4$.
+  \end{solution}
 \end{parts}
 \droptotalpoints
 
