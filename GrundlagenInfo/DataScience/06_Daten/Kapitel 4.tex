@@ -137,6 +137,7 @@ username, email, password, name, role, is_active
     \centering
     \begin{tabular}{c|c}
       \textbf{Kolonne}    & \textbf{Wert}                       \\\midrule
+      \texttt{id}         & \texttt{300}                        \\
       \texttt{username}   & \texttt{testuser}                   \\
       \texttt{email}      & \texttt{test@test.com}              \\
       \texttt{passwort}   & \texttt{test123}                    \\
@@ -145,12 +146,13 @@ username, email, password, name, role, is_active
       \texttt{is\_active} & \texttt{1}                          \\
     \end{tabular}
   \end{table}
-  Überprüfen Sie danach, ob der Eintrag korrekt erstellt worden ist, indem Sie  \lstinline[style=sql]|SELECT * FROM users| ausführen.
-  Ihr(e) Tisch-Nachbar(in) soll nun versuchen, sich mit diesen Angaben auf Ihrer InstaHub-Seite einzuloggen.
+  Überprüfen Sie danach, ob der Eintrag korrekt erstellt worden ist, indem Sie die Daten des users \texttt{testuser} abfragen (alle Attribute). Sie können mehrere SQL-Befehle mit einem Semikolon (;) aneinanderreihen.
   \begin{myantwort}
     \begin{lstlisting}[style=sql]
-INSERT INTO users (username, email, password, name, role, is_active) 
-VALUES ('testuser', 'test@test.com', 'test123', 'Test-Vorname Test-Nachname', 'user', '1')
+INSERT INTO users (id, username, email, password, 
+				   name, role, is_active) 
+VALUES (300, 'testuser', 'test@test.com', 'test123', 'Test-Vorname Test-Nachname', 'user', '1');
+SELECT * FROM users WHERE username="testuser"
 \end{lstlisting}
   \end{myantwort}
 \end{myabgabe}
@@ -178,11 +180,15 @@ WHERE city="Berlin"
 \end{aufgabe}
 
 \begin{myabgabe}
-  Setzen Sie die Körpergrössen aller männlichen Mitglieder auf 190.
+  Setzen Sie die Körpergrössen aller männlichen Mitglieder auf 190. Überprüfen Sie die Richtigkeit Ihres Befehls, indem Sie nach Ihrem Befehl die Kolonnen für die Körpergrösse, das Geschlecht und den Name aller männlichen Mitglieder abfragen. Verwenden Sie ein Semikolon (;), um mehrere Befehle voneinander abzutrennen.
   \begin{myantwort}
     \begin{lstlisting}[style=sql]
-UPDATE users 
-SET centimeters=190 
+UPDATE users
+SET centimeters=190
+WHERE gender="male"; 
+
+SELECT centimeters, gender, name
+FROM users
 WHERE gender="male"
 \end{lstlisting}
   \end{myantwort}
