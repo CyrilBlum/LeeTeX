@@ -85,7 +85,7 @@ Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} a
 \end{itemize}
 
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Eine Schule möchte ihre Datenbankstruktur neu organisieren, um Informationen über Lehrer, Schüler und Klassen besser verwalten zu können. Die Schule hat entschieden, ein Entity-Relationship-Modell (ERM) zu entwerfen, um die Beziehungen zwischen diesen Entitäten klar darzustellen (s. \cref{fig:erm-school}). Was fällt Ihnen in diesem \gls{ERM} auf? Stimmen die Kardinalitäten?
   \begin{figure}[H]
     \centering
@@ -112,12 +112,12 @@ Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} a
     \label{fig:erm-school}
   \end{figure}
 
-  \begin{myantwort}
+  \begin{myanswer}
     Ein Lehrer kann in diesem \gls{ERM} nur 0 oder 1 Klasse unterrichten. In Realität ergibt es keinen Sinn, dass ein Lehrer keine Klasse unterrichtet, und auch die Beschränkung auf maximal eine Klasse ergibt keinen Sinn. Statt \texttt{0:1} sollte also \texttt{m} stehen zwischen ``unterrichtet'' und ``Klasse''.
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Ein Krankenhaus möchte seine Datenbankstruktur neu organisieren, um Informationen über Ärzte, Patienten und Behandlungen effizienter zu verwalten. Das Krankenhaus hat sich entschieden, ein Entity-Relationship-Modell (ERM) zu entwerfen, um die Beziehungen zwischen diesen Entitäten klar darzustellen (s. \cref{fig:erm-hospital}).
   \begin{figure}[H]
     \centering
@@ -140,10 +140,10 @@ Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} a
     \label{fig:erm-hospital}
   \end{figure}
   Bewerten Sie das dargestellte ERM. Sind die Kardinalitäten korrekt angegeben?
-  \begin{myantwort}
+  \begin{myanswer}
     In dem dargestellten ERM wird angenommen, dass ein Arzt mehrere Behandlungen durchführen kann (n:m-Beziehung) und dass jeder Patient genau eine Behandlung erhält (1:m-Beziehung). Diese Annahme ist jedoch nicht ganz realistisch, da ein Patient mehrere Behandlungen erhalten könnte. Die Kardinalität zwischen ``Patienten'' und ``behandelt'' sollte daher m sein, um anzugeben, dass ein Patient mehrere Behandlungen erhalten kann.
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 
 \clearpage
@@ -270,7 +270,7 @@ Wie Sie sehen, kann es hilfreich sein, im \lstinline[style=sql]|SELECT|-Ausdruck
 
 Auch alle anderen SQL-Befehle wie beispielsweise \lstinline[style=sql]|GROUP BY| können nach einem \lstinline[style=sql]|JOIN|-Befehl verwendet werden.
 
-\begin{myexample}[join-group]
+\begin{myexample}\label{myexample:join-group}
 Folgender Code gibt die Anzahl Fotos für alle Benutzer aus (und sortiert die Resultate absteigend):
 \begin{lstlisting}[style=sql]
 SELECT name, COUNT(*) AS "Anzahl Fotos"
@@ -281,13 +281,13 @@ ORDER BY `Anzahl Fotos` DESC
 \end{lstlisting}
 \end{myexample}
 
-\begin{myachtung}
-  Wie Sie in \cref{ex:join-group} sehen, können Kolonnen jederzeit mit dem Befehl \lstinline[style=sql]|AS "Neuer Name"| umbenannt werden. Allerdings gilt es zu beachten, dass Abstände im Namen eher ungünstig sind: Falls der Name später wiederverwendet wird, wie etwa in einem \lstinline[style=sql]|ORDER BY|-Ausdruck, müssen sogenannte \textit{backticks} (\lstinline[style=sql]|`|) vor und nach dem Namen gesetzt werden.
-\end{myachtung}
+\begin{mycaution}
+  Wie Sie in \cref{myexample:join-group} sehen, können Kolonnen jederzeit mit dem Befehl \lstinline[style=sql]|AS "Neuer Name"| umbenannt werden. Allerdings gilt es zu beachten, dass Abstände im Namen eher ungünstig sind: Falls der Name später wiederverwendet wird, wie etwa in einem \lstinline[style=sql]|ORDER BY|-Ausdruck, müssen sogenannte \textit{backticks} (\lstinline[style=sql]|`|) vor und nach dem Namen gesetzt werden.
+\end{mycaution}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie die ids aller Fotos in der Tabelle \texttt{likes} and, die der user Mika Kaufmann gelikt hat.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT photo_id, user_id, name 
 FROM likes 
@@ -295,11 +295,11 @@ INNER JOIN users
 ON likes.user_id=users.id 
 WHERE name="Mika Kaufmann"
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
-\begin{mychallenge}{}
+  \end{myanswer}
+\end{myexercise}
+\begin{mychallenge}
   Challenge: Erstellen Sie eine Liste, wo für jedes Hamburger Mitglied die Anzahl seiner Fotos aufgeführt ist. Die Liste soll in absteigender Reihenfolge die Anzahl Fotos pro Mitglieder auflisten.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT city, username, COUNT(*) AS "Anzahl Fotos" 
 FROM photos 
@@ -308,24 +308,24 @@ WHERE city="Hamburg"
 GROUP BY username 
 ORDER BY `Anzahl Fotos` DESC
 \end{lstlisting}
-  \end{myantwort}
+  \end{myanswer}
 \end{mychallenge}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Es soll Werbung an alle Strandurlauber verschickt werden. Finden Sie alle Photos die den Hashtag \texttt{meer} enthalten. Geben Sie den Namen, die Emailadresse, den Geburtstag und die Stadt der zugehörigen Benutzer aus.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT description, name, email, birthday, city  
 FROM photos 
 JOIN users on photos.user_id = users.id 
 WHERE description LIKE "%#meer%"
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{myabgabe}
+\begin{mysubmission}
   Geben Sie die 5 User mit den meisten Followern aus.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, COUNT(*) AS "Followers"
 FROM users JOIN follows on follows.following_id = users.id 
@@ -333,12 +333,12 @@ GROUP BY name
 ORDER BY Followers DESC
 LIMIT 5
 \end{lstlisting}
-  \end{myantwort}
-\end{myabgabe}
+  \end{myanswer}
+\end{mysubmission}
 
 \begin{mychallenge}
   Finden Sie heraus, welche 5 Fotos am meisten Likes erhalten haben. Geben Sie den Benutzernamen und Namen der Ersteller der Fotos an, die id der Fotos sowie die Anzahl Likes.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT users.username, users.name AS "Name", photos.id AS "Photo id", COUNT(likes.photo_id) AS "Likes"
 FROM users
@@ -348,7 +348,7 @@ GROUP BY users.name, likes.photo_id
 ORDER BY Likes DESC
 LIMIT 5
 \end{lstlisting}
-  \end{myantwort}
+  \end{myanswer}
 
 \end{mychallenge}
 
@@ -374,9 +374,9 @@ Ein \lstinline[style=sql]|LEFT JOIN|, oder \lstinline[style=sql]|LEFT OUTER JOIN
   \label{fig:venn-left-join}
 \end{figure}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Diejenigen BenutzerInnen, die noch keine Fotos hochgeladen habe, sollen per Email dazu aufgefordert werden, Fotos hochzuladen. Finden Sie alle users, die noch keine Fotos hochgeladen haben. Geben Sie deren Name und Email-Adresse aus. Verwenden Sie statt \lstinline[style=sql]|WHERE| den Befehl \lstinline[style=sql]|HAVING|.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT users.name, users.email, COUNT(photos.id) AS "Anzahl Fotos"
 FROM users
@@ -384,8 +384,8 @@ LEFT JOIN photos ON photos.user_id = users.id
 GROUP BY users.name
 HAVING `Anzahl Fotos` = 0
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 \subsection{\texorpdfstring{\lstinline[style=sql]|RIGHT JOIN| (=\lstinline[style=sql]|RIGHT OUTER JOIN|)}{RIGHT JOIN (=RIGHT OUTER JOIN)}}
 Ein \lstinline[style=sql]|RIGHT JOIN| funktioniert analog zu einem \lstinline[style=sql]|LEFT JOIN| (s. \cref{fig:venn-right-join}).
@@ -427,6 +427,6 @@ Bei einem \lstinline[style=sql]|FULL (OUTER) JOIN| werden alle Werte aus der ers
 \end{figure}
 In InstaHub funktioniert der \lstinline[style=sql]|FULL (OUTER) JOIN| nicht, weshalb es an dieser Stelle keine Übungen hierzu gibt.
 
-\begin{myabgabe}
+\begin{mysubmission}
 Lösen Sie Aufgaben 1-10 unter folgendem Link: \url{https://sql-tutorial.de/home/uebungen.php?lektion=3}.
-\end{myabgabe}
+\end{mysubmission}

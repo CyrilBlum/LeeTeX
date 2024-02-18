@@ -62,13 +62,13 @@ Zudem können folgende Eingeschaften für Kolonnen angegeben werden:
 \subsection{Tabellen löschen: \texorpdfstring{\lstinline[style=sql]|DROP table|}{DROP table}}
 Mit dem Befehl \lstinline[style=sql]|DROP TABLE tabellenname| kann eine Tabelle komplett löschen.
 
-\begin{myachtung}
+\begin{mycaution}
   Dieser Schritt ist irreversibel. Falls Sie eine Tabelle irrtümlich löschen, geben Sie mir Bescheid, damit ich Ihre Datenbank zurücksetzen kann.
-\end{myachtung}
+\end{mycaution}
 
-\begin{aufgabe}{aufg:a-sql-insert}
+\begin{myexercise}\label{aufg:a-sql-insert}
   Erstellen Sie eine Tabelle \texttt{users2} mit denselben Eigenschaften wie \texttt{users} (s. Beispiel \ref{ex:sql-create})
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 CREATE TABLE users2 (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -90,17 +90,17 @@ CREATE TABLE users2 (
   `updated_at` timestamp NULL DEFAULT NULL
 )
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Löschen Sie danach die Tabelle \texttt{users2} wieder.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 DROP TABLE users2
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 
 \subsection{Daten einfügen: \texorpdfstring{\lstinline[style=sql]|INSERT|}{INSERT}}
@@ -123,15 +123,15 @@ VALUES ('guenther37', 'guenther@instahub.test', '12345', 'Günther Müller', 'G�
 Wie Sie sehen, wird zuerst die Tabelle (\texttt{users}) aufgelistet, danach die Kolonnen und schliesslich die Werte.
 \end{myexample}
 
-\begin{aufgabe}{aufg:sql-insert}
+\begin{myexercise}[aufg:sql-insert]
   Für welche Kolonnen müssen für einen neuen Benutzer immer die Werte mitgegeben werden? S. die Erklärungen zu \lstinline[style=sql]|NOT NULL| und \lstinline[style=sql]|DEFAULT| in \cref{subsec:create-table}.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{verbatim}
 username, email, password, name, role, is_active
 \end{verbatim}
-  \end{myantwort}
-\end{aufgabe}
-\begin{myabgabe}
+  \end{myanswer}
+\end{myexercise}
+\begin{mysubmission}
   Erstellen Sie einen neuen Eintrag in der Tabelle \texttt{users} mit folgenden Eigenschaften:
   \begin{table}[H]
     \centering
@@ -147,15 +147,15 @@ username, email, password, name, role, is_active
     \end{tabular}
   \end{table}
   Überprüfen Sie danach, ob der Eintrag korrekt erstellt worden ist, indem Sie die Daten des users \texttt{testuser} abfragen (alle Attribute). Sie können mehrere SQL-Befehle mit einem Semikolon (;) aneinanderreihen.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 INSERT INTO users (id, username, email, password, 
 				   name, role, is_active) 
 VALUES (300, 'testuser', 'test@test.com', 'test123', 'Test-Vorname Test-Nachname', 'user', '1');
 SELECT * FROM users WHERE username="testuser"
 \end{lstlisting}
-  \end{myantwort}
-\end{myabgabe}
+  \end{myanswer}
+\end{mysubmission}
 
 \subsection{Daten verändern: \texorpdfstring{\lstinline[style=sql]|UPDATE|}{UPDATE}}
 
@@ -167,21 +167,21 @@ SET kolonne1 = wert1, kolonne2=wert2, ...
 WHERE bedingung(en)
 \end{lstlisting}
 
-\begin{aufgabe}{aufgabe:evalPoly}
+\begin{myexercise}{aufgabe:evalPoly}
 
   Ersetzen Sie die Stadt ``Berlin'' überall durch ``Bern''
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 UPDATE users
 SET city="Bern"
 WHERE city="Berlin"
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{myabgabe}
+\begin{mysubmission}
   Setzen Sie die Körpergrössen aller männlichen Mitglieder auf 190. Überprüfen Sie die Richtigkeit Ihres Befehls, indem Sie nach Ihrem Befehl die Kolonnen für die Körpergrösse, das Geschlecht und den Name aller männlichen Mitglieder abfragen. Verwenden Sie ein Semikolon (;), um mehrere Befehle voneinander abzutrennen.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 UPDATE users
 SET centimeters=190
@@ -191,8 +191,8 @@ SELECT centimeters, gender, name
 FROM users
 WHERE gender="male"
 \end{lstlisting}
-  \end{myantwort}
-\end{myabgabe}
+  \end{myanswer}
+\end{mysubmission}
 
 \subsection{Einträge löschen: \texorpdfstring{\lstinline[style=sql]|DELETE FROM|}{DELETE FROM}}
 Mit dem Befehl \lstinline[style=sql]|DELETE FROM| können Einträge aus einer Tabelle gelöscht werden.
@@ -209,16 +209,16 @@ WHERE username="guenther37"
 \end{lstlisting}
 \end{myexample}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Löschen Sie den Eintrag, den Sie in \cref{aufg:a-sql-insert} erstellt haben. Überprüfen Sie, ob der Eintrag verschwunden ist, indem Sie danach \lstinline[style=sql]|SELECT * FROM users| ausführen.
   %TODO Referenz stimmt nicht
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 DELETE FROM users
 WHERE username="testuser"
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 \section{Weiterführende Links und Übungen}
 Folgende Links dienen der Vertiefung in das Thema \gls{SQL} (und der Prüfungsvorbereitung).

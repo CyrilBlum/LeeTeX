@@ -13,119 +13,119 @@
     \item Verzweigungen in \gls{SQL}
     \item Personalisierte Werbung auf sozialen Netzwerken
   \end{itemize}
-  \begin{myachtung}
+  \begin{mycaution}
     Nummerierung von Aufgaben in dieser Präsentation nicht genau gleich wie im Skript.
-  \end{myachtung}
+  \end{mycaution}
 \end{frame}
 
 
 \begin{frame}[fragile]{Einfache Selektion: \lstinline[style=sql]|SELECT|}
-  \begin{aufgabe}{}
+  \begin{myexercise}
     Geben Sie die Namen und Wohnorte aller Mitglieder aus.
-    \begin{myantwort}
+    \begin{myanswer}
       \begin{lstlisting}[style=sql]
 SELECT username, city
 FROM users
 \end{lstlisting}
-    \end{myantwort}
-  \end{aufgabe}
+    \end{myanswer}
+  \end{myexercise}
 \end{frame}
 
 \begin{frame}[fragile]{Selektion mit Filter: \lstinline[style=sql]|WHERE|}
-  \begin{aufgabe}{}
+  \begin{myexercise}
     Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
-    \begin{myantwort}
+    \begin{myanswer}
       \begin{lstlisting}[style=sql]
 SELECT name, gender, centimeters
 FROM users
 WHERE gender="female"
 AND centimeters between 150 and 155
 \end{lstlisting}
-    \end{myantwort}
-  \end{aufgabe}
+    \end{myanswer}
+  \end{myexercise}
 \end{frame}
 
 \begin{frame}[fragile]{Eindeutige Selektion: \lstinline[style=sql]|SELECT DISTINCT|}
   \small
-  \begin{aufgabe}{}
+  \begin{myexercise}
     Geben Sie jeden Wohnort nur einmal aus.
-    \begin{myantwort}
+    \begin{myanswer}
       \begin{lstlisting}[style=sql]
 SELECT DISTINCT city 
 FROM users
 \end{lstlisting}
-    \end{myantwort}
-  \end{aufgabe}
+    \end{myanswer}
+  \end{myexercise}
 \end{frame}
 
 \begin{frame}[fragile]{Ungefähre Matches: \lstinline[style=sql]|LIKE|}
-  \begin{myabgabe}[-]
+  \begin{mysubmission}
     Wählen Sie alle Personen mit dem Namen Naomi aus, die nicht aus Berlin kommen.
-    \begin{myantwort}[hide]
+    \begin{myanswer}[hide]
       \begin{lstlisting}[style=sql]
 SELECT name, city
 FROM users
 WHERE name LIKE "Naomi%"
 AND city <> "Berlin"
 \end{lstlisting}
-    \end{myantwort}
-  \end{myabgabe}
+    \end{myanswer}
+  \end{mysubmission}
 \end{frame}
 
 \begin{frame}[fragile]{Sortieren: \lstinline[style=sql]|ORDER BY|}
-  \begin{aufgabe}{}
+  \begin{myexercise}
     Geben Sie alle Benutzernamen in sortierter Reihenfolge aus (a $\rightarrow$ z).
-    \begin{myantwort}
+    \begin{myanswer}
       \begin{lstlisting}[style=sql]
 SELECT username
 FROM users
 ORDER BY username ASC
 \end{lstlisting}
-    \end{myantwort}
-  \end{aufgabe}
+    \end{myanswer}
+  \end{myexercise}
 \end{frame}
 
 \begin{frame}[fragile]{Aggregatsfunktionen: \lstinline[style=sql]|COUNT|, \lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|, \lstinline[style=sql]|SUM|, \lstinline[style=sql]|AVG|, \lstinline[style=sql]|LENGTH|}
 
-  \begin{aufgabe}{}
+  \begin{myexercise}
     Geben Sie die Anzahl registrierten Mitglieder in Berlin aus. Die resultierende Spalte soll ``Registrierte Mitglieder in Berlin'' heissen.
-    \begin{myantwort}
+    \begin{myanswer}
       \begin{lstlisting}[style=sql]
 SELECT COUNT(*) AS "Registrierte Mitglieder in Berlin" 
 FROM users
 WHERE city="Berlin"
 \end{lstlisting}
-    \end{myantwort}
-  \end{aufgabe}
+    \end{myanswer}
+  \end{myexercise}
 \end{frame}
 
 
 \begin{frame}[fragile]{Gruppieren: \lstinline[style=sql]|GROUP BY|}
-  \begin{myabgabe}[-]
+  \begin{mysubmission}
     Geben Sie die durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt aus. Zeigen Sie nur die Städte, in denen die Menschen im Durchschnitt zwischen 150 und 155 gross sind.
-    \begin{myantwort}[hide]
+    \begin{myanswer}[hide]
       \begin{lstlisting}[style=sql]
 SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
 FROM users
 GROUP BY city
 HAVING `Durchschnittliche Körpergrösse` BETWEEN 150 AND 155
 \end{lstlisting}
-    \end{myantwort}
-  \end{myabgabe}
+    \end{myanswer}
+  \end{mysubmission}
 \end{frame}
 
 \begin{frame}[fragile]{Erste \textit{n} Zeilen: \lstinline[style=sql]|LIMIT|}
-  \begin{aufgabe}{}
+  \begin{myexercise}
     Zeigen Sie die Namen und Körpergrösse der 5 grössten Mitglieder an.
-    \begin{myantwort}
+    \begin{myanswer}
       \begin{lstlisting}[style=sql]
 SELECT name, centimeters
 FROM users
 ORDER BY centimeters DESC
 LIMIT 5
 \end{lstlisting}
-    \end{myantwort}
-  \end{aufgabe}
+    \end{myanswer}
+  \end{myexercise}
 
 \end{frame}
 

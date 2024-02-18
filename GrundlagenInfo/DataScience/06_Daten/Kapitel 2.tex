@@ -36,35 +36,35 @@ Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
 \end{myexample}
 
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie alle Benutzernamen (\texttt{username}) aus \texttt{users} aus.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT username
 FROM users
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie die Benutzernamen (\texttt{username}) und echten Namen (\texttt{name}) aller Einträge aus \texttt{users} aus.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT username, name
 FROM users
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie die Namen und Wohnorte aller Mitglieder aus.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT username, city
 FROM users
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 
 \subsection{Selektion mit Filter: \texorpdfstring{\lstinline[style=sql]|WHERE|}{WHERE}}
@@ -99,7 +99,7 @@ Nebst dem Gleich-Zeichen (im obigen Beispiel) stehen folgende Filter-Operatoren 
 Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|NOT| sowie \lstinline[style=sql]|OR| verwenden.
 %TODO: braucht es eine Erklärung zu Klammern für die richtige Verknüpfung von mehreren Bedingungen?
 
-\begin{myexample}[between]
+\begin{myexample}\label{myexample:between}
 Folgender Code gibt alle Mitglieder aus, die zwischen 172 und 174 cm gross sind.
 
 \begin{lstlisting}[style=sql]
@@ -109,7 +109,7 @@ WHERE centimeters BETWEEN 172 AND 174
 \end{lstlisting}
 \end{myexample}
 
-\begin{myexample}[in]
+\begin{myexample}\label{myexample:in}
 Folgender Code gibt alle den Namen und die Stadt aller Mitglieder aus, die entweder in Leipzig, Berlin oder Hamburg wohnen.
 
 \begin{lstlisting}[style=sql]
@@ -120,9 +120,12 @@ WHERE city IN ("Leipzig", "Berlin", "Hamburg")
 \end{myexample}
 
 
-\begin{myachtung}
-  Wie Sie anhand von \cref{ex:in} und \cref{ex:between} sehen, spielt es in SQL eine Rolle, ob  wir Zahlen oder Text filtern: Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B. \lstinline[style=sql]|"Berlin"| in \cref{ex:in}). Bei Zahlen ist dies nicht nötig (s. z.B. die Zahl \lstinline[style=sql]|172| in \cref{ex:between}).
-\end{myachtung}
+\begin{mycaution}
+  Wie Sie anhand von \cref{myexample:in} und \cref{myexample:between} sehen, spielt es in SQL eine Rolle, ob  wir Zahlen oder
+  Text filtern: Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B.
+  \lstinline[style=sql]|"Berlin"| in \cref{myexample:in}). Bei Zahlen ist dies nicht nötig (s. z.B. die Zahl
+  \lstinline[style=sql]|172| in \cref{myexample:between}).
+\end{mycaution}
 
 \lstinline[style=sql]|NULL| ist ein spezielles \gls{SQL}-Wort, welches bedeutet, dass ein Feld leer ist, bzw. keinen Wert hat. \lstinline[style=sql]|NULL| muss von ``0'' unterschieden werden: Beispielsweise könnte die Zahl 0 in einer Tabelle über Bankkonten bedeuten, dass jemand 0 Franken auf seinem Konto hat, während der Wert \lstinline[style=sql]|NULL| bedeuten würde, dass keine Informationen zum Kontostand vorhanden sind.
 
@@ -137,46 +140,46 @@ WHERE centimeters IS NULL
 \end{myexample}
 
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, gender, centimeters
 FROM users
 WHERE gender="female"
 AND centimeters BETWEEN 150 AND 155
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
-\begin{aufgabe}{}
+  \end{myanswer}
+\end{myexercise}
+\begin{myexercise}
   Zeigen Sie den Namen, das Geburtsdatum sowie die Grösse aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, birthday, centimeters
 FROM users
 WHERE gender="female"
 AND centimeters <= 160
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Verwenden Sie die Tabelle \texttt{comments}. und geben Sie alle Kommentare aus, die Entweder vom user mit der ID 10 oder vom user mit der ID 38 stammen.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT user_id, body 
 FROM comments 
 WHERE user_id IN (38, 10)
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 
 \subsection{Eindeutige Selektion: \texorpdfstring{\lstinline[style=sql]|SELECT DISTINCT|}{SELECT DISTINCT}}
 
 Der Befehl \lstinline[style=sql]|DISTINCT| nach einem \lstinline[style=sql]|SELECT| führt dazu, dass jeder mögliche Wert nur einmal ausgegeben wird, d.h. Duplikate werden entfernt.
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Vergleichen Sie folgende zwei Befehle. Überlegen Sie sich zuerst, was der Code ausgeben sollte, bevor Sie die Befehle in InstaHub ausführen.
 
  \begin{lstlisting}[style=sql]
@@ -188,26 +191,26 @@ FROM users
 SELECT DISTINCT gender
 FROM users
 \end{lstlisting}
-\end{aufgabe}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie jeden Wohnort nur einmal aus.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT DISTINCT city 
 FROM users
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
-\begin{aufgabe}{}
+  \end{myanswer}
+\end{myexercise}
+\begin{myexercise}
   Geben Sie jede Benutzerrolle nur einmal aus. \texttt{dba} bedeutet ``Database Administrator'', also Datenbank-AdministratorIn.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT DISTINCT role
 FROM users
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 
 \subsection{Ungefähre Treffer: \texorpdfstring{\lstinline[style=sql]|LIKE|}{LIKE}}
@@ -249,7 +252,7 @@ WHERE city LIKE "H_m%"
 
 
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Vergleichen Sie folgende drei Befehle. Überlegen Sie sich zuerst, was der Code ausgeben sollte, bevor sie die Befehle in InstaHub ausführen.
 
   \begin{lstlisting}[style=sql]
@@ -269,62 +272,62 @@ SELECT username, city
 FROM users 
 WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
 \end{lstlisting}
-\end{aufgabe}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Finden Sie alle Berliner die Marc heissen.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, city
 FROM users
 WHERE city="Berlin" AND name LIKE "Marc%"
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Finden Sie alle Linas und Lorenas.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, city
 FROM users
 WHERE name LIKE "Lina%"
 OR name LIKE "Lorena%"
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 \begin{mychallenge}
   Überprüfen Sie, welche Mitglieder im Jahr 2001 geboren sind (mit der Spalte \texttt{birthday}).
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, birthday
 FROM users
 WHERE birthday LIKE "2001%"
 \end{lstlisting}
-  \end{myantwort}
+  \end{myanswer}
 \end{mychallenge}
-\begin{myabgabe}
+\begin{mysubmission}
   Wählen Sie alle Personen mit dem Namen \textit{Naomi} aus, die nicht aus Berlin kommen.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, city
 FROM users
 WHERE name LIKE "Naomi%"
 AND city <> "Berlin"
 \end{lstlisting}
-  \end{myantwort}
-\end{myabgabe}
+  \end{myanswer}
+\end{mysubmission}
 
 \begin{mychallenge}
   Geben Sie die Grösse und den Wohnort von Juliette Amsel sowie Juliette Unger aus. Sie sollten das Zeichen \lstinline[style=sql]|"%"| nicht verwenden.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, centimeters, city
 FROM users
 WHERE name LIKE "Juliette ___e_"
 \end{lstlisting}
-  \end{myantwort}
+  \end{myanswer}
 \end{mychallenge}
 
 \subsection{Sortieren: \texorpdfstring{\lstinline[style=sql]|ORDER BY|}{ORDER BY}}
@@ -341,20 +344,20 @@ ORDER BY city DESC
 \end{lstlisting}
 \end{myexample}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie alle Benutzernamen in sortierter Reihenfolge aus (a $\rightarrow$ z).
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT username
 FROM users
 ORDER BY username ASC
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{myabgabe}
+\begin{mysubmission}
 Lösen Sie Aufgaben 1-11 unter folgendem Link: \url{https://sql-tutorial.de/home/uebungen.php?lektion=1}. Geben Sie danach auf Moodle die Abgabe unter ``Übungen 1 (Einfache Selektion)'' ab.
-\end{myabgabe}
+\end{mysubmission}
 
 \subsection{Aggregatsfunktionen}
 
@@ -374,16 +377,16 @@ SELECT COUNT(*) AS "Registrierte Mitglieder"
 FROM users
 \end{lstlisting}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie die Anzahl registrierten Mitglieder in Berlin aus. Die resultierende Spalte soll ``Registrierte Mitglieder in Berlin'' heissen.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT COUNT(*) AS "Registrierte Mitglieder in Berlin" 
 FROM users
 WHERE city="Berlin"
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 \subsubsection{\texorpdfstring{\lstinline[style=sql]|MAX, MIN|}{MAX, MIN}}
 
@@ -398,24 +401,24 @@ FROM users
 \end{lstlisting}
 \end{myexample}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Zeigen Sie, wie gross das kleinste Mitglied ist.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT MIN(centimeters) AS "Kleinste Körpergrösse"
 FROM users
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
-\begin{aufgabe}{}
+  \end{myanswer}
+\end{myexercise}
+\begin{myexercise}
   Zeigen Sie, wann sich zuletzt ein Mitglied registriert hat.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT max(created_at) AS "Zuletzt Registriert"
 FROM users
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 
 \subsubsection{\texorpdfstring{\lstinline[style=sql]|SUM|}{SUM}}
@@ -459,9 +462,9 @@ FROM users
 \end{lstlisting}
 \end{myexample}
 
-\begin{myabgabe}
+\begin{mysubmission}
 Lösen Sie Aufgaben 1-6 unter folgendem Link: \url{https://sql-tutorial.de/home/uebungen.php?lektion=2}. Geben Sie danach auf Moodle die Abgabe unter ``Übungen 2 (Aggregatsfunktionen)'' ab.
-\end{myabgabe}
+\end{mysubmission}
 
 \subsection{Gruppieren: \texorpdfstring{\lstinline[style=sql]|GROUP BY|}{GROUP BY}}
 Um die Resultate einer Anfrage pro Untergruppen zu sehen, kann der Befehl \lstinline[style=sql]|GROUP BY| verwendet werden.
@@ -491,26 +494,26 @@ Falls nach einem \lstinline[style=sql]|GROUP BY| die Resultate noch weiter einge
 
 \begin{mychallenge}
   Geben Sie die durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt aus. Zeigen Sie nur die Städte, in denen die Menschen im Durchschnitt zwischen 150 und 155 gross sind.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
 FROM users
 GROUP BY city
 HAVING `Durchschnittliche Körpergrösse` BETWEEN 150 AND 155
 \end{lstlisting}
-  \end{myantwort}
+  \end{myanswer}
 \end{mychallenge}
 
 \begin{mychallenge}
   Geben Sie die maximale Körpergrösse aus, gruppiert nach Stadt und Geschlecht, für alle Städte, die mit dem Buchstaben "B" beginnen
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT city, gender, MAX(centimeters) AS "Grösste Körpergrösse"
 FROM users
 WHERE city LIKE "B%"
 GROUP BY city, gender
 \end{lstlisting}
-  \end{myantwort}
+  \end{myanswer}
 \end{mychallenge}
 
 \subsection{Erste / Letzte Zeilen: \texorpdfstring{\lstinline[style=sql]|LIMIT|}{LIMIT}}
@@ -520,20 +523,20 @@ Beobachten Sie das Resultat folgender Abfrage:
 
 
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Zeigen Sie nur 3 Mitglieder (nur deren Namen) an.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name
 FROM users
 LIMIT 3
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Geben Sie die drei Städte mit den meisten Mitgliedern an.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT city, COUNT(*) AS "Anzahl Mitglieder"
 FROM users
@@ -541,20 +544,20 @@ GROUP BY city
 ORDER BY `Anzahl Mitglieder` DESC
 LIMIT 3
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Zeigen Sie die Namen und Körpergrösse der 5 grössten Mitglieder an.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, centimeters
 FROM users
 ORDER BY centimeters DESC
 LIMIT 5
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 \begin{mychallenge}
   Geben Sie die Stadtnamen aus, wo die meisten Mitglieder mit einem ``b'' im Namen wohnen (nur die ersten drei Zeilen).
@@ -567,7 +570,7 @@ LIMIT 5
     \item Verwenden Sie den \lstinline[style=sql]|LIMIT|-Befehl erst am Schluss
   \end{itemize}
 
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT city, COUNT(*) AS "Mitglieder"
 FROM users 
@@ -576,12 +579,12 @@ GROUP by city
 ORDER BY Mitglieder
 DESC LIMIT 3
 \end{lstlisting}
-  \end{myantwort}
+  \end{myanswer}
 \end{mychallenge}
 
-\begin{myabgabe}
+\begin{mysubmission}
 Lösen Sie Aufgaben 1-5 unter folgendem Link: \url{https://sql-tutorial.de/home/uebungen.php?lektion=4}. Geben Sie danach auf Moodle die Abgabe unter ``Übungen 3 (\lstinline[style=sql]|GROUP BY|)'' ab.
-\end{myabgabe}
+\end{mysubmission}
 
 \subsection{Verzweigungen: \texorpdfstring{\lstinline[style=sql]|CASE WHEN|}{CASE WHEN}}
 
@@ -602,9 +605,9 @@ WHERE gender="male"
 \end{lstlisting}
 \end{myexample}
 
-\begin{aufgabe}
+\begin{myexercise}
   Berechnen Sie eine neue Kolonne, die den Text ``langer Name'' enthält, falls ein Name länger als 20 Zeichen lang ist, und ansonsten ``kurzer Name''. BenutzerInnen mit langem Namen sollen zuoberst stehen. Zeigen Sie nur die ersten 5 Zeilen.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, LENGTH(name),
 CASE
@@ -615,8 +618,8 @@ FROM users
 ORDER BY `Langer oder kurzer Name` DESC
 LIMIT 5
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 \subsection{Anwendung: Personalisierte Werbung auf InstaHub}
 
@@ -721,9 +724,9 @@ Diese Abfrage wird nun auf der Webseite für jedes Foto ausgeführt, um zu sehen
 
 Wir sehen zuerst, dass die Kolonne \texttt{description} der Tabelle \texttt{photos}, also die Kolonne, die Hashtags speichert, auf Texte wie ``Natur'', ``Landschaft'' und ``Berg'' abgesucht wird. Falls so ein Text vorhanden ist in den Hashtags des Fotos, wird der Wert \texttt{true} zurückgegeben, und somit wird die Werbung potentiell angezeigt, andernfalls wird der Wert \texttt{false} zurückgegeben. Auf der letzten Zeile sehen wir eine Variable \lstinline[style=sql]|$photo|, mit welcher jedes Foto der gesamten Webseite nach den genannten Kriterien abgesucht werden kann.
 
-\begin{aufgabe}{}
+\begin{myexercise}
   Verändern Sie den SQL-Befehl so, dass die Werbung auch für Fotos mit dem Hashtag ``\texttt{\#Wasser}'' angezeigt werden. Testen Sie danach, ob es geklappt hat, indem Sie Fotos mit diesem Hashtag suchen. Sie können auf folgender URL überprüfen, ob es geklappt hat: \url{[ihrefarbe].instahub.org/p/1517}.
-  \begin{myantwort}
+  \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT CASE 
 	WHEN description LIKE '%natur%' 
@@ -735,8 +738,8 @@ END
 FROM photos 
 WHERE id=$photo
 \end{lstlisting}
-  \end{myantwort}
-\end{aufgabe}
+  \end{myanswer}
+\end{myexercise}
 
 \begin{mychallenge}
   Erstellen Sie eine neue Werbekampagne (s. \cref{fig:screenshot-ads1}).
