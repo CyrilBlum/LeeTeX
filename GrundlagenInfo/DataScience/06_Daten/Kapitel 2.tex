@@ -18,7 +18,7 @@ mehrere Zeilen */
 % need to add "texorpdfstring" to avoid warnings
 \subsection{Einfache Selektion: \texorpdfstring{\lstinline[style=sql]|SELECT|}{SELECT}}
 
-Mit dem Befehl ``\lstinline[style=sql]|SELECT col1,col2,... FROM tablename|'' können wir gewisse Spalten (=Kolonnen) \lstinline[style=sql]|col1,col2,...| aus einer Tabelle mit dem Namen \lstinline[style=sql]|tablename| auswählen. Wir können statt den Spaltennamen auch einfach einen Stern (\texttt{*}) tippen, um alle Kolonnen einer Tabelle zu erhalten, d.h. die gesamte Tabelle.
+Mit dem Befehl \enquote{\lstinline[style=sql]|SELECT col1,col2,... FROM tablename|} können wir gewisse Spalten ($=$ Kolonnen) \lstinline[style=sql]|col1,col2,...| aus einer Tabelle mit dem Namen \lstinline[style=sql]|tablename| auswählen. Wir können statt den Spaltennamen auch einfach einen Stern (\texttt{*}) tippen, um alle Kolonnen einer Tabelle zu erhalten, d.h. die gesamte Tabelle.
 
 
 \begin{myexample}
@@ -30,19 +30,17 @@ SELECT *
 FROM users
 \end{lstlisting}
 
-
 Mit diesem Befehl wählen wir alle Spalten (\lstinline[style=sql]|*|) der Tabelle \lstinline[style=sql]|users| aus.
 Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
 \end{myexample}
-
 
 \begin{myexercise}
   Geben Sie alle Benutzernamen (\texttt{username}) aus \texttt{users} aus.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
-SELECT username
-FROM users
-\end{lstlisting}
+      SELECT username
+      FROM users
+      \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
 
@@ -50,9 +48,9 @@ FROM users
   Geben Sie die Benutzernamen (\texttt{username}) und echten Namen (\texttt{name}) aller Einträge aus \texttt{users} aus.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
-SELECT username, name
-FROM users
-\end{lstlisting}
+      SELECT username, name
+      FROM users
+    \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
 
@@ -60,12 +58,11 @@ FROM users
   Geben Sie die Namen und Wohnorte aller Mitglieder aus.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
-SELECT username, city
-FROM users
-\end{lstlisting}
+      SELECT username, city
+      FROM users
+    \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
-
 
 \subsection{Selektion mit Filter: \texorpdfstring{\lstinline[style=sql]|WHERE|}{WHERE}}
 Fügen wir zu einer \gls{SQL}-Abfrage den Befehl ``\lstinline[style=sql]|WHERE conditions|'' hinzu, können wir das erhaltene Resultat nach gewissen Bedingungen (\texttt{conditions}) filtern.
@@ -110,7 +107,7 @@ WHERE centimeters BETWEEN 172 AND 174
 \end{myexample}
 
 \begin{myexample}\label{myexample:in}
-Folgender Code gibt alle den Namen und die Stadt aller Mitglieder aus, die entweder in Leipzig, Berlin oder Hamburg wohnen.
+Folgender Code gibt den Namen und die Stadt aller Mitglieder aus, die entweder in Leipzig, Berlin oder Hamburg wohnen.
 
 \begin{lstlisting}[style=sql]
 SELECT name, city
@@ -123,53 +120,55 @@ WHERE city IN ("Leipzig", "Berlin", "Hamburg")
 \begin{mycaution}
   Wie Sie anhand von \cref{myexample:in} und \cref{myexample:between} sehen, spielt es in SQL eine Rolle, ob  wir Zahlen oder
   Text filtern: Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B.
-  \lstinline[style=sql]|"Berlin"| in \cref{myexample:in}). Bei Zahlen ist dies nicht nötig (s. z.B. die Zahl
+  \lstinline[style=sql]|"Berlin"| in \cref{myexample:in}). Bei Zahlen dürfen Sie keine Anführungszeichen schreiben (s. z.B. die Zahl
   \lstinline[style=sql]|172| in \cref{myexample:between}).
 \end{mycaution}
 
-\lstinline[style=sql]|NULL| ist ein spezielles \gls{SQL}-Wort, welches bedeutet, dass ein Feld leer ist, bzw. keinen Wert hat. \lstinline[style=sql]|NULL| muss von ``0'' unterschieden werden: Beispielsweise könnte die Zahl 0 in einer Tabelle über Bankkonten bedeuten, dass jemand 0 Franken auf seinem Konto hat, während der Wert \lstinline[style=sql]|NULL| bedeuten würde, dass keine Informationen zum Kontostand vorhanden sind.
+\lstinline[style=sql]|NULL| ist ein spezielles \gls{SQL}-Wort, welches bedeutet, dass ein Feld leer ist, bzw. keinen
+Wert hat. \lstinline[style=sql]|NULL| muss von \enquote{0} unterschieden werden: Beispielsweise könnte die Zahl 0 in einer 
+Tabelle über Bankkonten bedeuten, dass jemand 0 Franken auf seinem Konto hat, während der Wert \lstinline[style=sql]|NULL| bedeuten würde, dass keine 
+Informationen zum Kontostand vorhanden sind.
 
 \begin{myexample}
-Folgender Code gibt die Namen aller Mitglieder an, die ihre Grösse nicht angegeben haben.
-
-\begin{lstlisting}[style=sql]
-SELECT name, centimeters
-FROM users 
-WHERE centimeters IS NULL
-\end{lstlisting}
+  Folgender Code gibt die Namen aller Mitglieder an, die ihre Grösse nicht angegeben haben.
+  \begin{lstlisting}[style=sql]
+    SELECT name, centimeters
+    FROM users 
+    WHERE centimeters IS NULL
+  \end{lstlisting}
 \end{myexample}
 
 
 \begin{myexercise}
-  Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
+  Geben Sie die Namen aller weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
-SELECT name, gender, centimeters
-FROM users
-WHERE gender="female"
-AND centimeters BETWEEN 150 AND 155
-\end{lstlisting}
+      SELECT name, gender, centimeters
+      FROM users
+      WHERE gender="female"
+      AND centimeters BETWEEN 150 AND 155
+    \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
 \begin{myexercise}
   Zeigen Sie den Namen, das Geburtsdatum sowie die Grösse aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
-SELECT name, birthday, centimeters
-FROM users
-WHERE gender="female"
-AND centimeters <= 160
-\end{lstlisting}
+      SELECT name, birthday, centimeters
+      FROM users
+      WHERE gender="female"
+      AND centimeters <= 160
+    \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-  Verwenden Sie die Tabelle \texttt{comments}. und geben Sie alle Kommentare aus, die Entweder vom user mit der ID 10 oder vom user mit der ID 38 stammen.
+  Verwenden Sie die Tabelle \texttt{comments} und geben Sie alle Kommentare aus, die vom user mit der ID 10 oder vom user mit der ID 38 stammen.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
-SELECT user_id, body 
-FROM comments 
-WHERE user_id IN (38, 10)
+      SELECT user_id, body 
+      FROM comments 
+      WHERE user_id IN (38, 10)
 \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
@@ -177,7 +176,8 @@ WHERE user_id IN (38, 10)
 
 \subsection{Eindeutige Selektion: \texorpdfstring{\lstinline[style=sql]|SELECT DISTINCT|}{SELECT DISTINCT}}
 
-Der Befehl \lstinline[style=sql]|DISTINCT| nach einem \lstinline[style=sql]|SELECT| führt dazu, dass jeder mögliche Wert nur einmal ausgegeben wird, d.h. Duplikate werden entfernt.
+Der Befehl \lstinline[style=sql]|DISTINCT| nach einem \lstinline[style=sql]|SELECT| führt dazu, dass jeder mögliche Wert
+nur höchstens einmal ausgegeben wird, d.h. Duplikate werden entfernt.
 
 \begin{myexercise}
   Vergleichen Sie folgende zwei Befehle. Überlegen Sie sich zuerst, was der Code ausgeben sollte, bevor Sie die Befehle in InstaHub ausführen.
@@ -275,7 +275,7 @@ WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
 \end{myexercise}
 
 \begin{myexercise}
-  Finden Sie alle Berliner die Marc heissen.
+  Finden Sie alle Berliner die \textit{Marc} heissen.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, city
@@ -286,14 +286,14 @@ WHERE city="Berlin" AND name LIKE "Marc%"
 \end{myexercise}
 
 \begin{myexercise}
-  Finden Sie alle Linas und Lorenas.
+  Finden Sie alle Person mit dem Vornamen \textit{Lina} oder \textit{Lorena}.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
-SELECT name, city
-FROM users
-WHERE name LIKE "Lina%"
-OR name LIKE "Lorena%"
-\end{lstlisting}
+      SELECT name, city
+      FROM users
+      WHERE name LIKE "Lina%"
+      OR name LIKE "Lorena%"
+    \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
 
@@ -307,7 +307,9 @@ WHERE birthday LIKE "2001%"
 \end{lstlisting}
   \end{myanswer}
 \end{mychallenge}
-\begin{mysubmission}
+
+% TODO: soll das eine Abgabe sein?
+\begin{myexercise}
   Wählen Sie alle Personen mit dem Namen \textit{Naomi} aus, die nicht aus Berlin kommen.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
@@ -317,7 +319,7 @@ WHERE name LIKE "Naomi%"
 AND city <> "Berlin"
 \end{lstlisting}
   \end{myanswer}
-\end{mysubmission}
+\end{myexercise}
 
 \begin{mychallenge}
   Geben Sie die Grösse und den Wohnort von Juliette Amsel sowie Juliette Unger aus. Sie sollten das Zeichen \lstinline[style=sql]|"%"| nicht verwenden.
