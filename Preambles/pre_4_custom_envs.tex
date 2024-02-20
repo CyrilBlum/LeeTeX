@@ -1,17 +1,23 @@
 \iftoggle{book}{%
-  \newtheorem{SharedCounter}{Dummy}[chapter]
+  \iftoggle{german}{%
+    \newtheorem{myexample}{Beispiel}[chapter]
+    \newtheorem{myremark}{Bemerkung}[chapter]
+    \newtheorem{mydefinition}{Definition}[chapter]
+  } {%
+    \newtheorem{myexample}{Example}[chapter]
+    \newtheorem{myremark}{Remark}[chapter]
+    \newtheorem{mydefinition}{Definition}[chapter]
+  }%
 } {%
-  \newtheorem{SharedCounter}{Dummy}[section]
-}%
-
-\iftoggle{german}{%
-  \newtheorem{myexample}[SharedCounter]{Beispiel}
-  \newtheorem{myremark}[SharedCounter]{Bemerkung}
-  \newtheorem{mydefinition}[SharedCounter]{Definition}
-} {%
-  \newtheorem{myexample}[SharedCounter]{Example}
-  \newtheorem{myremark}[SharedCounter]{Remark}
-  \newtheorem{mydefinition}[SharedCounter]{Definition}
+   \iftoggle{german}{%
+    \newtheorem{myexample}{Beispiel}[section]
+    \newtheorem{myremark}{Bemerkung}[section]
+    \newtheorem{mydefinition}{Definition}[section]
+  } {%
+    \newtheorem{myexample}{Example}[section]
+    \newtheorem{myremark}{Remark}[section]
+    \newtheorem{mydefinition}{Definition}[section]
+  }%
 }%
 
 % tcolorbox template to be reused in various enviroments.
@@ -36,6 +42,10 @@
   \end{tcolorboxTemplate}
 }%
 
+% counter shared between 'myexercise', 'mychallenge' and 'mysubmission'
+\newcounter{SharedCounter}
+\setcounter{SharedCounter}{0}
+
 % myexercise
 \newaliascnt{ExerciseCounter}{SharedCounter}
 \aliascntresetthe{ExerciseCounter}
@@ -43,7 +53,7 @@
 {%
   \refstepcounter{ExerciseCounter}
   \begin{tcolorboxTemplate}[
-    title=\faEdit{} Aufgabe~\theExerciseCounter~#1,
+    title=\faEdit{} Aufgabe~\thechapter.\theExerciseCounter~#1,
     colback=RoyalBlue!10,
     colframe=RoyalBlue,
     colbacktitle=RoyalBlue]
@@ -64,7 +74,7 @@
     colframe=ForestGreen,
     colbacktitle=ForestGreen,
     opacityback=1,
-    title=\faCheckSquareO{} Lösungsvorschlag zu Aufgabe \theExerciseCounter]
+    title=\faCheckSquareO{} Lösungsvorschlag zu Aufgabe \thechapter.\theExerciseCounter]
 }%%
 {%
   \end{tcolorboxTemplate}
@@ -78,7 +88,7 @@
 {%
   \refstepcounter{SubmissionCounter}
   \begin{tcolorboxTemplate}[
-    title=\faArrowUp{} Aufgabe (Abgabe)~\theSubmissionCounter~#1,
+    title=\faArrowUp{} Aufgabe (Abgabe)~\thechapter.\theSubmissionCounter~#1,
     colback=Purple!10,
     colframe=Purple,
     colbacktitle=Purple]
@@ -94,7 +104,7 @@
 {%
   \refstepcounter{ChallengeCounter}
   \begin{tcolorboxTemplate}[
-    title=\faTrophy{} Aufgabe (Challenge)~\theChallengeCounter~#1,
+    title=\faTrophy{} Aufgabe (Challenge)~\thechapter.\theChallengeCounter~#1,
     colback=Gold!10,
     colframe=Gold!50!black,
     colbacktitle=Gold!50!black]
@@ -121,11 +131,3 @@
     \Crefname{ChallengeCounter}{Challenge}{Challenges}
   }%
 }{}
-
-% TODO: fix references for table and figure if we want to use this
-% % make the table enviroment use SharedCounter
-% \renewcommand*{\thetable}{\arabic{chapter}.\arabic{SharedCounter}}
-% \AtBeginEnvironment{table}{\refstepcounter{SharedCounter}}
-% % make the figure enviroment use SharedCounter
-% \renewcommand*{\thefigure}{\arabic{chapter}.\arabic{SharedCounter}}
-% \AtBeginEnvironment{figure}{\refstepcounter{SharedCounter}}
