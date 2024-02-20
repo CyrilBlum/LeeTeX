@@ -180,15 +180,18 @@ Gegeben ist die Sprache
 
 \question{\textbf{\red{Nicht reguläre} Sprache}}
 
-Gegeben ist die Sprache
+Für ein Wort $a := a_1a_2\ldots a_n$ bezeichnet $a^R := a_na_{n-1}\ldots a_1$ die Umkehrung (\textbf{R}eversal) von
+$a$. Zum Beispiel ist die Umkehrung $w^R$ des binären Worts $w := 11101$ gegeben durch $w^R = 10111$.
+
+Gegeben sei nun die Sprache
 \begin{align*}
-  L_4 := \setcm{w\#w}{w\in\lrc{a,b}^*}.  
+  L_4 := \setcm{wabw^R}{w\in\lrc{a,b}^*}.
 \end{align*}
 \begin{parts}
   \part[1] Nenne genau drei verschiedene Wörter, die in $L_4$ liegen. 
   \begin{solution}
     \begin{align*}
-     \#, a\#a, bbabaaaab\#bbabaaaab
+     aaabaa, baabab, ab
     \end{align*} 
   \end{solution}
   \vspace{5cm}
@@ -198,25 +201,25 @@ Gegeben ist die Sprache
     \begin{align*}
       A = (Q, {a,b}, \delta, q_0, F) 
     \end{align*}
-    und $A$ akzeptiert $L_4$. Sei nun $m := \abs{Q}$, also die Anzahl der verschiedenen Zustände des endlichen Automaten
+    und $A$ akzeptiert $L_4$. Sei jetzt $m := \abs{Q}$, also die Anzahl der verschiedenen Zustände des endlichen Automaten
     $A$. Wir betrachten die $m+1$ verschiedenen Wörter
     \begin{align*}
-      a^1\#, a^2\#, \ldots, a^{m+1}\#.
+      a^1ab a^2ab \ldots, a^{m+1}ab.
     \end{align*}
     Dies sind mehr Worte (genau ein Wort mehr), als $A$ Zustände hat. Nach dem Schubfachprinzip (pigeonhole principle) existieren
     $i,j\in\lrc{1,2,\ldots,m+1}$ mit $i<j$, sodass
     \begin{align*}
-      \hat{\delta}\lr{q_0,a^i\#} = \hat{\delta}\lr{q_0,a^j\#}. 
+      \hat{\delta}\lr{q_0,a^i} = \hat{\delta}\lr{q_0,a^j}. 
     \end{align*}
     Nach der im Unterricht bewiesenen Aussage gilt
     \begin{align*}
-      a^i\#\in L_4 \iff a^j\#\in L_4 
+      a^iz\in L_4 \iff a^jz\in L_4 
     \end{align*}
-    für alle $z\in\lrc{a,b}^*$. Doch dies gilt nicht, da zum Beispiel für die Wahl $z:=a^i$
+    für alle $z\in\lrc{a,b}^*$. Doch dies gilt nicht, da zum Beispiel für die Wahl $z:=aba^i$
     \begin{align*}
-      a^i\# z = a^i\# a^i\in L_4 \quad\text{aber}\quad a^j\# z = a^j\# a^i\notin L_4
+      a^iz = a^iaba^i\in L_4 \quad\text{aber}\quad a^jz = a^jaba^i\notin L_4
     \end{align*}
-    gilt, da $i<j$ und somit insbesondere $i\neq j$. Damit war unsere ursprüngliche Annahme falsch und es existiert kein
+    gilt, da $a^i$ zwar die Umkehrung von $a^i$ ist aber nicht von $a^j$. Damit war unsere ursprüngliche Annahme falsch und es existiert kein
     endlicher Automat für die Sprache $L_4$.
   \end{solution}
 \end{parts}
