@@ -7,281 +7,290 @@
     \textbf{Zahlensysteme} \emoji{pencil}: \textbf{Lektion 02}
 \end{frame}
 
+\begin{frame}{Weshalb unterschiedliche Zahlensysteme?}
+    \begin{itemize}
+    \item Zahlensysteme sind ``willkürlich'' und historisch entstanden
+        \item Computer arbeiten mit binären Zahlen \{0,1\}
+        \begin{itemize}
+            \item Schnelleres Rechnen
+            \item \emoji{high-voltage} 1 = Strom fliesst, 0 = kein Strom
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Alphabete und Buchstaben}
+\begin{itemize}[<+->]
+\item Ein \tib{Alphabet} ist eine endliche, nicht leere
+Menge von Zeichen, die wir uns zur Informationsdarstellung aussuchen.
+\item Die Elemente eines Alphabets werden \tib{Buchstaben} genannt.
+\end{itemize}
+\end{frame}
 
 
-\begin{frame}{Stellenwertdarstellung \& $\alpha$-adische Zahlensysteme}
+\begin{frame}{Beispiel von Alphabeten}
+\begin{itemize}[<+->]
+\item
+Die Menge
+\begin{align*}
+    \lrc{A,B,C,\dots, Z}
+\end{align*}
+ist das lateinische Alphabet der Grossbuchstaben.
+\item
+Die Menge 
+\begin{align*}
+    \lrc{a,b,c,...,z,A,B,C,...,Z,\text{\textvisiblespace}\,,>,<,(,),...,\#,?,!}
+\end{align*}
+ist das Alphabet der US-Amerikanischen Tastatur.
+\item Die Menge
+\begin{align*}
+    \lrc{0,1}
+\end{align*}
+ist das binäre Alphabet.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Wörter}
+\begin{itemize}[<+->]
+    \item Ein \tib{Wort über einem gegebenen Alphabet} $A$ ist eine beliebige endliche Folge von Buchstaben aus $A$. Mit \tib{der Länge eines Worts} ist die Anzahl der Buchstaben in diesem Wort gemeint.
+    \item Zum Beispiel ist $0,1,1,1,0,1$ ein Wort der Länge 6 über dem binären Alphabet.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Wörter}
+\begin{itemize}[<+->]
+    \item Die Kommas werden bei Wörtern weggelassen und wir schreiben $011101$ anstelle von $0,1,1,1,0,1$.
+    \item $GLKK$ ist ein Wort der Länge 4 über dem Alphabet der lateinischen Grossbuchstaben.
+    \item $uh01$ ist kein Wort über dem binären Alphabet , da die Buchstaben $u$ und $h$ in diesem Alphabet nicht enthalten sind.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Stellenwertdarstellung}{Allgemeine Beobachtungen}
+
 \begin{itemize}
+    \item Zahlen können mit unterschiedlicher Anzahl Buchstaben geschrieben werden. Wenn wir``normale'' Zahlen schreiben, verwenden wir folgende Buchstaben:
+    $$\{0,1,2,3,4,5,6,7,8,9\}$$
+    Dieses Zahlen-System ist \textcolor{blue}{10-adisch}, da es 10 Zeichen hat. Die gängie Bezeichnung dafür ist das \textcolor{red}{Dezimalsystem} (von lateinisch \textit{decem} 
+    $\rightarrow$ ``zehn'')
+    \item Wenn wir Zahlen mit nur zwei Zeichen schreiben, benutzen wir ein \textcolor{blue}{2-adisches} Zahlensystem, bestehend aus nur zwei Buchstaben:
+    $$\{0,1\}$$
+    In diesem Fall sprechen wir vom \textcolor{red}{binären Zahlensystem} (von lateinisch \textit{binarius} $\rightarrow$ ``zweifach'')
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Stellenwertdarstellung}
+    Allgemeine Beobachtungen
+    \begin{itemize}
+        \item ``Normale'' Zahlen sind im Dezimalsystem geschrieben. Da das dezimale Alphabet aus 10 unterschiedlichen Buchstaben besteht, können wir die Zahl \textcolor{red}{4605} zur Klarheit auch als \textcolor{red}{$4605_{10}$} schreiben.\\
+        
+        \only<1>{
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{c|c}
+                 \textbf{Dezimal ($\{0,1,...,9\}$)}& \textbf{Binär ($\{0,1\}$)}  \\\midrule\midrule
+                 $0\quad(=0_{10})$&$?_{2}$\\\hline
+                 $1\quad(=1_{10})$&$?_{2}$\\\hline
+                 $2\quad(=2_{10})$&$?_{2}$\\\hline
+                 $3\quad(=3_{10})$&$?_{2}$\\\hline
+                 $4\quad(=4_{10})$& $?_{2}$\\\hline
+                 ...&...
+            \end{tabular}
+        \end{table}
+        }
+        \only<2->{
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{c|c}
+                 \textbf{Dezimal ($\{0,1,...,9\}$)}& \textbf{Binär ($\{0,1\}$)}  \\\midrule\midrule
+                 $0\quad(=0_{10})$&$0_{2}$\\\hline
+                 $1\quad(=1_{10})$&$1_{2}$\\\hline
+                 $2\quad(=2_{10})$&$10_{2}$\\\hline
+                 $3\quad(=3_{10})$&$11_{2}$\\\hline
+                 $4\quad(=4_{10})$&$100_{2}$\\\hline
+                 ...&...
+            \end{tabular}
+        \end{table}
+        }
+        \item<3-> Wie kann man Zahlen allgemein vom einen System in ein anderes Transformieren?\\
+        $\rightarrow \alpha$-adische Zahlensysteme!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Stellenwertdarstellung und $\alpha$-adische Systeme}
+    \begin{itemize}
         \item Das \textcolor{red}{Dezimalsystem} hat die Basisgrössen
         $$10^0=1,\quad 10^1=10,\quad 10^2=100,\quad 10^3=1000,...$$
+        \rule{\textwidth}{0.4pt}
+    Beispiel: Das Wort \textcolor{red}{$4605_{10}$} wird interpretiert als die Zahl
+    \only<1>{
+    \begin{align*}
+        \textcolor{red}{\underbrace{\ldots}_{?}} \underbrace{10^3}_{?} +
+        \textcolor{red}{\underbrace{\ldots}_{?}} \underbrace{10^2}_{?} + 
+        \textcolor{red}{\underbrace{\ldots}_{?}} \underbrace{10^1}_{?} + 
+        \textcolor{red}{\underbrace{\ldots}_{?}} \underbrace{10^0}_{?}.
+    \end{align*}
+    }
+    \only<2>{
+    \begin{align*}
+        \textcolor{red}{\underbrace{\ldots}_{?}} \underbrace{10^3}_{1000} + \textcolor{red}{\underbrace{\ldots}_{?}} \underbrace{10^2}_{100} + \textcolor{red}{\underbrace{\ldots}_{?}} \underbrace{10^1}_{10} + \textcolor{red}{\underbrace{\ldots}_{?}} \underbrace{10^0}_{1}.
+    \end{align*}
+    }
+    \only<3>{
+    \begin{align*}
+        \textcolor{red}{\underbrace{a_3}_{?}}\cdot \underbrace{10^3}_{1000} + \textcolor{red}{\underbrace{a_2}_{?}}\cdot \underbrace{10^2}_{100} + \textcolor{red}{\underbrace{a_1}_{?}}\cdot \underbrace{10^1}_{10} + \textcolor{red}{\underbrace{a_0}_{?}}\cdot \underbrace{10^0}_{1}.
+    \end{align*}
+    }
+    \only<4->{
+    \begin{align*}
+        \textcolor{red}{4}\cdot \underbrace{10^3}_{1000} + \textcolor{red}{6}\cdot \underbrace{10^2}_{100} + \textcolor{red}{0}\cdot \underbrace{10^1}_{10} + \textcolor{red}{5}\cdot \underbrace{10^0}_{1}.
+    \end{align*}
+    
+    \only<5->{
+    =vier Tausender $+$ sechs Hunderter $+$ null Zehner $+$ fünf Einer.
+    }
+    }
+    \only<6->{
+    \rule{\textwidth}{0.4pt}
         \item Das \textcolor{red}{Binärsystem} hat die Basisgrössen
         $$2^0=1,\quad 2^1=2,\quad 2^2=4,\quad 2^3=8,...$$
         \item Allgemein: Das \textcolor{red}{$\alpha$-adische System} hat die Basisgrössen
         $$\alpha^0,\quad \alpha^1,\quad \alpha^2,\quad \alpha^3,...$$
-    \end{itemize}
-    \rule{\textwidth}{0.4pt}
-    Beispiel: Das Wort \textcolor{red}{$4605_{10}$} wird interpretiert als die Zahl
-    \begin{align*}
-        \textcolor{red}{4}\cdot \underbrace{10^3}_{1000} + \textcolor{red}{6}\cdot \underbrace{10^2}_{100} + \textcolor{red}{0}\cdot \underbrace{10^1}_{10} + \textcolor{red}{5}\cdot \underbrace{10^0}_{1}.
-    \end{align*}
-    $\rightarrow$ \tib{greedy}-Algorithmus, um Zahlen zu konvertieren
-\end{frame}
-
-\begin{frame}{Kleine Mathe-Wiederholung \emoji{nerd-face}\emoji{books}}
-Wie kann man die Zahl umschreiben? $\rightarrow$ \tib{Wissenschaftliche Notation} oder \tib{Exponentialdarstellung}
-\[ 10^b\cdot a\]
-Beispiel:
-\[500.11 = 10^2\cdot 5.0011 \]
-    \begin{itemize}
-        \item 
-        \only<1>{$0.0003 = 10^{b}\cdot a$}
-        \only<2->{$0.0003 = \underbrace{10^{-4}}_{=0.0001}\cdot 3$}
-        \item
-        \only<1-2>{$5'000 = 10^{b}\cdot a$}
-        \only<3->{$5'000 = \underbrace{10^{3}}_{=1'000}\cdot 5$}
-        \item
-        \only<1-3>{$10'003.3455 = 10^{b}\cdot a$}
-        \only<4->{$10'003.3455 = \underbrace{10^{4}}_{=10'000}\cdot 1.0033455$}
+        }
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Stellenwertdarstellung}{Beispiel}
-Frage: Wie stellen wir Kommazahlen dar?
-    Z.B. \textcolor{red}{$3.4375$}\\
-    \rule{\textwidth}{0.4pt}
-    \only<1-4>{
-    Das Wort
-    \begin{align*}
-        a_na_{n-1}\ldots a_1a_0.b_1b_2\ldots b_m
-    \end{align*}
-    entspricht definitionsgemäss der Zahl
-    \begin{align*}
-        a_n\cdot d^n + a_{n-1}\cdot d^{n-1}+\ldots + a_1\cdot d^1 + a_0\cdot d^0 + \\
-        b_1\cdot d^{-1} + b_2\cdot d^{-2} + \ldots + b_{m-1}\cdot d^{-m-1} + b_m\cdot d^{-m} 
-    \end{align*}
-    \rule{\textwidth}{0.4pt}
-    }
-    \only<2>{
-    daher haben wir, im dezimalen Zahlensystem ($d=10$):
-    \begin{align*}
-    \tiny
-        \textcolor{red}{a_1}\cdot\underbrace{10^0}_{?} + 
-        \textcolor{red}{b_1}\cdot\underbrace{10^{-1}}_{?} +
-        \textcolor{red}{b_2}\cdot\underbrace{10^{-2}}_{?} +
-        \textcolor{red}{b_3}\cdot\underbrace{10^{-3}}_{?} +
-        \textcolor{red}{b_4}\cdot\underbrace{10^{-4}}_{?}
-    \end{align*}
-    }
-    \only<3>{
-    daher haben wir, im dezimalen Zahlensystem ($d=10$):
-    \begin{align*}
-    \tiny
-        \textcolor{red}{a_1}\cdot\underbrace{10^0}_{1} + 
-        \textcolor{red}{b_1}\cdot\underbrace{10^{-1}}_{0.1} +
-        \textcolor{red}{b_2}\cdot\underbrace{10^{-2}}_{0.01} +
-        \textcolor{red}{b_3}\cdot\underbrace{10^{-3}}_{0.001} +
-        \textcolor{red}{b_4}\cdot\underbrace{10^{-4}}_{0.0001}
-    \end{align*}
-    }
-    \only<4->{
-    daher haben wir, im dezimalen Zahlensystem ($d=10$):
-    \begin{align*}
-    \tiny
-        \textcolor{red}{\overbrace{3}^{a_0}}\cdot\underbrace{10^0}_{1} + 
-        \textcolor{red}{\overbrace{4}^{b_1}}\cdot\underbrace{10^{-1}}_{0.1} +
-        \textcolor{red}{\overbrace{3}^{b_2}}\cdot\underbrace{10^{-2}}_{0.01} +
-        \textcolor{red}{\overbrace{7}^{b_3}}\cdot\underbrace{10^{-3}}_{0.001} +
-        \textcolor{red}{\overbrace{5}^{b_4}}\cdot\underbrace{10^{-4}}_{0.0001}
-    \end{align*}
-    }
-    \only<5-8>{
-    Im binären Zahlensystem ($d=2$):
-    }
-    \only<5>{
-    \begin{align*}
-    \tiny
-        \textcolor{red}{a_1}\cdot\underbrace{2^1}_{?} + 
-        \textcolor{red}{a_0}\cdot\underbrace{2^0}_{?} + 
-        \textcolor{red}{b_1}\cdot\underbrace{2^{-1}}_{?} +
-        \textcolor{red}{b_2}\cdot\underbrace{2^{-2}}_{?} +
-        \textcolor{red}{b_3}\cdot\underbrace{2^{-3}}_{?} +
-        \textcolor{red}{b_4}\cdot\underbrace{2^{-4}}_{?}
-    \end{align*}
-    }
-    \only<6>{
-    \begin{align*}
-    \tiny
-        \textcolor{red}{a_1}\cdot\underbrace{2^1}_{2} + 
-        \textcolor{red}{a_0}\cdot\underbrace{2^0}_{1} + 
-        \textcolor{red}{b_1}\cdot\underbrace{2^{-1}}_{1/2=0.5} +
-        \textcolor{red}{b_2}\cdot\underbrace{2^{-2}}_{1/4=0.25} +
-        \textcolor{red}{b_3}\cdot\underbrace{2^{-3}}_{1/8=0.125} +
-        \textcolor{red}{b_4}\cdot\underbrace{2^{-4}}_{0.0625}
-    \end{align*}
-    }
-    \only<7->{
-    \begin{align*}
-    \tiny
-        \textcolor{red}{1}\cdot\underbrace{2^1}_{2} + 
-        \textcolor{red}{1}\cdot\underbrace{2^0}_{1} + 
-        \textcolor{red}{0}\cdot\underbrace{2^{-1}}_{1/2=0.5} +
-        \textcolor{red}{1}\cdot\underbrace{2^{-2}}_{1/4=0.25} +
-        \textcolor{red}{1}\cdot\underbrace{2^{-3}}_{1/8=0.125} +
-        \textcolor{red}{1}\cdot\underbrace{2^{-4}}_{0.0625}
-    \end{align*}
-    }
-    \only<8>{
-    \rule{\textwidth}{0.4pt}
-    Wir wissen nun also, dass \textcolor{red}{$3.4375_{10}=11.0111_2$}
-    }
-    
-\end{frame}
-
-\begin{frame}{Stellenwertdarstellung}{Verallgemeinerung}
-    \rule{\textwidth}{0.4pt}
+\begin{frame}{Stellenwertdarstellung}
     Seien $a_n,a_{n-1},\ldots,a_1,a_0$ natürliche Zahlen. Dann stellt das Wort
     \begin{align*}
         a_na_{n-1}\ldots a_1a_0
     \end{align*}
-    (definitionsgemäss) die Ganzzahl
+    (definitionsgemäss) die Zahl
     \begin{align*}
-        a_n\cdot d^n + a_{n-1}\cdot d^{n-1}+\ldots + a_1\cdot d^1 + a_0\cdot d^0
+        a_n\cdot 10^n + a_{n-1}\cdot 10^{n-1}+\ldots + a_1\cdot 10^1 + a_0\cdot 10^0
     \end{align*}
-    im $d$-adischen Zahlensystem dar. 
-    \rule{\textwidth}{0.4pt}
-    Eine Nachkommazahl wird dargestellt wie folgt:
+
+    dar.
+
+    
+\begin{align*}
+    Beispiel: \textcolor{red}{4605} = \textcolor{red}{\overbrace{4}^{=a_3}}\cdot \underbrace{10^3}_{=1000} + \textcolor{red}{\overbrace{6}^{=a_2}}\cdot \underbrace{10^2}_{=100} + \textcolor{red}{\overbrace{0}^{=a_1}}\cdot \underbrace{10^1}_{=10} + \textcolor{red}{\overbrace{5}^{=a_0}}\cdot \underbrace{10^0}_{=1}.
+\end{align*}
+
+\end{frame}
+
+
+
+\begin{frame}{Stellenwertdarstellung}{Verallgemeinerung}
+
+Allgemein repräsentiert das Wort
     \begin{align*}
-        a_na_{n-1}\ldots a_1a_0.b_1b_2\ldots b_m
+        a_na_{n-1}\ldots a_1a_0
     \end{align*}
-    und entspricht definitionsgemäss der Zahl
+    in der $b$-adischen Darstellung (Basisgrösse $b$) die Zahl
     \begin{align*}
-        a_n\cdot d^n + a_{n-1}\cdot d^{n-1}+\ldots + a_1\cdot d^1 + a_0\cdot d^0 + \\
-        b_1\cdot d^{-1} + b_2\cdot d^{-2} + \ldots + b_{m-1}\cdot d^{-m-1} + b_m\cdot d^{-m} 
+        a_n\cdot b^n + a_{n-1}\cdot b^{n-1}+\ldots + a_1\cdot b^1 + a_0\cdot b^0.
     \end{align*}
-\end{frame}
 
-\begin{frame}{Stellenwertdarstellung von Kommazahlen}
-Einige Überlegungen
-\begin{itemize}
-    \item Je nach Kommazahl finden müssen wir im binären System weit suchen gehen, bis wir die Zahl korrekt abgebildet haben
-    \item Wie präzise sollen / können wir Zahlen abbilden?
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Übungen}
-\begin{itemize}
-    \item Arbeiten Sie weiter an den Aufgaben von letztem Mal
+    Beispiel für $b = 3$
     \begin{itemize}
-        \item (Auffrischung) Lesen Sie ``Neue Konzepte und Begriffe'' auf S. 14.
-        \item Lösen Sie Aufgabe 1.11 (Hilfestellung: im 5-adischen Zahlensystem gibt es nur die Ziffern $\{0,1,2,3,4\}$)
-        \item Lesen Sie Beispiel 1.2 (Transformation von Zahlendarstellungen) und lösen Sie danach die Aufgabe 1.12.
+        \item Buchstaben = $\{0,1,2\}$
+        \item Die Zahl $23_{10}$ wird folgendermassen in das 3-adische System übersetzt:
+        \begin{align*}
+        \textcolor{red}{23_{10}}=\underbrace{\textcolor{red}{\overbrace{2}^{=a_2}}\cdot \underbrace{3^2}_{9}}_{18} + \underbrace{\textcolor{red}{\overbrace{1}^{=a_1}}\cdot \underbrace{3^1}_{3}}_{3} + \underbrace{\textcolor{red}{\overbrace{2}^{=a_0}}\cdot \underbrace{3^0}_{1}}_{2}.
+    \end{align*}
     \end{itemize}
-    \item (Auffrischung) Lesen Sie ``Neue Konzepte und Begriffe'' auf S. 24.
-    \item 1.28 a und b
-    \item Helfen Sie anderen!
-\end{itemize}
+    
+ \end{frame}
+
+\begin{frame}{Stellenwertdarstellung}{Übung}
+
+\begin{enumerate}
+    \only<1>{\item Wir wollen die dezimale (``normale'') Zahl \textcolor{red}{$29_{10}$} in das binäre System umwandeln:
+    \begin{align*}
+    \small
+        \textcolor{red}{29_{10}} = 
+        \textcolor{red}{a_3}\cdot \underbrace{10^3}_{=1000} + 
+        \textcolor{red}{a_2}\cdot \underbrace{10^2}_{=100} + 
+        \textcolor{red}{a_1}\cdot \underbrace{10^1}_{=10} + 
+        \textcolor{red}{a_0}\cdot \underbrace{10^0}_{=1}.
+    \end{align*}}
+    \only<2->{
+    \item Wir wollen die dezimale (``normale'') Zahl \textcolor{red}{$29_{10}$} in das binäre System umwandeln:
+    \begin{align*}
+    \small
+        \textcolor{red}{29_{10}} = 
+        \xcancel{\textcolor{red}{\overbrace{0}^{=a_3}}\cdot \underbrace{10^3}_{=1000}} + 
+        \xcancel{\textcolor{red}{\overbrace{0}^{=a_2}}\cdot \underbrace{10^2}_{=100}} + 
+        \textcolor{red}{\overbrace{2}^{=a_1}}\cdot \underbrace{10^1}_{=10} + 
+        \textcolor{red}{\overbrace{9}^{=a_0}}\cdot \underbrace{10^0}_{=1}.
+    \end{align*}
+    }
+    \only<3>{
+    \item Wandeln Sie die Zahl vom 10-adischen ins 2-adische System um (also von dezimal zu binär)
+    \begin{align*}
+        \textcolor{red}{29_{10}} = \textcolor{red}{?_{2}}
+    \end{align*}
+    }
+    \only<4>{
+    \item Wandeln Sie die Zahl vom 10-adischen ins 2-adische System um (also von dezimal zu binär)
+    \begin{align*}
+    \small
+        \textcolor{red}{a_4}\cdot \underbrace{2^4}_{=?} + 
+        \textcolor{red}{a_3}\cdot \underbrace{2^3}_{=?} + 
+        \textcolor{red}{a_2}\cdot \underbrace{2^2}_{=?} +
+        \textcolor{red}{a_1}\cdot \underbrace{2^1}_{=?} + 
+        \textcolor{red}{a_0}\cdot \underbrace{2^0}_{=?}.
+    \end{align*}
+    }
+    \only<5>{
+    \item Wandeln Sie die Zahl vom 10-adischen ins 2-adische System um (also von dezimal zu binär)
+    \begin{align*}
+    \small
+        \textcolor{red}{a_4}\cdot \underbrace{2^4}_{=16} + 
+        \textcolor{red}{a_3}\cdot \underbrace{2^3}_{=8} + 
+        \textcolor{red}{a_2}\cdot \underbrace{2^2}_{=4} +
+        \textcolor{red}{a_1}\cdot \underbrace{2^1}_{=2} + 
+        \textcolor{red}{a_0}\cdot \underbrace{2^0}_{=1}.
+    \end{align*}
+    }
+    \only<6->{
+    \item Wandeln Sie die Zahl vom 10-adischen ins 2-adische System um (also von dezimal zu binär)
+    \begin{align*}
+    \small
+        \textcolor{red}{\overbrace{1}^{=a_4}}\cdot \underbrace{2^4}_{=16} + 
+        \textcolor{red}{\overbrace{1}^{=a_3}}\cdot \underbrace{2^3}_{=8} + 
+        \textcolor{red}{\overbrace{1}^{=a_2}}\cdot \underbrace{2^2}_{=4} +
+        \textcolor{red}{\overbrace{0}^{=a_1}}\cdot \underbrace{2^1}_{=2} + 
+        \textcolor{red}{\overbrace{1}^{=a_0}}\cdot \underbrace{2^0}_{=1}.
+    \end{align*}
+    }
+    \item<7-> Das Resultat ist also $\textcolor{red}{11101_2}$
+    \item<8-> Man nennt dieses Verfahren \tib{greedy} (``gierig'')
+    
+    
+\end{enumerate}
 \end{frame}
 
-\begin{frame}{Anhang (optional)}
+
+
+
+\begin{frame}{Ziffern}
+Die (nicht notwendigerweise verschiedenen) natürlichen Zahlen $a_n,a_{n-1},\ldots,a_1,a_0$ werden \tib{Ziffern} genannt.
 \end{frame}
 
-\begin{frame}{Stellenwertdarstellung von Kommazahlen}
-Präzision von Kommazahlen (Übung 1.31)
-\begin{itemize}[<+->]
-    \item Angenommen, wir haben 20 bits zur Verfügung und wollen Zahlen in einem Intervall von $[0, 1000)$ abspeichern, was könnten wir tun?
-    \item Wir haben 20 bits zur Verfügung, also können wir $2^{20}$ unterschiedliche Zahlen modellieren (ca. $1\text{\textquotesingle}000\text{\textquotesingle}000)$. 
-    \item Problem: es gibt unendlich viele Zahlen zwischen $0$ und $1000$...
-    \item Erste Lösungsidee: Wir teilen das Intervall $[0,1000)$ in $1\text{\textquotesingle}000\text{\textquotesingle}000$ gleich grosse Unter-Intervalle auf (also Schritte von $0.001$, denn $0.001\cdot1000=1\text{\textquotesingle} 000\text{\textquotesingle}000$).
-    \item Jede Zahl $i$ stellen wir durch den Mittelwert des i-ten Intervalls dar.
-    \item \textbf{Beispiel}:
-    \begin{itemize}
-        \item Alle Zahlen zwischen $[0.001, 0.002)$ werden durch 0.0015 dargestellt (=Mittelwert)
-        \item Alle Zahlen zwischen $[999.999, 1000)$ werden durch 999.9995 dargestellt (=Mittelwert)
-    \end{itemize}
-    \item Somit beträgt der absolute Fehler jeder Zahl maximal 0.0005.
-\end{itemize}
+\begin{frame}{Wichtige Beobachtung zu Ziffern}
+Eine kürzeste Darstellung im $b$-adischen System ist immer ein Wort über dem Alphabet
+\begin{align*}
+    \lrc{0,1,2,\ldots ,b-1}.
+\end{align*}
+Die höchste mögliche (sinnvolle) Ziffer ist also $b-1$ (zum Beispiel ist $9 = 10-1$ die grösste Ziffer im Zehnersystem oder $1 = 2-1$ die grösste Ziffer im Binärsystem).
+
+\centering
 \end{frame}
 
-\begin{frame}{Stellenwertdarstellung von Kommazahlen}
-
-\begin{itemize}[<+->]
-        \item \tib{Problem}: Der relative Darstellungsfehler kann riesig sein.
-            \tiny$$
-            \text{Relativer Darstellungsfehler} = \frac{\abs{\text{Wert der Darstellung - Zahl}}}{\text{Zahl}}
-            $$
-            \normalsize
-        \item Wert der Darstellung: 0.0015, echte Zahl: 0.001.\\
-        \tiny$$
-        \frac{\overbrace{\abs{0.0015 - 0.001}}^{\textcolor{red}{=0.0005}}}{0.001} = \text{50\%!}
-        $$
-        \item Wert der Darstellung: 999.9995, echte Zahl: 999.999.\\
-        \tiny$$
-        \frac{\overbrace{\abs{999.9995 - 999.999}}^{\textcolor{red}{=0.0005}}}{999.999} = \text{ca. 0.00005\%!}
-        $$\normalsize
-        \item Allgemein sehen wir, dass der relative Fehler in diesem Fall lediglich von der Zahl abhängt:
-        $$\tiny
-                \text{Relativer Darstellungsfehler} = \frac{\overbrace{\textcolor{red}{0.0005}}^{\text{Absoluter Darstellungsfehler}}}{\text{Zahl}}
-        \normalsize$$
-        \item Wir möchten aber unabhängig von der Zahl einigermassen genau rechnen können...
-
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Lösungsansatz}
-% Basiert auf Übunge 1.32
-Weitere Illustration (20 bits):
+\begin{frame}{Aufgaben}{Skript ``Theoretische Informatik'' (auf Moodle)}
 \begin{itemize}
-\tiny
-    \item $\textcolor{red}{110111001001011.001 }\textcolor{blue}{01}_2$
-    \item $\textcolor{red}{1101110.010}\textcolor{blue}{0101100101}_2$
-    \item $\textcolor{red}{11.011}\textcolor{blue}{100100101100101}_2$
-\end{itemize}\normalsize
-Der \textcolor{red}{rote} Teil ist mit dem obigen Ansatz \enquote{präzise} dargestellt, dar \textcolor{blue}{blaue} nicht. Erkennen Sie das Problem dieses Ansatzes?
-
-\begin{itemize}
-    \item Wie wir intuitiv sehen, müssen lange Zahlen gar nicht so genau sein. Bei einer Zahl wie ``1'000'000'000'' (eine Milliarde) ist es weniger wichtig, sie auf mehrere Nachkommastellen genau abzubilden, als bei einer Zahl wie ``0.0034551''. 
-    \item Wenn wir eine ähnliche relative Genauigkeit für Zahlen unterschiedlicher Grössenordnungen wollen, müssen wir für kleinere Zahlen ``genauer'' sein als für grosse.
-    \item Analogie: \emoji{bread}
-    \begin{itemize}
-        \item \emoji{carpentry-saw} Dicke Stücke können wir einer stumpfen Säge schneiden 
-        \item \emoji{knife} Für hauchdünne Stücke brauchen wir ein fein geschliffenes Messer (Aufteilung des Brotes in feinere Stücke / ``Intervalle'')
-    \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Lösungsansatz (s. Übung 1.32)}
-\rule{\textwidth}{0.4pt}
-\begin{itemize}
-    \item \tib{Lösungsidee}: Statt die Intervalle immer gleich gross zu machen, machen die Unterteilung feiner für kleinere Zahlen, und grösser für grössere Zahlen
-\end{itemize}\rule{\textwidth}{0.4pt}\\
-\only<2->{Betrachten Sie folgende Zahlen. Wie lassen sich diese Zahlen neu schreiben, um ähnliche Genauigkeit beim Abspeichern zu haben?
-    \begin{enumerate}
-        \item 1003030401.003 \only<3->{\textcolor{red}{$\rightarrow 10^9\cdot1.003030401003$}}
-        \item 34034.11100345 \only<3->{\textcolor{red}{$\rightarrow 10^4\cdot3.403411100345$}}
-        \item 9.349995613496 \only<3->{\textcolor{red}{$\rightarrow 10^0\cdot9.349995613496$}}
-    \end{enumerate}}
-    \only<3->{\rightarrow \tib{Normalisierte (wissenschaftliche) Darstellung}}
-\end{frame}
-\begin{frame}{Lösungsansatz (s. Übung 1.32)}
-\begin{itemize}[<+->]
-    \item Angenommen, wir wollen Zahlen zwischen 0 und 10 darstellen. Wir sagen, dass Zahlen kleiner als $10^{-31}$ (also $< 0.000\ldots 0001$) als 0 dargestellt werden.
-    \item Wir haben für also $32 = 2^5$ Intervalle bezüglich 10er-Potenzen:
-    \scriptsize\begin{align*}
-        =&[10^{-31}, 10^{-30}),&[10^{-30}, 10^{-29}),&...,&\underbrace{[10^{-2}, 10^{-1})}_{=[0.01, 0.1)},&\underbrace{[10^{-1}, 10^0)}_{=[0.1, 1)},& \underbrace{[10^0, 10^1)}_{=[1, 10)}&
-    \end{align*}\normalsize
-    \item Allgemein schreiben wir ein Intervall als $[10^i, 10^{i+1})$.
-    \item Wir teilen jedes Intervall in gleich viele Unter-Intervalle auf, z.B. in Schritten von $0.01\cdot 10^i$ (d.h. je 900 Unter-Intervalle pro Intervall)\only<4->{\footnote{Die Unter-Intervalle des grössten Intervalls sind beispielsweise: $[1.00, 1.01), [1.01, 1.02), [1.02, 1.03), ..., [9.98, 9.99), [9.99, 10.00)$}}. Dann beträgt der relative Fehler immer $\frac{0.005\cdot 10^i}{10^i}=0.005$ und ist somit nun unabhängig von der Zahl!
-    \item Umsetzung im Computer:
-    \begin{figure}[H]
-        \centering
-        \includegraphics[keepaspectratio, width=0.75\paperwidth, height=\paperheight]{GrundlagenInfo/DataScience/01_TheoretischeInformatik/Figures/4-ex132.png}
-    \end{figure}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Übungen}
-\begin{itemize}
-    \item (Optional) lesen Sie die Lösungen von Übung 1.32
-    \item Lesen Sie Beispiel 1.5
-    \item 1.33
+    \item \aufgabebox{Aufgaben 1.2 - 1.5}
 \end{itemize}
 \end{frame}
