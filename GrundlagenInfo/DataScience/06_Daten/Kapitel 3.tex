@@ -149,8 +149,144 @@ Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} a
 \clearpage
 
 
-\section{Mehrere Tabellen abfragen mit SQL}
-Häufig kann es nützlich sein, mehrere Tabellen miteinander zu verbinden, um neue Einsichten in die Daten zu gewinnen. Verschiedene Tabellen-Verbindungen sind schematisch in \cref{fig:venn-joins} abgebildet. Die Bedeutung dieser Abbildungen wird in den folgenden Abschnitten erklärt.
+\section{Informationen aus mehrere Tabellen kombinieren}
+\subsection{Primärschlüssel}
+Wie in \cref{subsec:tables} diskutiert wurde, besitzen Tabellen häufig sogenannte Primärschlüssel (en. \textit{primary keys}). \cref{table:angestellte} beispielsweise verwendet einen Primärschlüssel \underline{mID} (in blau, Titel unterstrichen). 
+
+\newcolumntype{a}{>{\columncolor{RoyalBlue!50}}l}
+\newcolumntype{R}[1]{%
+    >{\columncolor{RoyalBlue!50}\adjustbox{angle=#1}\bgroup}%
+    l<{\egroup}|%
+}
+\newcommand*\rot{\multicolumn{1}{R{90}}}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{a|l|l}
+\underline{mID} & Name   & ... \\\midrule
+1  & Müller  & ...  \\
+2  & Schmidt & ...  \\
+3  & Kaufmann  & ...\\
+... & ... & ... 
+\end{tabular}
+\caption{Beispiel-Tabelle: ``Angestellte''}
+\label{table:angestellte}
+\end{table}
+
+Dieser dient in erster Linie dazu, einen Eintrag (in diesem Fall eine Person) eindeutig zu identifizieren. Weshalb ist das nötig? 
+
+Zwei Hauptgründe seine angegeben:
+
+\begin{itemize}
+\item \textbf{Eindeutigkeit}: Es könnte sein, dass zwei Personen gleich heissen. In diesem Fall ist es hilfreich, eine eindeutige Identifikationsnummer (oder einen eindeutigen Text) zu haben, um Information zu genau \textit{einer} der beiden Personen abfragen zu können.
+\item \textbf{Dauerhaftigkeit}: Es könnte sein, dass eine Person den Namen wechselt. In diesem Fall möchte man eine eindeutige Identifikationsnummer haben, damit die Informationen zu den Personen wie etwa der Gehalt oder die Abteilung weiterhin eindeutig zur selben Person gehören (und abgefragt werden können).
+\end{itemize}
+
+\subsection{Fremdschlüssel}
+Nebst Primärschlüsseln können Tabellen auch sogenannte Fremdschlüssel (en. \textit{foreign keys}) besitzen, die sich auf Primärschlüssel von anderen Tabellen beziehen. Dies erlaubt, Informationen aus mehreren Tabellen zu kombinieren. Gegeben sei folgendes Beispiel mit je einer Tabellen zu Angestellten und Abteilungen (\cref{table:angestellte2}, \cref{table:abteilungen}).
+
+\begin{minipage}{.48\textwidth}
+\centering
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|a}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\caption{Tabelle ``\textbf{Angestellte}''}
+\label{table:angestellte2}
+\end{table}
+\end{minipage}
+\begin{minipage}{.48\textwidth}
+\centering
+\begin{table}[H]
+\centering
+\begin{tabular}{a|l}
+\underline{aID} & Abteilungs \\\midrule
+31    & Verkauf   \\
+32    & Technik   \\
+33    & Marketing \\
+... & ... 
+\end{tabular}
+\caption{Tabelle ``\textbf{Abteilungen}''}
+\label{table:abteilungen}
+\end{table}
+\end{minipage}
+
+In diesem Beispiel hat die Tabelle ``Angestellte'' nicht nur einen Primärschlüssel \texttt{mID}, sondern auch einen Fremdschlüssel \texttt{aID} (hervorgehoben mit dem Symbol \faArrowUp), der auf den Primärschlüssel mit demselben Name der Tabelle ``Abteilungen'' verweist. Angenommen wir möchten nun (mit SQL, nicht mit manuellem Nachschauen) herausfinden, in welcher Abteilung die Person ``Kaufmann'' arbeitet, wie lassen sich nun die Informationen aus beiden Tabellen kombinieren?
+
+
+
+\subsection{\texorpdfstring{Tabellen verbinden mit oder ohne \lstinline[style=SQL]|JOIN|}{Tabellen verbinden mit oder ohne JOIN}}
+Eine erste Möglichkeit bestünde daraus, einfach beide Tabellen ``aufzurufen'', wie in folgendem Beispiel gezeigt wird.
+
+\begin{lstlisting}[style=sql]
+SELECT *
+FROM Angestellte, Abteilung
+\end{lstlisting}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|a|a|l}
+\underline{mID} & Name   &  \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+1  & Müller  & 31  & 31  & Verkauf\\
+1  & Müller  & 31  & 32  & Technik\\
+1  & Müller  & 31  &33  &  Marketing\\
+1  & Müller  & 31  & ...  & ...\\
+2  & Schmidt & 32 &31 & Verkauf\\
+2  & Schmidt & 32 &32 & Technik\\
+2  & Schmidt & 32 &33 & Marketing\\
+2  & Schmidt & 32 &... & ...\\
+3  & Kaufmann  & 31 &... & ... \\
+... & ... & ... & ... & ... 
+\end{tabular}
+\end{table}
+
+Wie wir sehen, wurden beide Informationen kombiniert. Die beiden gleichnamigen Kolonnen erhalten zusätzlich einen Präfix (vorausgehenden Text) mit dem Namen der Ursprungstabelle, um diese voneinander abzugrenzen. Wir könnten nun die Auswahl einfach eingrenzen, indem wir zwei Filter einfügen:
+
+\begin{lstlisting}[style=sql]
+SELECT *
+FROM Angestellte, Abteilung
+WHERE Angestellte.aID = Abteilung.aID
+AND Name = "Kaufmann"
+\end{lstlisting}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|a|a|l}
+\underline{mID} & Name   & \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+3  & Kaufmann  & 32 &32 & Technik \\
+\end{tabular}
+\end{table}
+
+\begin{mycaution}
+Bisher haben wir immer auf Kolonnen von Tabellen zugegriffen, indem wir den Namen der Kolonne geschrieben haben. Wenn wir mit mehreren Tabellen arbeiten, kann es aber passieren, dass Kolonnen denselben Namen haben. Es kann daher nötig sein, zusätzlich zum Kolonnennamen den Namen der Tabelle anzugeben.
+\end{mycaution}
+
+Die Tatsache, dass unsere Abfrage mehrere Kolonnen \texttt{aID} zurückgibt, mag etwas unschön sein. Dies könnte umgangen werden, indem wir ein \lstinline[style=sql]|JOIN|-Konstrukt verwenden:
+
+\begin{lstlisting}[style=sql]
+SELECT *
+FROM Angestellte JOIN Abteilung
+USING aID
+WHERE Name = "Kaufmann"
+\end{lstlisting}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|a|l}
+\underline{mID} & Name   & \underline{aID} & Abteilung \\\midrule
+3  & Kaufmann  & 32  & Technik \\
+\end{tabular}
+\end{table}
+
+\section{\texorpdfstring{\lstinline[style=sql]|JOIN|-Typen}{JOIN-Typen}}
+
+
+Häufig kann es nützlich sein, mehrere Tabellen auf unterschiedliche Arten miteinander zu verbinden, um neue Einsichten in die Daten zu gewinnen. Verschiedene Tabellen-Verbindungen sind schematisch in \cref{fig:venn-joins} abgebildet. Die Bedeutung dieser Abbildungen wird in den folgenden Abschnitten erklärt.
 
 
 \begin{figure}[htbp]

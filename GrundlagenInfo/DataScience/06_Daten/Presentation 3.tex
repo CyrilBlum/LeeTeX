@@ -130,9 +130,410 @@
   \begin{itemize}
 	\item \aufgabebox{Aufgabe 2.51}
 	\item \aufgabebox{Aufgabe 2.52}
+	\item  TODO bessere Übungen hinzufügen...
   \end{itemize}
 \end{frame}
 
+\newcolumntype{a}{>{\columncolor{RoyalBlue!50}}l}
+\newcolumntype{R}[1]{%
+    >{\columncolor{RoyalBlue!50}\adjustbox{angle=#1}\bgroup}%
+    l<{\egroup}|%
+}
+\newcommand*\rot{\multicolumn{1}{R{90}}}
+
+
+\begin{frame}[fragile]{Primärschlüssel einer Tabelle}
+
+\begin{table}
+\centering
+\begin{tabular}{a|l|l}
+\underline{mID} & Name   & ... \\\midrule
+1  & Müller  & ...  \\
+2  & Schmidt & ...  \\
+3  & Kaufmann  & ...\\
+... & ... & ... 
+\end{tabular}
+\end{table}
+\begin{center}
+\textbf{Frage}: Weshalb hat (fast) jede Tabelle einen Primärschlüssel (=ID)?
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Fremdschlüssel einer Tabelle}
+
+\begin{table}
+\centering
+\begin{tabular}{a|l|l}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\end{table}
+\begin{center}
+\textbf{Frage}: Weshalb könnten Fremdschlüssel benötigt werden?
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Angestellte}''}
+\end{table}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{table}[H]
+\begin{tabular}{a|l}
+\underline{aID} & Abteilungs \\\midrule
+31    & Verkauf   \\
+32    & Technik   \\
+33    & Marketing \\
+... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Abteilungen}''}
+\end{table}
+\end{column}
+\end{columns}
+\textbf{Frage}: Wie können wir Kolonne ``Abteilung'' zur Tabelle ``Angestellte'' hinzufügen?
+\end{frame}
+
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{``Naive'' Tabellenverbindung}
+\begin{lstlisting}[style=sql,basicstyle=\ttfamily\footnotesize]
+SELECT *
+FROM Angestellte, Abteilung
+\end{lstlisting}
+\vspace{-.3cm}
+\footnotesize
+\begin{columns}
+\begin{column}{.35\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Angestellte}''}
+\end{table}
+\vspace{-.5cm}
+\begin{table}[H]
+\begin{tabular}{a|l}
+\underline{aID} & Abteilungs \\\midrule
+31    & Verkauf   \\
+32    & Technik   \\
+33    & Marketing \\
+... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Abteilungen}''}
+\end{table}
+
+\end{column}
+\begin{column}{.1\textwidth}
+\faArrowRight
+\end{column}
+\begin{column}{.55\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a|a|l}
+\underline{mID} & Name   &  \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+1  & Müller  & 31  & 31  & Verkauf\\
+1  & Müller  & 31  & 32  & Technik\\
+1  & Müller  & 31  &33  &  Marketing\\
+1  & Müller  & 31  & ...  & ...\\
+2  & Schmidt & 32 &31 & Verkauf\\
+2  & Schmidt & 32 &32 & Technik\\
+2  & Schmidt & 32 &33 & Marketing\\
+2  & Schmidt & 32 &... & ...\\
+3  & Kaufmann  & 31 &... & ... \\
+... & ... & ... & ... & ... 
+\end{tabular}
+\end{table}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{Verwendung von \lstinline[style=sql]|WHERE|}
+\begin{lstlisting}[style=sql,basicstyle=\ttfamily\footnotesize]
+SELECT *
+FROM Angestellte, Abteilung
+WHERE Angestellte.aID = Abteilung.aID
+\end{lstlisting}
+\vspace{-.3cm}\begin{columns}\footnotesize
+\begin{column}{.35\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Angestellte}''}
+\end{table}
+\vspace{-.5cm}
+\begin{table}[H]
+\begin{tabular}{a|l}
+\underline{aID} & Abteilungs \\\midrule
+31    & Verkauf   \\
+32    & Technik   \\
+33    & Marketing \\
+... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Abteilungen}''}
+\end{table}
+
+\end{column}
+\begin{column}{.1\textwidth}
+\faArrowRight
+\end{column}
+\begin{column}{.55\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a|a|l}
+\underline{mID} & Name   & \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+1  & Müller  & 31  &31  & Verkauf\\
+2  & Schmidt & 32 &32 & Technik\\
+3  & Kaufmann  & 32 &32 & Technik \\
+... & ... & ... & ... 
+\end{tabular}
+\end{table}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}
+\begin{center}
+\textbf{Was ist die Abteilung von Frau Kaufmann?}
+\end{center}
+\begin{lstlisting}[style=sql,basicstyle=\ttfamily\footnotesize]
+SELECT *
+FROM Angestellte, Abteilung
+WHERE Angestellte.aID = Abteilung.aID
+AND Name = "Kaufmann"
+\end{lstlisting}
+\vspace{-.5cm}
+\footnotesize
+\begin{columns}
+\begin{column}{.35\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Angestellte}''}
+\end{table}
+\vspace{-.7cm}\begin{table}[H]
+\begin{tabular}{a|l}
+\underline{aID} & Abteilungs \\\midrule
+31    & Verkauf   \\
+32    & Technik   \\
+33    & Marketing \\
+... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Abteilungen}''}
+\end{table}
+
+\end{column}
+\begin{column}{.1\textwidth}
+\faArrowRight
+\end{column}
+\begin{column}{.55\textwidth}
+\begin{table}[H]
+\begin{table}[H]
+\begin{tabular}{l|l|a|a|l}
+\underline{mID} & Name   & \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+3  & Kaufmann  & 32 &32 & Technik \\
+\end{tabular}
+\end{table}
+\end{table}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{Nur eine Kolonne \texttt{aID}: Verwendung von \lstinline[style=sql]|JOIN|}
+\begin{lstlisting}[style=sql,basicstyle=\ttfamily\footnotesize]
+SELECT *
+FROM Angestellte JOIN Abteilung
+ON Angestellte.aID = Abteilung.aID
+\end{lstlisting}
+\vspace{-.3cm}
+\footnotesize
+\begin{columns}
+\begin{column}{.35\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Angestellte}''}
+\end{table}
+\vspace{-.5cm}\begin{table}[H]
+\begin{tabular}{a|l}
+\underline{aID} & Abteilungs \\\midrule
+31    & Verkauf   \\
+32    & Technik   \\
+33    & Marketing \\
+... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Abteilungen}''}
+\end{table}
+
+\end{column}
+\begin{column}{.1\textwidth}
+\faArrowRight
+\end{column}
+\begin{column}{.55\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a|a|l}
+\underline{mID} & Name   & \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+1  & Müller  & 31  &31  & Verkauf\\
+2  & Schmidt & 32 &32 & Technik\\
+3  & Kaufmann  & 32 &32 & Technik \\
+... & ... & ... & ... 
+\end{tabular}
+\end{table}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{Verwendung von \lstinline[style=sql]|JOIN|}
+\begin{lstlisting}[style=sql,basicstyle=\ttfamily\footnotesize]
+SELECT *
+FROM Angestellte JOIN Abteilung
+USING aID
+\end{lstlisting}
+\vspace{-.3cm}
+\footnotesize
+\begin{columns}
+\begin{column}{.35\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Angestellte}''}
+\end{table}
+\vspace{-.5cm}\begin{table}[H]
+\begin{tabular}{a|l}
+\underline{aID} & Abteilungs \\\midrule
+31    & Verkauf   \\
+32    & Technik   \\
+33    & Marketing \\
+... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Abteilungen}''}
+\end{table}
+
+\end{column}
+\begin{column}{.1\textwidth}
+\faArrowRight
+\end{column}
+\begin{column}{.55\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a|l}
+\underline{mID} & Name   & \underline{aID} & Abteilung \\\midrule
+1  & Müller  & 31  & Verkauf\\
+2  & Schmidt & 32  & Technik\\
+3  & Kaufmann  & 32  & Technik \\
+... & ... & ...  
+\end{tabular}
+\end{table}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}
+\begin{center}
+\textbf{Was ist die Abteilung von Frau Kaufmann?}
+\end{center}
+\begin{lstlisting}[style=sql,basicstyle=\ttfamily\footnotesize]
+SELECT *
+FROM Angestellte JOIN Abteilung
+USING aID
+WHERE Name = "Kaufmann"
+\end{lstlisting}
+\vspace{-.5cm}
+\footnotesize
+\begin{columns}
+\begin{column}{.35\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a}
+\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+1  & Müller  & 31  \\
+2  & Schmidt & 32  \\
+3  & Kaufmann  & 32\\
+... & ... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Angestellte}''}
+\end{table}
+\vspace{-.7cm}\begin{table}[H]
+\begin{tabular}{a|l}
+\underline{aID} & Abteilungs \\\midrule
+31    & Verkauf   \\
+32    & Technik   \\
+33    & Marketing \\
+... & ... 
+\end{tabular}
+\caption*{Tabelle ``\textbf{Abteilungen}''}
+\end{table}
+
+\end{column}
+\begin{column}{.1\textwidth}
+\faArrowRight
+\end{column}
+\begin{column}{.55\textwidth}
+\begin{table}[H]
+\begin{tabular}{l|l|a|l}
+\underline{mID} & Name   & \underline{aID} & Abteilung \\\midrule
+3  & Kaufmann  & 32  & Technik \\
+\end{tabular}
+\end{table}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{center}
+    Demo: InstaHub
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag}
+  Skript (Moodle)
+  \begin{itemize}
+    \item \aufgabebox{Aufgabe 2.55}
+    \item \aufgabebox{Aufgabe 2.57}
+    \item \abgabebox{Abgabe 2.58}
+    \item \challengebox{Aufgabe(n) 2.61}
+    \item Aufgaben und Abgaben in Kapitel 2.4
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Appendix}
+\end{frame}
 \begin{frame}[fragile]{\lstinline[style=sql]|JOIN|-Typen}
   \begin{figure}[htbp]
     \centering
@@ -207,21 +608,4 @@
     \caption{Venn-Diagramme unterschiedlicher SQL-Joins}
     \label{fig:venn-joins}
   \end{figure}
-\end{frame}
-
-\begin{frame}[fragile]
-  \begin{center}
-    Demo: InstaHub
-  \end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Auftrag}
-  Skript (Moodle)
-  \begin{itemize}
-    \item \aufgabebox{Aufgabe 2.55}
-    \item \aufgabebox{Aufgabe 2.57}
-    \item \abgabebox{Abgabe 2.58}
-    \item \challengebox{Aufgabe(n) 2.61}
-    \item Aufgaben und Abgaben in Kapitel 2.4
-  \end{itemize}
 \end{frame}
