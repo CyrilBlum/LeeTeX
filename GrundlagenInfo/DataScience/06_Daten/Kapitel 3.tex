@@ -221,8 +221,9 @@ In diesem Beispiel hat die Tabelle ``Angestellte'' nicht nur einen Primärschlü
 
 
 \subsection{\texorpdfstring{Tabellen verbinden mit oder ohne \lstinline[style=SQL]|JOIN|}{Tabellen verbinden mit oder ohne JOIN}}
-Eine erste Möglichkeit bestünde daraus, einfach beide Tabellen ``aufzurufen'', wie in folgendem Beispiel gezeigt wird.
 
+\begin{myexample}
+Eine erste Möglichkeit, \cref{table:angestellte2} mit \cref{table:abteilungen} zu verbinden, besteht darin, einfach beide Tabellen ``aufzurufen'':
 \begin{lstlisting}[style=sql]
 SELECT *
 FROM Angestellte, Abteilung
@@ -245,7 +246,11 @@ FROM Angestellte, Abteilung
 \end{tabular}
 \end{table}
 
-Wie wir sehen, wurden beide Informationen kombiniert. Die beiden gleichnamigen Kolonnen erhalten zusätzlich einen Präfix (vorausgehenden Text) mit dem Namen der Ursprungstabelle, um diese voneinander abzugrenzen. Wir könnten nun die Auswahl einfach eingrenzen, indem wir zwei Filter einfügen:
+Wie wir sehen, wurden Informationen aus beiden Tabellen zusammengeführt, indem alle möglichen Kombinationen beider Tabellen erstellt wurden. Die beiden gleichnamigen Kolonnen erhalten zusätzlich einen Präfix (vorausgehenden Text) mit dem Namen der Ursprungstabelle, um diese voneinander abzugrenzen. 
+\end{myexample}
+
+\begin{myexample}
+Wir könnten nun die Auswahl einfach eingrenzen, indem wir zwei Filter einfügen:
 
 \begin{lstlisting}[style=sql]
 SELECT *
@@ -261,19 +266,24 @@ AND Name = "Kaufmann"
 3  & Kaufmann  & 32 &32 & Technik \\
 \end{tabular}
 \end{table}
+\end{myexample}
 
-\begin{mycaution}
+\begin{myremark}
 Bisher haben wir immer auf Kolonnen von Tabellen zugegriffen, indem wir den Namen der Kolonne geschrieben haben. Wenn wir mit mehreren Tabellen arbeiten, kann es aber passieren, dass Kolonnen denselben Namen haben. Es kann daher nötig sein, zusätzlich zum Kolonnennamen den Namen der Tabelle anzugeben.
-\end{mycaution}
+\end{myremark}
 
-Die Tatsache, dass unsere Abfrage mehrere Kolonnen \texttt{aID} zurückgibt, mag etwas unschön sein. Dies könnte umgangen werden, indem wir ein \lstinline[style=sql]|JOIN|-Konstrukt verwenden:
+Die Tatsache, dass unsere Abfrage mehrere Kolonnen \texttt{aID} zurückgibt, mag etwas unschön sein. Dies könnte umgangen werden, indem wir ein \lstinline[style=sql]|JOIN ... USING|-Konstrukt verwenden.
+\begin{myexample} Folgender Befehl führt zu einer einzigen Kolonne \texttt{aID} im Endresultat:
 
 \begin{lstlisting}[style=sql]
 SELECT *
-FROM Angestellte JOIN Abteilung
-USING aID
+FROM Angestellte JOIN Abteilung USING (aID)
 WHERE Name = "Kaufmann"
 \end{lstlisting}
+
+\begin{mycaution}
+Die Klammer um \texttt{aID} muss gesetzt werden, damit der \lstinline[style=sql]|USING|-Befehl funktioniert.
+\end{mycaution}
 
 \begin{table}[H]
 \centering
@@ -282,6 +292,21 @@ WHERE Name = "Kaufmann"
 3  & Kaufmann  & 32  & Technik \\
 \end{tabular}
 \end{table}
+
+\end{myexample}
+
+\begin{myremark}
+Statt zwei Tabellen können auch drei oder mehr Tabellen nach den oben erklärten Prinzipien miteinander verbunden werden.
+\end{myremark}
+
+\begin{myremark}
+Nach einer Tabellenverbindung können Sie alles machen, was Sie sonst auch tun: filtern mit \lstinline[style=sql]|WHERE|, gruppieren mit \lstinline[style=sql]|GROUP BY|, summieren mit \lstinline[style=sql]|SUM| etc.
+\end{myremark}
+
+
+\begin{myexercise}
+Lösen Sie Aufgaben 1-10 unter folgendem Link: \url{https://sql-tutorial.de/home/uebungen.php?lektion=3}.
+\end{myexercise}
 
 \section{\texorpdfstring{\lstinline[style=sql]|JOIN|-Typen}{JOIN-Typen}}
 
@@ -562,7 +587,3 @@ Bei einem \lstinline[style=sql]|FULL (OUTER) JOIN| werden alle Werte aus der ers
   \label{fig:venn-outer-join}
 \end{figure}
 In InstaHub funktioniert der \lstinline[style=sql]|FULL (OUTER) JOIN| nicht, weshalb es an dieser Stelle keine Übungen hierzu gibt.
-
-\begin{mysubmission}
-Lösen Sie Aufgaben 1-10 unter folgendem Link: \url{https://sql-tutorial.de/home/uebungen.php?lektion=3}.
-\end{mysubmission}
