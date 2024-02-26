@@ -151,7 +151,7 @@ Folgende Fakten können beispielsweise am \gls{ERM} in \cref{fig:erm-instahub} a
 
 \section{Informationen aus mehrere Tabellen kombinieren}
 \subsection{Primärschlüssel}
-Wie in \cref{subsec:tables} diskutiert wurde, besitzen Tabellen häufig sogenannte Primärschlüssel (en. \textit{primary keys}). \cref{table:angestellte} beispielsweise verwendet einen Primärschlüssel \underline{mID} (in blau, Titel unterstrichen). 
+Wie in \cref{subsec:tables} diskutiert wurde, besitzen Tabellen häufig sogenannte Primärschlüssel (en. \textit{primary keys}). \cref{table:angestellte} beispielsweise verwendet einen Primärschlüssel \underline{mID} (blaue Kolonne, hervorgehoben mit dem Symbol \emoji{key}). 
 
 \newcolumntype{a}{>{\columncolor{RoyalBlue!50}}l}
 \newcolumntype{R}[1]{%
@@ -163,7 +163,7 @@ Wie in \cref{subsec:tables} diskutiert wurde, besitzen Tabellen häufig sogenann
 \begin{table}[H]
 \centering
 \begin{tabular}{a|l|l}
-\underline{mID} & Name   & ... \\\midrule
+\emoji{key} \underline{mID} & Name   & ... \\\midrule
 1  & Müller  & ...  \\
 2  & Schmidt & ...  \\
 3  & Kaufmann  & ...\\
@@ -187,13 +187,14 @@ Nebst Primärschlüsseln können Tabellen auch sogenannte Fremdschlüssel (en. \
 
 \begin{minipage}{.48\textwidth}
 \centering
+
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
-1  & Müller  & 31  \\
-2  & Schmidt & 32  \\
-3  & Kaufmann  & 32\\
+\emoji{key} \underline{mID} & Name   & \tikzmarknode{fkey}{\underline{aID} \faKey} \\\midrule
+1  & Müller  & \tikzmarknode{31o}{31}  \\
+2  & Schmidt & \tikzmarknode{32o1}{32}  \\
+3  & Kaufmann  & \tikzmarknode{32o2}{32}\\
 ... & ... & ... 
 \end{tabular}
 \caption{Tabelle ``\textbf{Angestellte}''}
@@ -205,18 +206,26 @@ Nebst Primärschlüsseln können Tabellen auch sogenannte Fremdschlüssel (en. \
 \begin{table}[H]
 \centering
 \begin{tabular}{a|l}
-\underline{aID} & Abteilungs \\\midrule
-31    & Verkauf   \\
-32    & Technik   \\
-33    & Marketing \\
+\tikzmarknode{pkey}{\emoji{key} \underline{aID}} & Abteilungs \\\midrule
+\tikzmarknode{31t}{31}    & Verkauf   \\
+\tikzmarknode{32t}{32}    & Technik   \\
+\tikzmarknode{33t}{33}    & Marketing \\
 ... & ... 
 \end{tabular}
+\begin{tikzpicture}[overlay,remember picture]
+% title
+ \draw[red,-stealth] (fkey) to[bend left] (pkey);
+% values
+  \draw[red,-stealth] (31o) -- (31t);
+  \draw[red,-stealth] (32o1) -- (32t);
+  \draw[red,-stealth] (32o2) -- (32t);
+\end{tikzpicture}
 \caption{Tabelle ``\textbf{Abteilungen}''}
 \label{table:abteilungen}
 \end{table}
 \end{minipage}
 
-In diesem Beispiel hat die Tabelle ``Angestellte'' nicht nur einen Primärschlüssel \texttt{mID}, sondern auch einen Fremdschlüssel \texttt{aID} (hervorgehoben mit dem Symbol \faArrowUp), der auf den Primärschlüssel mit demselben Name der Tabelle ``Abteilungen'' verweist. Angenommen wir möchten nun (mit SQL, nicht mit manuellem Nachschauen) herausfinden, in welcher Abteilung die Person ``Kaufmann'' arbeitet, wie lassen sich nun die Informationen aus beiden Tabellen kombinieren?
+In diesem Beispiel hat die Tabelle ``Angestellte'' nicht nur einen Primärschlüssel \texttt{mID}, sondern auch einen Fremdschlüssel \texttt{aID} (hervorgehoben mit dem Symbol \faKey), der auf den Primärschlüssel mit demselben Name der Tabelle ``Abteilungen'' verweist. Angenommen wir möchten nun (mit SQL, nicht mit manuellem Nachschauen) herausfinden, in welcher Abteilung die Person ``Kaufmann'' arbeitet, wie lassen sich nun die Informationen aus beiden Tabellen kombinieren?
 
 
 
@@ -232,7 +241,7 @@ FROM Angestellte, Abteilung
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|a|a|l}
-\underline{mID} & Name   &  \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+mID & Name   &  \rot{Angestellte.aID} & \rot{Abteilung.aID} & Abteilung \\\midrule
 1  & Müller  & 31  & 31  & Verkauf\\
 1  & Müller  & 31  & 32  & Technik\\
 1  & Müller  & 31  &33  &  Marketing\\
@@ -262,7 +271,7 @@ AND Name = "Kaufmann"
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|a|a|l}
-\underline{mID} & Name   & \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+mID & Name   & \rot{Angestellte.aID} & \rot{Abteilung.aID} & Abteilung \\\midrule
 3  & Kaufmann  & 32 &32 & Technik \\
 \end{tabular}
 \end{table}
@@ -288,7 +297,7 @@ Die Klammer um \texttt{aID} muss gesetzt werden, damit der \lstinline[style=sql]
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|a|l}
-\underline{mID} & Name   & \underline{aID} & Abteilung \\\midrule
+mID & Name   & aID & Abteilung \\\midrule
 3  & Kaufmann  & 32  & Technik \\
 \end{tabular}
 \end{table}

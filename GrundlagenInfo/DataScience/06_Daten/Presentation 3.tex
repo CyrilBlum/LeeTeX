@@ -1,3 +1,13 @@
+
+\newcolumntype{a}{>{\columncolor{RoyalBlue!50}}l}
+\newcolumntype{b}{>{\columncolor{RoyalBlue!50}}p{1.2cm}}
+\newcolumntype{d}{>{\columncolor{RoyalBlue!50}}p{.6cm}}
+\newcolumntype{R}[1]{%
+    >{\columncolor{RoyalBlue!50}\adjustbox{angle=#1}\bgroup}%
+    l<{\egroup}|%
+}
+\newcommand*\rotCol{\multicolumn{1}{R{90}}}
+
 \begin{frame}[label=title]
   \centering
   \begin{figure}[H]
@@ -7,6 +17,27 @@
   \emoji{floppy-disk} \textbf{\gls{SQL}: mehrere Tabellen}
 \end{frame}
 
+
+\begin{frame}[fragile]{Weshalb braucht es mehrere Tabellen?}{Analogie: Wörterbuch}
+Angenommen, Sie lesen einen Text in deutscher Sprache. Wäre es praktisch, wenn jedes Wort in einer Klammer erklärt wäre?\\[.5cm]
+
+
+\begin{tcolorboxTemplate}[title=Beispiel]
+\tiny\textbf{Ich} (``das Selbst, dessen man sich bewusst ist und mit dem man sich von der Umwelt unterscheidet'') \textbf{ging} (gehen, ``schrittweises Sichfortbewegen auf den Füßen in aufrechter Haltung'') \textbf{nach} (``drückt aus, dass jemand jemandem, einer Sache folgt, nachgeht'') \textbf{draussen} (``außerhalb eines Raumes, Gebäudes'')...
+\end{tcolorboxTemplate}
+
+
+\normalsize
+Alternative: Nachschlagewerk / Wörterbuch!
+
+\end{frame}
+
+\begin{frame}[fragile]{Weshalb braucht es mehrere Tabellen?}{Analogie: Soziale Medien}
+\begin{center}
+Wäre es praktisch, wenn Sie bei Ihrer Tiktok-Freundesliste immer auch gleich all deren Posts, Kommentare und alles Weitere sehen könnten?
+\end{center}
+\end{frame}
+
 \begin{frame}[fragile]{Eine Schul-Datenbank}
   Eine Schule möchte eine Datenbank entwerfen. Sie will folgende Informationen speichern:
   \begin{itemize}
@@ -14,8 +45,13 @@
     \item LehrerInnen: Namen, Geschlecht, Geburtsdatum, Wohnort, Gehalt, Fach (oder Fächer), Klasse (oder Klassen)
     \item Klassen: SchülerInnen, Klassenname, Klassenlehrperson
   \end{itemize}
-  Wie viele Tabellen soll die Schule erstellen?
-  \only<2->{
+ Wäre es praktisch, wenn wir all diese Informationen in einer Tabelle hätten?
+ \only<2>{
+\begin{itemize}
+	\item Unübersichtlich
+	\item Redundant (viele doppelte Werte)
+\end{itemize}}
+  \only<3->{
     \begin{figure}[H]
       \centering
       \resizebox{\textwidth}{!}{%
@@ -43,12 +79,78 @@
   }
 \end{frame}
 
-\begin{frame}{Weitere Beispiele}{Es gibt noch viel komplexere Datenbanken...}
+\begin{frame}{Weitere Beispiele}{Supermarkt}
   \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{GrundlagenInfo/DataScience/06_Daten/Figures/er_nordwind_komplett}
     \caption{Datenbank einer Firma, die Produkte verkauft (z.B. Supermarkt)}
   \end{figure}
+
+\end{frame}
+
+\begin{frame}{Weitere Beispiele}{Supermarkt}
+\begin{center}
+Was bevorzugen Sie?
+\end{center}
+\begin{table}[H]
+\centering
+\tiny
+\begin{tabular}{l|p{1.2cm}|l|l|a|a|b}
+\textbf{ArtikelNr} & \textbf{Artikelname}                     & \textbf{Einzelpreis} & \textbf{Lagerbestand} & \textbf{KategorieNr} & \textbf{Kategoriename} & \textbf{Beschreibung}                             \\\midrule
+1         & Chai                            & 18.00       & 39           & 1           & Getränke      & Alkoholfreie Getränke, Kaffee, Tee, Bier \\\hline
+2         & Chang                           & 19.00       & 17           & 1           & Getränke      & Alkoholfreie Getränke, Kaffee, Tee, Bier \\\hline
+3         & Aniseed Syrup                   & 10.00       & 13           & 2           & Gewürze       & Süße und saure Soßen, Gewürze            \\\hline
+4         & Chef Anton's Cajun Seasoning    & 22.00       & 53           & 2           & Gewürze       & Süße und saure Soßen, Gewürze            \\\hline
+5         & Chef Anton's Gumbo Mix          & 21.35       & 0            & 2           & Gewürze       & Süße und saure Soßen, Gewürze            \\\hline
+6         & Grandma's Boysenberry Spread    & 25.00       & 120          & 2           & Gewürze       & Süße und saure Soßen, Gewürze            \\\hline
+…         & …                               & …           & …            & …           & …             & …                                       
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}{Weitere Beispiele}{Supermarkt}
+\begin{center}
+Was bevorzugen Sie?
+\end{center}
+
+\begin{columns}
+\begin{column}{.6\textwidth}
+\begin{table}[H]
+\tiny\centering
+\begin{tabular}{@{}p{.6cm}|p{1.2cm}|p{.6cm}|p{.6cm}|b@{}}
+\toprule
+\textbf{ArtikelNr} & \textbf{Artikelname}         & \textbf{Einzelpreis} & \textbf{Lagerbestand} & \textbf{KategorieNr} \\ \midrule
+1                  & Chai                         & 18.00                & 39                    & 1                    \\\hline
+2                  & Chang                        & 19.00                & 17                    & 1                    \\\hline
+3                  & Aniseed Syrup                & 10.00                & 13                    & 2                    \\\hline
+4                  & Chef Anton's Cajun Seasoning & 22.00                & 53                    & 2                    \\\hline
+5                  & Chef Anton's Gumbo Mix       & 21.35                & 0                     & 2                    \\\hline
+6                  & Grandma's Boysenberry Spread & 25.00                & 120                   & 2                    \\\hline
+…                  & …                            & …                    & …                     & …                    \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{column}
+\begin{column}{.4\textwidth}
+\begin{table}[H]
+\tiny\centering
+\begin{tabular}{@{}b|p{1.2cm}|p{1.2cm}@{}}
+\toprule
+\textbf{KategorieNr} & \textbf{Kategoriename}    & \textbf{Beschreibung}                             \\\midrule
+1           & Getränke         & Alkoholfreie Getränke, Kaffee, Tee, Bier \\\hline
+2           & Gewürze          & Süße und saure Soßen, Gewürze            \\\hline
+3           & Süßwaren         & Desserts und Süßigkeiten                 \\\hline
+4           & Milchprodukte    & Käsesorten                               \\\hline
+5           & Getreideprodukte & Brot, Kräcker, Nudeln, Müsli             \\\hline
+6           & Fleischprodukte  & Fleisch-Fertiggerichte                   \\\hline
+7           & Naturprodukte    & Getrocknete Früchte, Tofu usw.           \\\hline
+8           & Meeresfrüchte    & Meerespflanzen und -früchte, Fisch      \\\bottomrule
+\end{tabular}
+\end{table}
+\end{column}
+\end{columns}
+
+
 
 \end{frame}
 
@@ -133,59 +235,34 @@
   \end{itemize}
 \end{frame}
 
-\newcolumntype{a}{>{\columncolor{RoyalBlue!50}}l}
-\newcolumntype{R}[1]{%
-    >{\columncolor{RoyalBlue!50}\adjustbox{angle=#1}\bgroup}%
-    l<{\egroup}|%
-}
-\newcommand*\rot{\multicolumn{1}{R{90}}}
-
-
 \begin{frame}[fragile]{Primärschlüssel einer Tabelle}
 
 \begin{table}
 \centering
 \begin{tabular}{a|l|l}
-\underline{mID} & Name   & ... \\\midrule
+\emoji{key} \underline{mID} & Name   & ... \\\midrule
 1  & Müller  & ...  \\
 2  & Schmidt & ...  \\
 3  & Kaufmann  & ...\\
 ... & ... & ... 
 \end{tabular}
+\caption*{Tabelle ``\textbf{Angestellte}''}
 \end{table}
 \begin{center}
-\textbf{Frage}: Weshalb hat (fast) jede Tabelle einen Primärschlüssel (=ID)?
+\textbf{Frage}: Weshalb hat (fast) jede Tabelle einen Primärschlüssel \emoji{key}?
 \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Fremdschlüssel einer Tabelle}
 
-\begin{table}
-\centering
-\begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
-1  & Müller  & 31  \\
-2  & Schmidt & 32  \\
-3  & Kaufmann  & 32\\
-... & ... & ... 
-\end{tabular}
-\end{table}
-\begin{center}
-\textbf{Frage}: Was könnte ein Fremdschlüssel sein? \\
-
-Weshalb könnten Fremdschlüssel benötigt werden?
-\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}
 \begin{columns}
 \begin{column}{.5\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
-1  & Müller  & 31  \\
-2  & Schmidt & 32  \\
-3  & Kaufmann  & 32\\
+\emoji{key} \underline{mID} & Name   & \tikzmarknode{fkey}{\underline{aID} \faKey} \\\midrule
+1  & Müller  & \tikzmarknode{31o}{31}  \\
+2  & Schmidt & \tikzmarknode{32o1}{32}  \\
+3  & Kaufmann  & \tikzmarknode{32o2}{32}\\
 ... & ... & ... 
 \end{tabular}
 \caption*{Tabelle ``\textbf{Angestellte}''}
@@ -194,19 +271,39 @@ Weshalb könnten Fremdschlüssel benötigt werden?
 \begin{column}{.5\textwidth}
 \begin{table}[H]
 \begin{tabular}{a|l}
-\underline{aID} & Abteilungs \\\midrule
-31    & Verkauf   \\
-32    & Technik   \\
-33    & Marketing \\
+\tikzmarknode{pkey}{\emoji{key} \underline{aID}} & Abteilungs \\\midrule
+\tikzmarknode{31t}{31}    & Verkauf   \\
+\tikzmarknode{32t}{32}    & Technik   \\
+\tikzmarknode{33t}{33}    & Marketing \\
 ... & ... 
 \end{tabular}
 \caption*{Tabelle ``\textbf{Abteilungen}''}
 \end{table}
 \end{column}
 \end{columns}
+
+
+\only<2->{
+\begin{tikzpicture}[overlay,remember picture]
+% title
+ \draw[red,-stealth] (fkey) to[bend left] (pkey);
+% values
+  \draw[red,-stealth] (31o) -- (31t);
+  \draw[red,-stealth] (32o1) -- (32t);
+  \draw[red,-stealth] (32o2) -- (32t);
+\end{tikzpicture}}
+
 \begin{center}
+\only<1>{
+\textbf{Frage}: Was könnte ein Fremdschlüssel \faKey{} sein? \\
+
+Weshalb könnten Fremdschlüssel benötigt werden?
+}
+\only<2>{
 \textbf{Frage}: Was ist die Abteilung von Frau Kaufmann?
+}
 \end{center}
+
 \end{frame}
 
 \begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{``Naive'' Tabellenverbindung}
@@ -220,7 +317,7 @@ FROM Angestellte, Abteilung
 \begin{column}{.35\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
 1  & Müller  & 31  \\
 2  & Schmidt & 32  \\
 3  & Kaufmann  & 32\\
@@ -231,7 +328,7 @@ FROM Angestellte, Abteilung
 \vspace{-.5cm}
 \begin{table}[H]
 \begin{tabular}{a|l}
-\underline{aID} & Abteilungs \\\midrule
+\emoji{key} \underline{aID} & Abteilungs \\\midrule
 31    & Verkauf   \\
 32    & Technik   \\
 33    & Marketing \\
@@ -247,7 +344,7 @@ FROM Angestellte, Abteilung
 \begin{column}{.55\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a|a|l}
-\underline{mID} & Name   &  \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+mID & Name   &  \rotCol{Angestellte.aID} & \rotCol{Abteilung.aID} & Abteilung \\\midrule
 1  & Müller  & 31  & 31  & Verkauf\\
 1  & Müller  & 31  & 32  & Technik\\
 1  & Müller  & 31  &33  &  Marketing\\
@@ -275,7 +372,7 @@ WHERE Angestellte.aID = Abteilung.aID
 \begin{column}{.35\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
 1  & Müller  & 31  \\
 2  & Schmidt & 32  \\
 3  & Kaufmann  & 32\\
@@ -286,7 +383,7 @@ WHERE Angestellte.aID = Abteilung.aID
 \vspace{-.5cm}
 \begin{table}[H]
 \begin{tabular}{a|l}
-\underline{aID} & Abteilungs \\\midrule
+\emoji{key} \underline{aID} & Abteilungs \\\midrule
 31    & Verkauf   \\
 32    & Technik   \\
 33    & Marketing \\
@@ -302,7 +399,7 @@ WHERE Angestellte.aID = Abteilung.aID
 \begin{column}{.55\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a|a|l}
-\underline{mID} & Name   & \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+mID & Name   & \rotCol{Angestellte.aID} & \rotCol{Abteilung.aID} & Abteilung \\\midrule
 1  & Müller  & 31  &31  & Verkauf\\
 2  & Schmidt & 32 &32 & Technik\\
 3  & Kaufmann  & 32 &32 & Technik \\
@@ -329,7 +426,7 @@ AND Name = "Kaufmann"
 \begin{column}{.35\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
 1  & Müller  & 31  \\
 2  & Schmidt & 32  \\
 3  & Kaufmann  & 32\\
@@ -339,7 +436,7 @@ AND Name = "Kaufmann"
 \end{table}
 \vspace{-.7cm}\begin{table}[H]
 \begin{tabular}{a|l}
-\underline{aID} & Abteilungs \\\midrule
+\emoji{key} \underline{aID} & Abteilungs \\\midrule
 31    & Verkauf   \\
 32    & Technik   \\
 33    & Marketing \\
@@ -356,7 +453,7 @@ AND Name = "Kaufmann"
 \begin{table}[H]
 \begin{table}[H]
 \begin{tabular}{l|l|a|a|l}
-\underline{mID} & Name   & \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+mID & Name   & \rotCol{Angestellte.aID} & \rotCol{Abteilung.aID} & Abteilung \\\midrule
 3  & Kaufmann  & 32 &32 & Technik \\
 \end{tabular}
 \end{table}
@@ -378,7 +475,7 @@ ON Angestellte.aID = Abteilung.aID
 \begin{column}{.35\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
 1  & Müller  & 31  \\
 2  & Schmidt & 32  \\
 3  & Kaufmann  & 32\\
@@ -388,7 +485,7 @@ ON Angestellte.aID = Abteilung.aID
 \end{table}
 \vspace{-.5cm}\begin{table}[H]
 \begin{tabular}{a|l}
-\underline{aID} & Abteilungs \\\midrule
+\emoji{key} \underline{aID} & Abteilungs \\\midrule
 31    & Verkauf   \\
 32    & Technik   \\
 33    & Marketing \\
@@ -404,7 +501,7 @@ ON Angestellte.aID = Abteilung.aID
 \begin{column}{.55\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a|a|l}
-\underline{mID} & Name   & \rot{\underline{Angestellte.aID}} & \rot{\underline{Abteilung.aID}} & Abteilung \\\midrule
+mID & Name   & \rotCol{Angestellte.aID} & \rotCol{Abteilung.aID} & Abteilung \\\midrule
 1  & Müller  & 31  &31  & Verkauf\\
 2  & Schmidt & 32 &32 & Technik\\
 3  & Kaufmann  & 32 &32 & Technik \\
@@ -428,7 +525,7 @@ USING (aID)
 \begin{column}{.35\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
 1  & Müller  & 31  \\
 2  & Schmidt & 32  \\
 3  & Kaufmann  & 32\\
@@ -438,7 +535,7 @@ USING (aID)
 \end{table}
 \vspace{-.5cm}\begin{table}[H]
 \begin{tabular}{a|l}
-\underline{aID} & Abteilung \\\midrule
+\emoji{key} \underline{aID} & Abteilung \\\midrule
 31    & Verkauf   \\
 32    & Technik   \\
 33    & Marketing \\
@@ -454,7 +551,7 @@ USING (aID)
 \begin{column}{.55\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a|l}
-\underline{mID} & Name   & \underline{aID} & Abteilung \\\midrule
+mID & Name   & aID & Abteilung \\\midrule
 1  & Müller  & 31  & Verkauf\\
 2  & Schmidt & 32  & Technik\\
 3  & Kaufmann  & 32  & Technik \\
@@ -482,7 +579,7 @@ WHERE Name = "Kaufmann"
 \begin{column}{.35\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a}
-\underline{mID} & Name   & \underline{aID} \faArrowUp{} \\\midrule
+\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
 1  & Müller  & 31  \\
 2  & Schmidt & 32  \\
 3  & Kaufmann  & 32\\
@@ -492,7 +589,7 @@ WHERE Name = "Kaufmann"
 \end{table}
 \vspace{-.7cm}\begin{table}[H]
 \begin{tabular}{a|l}
-\underline{aID} & Abteilungs \\\midrule
+\emoji{key} \underline{aID} & Abteilungs \\\midrule
 31    & Verkauf   \\
 32    & Technik   \\
 33    & Marketing \\
@@ -508,7 +605,7 @@ WHERE Name = "Kaufmann"
 \begin{column}{.55\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a|l}
-\underline{mID} & Name   & \underline{aID} & Abteilung \\\midrule
+mID & Name   & aID & Abteilung \\\midrule
 3  & Kaufmann  & 32  & Technik \\
 \end{tabular}
 \end{table}
