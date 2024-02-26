@@ -321,6 +321,13 @@ $10100111$
 \end{myanswer}
 \end{myexercise}
 
+\begin{myexercise}
+Welches ist der höchste Zahl (in Dezimalschreibweise), die man mit 4 Bit darstellen kann? 
+\begin{myanswer}
+15 (=$1111_2$)
+\end{myanswer}
+\end{myexercise}
+
 \begin{mychallenge}
 Rechnen Sie folgende beiden Zahlen im Binärsystem zusammen: $11110001_2$, $00001111_2$.
 \begin{myanswer}
@@ -328,21 +335,282 @@ Die mathematisch richtige Antwort wäre eigentlich 100000000. Fall wir die Rechn
 \end{myanswer}
 \end{mychallenge}
 
+\begin{mychallenge}
+\begin{itemize}
+\item Wie lange benötigen Sie für 6 Umwandlungen? Testen Sie sich \href{https://oinf.ch/interactive/basiswechsel-10-zu-2/}{hier}.
+\item Testen Sie Ihre Zahlensystem-Umwandlungs-Wissen \href{https://oinf.ch/interactive/basiswechsel-10-zu-2/}{hier}!
+\item Schauen Sie sich das Video der Die \href{https://www.youtube.com/watch?app=desktop&v=GcDshWmhF4A&embeds_referring_euri=https%3A%2F%2Fwww.yaplakal.com%2Fforum28%2Fst%2F125%2Ftopic930979.html&feature=emb_imp_woyt}{Marble Adding Machine} an.
+\item Schauen Sie sich an, wie man einen binären Computer auch \href{https://youtu.be/5wKz1e0ULcg?si=AiPXUniyfU15X11m}{mit Wasser} bauen kann.
+\end{itemize}
+\end{mychallenge}
+
 \chapter{Kodierungen}
 \section{Kodierung von Informationen in der Informatik}
 
 Wir haben in den vorausgegangenen Kapiteln gelernt, wie man Zahlen im Binärsystem sowie in anderen $b$-adischen Systemen darstellt. Wir möchten jedoch selbstverständlich nicht nur Zahlen, sondern auch andere digitale Informationen wie etwa Buchstaben oder Bilder darstellen können. Im folgenden Kapitel widmen wir uns daher der Darstellung von Buchstaben und Bildern, sowie weiteren Dateiformaten im Allgemeinen.
 
+\subsection{Bits und Bytes}
+In Computern treten Bits oft in 8er-Gruppen auf. Einen solchen Block von 8 Bits nennt man ein Byte. Der Ausdruck stammt aus dem Englischen und setzt sich aus einem Wortspiel von \textit{bit} (= ``\textit{\underline{bi}nary digi\underline{t}}''), ``binäre Ziffer'', und \textit{bite} = ``Bissen'' zusammen. 
+
+Folgende Zahl ist die binäre Repräsentation der Dezimalzahl 22:
+
+\[00010110_2 = 22_{10}\]
+
+Bei Dezimalzahlen sind wir daran gewohnt, führende Nullen einfach wegzulassen (man könnte schliesslich genauso gut 000022 schreiben) – bei Binärzahlen werden üblicherweise alle Bits ausgeschrieben (also 00010110, nicht 10110).
+
+\begin{myexercise}
+Wie wird die Zahl 42 mit einem Byte dargestellt? Vergessen Sie die führenden Nullen nicht!
+\begin{myanswer}
+$00101010_2$
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+\label{ex:byte-max}
+Welches ist die grösste Dezimalzahl, die mit einem Byte (= 8 Bits) ausgedrückt werden kann?
+\begin{myanswer}
+255 (=$11111111_2$)
+\end{myanswer}
+\end{myexercise}
+
+
+
+
 \subsection{Kodierung von Buchstaben: ASCII-Tabellen und UTF-8}
-\begin{mycaution}
-Section under construction
-\end{mycaution}
-... % TODO fill
+In den vorausgehenden Kapiteln haben wir gelernt, dass Zahlen in unterschiedlichen Zahlensystemen unterschiedlich repräsentiert werden können. Insbesondere haben wir uns das Binärsystem genauer angeschaut, da alle Informationen, die Computer aus Nullen und Einen bestehen.
+
+Wenn Computer lediglich Nullen und Einen abspeichern können, wie kann man damit Zahlen repräsentieren? Genau dies wurde umgesetzt mit einer der ersten \tib{Text-Kodierungen}, dem \gls{ASCII}.
+
+Die Grundidee der \gls{ASCII}-Kodierung war, ein Byte pro Zeichen zu verwenden. Da, wie wir in \cref{ex:byte-max} gesehen haben, maximal 255 verschiedene Werte mit einem Byte abgebildet werden können, umfasst die \gls{ASCII}-Kodierung auch lediglich 255 Zeichen (s. \cref{table:ascii}).
+
+\begin{table}[H]
+    \centering
+    \tiny
+    \begin{tabular}{cccc}
+        \toprule
+        Dezimal & Hexadezimal & Binär & Zeichen \\
+        \midrule
+        0 & 00 & 00000000 & NUL \\
+        1 & 01 & 00000001 & SOH \\
+        2 & 02 & 00000010 & STX \\
+        3 & 03 & 00000011 & ETX \\
+        4 & 04 & 00000100 & EOT \\
+        5 & 05 & 00000101 & ENQ \\
+        6 & 06 & 00000110 & ACK \\
+        7 & 07 & 00000111 & BEL \\
+        8 & 08 & 00001000 & BS \\
+        9 & 09 & 00001001 & HT \\
+        10 & 0A & 00001010 & LF \\
+        11 & 0B & 00001011 & VT \\
+        12 & 0C & 00001100 & FF \\
+        13 & 0D & 00001101 & CR \\
+        14 & 0E & 00001110 & SO \\
+        15 & 0F & 00001111 & SI \\
+        16 & 10 & 00010000 & DLE \\
+        17 & 11 & 00010001 & DC1 \\
+        18 & 12 & 00010010 & DC2 \\
+        19 & 13 & 00010011 & DC3 \\
+        20 & 14 & 00010100 & DC4 \\
+        21 & 15 & 00010101 & NAK \\
+        22 & 16 & 00010110 & SYN \\
+        23 & 17 & 00010111 & ETB \\
+        24 & 18 & 00011000 & CAN \\
+        25 & 19 & 00011001 & EM \\
+        26 & 1A & 00011010 & SUB \\
+        27 & 1B & 00011011 & ESC \\
+        28 & 1C & 00011100 & FS \\
+        29 & 1D & 00011101 & GS \\
+        30 & 1E & 00011110 & RS \\
+        31 & 1F & 00011111 & US \\
+        \end{tabular}
+    \begin{tabular}{cccc}
+            \toprule
+            Dezimal & Hexadezimal & Binär & Zeichen \\
+            \midrule
+        32 & 20 & 00100000 & Space \\
+        33 & 21 & 00100001 & ! \\
+        34 & 22 & 00100010 & " \\
+        35 & 23 & 00100011 & \# \\
+        36 & 24 & 00100100 & \$ \\
+        37 & 25 & 00100101 & \% \\
+        38 & 26 & 00100110 & \& \\
+        39 & 27 & 00100111 & ' \\
+        40 & 28 & 00101000 & ( \\
+        41 & 29 & 00101001 & ) \\
+        42 & 2A & 00101010 & * \\
+        43 & 2B & 00101011 & + \\
+        44 & 2C & 00101100 & , \\
+        45 & 2D & 00101101 & - \\
+        46 & 2E & 00101110 & . \\
+        47 & 2F & 00101111 & / \\
+        48 & 30 & 00110000 & 0 \\
+        49 & 31 & 00110001 & 1 \\
+        50 & 32 & 00110010 & 2 \\
+        51 & 33 & 00110011 & 3 \\
+        52 & 34 & 00110100 & 4 \\
+        53 & 35 & 00110101 & 5 \\
+        54 & 36 & 00110110 & 6 \\
+        55 & 37 & 00110111 & 7 \\
+        56 & 38 & 00111000 & 8 \\
+        57 & 39 & 00111001 & 9 \\
+        58 & 3A & 00111010 & : \\
+        59 & 3B & 00111011 & ; \\
+        60 & 3C & 00111100 & < \\
+        61 & 3D & 00111101 & = \\
+        62 & 3E & 00111110 & > \\
+        63 & 3F & 00111111 & ? \\
+        \end{tabular}
+    \begin{tabular}{cccc}
+            \toprule
+            Dezimal & Hexadezimal & Binär & Zeichen \\
+            \midrule
+        
+        64 & 40 & 01000000 & @ \\
+        65 & 41 & 01000001 & A \\
+        66 & 42 & 01000010 & B \\
+        67 & 43 & 01000011 & C \\
+        68 & 44 & 01000100 & D \\
+        69 & 45 & 01000101 & E \\
+        70 & 46 & 01000110 & F \\
+        71 & 47 & 01000111 & G \\
+        72 & 48 & 01001000 & H \\
+        73 & 49 & 01001001 & I \\
+        74 & 4A & 01001010 & J \\
+        75 & 4B & 01001011 & K \\
+        76 & 4C & 01001100 & L \\
+        77 & 4D & 01001101 & M \\
+        78 & 4E & 01001110 & N \\
+        79 & 4F & 01001111 & O \\
+        80 & 50 & 01010000 & P \\
+        81 & 51 & 01010001 & Q \\
+        82 & 52 & 01010010 & R \\
+        83 & 53 & 01010011 & S \\
+        84 & 54 & 01010100 & T \\
+        85 & 55 & 01010101 & U \\
+        86 & 56 & 01010110 & V \\
+        87 & 57 & 01010111 & W \\
+        88 & 58 & 01011000 & X \\
+        89 & 59 & 01011001 & Y \\
+        90 & 5A & 01011010 & Z \\
+        91 & 5B & 01011011 & [ \\
+        92 & 5C & 01011100 & \textbackslash \\
+        93 & 5D & 01011101 & ] \\
+        94 & 5E & 01011110 & \^{} \\
+        95 & 5F & 01011111 & \_ \\
+        \bottomrule
+        \end{tabular}
+    \begin{tabular}{cccc}
+            \toprule
+            Dezimal & Hexadezimal & Binär & Zeichen \\
+            \midrule
+        96 & 60 & 01100000 & ` \\
+        97 & 61 & 01100001 & a \\
+        98 & 62 & 01100010 & b \\
+        99 & 63 & 01100011 & c \\
+        100 & 64 & 01100100 & d \\
+        101 & 65 & 01100101 & e \\
+        102 & 66 & 01100110 & f \\
+        103 & 67 & 01100111 & g \\
+        104 & 68 & 01101000 & h \\
+        105 & 69 & 01101001 & i \\
+        106 & 6A & 01101010 & j \\
+        107 & 6B & 01101011 & k \\
+        108 & 6C & 01101100 & l \\
+        109 & 6D & 01101101 & m \\
+        110 & 6E & 01101110 & n \\
+        111 & 6F & 01101111 & o \\
+        112 & 70 & 01110000 & p \\
+        113 & 71 & 01110001 & q \\
+        114 & 72 & 01110010 & r \\
+        115 & 73 & 01110011 & s \\
+        116 & 74 & 01110100 & t \\
+        117 & 75 & 01110101 & u \\
+        118 & 76 & 01110110 & v \\
+        119 & 77 & 01110111 & w \\
+        120 & 78 & 01111000 & x \\
+        121 & 79 & 01111001 & y \\
+        122 & 7A & 01111010 & z \\
+        123 & 7B & 01111011 & \{ \\
+        124 & 7C & 01111100 & | \\
+        125 & 7D & 01111101 & \} \\
+        126 & 7E & 01111110 & \textasciitilde \\
+        127 & 7F & 01111111 & DEL \\
+        \bottomrule
+    \end{tabular}
+    \caption{ASCII-Zeichen}
+    \label{table:ascii}
+\end{table}
+
+\begin{myexercise}
+Im Computer ist die folgende Bit-Folge gespeichert:
+
+\[01101000\; 01100101\; 01101100\; 01101100\; 01101111\]
+
+Nutzen Sie \cref{table:ascii} oder die \href{https://moodle.ksimlee.ch/pluginfile.php/55979/mod_resource/content/1/ASCII_table.pdf}{\gls{ASCII}-Tabelle auf Moodle}, um die Bit-Folge in Zeichen zu übersetzen. Welches Wort wird damit codiert?\\
+
+\textbf{Tipp}: Nutzen Sie die Suchfunktion (\keys{\ctrl + F}, oder \keys{\cmd + F}) um in der ASCII-Tabelle nach den Bitfolgen zu suchen.
+\begin{myanswer}
+hello
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+Schreiben Sie Ihren Namen in der \gls{ASCII}-Kodierung.
+\end{myexercise}
+
 \subsection{Kodierung von Bildern}
+
+Auch Bilder werden im Computer durch Nullen und Einsen repräsentiert, üblicherweise indem die einzelnen Bildpunkte (= Pixel) in eine bestimmte Ordnung gebracht werden (meist Durchzählen von links nach rechts, dann von oben nach unten), und für jedes Pixel wird dann einfach ein Farbwert gespeichert – also eine (Binär-)Zahl die angibt, welche Farbe dieses Pixel hat. 
+
+Wenn es sich um ein Schwarz-Weiss-Bild handelt ist dies relativ einfach, wie \cref{table:bw-img} zeigt.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lllll}
+1 & 0 & 0 & 0 & 1 \\
+0 & 1 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1
+\end{tabular}
+\caption{Beispiel eines Schwarz-Weiss-Bilds}
+\label{table:bw-img}
+\end{table}
+
+\begin{myexercise}
+Um was für ein Bild handelt es sich bei \cref{table:bw-img}?
+\begin{myanswer}
+Um ein Kreuz.
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+Wie viele Bit Speicherplatz benötigt das Bild?
+\begin{myanswer}
+25 (=$5\cdot 5$).
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+Angenommen, für jeden Pixel stünden nicht nur Schwarz und Weiss, sondern insgesamt 8 Graustufen zur Verfügung. Wie viel Speicherplatz (in Bits) wäre dann nötig, um das Bild zu speichern?
+\begin{myanswer}
+75, da 3 Bits ausreichen, um 8 verschiedene Stufen abzubilden (von 0 bis 7, $7_{10}=111_2$). Daher haben wir und 3 Bits * 25 Pixel = 75 Bits.
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+\gls{GIF}-Bilder im Internet können in der Regel 256 Farben unterscheiden. Wie viele Bits pro Pixel sind dafür nötig?
+\begin{myanswer}
+8 (s. Lösung auf \cref{ex:byte-max}).
+\end{myanswer}
+\end{myexercise}
+
+\subsection{Kodierung von Farben}
 \begin{mycaution}
 Section under construction
 \end{mycaution}
 ... % TODO fill
+
 \subsection{Kodierung von weiteren Dateiformaten}
 \begin{mycaution}
 Section under construction
