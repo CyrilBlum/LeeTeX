@@ -121,3 +121,36 @@ fill=green!30
     \draw[-latex] (90:\ri-0.3) arc (90:{90-\rotate*360/26}:\ri-0.3)node[pos=0.5,anchor=90-\rotate*180/26]{$\rotate$};
   \end{tikzpicture}
 }
+
+% command for annotating multiple lines in a code via curly braces
+% arg1: xshift (0em for no shift)
+% arg2: coord1 from which to draw brace
+% arg3: coord2 to which to draw brace
+% arg4: annotation text
+% arg5: curly brace aspect ratio (0.5 for "normal" braces)
+\newcommand*{\drawBrace}[5]{%
+	
+	% fit rectangle
+    \node[fill=none, draw=none, fit={(#2) (#3)}, inner sep=0pt] (rectg) {};%
+    
+    % curly brace
+    \draw [decoration={brace,amplitude=0.3em,aspect=#5},decorate,very thick,red]%
+      ([xshift=#1]rectg.north east) --%
+      coordinate[right=1em, midway] (#2#3)
+      ([xshift=#1]rectg.south east);%
+      
+   	\coordinate (#2#3-coord-temp) at ($(#2.north)!#5!(#3.south)$);
+   	%\coordinate (#2#3-coord-temp) at ($(#2)$);
+   	\coordinate (#2#3-coord) at ($(#2#3-coord-temp)+(#1,0)+(.8em,0)$);
+   	%\node [circle,draw] (c) at (#2#3-coord) [minimum size=4pt] {};
+    
+    % comment
+    \node[right=3em of #2#3-coord] (#2#3-comment) {#4};
+    
+    % arrow pointing from comment to brace
+    \draw (#2#3-comment.west) edge (#2#3-coord);
+}%
+
+\renewcommand{\tikzmark}[2][]{%
+  \tikz[remember picture,overlay,baseline=-.5ex] \node[#1] (#2) {};%
+}
