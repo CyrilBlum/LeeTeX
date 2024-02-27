@@ -606,13 +606,152 @@ Angenommen, für jeden Pixel stünden nicht nur Schwarz und Weiss, sondern insge
 \end{myexercise}
 
 \subsection{Kodierung von Farben}
-\begin{mycaution}
-Section under construction
-\end{mycaution}
-... % TODO fill
+Computerbildschirme bestehen aus winzigen Lampen (typischerweise in \gls{LED}-Technologie), die entweder rot, grün oder blau leuchten können. Falls Sie zu Hause einen alten Bildschirm haben, können Sie den gerne von nahe betrachten und sollten die einzelnen \glspl{LED} erkennen können (s. \cref{fig:pixels}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\linewidth]{GrundlagenInfo/DataScience/01_TheoretischeInformatik/Figures/pixels}
+\caption{\gls{LED}-Leuchtmittel in einem Computer-Bildschirm}
+\label{fig:pixels}
+\end{figure}
+
+
+Durch die Mischung der jeweiligen Leucht-Intensitäten kann eine Vielzahl möglicher Farben dargestellt werden (s. \cref{fig:rgb-farbmischung}).
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.49\textwidth}
+\includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/01_TheoretischeInformatik/Figures/rgb-farbmischung-1}
+\caption{Lichtkegel machen dasselbe wie ein Monitor}
+\label{fig:rgb-farbmischung-1}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+\includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/01_TheoretischeInformatik/Figures/rgb-farbmischung-2}
+\caption{Mögliche Farbmischungen}
+\label{fig:rgb-farbmischung-2}
+\end{subfigure}
+\caption{Prinzip der additiven Farbmischung in einem Computer-Monitor}
+\label{fig:rgb-farbmischung}
+\end{figure}
+
+Wie weiss nun er Bildschirm, welche Pixels wie hell leuchten sollen? Auch hier gilt: Da Computer nur mit Nullen und Einsen arbeiten können, wird jedes Pixel mit einer Zahl angesteuert, die die Helligkeit in \% bezeichnet. Moderne Bildschirme können eine Vielzahl von Farben abbilden.
+
+\begin{myexample}
+Da jedes Farb-Pixel eines Bildschirms typischerweise in 256 Helligkeitsstufen leuchten kann, braucht es 8 bit (=ein Byte) pro Farbe, um die Helligkeitsstufe zu kodieren, da $2^8=256$. Da pro ``gemischte'' Farbe 3 Pixel leuchten, braucht es also $3\cdot 8$ bits, d.h. 24 bits, um eine Farbe zu kodieren. Daraus ergibt sich, dass ein Monitor auf jedem Pixel $2^{24}$ = ca. 16 Millionen Farben darstellen kann.
+\end{myexample}
+
+\begin{myexample}
+Da die Darstellung einer Farbe im Binärsystem 24 Stellen braucht, braucht es etwas Zeit, um diese Darstellung zu lesen. Stattdessen wird häufig die hexadezimale Schreibweise verwendet:
+
+\red{11111111}\green{00000000}\blue{00000000} = \#\red{FF}\green{00}\blue{00} = \red{255}\green{0}\blue{0} = reines Rot
+
+\red{10000000}\green{10000000}\blue{10000000} = \#\red{80}\green{80}\blue{80} = \red{128}\green{128}\blue{128} = grau
+
+Mit dem Hashtag vor der
+\end{myexample}
+
+\begin{myexercise}
+Ordnen Sie die folgenden hexadezimalen Farbkodierungen den Farben zu:
+
+\begin{minipage}[c]{.2\textwidth}
+\begin{itemize}
+\item \#FF0000
+\item \#00FF00
+\item \#0000FF
+\item \#000000
+\item \#FFFFFF
+\end{itemize}
+\end{minipage}
+\begin{minipage}[c]{.2\textwidth}
+\begin{itemize}
+\item Schwarz
+\item Grün
+\item Blau
+\item Rot
+\item Weiss
+\end{itemize}
+\end{minipage}
+\end{myexercise}
+
+\begin{mychallenge}
+Erraten Sie weitere Farben unter \href{https://oinf.ch/interactive/farben-raten/}{diesem Link}.
+\end{mychallenge}
+Jedes Pixel besteht also aus 3 Farben, die jeweils mit einem Byte kodiert werden. Die Anzahl Bits pro Pixel bestimmt die \tib{Farbtiefe} eines Bilds (s. \cref{fig:farbtiefe}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{GrundlagenInfo/DataScience/01_TheoretischeInformatik/Figures/colordepth}
+\caption{Farbtiefe in einem Bild}
+\label{fig:farbtiefe}
+\end{figure}
+
+Je geringer die Farbtiefe, desto weniger feine können Farben oder Grautöne abgestuft werden (s. \cref{fig:colordepth-examples}).
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.49\textwidth}
+\includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/01_TheoretischeInformatik/Figures/colordepth-bar}
+\caption{Farbtiefe: Skala}
+\label{fig:colordepth-bar}
+\end{subfigure}
+\begin{subfigure}{.49\textwidth}
+\includegraphics[width=\textwidth]{GrundlagenInfo/DataScience/01_TheoretischeInformatik/Figures/colordepth-cat}
+\caption{Farbtiefen bei Schwarz-Weiss-Bildern}
+\label{fig:colordepth-cat}
+\end{subfigure}
+\caption{Farbtiefe: Beispiele}
+\label{fig:colordepth-examples}
+\end{figure}
+
+Gewisse Bildformate sparen durch Indexierung und Kompression Speicherplatz. Falls beispielsweise ein grosser Teil des Bilds aus blauem Himmel besteht, muss die Farbe nicht für jedes einzelne Pixel abgespeichert werden. Mit dem Thema Kompression vertiefen wir uns in einem späteren Teil.
+
+\begin{myexercise}
+Wie viel Speicherplatz braucht ein $500\cdot500$ Pixel grosses Bild, wenn nur 48 Farben unterschieden werden sollen?
+\begin{myanswer}
+Jede Farbe besteht aus roten, grünen und blauen Anteilen, daher stehen uns jeweils 48/3 = 16 Stufen pro Farbe zur Verfügung. Da 16=$2^4$ ist, brauchen wir 12 bits pro Pixel. Wir benötigen also $500\cdot500\cdot12=3'000'000$ bits.
+\end{myanswer}
+\end{myexercise}
 
 \subsection{Kodierung von weiteren Dateiformaten}
-\begin{mycaution}
-Section under construction
-\end{mycaution}
-... % TODO fill
+Wir wissen nun, das Computer nur mit Nulles und Einsen ``arbeiten''. Woher wissen wir aber, ob eine Folge aus Nullen und Einsen ein Bild, eine Zahl, ein Buchstabe oder etwas anderes repräsentiert? Hier kommen Dateiformate ins Spiel (s. \cref{table:formats-codes}).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|p{11cm}}
+\textbf{In der Datei} & \textbf{Bedeutung (z.B.)}                                                                 \\\midrule
+\texttt{dateiname.\textbf{txt}}         & die Zeichen: $<|...$                                                                              \\
+\texttt{dateiname.\textbf{doc}}         & Teil des Befehls: "Einzug links um 1,75cm"                                                    \\
+\texttt{dateiname.\textbf{xls}}         & die Zahl 9662249 in einer Zelle                                                               \\
+\texttt{dateiname.\textbf{gif}}         & 3 Bildpunkte: blau hellblau weinrot (\texttt{.gif} kennt nur 256 Farben $\rightarrow$ 1 Byte pro Pixel) \\
+\texttt{dateiname.\textbf{bmp}}         & 1 Bildpunkt: rötlich-braun (16,7 Mio. Farben $\rightarrow$ 3 Byte pro Pixel)                  
+\end{tabular}
+\caption{Dateiformate und Kodierungen: Bedeutung einer Bitsequenz (z.B. \texttt{10010011   01101111   00101001
+})}
+\label{table:formats-codes}
+\end{table}
+
+\begin{myexercise}
+Um zu sehen, dass all Ihre Dateien tatsächlich nur aus Nullen oder Einsen bestehen, können Sie sich \href{https://moodle.ksimlee.ch/pluginfile.php/56580/mod_lesson/page_contents/2836/VideoXxdDemo.mov}{dieses Video} anschauen.
+\end{myexercise}
+
+
+\subsection{Speicherplatz und Speicherbedarf}
+Wir haben bereits gelernt, dass ein Byte acht Bits entspricht. Heutzutage rechnen wir jedoch mit höheren Grössenordnungen (s. \cref{table:daten-groessenordnungen}).
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{@{}l|rr|l@{}}
+    \toprule
+    \textbf{Masseinheit} & \multicolumn{2}{l|}{\textbf{Dezimalsystem}} & Grössenordnung                                   \\ \midrule
+    KB (Kilobyte)        & $10^3$ B(yte)                               & 1’000 B             & eine Text-Datei            \\
+    MB (Megabyte)        & $10^6$ B                                    & 1’000’000 B         & eine Musik-Datei           \\
+    GB (Gigabyte)        & $10^9$ B                                    & 1'000'000'000 B     & eine Video-Datei           \\
+    TB (Terabyte)        & $10^{12}$ B                                 & 1'000'000'000'000 B & kleiner Firmen-Server      \\
+    PB (Petabyte)        & $10^{15}$ B                                 & ...                 & Facebook-Server            \\
+    EB (Exabyte)         & $10^{18}$ B                                 & ...                 & alle CERN-Daten            \\
+    ZB (Zettabyte)       & $10^{21}$ B                                 & ...                 & alle Daten ($\sim$ 100 ZB) \\
+    YB (Yottabyte)       & $10^{24}$ B                                 & ...                 & $\sim$ 2030?               \\ \bottomrule
+  \end{tabular}
+  \caption{Gängige Daten-Grössenordnungen in der Informatik (ein \textbf{B}yte = 8 \textbf{b}it)}
+  \label{table:daten-groessenordnungen}
+\end{table}
