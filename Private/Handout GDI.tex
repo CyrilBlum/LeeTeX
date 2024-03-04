@@ -1,0 +1,133 @@
+\newcommand{\drawCube}[3]{
+% Define cube coordinates
+\coordinate (A#1) at (#2,    0,     0);
+\coordinate (B#1) at ({#2+1},0,     0);
+\coordinate (C#1) at ({#2+1},1,0);
+\coordinate (D#1) at (#2,    1,0);
+\coordinate (E#1) at (#2,     0,1);
+\coordinate (F#1) at ({#2+1}, 0,1);
+\coordinate (G#1) at ({#2+1},1,1);
+\coordinate (H#1) at (#2,    1,1);
+
+
+% Draw cube
+\draw[thick] (A#1) -- (B#1) -- (C#1) -- (D#1) -- cycle;
+\draw[thick] (E#1) -- (F#1) -- (G#1) -- (H#1) -- cycle;
+\draw[thick] (A#1) -- (E#1);
+\draw[thick] (B#1) -- (F#1);
+\draw[thick] (C#1) -- (G#1);
+\draw[thick] (D#1) -- (H#1);
+% define lower left corner of doors
+\foreach \x in {1,...,#3} {
+\pgfmathsetmacro\emptyspace{(1-#3*0.2)/(#3+1)*\x+#2}
+\pgfmathsetmacro\doorsspace{0.2*(\x-1)}
+\pgfmathsetmacro\llCord{\emptyspace+\doorsspace}
+% lower door coordinate
+\coordinate (llD\x#1) at (\llCord,0,1);
+% Draw doors
+\fill[blue!50, rounded corners] (llD\x#1) -- ++(0,0.5,0) -- ++(0.2,0,0)node[pos=0.5, below](in#1\x){\textcolor{blue}{\tiny\texttt{x\x}\normalsize}} -- ++(0,-0.5,0);
+}
+
+% coordinate for result door
+\coordinate (llDOut#1) at ({#2+1},0,0.2);
+\fill[green!50, rounded corners] (llDOut#1) -- ++(0,0.5,0) -- ++(0,0,0.6)node[pos=0.8,rotate=45, below, align=center](out#1){\textcolor{black}{\tiny\texttt{out#1}\normalsize}} -- ++(0,-0.5,0);
+
+% Draw a 2D rectangle around the cube
+\node[fit=(E#1) (C#1), inner sep=4pt, red, dotted, draw, line width=1pt,rounded corners](dottedRect#1) {};
+% annotate the two-d rect
+\node[above=5pt of dottedRect#1.north west, anchor=west, align=left]{\textcolor{red}{\tiny\texttt{def a#1(\textcolor{blue}{\foreach\x in {1,...,#3}{x\x, }...})}\normalsize}};
+}
+
+\newtcolorbox{myExBox}[1][]{
+  enhanced jigsaw,
+  lines before break=9,
+  breakable,
+  parbox=false,
+  attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+  colback=ForestGreen!10,
+  colframe=ForestGreen,
+  colbacktitle=ForestGreen,
+  #1}
+
+\newtcolorbox{myBox}[1][]{
+  enhanced jigsaw,
+  parbox=false,
+  lines before break=9,
+  breakable,
+  attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+  colback=RoyalBlue!10,
+  colframe=RoyalBlue,
+  colbacktitle=RoyalBlue,
+  #1}
+  
+\section*{Handout zum Thema ``Anregung von Lernprozessen im Unterricht''}
+
+\begin{myExBox}[title=Beispiel aus der Praxis]
+Frustriert trat ich ins Zimmer der Prorektorin. Es ging um die Nachbesprechung meiner Unterrichtssequenz, welche sie soeben hospitiert hatte. Obschon ich mir unglaublich viel Mühe gegeben hatte, kam der Inhalt, welcher ich den SuS vermitteln wollte, leider überhaupt nicht an. Meine Prorektorin kam meine Lektion hospitieren an einem Donnerstagnachmittag, in der zweiten Lektion einer Doppellektion, gerade nachdem die SuS eine Prüfung hatten. Leider waren die SuS, die am Donnerstag einen 10-Lektionen-Tag hatten, fixfertig, und konnten die Inhalte kaum aufnehmen.
+
+Die etwas zu schwer geratene belastete wohl nicht nur die SuS, sondern auch mich, da ich sie ja für Ihre Lern-Aufwände gerecht behandeln wollte. Nun kam jedoch auch noch hinzu, dass die Prorektorin im Raum sass, was dazu führte, dass ich in eine Art ``Notmodus'' schaltete und meine umfangreichen Vorbereitungen demonstrieren und schnell zum Inhalt der Lektion kommen wollte.
+
+Für die Vorbereitung der Inhalte hatte ich mir unglaublich viel Mühe gegeben: Mein Referat zum Thema Funktionen beinhaltete einige Grafiken, für deren Einarbeitung ich bestimmt mehrere Tage gebraucht hatte. Schon nur für die Grafiken hatte ich mehrere Nachmittage investiert, etwa folgende Grafik, die Funktionen mit Abteilungen in einer Fabrik vergleicht:
+
+
+\begin{figure}[H]
+% Use the \drawCube macro to draw various cubes
+\centering
+\begin{tikzpicture}[scale=2]
+\drawCube{1}{0}{2}
+% feed input values into a1
+\node[fill=blue!50, rounded corners] (input1) at (0.3,0,2){3};
+\node[fill=blue!50, rounded corners] (input2) at (0.7,0,2){12};
+\draw[thick,->] (input1) -- (in11);
+\draw[thick,->] (input2) -- (in12);
+\node[fill=green!50, rounded corners](outVal1) at (1.25,-0.6,0.5){36};
+\draw[thick,->] (out1) -- (outVal1);
+\drawCube{2}{1.75}{3}
+\drawCube{3}{3.5}{2}
+\draw[thick,->,rounded corners] (out1) -- ++(0,-1.5,0) -- ++(1.05,0,0)node[below]{\lstinline[language=Python,style=TigerJython,basicstyle=\ttfamily\tiny]{return out1}} -- ++(1.55,0,0) -- (in31);
+\end{tikzpicture}
+\caption{Selbst erstellte Abbildung, die das Konzept von Funktionen in Python veranschaulichen soll(te)}
+\end{figure}
+In der Hitze des Gefechts versuchte ich zwar, einige Beispiele und Analogien von Funktionen im echten Leben aufzugeben (Modularität in einer Fabrik, Kochrezepte etc.), allerdings waren es wohl etwas viele Beispiele, und unter Umständen solche, die etwas weit weg vom Leben der SuS schienen. Leider waren nicht nur die SuS wohl nicht mehr wirklich aufnamefähig, sondern auch meine Vorgehensweise, trotz persönlichem Engagement, nicht zielführend. So kam es dazu, dass sich während der Lektion herausstellte, dass ein grosser Teil der SuS leider meinen Erklärungen nicht gefolgt hatte und persönlich nachfragen musste. Dies fiel auch der Prorektorin auf und führte meinerseits zu grosser Frustration, insbesondere angesichts meiner investierten zeitlichen Ressourcen.
+
+\begin{myExBox}[title=Diskussion]
+Zentrale theoretische Aspekte, auf die ich eingehen möchte:
+\begin{enumerate}
+\item Was hätte ich tun können, um den Unterrichtseinstig besser zu gestalten? \cite{kaiser}
+\item ...
+\item ...
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage
+
+\thispagestyle{empty}
+\newgeometry{margin=1cm}
+\footnotesize
+
+\begin{landscape}
+\begin{center}
+\section*{Literatur: Übersicht \& Zusammenfassung}
+\end{center}
+\begin{multicols*}{3}
+
+\begin{myBox}[title=Literatur: ``Unterrichtsplanung und Methoden'' \cite{kaiser}]
+Hauptinhalt dieses Texts ist die gestaltung sinnvoller \tib{Unterrichtseinstiege}.
+\end{myBox}
+
+\begin{myBox}[title=Literatur: ``Lehr-Lernprozesse in der Schule: Studium'' \cite{maier}]
+...\cite{kaiser}
+\end{myBox}
+
+\begin{myBox}[title=Literatur: ``Unterrichtsplanung und Methoden'' \cite{gas}]
+...\cite{kaiser}
+\end{myBox}
+
+\begin{myBox}[title=Literatur: ``Gestaltung von Unterricht'' \cite{tulo}]
+...\cite{kaiser}
+\end{myBox}
+\end{multicols*}
+\end{landscape}
+\newpage
+\restoregeometry
+...
