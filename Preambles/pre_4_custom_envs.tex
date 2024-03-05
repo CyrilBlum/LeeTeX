@@ -1,14 +1,5 @@
 \iftoggle{book}{%
-\newtheoremstyle{note}% 〈name〉
-{3pt}%  <Space above>
-{6pt}%  <Space below>
-{\normalfont}%  <Body font〉
-{}% <Indent amount>
-{\itshape}% <Theorem head font〉
-{:}% Punctuation after theorem head〉
-{.5em}% Space after theorem head 
-{}% <Theorem head spec (can be left empty, meaning ‘normal’)〉
-\theoremstyle{note}
+  \def\mynumber{\thechapter}
   \iftoggle{german}{%
     \newtheorem{myexample}{Beispiel}[chapter]
     \newtheorem{myremark}{Bemerkung}[chapter]
@@ -19,6 +10,7 @@
     \newtheorem{mydefinition}{Definition}[chapter]
   }%
 } {%
+  \def\mynumber{\thesection}
    \iftoggle{german}{%
     \newtheorem{myexample}{Beispiel}[section]
     \newtheorem{myremark}{Bemerkung}[section]
@@ -29,6 +21,17 @@
     \newtheorem{mydefinition}{Definition}[section]
   }%
 }%
+
+\newtheoremstyle{note}% 〈name〉
+  {3pt}%  <Space above>
+  {6pt}%  <Space below>
+  {\normalfont}%  <Body font〉
+  {}% <Indent amount>
+  {\itshape}% <Theorem head font〉
+  {:}% Punctuation after theorem head〉
+  {.5em}% Space after theorem head 
+  {}% <Theorem head spec (can be left empty, meaning ‘normal’)〉
+\theoremstyle{note}
 
 % tcolorbox template to be reused in various enviroments.
 \newtcolorbox{tcolorboxTemplate}[1][]{
@@ -63,7 +66,7 @@
 {%
   \refstepcounter{ExerciseCounter}
   \begin{tcolorboxTemplate}[
-    title=\faEdit{} Aufgabe~\thechapter.\theExerciseCounter~#1,
+    title=\faEdit{} Aufgabe~\mynumber.\theExerciseCounter~#1,
     colback=RoyalBlue!10,
     colframe=RoyalBlue,
     colbacktitle=RoyalBlue]
@@ -84,7 +87,7 @@
     colframe=ForestGreen,
     colbacktitle=ForestGreen,
     opacityback=1,
-    title=\faCheckSquareO{} Lösungsvorschlag zu Aufgabe \thechapter.\theExerciseCounter]
+    title=\faCheckSquareO{} Lösungsvorschlag zu Aufgabe \mynumber.\theExerciseCounter]
 }%%
 {%
   \end{tcolorboxTemplate}
@@ -98,7 +101,7 @@
 {%
   \refstepcounter{SubmissionCounter}
   \begin{tcolorboxTemplate}[
-    title=\faArrowUp{} Aufgabe (Abgabe)~\thechapter.\theSubmissionCounter~#1,
+    title=\faArrowUp{} Aufgabe (Abgabe)~\mynumber.\theSubmissionCounter~#1,
     colback=Purple!10,
     colframe=Purple,
     colbacktitle=Purple]
@@ -114,7 +117,7 @@
 {%
   \refstepcounter{ChallengeCounter}
   \begin{tcolorboxTemplate}[
-    title=\faTrophy{} Aufgabe (Challenge)~\thechapter.\theChallengeCounter~#1,
+    title=\faTrophy{} Aufgabe (Challenge)~\mynumber.\theChallengeCounter~#1,
     colback=Gold!10,
     colframe=Gold!50!black,
     colbacktitle=Gold!50!black]
@@ -132,6 +135,9 @@
     \Crefname{SubmissionCounter}{Abgabe}{Abgaben}
     \crefname{ChallengeCounter}{Challenge}{Challenges}
     \Crefname{ChallengeCounter}{Challenge}{Challenges}
+    \crefname{myexample}{Beispiel}{Beispiele}
+    \crefname{myremark}{Bemerkung}{Bemerkungen}
+    \crefname{mydefinition}{definition}{Definitionen}
   } {%
     \crefname{ExerciseCounter}{exercise}{exercise}
     \Crefname{ExerciseCounter}{Exercise}{Exercises}
@@ -139,5 +145,8 @@
     \Crefname{SubmissionCounter}{submission}{Submissions}
     \crefname{ChallengeCounter}{challenge}{challenges}
     \Crefname{ChallengeCounter}{Challenge}{Challenges}
+    \crefname{myexample}{example}{examples}
+    \crefname{myremark}{remark}{remarks}
+    \crefname{mydefinition}{definition}{definitions}
   }%
 }{}
