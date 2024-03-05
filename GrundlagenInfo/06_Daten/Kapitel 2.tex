@@ -88,7 +88,7 @@ Nebst dem Gleich-Zeichen (im obigen Beispiel) stehen folgende Filter-Operatoren 
     \texttt{<=}                                   & kleiner oder gleich ($\leq$)                \\
     \texttt{>}                                    & grösser als ($>$)                           \\
     \texttt{>=}                                   & grösser oder gleich ($\geq$)                \\
-    \lstinline[style=sql]|BETWEEN x AND y|        & ein Wert zwischen \texttt{x} und \texttt{y} \\
+    \lstinline[style=sql]|BETWEEN x AND y|        & ein Wert zwischen (inklusive) \texttt{x} und \texttt{y} \\
     \lstinline[style=sql]|IN (wert1, wert2, ...)| & einer von mehreren möglichen Werten         \\
     \lstinline[style=sql]|IS NULL|                & Wert existiert nicht                        \\
   \end{tabular}
@@ -97,7 +97,7 @@ Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lsti
 %TODO: braucht es eine Erklärung zu Klammern für die richtige Verknüpfung von mehreren Bedingungen?
 
 \begin{myexample}\label{myexample:between}
-Folgender Code gibt alle Mitglieder aus, die zwischen 172 und 174 cm gross sind.
+Folgender Code gibt alle Mitglieder aus, die zwischen 172 cm und 174 cm gross sind. Dabei gehören 172 cm und 174 cm selbst ebenfalls dazu (inklusive).
 
 \begin{lstlisting}[style=sql]
 SELECT name, centimeters, gender 
@@ -118,7 +118,7 @@ WHERE city IN ("Leipzig", "Berlin", "Hamburg")
 
 
 \begin{mycaution}
-  Wie Sie anhand von \cref{myexample:in} und \cref{myexample:between} sehen, spielt es in SQL eine Rolle, ob  wir Zahlen oder
+Wie Sie anhand der \cref{myexample:in,myexample:between} sehen, spielt es in SQL eine Rolle, ob  wir nach Zahlen oder nach
   Text filtern: Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B.
   \lstinline[style=sql]|"Berlin"| in \cref{myexample:in}). Bei Zahlen dürfen Sie keine Anführungszeichen schreiben (s. z.B. die Zahl
   \lstinline[style=sql]|172| in \cref{myexample:between}).
@@ -151,7 +151,7 @@ WHERE centimeters IS NULL
   \end{myanswer}
 \end{myexercise}
 \begin{myexercise}
-  Zeigen Sie den Namen, das Geburtsdatum sowie die Grösse aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
+  Zeigen Sie den Namen, das Geburtsdatum sowie die Grössen aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
       SELECT name, birthday, centimeters
@@ -218,7 +218,7 @@ FROM users
 Mit dem Befehl \lstinline[style=sql]|LIKE| können wir die Tabelle nach Zeilen filtern, welche in einer gewissen Spalte ein bestimmtes Wort enthalten.
 
 \begin{myexample}
-Mit folgendem Befehl erhalten wir alle Städte, die mit ``Be...'' beginnen:
+Mit folgendem Befehl erhalten wir alle Städte, die mit ``Be'' beginnen:
 
 \begin{lstlisting}[style=sql]
 SELECT DISTINCT city 
@@ -275,7 +275,7 @@ WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
 \end{myexercise}
 
 \begin{myexercise}
-  Finden Sie alle Berliner die \textit{Marc} heissen.
+  Finden Sie alle Berliner, die \textit{Marc} heissen.
   \begin{myanswer}
     \begin{lstlisting}[style=sql]
 SELECT name, city
@@ -358,9 +358,11 @@ ORDER BY username ASC
 \end{myexercise}
 
 \begin{mysubmission}
-Lösen Sie Aufgaben 1-11 unter folgendem Link:\\
-\url{https://sql-tutorial.de/home/uebungen.php?lektion=1}\\
-Geben Sie danach auf Moodle die Abgabe unter ``Übungen 1 (Einfache Selektion)'' ab.
+  \begin{itemize}
+    \item Lösen Sie Aufgaben 1--11 unter folgendem Link:\\
+\url{https://sql-tutorial.de/home/uebungen.php?lektion=1} (keine Abgabe notwendig / möglich)
+    \item Geben Sie danach auf Moodle die Abgabe unter ``Übungen 1 (Einfache Selektion)'' ab.
+  \end{itemize}
 \end{mysubmission}
 
 \subsection{Aggregatsfunktionen}
