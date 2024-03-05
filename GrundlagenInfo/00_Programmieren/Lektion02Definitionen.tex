@@ -1,0 +1,106 @@
+\begin{frame}
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+    \end{figure}
+    Informatik: Programmieren\\
+    Lektion 02 \emoji{nerd-face}: \textbf{Neue Befehle definieren}
+\end{frame}
+
+\begin{frame}[fragile]{Neue Befehle definieren}
+\begin{lstlisting}[style=TigerJython,escapechar=!]
+from gturtle import *
+makeTurtle() # Befehl
+
+# zeichne ein Quadrat
+repeat 4:             !\tikzmark{befehlStart}!
+    fd(100)  # Befehl  
+    rt(90)   # Befehl !\tikzmark{befehlEnde}!
+\end{lstlisting}
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+    \only<2->{\drawBrace{0em}{befehlStart}{befehlEnde}{Neuer Befehl?}{.5};}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{Neue Befehle definieren}
+\begin{lstlisting}[style=TigerJython,escapechar=!]
+from gturtle import *
+makeTurtle()
+
+def quadrat(): !\tikzmark{to}!   !\tikzmark{befehlStart}!
+    repeat 4:
+        fd(100)
+        rt(90)   !\tikzmark{befehlEnde}!
+
+quadrat() !\tikzmark{from1}!
+rt(45)
+quadrat() !\tikzmark{from2}!
+\end{lstlisting}
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+	\drawBrace{0em}{befehlStart}{befehlEnde}{Befehl wird definiert}{.5};
+\end{tikzpicture}
+\begin{itemize}
+\item Definition = \lstinline[style=TigerJython]|def| = Funktion
+\item Ähnlich einem Kochrezept
+\begin{itemize}
+\item Beschreibung der auzuführenden Schritte
+\item Wird erst ausgeführt, sobald aufgerufen! 
+\end{itemize}
+\only<2->{
+\begin{tikzpicture}[overlay,remember picture]
+\draw[red,-stealth] (from1.north) to[bend right] node[right] {Aufruf} (to);
+\draw[red,-stealth] (from2.north) to[bend right] node[right] {Aufruf} (to);
+\end{tikzpicture}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Neue Befehle definieren}
+\begin{columns}
+\begin{column}{.4\textwidth}
+\begin{lstlisting}[style=TigerJython,escapechar=!]
+from gturtle import *
+makeTurtle()
+hideTurtle()
+
+def !\only<1-2>{viereck()}\only<3->{\colorbox{CarnationPink}{viereck()}}!: !\tikzmark{to2ex}!
+    repeat 4:
+        fd(100)
+        rt(360/4)
+
+def !\only<1>{viereck\_blume()}\only<2->{\colorbox{CornflowerBlue}{viereck\_blume()}}!:!\tikzmark{to1ex}! 
+    repeat 10:
+        !\only<1-2>{viereck()}\only<3->{\colorbox{CarnationPink}{viereck()}}! !\tikzmark{from2ex}!
+        rt(360/10)
+
+!\only<1>{viereck\_blume()}\only<2->{\colorbox{CornflowerBlue}{viereck\_blume()}}! !\tikzmark{from1ex}!
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\only<2->{\draw[red,-stealth] (from1ex.north) to[bend right] node[right] {Aufruf} (to1ex);}
+\only<3->{\draw[red,-stealth] (from2ex.north) to[bend right] node[right] {Aufruf} (to2ex);}
+\end{tikzpicture}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\columnwidth]{GrundlagenInfo/00_Programmieren/Figures/viereck_blume}
+\end{figure}
+\begin{itemize}
+\item \textbf{Modularität}: Zerlegung des Programms in kleinere Stücke
+\item \textbf{Übersichtlicher}!
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag}
+\begin{itemize}
+\item \aufgabebox{Aufgaben 2.1 - 2.7}
+\item \abgabebox{Abgabe auf Moodle: 2.7}
+\item \aufgabebox{Aufgaben 2.8 - 2.18}
+\item \abgabebox{Abgabe auf Moodle: 2.10}
+\end{itemize}
+\end{frame}
