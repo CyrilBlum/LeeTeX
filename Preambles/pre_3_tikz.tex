@@ -146,7 +146,20 @@ fill=green!30
     \node[right=5em of #2#3-coord-comment-y](#2#3-comment) {#4};
     
     % arrow pointing from comment to brace
-    \draw (#2#3-comment.west) edge (#2#3-coord-arrow);
+    \draw[->, style={thick, >=stealth, red!70}] (#2#3-comment.west) to (#2#3-coord-arrow);
+}%
+
+% command for annotating a line in a code via an arrow
+% arg1: code mark (using tikzmark, "to")
+% arg2: comment mark (using tikzmark, "from")
+% arg3: annotation text
+% arg4: fill and arrow color
+\newcommand*{\drawArrow}[4]{%
+    % comment
+    \node[draw=#4, fill=#4](#2-comment) at(#2.east) {#3};
+    
+    % arrow pointing from comment to brace
+    \draw[->,style=#4] (#2-comment.west) -- (#1);
 }%
 
 \renewcommand{\tikzmark}[2][]{%
