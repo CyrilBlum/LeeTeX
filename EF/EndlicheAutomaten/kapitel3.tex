@@ -1,0 +1,382 @@
+\chapter{Algorithmische Probleme}
+
+Der Titel dieses Kapitels stellt uns vor ein kleines Dilemma. Wir möchten in diesem Kapitel bereits über \textit{algorithmische Probleme} sprechen, bevor wird den Begriff \textit{Algorithmus} in einem späteren Kapitel formal durch das Modell der Turingmaschine definieren werden. Aus diesem Grund werden wir anstelle von \textit{Algorithmus} den Begriff \textit{Programm} verwenden. Dabei setzen wir voraus, dass die Leserin / der Leser eine gewisse intuitive Vorstellung von Programmen hat (die Programmiersprache spielt dabei keine Rolle).\\
+
+\noindent
+Wenn wir Programme als Algorithmen anschauen, werden wir jedoch zusätzlich fordern, dass solch ein Programm für jede zulässige Eingabe seine Arbeit in endlicher Zeit beendet (also nicht unendlich lange läuft) und eine Ausgabe liefert. Insbesondere ist es einem Algorithmus nicht gestattet in einer Endlosschleife zu laufen. Wenn ein Programm nach endlicher Zeit seine Arbeit beendet, sagt man auch, dass das Programm \textit{hält}.\\
+
+\noindent
+Unter diesen Bedingungen realisiert ein Programm (Algorithmus) $A$ typischerweise eine Abbildung
+\begin{align*}
+    A:\, \Sigma_1^* \to \Sigma_2^*
+\end{align*}
+für Alphabete $\Sigma_1$ und $\Sigma_2$. Dies sagt aus, dass
+\begin{itemize}
+    \item sowohl die Eingaben als auch die Ausgaben für das Programm (Algorithmus) als Wörter kodiert sind und
+    \item $A$ für jede Eingabe eine eindeutige Ausgabe bestimmt.
+\end{itemize}
+Für jeden Algorithmus $A$ und jede Eingabe $x$ bezeichnen wir mit $A(x)$ die Ausgabe des Algorithmus $A$ für die Eingabe $x$ (das Resultat, welches der Algorithmus für die Eingabe $x$ berechnet).\\
+\clearpage
+\begin{deff}[Äquivalenz von Algorithmen]{deff:equivalence_algorithms}
+Man sagt, dass zwei Algorithmen (Programme) $A$ und $B$ \textbf{äquivalent} sind, falls beide über dem gleichen Eingabealphabet $\Sigma$ arbeiten und $A(x) = B(x)$ für alle $x\in\Sigma^*$ gilt.\\
+\gray{Zwei Algorithmen sind also genau dann äquivalent, wenn sie das gleiche Eingabealphabet haben und auf allen möglichen Eingaben die gleiche Ausgabe liefern. Dabei spielt es keine Rolle, wie die jeweiligen Algorithmen ihre Ausgaben berechnen.}
+\end{deff}
+Wir werden im Folgenden einige sehr bekannte und wichtige algorithmische Probleme kennenlernen.\\
+
+\clearpage
+\noindent
+\section{Das Entscheidungsproblem}
+Das \textit{Entscheidungsproblem} hat eine besonders simple Formulierung und wird typischerweise verwendet um die Theorie der Berechenbarkeit zu entwickeln.
+\begin{deff}[Entscheidungsproblem]{deff:Entscheidungsproblem}
+Das \textbf{Entscheidungsproblem} $(\Sigma,L)$ für ein gegebenes Alphabet $\Sigma$ und eine gegebene Sprache $L\subseteq \Sigma^*$ ist, für jedes $x\in\Sigma^*$ zu entscheiden, ob
+\begin{align*}
+    x\in L\quad \text{oder}\quad x\notin L.
+\end{align*}
+Ein Algorithmus $A$ \textbf{löst} das Entscheidungsproblem $(\Sigma,L)$, falls für \textbf{alle} $x\in\Sigma^*$ gilt:
+\[
+  A(x) = 
+  \begin{cases}
+    1, & \text{falls } x\in L \\
+    0, & \text{falls } x\notin L.
+  \end{cases}
+\]
+\gray{Das Entscheidungsproblem ist also ein geordnetes Paar $(\Sigma,L)$ eines Alphabets $\Sigma$ und einer Sprache $L$ (über $\Sigma$).}
+\end{deff}
+Man sagt auch, dass $A$ die Sprache $L$ \textbf{erkennt}.\\
+
+\noindent
+Wenn für eine Sprache $L$ ein Algorithmus existiert, der $L$ erkennt, dann nennt man die Sprache $L$ \textbf{rekursiv}.\\
+
+\noindent
+Wir verwenden eine Sprache $L\subseteq \Sigma^*$ häufig um gewisse Eigenschaften von Wörtern zu erzwingen. Die Wörter in der Sprache $L$ haben diese geforderte Eigenschaft und alle Wörter im mengen-theoretischen Komplement $L^{\tt C} = \Sigma^* - L$ haben diese Eigenschaft nicht.\\
+In dieser Betrachtungsweise kann man ein Entscheidungsproblem auch wie folgt darstellen:
+\begin{itemize}
+    \item \textbf{Eingabe}: $x\in\Sigma^*$.
+    \item \textbf{Ausgabe}: $A(x)\in\Sigma_{\text{bool}} = \menge{0,1}$, wobei gilt
+\end{itemize}
+    \[
+  A(x) = 
+  \begin{cases}
+    1, & \text{falls } x\in L\quad \text{(Ja, $x$ hat die Eigenschaft)},\\
+    0, & \text{falls } x\notin L\quad \text{(Nein, $x$ hat die Eigenschaft nicht)}.
+  \end{cases}
+\]
+
+
+\clearpage
+
+\noindent
+Wir werden nun einige Beispiele von Sprachen geben, welche gewisse (interessante) Eigenschaften fordern.
+\begin{example}{example:begin_with_one}
+Sei $\Sigma_1 = \menge{0,1} = \Sigma_{\text{bool}}$. Wir definieren $L_1 = \mengecm{x\in\Sigma_1^*}{x = 1v,\;\text{für ein}\; v\in\menge{0,1}^*}$.\\
+In der Sprache $L_1$ liegen alle binären Wörter (alle endlichen Folgen von Nullen und Einsen), die mit einer $1$ beginnen (die $1$ als Präfix haben).\\
+Seien beispielsweise $x_1 = 110011$, $x_2 = 1$ und $x_3 = 011110$. Dann gilt $x_1, x_2\in L_1$ aber $x_3\notin L_1$.\\
+Das zugehörige Entscheidungsproblem ist das geordnete Paar $(\Sigma_1,L_1)$.
+\end{example}
+
+\begin{example}{example:alternating}
+Sei $\Sigma_2 = \menge{\#,\alpha,\beta}$. Wir definieren $L_2 = \mengecm{x\in\Sigma_2^*}{x = (\alpha\#)^n,\;\text{für ein}\; n\in\mathbb{N}}$.\\
+In der Sprache $L_2$ liegen also alle Wörter der Form $(\alpha\#)^n$ für eine natürliche Zahl $n$. Das zugehörige Entscheidungsproblem lautet $(\Sigma_2,L_2)$.\\
+Das kürzeste Wort in $L_2$ ist $\lambda$, das zweit kürzeste ist $\alpha\#$ und das dritt kürzeste ist $\alpha\#\alpha\# = (\alpha\#)^2$.
+\end{example}
+
+\begin{example}{example:is_prime}
+Eines der bekanntesten Entscheidungsprobleme ist der \textit{Primzahltest}. Für eine natürliche Zahl $n$ möchte man entscheiden, ob $n$ eine Primzahl ist. Der Primzahltest entspricht dem Entscheidungsproblem
+\begin{align*}
+    \left(\Sigma_{\text{bool}},\mengecm{x\in(\Sigma_{\text{bool}})^*}{\text{Nummer}(x)\;\text{ist eine Primzahl}}\right).
+\end{align*}
+Häufig wird dieses wichtige Entscheidungsproblem wie folgt dargestellt:
+\begin{itemize}
+    \item \textbf{Eingabe}: $x\in(\Sigma_{\text{bool}})^*$.
+    \item \textbf{Ausgabe}:
+    \begin{itemize}
+        \item Ja, falls $\text{Nummer}(x)$ eine Primzahl ist.
+        \item Nein, sonst.
+    \end{itemize}
+\end{itemize}
+\end{example}
+\clearpage
+
+\begin{example}{example:check_program}
+Die \textit{GNU Compiler Collection}\footnote{\url{https://de.wikipedia.org/wiki/GNU_Compiler_Collection}} (GCC) ist (unter anderem) ein {\tt C++} Compiler. Ein {\tt C++} Compiler ist ein spezielles Computerprogramm, welches als Input ein in der Programmiersprache {\tt C++} geschriebenes Programm erhält, und dieses Programm in ein, für den Computer \quotes{verständliches} Programm, umwandelt.\\
+
+\noindent
+Eine Teilaufgabe des Compilers ist zu prüfen, ob ein gegebenes {\tt C++} Programm syntaktisch korrekt ist. Ein Programm ist syntaktisch korrekt, wenn es keine zwingenden Regeln seiner entsprechenden Programmiersprache verletzt. Ein typisches Beispiel eines syntaktischen Fehlers ist das Öffnen einer linken Klammer ``('', die aber nirgends im Programm durch eine rechte Klammer ``)'' geschlossen wird.\\
+\gray{Achtung: Syntaktische Korrektheit eines Programms $P$ garantiert lediglich, dass $P$ die zwingenden Regeln seiner Programmiersprache nicht verletzt. Es wird nicht garantiert, dass $P$ ein sinnvolles Programm ist.}\\
+
+\noindent
+Wir definieren $L_{\text{{\tt C++}}}$ als die Sprache aller syntaktisch korrekter {\tt C++} Programme:
+\begin{align*}
+    L_{\text{{\tt C++}}} = \mengecm{x\in(\Sigma_{\text{Tastatur}})^*}{x\;\text{ist ein syntaktisch korrektes Programm in {\tt C++} }}
+\end{align*}
+Das entsprechende Entscheidungsproblem lautet:
+\begin{itemize}
+    \item \textbf{Eingabe}: $x\in(\Sigma_{\text{Tastatur}})^*$.
+    \item \textbf{Ausgabe}:
+    \begin{itemize}
+        \item Ja, falls $x\in L_{\text{{\tt C++}}}$.
+        \item Nein, sonst.
+    \end{itemize}
+\end{itemize}
+\gray{Man beachte, dass jedes Computerprogramm als ein Wort über dem Alphabet der Computertastatur aufgefasst werden kann - schliesslich ist jedes Programm nichts weiter als eine endliche Folge von Symbolen der Tastatur.}
+\end{example}
+
+\clearpage
+\section{Graphen}
+Einige sehr interessante Probleme und Konzepte lassen sich besonders gut durch \textit{Graphen} modellieren.\\
+Um ein Gefühl für Graphen zu erhalten, betrachten wir Zugverbindungen zwischen den drei Städten Zürich (Z), Effretikon (E) und Winterthur (W).\\
+Jede der drei Städte ist jeweils mit den anderen beiden verbunden. Diese Situation lässt sich mit einem Graphen wie in Abbildung \ref{fig:cities} darstellen.
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+  \tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+  \node[state] (A)                    {Z};
+  \node[state] (B) [above right of=A] {E};
+  \node[state] (C) [below right of=B] {W};
+
+  \path (A) edge node {} (B)
+        (B) edge node {} (C)
+        (A) edge node {} (C);
+\end{tikzpicture}
+\caption{Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
+\label{fig:cities}
+\end{figure}
+
+\noindent
+Die grünen Kreise (die Städte) bezeichnet man als \textit{Knoten}, die schwarzen Verbindungslinien zwischen den Knoten nennt man \textit{Kanten}. \textbf{Einen Graphen, in dem jeder Knoten mit jedem anderen Knoten verbunden ist, bezeichnet man als \textit{vollständigen Graphen}} (der Graph in Abbildung \ref{fig:cities} ist ein vollständiger Graph).\\
+\begin{deff}[Graph]{deff:Graph}
+Ein Graph $G$ ist ein geordnetes Paar $(V,E)$, wobei $V$ eine (endliche) nichtleere Menge von Knoten (englisch: \textit{vertices}) ist. Die Menge $E$ ist eine Teilmenge 
+der zweielementigen Teilmengen von $V$, also $E\subseteq \mengecm{\menge{x,y}}{x,y\in V, x\neq y}$. Die Elemente der Menge $E$ bezeichnet man als Kanten (englisch: \textit{edges}).\\
+Falls die Knotenmenge $V$ eine endliche Menge ist, nennt man den Graphen $G = (V,E)$ einen endlichen Graphen.\\
+\gray{Eine Kante in einem Graphen verbindet zwei verschiedene Knoten. Die Kantenmenge $E$ eines Graphen ist deshalb irgend eine Teilmenge (Auswahl) aller möglichen zweielementigen Teilmengen $\menge{x,y}$ der Knotenmenge $V$. Dabei muss aber $x \neq y$ gelten, da wir die Verbindung eines Knoten zu sich selbst nicht als Kante anschauen möchten.}
+\end{deff}
+Für $V = \menge{a,b,c,d}$ und $E = \menge{\menge{a,b},\menge{a,c},\menge{b,c},\menge{c,d}}$ würde der Zugehörige Graph $G = (V,E)$ beispielsweise so aussehen:
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+  \tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+  \node[state] (A)              {a};
+  \node[state] (B) [right of=A] {b};
+  \node[state] (C) [below of=A] {c};
+  \node[state] (D) [below of=B] {d};
+
+  \path (A) edge node {} (B)
+        (A) edge node {} (C)
+        (B) edge node {} (C)
+        (C) edge node {} (D);
+\end{tikzpicture}
+\end{figure}
+\noindent
+Falls wir in unserem Beispiel mit den Zugverbindungen auch die Dauer der Verbindungen darstellen, dann könnten wir das wie in Abbildung \ref{fig:cities2} tun. Man sagt dann, dass die Kanten \textit{gewichtet} sind. In diesem Beispiel sind die Gewichte die Fahrzeiten. Ein Graph mit gewichteten Kanten bezeichnet man als \textit{gewichteten Graphen}. Graphen, ohne gewichtete Kanten nennt man \textit{ungewichtete Graphen}.
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+  \tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+  \node[state] (A)                    {Z};
+  \node[state] (B) [above right of=A] {E};
+  \node[state] (C) [below right of=B] {W};
+
+  \path (A) edge node {15} (B)
+        (B) edge node {9} (C)
+        (A) edge node {21} (C);
+\end{tikzpicture}
+\caption{Gewichtete (ungerichtete) Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
+\label{fig:cities2}
+\end{figure}
+
+\noindent
+Stellen wir uns nun vor, dass die Verbindung von Zürich nach Effretikon (und somit auch von Zürich nach Winterthur) aktuell unterbrochen ist, aber weiterhin Züge von Effretikon und Winterthur nach Zürich fahren können. Desweiteren, haben wir bemerkt, dass die Verbindung von Effretikon nach Winterthur nur 9 Minuten dauert, die Verbindung von Winterthur (wegen Stopp in Kemptthal) jedoch 11 Minuten. Diese Situation lässt sich durch \textit{gerichtete} Kanten wie in Abbildung \ref{fig:cities3} veranschaulichen.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4.0cm, semithick]
+  \tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+  \node[state] (A)                    {Z};
+  \node[state] (B) [above right of=A] {E};
+  \node[state] (C) [below right of=B] {W};
+
+  \path (B) edge [bend left] node {9} (C)
+        (C) edge [bend left] node {11} (B)
+        (B) edge node {15} (A)
+        (C) edge node {21} (A);
+\end{tikzpicture}
+\caption{Gerichtete und gewichtete Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
+\label{fig:cities3}
+\end{figure}
+
+\noindent
+Natürlich ist es auch erlaubt Graphen zu konstruieren, die zwar gerichtet, aber nicht gewichtet sind.\\
+Um zu verdeutlichen, dass bei einer Gerichteten Kante die Reihenfolge (die Richtung) eine Rolle spielt, schreiben wir für Gerichteten Kanten nicht eine zweielementige Menge $\menge{\text{Effretikon},\text{Zürich}}$, sondern ein geordnetes Paar $(\text{Effretikon},\text{Zürich})$.
+\clearpage
+
+\subsection{Adjazenzmatrix}
+Jeder endliche Graph $G = (V,E)$, egal ob gerichtet / ungerichtet oder gewichtet / ungewichtet, lässt sich einfach durch die ihm zugehörige \textit{Adjazenzmatrix} $A^G$ repräsentieren.\\
+Wir wollen für einen gegebenen Graphen $G$ die Adjazenzmatrix $A^G$ finden. Bevor wir das Vorgehen für einen beliebigen endlichen Graphen beschreiben werden, möchten wir die Adjazenzmatrix für den Graphen in Abbildung \ref{fig:cities3} finden.\\
+Wir führen diesen Graphen hier nochmals auf, allerdings haben wir zu didaktischen Zwecken die Kantengewichte des Graphen gefärbt und die Knoten (Städte) neu beschriftet (nummeriert). Dazu haben wir die Bezeichnungen $v_1 = \text{Zürich}$, $v_2 = \text{Effretikon}$ und $v_3 = \text{Winterthur}$ gewählt.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4.0cm, semithick]
+  \tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+  \node[state] (A)                    {$v_1$};
+  \node[state] (B) [above right of=A] {$v_2$};
+  \node[state] (C) [below right of=B] {$v_3$};
+
+  \path (B) edge [bend left] node {\red{9}} (C)
+        (C) edge [bend left] node {\blue{11}} (B)
+        (B) edge node {\darkgreenone{15}} (A)
+        (C) edge node {\pinkone{21}} (A);
+\end{tikzpicture}
+\end{figure}
+\noindent
+Die zu diesem Graphen zugehörige Adjazenzmatrix $A_G$ ist:
+\begin{align}\label{eq:adjazenz}
+ A^G = \left( \begin{matrix} 0 & 0 & 0 \\ \darkgreenone{15} & 0 & \red{9} \\ \pinkone{21} & \blue{11} & 0 \end{matrix} \right)
+\end{align}
+Die Matrix $A_G$ ist wie folgt zu verstehen:\\
+
+\noindent
+Falls im Graphen eine Kantenverbindung vom Knoten $v_i$ ($i\in\menge{1,2,3}$) zum Knoten $v_j$ ($j\in\menge{1,2,3}$) besteht, dann setzt man den Matirx Eintrag $A^G_{i,j}$ (Eintrag in der $i$-ten Zeile und $j$-ten Spalte) auf das der Kante entsprechende Kantengewicht. Zum Beispiel besteht im Graphen die Kantenverbindung von  Effretikon ($v_2$) nach Winterthur ($v_3$), mit einem Kantengewicht von $\red{9}$. Damit wird der Eintrag $A^G_{2,3}$ der Adjazenzmatrix in der zweiten Zeile und der dritten Spalte auf den Wert $\red{9}$ gesetzt.\\
+Besteht keine Verbindung von Knoten $v_i$ nach $v_j$, so wird $A^G_{i,j} = 0$ gesetzt.\\
+
+\noindent
+Bei ungewichteten Graphen ist der Matrix Eintrag $A^G_{i,j} = 1$, falls eine Kante vom Knoten $v_i$ zum Knoten $v_j$ besteht und $A^G_{i,j} = 1$, falls keine Verbindung besteht.\\
+
+\noindent
+Es spielt keine Rolle, welche konkrete Nummerierung der Knoten im Graphen gewählt wird. Die Adjazenzmatrix wird immer genau eine vollständige Beschreibung des ihr entsprechenden Graphen liefern.
+
+\begin{mdframed}[backgroundcolor=green!20,nobreak=true]\label{vorgehen_adjazenz}
+\textbf{Aufstellen der Adjazenzmatrix bei gegebenem Graphen}\\
+Gegeben sei ein Graph $G = (V,E)$ als Bild oder als Beschreibung durch Mengen.\\
+Die zu $G$ gehörige Adjazenzmatrix $A^G$ wird wie folgt aufgestellt:
+\begin{enumerate}
+    \item Sei $n:= |V|$ die Anzahl der Knoten in $G$. Dann hat $A^G$ eine Anzahl von $n$ Zeilen und $n$ Spalten (und ist somit eine quadratische Matrix).
+    \item Wähle eine beliebige Nummerierung der $n$ Knoten von $G$ und beschrifte den $i$-ten Knoten mit $v_i$ für $i\in\menge{1,2,...,n}$.\\
+    \gray{Die genaue Form von $A^G$ hängt von der konkreten Wahl der Nummerierung ab, die von $A^G$ festgehaltene Information über $G$ jedoch nicht.}
+    \item Falls in $G$ \textbf{keine} Kantenverbindung von $v_i$, $i\in\menge{1,2,...,n}$,  nach $v_j$, $j\in\menge{1,2,...,n}$, existiert, dann setze $A^G_{i,j} = 0$. Falls eine solche Kantenverbindung existiert, dann setze
+    \begin{itemize}
+        \item bei ungewichteten Graphen: $A^G_{i,j} = 1$,
+        \item bei gewichteten Graphen: $A^G_{i,j} = w_{i,j}$, wobei $w_{i,j}$ das Gewicht der Kante von $v_i$ nach $v_j$ ist.
+    \end{itemize}
+\end{enumerate}
+\end{mdframed}
+
+\noindent
+Wir haben gesehen, wie ein gegebener Graph mit nummerierten Knoten eindeutig durch eine Adjazenzmatrix dargestellt werden kann. Umgekehrt, lässt sich aus einer gegebener Adjazenzmatrix ein eindeutiger Graph gewinnen. Damit ist eine Adjazenzmatrix eine alternative Repräsentation eines Graphen.\\
+Adjazenzmatrizen ungewichteter lassen sich einfach durch ein Wort über dem Alphabet $\menge{0,1,\#}$ darstellen (für gewichtete Graphen ist die Darstellung etwas weniger offensichtlich). Beispielsweise ist die Kodierung der Matrix
+\begin{align*}
+\left( \begin{matrix} 0 & 0 & 0 & 1 \\ 1 & 0 & 1 & 0 \\ 1 & 0 & 0 & 1 \\ 1 & 1 & 0 & 0 \end{matrix} \right)
+\end{align*}
+gegeben durch das Wort
+\begin{align*}
+    0001\#1010\#1001\#1100
+\end{align*}
+
+\begin{Exercise}%[difficulty={1}]
+\noindent
+Überlegen Sie sich eine mögliche Kodierung der Adjazenzmatrix
+\begin{align*}
+\left( \begin{matrix} 0 & 7 & 3 & 5 \\ 8 & 0 & 1 & 4 \\ 7 & 6 & 6 & 2 \\ 4 & 9 & 2 & 0 \end{matrix} \right)
+\end{align*}
+über dem Alphabet $\menge{0,1,\#}$
+\end{Exercise}
+\begin{Answer}
+\noindent
+Jedes Kantengewicht $w$ kodieren wir durch $\text{Bin}(w)$, die einzelnen Kodierungen der Gewichte werden durch $\#$ abgetrennt. Das Ende einer Zeile wird durch $\#\#$ markiert. Damit erhalten wir folgende Kodierung der gegebenen Adjazenzmatrix:
+\begin{align*}
+0 \# 111 \# 11 \# 101 \#\# 1000 \# 0 \# 1 \# 100 \#\# 111 \# 110 \# 110 \# 10 \#\# 100 \# 1001 \# 10 \# 0
+\end{align*}
+\end{Answer}
+
+\begin{Exercise}%[difficulty={1}]
+\noindent
+Welche Einträge haben bei jeder Adjazenzmatrix immer den Wert 0?\\
+\end{Exercise}
+\begin{Answer}
+\noindent
+Die sogenannten \textit{Diagonalemente}. Dies sind die Einträge, bei denen die Zeilennummer mit der Spaltennummer übereinstimmt, also alle Einträge der Form $A^G_{i,i}$.\\
+Angenommen, ein Diagonalelement wäre nicht 0. Dann würde im zur Adjazenzmatrix gehörenden Graphen eine Verbindung der Form $\menge{v_i,v_i}$ beziehungsweise $(v_i,v_i)$ bestehen. Dies darf aber gemäss der Definition der Kantenmenge nicht sein, weil sie Kantenverbindungen von einem Knoten zu sich selbst ausschliesst.
+\end{Answer}
+
+\subsubsection{Knotenüberdeckung (vertex cover)}
+Nun haben wir genügend Wissen über Graphen um ein sehr interessantes Entscheidungsproblem in Zusammenhang mit Graphen elegant beschreiben zu können. In diesem Unterabschnitt werden wir uns auf ungerichtete Graphen beschränken.\\
+\begin{deff}[Knotenüberdeckung (vertex cover)]{deff:knotenueberdeckung}
+Man sagt, dass eine Kante $\menge{u,v}$ \textbf{\textit{inzident}} zu genau ihren Endpunkten $u$ und $v$ ist.\\
+Eine \textbf{\textit{Knotenüberdeckung}} (englisch: \textit{vertex cover}) eines Graphen $G = (V,E)$ ist jede Knotenmenge $U\subseteq V$, so dass jede Kante aus $E$ zu mindestens einem Knoten aus $U$ inzident ist.\\
+\gray{Eine Teilmenge $U$ der Knotenmenge $V$ eines Graphen $G=(V,E)$ ist also eine Knotenüberdeckung, falls jede Kante $e\in E$ mindestens einen ihrer beiden Endpunkte in $U$ hat.}
+\end{deff}
+Betrachten wir zum Beispiel den Graphen in Abbildung \ref{fig:VC}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+  \tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+  \node[state] (A)                    {$v_1$};
+  \node[state,fill=red!20] (B) [above right of=A] {$v_2$};
+  \node[state,fill=red!20] (C) [right of=B]       {$v_3$};
+  \node[state,fill=red!20] (D) [right of=C]       {$v_4$};
+  \node[state,fill=red!20] (E) [below right of=A] {$v_5$};
+  \node[state] (F) [right of=E]       {$v_6$};
+
+  \path (A) edge node {} (B)
+            edge node {} (E)
+        (B) edge node {} (C)
+            edge node {} (E)
+        (C) edge node {} (D)
+            edge node {} (F)
+        (E) edge node {} (F);
+\end{tikzpicture}
+\caption{Graph mit $6$ Knoten. Die Menge $\menge{v_2,v_3,v_4,v_5}$ (rot markierte Knoten) ist eine Knotenüberdeckung des Graphen.}
+\label{fig:VC}
+\end{figure}
+\noindent
+Die Menge $\menge{v_2,v_3,v_4,v_5}$ der $4$ rot markierten Knoten ist eine Knotenüberdeckung des Graphen, da jede der $7$ Kanten des Graphen mindestens einer ihrer Endpunkte in dieser Menge hat.\\
+Jedoch ist die Menge $\menge{v_2,v_3,v_4,v_5}$ keine \textbf{minimale} Knotenüberdeckung, denn die Knotenmenge $\menge{v_2,v_3,v_5}$ (siehe Abbildung \ref{fig:VC1}) enthält einen Knoten weniger und ist ebenfalls eine Knotenüberdeckung .
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+  \tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+  \node[state] (A)                    {$v_1$};
+  \node[state,fill=red!20] (B) [above right of=A] {$v_2$};
+  \node[state,fill=red!20] (C) [right of=B]       {$v_3$};
+  \node[state] (D) [right of=C]       {$v_4$};
+  \node[state,fill=red!20] (E) [below right of=A] {$v_5$};
+  \node[state] (F) [right of=E]       {$v_6$};
+
+  \path (A) edge node {} (B)
+            edge node {} (E)
+        (B) edge node {} (C)
+            edge node {} (E)
+        (C) edge node {} (D)
+            edge node {} (F)
+        (E) edge node {} (F);
+\end{tikzpicture}
+\caption{Die Menge $\menge{v_2,v_3,v_5}$ (rot markierte Knoten) ist eine \textbf{minimale} Knotenüberdeckung des Graphen.}
+\label{fig:VC1}
+\end{figure}
+
+\begin{deff}[Entscheidungsproblem der Knotenüberdeckung]{deff:entscheidungVC}
+Das \textbf{Entscheidungsproblem der Knotenüberdeckung}, besteht darin für einen gegebenen Graphen $G$ und eine feste natürliche Zahl $k$ zu entscheiden, ob $G$ ein ungerichteter Graph ist, der eine Knotenüberdeckung mit maximal $k$ vielen Knoten besitzt. Man möchte also für einen Graphen $G$ und eine natürliche Zahl $k$ entscheiden, ob das geordnete Paar $(G,k)$ in der Menge
+\begin{equation*}
+\begin{split}
+    \text{VC} =\{ (G,k) \;|\; & \text{$G$ ist ein ungerichteter Graph mit einer Knotenüberdeckung } \\
+    &\text{(vertex cover) der Mächtigkeit höchstens $k$} \}
+\end{split}
+\end{equation*}
+liegt oder nicht.\\
+\gray{Noch etwas genauer ausgedrückt:
+\begin{equation*}
+\begin{split}
+    \text{VC} =\{ w\in\menge{0,1,\#}^* \;|\; & \text{$w$ ist die Kodierung eines ungerichteten Graph mit einer } \\ 
+    & \text{Knotenüberdeckung (vertex cover) der } \\
+    & \text{Mächtigkeit höchstens $k$} \}
+\end{split}
+\end{equation*}}
+\end{deff}
+Wie man überprüfen kann, lässt der Graph in Abbildung \ref{fig:VC1} zum Beispiel keine Knotenüberdeckung der Mächtigkeit höchstens $3$ zu. 
+
