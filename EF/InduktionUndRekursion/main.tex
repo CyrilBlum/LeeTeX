@@ -1,0 +1,72 @@
+%% SET DOCUMENT CLASS %%
+% EXAM
+%\documentclass[11pt,addpoints]{exam} 
+%\documentclass[11pt,addpoints,answers]{exam}
+
+% BOOK
+%\documentclass[a4paper,11pt,openany,titlepage]{book}
+\documentclass[a4paper,11pt,oneside]{book}
+
+% ARTICLE
+%\documentclass[11pt]{article}
+
+% BEAMER
+%\documentclass{beamer}
+
+%% INCLUDE PREAMBLES %%
+\input{preamble}
+
+\iftoggle{book} {
+	\makeindex[columns=1,title=Index,intoc]
+	%\includeonly{kapitel06}
+} {}
+
+\begin{document}
+	% BOOK
+	\iftoggle{book} {
+	    \frontmatter
+		\include{titlepage}
+		\include{vorwort}
+		\tableofcontents
+        \markright{}
+        \cleardoublepage
+		\mainmatter
+		
+		\part{Mathematische Diskussion}
+		\include{kapitel00} % Vorwissen
+        \include{kapitel01} % Die natürlichen Zahlen
+        \include{kapitel02} % Das Induktionsprinzip
+        \include{kapitel03} % Rekursion
+        \part{Ausgewählte rekursive Probleme und Algorithmen}
+        \include{kapitel04} % Binäre Strings ohne aufeinanderfolgende Nullen
+        \include{kapitel05} % Sortieren
+        \include{kapitel06} % Sudoku
+		\appendix
+		\input{appendix.tex} % Appendix: Prinzip der rekursiven Definition
+
+		\backmatter
+        \printbibliography[heading=bibintoc]
+		\printindex
+		
+
+		%\bibliographystyle{plain}
+        %\bibliography{refs}
+		
+	} {}
+
+	% EXAM
+	\iftoggle{exam} {
+        \input{exam}
+	} {}
+	
+	% ARTICLE
+	\iftoggle{article} {
+        \input{article}
+	} {}
+	
+	% BEAMER
+	\iftoggle{beamer} {
+        \input{beamer}
+	} {}
+	
+\end{document}

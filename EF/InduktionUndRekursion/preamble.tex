@@ -1,0 +1,1009 @@
+% e-TeX tools for LaTeX
+\usepackage{etoolbox}
+
+% toggle document class
+\newtoggle{book}    \settoggle{book}{true}
+\newtoggle{exam}    \settoggle{exam}{false}
+\newtoggle{article} \settoggle{article}{false}
+\newtoggle{beamer}  \settoggle{beamer}{false}
+
+% toggle: document contains citations
+\newtoggle{citations}   \settoggle{citations}{true}
+
+% An alternative to babel for XeLaTeX and LuaLaTeX. LOAD BEFORE BIBLATEX
+\usepackage{polyglossia}
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+%\setotherlanguage{latin}
+
+% document contains citations?
+%\iftoggle{citations} {
+    % Sophisticated Bibliographies in LaTeX
+    \usepackage[maxbibnames=99,sorting=none,style=alphabetic,backend=biber]{biblatex}
+
+    \addbibresource{refs.bib}
+%2} {}
+
+% Run a document through LaTeX for syntax checking
+%\usepackage{syntonly}
+
+% Draw a page-layout diagram
+%\usepackage{showframe}
+
+% Advanced font selection in XeLaTeX and LuaLaTeX
+\usepackage{fontspec}
+
+% Reimplementation of and extensions to LaTeX verbatim
+\usepackage{verbatim}
+
+% is document NOT a beamer presentation?
+\iftoggle{beamer} {
+    %
+} {
+    % Flexible and complete interface to document dimensions
+    \usepackage[a4paper,bindingoffset=0mm,left=30mm,right=30mm,top=25mm,bottom=25mm,footskip=15mm]{geometry}
+}
+
+% Easy access to the Lorem Ipsum dummy text
+\usepackage{lipsum}
+
+% Extensive support for hypertext in LaTeX
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!40!black},
+    citecolor={blue!70!black},
+    urlcolor={blue!90!black}
+}
+
+\ifboolexpr{not (togl {beamer})}
+{
+% Control table of contents, figures, etc
+\usepackage{tocloft}
+}{}
+
+\ifboolexpr{togl {exam} or togl {beamer}}
+    {}
+    {
+        % Extensive control of page headers and footers in LaTeX2ε
+        \usepackage{fancyhdr}
+    }
+
+% Completely customisable TOCs
+\usepackage{etoc}
+
+% Alternative headings for toc/lof/lot
+\usepackage{titletoc}
+
+% Conditional commands in LaTeX documents
+\usepackage{ifthen}
+
+% String manipulation for (La)TeX
+\usepackage{xstring}
+
+% Define commands that appear not to eat spaces
+\usepackage{xspace}
+
+% Context sensitive quotation facilities
+\usepackage{csquotes}
+
+% AMS mathematical facilities for LaTeX
+\usepackage{amsmath}
+
+% TeX fonts from the American Mathematical Society
+\usepackage{amssymb}
+
+% AMS-LaTeX commutative diagrams
+\usepackage{amscd}
+
+% Typesetting theorems (AMS style)
+\usepackage{amsthm}
+
+% Place lines through maths formulae
+\usepackage{cancel}
+
+% Access bold symbols in maths mode
+\usepackage{bm}
+
+% Macros for manipulating polynomials
+\usepackage{polynom}
+
+% Mathematical tools to use with amsmath
+\usepackage{mathtools}
+
+\ifboolexpr{not (togl {beamer})}
+{
+    % Control table of contents, figures, etc
+    % Driver-independent color extensions for LaTeX and pdfLaTeX
+    \usepackage[svgnames]{xcolor}
+    % see 'svgnames' in:
+    % https://mirror.koddos.net/CTAN/macros/latex/contrib/xcolor/xcolor.pdf
+}{}
+
+% Enhanced support for graphics
+\usepackage{graphicx}
+
+% wrapfig – Produces figures which text can flow around
+\usepackage{wrapfig}
+
+% Support for sub-captions
+\usepackage{subcaption}
+
+% Intermix single and multiple columns
+\usepackage{multicol}
+
+% Create PostScript and PDF graphics in TeX
+\usepackage{tikz}
+% Martin Vogel's Symbols (marvosym) font
+\usepackage{marvosym}
+% Some symbols created using TikZ
+\usepackage[marvosym]{tikzsymbols}
+\usetikzlibrary{
+  3d,
+  arrows,
+  arrows.spaced,
+  arrows.meta,
+  bending,
+  babel,
+  calc,
+  fit,
+  patterns,
+  patterns.meta,
+  plotmarks,
+  shapes.geometric,
+  shapes.misc,
+  shapes.symbols,
+  shapes.arrows,
+  shapes.callouts,
+  shapes.multipart,
+  shapes.gates.logic.US,
+  shapes.gates.logic.IEC,
+  circuits.logic.US,
+  circuits.logic.IEC,
+  circuits.logic.CDH,
+  circuits.ee.IEC,
+  datavisualization,
+  datavisualization.polar,
+  datavisualization.formats.functions,
+  er,
+  automata,
+  backgrounds,
+  chains,
+  topaths,
+  trees,
+  petri,
+  mindmap,
+  matrix,
+  calendar,
+  folding,
+  fadings,
+  shadings,
+  spy,
+  through,
+  turtle,
+  positioning,
+  scopes,
+  decorations.fractals,
+  decorations.shapes,
+  decorations.text,
+  decorations.pathmorphing,
+  decorations.pathreplacing,
+  decorations.footprints,
+  decorations.markings,
+  shadows,
+  lindenmayersystems,
+  intersections,
+  fixedpointarithmetic,
+  fpu,
+  svg.path,
+  external,
+  graphs,
+  graphs.standard,
+  quotes,
+  math,
+  angles,
+  views,
+  animations,
+  rdf,
+  perspective,
+}
+
+% The package provides a PGF/TikZ-based mechanism for drawing linguistic (and other kinds of) trees.
+\usepackage{forest}
+
+% Create normal/logarithmic plots in two and three dimensions
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+
+% Framed environments that can split at page boundaries
+\usepackage[framemethod=TikZ]{mdframed}
+
+% Customising captions in floating environments
+\usepackage{caption}
+
+% Improved interface for floating objects
+\usepackage{float}
+
+% A range of footnote options
+\usepackage[hang, flushmargin]{footmisc}
+
+% This package provides user control over the layout of the three basic list environments: enumerate, itemize and description.
+\usepackage[shortlabels]{enumitem}
+\setlist{nolistsep} % smaller spacing in lists
+
+% A package for producing multiple indexes
+\usepackage{imakeidx}
+
+% A generic document command parser
+\usepackage{xparse}
+
+% Create PostScript and PDF graphics in TeX
+\usepackage{pgf}
+
+% defines \foreach
+\usepackage{pgffor}
+
+% This package introduces aliases for counters, that share the same counter register and ‘clear’ list. 
+\usepackage{aliascnt}
+
+% Verbatim with URL-sensitive line breaks
+\usepackage{url}
+
+% Typeset source code listings using LaTeX
+\usepackage{listings}
+
+% float wrapper for algorithms
+\usepackage{algorithm}
+
+% layout for algorithmicx
+\usepackage[noend]{algpseudocode}
+
+% Extra control of appendices
+\usepackage[toc,page]{appendix}
+
+% Change the resetting of counters
+\usepackage{chngcntr}
+
+% Highly customised stacking of objects, insets, baseline changes, etc
+\usepackage{stackengine}
+
+% Horizontally columned lists
+\usepackage{tasks}
+
+% Typeset exercises, problems, etc. and their answers
+\usepackage[lastexercise,answerdelayed]{exercise}
+
+% Intelligent cross-referencing. LOAD AFTER \hypersetup
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+% left ( and right ) round brackets
+\newcommand{\lr}[1]{\left(#1\right)}
+% left { and right } curly brackets
+\newcommand{\lrc}[1]{\left\{#1\right\}}
+% left [ and right ] square brackets
+\newcommand{\lrs}[1]{\left[#1\right]}
+% set (condition is in math mode): {n\in\N ; n < 10}
+\newcommand{\setcm}[2]{\lrc{\;#1 \; ; \; #2 \;}}
+% set (condition is in text mode): {n\in\N ; $n$ is even}
+\newcommand{\setct}[2]{\lrc{\;#1 \; ; \; \text{#2} \;}}
+% set (all in text mode): {$w$ ist binärer String ; $n$ is even}
+\newcommand{\settt}[2]{\lrc{\; \text{#1} \; ; \; \text{#2} \;}}
+% N (set of natural numbers)
+\newcommand{\N}{\mathbb{N}}
+% set of units in N = N\{0}
+\newcommand{\Nunit}{\N^{\times}}
+% Z (set of integers)
+\newcommand{\Z}{\mathbb{Z}}
+% set of units in Z = Z\{0}
+\newcommand{\Zunit}{\Z^{\times}}
+% Q
+\newcommand{\Q}{\mathbb{Q}}
+% set of units in Q = Q\{0}
+\newcommand{\Qunit}{\Q^{\times}}
+% R
+\newcommand{\R}{\mathbb{R}}
+% set of units in R = R\{0}
+\newcommand{\Runit}{\R^{\times}}
+% R >= 0 (non negative real numbers)
+\newcommand{\Rnn}{\R_{\geq 0}}
+% R > 0 (positive real numbers)
+\newcommand{\Rp}{\R_{>0}}
+% C
+\newcommand{\C}{\mathbb{C}}
+% set of units in C = C\{0}
+\newcommand{\Cunit}{\C^{\times}}
+% K
+\newcommand{\K}{\mathbb{K}}
+% set of units in K = K\{0}
+\newcommand{\Kunit}{\K^{\times}}
+% real part of a complex number Re(...)
+\newcommand{\real}[1]{\text{Re}\lr{#1}}
+% imaginary part of a complex number Im(...)
+\newcommand{\imag}[1]{\text{Im}\lr{#1}}
+% absolute value
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+% norm
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+% closed interval [a,b]
+\newcommand{\ic}[2]{\lrs{#1, #2}}
+% closed / open interval [a,b)
+\newcommand{\ico}[2]{\left[#1, #2\right)}
+% open / closed interval (a,b]
+\newcommand{\ioc}[2]{\left(#1, #2\right]}
+% open interval (a,b)
+\newcommand{\io}[2]{\lr{#1, #2}}
+% double fraction
+\newcommand{\doublefraction}[4]{\cfrac{\frac{#1}{#2}}{\frac{#3}{#4}}}
+% degree (of a polynomial)
+\newcommand{\degree}[1]{\text{Grad}\lr{#1}}
+% defining symbols :=, =:  
+\newcommand{\defeql}{\mathrel{\mathop:}=} % defines Symbol :=
+\newcommand{\defeqr}{=\mathrel{\mathop:}} % defines Symbol =:
+% ceiling operator
+\newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}
+% floor operator
+\newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
+% quotation marks
+\newcommand{\quotes}[1]{``#1''}
+% text italics and bold font
+\newcommand{\tib}[1]{\textbf{\textit{#1}}}
+% implication
+\newcommand{\imp}{\Rightarrow}
+% cardinality
+\newcommand{\anz}[1]{\text{Anz}\lr{#1}}
+% arg
+\newcommand{\Carg}[1]{\text{arg}\lr{#1}}
+% cis
+\newcommand{\cis}[1]{\text{cis}\lr{#1}}
+
+% Typeset source code listings using LaTeX
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{BlanchedAlmond!10},   
+    commentstyle=\color{Blue},
+    keywordstyle=\color{Green},
+    numberstyle=\tiny\color{Gray},
+    stringstyle=\color{Fuchsia},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+\lstset{style=mystyle}
+
+% Typeset source code listings using LaTeX
+\lstdefinestyle{mystyleFootnotesize}{
+    backgroundcolor=\color{BlanchedAlmond!10},   
+    commentstyle=\color{Blue},
+    keywordstyle=\color{Green},
+    numberstyle=\tiny\color{Gray},
+    stringstyle=\color{Fuchsia},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+
+% Typeset source code listings using LaTeX
+\lstdefinestyle{mystyleTiny}{
+    backgroundcolor=\color{BlanchedAlmond!10},   
+    commentstyle=\color{Blue},
+    keywordstyle=\color{Green},
+    numberstyle=\tiny\color{Gray},
+    stringstyle=\color{Fuchsia},
+    basicstyle=\ttfamily\tiny,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+
+\crefname{lstlisting}{Programm}{Programme}
+\Crefname{lstlisting}{Programm}{Programme}
+\renewcommand{\lstlistingname}{Listing}
+
+% Python for inline
+\newcommand{\pythoninline}[1]{{\lstinline[language=Python]!#1!}}
+
+% C++ for inline
+\newcommand{\cppinline}[1]{{\lstinline[language=C++]!#1!}}
+
+\floatname{algorithm}{Algorithmus}
+
+\renewcommand{\algorithmicrequire}{\textbf{Eingabe:}}
+\renewcommand{\algorithmicensure}{\textbf{Resultat:}}
+
+% enumerate with roman numbers
+\newlist{renum}{enumerate}{1}
+\setlist[renum,1]{label=(\roman*)}
+
+% enumerate alphabetically
+\newlist{aenum}{enumerate}{1}
+\setlist[aenum,1]{label=(\alph*)}
+
+% custom environments
+\newcounter{dc} \setcounter{dc}{99999}
+\newcommand{\mylabel}{foo} % will get overwritten
+\iftoggle{book} {
+	\newcounter{cc}[chapter] % cc is reset at start of new chapter
+} {
+	\newcounter{cc}[section] % cc is reset at start of new section
+}
+\setcounter{cc}{0}
+\iftoggle{book} {
+	\renewcommand{\thecc}{\arabic{chapter}.\arabic{cc}}
+} {
+	\renewcommand{\thecc}{\arabic{section}.\arabic{cc}}
+}
+
+% theorem environment
+\newaliascnt{ccsatz}{cc}
+\aliascntresetthe{ccsatz}
+\crefname{ccsatz}{Satz}{Sätze}
+\Crefname{ccsatz}{Satz}{Sätze}
+
+\newenvironment{satz}[2][]
+    {
+        \refstepcounter{ccsatz}
+        \ifblank{#1} {
+            % if no title is given (#1 blank)
+        	\mdfsetup{
+        	frametitle={
+        	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+        	\node[anchor=east,rectangle,fill=Gold!60]
+        	{\strut Satz~\thecc};}
+        	}
+        } {	
+            % if a title is given (#1 not blank)
+        	\mdfsetup{
+        	frametitle={
+        	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+        	\node[anchor=east,rectangle,fill=Gold!60]
+        	{\strut Satz~\thecc~#1};}
+        	}
+        }
+        \mdfsetup{
+        	innertopmargin=0pt, linecolor=Gold,
+        	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+        }
+        \ifstrequal{#2}{-} {
+        	% #2 is the dummy label "-"
+        	\renewcommand{\mylabel}{\arabic{dc}}
+        	\refstepcounter{dc}
+        } {
+        	% #2 is an actual user-defined label
+        	\renewcommand{\mylabel}{#2}
+        }
+        \begin{mdframed}[backgroundcolor=Gold!15]\relax%
+        \label{\mylabel}
+    } %%
+    {
+        \end{mdframed}
+    }
+
+% definition environment
+\newaliascnt{ccdefinition}{cc}
+\aliascntresetthe{ccdefinition}
+\crefname{ccdefinition}{Definition}{Definitionen}
+\Crefname{ccdefinition}{Definition}{Definitionen}
+
+\newenvironment{definition}[2][]
+    {
+        \refstepcounter{ccdefinition}
+        \ifblank{#1} {
+            % if no title is given (#1 blank)
+        	\mdfsetup{
+        	frametitle={
+        	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+        	\node[anchor=east,rectangle,fill=DarkCyan!40]
+        	{\strut Definition~\thecc};}
+        	}
+        } {	
+            % if a title is given (#1 not blank)
+        	\mdfsetup{
+        	frametitle={
+        	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+        	\node[anchor=east,rectangle,fill=DarkCyan!40]
+        	{\strut Definition~\thecc~#1};}
+        	}
+        }
+        \mdfsetup{
+        	innertopmargin=0pt, linecolor=DarkCyan!80,
+        	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+        }
+        \ifstrequal{#2}{-} {
+        	% #2 is the dummy label "-"
+        	\renewcommand{\mylabel}{\arabic{dc}}
+        	\refstepcounter{dc}
+        } {
+        	% #2 is an actual user-defined label
+        	\renewcommand{\mylabel}{#2}
+        }
+        \begin{mdframed}[backgroundcolor=DarkCyan!8]\relax%
+        \label{\mylabel}
+    } %%
+    {
+        \end{mdframed}
+    }
+    
+% vereinbarung environment
+\newaliascnt{ccvereinbarung}{cc}
+\aliascntresetthe{ccvereinbarung}
+\crefname{ccvereinbarung}{Vereinbarung}{Vereinbarungen}
+\Crefname{ccvereinbarung}{Vereinbarung}{Vereinbarungen}
+
+\newenvironment{vereinbarung}[2][]
+    {
+        \refstepcounter{ccvereinbarung}
+        \ifblank{#1} {
+            % if no title is given (#1 blank)
+        	\mdfsetup{
+        	frametitle={
+        	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+        	\node[anchor=east,rectangle,fill=Coral!40]
+        	{\strut Vereinbarung~\thecc};}
+        	}
+        } {	
+            % if a title is given (#1 not blank)
+        	\mdfsetup{
+        	frametitle={
+        	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+        	\node[anchor=east,rectangle,fill=Coral!40]
+        	{\strut Vereinbarung~\thecc~#1};}
+        	}
+        }
+        \mdfsetup{
+        	innertopmargin=0pt, linecolor=Coral!80,
+        	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+        }
+        \ifstrequal{#2}{-} {
+        	% #2 is the dummy label "-"
+        	\renewcommand{\mylabel}{\arabic{dc}}
+        	\refstepcounter{dc}
+        } {
+        	% #2 is an actual user-defined label
+        	\renewcommand{\mylabel}{#2}
+        }
+        \begin{mdframed}[backgroundcolor=Coral!15]\relax%
+        \label{\mylabel}
+    } %%
+    {
+        \end{mdframed}
+    }
+
+% box environment
+\newaliascnt{ccbox}{cc}
+\aliascntresetthe{ccbox}
+\crefname{ccbox}{Box}{Boxen}
+\Crefname{ccbox}{Box}{Boxen}
+
+\newenvironment{myBox}[2][]
+    {
+        \refstepcounter{ccbox}
+        \ifblank{#1} {
+            % if no title is given (#1 blank)
+        	\mdfsetup{
+        	frametitle={
+        	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+        	\node[anchor=east,rectangle,fill=Indigo!40]
+        	{\strut Box~\thecc};}
+        	}
+        } {	
+            % if a title is given (#1 not blank)
+        	\mdfsetup{
+        	frametitle={
+        	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+        	\node[anchor=east,rectangle,fill=Indigo!40]
+        	{\strut Box~\thecc~#1};}
+        	}
+        }
+        \mdfsetup{
+        	innertopmargin=0pt, linecolor=Indigo!40,
+        	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+        }
+        \ifstrequal{#2}{-} {
+        	% #2 is the dummy label "-"
+        	\renewcommand{\mylabel}{\arabic{dc}}
+        	\refstepcounter{dc}
+        } {
+        	% #2 is an actual user-defined label
+        	\renewcommand{\mylabel}{#2}
+        }
+        \begin{mdframed}[backgroundcolor=Indigo!8]\relax%
+        \label{\mylabel}
+    } %%
+    {
+        \end{mdframed}
+    }
+
+% exercises and answers
+\newaliascnt{ccA}{cc}
+\aliascntresetthe{ccA}
+\iftoggle{book} {
+	\newcounter{ccaufgabe}[chapter]
+} {
+	\newcounter{ccaufgabe}[section]
+}
+\setcounter{ccaufgabe}{0}
+\iftoggle{book} {
+	\renewcommand{\theccaufgabe}{\arabic{chapter}.\arabic{ccaufgabe}}
+} {
+	\renewcommand{\theccaufgabe}{\arabic{section}.\arabic{ccaufgabe}}
+}
+
+% \crefname{ccaufgabe}{Aufgabe}{Aufgaben}
+% \Crefname{ccaufgabe}{Aufgabe}{Aufgaben}
+\crefname{ccaufgabe}{A}{A}
+\Crefname{ccaufgabe}{A}{A}
+
+\newenvironment{aufgabe}[2][]
+    {
+        \refstepcounter{ccA}
+        \refstepcounter{ccaufgabe}
+        \ifblank{#1} {
+            % if no title is given (#1 blank)
+        	\mdfsetup{
+            	frametitle={
+            	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+            	\node[anchor=east,rectangle,fill=DarkSeaGreen]{\strut Aufgabe~\theccA~(A~\theccaufgabe)};},
+            	innertopmargin=0pt, linecolor=DarkSeaGreen,
+            	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+            }
+        } {	
+            % if a title is given (#1 not blank)
+        	\mdfsetup{
+            	frametitle={
+            	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+            	\node[anchor=east,rectangle,fill=DarkSeaGreen]{\strut Aufgabe~\theccA~#1~(A~\theccaufgabe)};},
+            	innertopmargin=0pt, linecolor=DarkSeaGreen,
+            	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+            }
+        }
+        \mdfsetup{
+        	innertopmargin=0pt, linecolor=DarkSeaGreen,
+        	linewidth=1pt, topline=true, frametitleaboveskip=\dimexpr-\ht\strutbox\relax
+        }
+        \ifstrequal{#2}{-} {
+        	% #2 is the dummy label "-"
+        	\renewcommand{\mylabel}{\arabic{dc}}
+        	\refstepcounter{dc}
+        } {
+        	% #2 is an actual user-defined label
+        	\renewcommand{\mylabel}{#2}
+        }
+        \begin{mdframed}[backgroundcolor=DarkSeaGreen!15]\relax%
+        \label{\mylabel}
+    } %%
+    {
+        \end{mdframed}
+    }
+
+\newenvironment{antwort}[1]
+    {
+        \renewcommand{\AnswerHeader}
+        {
+            \noindent
+            \textcolor{DarkSeaGreen!65!black}{\textbf{Lösungsvorschlag}} zu \cref{#1} auf (ab) \cpageref{#1}:\\
+            \noindent
+        }
+        \begin{Answer}
+    } %%
+    {
+        \end{Answer}
+    }
+
+% examples
+\newaliascnt{ccbeispiele}{cc}
+\aliascntresetthe{ccbeispiele}
+\crefname{ccbeispiele}{Beispiel}{Beispiele}
+\Crefname{ccbeispiele}{Beispiel}{Beispiele}
+
+\makeatletter
+\newcommand{\beispiele}[3] {
+	\refstepcounter{ccbeispiele}
+	\IfEq{#1}{-}
+	{
+		% no user-defined label given (only "-")
+		\renewcommand{\mylabel}{\arabic{dc}}
+		\refstepcounter{dc}
+	} {
+		% actual user-defined label given
+		\renewcommand{\mylabel}{#1}
+	}
+	% do not reference to this if label "-" is given
+	\label{\mylabel}\par\smallskip\noindent\textbf{Beispiele~\thecc}\par\noindent #2 \begin{aenum}\item #3\checkNextArgOne}
+	\newcommand{\checkNextArgOne}{\@ifnextchar\bgroup{\getNextArgOne}{\end{aenum}}}
+	\newcommand{\getNextArgOne}[1]{\item #1\@ifnextchar\bgroup{\getNextArgOne}{~$_\blacktriangle$\smallskip\end{aenum}}
+}
+\makeatother
+
+% example
+\newaliascnt{ccbeispiel}{cc}
+\aliascntresetthe{ccbeispiel}
+\crefname{ccbeispiel}{Beispiel}{Beispiele}
+\Crefname{ccbeispiel}{Beispiel}{Beispiele}
+
+\newcommand{\beispiel}[2] {
+	\refstepcounter{ccbeispiel}
+	\IfEq{#1}{-}
+	{
+		% no user-defined label given (only "-")
+		\renewcommand{\mylabel}{\arabic{dc}}
+		\refstepcounter{dc}
+	} {
+		% actual user-defined label given
+		\renewcommand{\mylabel}{#1}
+	}
+	% do not reference to this if label "-" is given
+	\label{\mylabel}\par\smallskip\noindent\textbf{Beispiel~\thecc}\quad #2 ~$_\blacktriangle$\smallskip
+}
+
+% proof
+\newcommand{\beweis}[1]{\smallskip\noindent\textbf{Beweis:}\quad #1 ~$_\blacksquare$\smallskip}
+
+% multiple clever-refs
+\makeatletter
+\newcommand{\getNextArgTwoComma}[1]{,~\hyperref[#1]{\ref*{#1}}\@ifnextchar\bgroup{\getNextArgTwoComma}{\nolinebreak\xspace}}
+\newcommand{\cleverPart}[1]{\hyperref[#1]{\namecref{#1}~\labelcref*{#1}}\getNextArgTwoComma}
+\newcommand{\cleverParts}[1]{\hyperref[#1]{\namecrefs{#1}~\labelcref*{#1}}\getNextArgTwoComma}
+\makeatother
+
+% remarks
+\newaliascnt{ccbemerkungen}{cc}
+\aliascntresetthe{ccbemerkungen}
+\crefname{ccbemerkungen}{Bemerkung}{Bemerkungen}
+\Crefname{ccbemerkungen}{Bemerkung}{Bemerkungen}
+
+\makeatletter
+\newcommand{\bemerkungen}[3] {
+	\refstepcounter{ccbemerkungen}
+	\IfEq{#1}{-}
+	{
+		% no user-defined label given (only "-")
+		\renewcommand{\mylabel}{\arabic{dc}}
+		\refstepcounter{dc}
+	} {
+		% actual user-defined label given
+		\renewcommand{\mylabel}{#1}
+	}
+	% do not reference to this if label "-" is given
+	\label{\mylabel}\par\smallskip\noindent\textbf{Bemerkungen~\thecc}\par\noindent #2 \begin{aenum}\item #3\checkNextArgOne
+}
+\makeatother
+
+% remark
+\newaliascnt{ccbemerkung}{cc}
+\aliascntresetthe{ccbemerkung}
+\crefname{ccbemerkung}{Bemerkung}{Bemerkungen}
+\Crefname{ccbemerkung}{Bemerkung}{Bemerkungen}
+
+\newcommand{\bemerkung}[2] {
+	\refstepcounter{ccbemerkung}
+	\IfEq{#1}{-}
+	{
+		% no user-defined label given (only "-")
+		\renewcommand{\mylabel}{\arabic{dc}}
+		\refstepcounter{dc}
+	} {
+		% actual user-defined label given
+		\renewcommand{\mylabel}{#1}
+	}
+	% do not reference to this if label "-" is given
+	\label{\mylabel}\par\smallskip\noindent\textbf{Bemerkung~\thecc}\quad #2 ~$_\blacktriangle$\smallskip
+}
+
+% axiome
+\iftoggle{book} {
+	\newcounter{caxiome}[chapter]
+} {
+	\newcounter{caxiome}[section]
+}
+
+\setcounter{caxiome}{0}
+\iftoggle{book} {
+	\renewcommand{\thecaxiome}{\arabic{chapter}.\roman{caxiome}}
+} {
+	\renewcommand{\thecaxiome}{\arabic{section}.\roman{caxiome}}
+}
+
+\crefname{caxiome}{Axiom}{Axiome}
+\Crefname{caxiome}{Axiom}{Axiome}
+
+\makeatletter
+\newcommand{\axiome}[3] {
+	\refstepcounter{caxiome}
+	\IfEq{#1}{-}
+	{
+		% no user-defined label given (only "-")
+		\renewcommand{\mylabel}{\arabic{caxiome}}
+		\refstepcounter{caxiome}
+	} {
+		% actual user-defined label given
+		\renewcommand{\mylabel}{#1}
+	}
+	% do not reference to this if label "-" is given
+	\label{\mylabel}\par\smallskip\noindent\textbf{Axiome~\thecaxiom}\par\noindent #2 \begin{aenum}\item #3\checkNextArgOne
+}
+\makeatother
+
+% gedankenanstoss
+\newcommand{\gedankenanstoss}[1]{\bigskip\noindent\textbf{Gedankenanstoss}\quad #1 \par\noindent\hspace{0.9\linewidth}$^\blacktriangle$\bigskip}
+
+% axiom
+\newaliascnt{caxiom}{caxiome}
+\aliascntresetthe{caxiom}
+\crefname{caxiom}{Axiom}{Axiome}
+\Crefname{caxiom}{Axiom}{Axiome}
+
+\newcommand{\axiom}[2] {
+	\refstepcounter{caxiom}
+	\IfEq{#1}{-}
+	{
+		% no user-defined label given (only "-")
+		\renewcommand{\mylabel}{\arabic{caxiom}}
+		\refstepcounter{caxiom}
+	} {
+		% actual user-defined label given
+		\renewcommand{\mylabel}{#1}
+	}
+	% do not reference to this if label "-" is given
+	\label{\mylabel}\par\smallskip\noindent\textbf{Axiom~\thecaxiom}\quad #2 ~$_\blacktriangle$\smallskip
+}
+
+\iftoggle{book}{
+    % BOOK ENVIRONMENT %
+    \setcounter{secnumdepth}{5}
+    \setcounter{tocdepth}{5}
+    % roman chapter numbering instead of normal numbering
+    %\renewcommand{\thechapter}{\Roman{chapter}}
+    % start chapter numbering at 0
+    \setcounter{chapter}{-1}
+    % slightly changing chapter marking in header
+    \renewcommand{\chaptermark}[1]{\markboth{\textnormal{\thechapter}\ \textnormal{#1}}{}}
+    % slightly changing section marking in header
+    \renewcommand{\sectionmark}[1]{\markright{\textnormal{\thesection}\ \textnormal{#1}}{}}
+    % remove chapter counter in front of section number
+    %\counterwithout{section}{chapter}
+    % no page number on first page of new chapter
+    %\patchcmd{\chapter}{plain}{empty}{}{}
+    % resetting the section counter with the start of a new chapter
+    %\counterwithin{section}{chapter}
+    % do not show chapter number in section numbering
+    %\renewcommand*\thesection{\arabic{section}}
+    % making header of toc non italics (\upshape) and not all capitals
+    \addto\captionsgerman{\renewcommand{\contentsname}{\upshape{I\MakeLowercase{nhaltsverzeichnis}}}}
+    % chapter quote at beginning of chapter
+    \makeatletter
+    \newenvironment{chapquote}[2][2em]
+      {\setlength{\@tempdima}{#1}%
+       \def\chapquote@author{#2}%
+       \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+       \itshape}
+      {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\vspace{1.0cm}\ignorespacesafterend\par\noindent\aftergroup\@doendeq}
+    \makeatother
+}{}
+
+\iftoggle{exam}{
+    % EXAM ENVIRONMENT %
+    \pointpoints{Punkt}{Punkte}
+    \bonuspointpoints{Bonuspunkt}{Bonuspunkte}
+    \renewcommand{\solutiontitle}{\noindent\textbf{Lösung:}\enspace}
+    \hqword{Aufgabe:}
+    \hpgword{Seite:}
+    \hpword{Punkte:}
+    \hsword{erhalten:}
+    \htword{Total} 
+    \bhqword{Aufgabe:}
+    \bhpgword{Seite:}
+    \bhpword{Bonuspunkte:}
+    \bhsword{erhalten:}
+    \bhtword{Total} 
+    \chqword{Aufgabe:}
+    \chpgword{Seite:}
+    \chpword{Punkte:}
+    \chbpword{Bonuspunkte:}
+    \chsword{erhalten:}
+    \chtword{Total} 
+    %\checkedchar{\CheckedBox}
+    \totalformat{Aufgabe \thequestion\ total: \totalpoints\ Punkte}
+    \runningheadrule
+    %\firstpageheader{\mycourse}{\myclass}{\mydate}
+    \runningheader{\mycourse}{\myclass}{\mydate}
+    \firstpagefooter{}{\thepage\,/\,\numpages}{}
+    \runningfooter{}{\thepage\,/\,\numpages}{}
+    
+    \CorrectChoiceEmphasis{\normalfont}
+    
+    %\renewcommand{\questionlabel}{\bfseries Aufgabe~\thequestion.}
+}{}
+
+
+
+
+\tikzset{block/.style={
+        font=\sffamily,
+        draw=black,
+        thin,
+        fill=pink!50,
+        rectangle split,
+        rectangle split horizontal,
+        rectangle split parts=#1,
+        outer sep=0pt},
+        %
+        gblock/.style={
+            block,
+            rectangle split parts=#1,
+            fill=green!30}
+        }
+
+% to highlight matrix entries with tikz
+\tikzset{%
+  highlight/.style={rectangle,rounded corners,fill=cyan!15,draw=none,
+    fill opacity=0.4,thick,inner sep=0pt}
+}
+\newcommand{\tikzmark}[2]{\tikz[overlay,remember picture,
+  baseline=(#1.base)] \node (#1) {#2};}
+%
+\newcommand{\Highlight}[1][submatrix]{%
+    \tikz[overlay,remember picture]{
+    \node[highlight,fit=(left.north west) (right.south east)] (#1) {};}
+}
+
+\usepackage{drawmatrix}
+
+%\usepackage{mathpazo}
+\newcounter{row}
+\newcounter{col}
+
+\newcommand\setrow[9]{
+  \setcounter{col}{1}
+  \foreach \n in {#1, #2, #3, #4, #5, #6, #7, #8, #9} {
+    \edef\x{\value{col} - 0.5}
+    \edef\y{9.5 - \value{row}}
+    \node[anchor=center] at (\x, \y) {\n};
+    \stepcounter{col}
+  }
+  \stepcounter{row}
+}
+
+\newcommand\setminirow[4]{
+  \setcounter{col}{1}
+  \foreach \n in {#1, #2, #3, #4} {
+    \edef\x{\value{col} - 0.5}
+    \edef\y{4.5 - \value{row}}
+    \node[anchor=center] at (\x, \y) {\n};
+    \stepcounter{col}
+  }
+  \stepcounter{row}
+}
+
+\usepackage{twemojis}
+\usepackage{ifsym}
+
+\newcommand{\romanNumeral}[1]{%
+  \textup{\uppercase\expandafter{\romannumeral#1}}%
+}
+
+\usepackage{physics}
+\usepackage{tikz-3dplot}
+\usepackage[outline]{contour} % glow around text
+
+\usepackage[nottoc]{tocbibind}
