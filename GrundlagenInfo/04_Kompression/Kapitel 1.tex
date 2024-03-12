@@ -208,17 +208,123 @@ Beide Codierungen sind \textbf{präfixfrei}: Kein Codewort ist Anfangsstück (Pr
 
 \subsection{Top-Down-Ansatz: Maximale Balance}
 \textbf{Idee}: Summe der Buchstabenhäufigkeiten im linken und rechten Teilbaum ausbalancieren
-	
-\textbf{Beispiel}:
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c|c|c|c|c|c|c}
 		\textbf{Buchstabe} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D}& \textbf{E}& \textbf{F} \\\midrule\midrule
 		Relative Häufigkeit & 25\% & 25\% & 13\% & 13\%& 12\%& 12\%
 	\end{tabular}
+	\caption{Beispiel-Häufigkeiten von Buchstaben}
+	\label{table:ex-topdown}
 \end{table}
-	
+
 \begin{figure}[H]
+\centering
+\begin{subfigure}{.55\textwidth}
+\centering
+\begin{tikzpicture}
+	[-,>=stealth',
+	level distance=18mm,
+	level 1/.style={sibling distance=60mm},
+	level 2/.style={sibling distance=30mm},
+	level 3/.style={sibling distance=15mm},
+	level 4/.style={sibling distance=8mm},
+	leaf/.style={circle, draw},
+	label/.style={red},
+	edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+	
+	
+	\usetikzlibrary{shapes}
+	\tikzstyle{n} = [text width=1cm,align=center]
+	\tikzstyle{r} = [text=red]
+	
+	\node[n]{\textcolor{BlueGreen}{A,B,C,D,E,F}\\ 100\%}[edge from parent]
+	child {node[n] {\textcolor{BlueGreen}{A,B}\\ 50\%}
+		edge from parent node[left,r]{0};
+	}
+	child {node[n]{\textcolor{BlueGreen}{C,D,E,F}\\ 50\%}
+		edge from parent node[r,right]{1};
+	};
+\end{tikzpicture}
+\caption{Schritt 1}
+\end{subfigure}
+\begin{subfigure}{.55\textwidth}
+\centering
+\begin{tikzpicture}
+	[-,>=stealth',
+	level distance=18mm,
+	level 1/.style={sibling distance=60mm},
+	level 2/.style={sibling distance=30mm},
+	level 3/.style={sibling distance=15mm},
+	level 4/.style={sibling distance=8mm},
+	leaf/.style={circle, draw},
+	label/.style={red},
+	edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+	
+	
+	\usetikzlibrary{shapes}
+	\tikzstyle{n} = [text width=1cm,align=center]
+	\tikzstyle{r} = [text=red]
+	
+	\node[n]{\textcolor{BlueGreen}{A,B,C,D,E,F}\\ 100\%}[edge from parent]
+	child {node[n] {\textcolor{BlueGreen}{A,B}\\ 50\%}
+			child {node[n] {\textcolor{BlueGreen}{A}\\ 25\%\\\textcolor{red}{00}}
+				edge from parent[] node[left,r]{0};
+			}
+			child {node[n] {\textcolor{BlueGreen}{B}\\ 25\%\\\textcolor{red}{01}}
+				edge from parent[] node[r,right]{1};
+			}
+		edge from parent node[left,r]{0};
+	}
+	child {node[n]{\textcolor{BlueGreen}{C,D,E,F}\\ 50\%}
+		edge from parent node[r,right]{1};
+	};
+\end{tikzpicture}
+\caption{Schritt 2}
+\end{subfigure}
+\begin{subfigure}{.55\textwidth}
+\centering
+\begin{tikzpicture}
+	[-,>=stealth',
+	level distance=18mm,
+	level 1/.style={sibling distance=60mm},
+	level 2/.style={sibling distance=30mm},
+	level 3/.style={sibling distance=15mm},
+	level 4/.style={sibling distance=8mm},
+	leaf/.style={circle, draw},
+	label/.style={red},
+	edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+	
+	
+	\usetikzlibrary{shapes}
+	\tikzstyle{n} = [text width=1cm,align=center]
+	\tikzstyle{r} = [text=red]
+	
+	\node[n]{\textcolor{BlueGreen}{A,B,C,D,E,F}\\ 100\%}[edge from parent]
+	child {node[n] {\textcolor{BlueGreen}{A,B}\\ 50\%}
+			child {node[n] {\textcolor{BlueGreen}{A}\\ 25\%\\\textcolor{red}{00}}
+				edge from parent[] node[left,r]{0};
+			}
+			child {node[n] {\textcolor{BlueGreen}{B}\\ 25\%\\\textcolor{red}{01}}
+				edge from parent[] node[r,right]{1};
+			}
+		edge from parent node[left,r]{0};
+	}
+	child {node[n]{\textcolor{BlueGreen}{C,D,E,F}\\ 50\%}
+			child {node[n] {\textcolor{BlueGreen}{C,E}\\ 25\%}
+				edge from parent[] node[left,r]{0};
+			}
+			child {node[n] {\textcolor{BlueGreen}{D,F}\\ 25\%}
+				edge from parent[] node[r,right]{1};
+			}
+		edge from parent node[r,right]{1};
+	};
+\end{tikzpicture}
+\caption{Schritt 3}
+\end{subfigure}
+
+\begin{subfigure}{.5\textwidth}
 \centering
 \begin{tikzpicture}
 	[-,>=stealth',
@@ -268,7 +374,313 @@ Beide Codierungen sind \textbf{präfixfrei}: Kein Codewort ist Anfangsstück (Pr
 		edge from parent node[r,right]{1};
 	};
 \end{tikzpicture}
+\caption{Schritt 4}
+\end{subfigure}
+\caption{Schritt-für-Schritt-Erstellung des Baumdiagramms für \cref{table:ex-topdown} mit dem \tib{Top-Down}-Ansatz.}
 \end{figure}
 
+\begin{myexercise}
+\textbf{Problem}: Was passiert bei folgender Verteilung?
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{c|c|c|c|c|c|c}
+				\textbf{Buchstabe} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D}& \textbf{E}& \textbf{F} \\\midrule\midrule
+				Relative Häufigkeit &.55\% & 1\% & 25\% & 8\%& 9\%& 8\%
+			\end{tabular}
+	\end{table}
 
-\subsection{Bottom-Up-Ansatz: Huffington-Kodierung}
+
+	\begin{myanswer}
+	\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+				[-,>=stealth',
+				level distance=15mm,
+				level 1/.style={sibling distance=60mm},
+				level 2/.style={sibling distance=30mm},
+				level 3/.style={sibling distance=15mm},
+				level 4/.style={sibling distance=15mm},
+				level 5/.style={sibling distance=15mm},
+				leaf/.style={circle, draw},
+				label/.style={red},
+				edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+				
+				
+				\usetikzlibrary{shapes}
+				\tikzstyle{n} = [text width=1cm,align=center]
+				\tikzstyle{r} = [text=red]
+				
+				\node[n]{\textcolor{BlueGreen}{A,B,C,D,E,F}\\ 100\%}[edge from parent]
+				child {node[n] {\textcolor{BlueGreen}{A,B}\\ 50\%}
+					child {node[n] {\textcolor{BlueGreen}{A}\\.55\%\\\textcolor{red}{00}}
+						edge from parent[] node[left,r]{0};
+					}
+					child {node[n, draw] {\textcolor{BlueGreen}{B}\\ 1\%\\\textcolor{red}{01}}
+						edge from parent[] node[r,right]{1};
+					}
+					edge from parent node[left,r]{0};
+				}
+				child {node[n]{\textcolor{BlueGreen}{C,D,E,F}\\ 50\%}
+					child {node[n] {\textcolor{BlueGreen}{C}\\ 25\%\\\textcolor{red}{10}}
+						edge from parent[] node[left,r]{0};
+					}
+					child {node[n] {\textcolor{BlueGreen}{D,E,F}\\ 25\%}
+						child {node[n] {\textcolor{BlueGreen}{D,E}\\ 17\%\\}
+							child {node[n, draw] {\textcolor{BlueGreen}{D}\\ 8\%\\\textcolor{red}{1100}}
+								edge from parent[] node[left,r]{0};
+							}
+							child {node[n, draw] {\textcolor{BlueGreen}{E}\\ 9\%\\\textcolor{red}{1101}}
+								edge from parent[] node[right,r]{1};
+							}
+							edge from parent[] node[left,r]{0};
+						}
+						child {node[n, draw] {\textcolor{BlueGreen}{F}\\ 8\%\\\textcolor{red}{111}}
+							edge from parent[] node[r,right]{1};
+						}
+						edge from parent[] node[r,right]{1};
+					}
+					edge from parent node[r,right]{1};
+				};
+			\end{tikzpicture}
+	\end{figure}
+	Wie wir sehen, wird der resultierende Baum nicht ausgeglichen: während der Buchstabe ``F'' (8\% Häufigkeit im Originaltext) beispielsweise mit ``111'' kodiert wird, wird der Buchstabe ``B'' (1 \% Häufigkeit im Originaltext) mit ``01'' kodiert, also mit einer kürzeren Bitfolge. Wie wir allerdings gesehen haben, sollten Buchstaben mit höherer Häufigkeit kürzer kodiert werden, da wir sie ja häufiger kodieren müssen und mit einer kürzeren Kodierungslänge somit insgesamt mehr Speicherplatz sparen.
+\end{myanswer}
+	
+\end{myexercise}
+\subsection{Bottom-Up-Ansatz: Huffmann-Kodierung}
+
+Idee: 
+\begin{itemize}
+		\item Jeder Buchstabe wird als Graph mit einem Knoten (=Baum mit einem Blatt) betrachtet. Die Häufigkeit jedes Buchstabens wird neben dem Blatt notiert. Wir wollen nun die Buchstaben zu Teilbäumen verbinden, bis wir einen einzigen Baum haben.
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}
+				\tikzstyle{n} = [text width=1cm,align=center, draw, shape=circle]
+				\node[circle,draw, label={[align=center]below:\textcolor{BlueGreen}{A}\\.55\%}, ](a){};
+				\node[circle,draw, label={[align=center]below:\textcolor{BlueGreen}{B}\\ 1\%}, right of=a](b){};
+				\node[circle,draw, label={[align=center]below:\textcolor{BlueGreen}{C}\\ 25\%}, right of=b](c){};
+				\node[circle,draw, label={[align=center]below:\textcolor{BlueGreen}{D}\\ 8\%}, right of=c](d){};
+				\node[circle,draw, label={[align=center]below:\textcolor{BlueGreen}{E}\\ 9\%}, right of=d](e){};
+				\node[circle,draw, label={[align=center]below:\textcolor{BlueGreen}{F}\\ 8\%}, right of=e](f){};
+			\end{tikzpicture}
+			\caption{Beispiel-Häufigkeiten von Buchstaben}
+			\label{fig:exFreqHuffmann}
+		\end{figure}
+		\item In einer Schleife: Wir schauen alle isolierten Blätter und Wurzeln von Teilbäumen an. Diejenigen  Knoten, die die kleinste (gemeinsame) Prozentzahl enthalten werden miteinander verbunden. Die neue Wurzel wird markiert mit dem Prozentsatz beider Knoten.
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[-,>=stealth',
+				level distance=12mm,
+				level 1/.style={sibling distance=15mm},
+				level 2/.style={sibling distance=30mm},
+				level 3/.style={sibling distance=15mm},
+				level 4/.style={sibling distance=15mm},
+				level 5/.style={sibling distance=15mm},
+				leaf/.style={circle, draw},
+				edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+				
+				
+				\usetikzlibrary{shapes}
+				\tikzstyle{n} = [text width=1cm,align=center]
+				\tikzstyle{r} = [text=red]
+				
+				\node[n]{\textcolor{BlueGreen}{B,D}\\ 9\%}[edge from parent]
+				child {node[n] {\textcolor{BlueGreen}{B}\\ 1\%}
+					edge from parent node[left,r]{};
+				}
+				child {node[n]{\textcolor{BlueGreen}{D}\\ 8\%}
+					edge from parent node[r,right]{};
+				};
+			\end{tikzpicture}
+			\caption{Erster Schritt im Huffmann-Kodierungs-Algorithmus}
+		\end{figure}
+		\item Falls mehrere Möglichkeiten mit gleicher relativer Häufigkeit existieren, nehmen wir den Teilbaum mit der geringsten Tiefe.
+		\end{itemize}
+\textbf{Welche Knoten werden als nächstes miteinander verbunden?}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.55\textwidth}
+	\begin{tikzpicture}[-,>=stealth',
+		level distance=15mm,
+		level 1/.style={sibling distance=15mm},
+		level 2/.style={sibling distance=30mm},
+		level 3/.style={sibling distance=15mm},
+		level 4/.style={sibling distance=15mm},
+		level 5/.style={sibling distance=15mm},
+		leaf/.style={circle, draw},
+		edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+		
+		
+		\usetikzlibrary{shapes}
+		\tikzstyle{n} = [text width=1cm,align=center]
+		\tikzstyle{r} = [text=red]
+
+		\node(bd)[n]{\textcolor{BlueGreen}{B,D}\\ 9\%}[edge from parent]
+		child {node(b)[n] {\textcolor{BlueGreen}{B}\\ 1\%}
+			edge from parent node[left,r]{} ;
+		}
+		child {node[n]{\textcolor{BlueGreen}{D}\\ 8\%}
+			edge from parent node[r,right]{};
+		};
+		\node(ef)[n, left of=bd,xshift=-15mm]{\textcolor{BlueGreen}{E,F}\\ 17\%}[edge from parent]
+		child {node(f)[n] {\textcolor{BlueGreen}{F}\\ 8\%}
+			edge from parent node[left,r]{} ;
+		}
+		child {node[n]{\textcolor{BlueGreen}{E}\\ 9\%}
+			edge from parent node[r,right]{};
+		};
+		\node[n, left of=f](c){\textcolor{BlueGreen}{C}\\ 25\%};
+		\node[n, left of=c](a){\textcolor{BlueGreen}{A}\\.55\%};
+	\end{tikzpicture}
+	\caption{Schritt 1}
+	\end{subfigure}
+	\begin{subfigure}{.55\textwidth}
+	\begin{tikzpicture}[-,>=stealth',
+			level distance=15mm,
+			level 1/.style={sibling distance=30mm},
+			level 2/.style={sibling distance=15mm},
+			level 3/.style={sibling distance=15mm},
+			level 4/.style={sibling distance=15mm},
+			level 5/.style={sibling distance=15mm},
+			leaf/.style={circle, draw},
+			edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+			
+			\usetikzlibrary{shapes}
+			\tikzstyle{n} = [text width=1cm,align=center]
+			\tikzstyle{r} = [text=red]
+			
+			\node(febd)[n]{\textcolor{BlueGreen}{F,E,B,D}\\ 26\%}[edge from parent]
+				child{node(ef)[n]{\textcolor{BlueGreen}{E,F}\\ 17\%}
+					child {node(f)[n] {\textcolor{BlueGreen}{F}\\ 8\%}
+						edge from parent node[left,r]{} ;
+					}
+					child {node[n]{\textcolor{BlueGreen}{E}\\ 9\%}
+						edge from parent node[r,right]{};
+					}
+					edge from parent node[r,right]{};
+				}
+				child{node(bd)[n]{\textcolor{BlueGreen}{B,D}\\ 9\%}
+					child {node(b)[n] {\textcolor{BlueGreen}{B}\\ 1\%}
+						edge from parent node[left,r]{} ;
+					}
+					child {node[n]{\textcolor{BlueGreen}{D}\\ 8\%}
+						edge from parent node[r,right]{};
+					}
+					edge from parent node[r,left]{};
+				};
+			\node[n, left of=f](c){\textcolor{BlueGreen}{C}\\ 25\%};
+			\node[n, left of=c](a){\textcolor{BlueGreen}{A}\\.55\%};
+		\end{tikzpicture}
+		\caption{Schritt 2}
+	\end{subfigure}
+	\begin{subfigure}{.55\textwidth}
+	\begin{tikzpicture}[-,>=stealth',
+			level distance=15mm,
+			level 1/.style={sibling distance=60mm},
+			level 2/.style={sibling distance=30mm},
+			level 3/.style={sibling distance=30mm},
+			level 4/.style={sibling distance=15mm},
+			level 5/.style={sibling distance=15mm},
+			leaf/.style={circle, draw},
+			edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+			
+			\usetikzlibrary{shapes}
+			\tikzstyle{n} = [text width=1cm,align=center]
+			\tikzstyle{r} = [text=red]
+			
+			\node(acebd)[n]{\textcolor{BlueGreen}{A,C,F,E,B,D}\\ 100\%}[edge from parent]
+			child{node(a)[n]{\textcolor{BlueGreen}{A}\\.55\%}
+				edge from parent node[left,r]{} ;
+			}
+			child{node(cfebd)[n]{\textcolor{BlueGreen}{C,F,E,B,D}\\ 51\%}
+				child{node(c)[n]{\textcolor{BlueGreen}{C}\\ 25\%}
+					edge from parent node[left,r]{} ;
+					}
+				child{node(febd)[n]{\textcolor{BlueGreen}{F,E,B,D}\\ 26\%}
+					child{node(ef)[n]{\textcolor{BlueGreen}{E,F}\\ 17\%}
+						child {node(f)[n] {\textcolor{BlueGreen}{F}\\ 8\%}
+							edge from parent node[left,r]{} ;
+						}
+						child {node[n]{\textcolor{BlueGreen}{E}\\ 9\%}
+							edge from parent node[r,right]{};
+						}
+						edge from parent node[r,right]{};
+					}
+					child{node(bd)[n]{\textcolor{BlueGreen}{B,D}\\ 9\%}
+						child {node(b)[n] {\textcolor{BlueGreen}{B}\\ 1\%}
+							edge from parent node[left,r]{} ;
+						}
+						child {node[n]{\textcolor{BlueGreen}{D}\\ 8\%}
+							edge from parent node[r,right]{};
+						}
+						edge from parent node[r,left]{};
+					}
+				edge from parent node[right,r]{};
+				}
+				edge from parent node[right,r]{};
+			};		
+		\end{tikzpicture}
+		\caption{Schritt 3}
+	\end{subfigure}
+	\begin{subfigure}{.55\textwidth}
+	\begin{tikzpicture}[-,>=stealth',
+			level distance=15mm,
+			level 1/.style={sibling distance=60mm},
+			level 2/.style={sibling distance=30mm},
+			level 3/.style={sibling distance=30mm},
+			level 4/.style={sibling distance=15mm},
+			level 5/.style={sibling distance=15mm},
+			leaf/.style={circle, draw},
+			edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+			
+			\usetikzlibrary{shapes}
+			\tikzstyle{n} = [text width=1cm,align=center]
+			\tikzstyle{r} = [text=red]
+			
+			\node(acebd)[n]{\textcolor{BlueGreen}{A,C,F,E,B,D}\\ 100\%}[edge from parent]
+			child{node(a)[n]{\textcolor{BlueGreen}{A}\\.55\%\\\textcolor{red}{0}}
+				edge from parent node[left,r]{0} ;
+			}
+			child{node(cfebd)[n]{\textcolor{BlueGreen}{C,F,E,B,D}\\ 51\%}
+				child{node(c)[n]{\textcolor{BlueGreen}{C}\\ 25\%\\\textcolor{red}{10}}
+					edge from parent node[left,r]{0} ;
+				}
+				child{node(febd)[n]{\textcolor{BlueGreen}{F,E,B,D}\\ 26\%}
+					child{node(ef)[n]{\textcolor{BlueGreen}{E,F}\\ 17\%}
+						child {node(f)[n] {\textcolor{BlueGreen}{F}\\ 8\%\\\textcolor{red}{1100}}
+							edge from parent node[left,r]{0} ;
+						}
+						child {node[n]{\textcolor{BlueGreen}{E}\\ 9\%\\\textcolor{red}{1101}}
+							edge from parent node[r,right]{1};
+						}
+						edge from parent node[r,left]{0};
+					}
+					child{node(bd)[n]{\textcolor{BlueGreen}{B,D}\\ 9\%}
+						child {node(b)[n] {\textcolor{BlueGreen}{B}\\ 1\%\\\textcolor{red}{1110}}
+							edge from parent node[left,r]{0} ;
+						}
+						child {node[n]{\textcolor{BlueGreen}{D}\\ 8\%\\\textcolor{red}{1111}}
+							edge from parent node[r,right]{1};
+						}
+						edge from parent node[r,right]{1};
+					}
+					edge from parent node[right,r]{1};
+				}
+				edge from parent node[right,r]{1};
+			};		
+		\end{tikzpicture}
+		\caption{Schritt 4}
+	\end{subfigure}
+	\caption{Schritt-für-Schritt-Erstellung des Baumdiagramms für \cref{fig:exFreqHuffmann} mit der \tib{Huffmann}-Kodierung}
+\end{figure}
+
+\begin{myexercise}
+Weshalb haben wir in Schritt 2 einen Baum \{\textcolor{BlueGreen}{E,F}\} statt \{\textcolor{BlueGreen}{F,B,D}\} gemacht?
+\end{myexercise}	
+		
+Als Fazit kann folgendes festgehalten werden:
+\begin{itemize}
+	\item Strategie der \textbf{Maximale Balance}: \textit{top-down}-Ansatz (von Wurzel zu Blättern), kann zu suboptimalen Kodierungen führen
+	\item \textbf{Huffman-Kodierung}: \textit{bottom-up}-Ansatz (von Blättern zur Wurzel), garantiert bestmögliche Kodierungslänge für alle Buchstaben
+\end{itemize}
