@@ -7,7 +7,9 @@
   {:}% Punctuation after theorem head〉
   {.5em}% Space after theorem head 
   {}% <Theorem head spec (can be left empty, meaning ‘normal’)〉
+
 \theoremstyle{note}
+
 \iftoggle{book}{%
   \def\mynumber{\thechapter}
   \iftoggle{german}{%
@@ -33,7 +35,6 @@
 }%
 
 
-
 % tcolorbox template to be reused in various enviroments.
 \newtcolorbox{tcolorboxTemplate}[1][]{
   enhanced jigsaw,
@@ -57,8 +58,19 @@
 }%
 
 % counter shared between 'myexercise', 'mychallenge' and 'mysubmission'
-\newcounter{SharedCounter}
+\iftoggle{book} {
+	\newcounter{SharedCounter}[chapter]
+} {
+	\newcounter{SharedCounter}[section]
+}
+
 \setcounter{SharedCounter}{0}
+
+\iftoggle{book} {%
+	\renewcommand{\theSharedCounter}{\arabic{chapter}.\arabic{SharedCounter}}
+} {%
+	\renewcommand{\theSharedCounter}{\arabic{section}.\arabic{SharedCounter}}
+}
 
 % myexercise
 \newaliascnt{ExerciseCounter}{SharedCounter}
@@ -67,7 +79,7 @@
 {%
   \refstepcounter{ExerciseCounter}
   \begin{tcolorboxTemplate}[
-    title=\faEdit{} Aufgabe~\mynumber.\theExerciseCounter~#1,
+    title=\faEdit{} Aufgabe~\theSharedCounter~#1,
     colback=RoyalBlue!10,
     colframe=RoyalBlue,
     colbacktitle=RoyalBlue]
@@ -88,7 +100,7 @@
     colframe=ForestGreen,
     colbacktitle=ForestGreen,
     opacityback=1,
-    title=\faCheckSquareO{} Lösungsvorschlag zu Aufgabe \mynumber.\theExerciseCounter]
+    title=\faCheckSquareO{} Lösungsvorschlag zu Aufgabe~\theSharedCounter]
 }%%
 {%
   \end{tcolorboxTemplate}
@@ -102,7 +114,7 @@
 {%
   \refstepcounter{SubmissionCounter}
   \begin{tcolorboxTemplate}[
-    title=\faArrowUp{} Aufgabe (Abgabe)~\mynumber.\theSubmissionCounter~#1,
+    title=\faArrowUp{} Aufgabe (Abgabe)~\theSharedCounter~#1,
     colback=Purple!10,
     colframe=Purple,
     colbacktitle=Purple]
@@ -118,7 +130,7 @@
 {%
   \refstepcounter{ChallengeCounter}
   \begin{tcolorboxTemplate}[
-    title=\faTrophy{} Aufgabe (Challenge)~\mynumber.\theChallengeCounter~#1,
+    title=\faTrophy{} Aufgabe (Challenge)~\theSharedCounter~#1,
     colback=Gold!10,
     colframe=Gold!50!black,
     colbacktitle=Gold!50!black]
