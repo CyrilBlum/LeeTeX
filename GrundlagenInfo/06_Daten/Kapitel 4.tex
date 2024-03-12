@@ -55,9 +55,32 @@ Zudem können folgende Eingeschaften für Kolonnen angegeben werden:
   \item \lstinline[style=sql]|NOT NULL|: Feld darf nicht leer sein. Falls kein \lstinline[style=sql]|DEFAULT|-Wert angegeben wird, muss, der Wert für diese Kolonne beim Erstellen eines neuen Benutzerkontos immer mitgeliefert werden.
   \item \lstinline[style=sql]|DEFAULT wert|: Standard-Wert, falls nichts anderes angegeben wird. Das Attribut \texttt{avatar} nimmt beispielsweise den Wert \texttt{avatar.png} an, falls kein anderes Bild hochgeladen wird.
   \item \lstinline[style=sql]|AUTO_INCREMENT|: Zahl, die bei jedem neuen Eintrag automatisch immer um 1 grösser wird
-  \item \lstinline[style=sql]|PRIMARY KEY|: Schlüsselattribut (s. \cref{table:table-cia}).
+  \item \lstinline[style=sql]|PRIMARY KEY|: Primärschlüssel (s. \cref{table:table-cia}).
+  \item \lstinline[style=sql]|FOREIGN KEY (kolonneID) REFERENCES anderetabelle(kolonneID)|: Fremdschlüssel (s. \cref{table:table-cia}).
   \item \lstinline[style=sql]|UNIQUE|: Darf keine doppelten Werte enthalten
 \end{itemize}
+
+\subsection{Tabellen verändern: \texorpdfstring{\lstinline[style=sql]|ALTER table|}{ALTER table}}
+Mit dem Befehl \lstinline[style=sql]|ALTER table| können existierende Tabellen verändert werden.
+
+\begin{myexample}
+Um eine weitere Kolonne hinzuzufügen, kann folgender Befehl verwendet werden:
+\begin{lstlisting}[style=sql]
+ALTER TABLE tabellenname
+ADD neue_kolonne eigenschaften
+\end{lstlisting}
+\end{myexample}
+
+\begin{myexample}
+Um eine Kolonne umzubenennen, kann folgender Befehl verwendet werden:
+\begin{lstlisting}[style=sql]
+ALTER TABLE tabellenname
+RENAME COLUMN alter_name TO neuer_name;
+\end{lstlisting}
+\end{myexample}
+\begin{mycaution}
+Beim Umbenennen einer Kolonne können Datenbankschemen (z.B. Fremschlüssel-Referenzen) zerstört werden, z.B. falls ein Primärschlüssel umbenannt wird, welcher von einer anderen Tabelle per Fremschlüssel referenziert wird (s. \cref{subsec:create-table}).
+\end{mycaution}
 
 \subsection{Tabellen löschen: \texorpdfstring{\lstinline[style=sql]|DROP table|}{DROP table}}
 Mit dem Befehl \lstinline[style=sql]|DROP TABLE tabellenname| kann eine Tabelle komplett löschen.
