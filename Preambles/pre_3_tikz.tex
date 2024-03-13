@@ -128,26 +128,40 @@ fill=green!30
 % arg3: coord2 to which to draw brace
 % arg4: annotation text
 % arg5: curly brace aspect ratio (0.5 for "normal" braces)
-\newcommand*{\drawBrace}[5]{%
+% arg6: rotation (empty for right, "mirror" for left)
+\newcommand*{\drawBrace}[6]{%
 	
 	% fit rectangle
     \node[fill=none, draw=none, fit={(#2) (#3)}, inner sep=0pt] (rectg) {};%
 c    
     % curly brace
-    \draw [decoration={brace,amplitude=0.3em,aspect=#5},decorate,very thick,red]%
+    \draw [decoration={brace,#6,amplitude=0.3em,aspect=#5},decorate,very thick,red]%
       ([xshift=#1]rectg.north east) --%
       coordinate[right=1em, midway] (#2#3)
       ([xshift=#1]rectg.south east);%
-      
+    
+    % coordinate for arrow start
    	\coordinate (#2#3-coord-comment-y) at ($(#2.north)!#5!(#3.south)$);
-   	\coordinate (#2#3-coord-arrow) at ($(#2#3-coord-comment-y)+(#1,0)+(.8em,0)$);
+   	% coordinate for arrow end
+   	\ifstrequal{#6}{mirror}{
+   	\def\adjarrow{-.3em}
+   	}{
+   	\def\adjarrow{.8em}
+   	}
+   	
+    \coordinate (#2#3-coord-arrow) at ($(#2#3-coord-comment-y)+(#1,0)+(\adjarrow,0)$);
     
-    % comment
-    \node[right=5em of #2#3-coord-comment-y](#2#3-comment) {#4};
-    
-    % arrow pointing from comment to brace
-    \draw[->, style={thick, >=stealth, red!70}] (#2#3-comment.west) to (#2#3-coord-arrow);
+    % add text (if provided)
+    \ifblank{#4}{}{        
+        % comment
+        \node[right=5em of #2#3-coord-comment-y](#2#3-comment) {#4};
+        
+        % arrow pointing from comment to brace
+        \draw[->, style={thick, >=stealth, red!70}] (#2#3-comment.west) to (#2#3-coord-arrow);
+    }  
+   	
 }%
+
 
 % command for annotating a line in a code via an arrow
 % arg1: code mark (using tikzmark, "to")

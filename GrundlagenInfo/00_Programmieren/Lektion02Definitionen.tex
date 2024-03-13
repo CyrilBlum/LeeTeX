@@ -38,8 +38,8 @@ repeat 6:     !\tikzmark{repeatStart}!
     \drawArrow{code}{comment}{\footnotesize\emoji{cook} Befehl}{RoyalBlue!50!white};
     \drawArrow{code2}{comment2}{\footnotesize\emoji{cook} Befehl}{RoyalBlue!50!white};
     \drawArrow{code3}{comment3}{\footnotesize\emoji{cook} Befehl}{RoyalBlue!50!white};}
-    \only<3->{\drawBrace{1em}{repeatStart}{bodyEnd}{\footnotesize Schleife}{.3};}
-    \only<4->{\drawBrace{.0em}{bodyStart}{bodyEnd}{\textit{\footnotesize Körper} der Schleife}{.7};}
+    \only<3->{\drawBrace{1em}{repeatStart}{bodyEnd}{\footnotesize Schleife}{.3}{};}
+    \only<4->{\drawBrace{.0em}{bodyStart}{bodyEnd}{\textit{\footnotesize Körper} der Schleife}{.7}{};}
 \end{tikzpicture}
 \only<5->{\begin{itemize}
 \item Mit \textbf{Befehlen} können wir den Computer eine abstrakte Tätigkeit ausführen lassen
@@ -62,7 +62,7 @@ repeat 4:             !\tikzmark{befehlStart}!
 \begin{tikzpicture}[overlay, remember picture,
     every edge/.append style = { ->, thick, >=stealth, red!70},
     every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-    \only<2->{\drawBrace{0em}{befehlStart}{befehlEnde}{Neuer Befehl?}{.5};}
+    \only<2->{\drawBrace{0em}{befehlStart}{befehlEnde}{Neuer Befehl?}{.5}{};}
 \end{tikzpicture}
 \end{frame}
 
@@ -83,7 +83,7 @@ quadrat() !\tikzmark{from2}!
 \begin{tikzpicture}[overlay, remember picture,
     every edge/.append style = { ->, thick, >=stealth, red!70},
     every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-	\drawBrace{0em}{befehlStart}{befehlEnde}{Befehl wird definiert \emoji{page-facing-up}}{.5};
+	\drawBrace{0em}{befehlStart}{befehlEnde}{Befehl wird definiert \emoji{page-facing-up}}{.5}{};
 \end{tikzpicture}
 \begin{itemize}
 \item Definition = \lstinline[style=TigerJython]|def| = Funktion
@@ -138,20 +138,88 @@ def !\only<1>{viereck\_blume()}\only<2->{\colorbox{CornflowerBlue}{viereck\_blum
 \end{columns}
 \end{frame}
 
-\begin{frame}{Tipps}
+\begin{frame}[fragile]{Definitionen \& Schleifen}
+\begin{columns}
+\begin{column}[t]{.5\textwidth}
+\begin{lstlisting}[style=TigerJython,escapechar=!,basicstyle=\ttfamily\footnotesize]
+from gturtle import *
+makeTurtle()
+hideTurtle()
+
+repeat 4:        !\tikzmark{repOuterStart}!
+    repeat 9:    !\tikzmark{repInnerStart}!
+        forward(4)
+        left(10) !\tikzmark{repInnerEnd}!
+    forward(100) !\tikzmark{repOuterEnd}!
+\end{lstlisting}
+\begin{center}
+\includegraphics[width=0.3\linewidth]{GrundlagenInfo/00_Programmieren/Figures/round-circle}
+\end{center}
+\only<4->{
+\footnotesize
+\textbf{Übersichtlichkeit}
 \begin{itemize}
-\item Turtle am Ende jedes Befehls wieder in gleiche Position bringen (Rotation, Ort)
+\item Innere Schleifen $\rightarrow$ Definitionen
+\item Sprechende Definitions-Namen
+\end{itemize}
+}
+\end{column}
+\begin{column}[t]{.5\textwidth}
+\begin{lstlisting}[style=TigerJython,escapechar=!,basicstyle=\ttfamily\footnotesize]
+from gturtle import *
+makeTurtle()
+hideTurtle()
+
+!\tikzmark{repInnerStartTo}!def viertelkreis():
+    repeat 9:
+        forward(4)
+!\tikzmark{repInnerEndTo}!        left(10)
+
+!\tikzmark{repOuterStartTo}!def abgerundetes_quadrat():
+    repeat 4:
+        viertelkreis()
+!\tikzmark{repOuterEndTo}!        forward(100)
+
+abgerundetes_quadrat()
+\end{lstlisting}
+\end{column}
+\end{columns}
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+	\only<2->{
+	\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
+		\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
+		% arrow pointing from one code to other
+		\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
+		}
+	\only<3->{
+		\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
+			\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
+			% arrow pointing from one code to other
+			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
+			}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{Zusammenfassung}
+Nutzen von \textbf{Definitionen}
+\begin{itemize}[<+->]
+\item Problem in \textbf{Teilprobleme} gliedern
+\item \textbf{Übersichtlichkeit} erhöhen
+\item \textbf{Sinnstiftender} Name für jede Definition!
+\item Im ``Hauptprogramm'' Befehle zusammensetzen
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Auftrag}
 \begin{itemize}
-\item \aufgabebox{Aufgaben 2.1 - 2.7}
+\item \aufgabebox{Aufgaben 2.1 - 2.10}
 \item \abgabebox{Abgabe auf Moodle: 2.7}
-\item \aufgabebox{Aufgaben 2.8 - 2.18}
 \item \abgabebox{Abgabe auf Moodle: 2.10}
 \end{itemize}
 \begin{mycaution}
 Das Kapitel ``Befehle langfristig speichern'' (S. 27) funktioniert nur mit lokaler Installation!
 \end{mycaution}
 \end{frame}
+
