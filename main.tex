@@ -1,57 +1,51 @@
 %!TeX program = lualatex
-%choose document class (book / exam / article / beamer)
 
-%BOOK
-%\documentclass[a4paper,11pt,openany,titlepage,svgnames,dvipsnames]{book}
-%\documentclass[a4paper,11pt,oneside,svgnames,exerciseonly]{book}
+% choose document class (book / exam / article / beamer)
+% BOOK
+\documentclass[a4paper,11pt,openany,titlepage,svgnames,dvipsnames]{book}
+% \documentclass[a4paper,11pt,oneside,svgnames,exerciseonly]{book}
 % \documentclass[a4paper,11pt,openany,titlepage,svgnames]{book}
-%\documentclass[a4paper,11pt,oneside,svgnames]{book}
+% \documentclass[a4paper,11pt,oneside,svgnames]{book}
 
-%ARTICLE
-  \documentclass[svgnames,hyphens]{article}
+% ARTICLE
+% \documentclass[svgnames,hyphens]{article}
 
-%EXAM
-%\documentclass[11pt,addpoints,svgnames]{exam} 
-%\documentclass[11pt,addpoints,answers,svgnames]{exam}
+% EXAM
+% \documentclass[11pt,addpoints,svgnames]{exam} 
+% \documentclass[11pt,addpoints,answers,svgnames]{exam}
 
-%BEAMER
-%\documentclass[xcolor={svgnames,table,dvipsnames},hyphens]{beamer}
+% BEAMER
+% \documentclass[xcolor={svgnames,table,dvipsnames},hyphens]{beamer}
 
-%e-TeX tools for LaTeX
+% e-TeX tools for LaTeX
 \usepackage{etoolbox}
 
-%set toggles (switches) for the document class
+% set toggles (switches) for the document class
 \newtoggle{book} \newtoggle{article} \newtoggle{exam} \newtoggle{beamer} %default value is 'false'
 
-\def\documentToggle{1} % <---- choose number
+\def\documentToggle{0} % <---- choose number
 
 \ifnumequal{\documentToggle}{0}{\settoggle{book}{true}}{}     %book
 \ifnumequal{\documentToggle}{1}{\settoggle{article}{true}}{}  %article
 \ifnumequal{\documentToggle}{2}{\settoggle{exam}{true}}{}     %exam
 \ifnumequal{\documentToggle}{3}{\settoggle{beamer}{true}}{}   %beamer
 
-%does the document contain at least one citation? (true / false)
+% Does the document contain at least one citation? (true / false)
 \newtoggle{citations} \settoggle{citations}{true}
- \def\thebibpath{Private/References GDI 2.bib}
-%\def\thebibpath{refs.bib} %[PATH]
-%\def\thebibpath{Interessenwochen/Wn_Gf_Sommer_2024/References.bib}
 
-%should the document (only if article) contain a header? If yes, which text?
- \newtoggle{addheader}\settoggle{addheader}{true}
-% \def\leftheadertext{Handout für ``Grundlagen der Didaktik'', FS 2024, Atelier vom 08.03.2024}
-\def\leftheadertext{``Grundlagen der Didaktik'', FS 2024, Arbeit zu zweitem Thema: Lernprozesse verstehen}
-\def\rightheadertext{Cyril Wendl}
+% Wn stuff
+\input{Wn}
 
-%show git version number using the package gitinfo2
-%this requires a local installation / modification <-- TODO: document this in README.MD on GitHub
+% show git version number using the package gitinfo2
+% this requires a local installation / modification <-- TODO: document this in README.MD on GitHub
 \newtoggle{showgitinfo2} \settoggle{showgitinfo2}{true}
 
-%language toggle
+% language toggle
 \newtoggle{german} \newtoggle{english}
 \def\languageToggle{0}
 
 \ifnumequal{\languageToggle}{0}{\settoggle{german}{true}}{} %german
-\ifnumequal{\languageToggle}{1}{\settoggle{english}{true}}{} %english
+\ifnumequal{\languageToggle}{1}{\settoggle{english}{false}}{} %english
 
 \input{Preambles/pre_0_packages} %loading packages
 \input{Preambles/pre_1_options} %settings and various options for packages
@@ -62,117 +56,113 @@
 \input{Preambles/pre_6_glossaries} %misc settings and macros (not very generally used) 
 
 \begin{document}
-	%BOOK
+	% BOOK
 	\iftoggle{book} {
-	%title for title page
-     % \newcommand{\thetopic}{Daten \& SQL}
-      % \newcommand{\thetopic}{Kompression}
-   \newcommand{\thetopic}{Zahlendarstellungen und Kodierungen}
-    %\newcommand{\thetopic}{Kryptologie}
-    %\newcommand{\thetopic}{Netzwerke}
-    %emojis on title page (see emoji package)
-       % \def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
- \def\arrayB{"ledger","pencil","laptop","key","divide","satellite-antenna","infinity"}
+    % title for title page
+    \newcommand{\thetopic}{Daten \& SQL}
+    % \newcommand{\thetopic}{Kompression}
+    % \newcommand{\thetopic}{Zahlendarstellungen und Kodierungen}
+    % \newcommand{\thetopic}{Kryptologie}
+    % \newcommand{\thetopic}{Netzwerke}
+
+    % emojis on title page (see emoji package)
+    % \def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+    \def\arrayB{"ledger","pencil","laptop","key","divide","satellite-antenna","infinity"}
+
     \frontmatter
       \maketitlepage{\thetopic}{}
-      %\include{titlepage}
-      %\include{vorwort}
+      % \include{titlepage}
+      % \include{vorwort}
       \tableofcontents
       \markright{}
       \cleardoublepage
 
     \mainmatter
-%     \part{Environments}
-%     \input{LaTeX_related/example_file}
+      % \part{Environments}
+      % \input{LaTeX_related/example_file}
 
-      %01 Zahlendarstellungen und Kodierungen
-   \part{Zahlendarstellungen und Kodierungen}
-     \include{GrundlagenInfo/01_TheoretischeInformatik/kapitel01.tex}
-%
-     %03 Kryptologie
-%      \input{GrundlagenInfo/03_Kryptologie/Skript_Kryptologie.tex} 
-      
+      % 01 Zahlendarstellungen und Kodierungen
+      % \part{Zahlendarstellungen und Kodierungen}
+      % \include{GrundlagenInfo/01_TheoretischeInformatik/kapitel01.tex}
+
+      % 03 Kryptologie
+      \input{GrundlagenInfo/03_Kryptologie/Skript_Kryptologie.tex} 
+
       %\input{GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Kapitel01}
       %\input{GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Kapitel02}
-      
+
       % 04 Kompression
       % \input{GrundlagenInfo/04_Kompression/Kapitel 1}\clearpage
-       
-       %06 Datenbanken
-     % \part{Datenbanken}
-     %   \input{GrundlagenInfo/06_Daten/Preface}\clearpage
-     %   \input{GrundlagenInfo/06_Daten/Kapitel 1}\clearpage
-     %   \input{GrundlagenInfo/06_Daten/Kapitel 2}\clearpage
-     %   \input{GrundlagenInfo/06_Daten/Kapitel 3}\clearpage
-     %   \input{GrundlagenInfo/06_Daten/Kapitel 4}\clearpage
-     %   \input{GrundlagenInfo/06_Daten/Cheatsheet}\clearpage 
+
+      % 06 Datenbanken
+      \part{Datenbanken}
+       \input{GrundlagenInfo/06_Daten/Preface}\clearpage
+       \input{GrundlagenInfo/06_Daten/Kapitel 1}\clearpage
+       \input{GrundlagenInfo/06_Daten/Kapitel 2}\clearpage
+       \input{GrundlagenInfo/06_Daten/Kapitel 3}\clearpage
+       \input{GrundlagenInfo/06_Daten/Kapitel 4}\clearpage
+       \input{GrundlagenInfo/06_Daten/Cheatsheet}\clearpage 
  
 
-     %\include{GrundlagenInfo/07_Netzwerke/kapitel01}
+      \include{GrundlagenInfo/07_Netzwerke/kapitel01}
 
-      %\appendix
-      %\input{appendix.tex}  
+      % \appendix
+        % \input{appendix.tex}  
 
-%   \backmatter
-      %\printbibliography
-%     \printindex
-%     \printglossary
-      %\bibliographystyle{plain}
-      %\bibliography{refs}
+    \backmatter
+      \printbibliography
+      \printindex
+      \printglossary
+      \bibliographystyle{plain}
+      \bibliography{refs}
 	} {}
 	
-	%ARTICLE
+	% ARTICLE
 	\iftoggle{article} {
-%    \input{Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee}
-%    \input{Private/Handout GDI}
+    % \input{Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee}
+    % \input{Private/Handout GDI}
     \input{Private/Themenvertiefung GDI}
-    \clearpage\printbibliography
+    \clearpage
+    \printbibliography
 	} {}
 
-	%EXAM
+	% EXAM
 	\iftoggle{exam} {
-     \input{GrundlagenInfo/ExamQuestions/Questions}
-%     \input{GrundlagenInfo/Programmieren/ExamQuestions/QuestionsProg}
-     %\input{EF/Exams/EA_00.tex}
-     \input{EF/Exams/EA_01.tex}
+    % \input{GrundlagenInfo/ExamQuestions/Questions}
+    % \input{GrundlagenInfo/Programmieren/ExamQuestions/QuestionsProg}
+    % \input{EF/Exams/EA_00.tex}
+    % \input{EF/Exams/EA_01.tex}
 	} {}
 	
-	%BEAMER
+	% BEAMER
 	\iftoggle{beamer} {
-%	     \input{GrundlagenInfo/00_Programmieren/Examples_Exam}
-%		 \input{GrundlagenInfo/00_Programmieren/Kapitel01Intro}
-%		\input{GrundlagenInfo/00_Programmieren/Kapitel02aDefinitionen}
-%		\input{GrundlagenInfo/00_Programmieren/Kapitel02bAnimationen}
-%		\input{GrundlagenInfo/00_Programmieren/Kapitel03aParameter}
-%	     \input{GrundlagenInfo/00_Programmieren/Kapitel03bVariablen}
-%	     \input{GrundlagenInfo/00_Programmieren/Kapitel03cZeitTabellen}
-%	     \input{GrundlagenInfo/00_Programmieren/Kapitel04IfElifElse}
-%	     \input{GrundlagenInfo/00_Programmieren/Kapitel07Funktionen}
-	
-%     \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L01}
-%     \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L02}
-%     \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L03}
-     \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L04}
-
-%    \input{GrundlagenInfo/02_Graphen/Graphen_L01}
-%   \input{GrundlagenInfo/02_Graphen/Graphen_L02}
-%    \input{GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01}
-%    \input{GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel02}
-    
-%    \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L01}
-%    \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L02}
-%    \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L03}
-%    \input{GrundlagenInfo/03_Kryptologie/Appendix}
-
-    \input{GrundlagenInfo/04_Kompression/Kompression_L01}
-
-%    \input{GrundlagenInfo/05_ErrorChecking/ErrorChecking}
-
-%   \input{GrundlagenInfo/06_Daten/Presentation 1}
-%    \input{GrundlagenInfo/06_Daten/Presentation 2}
-%    \input{GrundlagenInfo/06_Daten/Presentation 3}
-%     \input{GrundlagenInfo/06_Daten/Presentation 4}
-     
-     %   \input{GrundlagenInfo/07_Netzwerke/Netzwerke_L01}
+    % \input{GrundlagenInfo/00_Programmieren/Examples_Exam}
+    % \input{GrundlagenInfo/00_Programmieren/Kapitel01Intro}
+    % \input{GrundlagenInfo/00_Programmieren/Kapitel02aDefinitionen}
+    % \input{GrundlagenInfo/00_Programmieren/Kapitel02bAnimationen}
+    % \input{GrundlagenInfo/00_Programmieren/Kapitel03aParameter}
+    % \input{GrundlagenInfo/00_Programmieren/Kapitel03bVariablen}
+    % \input{GrundlagenInfo/00_Programmieren/Kapitel03cZeitTabellen}
+    % \input{GrundlagenInfo/00_Programmieren/Kapitel04IfElifElse}
+    % \input{GrundlagenInfo/00_Programmieren/Kapitel07Funktionen}
+    % \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L01}
+    % \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L02}
+    % \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L03}
+    % \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L04}
+    % \input{GrundlagenInfo/02_Graphen/Graphen_L01}
+    % \input{GrundlagenInfo/02_Graphen/Graphen_L02}
+    % \input{GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01}
+    % \input{GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel02}
+    % \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L01}
+    % \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L02}
+    % \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L03}
+    % \input{GrundlagenInfo/03_Kryptologie/Appendix}
+    % \input{GrundlagenInfo/04_Kompression/Kompression_L01}
+    % \input{GrundlagenInfo/05_ErrorChecking/ErrorChecking}
+    % \input{GrundlagenInfo/06_Daten/Presentation 1}
+    % \input{GrundlagenInfo/06_Daten/Presentation 2}
+    % \input{GrundlagenInfo/06_Daten/Presentation 3}
+    % \input{GrundlagenInfo/06_Daten/Presentation 4}
+    % \input{GrundlagenInfo/07_Netzwerke/Netzwerke_L01}
 	} {}
 \end{document}
