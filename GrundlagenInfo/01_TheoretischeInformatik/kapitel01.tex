@@ -184,7 +184,7 @@ Dort haben wir versucht, Geldbeträge mit möglichst wenigen Münzstücken auszu
   \end{myanswer}
 \end{myexercise}
 
-\begin{myexample}
+\begin{myexample}\label{myexample:ersetzen}
   Wir wollen dreizehn Objekte im Dezimalsystem mit so wenigen Münzstücken wie möglich darstellen. Wir könnten dies mit
   dreizehn Einern tun. Doch wir sehen sofort, dass sich zehn Einer stets durch nur einen einzigen Zehner (und null
   Einer) ersetzen lassen. Dadurch haben wir insgesamt neun Münzen gespart:
@@ -222,16 +222,23 @@ Dort haben wir versucht, Geldbeträge mit möglichst wenigen Münzstücken auszu
 \begin{mychallenge}
   Begründen Sie, warum es nicht besonders sinnvoll ist, die natürliche Zahl $1$ als Basis zu wählen, selbst wenn wir in \cref{mydefinition:badisch} die Einschränkung $a_{n-1}, a_{n}\in\lrc{0,1,\ldots,b-1}$ an die Ziffern ignorieren?
   \begin{myanswer}
-      Mit der Wahl der Basis $b := 1$ erhalten wir keine verschiedene Stellenwerte, da für alle natürlichen Zahlen $k$ gilt, dass $b^k = 1^k = 1$. Somit würden wir im Grunde zu den unären Darstellungen zurückkehren. 
+      Mit der Wahl der Basis $b := 1$ erhalten wir keine unterschiedlichen Stellenwerte, da $b^k = 1^k = 1$ für alle natürlichen Zahlen $k$ gilt.
   \end{myanswer}
 \end{mychallenge}
 
+\begin{myremark}
+  Warum ist es sinnvoll in \cref{mydefinition:badisch} zu fordern, dass eine $b$-adische Darstellung keine Ziffern grösser als $b-1$ verwenden darf?
+  Unsere Argumentation ist ähnlich zu der in \cref{myexample:ersetzen}. Angenommen eine Darstellung
+  \begin{align*}
+    \red{a}_n\cdot \blue{b}^n + \red{a}_{n-1}\cdot \blue{b}^{n-1} + \ldots +\red{a}_1\cdot \blue{b}^1 + a_0\cdot
+     \blue{b}^0
+  \end{align*}
+  würde eine Ziffer $a_k \geq b$ verwenden. Anders gesagt, würden dann $b$ oder mehr Münzstücke von dem Typ $b^k$ verwendet werden.
+  Dann könnten wir aber immer eine Gruppe von $b$ vielen Münzen vom Typ $b^k$ durch jeweils eine einzige Münze vom Typ $b^{k+1}$ ersetzen und würden für jede solche Gruppe $b-1$ Münzstücke einsparen.
 
-\begin{mychallenge}
-  Wie kann eine Darstellung, welche mindestens eine Ziffer $\geq b$ verwendet, stets durch eine
-  $b$-adische Darstellung mit kleinerer Quersumme ($=$ Anzahl der verwendeten Münzstücke) ersetzt werden kann.
-  Dies erklärt, warum wir in einer $b$-adischen Zahlendarstellung $b-1$ als höchste \enquote{erlaubte} Ziffer ansehen. 
-\end{mychallenge}
+  Beispielsweise ist es in der Basis $b = 10$ nicht sinnvoll 23 Hunderter ($23\cdot 10^2$) zu verwenden, da wir stattdessen zwei Tausender und nur drei Hunderter ($2\cdot 10^3 + 3\cdot 10^2$) verwenden könnten.
+  Dabei würden wir insgesamt $18$ Münzstücke einsparen.
+\end{myremark}
 
 \begin{myexercise}
   Ordnen Sie die folgenden Zahlen aufsteigend:
@@ -251,17 +258,21 @@ Dort haben wir versucht, Geldbeträge mit möglichst wenigen Münzstücken auszu
 \end{myexercise}
 
 \begin{mychallenge}
-  Zur Vereinfachung betrachten wir hier nur die Wahl der Basis $b := 10$. Die Aussage gilt aber auch für jede andere
-  Basis eines $b$-adischen Systems. Zeigen Sie, dass die $10$-adische Darstellung eindeutig ist. Genauer: Es gibt keine
-  zwei verschiedenen $10$-adischen Darstellungen, welche dieselbe Zahl darstellen.
-  \begin{enumerate}
-    \item Nehmen Sie an, dass es zwei unterschiedliche $10$-adische Darstellungen $x$ und $y$ gibt, welche aber dieselbe
-      Zahl darstellen.    
-    \item Dann haben $x$ und $y$ nicht dieselbe Anzahl Ziffern oder unterscheiden sich mindestens in einer Ziffer.
-    \item Zeigen Sie, dass sich dann die von $x$ und $y$ dargestellten Zahlen unterscheiden müssen. 
-  \end{enumerate}
-  Tipp: Wie lautet die kleinste vierstellige $10$-adische Zahl (die nicht mit $0$ beginnt)? Wie lautet die grösste
-  dreistellige $10$-adische Zahl? 
+  Die nachfolgende Aussage gilt für jede Basis $b$ eines $b$-adischen Systems. Zur Vereinfachung werden wir aber nur die Wahl der Basis $b := 10$ untersuchen.
+  Zeigen Sie, dass die $10$-adische Darstellung eindeutig ist. Es gibt also keine
+  zwei unterschiedliche $10$-adischen Darstellungen $x$ und $y$, welche dieselbe Zahl (Anzahl Objekte) darstellen.
+  \begin{myanswer}
+    Seien
+    \begin{align*}
+      x &:= a_n\cdot 10^n + a_{n-1}\cdot 10^{n-1} + \ldots + a_k\cdot 10^k + a_{k-1}\cdot 10^{k-1} + \ldots + a_1\cdot 10^1 + a_0\cdot 10^0  \\
+      y &:= b_n\cdot 10^n + b_{n-1}\cdot 10^{n-1} + \ldots + b_k\cdot 10^k + b_{k-1}\cdot 10^{k-1} + \ldots + b_1\cdot 10^1 + b_0\cdot 10^0 
+    \end{align*}
+    zwei unterschiedliche $10$-adische Darstellungen derselben Zahl.
+    Dann müssen sich $x$ und $y$ an mindestens einer Stelle (in einer Ziffer) unterscheiden.
+    Sei $10^k$ die grösste Stelle, an der sich $x$ und $y$ unterscheiden. Wir können annehmen, dass $a_k > b_k$ gilt. Dann bewirkt der Unterschied an dieser Stelle
+    eine Differenz von mindestens $10^k$. Doch selbst mit der Wahl $a_{k-1} = \ldots = a_1 = a_0 = 0$ und $b_{k-1} = \ldots = b_1 = b_0 = 9$ kann nur noch ein Unterschied von $10^k - 1$ erwirkt werden.
+    Dann ist aber die von $x$ dargestellte Zahl um mindestens 1 grösser als die von $y$ dargestellte Zahl.
+  \end{myanswer}
 \end{mychallenge}
 
 \subsection{Umrechnungen zwischen Darstellungen}
