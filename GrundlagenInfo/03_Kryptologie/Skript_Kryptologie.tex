@@ -4,6 +4,31 @@
 
 \section{Motivation}
 
+\section{Geheimschriften}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+    \node[alice, minimum width=1.5cm, 
+        label={[mylabel, anchor=west]north east:{}}, 
+        label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Chiffrierung)}$\\
+        \textcolor{Red}{Geheimtext}}}] (alice) {Alice (Sender)};
+    \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
+        label={[mylabel, anchor=east]north west:{}}, 
+        label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
+        \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
+    
+    \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{(Übermittlung über unsicheren Kanal e.g. Internet, Telefonie)\\
+    \textcolor{Red}{Geheimtext}} (aux-a-|bob.west);
+
+    \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
+    \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+    \end{tikzpicture}
+    \\[1cm]$\rightarrow$ Vertraulichkeit, Integrität, Authentizität, Verbindlichkeit
+    \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger).}
+\end{figure}
+Alice möchte Bob eine Nachricht zuk eine Nachricht, den \tib{Klartext}\index{Klartext} an Bob senden.
+\clearpage
+
 \section{Kryptosysteme}
 
 \section{Kryptoanalyse}
