@@ -2,10 +2,80 @@
 \epigraph{To my wife Marganit and my children Ella Rose and Daniel Adam without whom this book would have been completed two years earlier.}
 {\textit{Joseph J. Rotman, An Introduction to Algebraic Topology}}
 
+\section{Arbeiten mit Strings in Python}
+\begin{myexercise}
+  Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+  \begin{lstlisting}[style=TigerJython,numbers=none]
+    text = "EASY"
+    for buchstabe in text:
+      print(buchstabe)
+  \end{lstlisting}
+  \begin{myanswer}
+    \begin{lstlisting}[style=TigerJython,numbers=none]
+      E
+      A
+      S
+      Y
+    \end{lstlisting}
+    \tjinline{for x in mystring} ist eine Schleife durch den String \tjinline{mystring}. Dabei nimmt \tjinline{x} nacheinander jeden Buchstaben in diesem String genau einmal an.
+  \end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{myexercise:index}
+  Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+  \begin{lstlisting}[style=TigerJython,numbers=none]
+    Klartext = "Schweiz"
+    print(Klartext[0])
+    print(Klartext[1])
+    print(Klartext[2])
+    print(Klartext[3])
+    print(Klartext[4])
+    print(Klartext[5])
+    print(Klartext[6])
+  \end{lstlisting}
+  \begin{myanswer}
+    \begin{lstlisting}[style=TigerJython,numbers=none]
+      S
+      c
+      h
+      w
+      e
+      i
+      z
+    \end{lstlisting}
+    \tjinline{mystring[0]} ist der erste Buchstabe des Strings \tjinline{mystring}, \tjinline{mystring[1]} der zweite und so weiter.
+  \end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+  Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+  \begin{lstlisting}[style=TigerJython,numbers=none]
+    Klartext = "Schweiz"
+    for i in range(0, len(Klartext)):
+      print(Klartext[i])
+  \end{lstlisting}
+  \begin{myanswer}
+    Dieses Programm ist äquivalent zum Programm in \cref{myexercise:index}. Hier wird allerdings eine Schleife über die Länge des Texts verwendet.
+  \end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+  Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+  \begin{lstlisting}[style=TigerJython,numbers=none]
+    Klartext = "Schweiz"
+    for i in range(0, len(Klartext)):
+      print(Klartext[i])
+  \end{lstlisting}
+  \begin{myanswer}
+    Dieses Programm ist äquivalent zum Programm in \cref{myexercise:index}. Hier wird allerdings eine Schleife über die Länge des Texts verwendet.
+  \end{myanswer}
+\end{myexercise}
+
 \section{Motivation}
 
-\section{Geheimschriften}
-\begin{figure}
+Alice möchte Bob eine Nachricht zukommen lassen. Diese Nachricht wird \tib{Klartext}\index{Klartext} genannt. 
+In der Praxis wird Alice 
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
     \node[alice, minimum width=1.5cm, 
@@ -17,20 +87,40 @@
         label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
         \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
     
-    \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{(Übermittlung über unsicheren Kanal e.g. Internet, Telefonie)\\
+    \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
     \textcolor{Red}{Geheimtext}} (aux-a-|bob.west);
 
     \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
     \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
     \end{tikzpicture}
-    \\[1cm]$\rightarrow$ Vertraulichkeit, Integrität, Authentizität, Verbindlichkeit
     \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger).}
+    \label{fig:schema_geheimtext}
 \end{figure}
-Alice möchte Bob eine Nachricht zuk eine Nachricht, den \tib{Klartext}\index{Klartext} an Bob senden.
 \clearpage
 
+\section{Geheimschriften}
 \section{Kryptosysteme}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+    \node[alice, minimum width=1.5cm, 
+        label={[mylabel, anchor=west]north east:{}}, 
+        label={[mylabel, anchor=east]north west:{\textcolor{Blue}{(Klartext, Schlüssel)} $\big\downarrow\text{\tiny (Verschlüsselung)}$\\
+        \textcolor{Red}{Kryptotext}}}] (alice) {Alice (Sender)};
+    \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
+        label={[mylabel, anchor=east]north west:{}}, 
+        label={[mylabel, anchor=west]north east:{\textcolor{Red}{(Kryptotext, Schlüssel)} $\big\downarrow\text{\tiny (Entschlüsselung)}$\\
+        \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
+    
+    \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
+    \textcolor{Red}{Kryptotext}} (aux-a-|bob.west);
 
+    \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
+    \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+    \end{tikzpicture}
+    \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems.}
+    \label{fig:schema_kryptotext}
+\end{figure}
 \section{Kryptoanalyse}
 
 \section{Moderne Kryptologie}
