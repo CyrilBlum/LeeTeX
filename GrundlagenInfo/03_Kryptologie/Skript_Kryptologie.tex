@@ -1,8 +1,56 @@
 \chapter{Kryptologie}\label{ch:Kryptologie}
-\epigraph{To my wife Marganit and my children Ella Rose and Daniel Adam without whom this book would have been completed two years earlier.}
-{\textit{Joseph J. Rotman, An Introduction to Algebraic Topology}}
 
-\section{Arbeiten mit Strings in Python}
+
+\section{Zeichenketten in Python}
+Im Nachfolgenden schauen wir uns einige Python-Befehle an, die dazu dienen, mit Zeichenketten (=engl. \textit{strings}) zu arbeiten. Dies werden wir insbesondere benötigen, um eigene Python-Programme zu schreiben, mit denen wir Texte verschlüsseln und entschlüsseln können. Genauer gesagt bezeichnen wir Texte in Python als Zeichenketten. Zeichenketten werden in Python innerhalb von einfachen oder doppelten Anführungszeichen geschrieben, also entweder \lstinline[style=TigerJython]|'...'| oder \lstinline[style=TigerJython]|"..."|. Innerhalb der Anführungszeichen können beliebige Zeichen stehen, beispielsweise Buchstaben, Leerzeichen, Spezialzeichen oder Zahlen.
+
+\begin{mychallenge}
+Was könnte der Nutzen davon sein, dass es zwei Möglichkeiten gibt und nicht nur eine, Zeichenketten zu schreiben (\lstinline[style=TigerJython]|'...'| oder \lstinline[style=TigerJython]|"..."|)? 
+\begin{myanswer}
+Eine Möglichkeit, die uns durch die unterschiedlichen Schreibweisen geboten wird, ist, Anführungszeichen auszugeben. Beispielsweise könnten Sie so einen Text, der Anführungszeichen beinhaltet, auf der Konsole drucken:
+\begin{lstlisting}[style=TigerJython,numbers=none]
+print('Meine Freunde nennen mich "Mr. X"')
+\end{lstlisting}
+\end{myanswer}
+\end{mychallenge}
+
+Mit der \textbf{Länge} von Zeichenketten ist die Anzahl der Zeichen zwischen den Anführungszeichen gemeint: Die Zeichenkette \lstinline[style=TigerJython]|"Hello World"| hat beispielsweise eine Länge von 11 Zeichen. Die Länge einer Zeichenkette kann mit dem Ausdruck \lstinline[style=TigerJython]|len(Klartext)| bestimmt werden.
+
+\begin{myexercise}
+Bestimmen Sie die Länge Ihres vollen Namens mithilfe des Befehls \lstinline[style=TigerJython]|len()| in Python.
+\end{myexercise}
+
+Zeichenketten können verkettet, also aneinandergehängt werden mit dem Befehl \lstinline[style=TigerJython]|"Text1" + "Text2" + "Text3"| usw. Falls Sie eine Zeichenkette mehrfach drucken wollen, können Sie diesen mit einer Zahl multiplizieren, die dann die Anzahl Wiederholungen der Zeichenkette bestimmt.
+
+\begin{myexercise}\label{ex:pfeil}
+Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+  \begin{lstlisting}[style=TigerJython,numbers=none]
+    print(" " * 3 + "X" * 1)
+    print(" " * 2 + "X" * 3)
+    print(" " * 1 + "X" * 5)
+    print(" " * 0 + "X" * 7)
+    print(" " * 3 + "X" * 1)
+    print(" " * 3 + "X" * 1)
+  \end{lstlisting}
+\end{myexercise}
+
+\begin{myexercise}
+Erstellen Sie nun ein Programm, das ein Herz zeichnet, ähnlich zu \cref{ex:pfeil}, also lediglich mit Zeichenketten-Ausdrücken und dem Befehl \lstinline[style=TigerJython]|print()|.
+\begin{myanswer}
+\begin{lstlisting}[style=TigerJython,numbers=none]
+print(" " * 2 + "X" * 1 + " "*4+"X" * 1 + " "*1)
+print(" " * 1 + "X" * 8 + " "*1)
+print(" " * 2 + "X" * 6 + " "*1)
+print(" " * 3 + "X" * 4 + " "*2)
+print(" " * 4 + "X" * 2 + " "*2)
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+
+\subsection{Zeichen aus Zeichenketten auslesen}
+Im Nachfolgenden schauen wir uns einige Übungen an, mit denen wir die einzelnen Zeichen aus Zeichenketten herauslesen können.
+
 \begin{myexercise}
   Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
   \begin{lstlisting}[style=TigerJython,numbers=none]
@@ -17,7 +65,7 @@
       S
       Y
     \end{lstlisting}
-    \pythoninline{for x in mystring} ist eine Schleife durch den String \pythoninline{mystring}. Dabei nimmt \pythoninline{x} nacheinander jeden Buchstaben in diesem String genau einmal an.
+    \pythoninline{for x in mystring} ist eine Schleife über die Zeichenkette \pythoninline{mystring}. Dabei nimmt \pythoninline{x} nacheinander jeden Buchstaben in dieser Zeichenkette genau einmal an.
   \end{myanswer}
 \end{myexercise}
 
@@ -51,7 +99,7 @@
   Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
   \begin{lstlisting}[style=TigerJython,numbers=none]
     Klartext = "Schweiz"
-    for i in range(0, len(Klartext)):
+    for i in range(len(Klartext)):
       print(Klartext[i])
   \end{lstlisting}
   \begin{myanswer}
@@ -60,13 +108,23 @@
   \end{myanswer}
 \end{myexercise}
 
-\begin{myexercise}
-  Eine Person verrät uns lediglich die Vorwahl ihrer $10$-stelligen Mobiltelefonnummer.
-  Damit gibt es nur noch $10$ Millionen Kombinationen, die es (im schlimmsten Fall) auszuprobieren gilt. 
-  Schreiben Sie ein Python-Programm, welches die $2000$ kleinsten Nummern auflistet. 
-  Die erste Nummer sollte $0790000000$ sein, die letzte $0790001999$. 
-  Das Programm soll die Nummern als Strings (eine Nummer pro Zeile) ausgeben.
+Der Befehl \lstinline[style=TigerJython]|for i in range(len(Klartext))| erstellt eine Variable \lstinline[style=TigerJython]|i| innerhalb der \lstinline[style=TigerJython]|for|-Schleife, welche jedes Zeichen von 0 bis zur Länge von \lstinline[style=TigerJython]|Klartext| minus 1 geht. Weshalb minus 1? Das erste Zeichen von \lstinline[style=TigerJython]|Klartext| wird in Python mit \lstinline[style=TigerJython]|Klartext[0]| ausgelesen, das letzte mit \lstinline[style=TigerJython]|Klartext[len(Klartext)-1]|, da wir bei 0 zu zählen beginnen und nicht bei 1. Mit dem Ausdruck \lstinline[style=TigerJython]|Klartext[i]| wird also das \lstinline[style=TigerJython]|i|-te Zeichen der Zeichenkette \lstinline[style=TigerJython]|Klartext| ausgelesen, wobei \lstinline[style=TigerJython]|i| von 0 bis zu (Länge des Klartexts minus 1) geht. 
 
+Der Befehl \lstinline[style=TigerJython]|for i in range(len(Klartext))| kann auch geschrieben werden also Befehl \lstinline[style=TigerJython]|for i in range(0, len(Klartext), 1)|, wobei dies meint:
+\begin{itemize}
+\item \lstinline[style=TigerJython]|i| beginnt bei 0
+\item \lstinline[style=TigerJython]|i| geht bis zu \lstinline[style=TigerJython]|len(Klartext)-1|
+\item \lstinline[style=TigerJython]|i| vergrössert sich in 1er-Schritten
+\end{itemize}
+Dieser Befehl könnte auch verwendet werden, um bei einer beliebigen Zahl zu starten (nicht notwendigerweise 0), und um \lstinline[style=TigerJython]|i| in Schritten grösser als 1 zu vergrössern. Die allgemeine Syntax des Befehls lässt sich also wie folgt zusammenfassen: \lstinline[style=TigerJython]|for i in range(start, ende, schrittgroesse)|.
+
+\begin{mychallenge}
+  Eine Person verrät uns lediglich die Vorwahl ihrer $10$-stelligen Mobiltelefonnummer. Zudem verrät Sie Ihnen auch, dass ihre Telefonnummer gerade ist (also auf 2, 4, 6, 8 oder 0 endet).
+  Damit gibt es nur noch $5$ Millionen Kombinationen, die es (im schlimmsten Fall) auszuprobieren gilt. 
+  Schreiben Sie ein Python-Programm, welches die $2000$ kleinsten, geraden Nummern auflistet. 
+  Die erste Nummer sollte $0790000000$ sein, die letzte $0790001999$. 
+  Das Programm soll die Nummern als Zeichenkette (eine Nummer pro Zeile) ausgeben.
+  
   Tipps:
   \begin{itemize}
     \item Mit \pythoninline{str(num)} 
@@ -77,11 +135,11 @@
   \end{itemize}
   \begin{myanswer}
     \begin{lstlisting}[style=TigerJython,numbers=none]
-      for num in range(790000000, 790002000):
+      for num in range(790000000, 790002000,2):
         print("0" + str(num)) # füge den String "0" vorne an
     \end{lstlisting}
   \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
 \section{Motivation}
 
