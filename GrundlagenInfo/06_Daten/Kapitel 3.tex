@@ -227,11 +227,11 @@ In diesem Beispiel hat die Tabelle ``Angestellte'' nicht nur einen Primärschlü
 
 
 
-\subsection{\texorpdfstring{Tabellen verbinden mit oder ohne \lstinline[style=SQL]|JOIN|}{Tabellen verbinden mit oder ohne JOIN}}
+\subsection{\texorpdfstring{Tabellen verbinden mit oder ohne \lstinline|JOIN|}{Tabellen verbinden mit oder ohne JOIN}}
 
 \begin{myexample}
 Eine erste Möglichkeit, \cref{table:angestellte2} mit \cref{table:abteilungen} zu verbinden, besteht darin, einfach beide Tabellen ``aufzurufen'':
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT *
 FROM Angestellte, Abteilung
 \end{lstlisting}
@@ -259,7 +259,7 @@ Wie wir sehen, wurden Informationen aus beiden Tabellen zusammengeführt, indem 
 \begin{myexample}
 Wir könnten nun die Auswahl einfach eingrenzen, indem wir zwei Filter einfügen:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT *
 FROM Angestellte, Abteilung
 WHERE Angestellte.aID = Abteilung.aID
@@ -279,17 +279,17 @@ mID & Name   & \rot{Angestellte.aID} & \rot{Abteilung.aID} & Abteilung \\\midrul
 Bisher haben wir immer auf Kolonnen von Tabellen zugegriffen, indem wir den Namen der Kolonne geschrieben haben. Wenn wir mit mehreren Tabellen arbeiten, kann es aber passieren, dass Kolonnen denselben Namen haben. Es kann daher nötig sein, zusätzlich zum Kolonnennamen den Namen der Tabelle anzugeben.
 \end{myremark}
 
-Die Tatsache, dass unsere Abfrage mehrere Kolonnen \texttt{aID} zurückgibt, mag etwas unschön sein. Dies könnte umgangen werden, indem wir ein \lstinline[style=sql]|JOIN ... USING|-Konstrukt verwenden.
+Die Tatsache, dass unsere Abfrage mehrere Kolonnen \texttt{aID} zurückgibt, mag etwas unschön sein. Dies könnte umgangen werden, indem wir ein \lstinline|JOIN ... USING|-Konstrukt verwenden.
 \begin{myexample} Folgender Befehl führt zu einer einzigen Kolonne \texttt{aID} im Endresultat:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT *
 FROM Angestellte JOIN Abteilung USING (aID)
 WHERE Name = "Kaufmann"
 \end{lstlisting}
 
 \begin{mycaution}
-Die Klammer um \texttt{aID} muss gesetzt werden, damit der \lstinline[style=sql]|USING|-Befehl funktioniert.
+Die Klammer um \texttt{aID} muss gesetzt werden, damit der \lstinline|USING|-Befehl funktioniert.
 \end{mycaution}
 
 
@@ -306,7 +306,7 @@ mID & Name   & aID & Abteilung \\\midrule
 \begin{myremark}
 Statt zwei Tabellen können auch drei oder mehr Tabellen nach den oben erklärten Prinzipien miteinander verbunden werden. Folgendes Beispiel soll Ihnen eine Idee davon geben:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT kolonne1, kolonne2, ...
 FROM tabelle1 
 JOIN tabelle2 USING (kolonne_id1)
@@ -316,7 +316,7 @@ JOIN tabelle3 USING (kolonne_id2)
 \end{myremark}
 
 \begin{myremark}
-Nach einer Tabellenverbindung können Sie alles machen, was Sie sonst auch tun: filtern mit \lstinline[style=sql]|WHERE|, gruppieren mit \lstinline[style=sql]|GROUP BY|, summieren mit \lstinline[style=sql]|SUM| etc.
+Nach einer Tabellenverbindung können Sie alles machen, was Sie sonst auch tun: filtern mit \lstinline|WHERE|, gruppieren mit \lstinline|GROUP BY|, summieren mit \lstinline|SUM| etc.
 \end{myremark}
 
 
@@ -325,7 +325,7 @@ Lösen Sie Aufgaben 1--10 unter folgendem Link:\\
 \url{https://sql-tutorial.de/home/uebungen.php?lektion=3}.
 \end{myexercise}
 
-\section{\texorpdfstring{\lstinline[style=sql]|JOIN|-Typen}{JOIN-Typen}}
+\section{\texorpdfstring{\lstinline|JOIN|-Typen}{JOIN-Typen}}
 
 
 Häufig kann es nützlich sein, mehrere Tabellen auf unterschiedliche Arten miteinander zu verbinden, um neue Einsichten in die Daten zu gewinnen. Verschiedene Tabellen-Verbindungen sind schematisch in \cref{fig:venn-joins} abgebildet. Die Bedeutung dieser Abbildungen wird in den folgenden Abschnitten erklärt.
@@ -346,7 +346,7 @@ Häufig kann es nützlich sein, mehrere Tabellen auf unterschiedliche Arten mite
         \fill[gray] (1.5,0) circle (1.25cm);
       \end{scope}
     \end{tikzpicture}
-    \caption{\lstinline[style=sql]|INNER JOIN|}
+    \caption{\lstinline|INNER JOIN|}
   \end{subfigure}
   \hfill
   % LEFT OUTER JOIN
@@ -365,7 +365,7 @@ Häufig kann es nützlich sein, mehrere Tabellen auf unterschiedliche Arten mite
         \fill[gray] (1.5,0) circle (1.25cm);
       \end{scope}
     \end{tikzpicture}
-    \caption{\lstinline[style=sql]|LEFT OUTER JOIN|}
+    \caption{\lstinline|LEFT OUTER JOIN|}
   \end{subfigure}
 
   \bigskip
@@ -386,7 +386,7 @@ Häufig kann es nützlich sein, mehrere Tabellen auf unterschiedliche Arten mite
         \fill[gray] (0,0) circle (1.25cm);
       \end{scope}
     \end{tikzpicture}
-    \caption{\lstinline[style=sql]|RIGHT OUTER JOIN|}
+    \caption{\lstinline|RIGHT OUTER JOIN|}
   \end{subfigure}
   \hfill
   % FULL OUTER JOIN
@@ -399,23 +399,23 @@ Häufig kann es nützlich sein, mehrere Tabellen auf unterschiedliche Arten mite
       \fill[gray] (0,0) circle (1.25cm);
       \fill[gray] (1.5,0) circle (1.25cm);
     \end{tikzpicture}
-    \caption{\lstinline[style=sql]|FULL OUTER JOIN|}
+    \caption{\lstinline|FULL OUTER JOIN|}
   \end{subfigure}
   \caption{Venn-Diagramme unterschiedlicher SQL-Joins}
   \label{fig:venn-joins}
 \end{figure}
 
 
-\subsection{\texorpdfstring{\lstinline[style=sql]|INNER JOIN| (=\lstinline[style=sql]|JOIN|)}{INNER JOIN (=JOIN)}}
-Die Syntax eines \lstinline[style=sql]|INNER JOIN|-, oder auch einfach \lstinline[style=sql]|JOIN|-Befehls sieht wie folgt aus:
+\subsection{\texorpdfstring{\lstinline|INNER JOIN| (=\lstinline|JOIN|)}{INNER JOIN (=JOIN)}}
+Die Syntax eines \lstinline|INNER JOIN|-, oder auch einfach \lstinline|JOIN|-Befehls sieht wie folgt aus:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT kolonne1, kolonne2, ...
 FROM tabelle1
 INNER JOIN tabelle2
 ON tabelle1.kolonne_id1 = tabelle2.kolonne_id2
 \end{lstlisting}
-Hier verbinden wir zwei Tabellen, indem wir zwei Kolonnen \texttt{kolonne\_id1} und \texttt{kolonne\_id2}, die derselben Information entsprechen (beispielsweise die user-ID), miteinander abgleichen. Beim \lstinline[style=sql]|INNER JOIN| werden nur die Zeilen aus \texttt{tabelle1} retourniert, für die es einen entsprechenden Wert in \texttt{kolonne\_id2} in \texttt{tabelle2} gibt. Alle Werte in \texttt{tabelle1} die mit keinem Wert in \texttt{tabelle2} überschneiden, sowie umgekehrt, tauchen nicht im Resultat auf (s. \cref{fig:venn-join}).
+Hier verbinden wir zwei Tabellen, indem wir zwei Kolonnen \texttt{kolonne\_id1} und \texttt{kolonne\_id2}, die derselben Information entsprechen (beispielsweise die user-ID), miteinander abgleichen. Beim \lstinline|INNER JOIN| werden nur die Zeilen aus \texttt{tabelle1} retourniert, für die es einen entsprechenden Wert in \texttt{kolonne\_id2} in \texttt{tabelle2} gibt. Alle Werte in \texttt{tabelle1} die mit keinem Wert in \texttt{tabelle2} überschneiden, sowie umgekehrt, tauchen nicht im Resultat auf (s. \cref{fig:venn-join}).
 
 \begin{figure}[H]
   \centering
@@ -428,7 +428,7 @@ Hier verbinden wir zwei Tabellen, indem wir zwei Kolonnen \texttt{kolonne\_id1} 
       \fill[gray] (1.5,0) circle (1.25cm);
     \end{scope}
   \end{tikzpicture}
-  \caption{\lstinline[style=sql]|(INNER) JOIN|}
+  \caption{\lstinline|(INNER) JOIN|}
   \label{fig:venn-join}
 \end{figure}
 
@@ -436,21 +436,21 @@ Wichtig zu wissen ist zudem, dass \texttt{kolonne1, kolonne2} usw. auf der erste
 
 \begin{myexample}
 Folgender Code gibt die ids aller user zurück, denen der user Mika Kaufmann folgt:
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT follows.following_id, follows.follower_id, users.name 
 FROM follows JOIN users 
 ON follows.follower_id = users.id 
 WHERE name="Mika Kaufmann"
 \end{lstlisting}
 
-Wie Sie sehen, kann es hilfreich sein, im \lstinline[style=sql]|SELECT|-Ausdruck explizit die Tabelle zu nennen, von welcher eine bestimmt Kolonne stammt.
+Wie Sie sehen, kann es hilfreich sein, im \lstinline|SELECT|-Ausdruck explizit die Tabelle zu nennen, von welcher eine bestimmt Kolonne stammt.
 \end{myexample}
 
-Auch alle anderen SQL-Befehle wie beispielsweise \lstinline[style=sql]|GROUP BY| können nach einem \lstinline[style=sql]|JOIN|-Befehl verwendet werden.
+Auch alle anderen SQL-Befehle wie beispielsweise \lstinline|GROUP BY| können nach einem \lstinline|JOIN|-Befehl verwendet werden.
 
 \begin{myexample}\label{myexample:join-group}
 Folgender Code gibt die Anzahl Fotos für alle Benutzer aus (und sortiert die Resultate absteigend):
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT name, COUNT(*) AS "Anzahl Fotos"
 FROM users
 JOIN photos ON users.id = photos.user_id
@@ -460,13 +460,13 @@ ORDER BY `Anzahl Fotos` DESC
 \end{myexample}
 
 \begin{mycaution}
-  Wie Sie in \cref{myexample:join-group} sehen, können Kolonnen jederzeit mit dem Befehl \lstinline[style=sql]|AS "Neuer Name"| umbenannt werden. Allerdings gilt es zu beachten, dass Abstände im Namen eher ungünstig sind: Falls der Name später wiederverwendet wird, wie etwa in einem \lstinline[style=sql]|ORDER BY|-Ausdruck, müssen sogenannte \textit{backticks} (\lstinline[style=sql]|`|) vor und nach dem Namen gesetzt werden.
+  Wie Sie in \cref{myexample:join-group} sehen, können Kolonnen jederzeit mit dem Befehl \lstinline|AS "Neuer Name"| umbenannt werden. Allerdings gilt es zu beachten, dass Abstände im Namen eher ungünstig sind: Falls der Name später wiederverwendet wird, wie etwa in einem \lstinline|ORDER BY|-Ausdruck, müssen sogenannte \textit{backticks} (\lstinline|`|) vor und nach dem Namen gesetzt werden.
 \end{mycaution}
 
 \begin{myexercise}
   Geben Sie die \texttt{id} aller Fotos in der Tabelle \texttt{likes} an, die der user Mika Kaufmann gelikt hat.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT photo_id, user_id, name 
 FROM likes 
 INNER JOIN users 
@@ -478,7 +478,7 @@ WHERE name="Mika Kaufmann"
 \begin{mychallenge}
   Challenge: Erstellen Sie eine Liste, wo für jedes Hamburger Mitglied die Anzahl seiner Fotos aufgeführt ist. Die Liste soll in absteigender Reihenfolge die Anzahl Fotos pro Mitglieder auflisten.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT city, username, COUNT(*) AS "Anzahl Fotos" 
 FROM photos 
 JOIN users ON photos.user_id = users.id 
@@ -492,7 +492,7 @@ ORDER BY `Anzahl Fotos` DESC
 \begin{myexercise}
   Es soll Werbung an alle Strandurlauber verschickt werden. Finden Sie alle Photos die den Hashtag \texttt{meer} enthalten. Geben Sie den Namen, die Emailadresse, den Geburtstag und die Stadt der zugehörigen Benutzer aus.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT description, name, email, birthday, city  
 FROM photos 
 JOIN users on photos.user_id = users.id 
@@ -504,7 +504,7 @@ WHERE description LIKE "%#meer%"
 \begin{mysubmission}
   Geben Sie die 5 User mit den meisten Followern aus.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT name, COUNT(*) AS "Followers"
 FROM users JOIN follows on follows.following_id = users.id 
 GROUP BY name
@@ -517,7 +517,7 @@ LIMIT 5
 \begin{mychallenge}
   Finden Sie heraus, welche 5 Fotos am meisten Likes erhalten haben. Geben Sie den Benutzernamen und Namen der Ersteller der Fotos an, die id der Fotos sowie die Anzahl Likes.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT users.username, users.name AS "Name", photos.id AS "Photo id", COUNT(likes.photo_id) AS "Likes"
 FROM users
 JOIN photos ON photos.user_id = users.id
@@ -530,8 +530,8 @@ LIMIT 5
 
 \end{mychallenge}
 
-\subsection{\texorpdfstring{\lstinline[style=sql]|LEFT JOIN| (=\lstinline[style=sql]|LEFT OUTER JOIN|)}{LEFT JOIN (=LEFT OUTER JOIN)}}
-Ein \lstinline[style=sql]|LEFT JOIN|, oder \lstinline[style=sql]|LEFT OUTER JOIN| unterscheidet sich von einem \lstinline[style=sql]|INNER JOIN| dadurch, dass \textbf{alle} Einträge der ersten Tabelle (nach dem \lstinline[style=sql]|SELECT|-Befehl) in der neuen Tabelle erscheinen. Werte aus der zweiten Tabelle, die nicht in der ersten sind, werden jedoch nicht angezeigt (s. \cref{fig:venn-left-join}).
+\subsection{\texorpdfstring{\lstinline|LEFT JOIN| (=\lstinline|LEFT OUTER JOIN|)}{LEFT JOIN (=LEFT OUTER JOIN)}}
+Ein \lstinline|LEFT JOIN|, oder \lstinline|LEFT OUTER JOIN| unterscheidet sich von einem \lstinline|INNER JOIN| dadurch, dass \textbf{alle} Einträge der ersten Tabelle (nach dem \lstinline|SELECT|-Befehl) in der neuen Tabelle erscheinen. Werte aus der zweiten Tabelle, die nicht in der ersten sind, werden jedoch nicht angezeigt (s. \cref{fig:venn-left-join}).
 
 \begin{figure}[H]
   \centering
@@ -548,14 +548,14 @@ Ein \lstinline[style=sql]|LEFT JOIN|, oder \lstinline[style=sql]|LEFT OUTER JOIN
       \fill[gray] (1.5,0) circle (1.25cm);
     \end{scope}
   \end{tikzpicture}
-  \caption{\lstinline[style=sql]|LEFT (OUTER) JOIN|}
+  \caption{\lstinline|LEFT (OUTER) JOIN|}
   \label{fig:venn-left-join}
 \end{figure}
 
 \begin{myexercise}
-  Diejenigen BenutzerInnen, die noch keine Fotos hochgeladen habe, sollen per Email dazu aufgefordert werden, Fotos hochzuladen. Finden Sie alle users, die noch keine Fotos hochgeladen haben. Geben Sie deren Name und Email-Adresse aus. Verwenden Sie statt \lstinline[style=sql]|WHERE| den Befehl \lstinline[style=sql]|HAVING|.
+  Diejenigen BenutzerInnen, die noch keine Fotos hochgeladen habe, sollen per Email dazu aufgefordert werden, Fotos hochzuladen. Finden Sie alle users, die noch keine Fotos hochgeladen haben. Geben Sie deren Name und Email-Adresse aus. Verwenden Sie statt \lstinline|WHERE| den Befehl \lstinline|HAVING|.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT users.name, users.email, COUNT(photos.id) AS "Anzahl Fotos"
 FROM users
 LEFT JOIN photos ON photos.user_id = users.id
@@ -565,8 +565,8 @@ HAVING `Anzahl Fotos` = 0
   \end{myanswer}
 \end{myexercise}
 
-\subsection{\texorpdfstring{\lstinline[style=sql]|RIGHT JOIN| (=\lstinline[style=sql]|RIGHT OUTER JOIN|)}{RIGHT JOIN (=RIGHT OUTER JOIN)}}
-Ein \lstinline[style=sql]|RIGHT JOIN| funktioniert analog zu einem \lstinline[style=sql]|LEFT JOIN| (s. \cref{fig:venn-right-join}).
+\subsection{\texorpdfstring{\lstinline|RIGHT JOIN| (=\lstinline|RIGHT OUTER JOIN|)}{RIGHT JOIN (=RIGHT OUTER JOIN)}}
+Ein \lstinline|RIGHT JOIN| funktioniert analog zu einem \lstinline|LEFT JOIN| (s. \cref{fig:venn-right-join}).
 
 \begin{figure}[H]
   \centering
@@ -583,13 +583,13 @@ Ein \lstinline[style=sql]|RIGHT JOIN| funktioniert analog zu einem \lstinline[st
       \fill[gray] (0,0) circle (1.25cm);
     \end{scope}
   \end{tikzpicture}
-  \caption{\lstinline[style=sql]|RIGHT (OUTER) JOIN|}
+  \caption{\lstinline|RIGHT (OUTER) JOIN|}
   \label{fig:venn-right-join}
 \end{figure}
 
 
-\subsection{\texorpdfstring{\lstinline[style=sql]|FULL JOIN| (=\lstinline[style=sql]|FULL OUTER JOIN|)}{FULL JOIN (=FULL OUTER JOIN)}}
-Bei einem \lstinline[style=sql]|FULL (OUTER) JOIN| werden alle Werte aus der ersten und der zweiten Tabelle angezeigt (s. \cref{fig:venn-outer-join}).
+\subsection{\texorpdfstring{\lstinline|FULL JOIN| (=\lstinline|FULL OUTER JOIN|)}{FULL JOIN (=FULL OUTER JOIN)}}
+Bei einem \lstinline|FULL (OUTER) JOIN| werden alle Werte aus der ersten und der zweiten Tabelle angezeigt (s. \cref{fig:venn-outer-join}).
 
 \begin{figure}[H]
   \centering
@@ -600,7 +600,7 @@ Bei einem \lstinline[style=sql]|FULL (OUTER) JOIN| werden alle Werte aus der ers
     \fill[gray] (0,0) circle (1.25cm);
     \fill[gray] (1.5,0) circle (1.25cm);
   \end{tikzpicture}
-  \caption{\lstinline[style=sql]|FULL (OUTER) JOIN|}
+  \caption{\lstinline|FULL (OUTER) JOIN|}
   \label{fig:venn-outer-join}
 \end{figure}
-In InstaHub funktioniert der \lstinline[style=sql]|FULL (OUTER) JOIN| nicht, weshalb es an dieser Stelle keine Übungen hierzu gibt.
+In InstaHub funktioniert der \lstinline|FULL (OUTER) JOIN| nicht, weshalb es an dieser Stelle keine Übungen hierzu gibt.

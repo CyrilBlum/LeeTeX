@@ -1,43 +1,45 @@
 \section{Einzelne Tabellen abfragen mit \texorpdfstring{\gls{SQL}}{SQL}}
 
+\lstset{style=sql}
+
 \subsection{Syntax}
-Die Sprache \acrfull{SQL} besteht, wie wir sehen werden, aus verschiedenen Schlüsselwörtern, wie etwa \lstinline[style=sql]|SELECT|, \lstinline[style=sql]|WHERE|, \lstinline[style=sql]|GROUP BY|, \lstinline[style=sql]|ORDER BY| usw. Dazu gibt es Folgendes zu beachten:
+Die Sprache \acrfull{SQL} besteht, wie wir sehen werden, aus verschiedenen Schlüsselwörtern, wie etwa \lstinline|SELECT|, \lstinline|WHERE|, \lstinline|GROUP BY|, \lstinline|ORDER BY| usw. Dazu gibt es Folgendes zu beachten:
 \begin{itemize}
   \item Ob wir diese Schlüsselwörter gross oder klein schreiben, spielt keine Rolle. Allerdings wird empfohlen, die Schlüsselwörter immer in Grossbuchstaben zu schreiben, um sie von Kolonnen-Namen, Tabellen-Namen usw. abzugrenzen.
-  \item Wir können alle \gls{SQL}-Befehle auf einer einzigen Zeile schreiben, dadurch wird der Code aber deutlich weniger lesbar. Stattdessen empfiehlt es sich, vor gewissen Schlüsselwörtern wie \lstinline[style=sql]|SELECT|, \lstinline[style=sql]|WHERE| oder \lstinline[style=sql]|GROUP BY| eine neue Zeile zu erstellen. Dazu lohnt es sich, die Beispiele genau anzuschauen.
+  \item Wir können alle \gls{SQL}-Befehle auf einer einzigen Zeile schreiben, dadurch wird der Code aber deutlich weniger lesbar. Stattdessen empfiehlt es sich, vor gewissen Schlüsselwörtern wie \lstinline|SELECT|, \lstinline|WHERE| oder \lstinline|GROUP BY| eine neue Zeile zu erstellen. Dazu lohnt es sich, die Beispiele genau anzuschauen.
 \end{itemize}
 
 \textbf{Kommentare} können in \gls{SQL}  auf zwei Arten geschrieben werden:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 -- 1. Kommentar auf einer Zeile
 /* 2. Kommentar über
 mehrere Zeilen */
 \end{lstlisting}
 
 % need to add "texorpdfstring" to avoid warnings
-\subsection{Einfache Selektion: \texorpdfstring{\lstinline[style=sql]|SELECT|}{SELECT}}
+\subsection{Einfache Selektion: \texorpdfstring{\lstinline|SELECT|}{SELECT}}
 
-Mit dem Befehl \enquote{\lstinline[style=sql]|SELECT col1,col2,... FROM tablename|} können wir gewisse Spalten ($=$ Kolonnen) \lstinline[style=sql]|col1,col2,...| aus einer Tabelle mit dem Namen \lstinline[style=sql]|tablename| auswählen. Wir können statt den Spaltennamen auch einfach einen Stern (\texttt{*}) tippen, um alle Kolonnen einer Tabelle zu erhalten, d.h. die gesamte Tabelle.
+Mit dem Befehl \enquote{\lstinline|SELECT col1,col2,... FROM tablename|} können wir gewisse Spalten ($=$ Kolonnen) \lstinline|col1,col2,...| aus einer Tabelle mit dem Namen \lstinline|tablename| auswählen. Wir können statt den Spaltennamen auch einfach einen Stern (\texttt{*}) tippen, um alle Kolonnen einer Tabelle zu erhalten, d.h. die gesamte Tabelle.
 
 
 \begin{myexample}
 Geben Sie auf InstaHub den folgenden Befehl ein (der \textcolor{blue}{Kommentar} muss nicht kopiert werden, er dient lediglich zur Erklärung des Codes):
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 -- wähle alle Spalten aus der Tabelle users aus
 SELECT *
 FROM users
 \end{lstlisting}
 
-Mit diesem Befehl wählen wir alle Spalten (\lstinline[style=sql]|*|) der Tabelle \lstinline[style=sql]|users| aus.
+Mit diesem Befehl wählen wir alle Spalten (\lstinline|*|) der Tabelle \lstinline|users| aus.
 Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
 \end{myexample}
 
 \begin{myexercise}
   Geben Sie alle Benutzernamen (\texttt{username}) aus \texttt{users} aus.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
       SELECT username
       FROM users
       \end{lstlisting}
@@ -47,7 +49,7 @@ Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
 \begin{myexercise}
   Geben Sie die Benutzernamen (\texttt{username}) und echten Namen (\texttt{name}) aller Einträge aus \texttt{users} aus.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
       SELECT username, name
       FROM users
     \end{lstlisting}
@@ -57,20 +59,20 @@ Sie sollten nun die gesamte Tabelle \texttt{users} sehen.
 \begin{myexercise}
   Geben Sie die Namen und Wohnorte aller Mitglieder aus.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
       SELECT username, city
       FROM users
     \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
 
-\subsection{Selektion mit Filter: \texorpdfstring{\lstinline[style=sql]|WHERE|}{WHERE}}
-Fügen wir zu einer \gls{SQL}-Abfrage den Befehl ``\lstinline[style=sql]|WHERE conditions|'' hinzu, können wir das erhaltene Resultat nach gewissen Bedingungen (\texttt{conditions}) filtern.
+\subsection{Selektion mit Filter: \texorpdfstring{\lstinline|WHERE|}{WHERE}}
+Fügen wir zu einer \gls{SQL}-Abfrage den Befehl ``\lstinline|WHERE conditions|'' hinzu, können wir das erhaltene Resultat nach gewissen Bedingungen (\texttt{conditions}) filtern.
 
 \begin{myexample}
 Geben Sie folgendes Beispiel in Instahub ein:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT name, city, gender
 FROM users
 WHERE gender="male"
@@ -88,18 +90,18 @@ Nebst dem Gleich-Zeichen (im obigen Beispiel) stehen folgende Filter-Operatoren 
     \texttt{<=}                                   & kleiner oder gleich ($\leq$)                \\
     \texttt{>}                                    & grösser als ($>$)                           \\
     \texttt{>=}                                   & grösser oder gleich ($\geq$)                \\
-    \lstinline[style=sql]|BETWEEN x AND y|        & ein Wert zwischen (inklusive) \texttt{x} und \texttt{y} \\
-    \lstinline[style=sql]|IN (wert1, wert2, ...)| & einer von mehreren möglichen Werten         \\
-    \lstinline[style=sql]|IS NULL|                & Wert existiert nicht                        \\
+    \lstinline|BETWEEN x AND y|        & ein Wert zwischen (inklusive) \texttt{x} und \texttt{y} \\
+    \lstinline|IN (wert1, wert2, ...)| & einer von mehreren möglichen Werten         \\
+    \lstinline|IS NULL|                & Wert existiert nicht                        \\
   \end{tabular}
 \end{table}
-Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline[style=sql]|AND|, \lstinline[style=sql]|NOT| sowie \lstinline[style=sql]|OR| verwenden.
+Um mehrere Bedingungen miteinander zu verknüpfen, können wir die Befehle \lstinline|AND|, \lstinline|NOT| sowie \lstinline|OR| verwenden.
 %TODO: braucht es eine Erklärung zu Klammern für die richtige Verknüpfung von mehreren Bedingungen?
 
 \begin{myexample}\label{myexample:between}
 Folgender Code gibt alle Mitglieder aus, die zwischen 172 cm und 174 cm gross sind. Dabei gehören 172 cm und 174 cm selbst ebenfalls dazu (inklusive).
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT name, centimeters, gender 
 FROM users 
 WHERE centimeters BETWEEN 172 AND 174 
@@ -109,7 +111,7 @@ WHERE centimeters BETWEEN 172 AND 174
 \begin{myexample}\label{myexample:in}
 Folgender Code gibt den Namen und die Stadt aller Mitglieder aus, die entweder in Leipzig, Berlin oder Hamburg wohnen.
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT name, city
 FROM users 
 WHERE city IN ("Leipzig", "Berlin", "Hamburg")
@@ -120,18 +122,18 @@ WHERE city IN ("Leipzig", "Berlin", "Hamburg")
 \begin{mycaution}
 Wie Sie anhand der \cref{myexample:in,myexample:between} sehen, spielt es in SQL eine Rolle, ob  wir nach Zahlen oder nach
   Text filtern: Wenn nach einem Text gefiltert wird, muss dieser in Anführungszeichen stehen (wie z.B.
-  \lstinline[style=sql]|"Berlin"| in \cref{myexample:in}). Bei Zahlen dürfen Sie keine Anführungszeichen schreiben (s. z.B. die Zahl
-  \lstinline[style=sql]|172| in \cref{myexample:between}).
+  \lstinline|"Berlin"| in \cref{myexample:in}). Bei Zahlen dürfen Sie keine Anführungszeichen schreiben (s. z.B. die Zahl
+  \lstinline|172| in \cref{myexample:between}).
 \end{mycaution}
 
-\lstinline[style=sql]|NULL| ist ein spezielles \gls{SQL}-Wort, welches bedeutet, dass ein Feld leer ist, bzw. keinen
-Wert hat. \lstinline[style=sql]|NULL| muss von \enquote{0} unterschieden werden: Beispielsweise könnte die Zahl 0 in einer 
-Tabelle über Bankkonten bedeuten, dass jemand 0 Franken auf seinem Konto hat, während der Wert \lstinline[style=sql]|NULL| bedeuten würde, dass keine 
+\lstinline|NULL| ist ein spezielles \gls{SQL}-Wort, welches bedeutet, dass ein Feld leer ist, bzw. keinen
+Wert hat. \lstinline|NULL| muss von \enquote{0} unterschieden werden: Beispielsweise könnte die Zahl 0 in einer 
+Tabelle über Bankkonten bedeuten, dass jemand 0 Franken auf seinem Konto hat, während der Wert \lstinline|NULL| bedeuten würde, dass keine 
 Informationen zum Kontostand vorhanden sind.
 
 \begin{myexample}
   Folgender Code gibt die Namen aller Mitglieder an, die ihre Grösse nicht angegeben haben.
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT name, centimeters
 FROM users 
 WHERE centimeters IS NULL
@@ -142,7 +144,7 @@ WHERE centimeters IS NULL
 \begin{myexercise}
   Geben Sie die Namen aller weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
       SELECT name, gender, centimeters
       FROM users
       WHERE gender="female"
@@ -153,7 +155,7 @@ WHERE centimeters IS NULL
 \begin{myexercise}
   Zeigen Sie den Namen, das Geburtsdatum sowie die Grössen aller Frauen an, die kleiner oder gleich 160 Zentimeter sind.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
       SELECT name, birthday, centimeters
       FROM users
       WHERE gender="female"
@@ -165,7 +167,7 @@ WHERE centimeters IS NULL
 \begin{myexercise}
   Verwenden Sie die Tabelle \texttt{comments} und geben Sie alle Kommentare aus, die vom user mit der ID 10 oder vom user mit der ID 38 stammen.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
       SELECT user_id, body 
       FROM comments 
       WHERE user_id IN (38, 10)
@@ -174,20 +176,20 @@ WHERE centimeters IS NULL
 \end{myexercise}
 
 
-\subsection{Eindeutige Selektion: \texorpdfstring{\lstinline[style=sql]|SELECT DISTINCT|}{SELECT DISTINCT}}
+\subsection{Eindeutige Selektion: \texorpdfstring{\lstinline|SELECT DISTINCT|}{SELECT DISTINCT}}
 
-Der Befehl \lstinline[style=sql]|DISTINCT| nach einem \lstinline[style=sql]|SELECT| führt dazu, dass jeder mögliche Wert
+Der Befehl \lstinline|DISTINCT| nach einem \lstinline|SELECT| führt dazu, dass jeder mögliche Wert
 nur höchstens einmal ausgegeben wird, d.h. Duplikate werden entfernt.
 
 \begin{myexercise}
   Vergleichen Sie folgende zwei Befehle. Überlegen Sie sich zuerst, was der Code ausgeben sollte, bevor Sie die Befehle in InstaHub ausführen.
 
- \begin{lstlisting}[style=sql]
+ \begin{lstlisting}
 SELECT gender
 FROM users
 \end{lstlisting}
 
-  \begin{lstlisting}[style=sql]
+  \begin{lstlisting}
 SELECT DISTINCT gender
 FROM users
 \end{lstlisting}
@@ -196,7 +198,7 @@ FROM users
 \begin{myexercise}
   Geben Sie jeden Wohnort nur einmal aus.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT DISTINCT city 
 FROM users
 \end{lstlisting}
@@ -205,7 +207,7 @@ FROM users
 \begin{myexercise}
   Geben Sie jede Benutzerrolle nur einmal aus. \texttt{dba} bedeutet ``Database Administrator'', also Datenbank-AdministratorIn.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT DISTINCT role
 FROM users
 \end{lstlisting}
@@ -213,14 +215,14 @@ FROM users
 \end{myexercise}
 
 
-\subsection{Ungefähre Treffer: \texorpdfstring{\lstinline[style=sql]|LIKE|}{LIKE}}
+\subsection{Ungefähre Treffer: \texorpdfstring{\lstinline|LIKE|}{LIKE}}
 
-Mit dem Befehl \lstinline[style=sql]|LIKE| können wir die Tabelle nach Zeilen filtern, welche in einer gewissen Spalte ein bestimmtes Wort enthalten.
+Mit dem Befehl \lstinline|LIKE| können wir die Tabelle nach Zeilen filtern, welche in einer gewissen Spalte ein bestimmtes Wort enthalten.
 
 \begin{myexample}
 Mit folgendem Befehl erhalten wir alle Städte, die mit ``Be'' beginnen:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT DISTINCT city 
 FROM users 
 WHERE city LIKE "Be%"
@@ -233,8 +235,8 @@ Das ``\%''-Zeichen ist eine sogenannte \textit{wildcard} und dient hier als Plat
   \centering
   \begin{tabular}{c|l}
     \textbf{Symbol}            & \textbf{Bedeutung}                              \\ \midrule
-    \lstinline[style=sql]|"%"| & Stellt null oder mehrere, beliebige Zeichen dar \\ \hline
-    \lstinline[style=sql]|"_"| & Stellt ein einzelnes, beliebiges Zeichen dar    \\
+    \lstinline|"%"| & Stellt null oder mehrere, beliebige Zeichen dar \\ \hline
+    \lstinline|"_"| & Stellt ein einzelnes, beliebiges Zeichen dar    \\
   \end{tabular}
   \caption{\textit{wildcards} in \gls{SQL}}
   \label{table:wildcards}
@@ -243,7 +245,7 @@ Das ``\%''-Zeichen ist eine sogenannte \textit{wildcard} und dient hier als Plat
 \begin{myexample}
 Mit folgendem Befehl erhalten wir alle Städte, die mit ``H'' beginnen und ein ``m'' an dritter Stelle haben:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT DISTINCT city 
 FROM users 
 WHERE city LIKE "H_m%"
@@ -255,19 +257,19 @@ WHERE city LIKE "H_m%"
 \begin{myexercise}
   Vergleichen Sie folgende drei Befehle. Überlegen Sie sich zuerst, was der Code ausgeben sollte, bevor sie die Befehle in InstaHub ausführen.
 
-  \begin{lstlisting}[style=sql]
+  \begin{lstlisting}
 SELECT username, city 
 FROM users 
 WHERE city = "Berlin" AND name LIKE "Fabian%"
 \end{lstlisting}
 
-  \begin{lstlisting}[style=sql]
+  \begin{lstlisting}
 SELECT username, city 
 FROM users 
 WHERE city = "Berlin" OR name LIKE "Fabian%"
 \end{lstlisting}
 
-  \begin{lstlisting}[style=sql]
+  \begin{lstlisting}
 SELECT username, city 
 FROM users 
 WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
@@ -277,7 +279,7 @@ WHERE city = "Berlin" AND NOT name LIKE "Fabian%"
 \begin{myexercise}
   Finden Sie alle Berliner, die \textit{Marc} heissen.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT name, city
 FROM users
 WHERE city="Berlin" AND name LIKE "Marc%"
@@ -288,7 +290,7 @@ WHERE city="Berlin" AND name LIKE "Marc%"
 \begin{myexercise}
   Finden Sie alle Person mit dem Vornamen \textit{Lina} oder \textit{Lorena}.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
       SELECT name, city
       FROM users
       WHERE name LIKE "Lina%"
@@ -300,7 +302,7 @@ WHERE city="Berlin" AND name LIKE "Marc%"
 \begin{mychallenge}
   Überprüfen Sie, welche Mitglieder im Jahr 2001 geboren sind (mit der Spalte \texttt{birthday}).
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT name, birthday
 FROM users
 WHERE birthday LIKE "2001%"
@@ -312,7 +314,7 @@ WHERE birthday LIKE "2001%"
 \begin{myexercise}
   Wählen Sie alle Personen mit dem Namen \textit{Naomi} aus, die nicht aus Berlin kommen.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT name, city
 FROM users
 WHERE name LIKE "Naomi%"
@@ -322,9 +324,9 @@ AND city <> "Berlin"
 \end{myexercise}
 
 \begin{mychallenge}
-  Geben Sie die Grösse und den Wohnort von Juliette Amsel sowie Juliette Unger aus. Sie sollten das Zeichen \lstinline[style=sql]|"%"| nicht verwenden.
+  Geben Sie die Grösse und den Wohnort von Juliette Amsel sowie Juliette Unger aus. Sie sollten das Zeichen \lstinline|"%"| nicht verwenden.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT name, centimeters, city
 FROM users
 WHERE name LIKE "Juliette ___e_"
@@ -332,14 +334,14 @@ WHERE name LIKE "Juliette ___e_"
   \end{myanswer}
 \end{mychallenge}
 
-\subsection{Sortieren: \texorpdfstring{\lstinline[style=sql]|ORDER BY|}{ORDER BY}}
+\subsection{Sortieren: \texorpdfstring{\lstinline|ORDER BY|}{ORDER BY}}
 
-Mit dem Befehl \lstinline[style=sql]|ORDER BY col ASC| oder \lstinline[style=sql]|ORDER BY col DESC| kann das Resultat einer \gls{SQL} -Abfrage nach einer bestimmten Kolonne \lstinline[style=sql]|col| sortiert werden. Mit \lstinline[style=sql]|ASC| wird das Resultat aufsteigend und mit \lstinline[style=sql]|DESC| absteigend sortiert.
+Mit dem Befehl \lstinline|ORDER BY col ASC| oder \lstinline|ORDER BY col DESC| kann das Resultat einer \gls{SQL} -Abfrage nach einer bestimmten Kolonne \lstinline|col| sortiert werden. Mit \lstinline|ASC| wird das Resultat aufsteigend und mit \lstinline|DESC| absteigend sortiert.
 
 \begin{myexample}
 Beobachten Sie das Resultat folgender Abfrage:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT DISTINCT city 
 FROM users 
 ORDER BY city DESC
@@ -349,7 +351,7 @@ ORDER BY city DESC
 \begin{myexercise}
   Geben Sie alle Benutzernamen in sortierter Reihenfolge aus (a $\rightarrow$ z).
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT username
 FROM users
 ORDER BY username ASC
@@ -367,18 +369,18 @@ ORDER BY username ASC
 
 \subsection{Aggregatsfunktionen}
 
-\subsubsection{\texorpdfstring{\lstinline[style=sql]|COUNT|}{COUNT}}
+\subsubsection{\texorpdfstring{\lstinline|COUNT|}{COUNT}}
 
-Mit dem Befehl \lstinline[style=sql]|COUNT| kann man die Anzahl Resultate zählen.
+Mit dem Befehl \lstinline|COUNT| kann man die Anzahl Resultate zählen.
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT COUNT(*)
 FROM users
 \end{lstlisting}
 
-Wir können den berechneten Wert zudem zur besseren Lesbarkeit umbenennen, indem wir den Befehl \lstinline[style=sql]|AS| verwenden:
+Wir können den berechneten Wert zudem zur besseren Lesbarkeit umbenennen, indem wir den Befehl \lstinline|AS| verwenden:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT COUNT(*) AS "Registrierte Mitglieder" 
 FROM users
 \end{lstlisting}
@@ -386,7 +388,7 @@ FROM users
 \begin{myexercise}
   Geben Sie die Anzahl registrierten Mitglieder in Berlin aus. Die resultierende Spalte soll ``Registrierte Mitglieder in Berlin'' heissen.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT COUNT(*) AS "Registrierte Mitglieder in Berlin" 
 FROM users
 WHERE city="Berlin"
@@ -394,14 +396,14 @@ WHERE city="Berlin"
   \end{myanswer}
 \end{myexercise}
 
-\subsubsection{\texorpdfstring{\lstinline[style=sql]|MAX, MIN|}{MAX, MIN}}
+\subsubsection{\texorpdfstring{\lstinline|MAX, MIN|}{MAX, MIN}}
 
-Um die höchsten, bzw. tiefsten Werte einer Kolonne zu erhalten, können die Befehle \lstinline[style=sql]|MIN| und \lstinline[style=sql]|MAX| verwendet werden:
+Um die höchsten, bzw. tiefsten Werte einer Kolonne zu erhalten, können die Befehle \lstinline|MIN| und \lstinline|MAX| verwendet werden:
 
 \begin{myexample}
 Beobachten Sie das Resultat folgender Abfrage:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT MAX(centimeters) AS "Maximale Körpergrösse" 
 FROM users
 \end{lstlisting}
@@ -410,7 +412,7 @@ FROM users
 \begin{myexercise}
   Zeigen Sie, wie gross das kleinste Mitglied ist.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT MIN(centimeters) AS "Kleinste Körpergrösse"
 FROM users
 \end{lstlisting}
@@ -419,7 +421,7 @@ FROM users
 \begin{myexercise}
   Zeigen Sie, wann sich zuletzt ein Mitglied registriert hat.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT max(created_at) AS "Zuletzt Registriert"
 FROM users
 \end{lstlisting}
@@ -427,42 +429,42 @@ FROM users
 \end{myexercise}
 
 
-\subsubsection{\texorpdfstring{\lstinline[style=sql]|SUM|}{SUM}}
+\subsubsection{\texorpdfstring{\lstinline|SUM|}{SUM}}
 
-Mit \lstinline[style=sql]|SUM| kann die Summe einer Datenserie ausgegeben werden.
+Mit \lstinline|SUM| kann die Summe einer Datenserie ausgegeben werden.
 
 \begin{myexample}
 Folgender Code berechnet die Summe der Körpergrössen aller Personen, die Felix heissen:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT SUM(centimeters) 
 FROM users 
 WHERE name LIKE "Felix%"
 \end{lstlisting}
 \end{myexample}
 
-\subsubsection{\texorpdfstring{\lstinline[style=sql]|AVG|}{AVG}}
+\subsubsection{\texorpdfstring{\lstinline|AVG|}{AVG}}
 
-Mit \lstinline[style=sql]|AVG| kann der Durchschnitt einer Datenserie ausgegeben werden.
+Mit \lstinline|AVG| kann der Durchschnitt einer Datenserie ausgegeben werden.
 
 \begin{myexample}
 Folgender Code berechnet die durchschnittliche Körpergrössen aller Personen, die Felix heissen:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT AVG(centimeters) 
 FROM users 
 WHERE name LIKE "Felix%"
 \end{lstlisting}
 \end{myexample}
 
-\subsubsection{\texorpdfstring{\lstinline[style=sql]|LENGTH|}{LENGTH}}
+\subsubsection{\texorpdfstring{\lstinline|LENGTH|}{LENGTH}}
 
-Mit \lstinline[style=sql]|LENGTH| gibt die Anzahl Zeichen eines Texts zurück.
+Mit \lstinline|LENGTH| gibt die Anzahl Zeichen eines Texts zurück.
 
 \begin{myexample}
 Folgender Code berechnet die Länge aller Namen:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT name, LENGTH(name) 
 FROM users
 \end{lstlisting}
@@ -475,12 +477,12 @@ FROM users
   \end{itemize}
 \end{mysubmission}
 
-\subsection{Gruppieren: \texorpdfstring{\lstinline[style=sql]|GROUP BY|}{GROUP BY}}
-Um die Resultate einer Anfrage pro Untergruppen zu sehen, kann der Befehl \lstinline[style=sql]|GROUP BY| verwendet werden.
+\subsection{Gruppieren: \texorpdfstring{\lstinline|GROUP BY|}{GROUP BY}}
+Um die Resultate einer Anfrage pro Untergruppen zu sehen, kann der Befehl \lstinline|GROUP BY| verwendet werden.
 
 \begin{myexample}
 Folgender Code gibt die Anzahl Mitglieder pro Stadt aus:
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT city, COUNT(*) AS "Mitglieder pro Stadt" 
 FROM users 
 GROUP BY city
@@ -491,20 +493,20 @@ Zudem ist es möglich, Daten auch in Untergruppen zusammenzufassen.
 
 \begin{myexample}
 Folgender Code gibt die Anzahl männlicher und weiblicher Mitglieder pro Stadt aus:
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT city, gender, COUNT(*) 
 FROM users 
 GROUP by city, gender
 \end{lstlisting}
 \end{myexample}
 
-\subsection{Filtern nach Gruppieren: \texorpdfstring{\lstinline[style=sql]|HAVING|}{HAVING}}
-Falls nach einem \lstinline[style=sql]|GROUP BY| die Resultate noch weiter eingegrenzt werden sollen, muss statt \lstinline[style=sql]|WHERE| der Befehl \lstinline[style=sql]|HAVING| verwendet werden. Der Befehl \lstinline[style=sql]|WHERE| wird verwendet, um die ursprünglichen Daten \textit{vor} einem \lstinline[style=sql]|GROUP BY| zu filtern, der Befehl \lstinline[style=sql]|HAVING| wird verwendet, um die Resultate \textit{nach} einem \lstinline[style=sql]|GROUP BY| zu filtern.
+\subsection{Filtern nach Gruppieren: \texorpdfstring{\lstinline|HAVING|}{HAVING}}
+Falls nach einem \lstinline|GROUP BY| die Resultate noch weiter eingegrenzt werden sollen, muss statt \lstinline|WHERE| der Befehl \lstinline|HAVING| verwendet werden. Der Befehl \lstinline|WHERE| wird verwendet, um die ursprünglichen Daten \textit{vor} einem \lstinline|GROUP BY| zu filtern, der Befehl \lstinline|HAVING| wird verwendet, um die Resultate \textit{nach} einem \lstinline|GROUP BY| zu filtern.
 
 \begin{mychallenge}
   Geben Sie die durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt aus. Zeigen Sie nur die Städte, in denen die Menschen im Durchschnitt zwischen 150 und 155 gross sind.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
 FROM users
 GROUP BY city
@@ -516,7 +518,7 @@ HAVING `Durchschnittliche Körpergrösse` BETWEEN 150 AND 155
 \begin{mychallenge}
   Geben Sie die maximale Körpergrösse aus, gruppiert nach Stadt und Geschlecht, für alle Städte, die mit dem Buchstaben "B" beginnen
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT city, gender, MAX(centimeters) AS "Grösste Körpergrösse"
 FROM users
 WHERE city LIKE "B%"
@@ -525,8 +527,8 @@ GROUP BY city, gender
   \end{myanswer}
 \end{mychallenge}
 
-\subsection{Erste / Letzte Zeilen: \texorpdfstring{\lstinline[style=sql]|LIMIT|}{LIMIT}}
-Mit dem Befehl \lstinline[style=sql]|LIMIT| kann das Resultat einer \gls{SQL}-Abfrage auf eine gewisse Anzahl Zeilen beschränkt werden.
+\subsection{Erste / Letzte Zeilen: \texorpdfstring{\lstinline|LIMIT|}{LIMIT}}
+Mit dem Befehl \lstinline|LIMIT| kann das Resultat einer \gls{SQL}-Abfrage auf eine gewisse Anzahl Zeilen beschränkt werden.
 
 Beobachten Sie das Resultat folgender Abfrage:
 
@@ -535,7 +537,7 @@ Beobachten Sie das Resultat folgender Abfrage:
 \begin{myexercise}
   Zeigen Sie nur 3 Mitglieder (nur deren Namen) an.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT name
 FROM users
 LIMIT 3
@@ -546,7 +548,7 @@ LIMIT 3
 \begin{myexercise}
   Geben Sie die drei Städte mit den meisten Mitgliedern an.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT city, COUNT(*) AS "Anzahl Mitglieder"
 FROM users
 GROUP BY city
@@ -559,7 +561,7 @@ LIMIT 3
 \begin{myexercise}
   Zeigen Sie die Namen und Körpergrösse der 5 grössten Mitglieder an.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT name, centimeters
 FROM users
 ORDER BY centimeters DESC
@@ -573,14 +575,14 @@ LIMIT 5
 
   \textbf{Tipps:}
   \begin{itemize}
-    \item Berechnen Sie zuerst mit einem \lstinline[style=sql]|GROUP BY|-Befehl die Anzahl Einwohner pro Stadt
-    \item Beschränken Sie danach Ihre Abfrage mit dem \lstinline[style=sql]|WHERE|-Befehl auf Benutzer, die ein ``b'' im Namen haben
+    \item Berechnen Sie zuerst mit einem \lstinline|GROUP BY|-Befehl die Anzahl Einwohner pro Stadt
+    \item Beschränken Sie danach Ihre Abfrage mit dem \lstinline|WHERE|-Befehl auf Benutzer, die ein ``b'' im Namen haben
     \item Sortieren Sie dann nach der Anzahl Mitglieder
-    \item Verwenden Sie den \lstinline[style=sql]|LIMIT|-Befehl erst am Schluss
+    \item Verwenden Sie den \lstinline|LIMIT|-Befehl erst am Schluss
   \end{itemize}
 
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT city, COUNT(*) AS "Mitglieder"
 FROM users 
 WHERE name LIKE "%b%" 
@@ -594,18 +596,18 @@ LIMIT 3
 \begin{mysubmission}
   \begin{itemize}
     \item Lösen Sie Aufgaben 1--5 unter folgendem Link: \url{https://sql-tutorial.de/home/uebungen.php?lektion=4}.   
-    \item Geben Sie danach auf Moodle ``Übungen 3 (\lstinline[style=sql]|GROUP BY|)'' ab.
+    \item Geben Sie danach auf Moodle ``Übungen 3 (\lstinline|GROUP BY|)'' ab.
   \end{itemize}
 \end{mysubmission}
 
-\subsection{Verzweigungen: \texorpdfstring{\lstinline[style=sql]|CASE WHEN|}{CASE WHEN}}
+\subsection{Verzweigungen: \texorpdfstring{\lstinline|CASE WHEN|}{CASE WHEN}}
 
-Der SQL-Befehl \lstinline[style=sql]|CASE WHEN| kann helfen, Ausdrücke basierend auf Bedingungen zu schreiben, also ähnlich wie if-elif-else-Verzweigungen in Python.
+Der SQL-Befehl \lstinline|CASE WHEN| kann helfen, Ausdrücke basierend auf Bedingungen zu schreiben, also ähnlich wie if-elif-else-Verzweigungen in Python.
 
 \begin{myexample}
 Die durchschnittliche Körpergrösse in Deutschland beträgt 179 cm für Männer. Folgender Code berechnet für alle Männer, ob sie grösser, kleiner oder gleich dem Durchschnitt sind, und gibt das Resultat in einer neuen Kolonne aus.
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT name, centimeters,
 CASE 
 	WHEN centimeters > 179 THEN 'Gross'
@@ -620,7 +622,7 @@ WHERE gender="male"
 \begin{myexercise}
   Berechnen Sie eine neue Kolonne, die den Text ``langer Name'' enthält, falls ein Name länger als 20 Zeichen lang ist, und ansonsten ``kurzer Name''. BenutzerInnen mit langem Namen sollen zuoberst stehen. Zeigen Sie nur die ersten 5 Zeilen.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT name, LENGTH(name),
 CASE
 	WHEN LENGTH(name)>20 THEN "Langer Name"
@@ -726,7 +728,7 @@ Von dort aus kann man auf eine Werbekampagne klicken, um mehr Details zu sehen. 
 Als erstes sehen wir den (frei wählbaren) Kampagnen-Namen \texttt{bergalm}. Wir sehen auch dass die Werbung vom Typ ``banner'' ist, sie wird also bei Fotos angezeigt. Nebst weiteren Informationen sehen wir insbesondere zuunterst die ``SQL-Query'', also die SQL-Abfrage, mit der eine Werbung personalisiert wird.
 Für diese Natur-Werbung haben wir folgende Abfrage:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 SELECT CASE 
 	WHEN description LIKE '%natur%' 
 	OR   description LIKE '%landschaft%' 
@@ -739,12 +741,12 @@ WHERE id=$photo
 
 Diese Abfrage wird nun auf der Webseite für jedes Foto ausgeführt, um zu sehen, ob die Werbung zum Foto passt.
 
-Wir sehen zuerst, dass die Kolonne \texttt{description} der Tabelle \texttt{photos}, also die Kolonne, die Hashtags speichert, auf Texte wie ``Natur'', ``Landschaft'' und ``Berg'' abgesucht wird. Falls so ein Text vorhanden ist in den Hashtags des Fotos, wird der Wert \texttt{true} zurückgegeben, und somit wird die Werbung potentiell angezeigt, andernfalls wird der Wert \texttt{false} zurückgegeben. Auf der letzten Zeile sehen wir eine Variable \lstinline[style=sql]|$photo|, mit welcher jedes Foto der gesamten Webseite nach den genannten Kriterien abgesucht werden kann.
+Wir sehen zuerst, dass die Kolonne \texttt{description} der Tabelle \texttt{photos}, also die Kolonne, die Hashtags speichert, auf Texte wie ``Natur'', ``Landschaft'' und ``Berg'' abgesucht wird. Falls so ein Text vorhanden ist in den Hashtags des Fotos, wird der Wert \texttt{true} zurückgegeben, und somit wird die Werbung potentiell angezeigt, andernfalls wird der Wert \texttt{false} zurückgegeben. Auf der letzten Zeile sehen wir eine Variable \lstinline|$photo|, mit welcher jedes Foto der gesamten Webseite nach den genannten Kriterien abgesucht werden kann.
 
 \begin{myexercise}
   Verändern Sie den SQL-Befehl so, dass die Werbung auch für Fotos mit dem Hashtag ``\texttt{\#Wasser}'' angezeigt werden. Testen Sie danach, ob es geklappt hat, indem Sie Fotos mit diesem Hashtag suchen. Sie können auf folgender URL überprüfen, ob es geklappt hat: \url{[ihrefarbe].instahub.org/p/1517}.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 SELECT CASE 
 	WHEN description LIKE '%natur%' 
 	OR   description LIKE '%landschaft%' 

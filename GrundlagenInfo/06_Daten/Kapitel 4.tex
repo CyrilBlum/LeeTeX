@@ -1,11 +1,11 @@
 \section{Daten bearbeiten mit \texorpdfstring{\gls{SQL}}{SQL}}
 Mit SQL kann man Daten nicht nur abfragen, sondern auch erstellen, verändern und löschen. Im folgenden Schauen wir uns dafür nötigen Befehle an.
 
-\subsection{Eine neue Tabelle erstellen: \texorpdfstring{\lstinline[style=sql]|CREATE table|}{CREATE table}}
+\subsection{Eine neue Tabelle erstellen: \texorpdfstring{\lstinline|CREATE table|}{CREATE table}}
 \label{subsec:create-table}
-Eine neue Tabelle kann innerhalb einer Datenbank mit dem Befehl \lstinline[style=sql]|CREATE TABLE| angelegt werden:
+Eine neue Tabelle kann innerhalb einer Datenbank mit dem Befehl \lstinline|CREATE TABLE| angelegt werden:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 CREATE TABLE tabellenname(
   kolonne1 eigenschaften1,
   kolonne2 eigenschaften2,
@@ -17,7 +17,7 @@ CREATE TABLE tabellenname(
 \label{ex:sql-create}
 Die Tabelle \texttt{users} wurde mit folgendem Befehl erstellt:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 CREATE TABLE users (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `username` varchar(191) NOT NULL UNIQUE,
@@ -42,30 +42,30 @@ CREATE TABLE users (
 
 Nach dem Kolonnennamen folgt zuerst der \textbf{Kolonnentyp}, d.h., die Angabe, welche Art von Daten in der Kolonne gespeichert werden. Einige der häufigsten Datentypen sind:
 \begin{itemize}
-  \item \lstinline[style=sql]|INT(laenge)| bezeichnet eine Ganzzahl, für die \texttt{laenge} bytes zur Verfügung stehen. Beispielsweise speichert die Kolonne \texttt{centimeters} eine Zahl von 0 bis $2^{11}$, d.h. 2048.
-  \item \lstinline[style=sql]|TINYINT(1)| speichert den Wert 0 oder 1, wobei 0 typischerweise ``falsch'' und 1 ``wahr'' bedeuten.
-  \item \lstinline[style=sql]|DATETIME| ist ein Datum mit einer Uhrzeit
-  \item \lstinline[style=sql]|VARCHAR(laenge)| bezeichnet eine Zeichenkette, d.h. ein Text, der mit maximal \texttt{laenge} vielen Bit kodiert wird.
-  \item \lstinline[style=sql]|ENUM('wert1', 'wert2',...)| bezeichnet eine Auflistung (engl. \textit{enumeration}) möglicher Werte. Beispielsweise können nur ``male'' und ``female'' im Feld \texttt{gender} eingetragen werden.
+  \item \lstinline|INT(laenge)| bezeichnet eine Ganzzahl, für die \texttt{laenge} bytes zur Verfügung stehen. Beispielsweise speichert die Kolonne \texttt{centimeters} eine Zahl von 0 bis $2^{11}$, d.h. 2048.
+  \item \lstinline|TINYINT(1)| speichert den Wert 0 oder 1, wobei 0 typischerweise ``falsch'' und 1 ``wahr'' bedeuten.
+  \item \lstinline|DATETIME| ist ein Datum mit einer Uhrzeit
+  \item \lstinline|VARCHAR(laenge)| bezeichnet eine Zeichenkette, d.h. ein Text, der mit maximal \texttt{laenge} vielen Bit kodiert wird.
+  \item \lstinline|ENUM('wert1', 'wert2',...)| bezeichnet eine Auflistung (engl. \textit{enumeration}) möglicher Werte. Beispielsweise können nur ``male'' und ``female'' im Feld \texttt{gender} eingetragen werden.
 \end{itemize}
 
 Zudem können folgende Eingeschaften für Kolonnen angegeben werden:
 
 \begin{itemize}
-  \item \lstinline[style=sql]|NOT NULL|: Feld darf nicht leer sein. Falls kein \lstinline[style=sql]|DEFAULT|-Wert angegeben wird, muss, der Wert für diese Kolonne beim Erstellen eines neuen Benutzerkontos immer mitgeliefert werden.
-  \item \lstinline[style=sql]|DEFAULT wert|: Standard-Wert, falls nichts anderes angegeben wird. Das Attribut \texttt{avatar} nimmt beispielsweise den Wert \texttt{avatar.png} an, falls kein anderes Bild hochgeladen wird.
-  \item \lstinline[style=sql]|AUTO_INCREMENT|: Zahl, die bei jedem neuen Eintrag automatisch immer um 1 grösser wird
-  \item \lstinline[style=sql]|PRIMARY KEY|: Primärschlüssel (s. \cref{table:table-cia}).
-  \item \lstinline[style=sql]|FOREIGN KEY (kolonneID) REFERENCES tabelle2(kolonneID2)|: Fremdschlüssel (s. \cref{table:table-cia}).
-  \item \lstinline[style=sql]|UNIQUE|: Darf keine doppelten Werte enthalten
+  \item \lstinline|NOT NULL|: Feld darf nicht leer sein. Falls kein \lstinline|DEFAULT|-Wert angegeben wird, muss, der Wert für diese Kolonne beim Erstellen eines neuen Benutzerkontos immer mitgeliefert werden.
+  \item \lstinline|DEFAULT wert|: Standard-Wert, falls nichts anderes angegeben wird. Das Attribut \texttt{avatar} nimmt beispielsweise den Wert \texttt{avatar.png} an, falls kein anderes Bild hochgeladen wird.
+  \item \lstinline|AUTO_INCREMENT|: Zahl, die bei jedem neuen Eintrag automatisch immer um 1 grösser wird
+  \item \lstinline|PRIMARY KEY|: Primärschlüssel (s. \cref{table:table-cia}).
+  \item \lstinline|FOREIGN KEY (kolonneID) REFERENCES tabelle2(kolonneID2)|: Fremdschlüssel (s. \cref{table:table-cia}).
+  \item \lstinline|UNIQUE|: Darf keine doppelten Werte enthalten
 \end{itemize}
 
-\subsection{Tabellen verändern: \texorpdfstring{\lstinline[style=sql]|ALTER table|}{ALTER table}}
-Mit dem Befehl \lstinline[style=sql]|ALTER table| können existierende Tabellen verändert werden.
+\subsection{Tabellen verändern: \texorpdfstring{\lstinline|ALTER table|}{ALTER table}}
+Mit dem Befehl \lstinline|ALTER table| können existierende Tabellen verändert werden.
 
 \begin{myexample}
 Um eine weitere Kolonne hinzuzufügen, kann folgender Befehl verwendet werden:
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 ALTER TABLE tabellenname
 ADD neue_kolonne eigenschaften
 \end{lstlisting}
@@ -73,7 +73,7 @@ ADD neue_kolonne eigenschaften
 
 \begin{myexample}
 Um eine Kolonne umzubenennen, kann folgender Befehl verwendet werden:
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 ALTER TABLE tabellenname
 RENAME COLUMN alter_name TO neuer_name;
 \end{lstlisting}
@@ -82,8 +82,8 @@ RENAME COLUMN alter_name TO neuer_name;
 Beim Umbenennen einer Kolonne können Datenbankschemen (z.B. Fremschlüssel-Referenzen) zerstört werden, z.B. falls ein Primärschlüssel umbenannt wird, welcher von einer anderen Tabelle per Fremschlüssel referenziert wird (s. \cref{subsec:create-table}).
 \end{mycaution}
 
-\subsection{Tabellen löschen: \texorpdfstring{\lstinline[style=sql]|DROP table|}{DROP table}}
-Mit dem Befehl \lstinline[style=sql]|DROP TABLE tabellenname| kann eine Tabelle komplett löschen.
+\subsection{Tabellen löschen: \texorpdfstring{\lstinline|DROP table|}{DROP table}}
+Mit dem Befehl \lstinline|DROP TABLE tabellenname| kann eine Tabelle komplett löschen.
 
 \begin{mycaution}
   Dieser Schritt ist irreversibel. Falls Sie eine Tabelle irrtümlich löschen, geben Sie mir Bescheid, damit ich Ihre Datenbank zurücksetzen kann.
@@ -92,7 +92,7 @@ Mit dem Befehl \lstinline[style=sql]|DROP TABLE tabellenname| kann eine Tabelle 
 \begin{myexercise}\label{aufg:a-sql-insert}
   Erstellen Sie auf InstaHub eine Tabelle \texttt{users2} mit denselben Eigenschaften wie \texttt{users} (s. Beispiel \ref{ex:sql-create})
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 CREATE TABLE users2 (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `username` varchar(191) NOT NULL UNIQUE,
@@ -119,20 +119,20 @@ CREATE TABLE users2 (
 \begin{myexercise}
   Löschen Sie danach die Tabelle \texttt{users2} wieder.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 DROP TABLE users2
 \end{lstlisting}
   \end{myanswer}
 \end{myexercise}
 
 
-\subsection{Daten einfügen: \texorpdfstring{\lstinline[style=sql]|INSERT|}{INSERT}}
+\subsection{Daten einfügen: \texorpdfstring{\lstinline|INSERT|}{INSERT}}
 
-Mit \lstinline[style=sql]|INSERT| können neue Zeilen in eine bestehende Tabelle eingefügt werden.
+Mit \lstinline|INSERT| können neue Zeilen in eine bestehende Tabelle eingefügt werden.
 
-Die Syntax von \lstinline[style=sql]|INSERT| sieht wie folgt aus:
+Die Syntax von \lstinline|INSERT| sieht wie folgt aus:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 INSERT INTO tabelle_name (kolonne1, kolonne2, kolonne3, ...)
 VALUES (wert1, wert2, wert3, ...)
 \end{lstlisting}
@@ -140,7 +140,7 @@ VALUES (wert1, wert2, wert3, ...)
 \begin{myexample}
 \label{ex:sql-insert}
 Folgender Code fügt eine neue Person in die Tabelle \texttt{users} ein:
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 INSERT INTO users (username, email, password, name, bio, gender, birthday, city, country, centimeters, avatar, role, is_active, remember_token, created_at, updated_at) 
 VALUES ('guenther37', 'guenther@instahub.test', '12345', 'Günther Müller', 'Günther mag Kartoffelsalat.', 'male', '2006-06-06 00:00:00', 'Leipzig', 'Deutschland', '173', 'avatar.png', 'user', '0', NULL, now(), now())
 \end{lstlisting}
@@ -149,7 +149,7 @@ Wie Sie sehen, wird zuerst die Tabelle (\texttt{users}) aufgelistet, danach die 
 
 \begin{myexercise}
 \label{aufg:sql-insert}
-  Für welche Kolonnen müssen für einen neuen Benutzer immer die Werte mitgegeben werden? S. die Erklärungen zu \lstinline[style=sql]|NOT NULL| und \lstinline[style=sql]|DEFAULT| in \cref{subsec:create-table}.
+  Für welche Kolonnen müssen für einen neuen Benutzer immer die Werte mitgegeben werden? S. die Erklärungen zu \lstinline|NOT NULL| und \lstinline|DEFAULT| in \cref{subsec:create-table}.
   \begin{myanswer}
     \begin{verbatim}
 username, email, password, name, role, is_active
@@ -173,7 +173,7 @@ username, email, password, name, role, is_active
   \end{table}
   Überprüfen Sie danach, ob der Eintrag korrekt erstellt worden ist, indem Sie die Daten des users \texttt{testuser} abfragen (alle Attribute). Sie können mehrere SQL-Befehle mit einem Semikolon (;) aneinanderreihen.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 INSERT INTO users (id, username, email, password, 
 				   name, role, is_active) 
 VALUES (300, 'testuser', 'test@test.com', 'test123', 'Test-Vorname Test-Nachname', 'user', '1');
@@ -182,11 +182,11 @@ SELECT * FROM users WHERE username="testuser"
   \end{myanswer}
 \end{mysubmission}
 
-\subsection{Daten verändern: \texorpdfstring{\lstinline[style=sql]|UPDATE|}{UPDATE}}
+\subsection{Daten verändern: \texorpdfstring{\lstinline|UPDATE|}{UPDATE}}
 
-Mit \lstinline[style=sql]|UPDATE| können Werte einer Tabelle aktualisiert werden. Die Syntax von \lstinline[style=sql]|UPDATE| sieht wie folgt aus:
+Mit \lstinline|UPDATE| können Werte einer Tabelle aktualisiert werden. Die Syntax von \lstinline|UPDATE| sieht wie folgt aus:
 
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 UPDATE tabelle_name
 SET kolonne1 = wert1, kolonne2=wert2, ...
 WHERE bedingung(en)
@@ -196,7 +196,7 @@ WHERE bedingung(en)
 
   Ersetzen Sie die Stadt ``Berlin'' überall durch ``Bern''
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 UPDATE users
 SET city="Bern"
 WHERE city="Berlin"
@@ -207,7 +207,7 @@ WHERE city="Berlin"
 \begin{mysubmission}
   Setzen Sie die Körpergrössen aller männlichen Mitglieder auf 190. Überprüfen Sie die Richtigkeit Ihres Befehls, indem Sie nach Ihrem Befehl die Kolonnen für die Körpergrösse, das Geschlecht und den Name aller männlichen Mitglieder abfragen. Verwenden Sie ein Semikolon (;), um mehrere Befehle voneinander abzutrennen.
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 UPDATE users
 SET centimeters=190
 WHERE gender="male"; 
@@ -219,26 +219,26 @@ WHERE gender="male"
   \end{myanswer}
 \end{mysubmission}
 
-\subsection{Einträge löschen: \texorpdfstring{\lstinline[style=sql]|DELETE FROM|}{DELETE FROM}}
-Mit dem Befehl \lstinline[style=sql]|DELETE FROM| können Einträge aus einer Tabelle gelöscht werden.
-\begin{lstlisting}[style=sql]
+\subsection{Einträge löschen: \texorpdfstring{\lstinline|DELETE FROM|}{DELETE FROM}}
+Mit dem Befehl \lstinline|DELETE FROM| können Einträge aus einer Tabelle gelöscht werden.
+\begin{lstlisting}
 DELETE FROM tabellenname
 WHERE bedingungen
 \end{lstlisting}
 
 \begin{myexample}
 Folgender Code löscht den Eintrag für user \texttt{guenther37}:
-\begin{lstlisting}[style=sql]
+\begin{lstlisting}
 DELETE FROM users
 WHERE username="guenther37"
 \end{lstlisting}
 \end{myexample}
 
 \begin{myexercise}
-  Löschen Sie den Eintrag, den Sie in \cref{aufg:a-sql-insert} erstellt haben. Überprüfen Sie, ob der Eintrag verschwunden ist, indem Sie danach \lstinline[style=sql]|SELECT * FROM users| ausführen.
+  Löschen Sie den Eintrag, den Sie in \cref{aufg:a-sql-insert} erstellt haben. Überprüfen Sie, ob der Eintrag verschwunden ist, indem Sie danach \lstinline|SELECT * FROM users| ausführen.
   %TODO Referenz stimmt nicht
   \begin{myanswer}
-    \begin{lstlisting}[style=sql]
+    \begin{lstlisting}
 DELETE FROM users
 WHERE username="testuser"
 \end{lstlisting}
