@@ -210,6 +210,120 @@ Sei $\Sigma$ ein Alphabet. $\Sigma^*$ (gesprochen: \textit{Sigma Stern}) ist die
 \end{myremark}
 
 
+\begin{myexercise}\label{myexercise:2.6}
+Wie sieht die Menge $\lrc{1}^*$ aus und wie die Menge $\lr{\Sigma_{\text{bool}}}^*$?
+\begin{myanswer}
+\begin{align*}
+    \lrc{1}^* &= \lrc{\lambda, 1, 11, 111, 1111, 11111, ...} =\\
+    &= \lrc{\lambda}\cup\setcm{x_1x_2...x_i}{i\in\N,\; x_j = 1\;\text{für}\; j = 1,2,..., i}
+\end{align*}
+\begin{align*}
+  \lr{\Sigma_{\text{bool}}}^* = \lrc{0,1}^* &= \lrc{\lambda, 0, 1,, 00, 01, 10, 11, 000, 001, 010, 100, 011, ...} =\\
+    &= \lrc{\lambda}\cup \setcm{x_1x_2...x_i}{i\in\N,\; x_j\in\Sigma_{\text{bool}} \;\text{für}\; j = 1,2,..., i}
+\end{align*}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+In \cref{mydefinition:Wort} haben wir ein Wort als endliche Folge von Buchstaben definiert. Nun enthält zum Beispiel die Menge $\lrc{1}^*$ in \cref{myexercise:2.6} aber Wörter beliebiger Länge. Erklären Sie, warum dies kein Widerspruch ist.
+\end{myexercise}
+\begin{myanswer}
+\noindent
+Anhand dieser Frage lässt sich der Unterschied zwischen den Begriffen \textit{unbeschränkt} und \textit{unendlich} schön verdeutlichen. Betrachten wir dazu exemplarisch nochmals die Menge $\lrc{1}^*$ aus \cref{myexercise:2.6}:
+\begin{align*}
+    \lrc{1}^* &= \lrc{\lambda, 1, 11, 111, 1111, 11111, ...} =\\
+    &= \lrc{\lambda}\cup \setcm{x_1x_2...x_i}{i\in\N,\; x_j = 1\;\text{für}\; j = 1,2,..., i}
+\end{align*}
+\begin{itemize}
+  \item Für jede natürliche Zahl $n\in\N$, existiert in $\lrc{1}^*$ ein Wort $w$ mit $\abs{w} \geq n$, da für jedes $n\in\N$ (insbesondere) auch das Wort $w:=1^n$ in der Menge $\lrc{1}^*$ enthalten ist und $\abs{w}\geq n$. Damit gibt es \textbf{keine obere Schranke} für die Länge der Wörter in $\lrc{1}^*$.
+    \item Jedes Wort $w\in\lrc{1}^*$ hat die Form $w = 1^n$ für eine natürliche Zahl $n$. Damit hat jedes Wort in der Menge $\lrc{1}^*$ eine endliche Länge.
+\end{itemize}
+Die Länge der Wörter in $\lrc{1}^*$ können also nicht nach oben beschränkt werden, trotzdem hat jedes Wort in $\lrc{1}^*$ eine endliche Länge und ist somit tatsächlich ein Wort im Sinne von Definition \cref{mydefinition:Wort}.
+\end{myanswer}
+
+
+Mit der folgenden Definition wollen wir den Begriff \textit{Teilwort}, für den wir eine gute Intuition haben, formalisieren. Ein Teilwort eines Wortes $x$ ist ein zusammenhängender Teil von $x$.
+\begin{mydefinition}{\textbf{Teilwörter}}\label{mydefinition:Teilwort}
+
+Seien $u,w\in\Sigma^*$ für ein Alphabet $\Sigma$.
+\begin{itemize}
+    \item $v$ heisst \textbf{Teilwort} von $w$ $\Leftrightarrow$ es existieren $x,y\in\Sigma^*$, so dass $w = xvy$
+    \item $v$ heisst \textbf{Präfix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, so dass $w = vx$
+    \item $v$ heisst \textbf{Suffix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, so dass $w = xv$
+    \item $v\neq \lambda$ heisst \textbf{echtes} Teilwort (Präfix, Suffix) von $w$ $\Leftrightarrow$ $v\neq w$ und $v$ ein Teilwort (Präfix, Suffix) von $w$ ist
+\end{itemize}
+\end{mydefinition}
+
+\begin{myexample}
+Sei $\Sigma = \lrc{a,b,c}$. Das Wort $abc$ ist ein echtes Teilwort, echtes Präfix und ein echtes Suffix von $(abc)^3$. Das leere Wort $\lambda$ ist Teilwort von jedem Wort. Jedes Wort ist Teilwort von sich selbst (aber kein echtes Teilwort).
+\end{myexample}
+
+\begin{mychallenge}
+Sei $\Sigma = \lrc{a_1,a_2,...,a_m}$ ein Alphabet der Grösse $m\in\Nunit$.
+\begin{aenum}
+    \item Welche Bedingungen muss ein Wort $x$ der Länge $n\leq m$ über $\Sigma$ erfüllen, damit es die maximale Anzahl von verschiedenen Teilwörtern hat?
+    \item Wie viele verschiedene Teilwörter hat ein solches $x$?
+\end{aenum}
+\end{mychallenge}
+\begin{myanswer}
+\begin{aenum}
+    \item Die Bedingung ist, dass $x$ (Länge $n$) aus $n$ verschiedenen Buchstaben besteht (also aus lauter verschiedenen Buchstaben). Dann (und nur dann) sind offensichtlich alle möglichen Teilwörter paarweise verschieden und wir erreichen die maximale Anzahl von Teilwörtern.
+      Ein solches Wort ist beispielsweise $w = a_1a_2...a_n$.
+    \item Es genügt also, die Anzahl der Teilwörter von $w$ zu zählen. Wir werden die Anzahl der Teilwörter der Länge $i = 1, i = 2$ bis zur Länge $i = n$ zählen.\\
+    \underline{$i = 1$}:
+    \begin{align*}
+        1:\quad &\blue{\underline{a_1}}a_2a_3a_4...a_{n-3}a_{n-2}a_{n-1}a_n\\
+        2:\quad &a_1\blue{\underline{a_2}}a_3a_4...a_{n-3}a_{n-2}a_{n-1}a_n\\
+        3:\quad &a_1a_2\blue{\underline{a_3}}a_4...a_{n-3}a_{n-2}a_{n-1}a_n\\
+        &...\\
+        (n-3):\quad &a_1a_2a_3a_4...\blue{\underline{a_{n-3}}}a_{n-2}a_{n-1}a_n\\
+        (n-2):\quad &a_1a_2a_3a_4...a_{n-3}\blue{\underline{a_{n-2}}}a_{n-1}a_n\\
+        (n-1):\quad &a_1a_2a_3a_4...a_{n-3}a_{n-2}\blue{\underline{a_{n-1}}}a_n\\
+        n: \quad &a_1a_2a_3a_4...a_{n-3}a_{n-2}a_{n-1}\blue{\underline{a_n}}
+    \end{align*}
+    Offensichtlich gibt es $n$ viele Teilwörter der Länge $1$, nämlich genau die Teilwörter $\blue{a_1},\blue{a_2},...,\blue{a_n}$. Wir haben jeweils die Anfangsposition des Teilwortes in $w$ unterstrichen.
+\underline{$i = 2$}:
+    \begin{align*}
+        1: \quad &\blue{\underline{a_1}a_2}a_3a_4...a_{n-3}a_{n-2}a_{n-1}a_n\\
+        2: \quad &a_1\blue{\underline{a_2}a_3}a_4...a_{n-3}a_{n-2}a_{n-1}a_n\\
+        3: \quad &a_1a_2\blue{\underline{a_3}a_4}...a_{n-3}a_{n-2}a_{n-1}a_n\\
+        &...\\
+        (n-3):\quad &a_1a_2a_3a_4...\blue{\underline{a_{n-3}}a_{n-2}}a_{n-1}a_n\\
+        (n-2):\quad &a_1a_2a_3a_4...a_{n-3}\blue{\underline{a_{n-2}}a_{n-1}}a_n\\
+        (n-1):\quad &a_1a_2a_3a_4...a_{n-3}a_{n-2}\blue{\underline{a_{n-1}}a_n}
+    \end{align*}
+    Es gibt $n-1$ viele Teilwörter der Länge $2$. Man beachte, dass sich die Anfangsposition der Teilwörter in $w$ um eine Position nach links verschoben hat, da das letzte Teilwort (ganz rechts) der Länge $2$ beim zweitletzten Symbol in $w$ beginnen muss.\\
+\underline{$i = 3$}:
+    \begin{align*}
+        1: \quad &\blue{\underline{a_1}a_2}a_3a_4...a_{n-3}a_{n-2}a_{n-1}a_n\\
+        2: \quad &a_1\blue{\underline{a_2}a_3a_4}...a_{n-3}a_{n-2}a_{n-1}a_n\\
+        &...\\
+        (n-3):\quad &a_1a_2a_3a_4...\blue{\underline{a_{n-3}}a_{n-2}a_{n-1}}a_n\\
+        (n-2):\quad &a_1a_2a_3a_4...a_{n-3}\blue{\underline{a_{n-2}}a_{n-1}a_n}
+    \end{align*}
+    Es gibt $n-2$ viele Teilwörter der Länge $3$.\\
+    
+    \noindent
+    Es ist nun nicht mehr schwierig zu sehen, dass es für ein Teilwort der Länge $i\in\lrc{1,2,...,n}$ genau $n-i+1$ mögliche Anfangspositionen in $w$ gibt, da die Positionen $n-i+2,3,...,n$ nicht möglich sind (\quotes{zu wenig Platz}). Nun summieren wir die Anzahl aller unterschiedlichen (nicht leeren) Teilwörter von $w$ der Längen $i=1,2,...n$ auf:
+    \begin{align*}
+        \sum_{i=1}^n (n-i+1) = n(n+1)-\sum_{i=1}^n i = n(n+1) - \frac{n(n+1)}{2}=\frac{n(n+1)}{2}
+    \end{align*}
+    Hinzu kommt noch das leere Wort (welches Teilwort jedes Wortes ist) und als Resultat finden wir, dass es
+    \begin{align*}
+        \frac{n(n+1)}{2} + 1
+    \end{align*}
+    viele verschiedene Teilwörter von $w$ gibt.
+\end{aenum}
+\end{myanswer}
+
+
+
+
+
+
+
+
+
 \section{Motivation}
 
 Alice möchte Bob eine Nachricht zukommen lassen. Diese Nachricht wird \tib{Klartext}\index{Klartext} genannt. 
