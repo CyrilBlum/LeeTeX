@@ -1,0 +1,432 @@
+\newtcolorbox{myExBox}[1][]{
+  enhanced jigsaw,
+  breakable,
+  parbox=false,
+    attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+%  attach boxed title to top text left={yshift=-3mm},
+  colback=ForestGreen!10,
+  colframe=ForestGreen,
+  colbacktitle=ForestGreen,
+  #1}
+
+\newtcolorbox{overviewBox}[1][]{
+  enhanced jigsaw,
+  breakable,
+  parbox=false,
+    attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+%  attach boxed title to top text left={yshift=-3mm},
+  colback=RoyalBlue!10,
+  colframe=RoyalBlue,
+  colbacktitle=RoyalBlue,
+  #1}
+
+% initialize new counter for DLs and set it to 1
+\newcounter{mycounter}\stepcounter{mycounter}
+
+\lstset{style=TigerJython}
+
+\newcommand{\thetopic}{Semester-Programm ``Einführung Programmieren''}
+\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+\maketitlepage{\thetopic}{}
+\clearpage
+
+
+\section*{Begleitdokument für Lehrpersonen}
+%\begin{itemize}
+%    \item Einführung in den Semesterplan
+%    \item Kontext (Voraussetzungen, Stufe, Empfehlung zur Einbettung und zur Fortsetzung)
+%    \item Mögliche Schwierigkeiten der SuS und Lösungsvorschläge (für Gesamt-Programm)
+%\end{itemize}
+
+Dieses Dokument hat zum Ziel, einen Semester-Plan für die Einführung in das Programmieren auf Gymnasial-Stufe (Schweizer Bildungssystem, Sekundarstufe II, Altersstufe ca. 15-18 Jahre, obligatorisches Fach Informatik, kurz OInf) mittels Python zur Verfügung zu stellen. Das Semesterprogramm setzt keine besonderen Programmier- oder Informatikkenntnisse voraus. Das Semesterprogramm erstreckt sich über ca. 10 Lektionen und sollte den SuS ermöglichen, einfache mathematische und grafische Programme in Python zu schreiben. 
+
+Da relativ wenig Zeit für das OInf zur Verfügung steht, liegt der Fokus dieses Semester-Programms auf grundlegenden Python-Kenntnissen. Als Fortsetzung und Vertiefung der neu gewonnen Kenntnisse empfiehlt sich eine Einführung in die Robotik im OInf, beziehungsweise eine Vertiefung der Programmierung im Ergänzungsfach, beispielsweise mit Themen wie Rekursion oder objektorientierter Programmierung (in Python).
+
+Beim untenstehenden Themenüberblick wurde insbesondere darauf geachtet, die Reihenfolge möglichst sinnvoll zu gestalten, so dass die Kenntnisse schrittweise erweitert und aufeinander aufgebaut werden können. Zudem wurde darauf geachtet, stets ein möglichst ausgeglichenes Verhältnis zwischen ``theoretisch-mathematischen'' und ``grafisch-interaktiven'' Aufgaben zu bewahren (da letztere die SuS erfahrungsgemäss stärker motivieren).
+
+\begin{overviewBox}[title=Überblick der Themen]
+    \begin{enumerate}
+    \item \textbf{Allgemeine Motivation und Einführung ins Programmieren}
+    \begin{itemize}
+        \item 1-2 Beispiele mit Bezug zur Lebenswelt und Vorwissen von SuS, einige Algorithmen und Beispiele zu logischem Denken
+        \item Vordefinierte Grafik-Befehle mit \lstinline|turtle| (nur ein Parameter): \lstinline|forward()|, \lstinline|right()|
+        \item Einfache Schleifen mit \lstinline|for i in range(...)|
+    \end{itemize}
+    \item \textbf{Datentypen und Syntax}
+    \begin{itemize}
+        \item Variablen und Zuweisung vs. Mathematik
+        \item Arbeiten mit einfachen mathematischen Operatoren
+        \item Arbeiten mit Text
+        \item Debugging-Übungen (syntax vs. runtime vs. semantic errors), typische Fehler
+    \end{itemize}
+    \item \textbf{Verzweigungen} (\lstinline|if...elif...else|) \& \lstinline|while|,  elementare logische Operatoren (or, and, xor)  und Flussdiagramme
+    \item \textbf{Befehle / Funktionen} (\lstinline|def|)
+    \begin{itemize}
+        \item Ohne Parameter, ohne \lstinline|return|
+        \item Mit Parameter, ohne \lstinline|return|
+        \item Mit Parameter, mit \lstinline|return|
+    \end{itemize}
+    \item \textbf{Listen}
+    \begin{itemize}
+        \item  Koordinatengrafik, Zufallszahlen, \lstinline|random|-Library ($\rightarrow$ \lstinline|turtle|), \item Schleifen / Traversieren (\lstinline|for item in mylist|)
+    \end{itemize}
+\end{enumerate}
+\end{overviewBox}
+
+
+Mögliche Schwierigkeiten, die Auftreten können:
+\begin{enumerate}
+\item \textbf{Zeitbedarf}: Übungen zu neuen Teilen können erfahrungsgemäss viel Zeit beanspruchen, insbesondere Übungen zu Syntax oder Funktionen. Dabei kann es hilfreich sein, die Übungen von Anfang an mit einer Zeiteinschätzung zu versehen und einzuplanen, welche Übungen bei Bedarf gestrichen, beziehungsweise auf eine andere Lektion verschoben, oder als Challenge-Aufgabe für Schnelle deklariert werden sollen.
+\item \textbf{Abstraktes Denken}: Gerade in Bereichen wie Verzweigungen und Flussdiagrammen, oder beim Traversieren von Listen, zeigt sich, dass das abstrakte Denken --- insbesondere in tieferen Altersstufen --- häufig noch nicht ausreichend entwickelt ist. Daher kann es, sofern diese Möglichkeit besteht, sinnvoll sein, das Semesterprogramm erst in einem späteren Semester auszuführen.
+\item \textbf{Technische Probleme}: \textit{Shortcuts}, Programme installieren, Programme abspeichern --- all dies ist für viele SuS entgegen der Erwartung vieler LP noch neu. Dazu kommen häufige Probleme beim Betreiben eigener Geräte (BYOD). Daher sollte genügend Zeit eingeplant werden, um auch auf solche Faktoren einzugehen und um ``softes'' Wissen zu vermitteln.
+\end{enumerate}
+
+\clearpage
+\tableofcontents
+\clearpage
+\section{DL \themycounter: Allgemeine Motivation und Einstieg ins Programmieren}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+Die Lektion soll den Einstieg in die (für die meisten SuS noch neue) Welt des Programmierens machen. Dabei werden zuerst das Thema ``Programmieren'' im Allgemeinen und danach Python als spezifische Programmiersprache für diesen Semester-Kurs vorgestellt. Abschliessend führen einige einfache grafische Beispiele mit der \lstinline|turtle|-Library die SuS an die Programmierung mit Python heran.
+
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können Beispiele aus ihrem eigenen Alltag nennen, wo Algorithmen eine Rolle spielen.
+    \item Die SuS können logische Prozesse aus der ihnen bekannten Alltagswelt mithilfe von Flussdiagrammen modellieren.
+    \item Die SuS können grundlegende \lstinline|turtle|-Befehle wie \lstinline|forward()|, \lstinline|right()| und \lstinline|left()| ausführen, um damit einfache Zeichnungen zu erstellen.
+    \item Die SuS können einfache Formen mit einer \lstinline|for i in range(start, end, step)|-Schleife zeichnen, beispielsweise ein Quadrat oder ein Sechs-Eck.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+\subsubsection*{Lektion 1/2: Programmieren \& Algorithmen}
+Erste Hälfte der Lektion: Die SuS werden an das Thema Programmieren herangeführt und lernen dessen Relevanz anhand einiger alltagsnaher Beispiele kennen: Messgeräte in Spitäler (unterliegende Idee: \lstinline|if...elif...else|), Sensoren in Autos (z.B. \lstinline|while|), etc. Dabei lernen die SuS, die unterliegenden Algorithmen als Flussdiagramme darzustellen. Zweite Hälfte: Die SuS lösen eigenhändig Übungen und wenden ihr neu gewonnenes Wissen zu Flussdiagrammen auf die Übungen an (Abgabe auf Moodle).
+
+\subsubsection*{Lektion 2/2: Programmieren mit Python und \lstinline|turtle|}
+Die SuS lernen Python kennen und installieren ein lokales IDE. Danach führen sie, geleitet durch die LP, einige Übungen durch, um einfache Formen mit der Schildkröte zu zeichnen. Dabei lernen Sie die erste einfache Schleife (\lstinline|for i in range(start, end, step)|) kennen.
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Abstraktes Denken zu Flussdiagrammen ist komplex und herausfordernd. Der wäre es hilfreich, bereits zu Beginn des Unterrichts ein Nachschlagewerk zur Verfügung zu stellen, welches die SuS dabei unterstützt, die Übungen zu lösen, indem sie bei Bedarf nachlesen können.
+    \item BYOD als Herausforderung: Möglicherweise gestaltet sich der Installationsprozess komplexer und langwieriger als gedacht. Daher sollte die Installation des IDE nach Möglichkeit bereits im Voraus als Hausaufgabe (mittels Schritt-für-Schritt-Dokumentation) ausgeführt worden sein.
+    \item Technische Herausforderungen beim Ausführen von Code: Gerade in der ersten Lektion brauchen einige SuS noch Unterstützung beim Ausführen und Debuggen von Code (``wo ist der Run-Knopf?''). Mögliche Lösungsansätze könnten sein, genügend Zeit für die Übungen einzuplanen (s. Punkt 2), bzw. den Einstieg nach Möglichkeit in Halbklassen zu machen. 
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Datentypen und Syntax (Variablen \& Zahlen)}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+In dieser Doppellektion geht es darum, die SuS an die Grundlagen von Datentypen sowie einige grundlegende syntaktische Elemente in Python heranzuführen. Dabei soll, in der ersten der beiden dafür vorgesehenen Doppellektionen, der Fokus auf mathematische Operationen gelegt werden, wodurch die SuS hoffentlich auch einen Bezug zu ihrem Vorwissen herstellen können.
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können das Gleichzeichen verwenden, um Variablen zu erstellen. Sie können in eigenen Worten erklären, was der Unterschied zwischen dem Gleichzeichen in Python und dem Gleichzeichen in der Mathematik ist.
+    \item Die SuS können einfache Rechnungen machen, indem Sie Variablen erstellen und einfache mathematische Operatoren verwenden.
+    \item Die SuS können den Inhalt einer Variable \lstinline|x| mit \lstinline|print(x)| ausgeben.
+    \item Die SuS können den Modulo-Operator (\lstinline|%|) korrekt verwenden, beispielsweise um alle geraden Zahlen in einer Schleife auszugeben  (s. DL 1 für einfache Schleifen).
+    \item Die SuS können Weret einer Variable in einer Schleife verändern, indem Sie \textit{compound operators} wie beispielsweise \lstinline|+=|, \lstinline|-=|, \lstinline|*=| oder \lstinline|/=| verwenden.
+    \item Die SuS können Funktionen, um die Wurzel einer Zahl (z.B. \lstinline|sqrt(x)|) oder deren Quadrat (z.B. \lstinline|x**2|) sinnvoll verwenden und das Resultat in einer Variable speichern sowie ausgeben.
+    \item Die SuS können einfache Formen mit Pythagoras zeichnen (beispielsweise ein schräges Dach in einem Haus)
+    \item Die SuS können Probleme aus der Mathematik, wie beispielsweise polynomiale Gleichungen, mit einem Python-Code implementieren und lösen.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+\subsubsection*{Lektion 1/2: Einführung und Übungen}
+Alltagsnahe Beispiele werden aufgezeigt, um das Interesse für mathematische Operatoren zu wecken. Man könnte beispielsweise aufzeigen, wie aus einer Liste von Körpergrössen diejenige ausgeben kann, deren Körpergrösse eine gerade Zahle ist. Da die Doppellektion eher voll beladen ist, wird diese Sequenz jedoch relativ kurz gehalten, um genug Zeit für die Übungen zu lassen. Die Übungen sind, wie immer, im Skript, und die Erklärungen zu den neuen Konzepten, welche mit dem einführenden Beispiel vermittelt wurden, können dort bei Bedarf nochmals nachgelesen werden.
+
+\subsubsection*{Lektion 2/2: Übungen}
+Lektion 2 widmet sich hauptsächlich den Übungen. Am Schluss wird, je nach dem welche Schwierigkeiten bei den SuS während den Übungen beobachtet wurde, nochmals auf einige herausfordernde Aufgaben eingegangen, und danach wird eine Ergebnissicherung (neue Konzepte) durchgeführt.
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Die SuS könnten verwirrt sein, weshalb mit dem Gleichzeichen nun etwas anderes gemeint ist als in der Mathematik (Zuweisung statt Gleichheit). Dies könnte durch klare grafische Darstellungen gelöst werden, etwa wie folgt: $  \tikzmarknode{b}{\text{\texttt{a}}} =\tikzmarknode{a}{\color{red}\underbrace{\color{black}\text{\texttt{10+3}}}}
+        $
+    \tikz[remember picture, overlay]{\draw[-latex,red] ([yshift=0.1em]a.south) to[bend left] ([yshift=-0.3em]b.south);}
+	Die Erklärung dazu könnte lauten: ``Wir werten \pythoninline{10+3 = 13} aus und speichern den Wert \pythoninline{13} in der Variable \pythoninline{a}''.
+	\item Die Lektion könnte zu kurz sein für alle Inhalte. Allenfalls müsste nach einer ersten Durchführung entschieden werden, ob Teile der Lektion in DL 3 durchgeführt werden, welche aus diesem Grund weniger umfangreich geplant ist.
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Datentypen und Syntax (Text \& Debugging)}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+In dieser zweiten, den Datentypen und Grundlagen sowie der Syntax gewidmeten Doppellektion geht es darum, elementare Text-Operationen kennenzulernen und diese sinnvoll zu verwenden. Ebenfalls soll sichergestellt werden, dass die SuS geläufige Laufzeit-Probleme aufgrund von Datentypen selbstständig entdecken und beheben können.
+
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können in eigenen Worten beschreiben, was eine Zeichenkette in Python ist, und können eine solche selbstständig erstellen.
+    \item Die SuS können Zeichenketten mit \lstinline|"..." + "..."| verketten.
+    \item Die SuS können Zeichenketten mit \lstinline|"..." * [zahl]| beliebig viele Male wiederholen.
+    \item Die SuS können mithilfe von Spezialzeichen (z.B. \lstinline|\n|) sowie \lstinline|print()| einfache ASCII-Zeichnungen machen, wie etwa einen Pfeil.
+    \item Die SuS können Zeichenketten sowohl innerhalb einfacher wie doppelter Klammern (\lstinline|'| oder \lstinline|"|) schreiben, den Unterschied zwischen den beiden in eigenen Worten erklären und diesen Unterschied anhand eines Beispiels veranschaulichen (z.B. \lstinline|print('Meine Freunde nennen mich "Mr. X"')|).
+    \item Die SuS können geläufige Laufzeit-Probleme wie etwa die nicht funktionalen Ausdrück \lstinline|print("1+2")| oder \lstinline|print(Hallo Welt)| als solche erkennen und beheben.
+    \item Die SuS können die Funktion \lstinline|input("Fragetext")| verwenden, um einen Wert (Text oder Zahl) während der Laufzeit zu generieren. Diesen können die SuS in einer Variable abspeichern und weiterverwenden.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+
+Ähnlich wie die vorherige Doppellektion, beginnt auch diese Doppellektion mit einigen alltagsnahen Beispielen, die direkt im Code-Editor vorgezeigt und ausgeführt werden. Beispielsweise könnte mit \lstinline|input| nach einem Namen gefragt werden, der dann in der Konsole 20 mal als ASCII-Zeichnung ausgegeben wird. Nach einer relativ kurzen Einführungssequenz wird der Rest der Doppellektion den Übungen sowie einer Ergebnissicherung gewidmet, wobei letztere insbesondere nochmals Debugging-relavante Aufgaben aufgreift (welche im Skript an letzter Stelle dieser Doppellektion vorkommen).
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Die SuS könnten unter Umständen verwirrt sein, weshalb \lstinline|turtle|-Grafiken in einem separaten Fenster gezeichnet werden, währenddem der \lstinline|print()|-Befehl in der Konsole ausgegeben wird. Darauf sollte in der Einführung eingegangen werden.
+    \item Die SuS könnten Mühe haben mit dem Abstraktionsgrad von Zeichenketten (Wiederholungen etc.) und durch die Syntax verwirrt sein (beispielsweise die Möglichkeit, Zeichenketten mit einem einfachen oder doppelten Anführungszeichen zu schreiben). Diesen Aspekten sollte daher sowohl während der Präsentation wie auch im Skript besondere Aufmerksamkeit gewidmet werden.
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Verzweigungen mit \texorpdfstring{\lstinline|if...elif...else|}{if...elif...else}}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+Die SuS lernen das Programmieren mit konditionaler Logik kennen, indem Sie mit den Befehlen \lstinline|if|, \lstinline|elif| und \lstinline|else| vertraut gemacht werden. Dabei wird nochmals das in DL 1 angeeignete Wissen zu Flussdiagrammen aufgefrischt, um die neuen Konzepte grafisch (im Sinne der \textit{dual-code}-Theorie) zu unterstützen und aufzuwerten.
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können in ihrem Programm konditionale Logik implementieren, indem sie die Befehle \lstinline|if|, \lstinline|elif| und \lstinline|else| verwenden.
+    \item Die SuS verstehen die Bedeutung der Einrückung in Python.
+    \item Die SuS können einen gegebenen Code als Flussdiagramm veranschaulichen.
+    \item Die SuS können erklären, weshalb ein bestimmter Code (nicht) ausgeführt wird.
+    \item Die SuS können in ihrem Programm logische Tests implementieren. Dabei können Sie die Operatoren \lstinline|!=|, \lstinline|<|, \lstinline|<=|, \lstinline|>=|, \lstinline|>| und \lstinline|==| korrekt auf Zahlen- sowie Text-Variablen anwenden.
+    \item Die SuS können logische Tests korrekt negieren, indem sie den Operatoren \lstinline|not| verwenden.
+    \item Die SuS können zwischen der Negation und dem Gegenteil einer (logischen) Aussage unterscheiden, indem sie deren Unterschied anhand von Alltagsbeispielen aufzeigen
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+Ähnlich wie die vorherigen Doppellektionen beginnt auch diese Doppellektion mit einigen alltagsnahen Beispielen, die direkt im Code-Editor vorgezeigt und ausgeführt werden. Dabei wird parallel zum Code ebenfalls eine Visualisierung des Codes als Flussdiagramm gezeigt, wie folgt:\\[-.2cm]
+\begin{minipage}[H]{.45\textwidth}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+note = input("Benoten Sie die Lehrperson (0-100).")
+if note == 100:
+    print("Vielen Dank! :)")
+elif note > 60:
+    print("Wie kann ich mich verbessern?")
+else:
+    print("Geben Sie mir eine Chance!")
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[H]{.55\textwidth}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2.5cm, scale=.5, transform shape, on grid, ->]
+    \tikzstyle{every node}=[font=\small]
+    % grid to easier see that the node centers line up while developing plot
+    %\draw [help lines] (-5,-9) grid (9,1);
+    \node (start) [code] {\pythoninline{note = input("Benoten Sie die Lehrperson")}};
+    \node (dec1) [decision, below of=start] {\pythoninline{note == 100}};
+    \node (printif) [code, text width=7cm, right=7cm of dec1] {\pythoninline{print("Vielen Dank! :)")}};
+    \node (dec2) [decision, below of=dec1] {\pythoninline{note > 60}};
+    \node (printelif) [code, text width=7cm, right=7cm of dec2] {\pythoninline{print("Wie kann ich mich verbessern?")}};
+    \node (printelse) [code, text width=6cm, below of=dec2] {\pythoninline{print("Geben Sie mir eine Chance!")}};
+    \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.5cm] {};
+    
+    \draw (start) -- (dec1);
+    \draw (dec1) -- node[anchor=top, above=.1cm] {\pythoninline{True}} (printif);
+    \draw (dec1) -- node[anchor=east] {\pythoninline{False}} (dec2);
+    
+    \draw (dec2) -- node[anchor=top, above=.1cm] {\pythoninline{True}} (printelif);
+    \draw (dec2) -- node[anchor=east] {\pythoninline{False}} (printelse);
+    
+    \draw (printif) --++ (4.5cm,0cm) |- (end);
+    \draw (printelif) --++ (4.5cm,0cm) |- (end);
+    
+    \draw (printelse) -- (end);
+    
+\end{tikzpicture}
+\end{figure}
+\end{minipage}
+Das Beispiel würde aber Schritt für Schritt eingeführt, um den Unterschied zwischen folgenden drei Dingen klar aufzuzeigen: \begin{enumerate*}
+\item \lstinline|if| \textit{ohne} \lstinline|elif| und \textit{ohne} \lstinline|else| 
+\item \lstinline|if| \textit{ohne} \lstinline|elif| aber \textit{mit} \lstinline|else| 
+\item \lstinline|if| \textit{mit} \lstinline|elif| und \textit{mit} \lstinline|else|
+\end{enumerate*}. Ebenfalls können weitere alltagsnahe Beispiele (zumindest konzeptuell) aufgezeigt werden, um klarzustellen, wozu die konditionale Logik dienen kann (medizinische Bereiche, selbstfahrende Autos etc.). Danach üben die SuS das neu gewonnene Wissen, indem Sie es auf Zeichenketten, Texte und mit \lstinline|turtle| anwenden. Am Schluss findet wie immer eine Ergebnissicherung statt.
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Die SuS finden es schwierig zu erkennen, ob Code nach einem \lstinline|elif| oder \lstinline|else| noch ausgeführt wird, da sie nicht verstehen, dass diese Blöcke nur dann ausgeführt werden, wenn vorher das \lstinline|if| \lstinline|False| war. Im Unterricht sollten daher einige Beispiele aufgezeigt werden, die dies veranschaulichen
+    \item Die Negation einer Aussage ist nicht dasselbe wie deren Gegenteil. Dies sollte anhand von alltagsnahen Beispielen (z.B. der Aussage ``der Schrank ist voll'') aufgezeigt werden.
+ \end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Verzweigungen mit \texorpdfstring{\lstinline|while|}{while}}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+In dieser Doppellektion soll die \lstinline|while|-Schleife eingeführt werden, die gewissermassen die bisher gewonnenen Kenntnisse zu Schleifen sowie konditionaler Logik kombiniert. Dabei wird das Augenmerk wieder vermehrt auf ``unterhaltsame'', grafische Übungen gelegt, wie etwa dem Zeichnen von Spiralen mit \lstinline|turtle| und mit dem \lstinline|while|-Befehl. Als gegenüber zur ``kopfgesteuerten'' \lstinline|while|-Schleife wird der Befehl \lstinline|break| eingeführt, sozusagen als ``fussgesteuerte'' Schleife. Die Visualisierung von \lstinline|while|-Schleifen als Flussdiagramm hilft, den Code besser zu verstehen.
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können \lstinline|while|-Ausdruck, bzw. \lstinline|repeat|-Ausdruck verwenden, um Schleifen zu schreiben, die unter bestimmten Konditionen enden.
+    \item Die SuS können erklären, weshalb ein Code der nach einem ausgeführten \lstinline|repeat|-Ausdruck steht, nicht mehr ausgeführt wird.
+    \item Die SuS können für ein einfaches, gegebenes Beispiel bestimmen, wie häufig eine bestimmte \lstinline|while|-Schleife ausgeführt wird.
+    \item Die SuS können die geeignetste Schleifenart auswählen, um ein bestimmtes Problem zu lösen (kopf- oder fussgesteuerter Abbruch, bzw. \lstinline|for|-Schleife mit vorgegebener Anzahl Wiederholungen).
+    \item Die SuS können die neu erlernten Schleifen-Typen mit einem Flussdiagramm modellieren.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+
+Als Einführung in die Lektion werden einige Beispiele ausgewählt, die die Schwierigkeiten, bzw. Komplexitäten gewisser Aufgaben \textit{ohne} \lstinline|while|-Schleife aufzeigen. Beispielsweise könnte dies das Zeichnen einer Schleife sein, \textit{solange} die Seitenlänge unter, bzw. über einem gewissen Wert liegt. Das gegebene Problem soll einem als \lstinline|for|-Schleife ohne Abbruch (mit berechneter Anzahl Wiederholungen) gelöst werden, einmal mit \lstinline|while| und einmal mit \lstinline|repeat|. Jede Lösung wird als Flussdiagramm aufgezeichnet. Die SuS sollen sich überlegen, welche der Lösungen am geeignetsten ist für ihr Problem. Wie in den vorigen Lektionen wird danach der Grossteil der DL den Übungen gewidmet.
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Die SuS finden es schwierig, zwischen einem \lstinline|break|- und einem \lstinline|while|-Konstrukt zu unterscheiden, bzw. die richtige Lösung für die richtige Situation auszuwählen. Zur Linderung dieses Problems könnte beitragen, dass die SuS zuerst eine Reihe von einfachen Beispielen von der einen in die andere Variante umschreiben müssen. Dabei sollen sie sich stets überlegen, was sie bevorzugen. Ihre Antworten fliessen in die Diskussion vor der Ergebnissicherung ein.
+    \item Die SuS verstehen nicht, wie sich eine Variable innerhalb einer \lstinline|while|-Schleife verändert. Dazu sollen sie spezielle Tabellen anfertigen, welche die Entwicklung der Variable in jedem Durchlauf der Schleife veranschaulichen.
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Befehle / Funktionen ohne Parameter, ohne \texorpdfstring{\lstinline|return|}{return}}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+Diese Doppellektion soll als Einführung in die modulare Programmierung dienen. Dabei soll klargestellt werden, dass wir für das Schreiben eines komplexen Programms zunächst kleinere ``Bausteine'' benötigen, die zum Lösen von Teilproblemen nötig sind. Die verschiedenen Programme, die sie bisher geschrieben haben, sollen somit für den zukünftigen Gebrauch als Befehle festgehalten werden. Für die Einführung verwenden wir weder Parameter noch das \lstinline|return|-statement.
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können mithilfe der \lstinline|turtle|-Library einen eigenen Befehl ohne Parameter schreiben und aufrufen, der eine einfache geometrische Form (bspw. Dreieck, Quadrat usw.) erzeugt.
+    \item Die SuS können anhand eines vorgegeben Befehls herleiten, was nach dem aufrufen des Befehls auf dem Bildschirm zu sehen ist. Der vorgegebene Befehl kann folgenden Aufbau haben: Sequentielle Folge von einfachen \lstinline|turtle|-Befehlen, wie bspw. \lstinline|forward()|, \lstinline|left()|, \lstinline|right()|. \lstinline|while|-Schleifen oder Verzweigungen, die einfache \lstinline|turtle|-Befehle beinhalten.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+\subsubsection*{Lektion 1/2:  \lstinline|def|-Statement}
+Zu Beginn das Konzept der Schleifen in Erinnerung rufen (als Automatisierung eines sich wiederholenden Vorgangs), Übertragung dieses Konzeptes auf den Aufbau des Codes (``Bündelung von vorprogrammierten Befehlen durch die Nutzung des \lstinline|def|-Statements, um Wiederholungen zu vermeiden''.) Anschliessend sollen die SuS bereits verwendete Befehlsfolgen von \lstinline|turtle|-Befehlen aus den vorherigen Lektionen in einen neuen, eigenen Befehl zusammenfassen und aufrufen. 
+
+\subsubsection*{Lektion 2/2: Verdichtung}
+Die SuS sollen zunächst neue Befehle schreiben, die sich von den bisher im Unterricht behandelten Programmen unterscheiden. Prinzipiell sollen sie sich zunächst mit einfach geometrischen Formen auseinandersetzen. Im Anschluss an diese Übung erhalten die SuS verschieden vorgegebene Befehle und sollen diese auf ihren Zweck untersuchen. Ihre Vermutungen können sie durch das Ausführen des Befehls überprüfen.
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Es könnte hier leicht zu Problemen mit der Verwendung von Parametern kommen. Durch den Einsatz von bereits existierenden \lstinline|turtle|-Befehlen wissen sie bereits, dass man Parameter in den Klammern eines Befehls eingeben muss, bzw. kann. Daher könnte es für sie naheliegend sein, dies auch beim Aufrufen eines eigenen Befehls zu versuchen. Die LP könnte bereits andeuten, dass das Verwenden von Parametern in unserem Fall noch nicht möglich ist, bzw. klarstellen, dass bei den eigenen Befehlen die Klammer leer sein muss.
+    \item Eine weitere Schwierigkeit wird die Syntax sein (fortlaufendes Problem bei der Einführung der Programmierung). In Python muss die Verschachtelung des Codes strikt eingehalten werden, d.h., nach dem Doppelpunkt muss die nächste Zeile einen zusätzlichen Abstand enthalten. IDEs wie Thonny, machen diesen Abstand in der Regel automatisch.
+    \item Zudem könnte der Unterscheide zwischen der Definition und dem Aufrufen des Befehls ein Problem darstellen: Bspw. könnte ein SuS versuchen, den Befehl aufzurufen, bevor er ihn definiert hat, bzw. das Statement \lstinline|def| nutzen wollen, um den Befehl aufzurufen, oder nach dem Aufrufen des Befehls einen Doppelpunkt platzieren. Die Syntax muss daher besonders deutlich erklärt werden. 
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Befehle / Funktionen mit Parameter, ohne \texorpdfstring{\lstinline|return|}{return}}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+Die bereits erworbenen Erkenntnisse zu den Befehlen soll erweitert werden, indem man Parameter einführt. Zunächst werden Ein-Parameter-Befehle und danach Mehr-Parameter-Befehle behandelt. In dieser Doppellektion gehen wir noch nicht auf das \lstinline|return|-Statement ein. 
+
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können den Unterschied zwischen Parametern und Variablen in eigenen Worten erklären.
+    \item Die SuS können eigene Befehle mit einem Parameter schreiben und aufrufen, um einfache Tätigkeiten auszuführen (z.B. eine einfache geometrischen Form zeichnen oder einfache mathematische Berechnungen durchführen und ausgeben).
+    \item Die SuS können einen vorgegebene Befehl mit einem Parameter auf Fehler überprüfen und diese, falls nötig, beheben. 
+    \item Die SuS können einen eigenen Befehl mit mehreren Parameter schreiben und aufrufen.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+\subsubsection*{Lektion 1/2: Ein-Parameter-Befehle}
+Beispiel: Zwi Codes, für ein 4- und ein 6-Eck, unterscheiden sich nur im verwendeten Winkel und in der Anzahl Schleifenwiederholungen. Um Code kürzer und übersichtlicher zu schreiben, führen wir den Begriff des Parameters ein. Die SuS erhalten als erste Aufgabe mehrere Code-Beispiele, die sie selbst implementieren und ausführen sollen. Die Resultate sollen sie miteinander vergleichen, um die Unterschiede zwischen Parameter und Variablen, die sich ausserhalb des Befehls befindet, zu ergründen.
+
+\subsubsection*{Lektion 2/2: Mehr-Parameter-Befehl}
+In der zweiten Lektion arbeiten SuS weiter an den Beispielen aus der ersten Lektion (Vertiefung). Zudem sollen Sie nochmals das \textit{debugging} vertiefen, indem Sie vorgegebene Befehle auf ihre Funktionalität überprüfen und Programm-Fehler beheben. Im Anschluss wird die Möglichkeit, mehr als einen Parameter zu verwenden, angesprochen und anhand von Übungen umgesetzt.
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Die SuS könnten die Parameter eines Befehls möglicherweise mit einer Variablen ausserhalb des Befehlskörpers verwechseln, bspw. indem sie den Parameter nach der Definition versuchen mit \lstinline|print()| anzugeben oder indem sie zuerst eine Variable definieren und diese anschliessend als Parameter verwenden möchten. Hier könnte man gezielt Übungen einsetzen, die den Unterschied zwischen ``allgemeinen'' Variablen und Parametern aufzeigen: Bspw. könnten die SuS unterschiedliche Programme ausführen und die jeweiligen Outputs miteinander vergleichen. Anhand dieses Vergleiches sollen sie herleiten, worin sich Parameter von anderen Variablen unterscheiden.
+    \item Man könnte den Inhalt der ersten Lektion gut auf eine Doppellektion ausweiten und die Befehle mit mehreren Parametern in der darauffolgenden Doppellektion behandeln oder sogar weglassen. Denn die verschiedenen Datentypen könnten noch eine weitere Schwierigkeit für die SuS darstellen: Die SuS könnten möglicherweise beim Aufrufen eines Befehls, der arithmetische Operatoren verwendet, dem Parameter einen String übergeben. Auch hier könnte man weitere Übungen zur Verfügung stellen, um den SuS diese Problematik aufzuzeigen.
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Befehle / Funktionen mit Parameter, mit \texorpdfstring{\lstinline|return|}{return}}
+
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+In dieser Doppellektion geht es um die Definition einer Funktion. Hierbei ist lediglich das Konzept des \lstinline|return|-Statements neu. Dabei soll ein Bezug zum Begriff der Funktion aus der Mathematik hergestellt werden. Eine mögliche Umsetzung, um das ganze etwas graphisch zu gestalten, ist, dass man den SuS ein GUI mit einem Taschenrechner vorgibt und die SuS die Funktionen für die Knöpfe programmieren lässt.
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können mathematische Funktionen, wie bspw. lineare, quadratische und Potenzfunktionen, in einem Python-Programm implementieren und diese aufrufen, um einen Funktionswerte einer Variable zu übergeben.
+    \item Die SuS können die Mitternachtsformel als eine Funktion in Python schreiben und die Lösung als String zurückgeben.
+    \item Die SuS können in eignen Worten beschreiben, wozu ein \lstinline|return|-Statement benötigt wird.
+    \item Die SuS können anhand einer vorgegebene Funktion herleiten, was die Funktion beim Aufrufen macht und welchen Wert die Funktion zurück gibt.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+\subsubsection*{Lektion 1/2: einfacher \lstinline|return|-Befehl}
+Einstieg: Zu Beginn, als wir Befehle eingeführt haben, haben wir von Bausteinen gesprochen. Die Bausteine sollten auch eine Verwendung/Nutzen haben: Ein Befehl sollte etwas zurückgegeben (ein \lstinline|return|-Statement enthalten) können. Die LP erklärt, wie man \lstinline|return|-Statements in einen Befehl integriert. Daraufhin integrieren die SuS in ihrem Programm eine einfache mathematische Funktion, die nur aus einem \lstinline|return|-Statement besteht. Als Ergänzung können sie weitere Funktionen implementieren, beispielsweise um die Fläche eines Rechtecks zu berechnen usw. 
+
+\subsubsection*{Lektion 2/2: \lstinline|return| in Schleifen und Verzweigungen}
+In der zweiten Lektion sollen die SuS sich Überlegungen zu Schleifen und Verzweigungen machen. Wo platziert man das \lstinline|return|-Statement in einer Schleife oder in einer Verzweigung? Im Anschluss sollen sie die Mitternachtsformel mithilfe einer Verzweigung programmieren. Um das Thema weiter zu vertiefen, gibt es zum Schluss noch weitere Übungen, wo sie den \lstinline|return|.Wert einer Funktion bestimmen sollen.
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Die Platzierung des \lstinline|return|-Statments stellt einige Schwierigkeit dar. Die SuS können annehmen, dass der Code, der nach dem \lstinline|return|-Statement geschrieben wird, trotzdem ausgeführt wird. Es besteht auch die Möglichkeit, dass sie das \lstinline|return|-Statement aussserhalb des Befehlsblock angeben (Syntax/Abstand nicht einhalten). Ihnen ist vermutlich auch nicht bewusst, dass man mehrere \lstinline|return| Statements einsetzen kann.  Hier könnte man wiederum gezielt Übungen einsetzen, die diese Probleme aufzeigen: Bspw. den SuS eine Funktion geben, die einen Befehl nach dem \lstinline|return|-Statement enthält und sie anhand des Outputs herleiten lassen, dass das \lstinline|return| einer Abbruchbedingung gleicht, bzw. die SuS einen Vergleich zwischen zwei Funktionen machen lasen, die eine Verzweigung beinhalten, wobei sich die Funktionen grundsätzlich nur darin unterscheiden, dass die Platzierung des \lstinline|return| anders ist und, falls nötig, zusätzliche Variablen eingesetzt werden können.
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Koordinaten \& Zufallszahlen}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+Die SuS beschäftigen sich mit der Integration von neuen Python-Modulen, spezifisch sollen Sie sich mit dem \lstinline|random|-Modul. Dabei vertiefen sie ihre Kenntnisse zu Befehlen mit Parametern. Als Resultat generieren sie Zufallsbilder mit \lstinline|turtle| und können Koordinaten der \lstinline|turtle| ablesen und verändern.
+
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können in eignen Worten die Bedeutung von \lstinline|from ... import ...| oder \lstinline|from ... import *| erklären und Module wie \lstinline|random| selbständig in ihren Programmen integrieren.
+    \item Die SuS können den Befehl \lstinline|x=random.randint(start, end)|, um Zufallszahlen zu generieren, in ein Programm einbauen und sinnvoll verwenden.
+    \item Die SuS können das Ergebnis eines vorgegebenes Programm mit \lstinline|turtle|-Befehlen (z.B. \lstinline|forward()|), von Hand in einem Koordinatensystem einzeichnen und dadurch die Position der \lstinline|turtle| am Ende des Programms bestimmen.
+    \item Die SuS können die Position der \lstinline|turtle| mithilfe folgender Funktionen verändern und mit \lstinline|print(pos())| wiedergeben: \lstinline|setX(), setY(), setPos(), setheading()|. 
+    \item Die SuS können mithilfe von \lstinline|turtle|- und \lstinline|random|-Befehlen, bzw. -Funktionen eigene Befehle, bzw. eigene Funktionen schreiben (mit oder ohne Parameter), die beim Aufrufen Zufallsbilder generieren. In ihren Befehlen sollten mindestens eine Schleife, ein \lstinline|random|-Befehl, eine \lstinline|turtle|-Farbänderung und eine Verzweigung vorkommen.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+\subsubsection*{Lektion 1/2: Module und Koordinaten}
+Zu Beginn eine kurze Erklärung zu Modulen in Python mit Bezug auf die vorherigen Lektionen (vordefinierte und neue Befehle). Anschliessend sollen die SuS sich mit dem \lstinline|random|-Modul vertraut machen indem sie eigene Befehle schreiben, welche Befehle des \lstinline|random|-Moduls beinhalten. Zudem sollen sie sich mit dem Prinzip der Koordinaten vertraut machen, indem sie zuerst von Hand \lstinline|turtle|-Porgramme ausführen und danach in eigenen Programmen die Position der \lstinline|turtle| manipulieren und ablesen.
+
+\subsubsection*{Lektion 2/2: Zufallsbild}
+In der zweiten Lektion sollen Sie den Inhalt der ersten Lektion nutzen, um eine Funktion (ohne \lstinline|return|), zu schreiben, die nach dem Aufrufen ein zufällig generiertes Bild erzeugt.
+
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item Die SuS könnten möglicherweise vergessen, dass Befehle sequentiell abgearbeitet werden und könnten daher versuchen, neue Module am Ende des Programms einzufügen. Daher sollte man zu Beginn der DL nochmals erwähnen, dass der Code sequentiell abgearbeitet wird.
+    \item Den SuS alle Funktionen eines Moduls zu präsentieren oder Sie die Online-Dokumentationen (bspw. \href{https://docs.python.org/3/library/random.html}{\lstinline|random|-Dokumentation}) durchlesen zu lassen, wäre für sie vermutlich ein  ``\textit{overkill}''. Stattdessen wollte Spickzettel mit den wichtigsten Funktionen angefertigt werden, welchen sie im Unterricht verwenden sollen, sowie einer Kurzbeschreibung zu den jeweiligen Funktionen. Die Beschreibung sollte folgende Punkte beinhalten: Wozu ist die Funktion nützlich? Wie viele Parameter muss man mitgeben? Welche Datentypen müssen die mitgegebenen Parameter haben? Eventuell kann man den SuS zunächst ein paar Beispiel-Codes geben, die sie auf ihre Funktionalität untersuchen sollen. Somit können sie sich beim Schreiben eines eigenen Befehls, an diesen Beispielen orientieren.
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
+
+\section{DL \themycounter: Listen}
+\begin{myExBox}[title=DL \themycounter]
+\subsection*{Thema}
+In dieser Lektion geht es um das Erstellen, Bearbeiten und Lesen von Listen.
+
+\subsection*{Operationalisierte Lernziele}
+\begin{todolist}
+    \item Die SuS können in eignen Worten beschreiben was eine Liste und ein Index sind und deren Bedeutung anhand eines eignen Beispiels veranschaulichen.
+    \item Die SuS können in Python eine Liste mit mehreren Werten erstellen, die Werte verändern, einen beliebigen Werte aus der Liste einer neuen Variable übergeben und einen Bereich von Indizes mit \lstinline| [*:*]| angeben, um einen Teil der Liste auszugeben.
+    \item Die SuS können mithilfe von \lstinline|.append()| oder \lstinline|.insert()| neue Elemente einer Liste hinzufügen.
+    \item Die SuS können mithilfe einer \lstinline|for|-  Schleife die Elemente einer Liste mit Zahlen oder Tupeln von Zahlen durchlaufen und diese Daten nutzen, um die Position der \lstinline|turtle| zu verändern.
+\end{todolist}
+
+\subsection*{Grober Lektionsablauf}
+\subsubsection*{Lektion 1/2: Listen}
+In der ersten Lektion wird zunächst das Konzept einer Liste eingeführt und mit Beispielen veranschaulicht. Anschliessend sollen die SuS unterschiedliche Übungen zu den Listen lösen, wobei sie zunächst Beispiele analysieren und anschliessend eigene Listen schreiben und deren Elemente mit \lstinline| print()| ausgeben. Danach sollen sie Zufalls-listen erstellen, deren Inhalt sie wiederum mit einer \lstinline|for|-Schliefe ausgeben sollen.
+
+\subsubsection*{Lektion 2/2: Random \lstinline|turtle|}
+In der zweiten Lektion sollen sie den Code aus der vorherigen Lektion anpassen, indem Sie Listen einbauen. Ziel ist es, dass Sie am Ende der Lektion ein Programm haben, dass ihnen eine oder mehrere Listen mit zufällige Zahlen oder Koordinaten erstellt, die wiederum genutzt werden, um ein Zufallsbild zu generieren (bspw. ein Blumenfeld).
+
+\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+\begin{enumerate}
+    \item SuS könnten zunächst die Vorstellung haben, dass eine Liste mit dem Index ``1'' beginnt und somit versuchen, dass erste Element einer Liste mit \lstinline|mylist[1]| abzufragen. Eine graphische Darstellung, wobei die Indizes direkt unter der Liste angegeben sind, kann hier weiterhelfen.
+    \item Der Unterschied zwischen \lstinline|.append()| und \lstinline|.insert()| könnte möglicherweise unklar sein. Da die SuS bisher nie mit Objekten arbeiten mussten, könnte es zunächst verwirrend sein, warum man den Befehl mit einem Punkt ausführt (z.B. \lstinline|mylist.append("hallo")|). Sie könnten versuchen die Funktion alleinstehend (\lstinline|.append("hallo")|) oder mit der Liste als Parameter \lstinline|.append("hallo", mylist)| aufzurufen. Auch hier kann es nützlich sein einen Spickzettel mit den wichtigsten Informationen (Anzahl Parameter, Parametertypen, Nutzen usw.) anzufertigen und ihnen Beispiele zu geben, die sie analysieren sollen und die ihnen aufzuzeigen, wie man die Funktionen einsetzen könnte.
+    \item Ein weiteres Problem könnte die Verschachtelung von Befehlen darstellen: Bspw. \lstinline|mylist.append(randint(1,2))| Hier könnte man den SuS als Tipp mitgeben, damit es für sie übersichtlicher ist, mit Variablen zu arbeiten, bspw. \lstinline|a = randint(1,2)| und dann \lstinline|mylist.append(a)| zu schreiben.
+\end{enumerate}
+\end{myExBox}
+\end{myExBox}
+\newpage\stepcounter{mycounter}
