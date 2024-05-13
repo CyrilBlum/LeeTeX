@@ -22,7 +22,6 @@
 \theoremstyle{note}
 
 \iftoggle{book}{%
-  % \def\mynumber{\thechapter}
   \iftoggle{german}{%
     \newtheorem{myexample}{Beispiel}[chapter]
     \newtheorem{myremark}{Bemerkung}[chapter]
@@ -41,7 +40,6 @@
     \newtheorem{mysummary}{summary}[chapter]
   }%
 } {%
-  % \def\mynumber{\thesection}
    \iftoggle{german}{%
     \newtheorem{myexample}{Beispiel}[section]
     \newtheorem{myremark}{Bemerkung}[section]
@@ -98,9 +96,9 @@
 }%
 
 % counter shared between 'myexercise', 'mychallenge' and 'mysubmission'
-\iftoggle{book} {
+\iftoggle{book} {%
 	\newcounter{SharedCounter}[chapter]
-} {
+} {%
 	\newcounter{SharedCounter}[section]
 }
 
@@ -129,36 +127,32 @@
 }%
 
 % myanswer
-\newenvironment{myanswer}
+\newcounter{DummyCounter}
+\newcommand{\myanswerlabel}{-}
+\newenvironment{myanswer}[1][]
 {
-\renewcommand{\AnswerHeader}{}
-\begin{Answer}[ref=\theExerciseCounter]
-  \begin{tcolorboxTemplate}[
-    opacityback=.5,
-    coltitle=white,
-    colback=ForestGreen!10,
-    colframe=ForestGreen,
-    colbacktitle=ForestGreen,
-    opacityback=1,
-    title=\faCheckSquareO{} Lösungsvorschlag zu Aufgabe~\theSharedCounter]
-}%%
-{%
-  \end{tcolorboxTemplate}
-\end{Answer}
+  \refstepcounter{DummyCounter}
+  \renewcommand{\AnswerHeader}{}
+  \ifblank{#1} {%
+      \renewcommand{\myanswerlabel}{Aufgabe~\theSharedCounter}
+    } {%
+      \renewcommand{\myanswerlabel}{\cref{#1}}
+    }
+  \begin{Answer}[ref=\theDummyCounter]
+    \begin{tcolorboxTemplate}[
+      opacityback=.5,
+      coltitle=white,
+      colback=ForestGreen!10,
+      colframe=ForestGreen,
+      colbacktitle=ForestGreen,
+      opacityback=1,
+      title=\faCheckSquareO{} Lösungsvorschlag zu~\myanswerlabel]
+  }%%
+  {%
+    \end{tcolorboxTemplate}
+  \end{Answer}
 }%
 
-% myremoteanswer
-\newenvironment{myremoteanswer}[1]
-{%
-  \begin{tcolorboxTemplate}[
-    title=\faEdit{} Lösungsvorschlag zu \cref{#1},
-    colback=RoyalBlue!10,
-    colframe=RoyalBlue,
-    colbacktitle=RoyalBlue]
-}%%
-{%
-  \end{tcolorboxTemplate}
-}%
 
 % mysubmission
 \newaliascnt{SubmissionCounter}{SharedCounter}

@@ -16,7 +16,7 @@ Es gibt $5\cdot 4\cdot 3\cdot 2\cdot 1 = 120$ Möglichkeiten, fünf Personen in 
 
 Da das Produkt $n\cdot (n-1)\cdot\ldots\cdot 3\cdot 2\cdot 1$ häufig in Erscheinung tritt, besitzt es einen eigenen Namen: Die \textit{Fakultät} von $n$ und wird $n!$ oder $fak(n)$ geschrieben. So ist zum Beispiel $5! = 5\cdot 4\cdot 3\cdot 2\cdot 1 = 120$.
 
-\begin{myexercise}{myexercise:0301}
+\begin{myexercise}\label{myexercise:0301}
 Wir gehen davon aus, dass Sie bereits das Produkt $12!$  berechnet haben. Wie können Sie dieses Vorwissen einsetzen, um $13!$ relativ schnell zu berechnen? Wie lässt sich für $n\in\Nunit$ die Fakultät $n!$ aus $(n-1)!$ berechnen?
 \end{myexercise}
 
@@ -40,7 +40,7 @@ Durch \enquote{Rückwärtseinsetzen} erhalten wir nun den Wert für $5!$:
 
 \noindent
 Nach diesen Betrachtungen ist plausibel, dass Folgendes eine sinnvolle Definition der \tib{Fakultät}\index{Fakultät} ist:
-\begin{definition}[Fakultät]{definition:fac}
+\begin{mydefinition}{Fakultät}\label{mydefinition:fac}
 Es sei $n$ eine natürliche Zahl. Dann definieren wir die Fakultät $n!$ von $n$ durch:
 \begin{align}\label{eq:fakultaet}
 n! := 
@@ -49,9 +49,9 @@ n! :=
     n(n-1)!, & \text{falls  $n\geq 1$. (Rekursionsschritt)}
   \end{cases}
 \end{align}
-\end{definition}
+\end{mydefinition}
 \noindent
-Beachten Sie, dass \cref{definition:fac} der Fakultät selbst die Fakultät verwendet! Eine auf diese Weise definierte Funktion wird \tib{rekursiv}\index{rekursiv} genannt.
+Beachten Sie, dass \cref{mydefinition:fac} der Fakultät selbst die Fakultät verwendet! Eine auf diese Weise definierte Funktion wird \tib{rekursiv}\index{rekursiv} genannt.
 
 \section{Finde den Star! (konstruktive Induktion)}
 Das folgende Beispiel stammt aus \cite{Datenstrukturen}. In einem Raum befinden sich $n\in\N$ Personen, wobei $n\geq 2$ ist. Wir wollen den \textit{Star} unter diesen $n$ Personen finden. Ein Star ist definiert als eine Person, welche niemanden anderen kennt, jedoch von allen gekannt wird. Die einzige erlaubte \textit{Operation}, um einen Star zu identifizieren, ist, eine Person $A$ zu fragen:
@@ -60,7 +60,7 @@ Das folgende Beispiel stammt aus \cite{Datenstrukturen}. In einem Raum befinden 
 \end{center}
 wobei $A\neq B$ gilt.
 
-\begin{myexercise}{myexercise:0350}
+\begin{myexercise}\label{myexercise:0350}
     Begründen Sie, warum es unter $n$ Personen in einem Raum nicht zwei verschiedene Stars geben kann.
 \end{myexercise}
 \noindent
@@ -96,7 +96,7 @@ Doch dieses Vorgehen können wir weiter fortsetzen und dieselbe Strategie auf da
     &n(n-1).
 \end{align*}
 Somit haben wir gegenüber der ursprünglichen naiven Lösung (befrage alle zu allen) nichts gewonnen. Zum Glück ist es aber kein grosser Aufwand unseren Ansatz der konstruktiven Induktion stark zu verbessern und somit zu retten. Die Idee der Verbesserung besteht darin, sicherzustellen, dass die Person, welche wir aus dem Raum schicken, kein Star ist.
-\begin{myexercise}{myexercise:0351}
+\begin{myexercise}\label{myexercise:0351}
 Erklären Sie, warum eine einzige Frage an eine beliebige Person im Raum stets genügt, um eine Person zu identifizieren, welche sicherlich kein Star ist.
 \end{myexercise}
 \noindent
@@ -109,7 +109,7 @@ Zum Schluss bleiben zwei Personen, von denen möglicherweise eine Person $X$ der
       \end{cases}
 \end{align}
 Ähnlich wie bei unserer Betrachtung der Fakultät, sehen wir auch hier, dass sich die Bestimmung der Anzahl benötigter Fragen $F(n)$ bei $n$ Personen auf die Bestimmung des kleineren (aber analogen) Problems $F(n-1)$ reduzieren lässt.
-\begin{myexercise}{myexercise:0352}
+\begin{myexercise}\label{myexercise:0352}
 Wir haben für die benötigten Fragen $F(n)$ für einen Raum mit $n$ Personen die Beziehung in \cref{eq:star} gefunden. Wir vermuten, dass wir den Wert für $F(n)$ durch wiederholte Reduktion auf kleinere Probleme wie folgt \enquote{entpacken} können:
 \begin{align*}
     F(n) = 3 + F(n-1) = 2\cdot 3 + F(n-2) = \ldots = 3\cdot (n-2) + 2 = 3n - 4.
@@ -127,7 +127,7 @@ def factorial(n):
     else:
         return n * factorial(n-1) # Rekursionsschritt
 \end{lstlisting}
-Wir haben \cref{definition:fac} praktisch eins zu eins \enquote{abgetippt}. Beachten Sie, dass in der Definition der Funktion \pythoninline{factorial} die Funktion \pythoninline{factorial} selbst verwendet wird. Wie und warum funktioniert dieses Vorgehen? \cref{listing:lowtech} zeigt schematisch auf, wie der Funktionsaufruf \pythoninline{factorial(3)} abgearbeitet wird. Beachten Sie die Ähnlichkeit zu unserer Diskussion in \cref{sec:fakultaet}. 
+Wir haben \cref{mydefinition:fac} praktisch eins zu eins \enquote{abgetippt}. Beachten Sie, dass in der Definition der Funktion \pythoninline{factorial} die Funktion \pythoninline{factorial} selbst verwendet wird. Wie und warum funktioniert dieses Vorgehen? \cref{listing:lowtech} zeigt schematisch auf, wie der Funktionsaufruf \pythoninline{factorial(3)} abgearbeitet wird. Beachten Sie die Ähnlichkeit zu unserer Diskussion in \cref{sec:fakultaet}. 
 
 \lstset{basicstyle=\ttfamily\footnotesize}
 \begin{lstlisting}[language=Python,caption=rekursive Berechnung der Fakultät,label=listing:lowtech]
@@ -160,13 +160,11 @@ factorial(1) = 1 * factorial(0) = 1 * 1 = 1
 factorial(2) = 2 * factorial(1) = 2 * 1 = 2
 factorial(3) = 3 * factorial(2) = 3 * 2 = 6
 \end{lstlisting}
-\lstset{style=mystyle}
-\noindent
 Der anfängliche Aufruf \pythoninline{factorial(3)} löst (rekursiv) in seinem \pythoninline{return} auf (seiner) Zeile 5 den Aufruf \pythoninline{factorial(2)} aus. Dieser löst rekursiv einen weiteren Funktionsaufruf aus. Dies geht so lange weiter, bis zum ersten Mal ein Aufruf den Rekursionsanfang (Zeile 2) erreicht. Danach können die noch ausstehenden \pythoninline{return}-Statements endlich komplettiert werden (Rückwärtseinsetzen).
 
 \clearpage
 
-\begin{myexercise}{myexercise:0303}
+\begin{myexercise}\label{myexercise:0303}
 Seien $a\in\R$ und $n$ eine natürliche Zahl. Wir definieren den Potenzausdruck $a^n$ rekursiv durch
 \[
   a^n := 
@@ -178,7 +176,7 @@ Seien $a\in\R$ und $n$ eine natürliche Zahl. Wir definieren den Potenzausdruck 
 Implementieren Sie eine Python-Funktion \pythoninline{def potenz(a,n)}, welche $a^n$ gemäss dieser rekursiven Definition berechnet.
 \end{myexercise}
 
-\begin{myexercise}{myexercise:0302}
+\begin{myexercise}\label{myexercise:0302}
 Implementieren Sie eine Python-Funktion \pythoninline{def factorial_loop(n)}, welche
 \begin{align*}
     n! = n\cdot (n-1)\cdot\ldots\cdot 3\cdot 2\cdot 1
@@ -214,7 +212,7 @@ def unbekannt(m,n):
 \end{myexercise}
 
 \clearpage
-\begin{myexercise}{myexercise:0305}
+\begin{myexercise}\label{myexercise:0305}
 In Python ist eine Liste \pythoninline{L} von reellen Zahlen gegeben. Schreiben Sie eine Python-Funktion \pythoninline{sum_rek(L)}, welche rekursiv die Summe der Zahlen in der Liste berechnet. Es kann angenommen werden, dass die Länge der Liste $\geq 1$ ist.
 \begin{lstlisting}[language=Python]
 Beispiel 1:
@@ -230,7 +228,7 @@ Ausgabe: 11
 
 
 
-\begin{myexercise}{myexercise:0377}
+\begin{myexercise}\label{myexercise:0377}
 Ein Wort heisst \textit{Palindrom}, falls das Wort vorwärts und rückwärts genau gleich gelesen wird.\\
 Beispiele:
 \begin{itemize}
@@ -242,7 +240,7 @@ Beispiele:
 Das \textit{leere Wort}, also das Wort der Länge $0$, ist ebenfalls ein Palindrom. Schreiben Sie ein rekursives Python-Programm, welches entscheidet, ob ein gegebenes Wort \verb|w| ein Palindrom ist oder nicht.
 \end{myexercise}
 
-\begin{myexercise}{myexercise:0308}
+\begin{myexercise}\label{myexercise:0308}
 Schreiben Sie eine Python-Funktion \pythoninline{summe(n)}, welche die Summe
 \begin{align*}
     \sum_{k=0}^n k := 0 + 1 + \ldots + n
@@ -250,7 +248,7 @@ Schreiben Sie eine Python-Funktion \pythoninline{summe(n)}, welche die Summe
 der ersten $n+1$ natürlichen Zahlen $0,1,\ldots ,n$ rekursiv berechnet.
 \end{myexercise}
 
-\begin{myexercise}{myexercise:0311}
+\begin{myexercise}\label{myexercise:0311}
 Schreiben Sie eine Python-Funktion \pythoninline{produkt(n)}, welche das Produkt
 \begin{align*}
     \prod_{k=1}^n k^3 := 1 \cdot 8 \cdot \ldots \cdot n^3
@@ -313,7 +311,7 @@ Beginnend mit den \enquote{Startwerten} $F_0 := 0$ und  $F_1 := 1$ ergibt sich $
 \begin{align*}
     F_{n+2} = \textcolor{Blue}{F_{n+1}} + \textcolor{Blue}{F_{n}}.
 \end{align*}
-\begin{definition}[Fibonacci-Folge]{definition:fibonacci}
+\begin{mydefinition}{Fibonacci-Folge}\label{mydefinition:fibonacci}
 Die Fibonacci-Folge ist rekursiv definiert durch
 \[
   F_n := 
@@ -323,29 +321,33 @@ Die Fibonacci-Folge ist rekursiv definiert durch
     F_{n-1} + F_{n-2}, & \text{falls  $n\geq 2$. (Rekursionsschritt)}
   \end{cases}
 \]
-\end{definition}
+\end{mydefinition}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Fibonacci.jpg}
+    \includegraphics[width=0.5\textwidth]{EF/InduktionUndRekursion/Figures/Fibonacci.jpg}
     \caption{Leonardo da Pisa (1170-1240), auch Fibonacci genannt}
     \label{fig:Fibonacci}
 \end{figure}
 
 \clearpage
 
-\begin{myexercise}{myexercise:0306}
+\begin{myexercise}\label{myexercise:0306}
 Implementieren Sie eine Python-Funktion \pythoninline{def fibonacci(n)}, welche für gegebenes $n\in\N$ das $n$-te Glied der Fibonacci-Folge rekursiv berechnet. Geben Sie schliesslich die ersten $25$ Glieder der Fibonacci-Folge aus.
 \end{myexercise}
 
-\begin{myexercise}{myexercise:0307}
-Versuchen wir $F_{40}$ mit der Python-Funktion aus \cref{myexercise:0306} zu berechnen, stellen wir fest, dass die Berechnung bereits recht lange dauert. Erklären Sie, warum die Berechnung der Glieder der Fibonacci-Folge mit Hilfe der \cref{definition:fibonacci} sehr aufwendig ist. Wie viele Funktionsaufrufe werden für die Berechnung von $F(5)$ benötigt? Wie viele für $F(10)$?
+\begin{myexercise}\label{myexercise:0307}
+Versuchen wir $F_{40}$ mit der Python-Funktion aus \cref{myexercise:0306} zu berechnen, stellen wir fest, dass die Berechnung bereits recht lange dauert. Erklären Sie, warum die Berechnung der Glieder der Fibonacci-Folge mit Hilfe der \cref{mydefinition:fibonacci} sehr aufwendig ist. Wie viele Funktionsaufrufe werden für die Berechnung von $F(5)$ benötigt? Wie viele für $F(10)$?
 \end{myexercise}
 
-\begin{myexercise}{myexercise:0358}
-Überlegen Sie sich, wie Sie die ersten $30$ Glieder der Fibonacci-Folge \enquote{von Hand} berechnen würden. Verwenden Sie diese Intuition um eine Python-Funktion \pythoninline{def fibonacci_fast(n)} zu schreiben, welche für gegebenes $n\in\N$ das $n$-te Glied der Fibonacci-Folge deutlich schneller und auf nicht rekursive Weise berechnet. Berechnen Sie mit Hilfe dieser Funktion das Folgeglied $F_{100}$.
+\begin{myexercise}\label{myexercise:0358}
+Überlegen Sie sich, wie Sie die ersten $30$ Glieder der Fibonacci-Folge \enquote{von Hand} berechnen würden. Verwenden Sie diese Intuition um eine Python-Funktion
+\begin{center}
+  \pythoninline{def fibonacci_fast(n)}
+\end{center}
+zu schreiben, welche für gegebenes $n\in\N$ das $n$-te Glied der Fibonacci-Folge deutlich schneller und auf nicht rekursive Weise berechnet. Berechnen Sie mit Hilfe dieser Funktion das Folgeglied $F_{100}$.
 \end{myexercise}
 
-\begin{myexercise}{myexercise:0309}
+\begin{myexercise}\label{myexercise:0309}
 (*) Wir bezeichnen für $n\in\N$ mit $F_n$ die $n$-te Fibonacci-Zahl. Betrachten Sie die Gleichung
 \begin{align}\label{eq:sumfib}
     F_{n+2} = 1 + \sum_{k=0}^{n} F_k
@@ -453,37 +455,37 @@ Betrachten wir den Aufruf \verb|f(2,'')|, um alle Strings der Länge $2$ auszuge
 Erst nachdem auch \verb|f(0,'01')| seine Arbeit beendet hat (Schritte $6$ und $\textcolor{Red}{7}$), erreicht der Aufruf \verb|f(1,'0')| seine Programmzeile $7$ und springt zurück zum ursprünglichen Aufruf \verb|f(2,'')| (Schritt $\textcolor{Red}{7}$). Dieser erreicht nun Programmzeile $6$ und ruft \verb|f(1,'1')| auf (Schritt $\textcolor{Blue}{9}$). Die Schritte in dieser \enquote{rechten} Hälfte von \cref{fig:binary} lassen sich nun analog beschreiben. Erst nach der Rückgabe des Aufrufs \verb|f(1,'1')| in Schritt $\textcolor{Red}{16}$ kann schliesslich der ursprüngliche Aufruf \verb|f(2,'')| seine Arbeit beenden.
 
 \clearpage
-\begin{myBox}[Wie werden rekursive Programme in Computern realisiert?]{-}
+\begin{mysummary}{Wie werden rekursive Programme in Computern realisiert?}
 In Computern wird für jeden Funktionsaufruf (Prozedur) ein Abschnitt im Speicher angelegt. Dieser Speicherabschnitt wird \textit{Stack-Frame} genannt. Darin darf die Funktion Speicherplatz zum Beispiel für lokale Variablen belegen. Deshalb benötigen rekursive Programme mit zahlreichen rekursiven Aufrufen viel Platz im Speicher.
 
 Ruft eine Prozedur \verb|A| eine andere Prozedur \verb|B| auf, so wird im Stack-Frame von Prozedur \verb|B| eine sogenannte \textit{Rücksprung-Adresse} gespeichert. Diese Adresse gibt an, wo im Speicher die Prozedur \verb|A| beginnt. Dadurch wird ermöglicht, dass Prozedur \verb|B| zu Prozedur \verb|A| \enquote{zurückspringen} kann (\textit{jump and link}). Mehr Details bezüglich der Funktionsweise von Computern und rekursiven Programmen finden Sie in den hervorragenden Texten \cite{Malvino} und \cite{Sauter}.
-\end{myBox}
+\end{mysummary}
 
 
-\begin{antwort}{myexercise:0301}
+\begin{myremoteanswer}{myexercise:0301}
 Wir beobachten, dass $13! = 13\cdot 12!$ gilt. Somit müssen wir $12!$ lediglich mit $13$ multiplizieren um $13!$ zu erhalten. Für $n\in\Nunit$ gilt allgemein
 \begin{align*}
     n! = n\cdot (n-1)!.
 \end{align*}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0350}
+\begin{myremoteanswer}{myexercise:0350}
 Angenommen es gäbe zwei Stars $S_1$ und $S_2$ in dem Raum. Da $S_2$ ein Star ist, wird $S_2$ von allen anderen gekannt. Insbesondere kennt $S_1$ die Person $S_2$. Damit kann aber $S_1$ selbst kein Star sein. Dies ist ein Widerspruch zu unserer Annahme, dass sowohl $S_1$ als auch $S_2$ Stars sind.
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0351}
+\begin{myremoteanswer}{myexercise:0351}
 \begin{itemize}
     \item Frage eine beliebige Person $A$ im Raum, ob sie eine andere beliebige Person $B$ kennt.
     \item Falls $A$ die Person $B$ kennt $\Rightarrow A$ ist kein Star.
     \item Falls $A$ die Person $B$ nicht kennt $\Rightarrow B$ ist kein Star.
 \end{itemize}
 In jedem der Fälle haben wir mit einer einzigen Frage eine Person identifiziert, welche sicherlich kein Star ist.
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0352}
+\begin{myremoteanswer}{myexercise:0352}
 Der Induktionsanfang ist klar, denn für $n = 2$ benötigen wir genau zwei Fragen. Sei nun die Behauptung für ein $n\in\N$ mit $n\geq 2$ wahr. Dann gilt
 \begin{align*}
     F(n+1) = F(n) + 3 = 3n-4 + 3 = 3n - 1,
@@ -491,10 +493,10 @@ Der Induktionsanfang ist klar, denn für $n = 2$ benötigen wir genau zwei Frage
 doch dies ist genau die Behauptung, denn $3(n+1)-4 = 3n+3-4=3n-1$.
 
 Gemäss der soeben bewiesenen Formel sind mit unserem Vorgehen genau $F(1000) = 3\cdot 1000 - 4 = 2996$ Fragen notwendig. Beachten Sie, dass wir in keinster Weise behaupten, dass dieses Vorgehen optimal ist.
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0303}
+\begin{myremoteanswer}{myexercise:0303}
 \begin{lstlisting}[language=Python,caption=rekursive Potenz-Funktion]
 def potenz(a,n):
     if n == 0:
@@ -502,10 +504,10 @@ def potenz(a,n):
     else:
         return a * potenz(a,n-1)
 \end{lstlisting}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0302}
+\begin{myremoteanswer}{myexercise:0302}
 \begin{lstlisting}[language=Python,caption=rekursive Potenz-Funktion]
 def factorial_loop(n):
     factorial = 1
@@ -516,19 +518,19 @@ def factorial_loop(n):
             factorial *= k
         return factorial
 \end{lstlisting}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0304}
+\begin{myremoteanswer}{myexercise:0304}
 \begin{aenum}
     \item Die Python-Funktion ist rekursiv definiert, da sie sich selbst aufruft.
     \item Die unbekannte Funktion multipliziert die Zahlen $m$ und $n$, realisiert also die Operation $m\cdot n$. In der Tat sieht man, dass die Funktion so lange $n$ addiert, bis $m = 0$ ist. Ein treffender Name für die Funktion wäre zum Beispiel \pythoninline{mult(m,n)}.
     \item Der Rückgabewert ist $100\cdot 50 = 5000$.
 \end{aenum}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0305}
+\begin{myremoteanswer}{myexercise:0305}
 \begin{lstlisting}[language=Python]
 def sum_rek(L):
     if len(L) == 1:
@@ -536,10 +538,10 @@ def sum_rek(L):
     else:
         return sum_rek(L[:-1]) + L[-1]
 \end{lstlisting}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0377}
+\begin{myremoteanswer}{myexercise:0377}
 \begin{lstlisting}[language=Python]
 def check_palindrom(w):
     w = w.upper()
@@ -554,10 +556,10 @@ oder noch kürzer:
 def check_palindrom(w):
     return (True if len(w) <= 1 else (check_palindrom(w[1:-1]) if w[0].lower() == w[-1].lower() else False))
 \end{lstlisting}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0308}
+\begin{myremoteanswer}{myexercise:0308}
 \begin{lstlisting}[language=Python,caption=rekursive Berechnung einer Summe]
 def summe(n):
     if n == 0:
@@ -565,10 +567,10 @@ def summe(n):
     else:
         return n + summe(n-1)
 \end{lstlisting}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0311}
+\begin{myremoteanswer}{myexercise:0311}
 \begin{lstlisting}[language=Python,caption=rekursive Berechnung eines Produkts]
 def produkt(n):
     if n == 1:
@@ -576,10 +578,10 @@ def produkt(n):
     else:
         return n**3 * produkt(n-1)
 \end{lstlisting}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0306}
+\begin{myremoteanswer}{myexercise:0306}
 \begin{lstlisting}[language=Python,caption=rekursive Berechnung der Fibonacci-Folge]
 def fibonacci(n):
     if n <= 1:
@@ -616,10 +618,10 @@ Die ersten $25$ Glieder der Fibonacci-Folge lauten:
 28657
 46368
 \end{lstlisting}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0307}
+\begin{myremoteanswer}{myexercise:0307}
 Die rekursiv definierte Python-Funktion aus \cref{myexercise:0306} berechnet viele Folgeglieder mehrfach und arbeitet somit sehr \enquote{verschwenderisch}. Beispielsweise werden bei der Berechnung von $F_{40}$ die Berechnungen von $F_{39}$ und $F_{38}$ aufgerufen. Doch zur Berechnung von $F_{39}$ muss nochmals $F_{38}$ berechnet werden und so weiter. In \cref{fig:fibonacciBaum} wird gezeigt, welche Funktionsaufrufe für die rekursive Berechnung von $F(5)$ benötigt werden. Beachten Sie, dass beispielsweise der Wert fib(2) dreimal berechnet wird. Es ist klar, dass die Anzahl der benötigten Funktionsaufrufe (und somit sicherlich auch die benötigten Rechenoperationen) zur Berechnung von $F(n)$ mit wachsendem $n$ stark ansteigt. Jede Fibonacci-Zahl, ausser $F(1)$ und $F(2)$, löst jeweils zwei Funktionsaufrufe aus. Damit ist es nicht schwierig, einzusehen, dass die Anzahl $A(n)$ der Funktionsaufrufe mindestens so schnell wächst wie die Fibonacci-Folge. Die genaue Anzahl ist gegeben durch
 \begin{align*}
     A(n) = 2F(n+1) - 1.
@@ -638,10 +640,10 @@ sn edges
 \caption{Die Anzahl Funktionsaufrufe für $F(5)$ ist 15.}
 \label{fig:fibonacciBaum}
 \end{figure}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0358}
+\begin{myremoteanswer}{myexercise:0358}
 Die folgende Python-Funktion startet zur Berechnung von $F_n$ bei den Startwerten $F_0$ und $F_1$ und berechnet \enquote{von unten her} nacheinander (man spricht in diesem Zusammenhang von \textit{iterativer Berechnung}) die Nachfolger. Dabei werden keine Berechnungen \enquote{verschwendet}.
 \begin{lstlisting}[language=Python,caption=iterative Berechnung der Fibonacci-Folge]
 def fibonacci_fast(n):
@@ -664,10 +666,10 @@ Mit Hilfe dieser Funktion berechnen wir (in sehr kurzer Zeit)
 \begin{align*}
     F_{100} = 354224848179261915075.
 \end{align*}
-\end{antwort}
+\end{myremoteanswer}
 
 
-\begin{antwort}{myexercise:0309}
+\begin{myremoteanswer}{myexercise:0309}
 \begin{aenum}
     \item Die $(n+2)$-te Fibonacci-Zahl ist um $1$ grösser als die Summe der Fibonacci-Zahlen $F_0,\ldots, F_n$.
     \item Wir beweisen die Behauptung durch vollständige Induktion. Für $n = 0$ haben wir
@@ -686,7 +688,7 @@ Mit Hilfe dieser Funktion berechnen wir (in sehr kurzer Zeit)
             &1 + \sum_{k=0}^{n} F_k.
         \end{align*}
 \end{aenum}
-\end{antwort}
+\end{myremoteanswer}
 
 
 
