@@ -1,0 +1,41 @@
+\chapter{Randomisiertes Kommunikationsprotokoll}
+Wir wollen den Begriff des \tib{deterministischen Algorithmus}\index{Algorithmus!deterministischer} einführen. Wikipedia beschreibt diesen Begriff (treffend) wie folgt:
+
+\begin{mydefinition}{deterministischer Algorithmus}
+  Ein deterministischer Algorithmus ist ein Algorithmus, bei dem nur definierte und reproduzierbare Zustände auftreten.
+  Für die gleiche Eingabe folgt auch immer die gleiche Ausgabe und zusätzlich wird die gleiche Folge an Zuständen durchlaufen.
+  Zu jedem Zeitpunkt ist der nachfolgende Abarbeitungsschritt des Algorithmus eindeutig festgelegt.
+  Das bedeutet auch, dass alle Zwischenergebnisse innerhalb des Algorithmus immer gleich sind.
+\end{mydefinition}
+
+Unsere bisheringen Algorithmen waren alle deterministisch. Sie haben auf gleichen Eingaben immer genau gleich gearbeitet und dabei stets die exakt gleiche Folge von Zuständen durchlaufen. Der nächste Schritt des Programms war dabei immer (von Anfang an) eindeutig festgelegt.
+
+Ein randomisierter Algorithmus wollen wir uns vorstellen, wie ein deterministischer Algorithmus, der mindestens eine Zufällig gewählte Zahl erhält, welche dann das Resultat der Berechnung beeinflusst.
+Man kann sich auch vorstellen, dass der randomisierte Algorithmus an mindestens einer Stelle eine Münze wirft und seine Berechnung / Entscheidung (zum Beispiel bei einem \pythoninline{if}) abhängig vom Ausgang dieses zufälligen Münzwurfs macht.
+
+Ziel dieses Kapitels ist zu zeigen, dass randomisierte Algorithmen deutlich effizienter als bestmögliche deterministische Algorithmen sein können.
+
+Dazu werden wir uns im Detail mit einem Beispiel eines randomisierten Algorithmus (randomisiertes Kommunikationsprotokoll) beschäftigen.
+
+Das Beispiel und die Notation wurden dem exzellenten Buch \cite{TheoretischeInformatik} entnommen.
+
+\section{Beschreibung des Problems}
+Sei $R_1$ ein Rechner, der sich an der ETH in Zürich befindet und sei $R_2$ ein Rechner am MIT in Boston, USA.
+Ursprünglich besassen diese Rechner je eine Datenbank mit exakt gleichem Inhalt.
+Mit der Zeit hat sich der Inhalt geändert, aber man hat sich bemüht, jeweils die gleichen Änderungen auf beiden Rechnern durchzuführen, um idealerweise die gleiche Datenbank auf beiden Rechnern zu erhalten.
+Nach einiger Zeit wollen wir prüfen, ob $R_1$ und $R_2$ tatsächlich noch dieselben Daten haben.
+Sei $n$ die Grösse der Datenbank in Bits.
+Wir wollen hier konkret eine Grösse von $n = 10^{16}$ betrachten.
+Unser Ziel ist es, einen Kommunikationsalgorithmus (ein Protokoll) zu
+entwerfen, der feststellt, ob sich die Inhalte der Datenbanken von $R_1$ und $R_2$ unterscheiden.
+
+Das offensichtliche Vorgehen, um diese Frage zu beantworten, ist zum Beispiel den Datensatz in Zürich Bit für Bit nach Boston zu senden, damit die Leute am MIT ihren Datensatz Bit für Bit mit dem Datensatz von Zürich vergleichen können.
+Dieses Vorgehen benötigt einen Austausch von genau $n$ Bits.
+Man kann beweisen\footnote{siehe $D(EQ) = n$ in \url{https://en.wikipedia.org/wiki/Communication_complexity}}, dass es keinen deterministischen Algorithmus gibt, der mit einem Austausch von weniger als $n$ Bit auskommt (bereits $n-1$ Bits reichen nicht aus).
+Offensichtlich ist diese Situation nicht sehr befriedigend, da es nicht praktisch ist, solch grosse Datenmengen zu senden.
+Des Weiteren ist die Wahrscheinlichkeit, dass bei der Übertragung solch vieler Bits mindestens ein Bit falsch übertragen werden könnte, nicht zu vernachlässigen.
+
+Im Folgenden wollen wir ein randomisiertes Kommunkationsprotokoll entwerfen, welches dieses Problem mit dem Austausch von wesentlich weniger Bits lösen kann.
+Dazu benötigen wir allerdings ein paar mathematische Tools, welche wir hier vorstellen wollen.
+
+
