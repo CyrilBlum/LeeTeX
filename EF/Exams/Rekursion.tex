@@ -1,0 +1,189 @@
+
+\newtoggle{withbonus} \toggletrue{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Ergänzungsfach Informatik}
+% name of the class
+\newcommand{\myclass}{4. Klassen}
+% set date
+\newcommand{\mydate}{16. Mai 2024}
+
+\title{\textbf{Rekursion}}
+\author{Thomas Graf\\
+\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}		
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $60$ Minuten
+				%\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item Erlaubte Hilfsmittel:
+				\begin{itemize}
+				    \item Schreibzeug
+				    %\item Taschenrechner
+				\end{itemize}
+	\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note: 
+	\vspace{10mm}
+	
+	\rule{8mm}{1.2pt}
+\end{center}
+%\thispagestyle{empty}
+\clearpage
+
+
+\begin{questions}
+
+\question[3]{\textbf{Beispiel nennen}}
+
+Gib ein Beispiel einer rekuriv definierten Funktion an (schreibe die vollständige Definition hin), welche aber nicht Teil der Aufgabenstellung einer der nachfolgenden Prüfungsfragen sein darf.
+Es darf aber durchaus ein Beispiel aus dem Skript / dem Unterricht gewählt werden.
+
+
+\question[3]{\textbf{Summe rekursiv berechnen}}
+
+Schreibe eine Python-Funktion \pythoninline{summe(n)}, welche die Summe
+\begin{align*}
+    \sum_{k=0}^n k := 0 + 1 + \ldots + n
+\end{align*}
+der ersten $n+1$ natürlichen Zahlen $0,1,\ldots ,n$ rekursiv berechnet.
+\begin{solution}
+\begin{lstlisting}[language=Python,caption=rekursive Berechnung einer Summe,numbers=none]
+def summe(n):
+    if n == 0:
+        return 0
+    else:
+        return n + summe(n - 1)
+\end{lstlisting}
+\end{solution}
+
+
+\question{\textbf{McCarthy}}
+
+Sei $n\geq 1$ eine natürliche Zahl. Wir definieren die \textit{McCarthy-Funktion} durch
+\begin{align}\label{eq:M}
+M(n) := 
+  \begin{cases}
+    n - 10, &\text{falls $n > 100$,} \\
+    M(M(n+11)), & \text{falls $n \leq 100$.}
+  \end{cases}
+\end{align}
+
+\begin{parts}
+    \part[1] Wie erkennt man, dass die \textit{McCarthy-Funktion} rekursiv definiert ist?
+    \begin{solution}
+      In der Definition von $M$ kommt $M$ vor.
+    \end{solution}
+    \part[1] Welchen Wert hat $M(1000)$?
+    \begin{solution}
+      Da $1000 > 100$ ist der Wert $1000-10 = 990$.
+    \end{solution}
+    \part[2] Berechne $M(99)$. Zeige alle deine Schritte.
+    \begin{solution}
+      \begin{align*}
+          &\overbrace{M(99)}^{\text{1. Aufruf}} = M(\red{M(110)}) = \overbrace{M(100)}^{\text{3. Aufruf}} = M(\blue{M(111)}) = \overbrace{M(101)}^{\text{5. Aufruf}} = 91\\
+          &\overbrace{\red{M(110)}}^{\text{2. Aufruf}} =  100\\
+          &\overbrace{\blue{M(111)}}^{\text{4. Aufruf}} = 101
+      \end{align*}
+    \end{solution}
+    \part[1] Wie oft wird McCarthy's 91 Funktion $M$ bei der Berechnung von $M(99)$ aufgerufen?
+    \begin{solution}
+      Die Funktion wird $5$ mal aufgerufen.
+    \end{solution}
+    \part[1] Schreibe eine Python-Funktion \pythoninline{def M(n)}, welche die rekursive Definition von McCarthy's 91 Funktion in \ref{eq:M} implementiert.
+    \begin{solution}
+    \begin{lstlisting}[language=Python,numbers=none]
+    def M(n):
+      if n > 100:
+          return n - 10
+      return M(M(n+11))
+    \end{lstlisting}
+    \end{solution}
+\end{parts}
+\droptotalpoints
+
+
+\question[5] \textbf{Iteration statt Rekursion}
+
+Für alle ganzzahligen $n$ sei die Funktion $f$ rekursiv definiert durch:
+\[
+  f(n) = 
+  \begin{cases}
+    1, & \text{falls } n \leq 2\\
+    f(n-1) + 2\cdot f(n-3), & \text{sonst}.
+  \end{cases}
+\]
+\begin{parts}
+\part (1 Punkt)
+Bestimme die Funktionswerte $f(3), f(4), f(5)$ und $f(6)$.
+
+\part[1]
+Schreibe eine rekursives Python-Funktion \pythoninline{def f_rek(n)}, welche die oben gegebene rekursive Funktion $f$ implementiert.
+Man darf davon ausgehen, dass der Input garantiert eine ganze Zahl ist.
+\begin{lstlisting}[language=Python,numbers=none]
+def rek_f(n):
+    if n <= 2:
+        return. ......
+    else:
+        return ..................................
+\end{lstlisting}
+\part[1]
+Schreibe eine Python-Funktion \pythoninline{def f_it(n)}, welche den Wert $f(n)$ für eine gegebene ganze Zahl $n$ mit einem \pythoninline{for}-Schleife berechnet, ohne sich rekursiv selbst aufzurufen (iterativ).
+Man darf davon ausgehen, dass der Input garantiert eine ganze Zahl ist.
+\part[1] Welche der beiden Funktionen \pythoninline{f_it} oder \pythoninline{f_rek} wird auf demselben Computer für $n\geq 40$ vermutlich mehr Zeit in Anspruch nehmen? Begründe deine Antwort.
+\end{parts}
+\droptotalpoints
+
+\question \textbf{unbekannte Funktion}
+
+Gegeben ist die folgende Funktion \pythoninline{unknown}, welche als Argument einen String \pythoninline{s} erhält:
+\begin{lstlisting}[language=Python,numbers=none]
+def unknown(s):
+  if len(s) <= 1:
+      return s
+  else:
+      return unknown(s[1:]) + s[0]
+\end{lstlisting}
+Bitte beachte, dass \pythoninline{s[1:]} identisch ist zu \pythoninline{s} aber ohne den ersten Buchstaben von \pythoninline{s}:
+\begin{lstlisting}[language=Python,numbers=none]
+s = "hallo"
+print(s[1:]) # gibtt aus: allo
+s = "super"
+print(s[1:]) # gibt aus: uper
+\end{lstlisting}
+\begin{parts}
+\part[1] Was ist die Ausgabe des Aufrufs \pythoninline{unknown("upsi")}?
+\begin{solution}
+  Die Ausgabe ist \pythoninline{ispu}.
+\end{solution}
+
+\part[2] Was macht die Funktion \pythoninline{unknown}?
+\begin{solution}
+  Die Funktion berechnet die Umkehrung des Strings \pythoninline{s} (Reversal von \pythoninline{s}). Die Ausgabe ist also \pythoninline{s} \enquote{rückwerts gelesen}.
+\end{solution}
+\end{parts}
+\droptotalpoints
+
+
+\end{questions}
+
