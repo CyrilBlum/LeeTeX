@@ -111,7 +111,7 @@ Dabei kann $q$ durch die Berechnung $q = (a-r)/b$ ermittelt werden.
 \end{align*}
 wobei $a = 121$, $b = 9$, $q = 13$ und $r = 4$.
     \item \phantom{1}
-\begin{lstlisting}[language=Python,caption=Division mit Rest]
+\begin{lstlisting}[language=Python,caption=Division mit Rest,numbers=none]
   def division_mit_rest(a,b):
       r = a % b
       q = int((a-r)/b)
@@ -155,7 +155,7 @@ die (kürzeste) Darstellung von $x$ im Dezimalsystem.
 \begin{mychallenge}
 Schreibe eine Python-Funktion \pythoninline{def Nummer(x)}, welche $\text{Nummer}(x)$ für eine natürliche Zahl $x$ berechnet.
 \begin{myanswer}
-\begin{lstlisting}[language=Python,caption=Nummer]
+\begin{lstlisting}[language=Python,caption=Nummer,numbers=none]
 def Nummer(x):
     x = list(str(x))
     n = len(x)
@@ -285,114 +285,141 @@ Sei $n\geq m$ die Eingabe für den Algorithmus \textit{Sieb des Eratosthenes}. N
 \end{aenum}
 \end{myanswer}
 
-\begin{myexercise}
+\begin{myexercise}\label{myexercise:sieb}
 Schreiben Sie eine Python-Funktion \pythoninline{def sieb(n)}, welche den Alogrithmus von Eratosthenes implementiert und alle Primzahlen $\leq n$ ausgibt. Vervollständigen Sie dazu die folgende Vorlage:
-\begin{lstlisting}[language=Python,caption=Sieb des Eratosthenes]
+\begin{lstlisting}[language=Python,caption=Sieb des Eratosthenes,numbers=none]
 def sieb(n):
-    # starte mit einer leeren Liste von 
-    # Primzahlen (wir haben noch keine gefunden)
-    primzahlen = []
-    
-    # starte mit einer Liste der Länge n + 1
-    # nicht_gestrichen[i] ist genau dann True, wenn
-    # die Zahl i (i = 0, 1, ..., n) noch
-    # nicht gestrichen wurde
-    # zu Beginn ist noch keine Zahl durchgestrichen
-    nicht_gestrichen = (n + 1) * [True]
-    
-    i = 2
-    # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
-    while i <= n:
-        if .....
-            .....
-            .....
-    
-        j = .....
-        while j <= n:
-            .....
-            .....
-    
-        i += 1
-    
-    print(primzahlen)
+  # starte mit einer leeren Liste von
+  # Primzahlen (wir haben noch keine gefunden)
+  primzahlen = []
+ 
+  # starte mit einer Liste der Länge n + 1
+  # nicht_gestrichen[i] ist genau dann True, wenn
+  # die Zahl i (i = 0, 1, ..., n) noch
+  # nicht gestrichen wurde
+  # zu Beginn ist noch keine Zahl durchgestrichen
+  nicht_gestrichen = (n + 1) * [True]
+ 
+  i = 2
+  # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
+  while i <= n:
+    if ....:
+      ....
+      ....
+      j = 2*i
+      while ....:
+          ....
+          ....
+
+    i += 1
+  print(primzahlen)
 \end{lstlisting}
 \end{myexercise}
-\begin{myanswer} 
-\begin{lstlisting}[language=Python,caption=Sieb des Eratosthenes]
+
+\begin{myanswer}[myexercise:sieb]
+\begin{lstlisting}[language=Python,caption=Sieb des Eratosthenes,numbers=none]
 def sieb(n):
-    # starte mit einer leeren Liste von 
-    # Primzahlen (wir haben noch keine gefunden)
-    primzahlen = []
-    
-    # starte mit einer Liste der Länge n + 1
-    # nicht_gestrichen[i] ist genau dann True, wenn
-    # die Zahl i (i = 0, 1, ..., n) noch
-    # nicht gestrichen wurde
-    # zu Beginn ist noch keine Zahl durchgestrichen
-    nicht_gestrichen = (n + 1) * [True]
-    
-    i = 2
-    # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
-    while i <= n:
-        if nicht_gestrichen[i]:
-            primzahlen.append(i)
-            nicht_gestrichen[i] = False
-    
-        j = 2*i
-        while j <= n:
-            nicht_gestrichen[j] = False
-            j += i
-    
-        i += 1
-    
-    print(primzahlen)
+  # starte mit einer leeren Liste von
+  # Primzahlen (wir haben noch keine gefunden)
+  primzahlen = []
+ 
+  # starte mit einer Liste der Länge n + 1
+  # nicht_gestrichen[i] ist genau dann True, wenn
+  # die Zahl i (i = 0, 1, ..., n) noch
+  # nicht gestrichen wurde
+  # zu Beginn ist noch keine Zahl durchgestrichen
+  nicht_gestrichen = (n + 1) * [True]
+ 
+  i = 2
+  # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
+  while i <= n:
+    if nicht_gestrichen[i]:
+      primzahlen.append(i)
+      j = 2*i
+      while j <= n:
+          nicht_gestrichen[j] = False
+          j += i
+    i += 1
+  print(primzahlen)
 \end{lstlisting}
 \end{myanswer}
 
 
 Mit Hilfe des Sieb von Eratosthenes, ist es nun ganz einfach, eine Funktion zu definieren, welche $\text{Prim}(n)$ berechnet. Dazu ändern wir den Befehl \pythoninline{print(primzahlen)} in unserer Funktion \pythoninline{sieb} ab zu \pythoninline{return primzahlen} und können dann schreiben:
-\begin{lstlisting}[language=Python,caption=Prim]
+\begin{lstlisting}[language=Python,caption=Prim,numbers=none]
 def prim(n):
     return len(sieve(n))
 \end{lstlisting}
 Die Laufzeit des \textit{Sieb des Eratosthenes} kann an zwei Stellen deutlich verbessert werden. Die Folgende Aufgabe hilft Dir dabei, dieses Stellen zu erkennen.
 
 
-\begin{myexercise}
-\underline{Verbesserung 1}
-
+\begin{myexercise}[Verbesserung 1]\label{myexercise:verbesserung1}
 Sei $n\geq 2$ eine natürliche Zahl. Zeige, dass folgende zwei Aussagen äquivalent sind:
-\begin{aenum}
+\begin{enumerate}
     \item Die Zahl $n$ ist eine Primzahl.
     \item Die Zahl $n$ besitzt keinen echten Teiler $\leq \floor{\sqrt{n}}$.
-\end{aenum}
-Dabei ist $\floor{x}$ die nächste ganze Zahl $\leq x$ (Abrundeklammer).
-\end{myexercise}
+\end{enumerate}
+Dabei bezeichnet für $x\in\R$ der Ausdruck $\floor{x}$ (sprich: $x$ abgerundet) die grösste ganze Zahl $\leq x$ (Abrundeklammer).
 \begin{myanswer}
-
-1. $\Rightarrow$ 2.
-
+  \begin{description}
+    \item[1. $\Rightarrow$ 2.:]
 Da $n$ eine Primzahl ist, besitzt sie keinen echten Teiler und somit insbesondere auch keinen echten Teiler $\leq \floor{\sqrt{n}}$.
-
-2. $\Rightarrow$ 1.
-
-Sei $n$ keine Primzahl. Damit besitzt $n$ eine Faktorisierung $n = ab$ mit $a,b\in\mathbb{N}$. Wir zeigen, dass mindestens einer der Faktoren $\leq \floor{\sqrt{n}}$ ist und $n$ somit einen echten Teiler $\leq \floor{\sqrt{n}}$ hat. Falls $n$ eine Quadratzahl ist, dann besitz $n$ die Faktorisierung $n = a^2$ mit $a = \sqrt{n}$. Damit ist $a$ ein echter Teiler $\leq \floor{\sqrt{n}}$. Sei also $n$ keine Quadratzahl. Dann muss  genau einer der beiden Faktoren $a$ oder $b$ kleiner oder gleich $\floor{\sqrt{n}}$ sein, da sonst das Produkt $ab$ grösser als $n$ wäre (im Widerspruch zu $n = ab$).
+    \item[2. $\Rightarrow$ 1.:]
+Sei $n$ keine Primzahl.
+Damit besitzt $n$ eine Faktorisierung $n = ab$ mit $a,b\in\N$ und $a,b\geq 2$.
+Wir zeigen, dass mindestens einer der Faktoren $\leq \floor{\sqrt{n}}$ ist und $n$ somit einen echten Teiler $\leq \floor{\sqrt{n}}$ hat.
+Angenommen $a, b > \floor{\sqrt{n}}$ (beide Faktoren sind grösser). 
+Dann gilt offensichtlich $a, b \geq \floor{\sqrt{n}} + 1$, da $a$ und $b$ natürliche Zahlen sind. 
+Beachten Sie, dass $\green{\floor{\sqrt{n}}} > \blue{\sqrt{n} - 1}$ gilt. Nun folgt: 
+\begin{align*}
+  ab \geq \lr{\floor{\green{\sqrt{n}}} + 1}^2 > \lr{\blue{\sqrt{n} - 1} + 1}^2 = n
+\end{align*}
+und somit insbesondere der Widerspruch $ab > n$ obwohl $ab = n$ gilt.
+\end{description}
 \end{myanswer}
-%
-%
-%
-% \begin{myexercise}
-% Wir wenden das Sieb des Eratosthenes auf die Eingabe $n>2$ an.
-%
-% Angenommen, das Sieb des Eratosthenes hat gerade eine Primzahl $p > 2$ gefunden. Zeige, dass die Vielfachen $hp$ von $p$ mit $h\in \left\{2,3, ..., p-1\right\}$ bereits vom Algorithmus gestrichen wurden. Damit genügt es, die Vielfachen $\geq p^2$ zu streichen (solange sie kleiner oder gleich $n$ sind).
-% \end{myexercise}
-%
-% \begin{myanswer}
-% Sei $hp$ für ein $h\in \left\{2,3, ..., p-1\right\}$ ein Vielfaches von $p$. Angenommen $h$ ist eine Primzahl. Da $h<p$ wurde $h$ bereits als Primzahl vom Sieb (vor $p$) gefunden und die Vielfachen $\leq n$ von $h$ wurden gestrichen. Insbesondere also auch das Vielfache $hp$ von $h$. Falls $h$ keine Primzahl ist, dann besitzt $h$ eine Zerlegung $h = ab$ für eine Primzahl $a<h<n$. Damit wurde aber $hp = abp$ als $bp$-faches Vielfache von $a$ bereits gestrichen.
-% \end{myanswer}
-%
-% \clearpage
-%
+\end{myexercise}
+
+\begin{myexercise}[Implementation von Verbesserung 1]\label{myexercise:implementVerbesserung1}
+  Implementieren Sie Verbesserung 1 aus \cref{myexercise:verbesserung1} in Python.
+\end{myexercise}
+
+\begin{myanswer}[myexercise:implementVerbesserung1]
+\begin{lstlisting}[language=Python,caption=Verbesserung 1,numbers=none]
+def sieb(n):
+    primzahlen = []
+    nicht_gestrichen = (n + 1) * [True]
+
+    i = 2
+    while i * i <= n:
+        if nicht_gestrichen[i]:
+            j = 2 * i
+            while j <= n:
+                nicht_gestrichen[j] = False
+                j += i
+        i += 1
+
+    # sammle alle nicht gestrichenen Zahlen
+    # dies sind genau die Primzahlen <= n
+    i = 2
+    while i <= n:
+        if nicht_gestrichen[i]:
+            primzahlen.append(i)
+        i += 1
+
+    print(primzahlen)
+\end{lstlisting}
+\end{myanswer}
+
+\begin{mychallenge}[Verbesserung 2]\label{myexercise:implementVerbesserung2}
+Wir wenden das Sieb des Eratosthenes auf die Eingabe $n>2$ an.
+
+Angenommen, das Sieb des Eratosthenes hat soeben eine Primzahl $p > 2$ gefunden. Zeige, dass die Vielfachen $hp$ von $p$ mit $h\in\lrc{2,3, ..., p-1}$ bereits vom Algorithmus gestrichen wurden. Damit genügt es, die Vielfachen $\geq p^2$ zu streichen (solange sie kleiner oder gleich $n$ sind).
+\end{mychallenge}
+
+\begin{myanswer}[myexercise:implementVerbesserung2]
+Sei $hp$ für ein $h\in\lrc{2,3, ..., p-1}$ ein Vielfaches von $p$. Angenommen $h$ ist eine Primzahl. Da $h<p$ wurde $h$ bereits als Primzahl vom Sieb (vor $p$) gefunden und die Vielfachen $\leq n$ von $h$ wurden gestrichen. Insbesondere also auch das Vielfache $hp$ von $h$. Falls $h$ keine Primzahl ist, dann besitzt $h$ eine Zerlegung $h = ab$ für eine Primzahl $a<h<n$. Damit wurde aber $hp = abp$ als $bp$-faches Vielfache von $a$ bereits gestrichen.
+\end{myanswer}
+
 % Mit Hilfe dieser zwei Verbesserungen, lässt sich $\text{Prim}(n)$ effizienter implementieren:
 % \begin{minted}[linenos]{python}
 % def sieve_fast(n):
