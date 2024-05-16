@@ -56,9 +56,26 @@
 
 \question[3]{\textbf{Beispiel nennen}}
 
-Gib ein Beispiel einer rekuriv definierten Funktion an (schreibe die vollständige Definition hin), welche aber nicht Teil der Aufgabenstellung einer der nachfolgenden Prüfungsfragen sein darf.
+Gib ein Beispiel einer rekursiv definierten Funktion an (schreibe die vollständige Definition hin), welche aber nicht Teil der Aufgabenstellung einer der nachfolgenden Prüfungsfragen sein darf.
 Es darf aber durchaus ein Beispiel aus dem Skript / dem Unterricht gewählt werden.
 
+\question{\textbf{Effizienz}}
+
+Betrachte die nachfolgende Behauptung:
+\begin{center}
+  \enquote{Falls zu einem Problem ein rekursiver Algorithmus existiert, so ist dieser (für beliebige erlaubte Eingaben) immer mindestens so schnell wie jeder nicht rekursive Algorithmus.}
+\end{center}
+\begin{parts}
+  \part[1] Ist diese Aussage korrekt (ja / nein)?
+  \begin{solution}
+    Nein, die Aussage ist nicht korrekt.
+  \end{solution}
+  \part[2] Begründe die Behauptung oder widerlege sie durch ein Gegenbeispiel.
+  \begin{solution}
+    Wir haben im Unterricht / Skript gesehen, dass die rekursive Berechnung der Fibonacci-Zahlen (zum Beispiel $F(40)$) wesentlich langsamer ist als die iterative (und nicht rekursive) Berechnung der Fibonacci-Zahlen.
+  \end{solution}
+\end{parts}
+\droptotalpoints
 
 \question[3]{\textbf{Summe rekursiv berechnen}}
 
@@ -110,7 +127,7 @@ M(n) :=
     \begin{solution}
       Die Funktion wird $5$ mal aufgerufen.
     \end{solution}
-    \part[1] Schreibe eine Python-Funktion \pythoninline{def M(n)}, welche die rekursive Definition von McCarthy's 91 Funktion in \ref{eq:M} implementiert.
+    \part[1] Schreibe eine Python-Funktion \pythoninline{def M(n)}, welche die rekursive Definition von McCarthy's 91 Funktion in Ausdruck \ref{eq:M} implementiert.
     \begin{solution}
     \begin{lstlisting}[language=Python,numbers=none]
     def M(n):
@@ -122,39 +139,7 @@ M(n) :=
 \end{parts}
 \droptotalpoints
 
-
-\question[5] \textbf{Iteration statt Rekursion}
-
-Für alle ganzzahligen $n$ sei die Funktion $f$ rekursiv definiert durch:
-\[
-  f(n) = 
-  \begin{cases}
-    1, & \text{falls } n \leq 2\\
-    f(n-1) + 2\cdot f(n-3), & \text{sonst}.
-  \end{cases}
-\]
-\begin{parts}
-\part (1 Punkt)
-Bestimme die Funktionswerte $f(3), f(4), f(5)$ und $f(6)$.
-
-\part[1]
-Schreibe eine rekursives Python-Funktion \pythoninline{def f_rek(n)}, welche die oben gegebene rekursive Funktion $f$ implementiert.
-Man darf davon ausgehen, dass der Input garantiert eine ganze Zahl ist.
-\begin{lstlisting}[language=Python,numbers=none]
-def rek_f(n):
-    if n <= 2:
-        return. ......
-    else:
-        return ..................................
-\end{lstlisting}
-\part[1]
-Schreibe eine Python-Funktion \pythoninline{def f_it(n)}, welche den Wert $f(n)$ für eine gegebene ganze Zahl $n$ mit einem \pythoninline{for}-Schleife berechnet, ohne sich rekursiv selbst aufzurufen (iterativ).
-Man darf davon ausgehen, dass der Input garantiert eine ganze Zahl ist.
-\part[1] Welche der beiden Funktionen \pythoninline{f_it} oder \pythoninline{f_rek} wird auf demselben Computer für $n\geq 40$ vermutlich mehr Zeit in Anspruch nehmen? Begründe deine Antwort.
-\end{parts}
-\droptotalpoints
-
-\question \textbf{unbekannte Funktion}
+\question \textbf{unknown function}
 
 Gegeben ist die folgende Funktion \pythoninline{unknown}, welche als Argument einen String \pythoninline{s} erhält:
 \begin{lstlisting}[language=Python,numbers=none]
@@ -179,11 +164,74 @@ print(s[1:]) # gibt aus: uper
 
 \part[2] Was macht die Funktion \pythoninline{unknown}?
 \begin{solution}
-  Die Funktion berechnet die Umkehrung des Strings \pythoninline{s} (Reversal von \pythoninline{s}). Die Ausgabe ist also \pythoninline{s} \enquote{rückwerts gelesen}.
+  Die Funktion berechnet die Umkehrung des Strings \pythoninline{s} (Reversal von \pythoninline{s}). Die Ausgabe ist also \pythoninline{s} \enquote{rückwärts gelesen}.
 \end{solution}
 \end{parts}
 \droptotalpoints
 
+\question\textbf{Iteration statt Rekursion}
 
+Für alle ganzzahligen $n$ sei die Funktion $f$ rekursiv definiert durch:
+\[
+  f(n) = 
+  \begin{cases}
+    1, & \text{falls } n \leq 2\\
+    f(n-1) + 2\cdot f(n-3), & \text{sonst}.
+  \end{cases}
+\]
+\begin{parts}
+\part[1]
+Bestimme die Funktionswerte $f(3), f(4), f(5)$ und $f(6)$.
+\begin{solution}
+\begin{align*}
+f(3) &= f(2) + 2\cdot f(0) = 1 + 2\cdot 1 = 3\\
+f(4) &= f(3) + 2\cdot f(1) = 3 + 2\cdot 1 = 5\\
+f(5) &= f(4) + 2\cdot f(2) = 5 + 2\cdot 1 = 7\\
+f(6) &= f(5) + 2\cdot f(3) = 7 + 2\cdot 3 = 13
+\end{align*}
+\end{solution}
+\part[1]
+Schreibe eine rekursive Python-Funktion \pythoninline{def f_rek(n)}, welche die oben gegebene rekursive Funktion $f$ implementiert.
+Man darf davon ausgehen, dass der Input garantiert eine ganze Zahl ist.
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+def rek_f(n):
+  if n <= 2:
+    return 1
+  else:
+    return rek_f(n - 1) + 2 * rek_f(n - 3)
+\end{lstlisting}
+\end{solution}
+
+\part[1]
+Schreibe eine Python-Funktion \pythoninline{def f_it(n)}, welche den Wert $f(n)$ für eine gegebene ganze Zahl $n$ mit einem \pythoninline{for}-Schleife berechnet (iterativ), ohne sich rekursiv selbst aufzurufen.
+Man darf davon ausgehen, dass der Input garantiert eine ganze Zahl ist.
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+def f_it(n):
+  if n <= 2:
+    return 1
+  else:
+    # Startwerte
+    # f(0) = f[0] = 1
+    # f(1) = f[1] = 1
+    # f(2) = f[2] = 1
+    # f(3) = f[3] = 0 (noch unbekannter Wert)
+    f = [1, 1, 1, 0]
+    for _ in range(n - 2):
+      f[3] = f[2] + 2 * f[0]  # f(n) = f(n-1) +2*f(n-3)
+      res = f[3]  # Zwischenspeichern von f[3]
+
+      # rücke Elemente der 4-Elementing Liste f um eins nach links
+      f.pop(0)  # entferne Element ganz links
+      f.append(res)  # füge ganz rechts den neuen Wert ein
+    return f[3]
+\end{lstlisting}
+\end{solution}
+\part[1] Welche der beiden Funktionen \pythoninline{f_it} oder \pythoninline{f_rek} wird auf demselben Computer für $n\geq 40$ vermutlich mehr Zeit in Anspruch nehmen? Begründe deine Antwort.
+\begin{solution}
+Die iterative Funktion wird sehr viel schneller arbeiten, da sie keine Werte mehrfach berechnet. Die rekursive Funktion verwendet sehr viele Rechenschritte, indem sie etliche Zwischenergebnisse mehrfach berechnet.
+\end{solution}
+\end{parts}
+\droptotalpoints
 \end{questions}
-
