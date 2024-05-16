@@ -7,6 +7,8 @@
   \emoji{floppy-disk} \textbf{\gls{SQL} und InstaHub}
 \end{frame}
 
+\lstset{style=sql, basicstyle=\ttfamily\scriptsize}
+
 \begin{frame}{Inhalte}
   \begin{itemize}
     \item Wiederholung: \gls{SQL} und Instahub
@@ -21,11 +23,11 @@
 \section{aa}
 \subsection{aaa}
 
-\begin{frame}[fragile]{Einfache Selektion: \lstinline[style=sql]|SELECT|}
+\begin{frame}[fragile]{Einfache Selektion: \lstinline|SELECT|}
   \begin{myexercise}
     Geben Sie die Namen und Wohnorte aller Mitglieder aus.
 \begin{myanswer}
-      \begin{lstlisting}[style=sql]
+      \begin{lstlisting}
 SELECT username, city
 FROM users
 \end{lstlisting}
@@ -33,11 +35,11 @@ FROM users
   \end{myexercise}
 \end{frame}
 
-\begin{frame}[fragile]{Selektion mit Filter: \lstinline[style=sql]|WHERE|}
+\begin{frame}[fragile]{Selektion mit Filter: \lstinline|WHERE|}
   \begin{myexercise}
     Geben Sie alle weiblichen Mitglieder aus, die zwischen 150 und 155 gross sind.
     \begin{myanswer}
-      \begin{lstlisting}[style=sql]
+      \begin{lstlisting}
 SELECT name, gender, centimeters
 FROM users
 WHERE gender="female"
@@ -47,12 +49,12 @@ AND centimeters between 150 and 155
   \end{myexercise}
 \end{frame}
 
-\begin{frame}[fragile]{Eindeutige Selektion: \lstinline[style=sql]|SELECT DISTINCT|}
+\begin{frame}[fragile]{Eindeutige Selektion: \lstinline|SELECT DISTINCT|}
   \small
   \begin{myexercise}
     Geben Sie jeden Wohnort nur einmal aus.
     \begin{myanswer}
-      \begin{lstlisting}[style=sql]
+      \begin{lstlisting}
 SELECT DISTINCT city 
 FROM users
 \end{lstlisting}
@@ -60,11 +62,11 @@ FROM users
   \end{myexercise}
 \end{frame}
 
-\begin{frame}[fragile]{Ungefähre Matches: \lstinline[style=sql]|LIKE|}
+\begin{frame}[fragile]{Ungefähre Matches: \lstinline|LIKE|}
   \begin{mysubmission}
     Wählen Sie alle Personen mit dem Namen Naomi aus, die nicht aus Berlin kommen.
     \begin{myanswer}
-      \begin{lstlisting}[style=sql]
+      \begin{lstlisting}
 SELECT name, city
 FROM users
 WHERE name LIKE "Naomi%"
@@ -74,11 +76,11 @@ AND city <> "Berlin"
   \end{mysubmission}
 \end{frame}
 
-\begin{frame}[fragile]{Sortieren: \lstinline[style=sql]|ORDER BY|}
+\begin{frame}[fragile]{Sortieren: \lstinline|ORDER BY|}
   \begin{myexercise}
     Geben Sie alle Benutzernamen in sortierter Reihenfolge aus (a $\rightarrow$ z).
     \begin{myanswer}
-      \begin{lstlisting}[style=sql]
+      \begin{lstlisting}
 SELECT username
 FROM users
 ORDER BY username ASC
@@ -87,12 +89,12 @@ ORDER BY username ASC
   \end{myexercise}
 \end{frame}
 
-\begin{frame}[fragile]{Aggregatsfunktionen: \lstinline[style=sql]|COUNT|, \lstinline[style=sql]|MAX|, \lstinline[style=sql]|MIN|, \lstinline[style=sql]|SUM|, \lstinline[style=sql]|AVG|, \lstinline[style=sql]|LENGTH|}
+\begin{frame}[fragile]{Aggregatsfunktionen: \lstinline|COUNT|, \lstinline|MAX|, \lstinline|MIN|, \lstinline|SUM|, \lstinline|AVG|, \lstinline|LENGTH|}
 
   \begin{myexercise}
     Geben Sie die Anzahl registrierten Mitglieder in Berlin aus. Die resultierende Spalte soll ``Registrierte Mitglieder in Berlin'' heissen.
     \begin{myanswer}
-      \begin{lstlisting}[style=sql]
+      \begin{lstlisting}
 SELECT COUNT(*) AS "Registrierte Mitglieder in Berlin" 
 FROM users
 WHERE city="Berlin"
@@ -102,11 +104,11 @@ WHERE city="Berlin"
 \end{frame}
 
 
-\begin{frame}[fragile]{Gruppieren: \lstinline[style=sql]|GROUP BY|}
+\begin{frame}[fragile]{Gruppieren: \lstinline|GROUP BY|}
   \begin{mysubmission}
     Geben Sie die durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt aus. Zeigen Sie nur die Städte, in denen die Menschen im Durchschnitt zwischen 150 und 155 gross sind.
     \begin{myanswer}
-      \begin{lstlisting}[style=sql]
+      \begin{lstlisting}
 SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
 FROM users
 GROUP BY city
@@ -116,11 +118,11 @@ HAVING `Durchschnittliche Körpergrösse` BETWEEN 150 AND 155
   \end{mysubmission}
 \end{frame}
 
-\begin{frame}[fragile]{Erste \textit{n} Zeilen: \lstinline[style=sql]|LIMIT|}
+\begin{frame}[fragile]{Erste \textit{n} Zeilen: \lstinline|LIMIT|}
   \begin{myexercise}
     Zeigen Sie die Namen und Körpergrösse der 5 grössten Mitglieder an.
     \begin{myanswer}
-      \begin{lstlisting}[style=sql]
+      \begin{lstlisting}
 SELECT name, centimeters
 FROM users
 ORDER BY centimeters DESC
@@ -131,9 +133,9 @@ LIMIT 5
 
 \end{frame}
 
-\begin{frame}[fragile]{Verzweigungen: \lstinline[style=sql]|CASE WHEN|}
+\begin{frame}[fragile]{Verzweigungen: \lstinline|CASE WHEN|}
 
-  \begin{lstlisting}[style=sql]
+  \begin{lstlisting}
 SELECT name, centimeters,
 CASE 
 	WHEN centimeters > 179 THEN 'Gross'
