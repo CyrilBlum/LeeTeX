@@ -1,0 +1,95 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=TigerJython, basicstyle=\scriptsize\ttfamily}
+
+\begin{frame}
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+    \end{figure}
+    Informatik: Programmieren\\
+    \emoji{right-arrow-curving-up} Kapitel 4 (Teil 3): \textbf{Konditionale Schleifen-Abbrüche mit \lstinline[basicstyle=\ttfamily]|while| und \lstinline[basicstyle=\ttfamily]|break|}
+\end{frame}
+
+\begin{frame}[fragile]{Spirale: Abbruchkondition?}
+\begin{columns}
+\begin{column}{.7\textwidth}
+\begin{lstlisting}
+from gturtle import *
+makeTurtle()
+
+def spirale(seite, add, max_seite):
+    repeat ?:
+        fd(seite)
+        rt(90)
+        seite+=add
+
+spirale(10, 10, 100)
+\end{lstlisting}
+Wie viele Male muss das \lstinline|repeat| ausgeführt werden?
+\[\floor{\frac{\text{\texttt{maxseite - seite}}}{\text{\texttt{add}}}} + 1\]
+Es geht auch einfacher$\ldots$
+\end{column}
+
+\begin{column}{.3\textwidth}
+\begin{figure}
+\includegraphics[width=\linewidth]{GrundlagenInfo/00_Programmieren/Figures/spirale_while}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Spirale: Fussgesteuerter Abbruch (\lstinline[basicstyle=\ttfamily]|break|)}
+\begin{columns}
+\begin{column}{.7\textwidth}
+\begin{lstlisting}
+from gturtle import *
+makeTurtle()
+
+def spirale(seite, add, max_seite):
+    repeat: # unendliche Schleife
+    	if seite > max_seite:
+    	    break
+        fd(seite)
+        rt(90)
+        seite+=add
+
+spirale(10, 10, 100)
+\end{lstlisting}
+
+\end{column}
+
+\begin{column}{.3\textwidth}
+\begin{figure}
+\includegraphics[width=\linewidth]{GrundlagenInfo/00_Programmieren/Figures/spirale_while}
+\end{figure}
+\end{column}
+\end{columns}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2cm, scale=.6, transform shape, ->]
+    \centering
+    \tikzstyle{every node}=[font=\small]
+    
+    \node (start) [code] {\pythoninline{note = input("Benoten Sie die Lehrperson.")}};
+    \node (dec1) [decision, below of=start] {\pythoninline{note == 100}};
+    \node (print) [code, below of=dec1] {\pythoninline{print("Echt jetzt? Vielen Dank :)"}};
+    \node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
+    
+    \draw (start) -- (dec1);
+    \draw (dec1) -- node[anchor=east] {\pythoninline{True}} (print);
+    \draw (dec1) --++ (5cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\pythoninline{False}};
+    \draw (print) -- (end);
+    
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Wichtige Bemerkungen}
+\begin{itemize}
+\item \lstinline|break| bricht nicht aus \lstinline|def| aus, sondern aus dem (aktuellen) \lstinline|repeat|
+\end{itemize}
+\end{frame}
