@@ -102,8 +102,6 @@ Dabei kann $q$ durch die Berechnung $q = (a-r)/b$ ermittelt werden.
     \item Bestimme die oben beschriebene Darstellung $a = bq + r$ für $a = 121$ und $b = 9$.
     \item Schreibe eine Python-Funktion \pythoninline{def division_mit_rest(a,b)}, welche für gegebene ganze Zahlen $a$ und $b$ mit $b \neq 0$ die Zahlen $q$ und $r$ berechnet und in einer Liste der Form \pythoninline{[q, r]} zurückgibt.
 \end{aenum}
-\end{myexercise}
-
 \begin{myanswer}
 \begin{aenum}
     \item \begin{align*}
@@ -112,16 +110,17 @@ Dabei kann $q$ durch die Berechnung $q = (a-r)/b$ ermittelt werden.
 wobei $a = 121$, $b = 9$, $q = 13$ und $r = 4$.
     \item \phantom{1}
 \begin{lstlisting}[language=Python,caption=Division mit Rest,numbers=none]
-  def division_mit_rest(a,b):
-      r = a % b
-      q = int((a-r)/b)
-      return([q,r])
+def division_mit_rest(a, b):
+    r = a % b
+    q = int((a - r) / b)
+    return [q, r]
 \end{lstlisting}
 \end{aenum}
-\end{myanswer}
+\end{myanswer} 
+\end{myexercise}
 
 \subsection{Nummer}
-Sei $x=x_1x_2\ldots x_n$, $x_i\in\lrc{0,1}$ für $i=1,2,\ldots n$ eine endliche Folge von binären Ziffern. Dann bezeichnet 
+Sei $x=x_1x_2\ldots x_n$, $x_i\in\lrc{0,1}$ für $i=1,2,\ldots, n$ eine endliche Folge von binären Ziffern. Dann bezeichnet 
 \begin{align}
     \text{Nummer}(x)=\displaystyle\sum_{i=1}^n x_i\cdot 2^{n-i}
 \end{align}
@@ -157,17 +156,19 @@ Schreibe eine Python-Funktion \pythoninline{def Nummer(x)}, welche $\text{Nummer
 \begin{myanswer}
 \begin{lstlisting}[language=Python,caption=Nummer,numbers=none]
 def Nummer(x):
-    x = list(str(x))
-    n = len(x)
     dec = 0
-    for i, xi in aenum(x):
-        dec = dec + int(xi) * 2**(n-(i+1))
-    return(dec)
+    power = len(x) - 1
+
+    for ziffer in x:
+        dec += int(ziffer) * 2**power
+        power -= 1
+
+    return dec
 \end{lstlisting}
 \end{myanswer}
 \end{mychallenge}
 
-\subsection{Primzahlsatz und Prim}
+\subsection{Primzahlsatz und die Funktion Prim}
 Euklid bewies bereits in der Antike, dass es unendlich viele Primzahlen gibt. Dies ist äquivalent zur Aussage, dass es keine grösste Primzahl gibt.
 
 Wir wollen einmal die ersten $25$ natürlichen Zahlen auflisten und die Primzahlen unter ihnen unterstreichen
@@ -259,9 +260,6 @@ Nun betrachtet der Algorithmus wieder die nächste Zahl in der Liste, also die Z
 \item Erkläre, warum dieser Algorithmus genau alle Primzahlen kleiner oder gleich $n$ ausgibt.
 \item Wie kann das Sieb des Eratosthenes verwendet werden, um $\text{Prim}(n)$ zu bestimmen?
 \end{aenum}
-\end{myexercise}
-
-\clearpage
 \begin{myanswer}
 \begin{aenum}
 \item Verlangt war nur eine informelle Erklärung. Wir zeigen hier etwas genauer:
@@ -278,72 +276,70 @@ $\Rightarrow$:
 
 Da $m$ eine Primzahl ist, besitzt sie keine echten Teiler. Damit ist sie nicht das Vielfache einer Zahl aus der Menge $\lrc{2,3,4, ..., m-1}$.
 Deshalb hat das Sieb die Zahl $m$ bis zum Erreichen von $m$ nicht durchgestrichen und somit wird $m$ vom Sieb ausgegeben.
+
 $\Leftarrow$:
 
 Sei $n\geq m$ die Eingabe für den Algorithmus \textit{Sieb des Eratosthenes}. Nach Konstruktion des Algorithmus, wird $m$ genau dann ausgegeben, wenn $m$ kein Vielfaches einer Zahl aus der Menge $\lrc{2,3,4, ..., m-1}$ ist. Damit besitzt $m$ aber keinen echten Teiler und somit ist $m$ eine Primzahl.
 \item Für die Eingabe $n$ liefert das Sieb alle Primzahlen $\leq n$. Um $\text{Prim}(n)$ zu bestimmen, müssen diese Primzahlen nur noch gezählt werden.
 \end{aenum}
 \end{myanswer}
-
-\begin{myexercise}\label{myexercise:sieb}
-Schreiben Sie eine Python-Funktion \pythoninline{def sieb(n)}, welche den Alogrithmus von Eratosthenes implementiert und alle Primzahlen $\leq n$ ausgibt. Vervollständigen Sie dazu die folgende Vorlage:
-\begin{lstlisting}[language=Python,caption=Sieb des Eratosthenes,numbers=none]
-def sieb(n):
-  # starte mit einer leeren Liste von
-  # Primzahlen (wir haben noch keine gefunden)
-  primzahlen = []
- 
-  # starte mit einer Liste der Länge n + 1
-  # nicht_gestrichen[i] ist genau dann True, wenn
-  # die Zahl i (i = 0, 1, ..., n) noch
-  # nicht gestrichen wurde
-  # zu Beginn ist noch keine Zahl durchgestrichen
-  nicht_gestrichen = (n + 1) * [True]
- 
-  i = 2
-  # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
-  while i <= n:
-    if ....:
-      ....
-      ....
-      j = 2*i
-      while ....:
-          ....
-          ....
-
-    i += 1
-  print(primzahlen)
-\end{lstlisting}
 \end{myexercise}
 
+\begin{myexercise}\label{myexercise:sieb}
+Schreiben Sie eine Python-Funktion \pythoninline{def sieb(n)}, welche den Algorithmus von Eratosthenes implementiert und alle Primzahlen $\leq n$ ausgibt. Vervollständigen Sie dazu die folgende Vorlage:
+\begin{lstlisting}[language=Python,caption=Sieb des Eratosthenes,numbers=none]
+def sieb(n):
+    # starte mit einer leeren Liste von
+    # Primzahlen (wir haben noch keine gefunden)
+    primzahlen = []
+
+    # starte mit einer Liste der Länge n + 1
+    # nicht_gestrichen[i] ist genau dann True, wenn
+    # die Zahl i (i = 0, 1, ..., n) noch
+    # nicht gestrichen wurde
+    # zu Beginn ist noch keine Zahl durchgestrichen
+    nicht_gestrichen = (n + 1) * [True]
+
+    i = 2
+    # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
+    while .....:
+        .....
+        .....
+            j = 2 * i
+            while .....:
+                .....
+                .....
+        i += 1
+    print(primzahlen)
+\end{lstlisting}
 \begin{myanswer}[myexercise:sieb]
 \begin{lstlisting}[language=Python,caption=Sieb des Eratosthenes,numbers=none]
 def sieb(n):
-  # starte mit einer leeren Liste von
-  # Primzahlen (wir haben noch keine gefunden)
-  primzahlen = []
- 
-  # starte mit einer Liste der Länge n + 1
-  # nicht_gestrichen[i] ist genau dann True, wenn
-  # die Zahl i (i = 0, 1, ..., n) noch
-  # nicht gestrichen wurde
-  # zu Beginn ist noch keine Zahl durchgestrichen
-  nicht_gestrichen = (n + 1) * [True]
- 
-  i = 2
-  # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
-  while i <= n:
-    if nicht_gestrichen[i]:
-      primzahlen.append(i)
-      j = 2*i
-      while j <= n:
-          nicht_gestrichen[j] = False
-          j += i
-    i += 1
-  print(primzahlen)
+    # starte mit einer leeren Liste von
+    # Primzahlen (wir haben noch keine gefunden)
+    primzahlen = []
+
+    # starte mit einer Liste der Länge n + 1
+    # nicht_gestrichen[i] ist genau dann True, wenn
+    # die Zahl i (i = 0, 1, ..., n) noch
+    # nicht gestrichen wurde
+    # zu Beginn ist noch keine Zahl durchgestrichen
+    nicht_gestrichen = (n + 1) * [True]
+
+    i = 2
+    # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
+    while i <= n:
+        if nicht_gestrichen[i]:
+            primzahlen.append(i)
+            j = 2 * i
+            while j <= n:
+                nicht_gestrichen[j] = False
+                j += i
+        i += 1
+    print(primzahlen)
 \end{lstlisting}
 \end{myanswer}
-
+\end{myexercise}
 
 Mit Hilfe des Sieb von Eratosthenes, ist es nun ganz einfach, eine Funktion zu definieren, welche $\text{Prim}(n)$ berechnet. Dazu ändern wir den Befehl \pythoninline{print(primzahlen)} in unserer Funktion \pythoninline{sieb} ab zu \pythoninline{return primzahlen} und können dann schreiben:
 \begin{lstlisting}[language=Python,caption=Prim,numbers=none]
@@ -351,7 +347,6 @@ def prim(n):
     return len(sieve(n))
 \end{lstlisting}
 Die Laufzeit des \textit{Sieb des Eratosthenes} kann an zwei Stellen deutlich verbessert werden. Die Folgende Aufgabe hilft Dir dabei, dieses Stellen zu erkennen.
-
 
 \begin{myexercise}[Verbesserung 1]\label{myexercise:verbesserung1}
 Sei $n\geq 2$ eine natürliche Zahl. Zeige, dass folgende zwei Aussagen äquivalent sind:
@@ -379,10 +374,9 @@ und somit insbesondere der Widerspruch $ab > n$ obwohl $ab = n$ gilt.
 \end{myanswer}
 \end{myexercise}
 
+\clearpage
 \begin{myexercise}[Implementation von Verbesserung 1]\label{myexercise:implementVerbesserung1}
   Implementieren Sie Verbesserung 1 aus \cref{myexercise:verbesserung1} in Python.
-\end{myexercise}
-
 \begin{myanswer}[myexercise:implementVerbesserung1]
 \begin{lstlisting}[language=Python,caption=Verbesserung 1,numbers=none]
 def sieb(n):
@@ -409,352 +403,371 @@ def sieb(n):
     print(primzahlen)
 \end{lstlisting}
 \end{myanswer}
+\end{myexercise}
 
-\begin{mychallenge}[Verbesserung 2]\label{myexercise:implementVerbesserung2}
+\begin{mychallenge}[Verbesserung 2]\label{myexercise:Verbesserung2}
 Wir wenden das Sieb des Eratosthenes auf die Eingabe $n>2$ an.
 
 Angenommen, das Sieb des Eratosthenes hat soeben eine Primzahl $p > 2$ gefunden. Zeige, dass die Vielfachen $hp$ von $p$ mit $h\in\lrc{2,3, ..., p-1}$ bereits vom Algorithmus gestrichen wurden. Damit genügt es, die Vielfachen $\geq p^2$ zu streichen (solange sie kleiner oder gleich $n$ sind).
+\begin{myanswer}[myexercise:Verbesserung2]
+Sei $hp$ für ein $h\in\lrc{2,3, ..., p-1}$ ein Vielfaches von $p$. Angenommen $h$ ist eine Primzahl. Da $h<p$, wurde $h$ bereits als Primzahl vom Sieb (vor $p$) gefunden und die Vielfachen $\leq n$ von $h$ wurden gestrichen. Insbesondere also auch das Vielfache $hp$ von $h$. Falls $h$ keine Primzahl ist, dann besitzt $h$ eine Zerlegung $h = ab$ für eine Primzahl $a$ mit $a<h<n$. Damit wurde aber $hp = abp$ als $bp$-faches Vielfache von $a$ bereits gestrichen.
+\end{myanswer}
 \end{mychallenge}
 
-\begin{myanswer}[myexercise:implementVerbesserung2]
-Sei $hp$ für ein $h\in\lrc{2,3, ..., p-1}$ ein Vielfaches von $p$. Angenommen $h$ ist eine Primzahl. Da $h<p$ wurde $h$ bereits als Primzahl vom Sieb (vor $p$) gefunden und die Vielfachen $\leq n$ von $h$ wurden gestrichen. Insbesondere also auch das Vielfache $hp$ von $h$. Falls $h$ keine Primzahl ist, dann besitzt $h$ eine Zerlegung $h = ab$ für eine Primzahl $a<h<n$. Damit wurde aber $hp = abp$ als $bp$-faches Vielfache von $a$ bereits gestrichen.
-\end{myanswer}
 
-% Mit Hilfe dieser zwei Verbesserungen, lässt sich $\text{Prim}(n)$ effizienter implementieren:
-% \begin{minted}[linenos]{python}
-% def sieve_fast(n):
-%     not_crossed = np.ones(n+1, dtype=bool)
-%
-%     i = 2 # first prime number
-%     while(i**2 <= n): # Verbesserung 1
-%         if (not_crossed[i]):
-%
-%             # Verbesserung 2
-%             for m in range(i**2, n+1, i):
-%                 not_crossed[m] = False
-%         i = i + 1
-%
-%     primes = []
-%
-%     for k in range(2, n+1):
-%         if (not_crossed[k]):
-%             primes.append(k)
-%     return(primes)
-%
-% def prim_fast(n):
-%     return(len(sieve_fast(n)))
-% \end{minted}
-%
-%
-% \begin{myexercise}
-% \begin{aenum}
-% \item Bestimme $\text{Prim}(n)$ für $n = 10000000$ (zehn Millionen) mit Hilfe der Funktion \pythoninline{prim_fast} und vergleiche den Wert der Schätzung $n/\ln{n}$ aus dem Primzahlensatz. Wie gut ist die Schätzung?
-%
-% \item Lade das Python-Programm {\tt prim\_plots.py} von Moodle herunter und führe es aus. Betrachte den generierten Plot. Was sagt der Plot aus? Wie sind die Achsen skaliert?
-%
-% \item Schreibe eine Python-Funktion \pythoninline{def prim_approx(n)}, welche $\text{Prim}(n)$ mit Hilfe der Abschätzung, welche von dem Primzahlsatz \ref{eq:primzahlsatz} geliefert wird, approximiert.
-%
-% \item Verwende die sehr schnelle Funktion $\pythoninline{prim_approx}$ anstelle von $\pythoninline{prim_fast}$, um den Wertebereich des Plots von $8\cdot 10^7$ auf $10^{10}$ zu erhöhen.
-% \end{aenum}
-% \end{myexercise}
-%
-%
-% \begin{myanswer}
-% \begin{aenum}
-% \item Das Python-Programm liefert $\text{Prim}(10000000) = 664579$. Der Primzahlsatz liefert $10^7/\ln{(10^7)}\approx 620421$. Der Fehler ist etwa $7$ Prozent.
-%
-% \item Beide Achsen sind logarithmiert. Der Plot zeigt, wie stark $f(n) = \text{Prim}(n)$ verglichen mit der linearen Funktion $g(n) = n$ wächst.
-%
-% \item Der folgende Code berechnet die Approximation:
-%
-% \begin{minted}[linenos]{python}
-% import numpy as np
-%
-% def prim_approx(n):
-%     return(n/(np.log(n)))
-% \end{minted}
-% \item 
-% Folgende Anpassungen müssen in {\tt prim\_plots.py} durchgeführt werden:
-% \begin{minted}[linenos]{python}
-% # Plots
-% N = [ 10**1, 10**2, 10**3, 10**4, 10**5, 10**6, 5*10**6, 10**7,
-%      4*10**7, 8*10**7 , 10**10]
-%
-% results = []
-% for n in N:
-%     results.append(prim_approx(n))
-% \end{minted}
-% \end{aenum}
-% \end{myanswer}
-%
-%
-% \begin{myexercise}
-% Erstelle einen zweiten Plot, welcher das Verhältnis $\text{Prim}(n) / (n / \ln{(n)})$ plottet. Was stellst Du fest? Was würde man erwarten?
-% \end{myexercise}
-%
-% \begin{myanswer}
-%
-% Der entsprechende Code ist:
-% \begin{minted}[linenos]{python}
-% # quotient Prim(n)/n
-% ratio = []
-% for k in range(len(N)):
-%     ratio.append(results[k] / N[k])
-% fig, ax = plt.subplots()
-% ax.loglog(N, ratio, 'go-', label ='f(n) / g(n) = Prim(n) / n')
-% ax.set(xlabel='n', ylabel='count', title='Prim(n) / n')
-% ax.grid()
-% legend = ax.legend(loc='upper right', shadow=True, fontsize='x-large')
-% fig.savefig('/home/tom/Desktop/Prim_ratio.pdf')
-% plt.show()
-% \end{minted}
-% \end{myanswer}
-%
-%
-%
-% \subsubsection{Binäre Darstellung einer Zahl}
-% Dies ist das letzte mathematische Werkzeug, das wir benötigen.
-%
-% Sei $m\geq 1$ eine natürliche Zahl. Wir bezeichnen mit $\text{Bin}(m)$ die kürzeste binäre Darstellung von $m$, also $\text{Nummer}(\text{Bin}(m)) = m$. Die binäre Darstellung ist offenbar genau dann am kürzesten, wenn die erste Ziffer der Darstellung eine $1$ und keine $0$ ist. Beispielsweise sind $100$ und $00100$ beides binäre Darstellungen der Zahl $4$, doch die erste ist die kürzeste.
-%
-%
-% \begin{myexercise}
-% Bestimme $\text{Bin}(11)$ und $\text{Bin}(52)$.
-% \end{myexercise}
-%
-% \begin{myanswer}
-% $\text{Bin}(11) = 1011$, $\text{Bin}(52) = 110100$
-% \end{myanswer}
-%
-%
-%
-% \begin{myexercise}
-% Schreibe eine Python-Funktion $\pythoninline{def Bin(n)}$, welche $\text{Bin}(n)$ für eine natürliche Zahl $n$ berechnet.
-% \end{myexercise}
-%
-% \begin{myanswer}
-% Lösungsvorschlag:
-% \begin{minted}[linenos]{python}
-% def Bin(n):
-%     x = []
-%     a = True
-%     while(a):
-%         r = n % 2
-%         x.insert(0,r)
-%         n = int(n/2)
-%         if n == 0:
-%             a = False
-%     return(x)
-% \end{minted}
-% \end{myanswer}
-%
-% \begin{myexercise}
-% Sei $m \neq 0$ eine natürliche Zahl. Beweise, dass die Länge $|\text{Bin}(m)|$ von $\text{Bin}(m)$ durch $\ceil{\log_2(m+1)}$ gegeben ist.
-% \end{myexercise}
-%
-%
-% \begin{myanswer}
-% Sei $k = |\text{Bin}(m)|$. Wir wollen $k$ ermitteln. Offensichtlich gilt für $m$ die Sandwich-Beziehung
-% \begin{align*}
-%     2^k-1 \geq m > 2^{k-1} - 1 \Rightarrow \\
-%     2^k \geq m+1 > 2^{k-1} \Rightarrow \\
-%     k \geq \log_2(m+1) > k-1.
-% \end{align*}
-% Die Beziehung $k \geq \log_2(m+1) > k-1$ sagt aus, dass $\log_2(m+1)\in (k-1,k]$ und damit folgt:
-% \begin{align*}
-%     k = \ceil{\log_2(m+1)}.
-% \end{align*}
-% \end{myanswer}
-%
-%
-%
-%
-% \clearpage
-% \subsection{Ein randomisiertes Kommunikationsprotokoll}
-% Nun sind wir in der Lage das randomisierte Kommunikationsprotokoll zu beschreiben. Zur Erinnerung: $R_1$ ist ein Rechner, der sich an der ETH in Zürich befindet (mit Datensatz $x$) und $R_2$ ist ein Rechner am MIT in Boston, USA (mit Datensatz $y$). Wir wollen prüfen, ob $x = y$ gilt (ob die Datensätze identisch sind).
-%
-% Das Protokoll $R = (R_1,R_2)$ für die beiden Rechner arbeitet wie folgt.
-% \begin{mdframed}[backgroundcolor=green!20,roundcorner=10pt,userdefinedwidth=16cm,align=center]
-% \textbf{Ausgangssituation}:
-%
-% $R_1$ hat $n$ Bits $x=x_1...x_n$, $R_2$ hat $n$ Bits $y = y_1...y_n$.
-%
-% \textbf{Phase 1}:
-%
-% $R_1$ wählt zufällig mit einer uniformen Wahrscheinlichkeitsverteilung $p$ als eine der $\text{Prim}(n^2)\approx n^2/\ln(n^2)$ (Primzahlsatz \ref{eq:quadrat}) Primzahlen kleiner gleich $n^2$.
-%
-%
-% \textbf{Phase 2}:
-%
-% $R_1$ berechnet die Zahl $s = \text{Nummer}(x)\; \text{mod} \; p$ und schickt die binäre Darstellung von $s$ und $p$ and $R_2$
-%
-%
-% \textbf{Phase 3}:
-%
-% Nach Empfang von $s$ und $p$ berechnet $R_2$ die Zahl $q = \text{Nummer}(y)\; \text{\text{mod}} \; p$.
-% \begin{itemize}
-%     \item Falls $q\neq s$, dann gibt $R_2$ die Ausgabe ``ungleich'' aus.
-%     \item Falls $q = s$, dann gibt $R_2$ die Ausgabe ``gleich'' aus.
-% \end{itemize}
-% \end{mdframed}
-%
-%
-%
-% \begin{myexercise}
-% Erkläre, warum das Protokoll garantiert richtig entscheidet, falls die Ausgabe ``ungleich'' ist.
-% \end{myexercise}
-%
-% \begin{myanswer}
-% Da $s = \text{Nummer}(x)\; \text{mod} \; p$ und $q = \text{Nummer}(y)\; \text{\text{mod}} \; p$ die Reste der Modulo-Operation mit $p$ sind, ist es nicht möglich, dass $s$ und $q$ unterschiedlich sind, wenn $x$ und $y$ gleich sind.
-% \end{myanswer}
-%
-% Jetzt analysieren wir die Arbeit von $R = (R_1,R_2)$. Zuerst bestimmen wir die Komplexität gemessen als die Anzahl der Kommunikationsbits. Anschliessend analysieren wir die Zuverlässigkeit (Fehlerwahrscheinlichkeit) von $R = (R_1,R_2)$.
-%
-% Die einzige Kommunikation besteht darin, dass $R_1$ die Zahlen $s$ und $p$ an $R_2$ schickt.
-%
-% Weil $s\leq p < n^2$ ($p$ ist strikt kleiner als $n^2$, da $n^2$ offensichtlich keine Primzahl sein kann) gilt, ist die Länge der binären Nachricht $2\cdot \ceil*{\log_2(n^2)}\leq 4\cdot \ceil*{\log_2(n)}$. Für $n = 10^{16}$ sind dies höchstens $4\cdot 16\cdot \ceil*{\log_2(10)}=256$ Bits. Es ist also eine sehr kurze Nachricht, die man in problemlos zuverlässig übertragen kann.
-%
-% Bei der Analyse der Fehlerwahrscheinlichkeit unterscheiden wir zwei Möglichkeiten bezüglich der tatsächlichen Relation zwischen den Datensätzen $x$ und $y$.
-% \begin{aenum}
-%     \item Sei $x = y$. Dann gilt
-%     \begin{align*}
-%         \text{Nummer}(x)\; \text{mod} \; p = \text{Nummer}(y)\; \text{mod} \; p
-%     \end{align*}
-%     für alle Primzahlen $p$. Also gibt $R_2$ die Antwort ``gleich'' mit Sicherheit. In diesem Fall ist die Fehlerwahrscheinlichkeit $0$.
-%     \item Sei $x\neq y$. Wir bekommen eine falsche Antwort ``gleich'' nur dann, wenn $R_2$ eine zufällige Primzahl $p$ gewählt hat, die die Eigenschaft hat, dass
-%     \begin{align*}
-%         z = \text{Nummer}(x)\; \text{mod} \; p = \text{Nummer}(y)\; \text{mod} \; p
-%     \end{align*}
-%     gilt. In anderer Form geschrieben:
-%     \begin{align*}
-%         \text{Nummer}(x) = x'\cdot p + z
-%     \end{align*}
-%     und
-%     \begin{align*}
-%         \text{Nummer}(y) = y'\cdot p + z
-%     \end{align*}
-%     für irgendwelche natürlichen Zahlen $x'$ und $y'$.
-%     
-%     Daraus folgt, dass
-%     \begin{align*}
-%         \text{Nummer}(x)-\text{Nummer}(y) = x'\cdot p -  y'\cdot p = (x'-y')\cdot p,
-%     \end{align*}
-%     also dass $p$ die Zahl $|\text{Nummer}(x)-\text{Nummer}(y)|$ teilt.
-%     
-%     Also gibt unser Protokoll eine falsche Antwort nur, wenn die gewählte Primzahl $p$ die Zahl $|\text{Nummer}(x)-\text{Nummer}(y)|$ teilt. Wir wollen uns nun überlegen, wie wahrscheinlich dieser Fall ist.
-%     
-%     Wir wissen, dass $p$ aus $\text{Prim}(n^2)$ Primzahlen aus $\left\{2,3,...,n^2\right\}$ mit uniformer Wahrscheinlichkeitsverteilung gewählt wurde. Es ist also hilfreich festzustellen, wie viele dieser $\text{Prim}(n^2)\approx n^2/\ln(n^2)$ Primzahlen die Zahl $|\text{Nummer}(x)-\text{Nummer}(y)|$ teilen können.
-%     
-%     Da die Länge von $x$ und $y$ gleich $n$ ist, gilt
-%     \begin{align*}
-%         w = |\text{Nummer}(x)-\text{Nummer}(y)| < 2^n.
-%     \end{align*}
-%     Sei $w = p_1^{i_1}p_2^{i_2}...p_k^{i_k}$, wobei $p_1<p_2<...<p_k$ Primzahlen  und $i_1, i_2,...,i_k$ positive ganze Zahlen sind. Wir wissen, dass jede Zahl eine solche eindeutige Faktorisierung besitzt. Unser Ziel ist zu beweisen, dass $k\leq n-1$ ist.
-%     
-%     Wir beweisen diese Aussage indirekt (durch Widerspruch).
-%     
-%     Angenommen die Aussage wäre falsch, also $k\geq n$. Dann ist für genügend grosse $n$
-%     \begin{align*}
-%         w = w = p_1^{i_1}p_2^{i_2}...p_k^{i_k} \geq p_1p_2...p_n > 1\cdot 2\cdot 3\cdot ... \cdot n = n! > 2^n.
-%     \end{align*}
-%     Dies ist aber ein Widerspruch zur Tatsache, dass $w < 2^n$. Damit ist unsere Annahme falsch und $w$ kann höchstens $n-1$ unterschiedliche Primfaktoren haben. Weil jede Primzahl aus $\left\{2,3,...,n^2\right\}$ die gleiche Wahrscheinlichkeit hat, (zufällig) gewählt zu werden, ist die Wahrscheinlichkeit, ein $p$ zu wählen, das $w$ teilt, höchstens
-% \begin{align*}
-%     \frac{n-1}{\text{Prim}(n^2)}\leq \frac{n-1}{n^2/\ln(n^2)}\leq\frac{\ln(n^2)}{n}
-% \end{align*}
-%     für genügend grosse $n$.
-%     
-%     Also ist die Fehlerwahrscheinlichkeit des Kommunikationsprotokolls höchstens $\ln(n^2)/n$, was für $n=10^{16}$ höchstens $0.736827\cdot 10^{-14}$ ist.
-% \end{aenum}
-% Sollte uns diese Fehlerwahrscheinlichkeit noch zu hoch sein, kann das Protokoll z.B. 10 mal wiederholt werden (mit 10 zufälligen Primzahlen) und man erhält dann eine Fehlerwahrscheinlichkeit von höchstens
-%     \begin{align*}
-%         \left(\frac{n-1}{\text{Prim}(n^2)}\right)^{10}\leq \left(\frac{\ln(n^2)}{n}\right)^{10} = \frac{2^{10}\cdot (\ln(n))^{10}}{n^{10}}
-%     \end{align*}
-%     für genügend grösse $n$. Für $n = 10^{16}$ ist dies höchstens $0.472\cdot 10^{-141}$. Eine Fehlerwahrscheinlichkeit, die man gerne in Kauf nimmt.
-%     
-% \begin{myexercise}
-% Verwende deine Python-Funktionen $\pythoninline{sieve_fast}$, $\pythoninline{Bin}$ und $\pythoninline{Nummer}$ um das Kommunikationsprotokoll in Python zu implementieren.
-% \end{myexercise}
-% \begin{myanswer}
-%
-% Die Funktionen \pythoninline{sieve_fast}, \pythoninline{Nummer} und \pythoninline{Bin} haben wir schon geschrieben. Diese können wir nun hier verwenden. Die Funktion \pythoninline{is_equal} wird nicht benötigt, kann aber verwendet werden um (deterministisch) zu prüfen, ob zwei Datensätze identisch sind oder nicht.
-% \begin{minted}[linenos]{python}
-% import numpy as np
-%
-% def sieve_fast(n):
-%     not_crossed = np.ones(n+1, dtype=bool)
-%
-%     i = 2
-%     while(i**2 <= n):
-%         if (not_crossed[i]):
-%             for m in range(i**2, n+1, i):
-%                 not_crossed[m] = False
-%         i = i + 1
-%
-%     primes = []
-%
-%     for k in range(2, n+1):
-%         if (not_crossed[k]):
-%             primes.append(k)
-%     return(primes)
-%
-% def Nummer(x):
-%     x = list(str(x))
-%     n = len(x)
-%     dec = 0
-%     for i, xi in aenum(x):
-%         dec = dec + int(xi) * 2**(n-(i+1))
-%     return(dec)
-%
-%
-%
-% def Bin(n):
-%     x = []
-%     a = True
-%     while(a):
-%         r = n % 2
-%         x.insert(0,r)
-%         n = int(n/2)
-%         if n == 0:
-%             a = False
-%     return(x)
-%
-% def is_equal(x,y):
-%     nx = len(x)
-%     ny = len(y)
-%
-%     if nx != ny:
-%         return(False)
-%     for i in range(nx):
-%         if x[i] != y[i]:
-%             return(False)
-%     return(True)
-% \end{minted}
-%
-% Das Protokoll lässt sich nun recht einfach wie folgt umsetzen:
-% \begin{minted}[linenos]{python}
-% def pick_random_prime(n):
-%     primes = sieve_fast(n)
-%     p = np.random.choice(primes,1)[0]
-%     return(p)
-%
-% def R1(x):
-%     n = len(str(x))
-%     p = pick_random_prime(n**2)
-%     s = Nummer(x) % p
-%     return([s,p])
-%
-% def protokoll(x,y):
-%     sp = R1(x)
-%     q = Nummer(y) % sp[1]
-%     if sp[0] == q:
-%         return(True)
-%     else:
-%         return(False)
-%
-% x = '100110101'
-% y = '100110101'
-%
-% print(protokoll(x,y))
-% \end{minted}
-% \end{myanswer}
-%
+\begin{mychallenge}[Implementation von Verbesserung 2]\label{myexercise:implementVerbesserung2}
+Ergänzen Sie Ihr Programm aus \cref{myexercise:implementVerbesserung1} um Verbesserung 2.
+\begin{myanswer}[myexercise:implementVerbesserung2]
+\begin{lstlisting}[language=Python,caption=Verbesserung 2,numbers=none]
+def sieb(n):
+    primzahlen = []
+    nicht_gestrichen = (n + 1) * [True]
+
+    i = 2
+    while i * i <= n:
+        if nicht_gestrichen[i]:
+            j = i * i
+            while j <= n:
+                nicht_gestrichen[j] = False
+                j += i
+        i += 1
+
+    # sammle alle nicht gestrichenen Zahlen
+    # dies sind genau die Primzahlen <= n
+    i = 2
+    while i <= n:
+        if nicht_gestrichen[i]:
+            primzahlen.append(i)
+        i += 1
+
+    print(primzahlen)
+\end{lstlisting}
+\end{myanswer}
+\end{mychallenge}
+
+
+
+\begin{myexercise}
+\begin{aenum}
+\item Bestimme $\text{Prim}(n)$ für $n = 10000000$ (zehn Millionen) mithilfe der Funktion \pythoninline{prim} (aus \cref{myexercise:implementVerbesserung1} oder \cref{myexercise:implementVerbesserung2}) und vergleiche den Wert mit der Schätzung $n/\ln{n}$.
+  Wie gross ist der relative Fehler der Schätzung?
+
+\item Lade das Python-Programm {\tt prim\_plots.py} von Moodle herunter und führe es aus. Betrachte den generierten Plot. Was sagt der Plot aus? Wie sind die Achsen skaliert?
+
+\item Schreibe eine Python-Funktion \pythoninline{def prim_approx(n)}, welche $\text{Prim}(n)$ mit Hilfe der Abschätzung, welche von dem Primzahlsatz \ref{eq:primzahlsatz} geliefert wird, approximiert.
+
+\item Verwende die sehr schnelle Funktion \pythoninline{prim_approx} anstelle von \pythoninline{prim}, um den Wertebereich des Plots von $8\cdot 10^7$ auf $10^{10}$ zu erhöhen.
+\end{aenum}
+\begin{myanswer}
+\begin{aenum}
+\item Das Python-Programm liefert $\text{Prim}(10000000) = 664579$. Die Schätzung liefert $10^7/\ln{(10^7)}\approx 620421$. Der relative Fehler ist etwa $6.645$ Prozent.
+
+\item Beide Achsen sind logarithmiert. Der Plot zeigt, wie stark $f(n) = \text{Prim}(n)$ verglichen mit der linearen Funktion $g(n) = n$ wächst.
+
+\item Der folgende Code berechnet die Approximation:
+
+\begin{lstlisting}[language=Python,numbers=none]
+import numpy as np
+
+def prim_approx(n):
+    return n / np.log(n)
+\end{lstlisting}
+\item 
+Folgende Anpassungen müssen in {\tt prim\_plots.py} durchgeführt werden:
+\begin{lstlisting}[language=Python,numbers=none]
+# Plots
+N = [ 10**1, 10**2, 10**3, 10**4, 10**5, 10**6, 5*10**6, 10**7,
+     4*10**7, 8*10**7 , 10**10]
+
+results = []
+for n in N:
+    results.append(prim_approx(n))
+\end{lstlisting}
+\end{aenum}
+\end{myanswer}
+\end{myexercise}
+
+
+\begin{myexercise}
+Erstelle einen zweiten Plot, welcher das Verhältnis $\text{Prim}(n) / (n / \ln{(n)})$ plottet. Was stellst Du fest? Was würde man erwarten?
+\begin{myanswer}
+Der entsprechende Code ist:
+\begin{lstlisting}[language=Python,numbers=none]
+# quotient Prim(n)/n
+ratio = []
+for k in range(len(N)):
+    ratio.append(results[k] / N[k])
+fig, ax = plt.subplots()
+ax.loglog(N, ratio, 'go-', label ='f(n) / g(n) = Prim(n) / n')
+ax.set(xlabel='n', ylabel='count', title='Prim(n) / n')
+ax.grid()
+legend = ax.legend(loc='upper right', shadow=True, fontsize='x-large')
+plt.show()
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\clearpage
+
+\subsection{Binäre Darstellung einer Zahl}
+Dies ist das letzte mathematische Werkzeug, das wir benötigen.
+
+Sei $m\geq 1$ eine natürliche Zahl. Wir bezeichnen mit $\text{Bin}(m)$ die kürzeste binäre Darstellung von $m$, also $\text{Nummer}(\text{Bin}(m)) = m$.
+Die binäre Darstellung ist offenbar genau dann am kürzesten, wenn die erste Ziffer der Darstellung eine $1$ und keine $0$ ist.
+Beispielsweise sind $100$ und $00100$ beides binäre Darstellungen der Zahl $4$, doch die erste ist die kürzeste.
+
+\begin{myexercise}
+Bestimme $\text{Bin}(11)$ und $\text{Bin}(52)$.
+\begin{myanswer}
+$\text{Bin}(11) = 1011$, $\text{Bin}(52) = 110100$
+\end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}
+Schreibe eine Python-Funktion \pythoninline{def Bin(n)}, welche $\text{Bin}(n)$ für eine natürliche Zahl $n$ berechnet.
+\begin{myanswer}
+\begin{lstlisting}[language=Python,numbers=none]
+def Bin(n):
+    if n == 0:
+        return "0"
+    binary_str = ""
+    while n > 0:
+        binary_str = str(n % 2) + binary_str
+        n = n // 2
+    return binary_str
+\end{lstlisting}
+\end{myanswer}
+\end{mychallenge}
+
+
+\begin{myexercise}
+Sei $m \neq 0$ eine natürliche Zahl. Beweise, dass die Länge $|\text{Bin}(m)|$ von $\text{Bin}(m)$ durch $\ceil{\log_2(m+1)}$ gegeben ist.
+\begin{myanswer}
+  Sei $k := \abs{\text{Bin}(m)}$. Wir wollen $k$ ermitteln. Die grösste Zahl, die sich in binär mit $k$-Stellen Darstellen lässt, ist
+  \begin{align*}
+    \underbrace{111\ldots 1}_{k-\text{Stellen}}\; =
+    \underbrace{100\ldots 0}_{(k+1)-\text{Stellen}} -\; 1 = 2^k - 1.
+  \end{align*}
+Die kleinste Zahl (ohne führende Nullen), die sich in binär mit $k$-Stellen Darstellen lässt, ist
+  \begin{align*}
+    \underbrace{100\ldots 0}_{k-\text{Stellen}}\; =
+    \underbrace{111\ldots 1}_{(k-1)-\text{Stellen}} +\; 1 = 2^{k-1} + 1.
+  \end{align*}
+
+  Offensichtlich gilt für $m$ nun also die \enquote{Sandwich-Beziehung}:
+\begin{align*}
+    & 2^k-1 \geq m > 2^{k-1} - 1 \iff \\
+    & 2^k \geq m+1 > 2^{k-1} \iff \\
+    & \log_2\lr{2^k} \geq \log_2\lr{m+1} > \log_2\lr{2^{k-1}} \iff \\
+    & k \geq \log_2(m+1) > k-1.
+\end{align*}
+Die Beziehung $k \geq \log_2(m+1) > k-1$ sagt aus, dass $\log_2(m+1)\in (k-1,k]$ und damit folgt:
+\begin{align*}
+    k = \abs{\text{Bin}(m)} = \ceil{\log_2(m+1)}.
+\end{align*}
+\end{myanswer}
+\end{myexercise}
+
+
+\clearpage
+\section{Ein randomisiertes Kommunikationsprotokoll}
+Nun sind wir in der Lage das randomisierte Kommunikationsprotokoll zu beschreiben. Zur Erinnerung: $R_1$ ist ein Rechner, der sich an der ETH in Zürich befindet (mit Datensatz $x$) und $R_2$ ist ein Rechner am MIT in Boston, USA (mit Datensatz $y$). Wir wollen prüfen, ob $x = y$ gilt (ob die Datensätze identisch sind).
+
+Das Protokoll $R = (R_1,R_2)$ für die beiden Rechner arbeitet wie folgt.
+\begin{mdframed}[backgroundcolor=green!20,roundcorner=10pt,userdefinedwidth=16cm,align=center]
+\textbf{Ausgangssituation}:
+
+$R_1$ hat $n$ Bits $x=x_1...x_n$, $R_2$ hat $n$ Bits $y = y_1...y_n$.
+
+\textbf{Phase 1}:
+
+$R_1$ wählt zufällig mit einer uniformen Wahrscheinlichkeitsverteilung (alle gleiche Wahrscheinlichkeit gewählt zu werden) eine Primzahl $p \leq n^2$ aus.
+
+
+\textbf{Phase 2}:
+
+$R_1$ berechnet die Zahl $s = \text{Nummer}(x)\; \text{mod} \; p$ und schickt die binäre Darstellung von $s$ und $p$ and $R_2$
+
+
+\textbf{Phase 3}:
+
+Nach Empfang von $s$ und $p$ berechnet $R_2$ die Zahl $q = \text{Nummer}(y)\; \text{\text{mod}} \; p$.
+\begin{itemize}
+  \item Falls $q\neq s$, dann gibt $R_2$ die Ausgabe \enquote{ungleich} aus.
+  \item Falls $q = s$, dann gibt $R_2$ die Ausgabe \enquote{gleich} aus.
+\end{itemize}
+\end{mdframed}
+
+
+\begin{myexercise}
+  Erkläre, warum das Protokoll garantiert richtig entscheidet, falls die Ausgabe \enquote{ungleich} ist.
+\begin{myanswer}
+Da $s = \text{Nummer}(x)\; \text{mod} \; p$ und $q = \text{Nummer}(y)\; \text{\text{mod}} \; p$ die Reste der Modulo-Operation mit $p$ sind, ist es nicht möglich, dass $s$ und $q$ unterschiedlich sind, wenn $x$ und $y$ gleich sind.
+\end{myanswer}
+\end{myexercise}
+
+
+\subsection{Analyse des Kommunikationsprotokolls}
+Jetzt analysieren wir die Arbeit von $R = (R_1,R_2)$. Zuerst bestimmen wir die Komplexität gemessen als die Anzahl der Kommunikationsbits. Anschliessend analysieren wir die Zuverlässigkeit (Fehlerwahrscheinlichkeit) von $R = (R_1, R_2)$.
+
+Die einzige Kommunikation besteht darin, dass $R_1$ die Zahlen $s$ und $p$ an $R_2$ schickt.
+
+Da $s\leq p < n^2$ ($p$ ist strikt kleiner als $n^2$, da $n^2$ offensichtlich keine Primzahl sein kann) gilt, ist die Länge der binären Nachricht $2\cdot \ceil{\log_2(n^2)}\leq 4\cdot \ceil{\log_2(n)}$.
+Für $n = 10^{16}$ sind dies höchstens $4\cdot 16\cdot \ceil{\log_2(10)}=256$ Bits. Es ist also eine sehr kurze Nachricht, die man in problemlos zuverlässig übertragen kann.
+
+Bei der Analyse der Fehlerwahrscheinlichkeit unterscheiden wir zwei Möglichkeiten bezüglich der tatsächlichen Relation zwischen den Datensätzen $x$ und $y$.
+\begin{aenum}
+    \item Sei $x = y$. Dann gilt
+    \begin{align*}
+        \text{Nummer}(x)\; \text{mod} \; p = \text{Nummer}(y)\; \text{mod} \; p
+    \end{align*}
+    für alle Primzahlen $p$. Also gibt $R_2$ die Antwort \enquote{gleich} mit Sicherheit. In diesem Fall ist die Fehlerwahrscheinlichkeit $0$.
+\item Sei $x\neq y$. Wir bekommen eine falsche Antwort \enquote{gleich} nur dann, wenn $R_2$ eine zufällige Primzahl $p$ gewählt hat, die die Eigenschaft hat, dass
+    \begin{align*}
+        z = \text{Nummer}(x)\; \text{mod} \; p = \text{Nummer}(y)\; \text{mod} \; p
+    \end{align*}
+    gilt. In anderer Form geschrieben:
+    \begin{align*}
+        \text{Nummer}(x) = x'\cdot p + z
+    \end{align*}
+    und
+    \begin{align*}
+        \text{Nummer}(y) = y'\cdot p + z
+    \end{align*}
+    für irgendwelche natürlichen Zahlen $x'$ und $y'$.
+    
+    Daraus folgt, dass
+    \begin{align*}
+        \text{Nummer}(x)-\text{Nummer}(y) = x'\cdot p -  y'\cdot p = (x'-y')\cdot p,
+    \end{align*}
+    also dass $p$ die Zahl $|\text{Nummer}(x)-\text{Nummer}(y)|$ teilt.
+    
+    Also gibt unser Protokoll eine falsche Antwort nur, wenn die gewählte Primzahl $p$ die Zahl $|\text{Nummer}(x)-\text{Nummer}(y)|$ teilt. Wir wollen uns nun überlegen, wie wahrscheinlich dieser Fall ist.
+    
+    Wir wissen, dass $p$ aus $\text{Prim}(n^2)$ Primzahlen aus $\lrc{2,3,\ldots, n^2}$ mit uniformer Wahrscheinlichkeitsverteilung gewählt wurde. Es ist also hilfreich festzustellen, wie viele dieser $\text{Prim}(n^2)\approx n^2/\ln(n^2)$ Primzahlen die Zahl $\abs{\text{Nummer}(x)-\text{Nummer}(y)}$ teilen können.
+    
+    Da die Länge von $x$ und $y$ gleich $n$ ist, gilt
+    \begin{align*}
+      w = \abs{\text{Nummer}(x)-\text{Nummer}(y)} < 2^n.
+    \end{align*}
+    Sei $w = p_1^{i_1}p_2^{i_2}...p_k^{i_k}$, wobei $p_1<p_2<\ldots<p_k$ Primzahlen  und $i_1, i_2,...,i_k$ positive ganze Zahlen sind. Wir wissen, dass jede Zahl eine solche eindeutige Faktorisierung besitzt. Unser Ziel ist zu beweisen, dass $k\leq n-1$ ist.
+    
+    Wir beweisen diese Aussage indirekt (durch Widerspruch).
+    
+    Angenommen die Aussage wäre falsch, also $k\geq n$. Dann ist für genügend grosse $n$
+    \begin{align*}
+        w = w = p_1^{i_1}p_2^{i_2}\ldots p_k^{i_k} \geq p_1p_2...p_n > 1\cdot 2\cdot 3\cdot \ldots \cdot n = n! > 2^n.
+    \end{align*}
+    Dies ist aber ein Widerspruch zur Tatsache, dass $w < 2^n$. Damit ist unsere Annahme falsch und $w$ kann höchstens $n-1$ unterschiedliche Primfaktoren haben. Weil jede Primzahl aus $\lrc{2,3,...,n^2}$ die gleiche Wahrscheinlichkeit hat, (zufällig) gewählt zu werden, ist die Wahrscheinlichkeit, ein $p$ zu wählen, das $w$ teilt, höchstens
+\begin{align*}
+    \frac{n-1}{\text{Prim}(n^2)}\leq \frac{n-1}{n^2/\ln(n^2)}\leq\frac{\ln(n^2)}{n}
+\end{align*}
+    für genügend grosse $n$.
+    
+    Also ist die Fehlerwahrscheinlichkeit des Kommunikationsprotokolls höchstens $\ln(n^2)/n$, was für $n=10^{16}$ höchstens $0.736827\cdot 10^{-14}$ ist.
+\end{aenum}
+Sollte uns diese Fehlerwahrscheinlichkeit noch zu hoch sein, kann das Protokoll z.B. 10 mal wiederholt werden (mit 10 zufälligen Primzahlen) und man erhält dann eine Fehlerwahrscheinlichkeit von höchstens
+    \begin{align*}
+      \lr{\frac{n-1}{\text{Prim}(n^2)}}^{10}\leq \lr{\frac{\ln(n^2)}{n}}^{10} = \frac{2^{10}\cdot \lr{\ln(n)}^{10}}{n^{10}}
+    \end{align*}
+    für genügend grösse $n$. Für $n = 10^{16}$ ist dies höchstens $0.472\cdot 10^{-141}$. Eine Fehlerwahrscheinlichkeit, die man gerne in Kauf nimmt.
+ 
+\subsection{Praktische Durchführung}
+\begin{myexercise}\label{myexercise:protokoll}
+Verwende deine Python-Funktionen \pythoninline{sieb}, \pythoninline{Bin} und \pythoninline{Nummer} um das Kommunikationsprotokoll in Python zu implementieren.
+\end{myexercise}
+
+\clearpage
+\begin{myanswer}[myexercise:protokoll]
+Die Funktionen \pythoninline{sieb}, \pythoninline{Nummer} und \pythoninline{Bin} haben wir schon geschrieben. Diese können wir nun hier verwenden.
+Die Funktion \pythoninline{is_equal} wird nicht benötigt, kann aber verwendet werden um (deterministisch) zu prüfen, ob zwei Datensätze identisch sind oder nicht.
+\begin{lstlisting}[language=Python,numbers=none]
+import numpy as np
+
+def sieb(n):
+    primzahlen = []
+    nicht_gestrichen = (n + 1) * [True]
+
+    i = 2
+    while i * i <= n:
+        if nicht_gestrichen[i]:
+            j = i * i
+            while j <= n:
+                nicht_gestrichen[j] = False
+                j += i
+        i += 1
+
+    # sammle alle nicht gestrichenen Zahlen
+    # dies sind genau die Primzahlen <= n
+    i = 2
+    while i <= n:
+        if nicht_gestrichen[i]:
+            primzahlen.append(i)
+        i += 1
+
+    return primzahlen
+
+
+def Nummer(x):
+    dec = 0
+    power = len(x) - 1
+
+    for ziffer in x:
+        dec += int(ziffer) * 2**power
+        power -= 1
+
+    return dec
+
+
+def Bin(n):
+    if n == 0:
+        return "0"
+    binary_str = ""
+    while n > 0:
+        binary_str = str(n % 2) + binary_str
+        n = n // 2
+    return binary_str
+
+
+def is_equal(x, y):
+    nx = len(x)
+    ny = len(y)
+
+    if nx != ny:
+        return False
+    for i in range(nx):
+        if x[i] != y[i]:
+            return False
+    return True
+\end{lstlisting}
+
+Das Protokoll lässt sich nun recht einfach wie folgt umsetzen:
+\begin{lstlisting}[language=Python,numbers=none]
+def random_primzahl(n):
+    primes = sieb(n)
+    p = np.random.choice(primes, 1)[0]
+    return p
+
+
+def R1(x):
+    n = len(str(x))
+    p = random_primzahl(n**2)
+    s = Nummer(x) % p
+    return [s, p]
+
+
+def protokoll(x, y):
+    sp = R1(x)
+    q = Nummer(y) % sp[1]
+    if sp[0] == q:
+        return True
+    else:
+        return False
+
+
+x = "100110101"
+y = "100110101"
+
+print(protokoll(x, y))
+\end{lstlisting}
+\end{myanswer}
