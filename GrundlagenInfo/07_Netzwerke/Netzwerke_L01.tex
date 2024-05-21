@@ -8,45 +8,27 @@
 \end{frame}
 
 \begin{frame}[fragile]{Was sind Netzwerke?}
-    \begin{itemize}
+    \begin{itemize}[<+->]
     \item Graphen:
-                \begin{figure}[H]
-                \centering
-                \includegraphics[keepaspectratio, width=0.35 \paperwidth]{GrundlagenInfo/02_Graphen/Figures/4-graph-zusammenhaengend.png}
-                \includegraphics[width=0.3\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/Subnetz-2}
-            \end{figure}    
+        \begin{figure}[H]
+        \centering
+        \includegraphics[keepaspectratio, width=0.35 \paperwidth]{GrundlagenInfo/02_Graphen/Figures/4-graph-zusammenhaengend.png}
+        \includegraphics[width=0.3\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/Subnetz-2}
+        \end{figure}    
     
 	    \item Im Alltag: 
 	    \begin{itemize}
-		    \item Post
-		    \item Soziale Netzwerke
-		    \item SBB, Zugverbindungen
-		    \item Aliexpress, Uber, ...
-		    \item \textbf{Das Internet}
+		    \item Kommunikations-Netzwerke: Die Post, DHL, Planzer, ...
+		    \item Soziale Netzwerke: TikTok, Youtube, Instagram, ...
+		    \item Transport-Netzwerke: SBB, Flixbus, ...
+		    \item Shopping-Netzwerke: Aliexpress, Uber, ...
+		    \item Computer-Netzwerke: \textbf{Das Internet}
 	    \end{itemize}
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Was sind Netzwerke?}
-    \begin{itemize}
-    \item Graphen:
-                \begin{figure}[H]
-                \centering
-                \includegraphics[keepaspectratio, width=0.35 \paperwidth]{GrundlagenInfo/02_Graphen/Figures/4-graph-zusammenhaengend.png}
-            \end{figure}    
-    
-	    \item Im Alltag: 
-	    \begin{itemize}
-		    \item Post
-		    \item Soziale Netzwerke
-		    \item SBB, Zugverbindungen
-		    \item Aliexpress, Uber, ...
-		    \item \textbf{Das Internet}
-	    \end{itemize}
-    \end{itemize}
-\end{frame}
 
-\begin{frame}[fragile]{Internet: Analogie}{Wie war es früher?}
+\begin{frame}[fragile]{Schichtenmodell}{Analogie}
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[
@@ -112,7 +94,7 @@
 %\node[box, fill=orange!30, below=of anwendung] (transport) {Transport};
 %\node[box, fill=blue!30, below=of transport] (vermittlung) {Vermittlung};
 %\node[box, fill=red!30, below=of vermittlung] (netzzugang) {Netzzugang};
-%
+%f
 %% box in boxes
 %\node[inner box, fill=yellow!50, minimum height=10mm, minimum width=10mm] at ([xshift=-8.5mm]anwendung.east) (anwendung_inner) {};
 %\node[inner box, fill=yellow!50, minimum height=10mm, minimum width=10mm] at ([xshift=-8.5mm]transport.east) (anwendung_inner2) {};
@@ -182,12 +164,197 @@
 %\end{frame}
 
 %\end{frame}
-\begin{frame}[fragile]{Schichtenmodell}
+
+
+
+\begin{frame}[fragile]{Schichtenmodell (vereinfacht)}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/Kommunikationsschichten}
 \caption*{Vereinfachtes Schichtenmodell (Quelle: \href{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}{OInf})}
 \end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]{Schichtenmodell}{Vorteile}
+\begin{itemize}[<+->]
+\item \textbf{Modularität}: Aufbau auf besetehenden Schichten
+\item \textbf{Austauschbarkeit} / Flexibilität
+\begin{itemize}
+\item Übertragung über Kabel, WLAN etc. kann ausgetauscht werden, ohne dass darüberliegende Schichten tangiert werden
+\item Analogie: Anstelle von Lastwagen kann Motorrad verwendet werden
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Schichtenmodell}{Übersicht}
+\begin{table}[h]
+\centering\tiny
+\begin{tabular}{c|p{2cm}|p{4cm}|p{1.5cm}|p{1.5cm}}
+\textbf{\#} & \textbf{Schichtname}           & \textbf{Verantwortlichkeit}                                                                                & \textbf{Informationsform (Dateneinheit)} & \textbf{Gerät oder Protokoll}               \\ \midrule\midrule
+7                    & Anwendungsschicht              & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & \textbf{HTTP(S)}, FTP, SMTP...                                        \\ \midrule
+(6)                    & Präsentationsschicht           & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF, \textbf{HTML}...                            \\ \midrule
+(5)                    & Sitzungsschicht                & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP                                    \\ \midrule
+4                    & Transportschicht               & Nimmt Dienst von der Netzwerkschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, Ports                                   \\ \midrule
+3                    & Netzwerkschicht                & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ \midrule
+2                    & Verbindungsschicht             & Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}                            \\ \midrule
+(1)                    & Physische Schicht              & Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel                \\
+\end{tabular}
+\caption*{Übersicht der Netzwerkschichten und ihrer Funktionen}
+\end{table}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Anwendungsschicht}{Client vs Server \emoji{computer}}
+Beides sind Computer!
+\begin{itemize}[<+->]
+\item \textbf{Client}
+\begin{itemize}
+\item Kunde (von en. \textit{client})
+\item Computer, der etwas will
+\end{itemize}
+\item \textbf{Server}
+\begin{itemize}
+\item Diener (von en. \textit{to serve} = bedienen, $\neq$ ``surf'')
+\item Computer, der etwas hat, das andere Computer brauchen
+\item Kann Verbindungsanfragen von anderen Computern akzeptieren / ablehnen
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Präsentationsschicht: Webseiten}{URL (Uniform Resource Locator)}
+
+URL = Web-Adresse
+
+\[
+\underbrace{\text{http://}}_{\text{Protokoll}}
+\underbrace{\text{www.}}_{\text{Server}}
+\underbrace{\text{beispiel.}}_{\text{Domain}}
+\underbrace{\text{ch}}_{\text{TLD\tikzmark{tld}}}
+\underbrace{\text{/dokumente/}}_{\text{Ordner}}
+\underbrace{\text{reglemente.html}}_{\text{Dateiname}}
+\]
+\begin{tikzpicture}[overlay, remember picture]
+\node[below=of tld] (tldFull) {Top Level Domain};
+\draw[red,-stealth] (tld.north) to[bend right] (tldFull);
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Präsentationsschicht}
+Beispiel: HTML (\textit{Hypertext Markup Language})
+\begin{itemize}[<+->]
+\item Demo (\textit{Inspect Element} oder \textit{View Page Source})
+\item Speichert die Struktur einer Webseite
+\item Kann weitere Dateien enthalten, beispielsweise:
+\begin{itemize}
+\item CSS (Cascading Style Sheet), für die Darstellung (Farbe, Grösse etc.)
+\item JavaScript, jQuery etc. für die Interaktivität (Ein- und Ausblenden von Objekten etc.)
+\end{itemize}
+\item Wie man eine Webseite baut ist hier nicht das Hauptthema, wird aber in der Interessenwoche vermittelt
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Transportschicht}{TCP (\textit{Transmission Control Protocol}) Header}
+\begin{figure}
+\centering
+\includegraphics[width=.8\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/tcp-header}
+\end{figure}
+\end{frame}
+\begin{frame}[fragile]{Transportschicht}{Ports}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccc}
+    \toprule
+    \textbf{Portnummer} & \textbf{Anwendung} & \textbf{Verwendung} \\
+    \midrule
+    20 & FTP & Dateitransfer \\
+    21 & FTP & Befehlssteuerung \\
+    22 & SSH & Sichere Shell-Zugriffe \\
+    23 & Telnet & Unverschlüsselte Fernsteuerung \\
+    25 & SMTP & E-Mail-Versand \\
+    53 & DNS & Namensauflösung \\
+    80 & HTTP & Webseiten-Abruf \\
+    110 & POP3 & E-Mail-Abholung \\
+    143 & IMAP & E-Mail-Management \\
+    443 & HTTPS & Verschlüsselter Webseiten-Abruf \\
+    993 & IMAP & E-Mail-Management über SSL \\
+    995 & POP3 & E-Mail-Abholung über SSL \\
+    \bottomrule
+    \end{tabular}
+    \caption*{Gängige TCP-Ports, Anwendungen und deren Verwendung}
+    \label{tab:tcp_ports_de_booktabs}
+\end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Netzwerkschicht}{IP-Adresse}
+
+\begin{itemize}[<+->]
+\item Netzwerk-Adresse eines Computers
+\item Analogie: Wohnadresse einer Person (Strasse \& Stadt)
+\item Häufig im IPv4-Format: 4 bytes, also 4 Zahlen von 0-255
+\item Wird meist dezimal angegeben, z.B. 192.168.0.1
+\item Übung: eigene IPv4-Adresse herausfinden
+\begin{itemize}
+\item MacOS, Terminal (via Spotlight-Suche): \\
+\texttt{ipconfig getifaddr en0}
+\item Windows, Programm ``cmd'': \\\texttt{ipconfig}
+\end{itemize}
+\item Wie viele IPv4-Adressen gibt es?
+\begin{itemize}
+\item $4\cdot 8 \text{ bytes} = 32 \text{ bytes}$
+\item $2^{32} \sim 4 \text{ Milliarden Adressen}$
+\item $\rightarrow \text{zu wenig!}$
+\end{itemize}
+\item IPv6: 128 bytes, fast unendlich viele Adressen
+\[2^{128} \sim 3.4\cdot 10^{38}\]
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Verbindungsschicht}{MAC-Adresse}
+\begin{itemize}[<+->]
+\item So etwas wie der ``Fingerabdruck'' eines Computers
+\item Analogie: Übergabe Brief von einer Hand in die andere
+\item 48 bit, die normalerweise in hexadezimaler Weise angegeben werden
+\item Z.B. \texttt{48-2C-6A-1E-59-3D}
+\item Jede Netzwerkkarte hat eine MAC-Adresse
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Schichtenmodell}{Video}
+\begin{figure}[H]
+\href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Youtube-Video (13')}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]{Auftrag: Vertiefung}
+\begin{itemize}
+\item Finden Sie Ihre eigene IP-Adresse heraus $\rightarrow$ \textbf{Abgabe Moodle}
+\item Lesen Sie zur Vertiefung des Schichtenmodells folgende Webseite, ohne Übungen: \url{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}.\\
+
+\qrcode{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}
+\item Beantworten Sie danach die Zuordnungs-Fragen $\rightarrow$ \textbf{Abgabe Moodle}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag: Filius \emoji{computer}}
+\begin{itemize}
+\item Filius Installieren: \href{https://oinf.ch/wp-content/uploads/Anleitung_Filius_Mac-OS.pdf}{Anleitung für MacOS} (etwas komplizierter...) (Credits: NKA)
+\item \href{https://informatik.mygymer.ch/base/?page=network/2-filius/1-peer/}{Aufträge 2.1 - 2.3 im Filius-Workshop} (Credits: Gymnasium Kirchenfeld)\\
+$\rightarrow$ \textbf{Abgabe \texttt{.fls}-Dateien auf Moodle!}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Anhang}
 \end{frame}
 
 \begin{frame}{Vollständiges Schichtenmodell}
@@ -196,40 +363,4 @@
 \includegraphics[width=\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/layers-geeksforgeeks}
 \caption*{Vollständiges Schichtenmodell (Quelle: \href{https://www.geeksforgeeks.org/open-systems-interconnection-model-osi/}{GeeksForGeeks})}
 \end{figure}
-\end{frame}
-
-\begin{frame}[fragile]{Schichten: Übersicht}
-\begin{table}[h]
-\centering\tiny
-\begin{tabular}{c|p{2cm}|p{4cm}|p{1.5cm}|p{1.5cm}}
-\textbf{\#} & \textbf{Schichtname}           & \textbf{Verantwortlichkeit}                                                                                & \textbf{Informationsform (Dateneinheit)} & \textbf{Gerät oder Protokoll}               \\ \midrule\midrule
-7                    & Anwendungsschicht              & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & SMTP                                        \\ \midrule
-6                    & Präsentationsschicht           & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF                            \\ \midrule
-5                    & Sitzungsschicht                & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP                                    \\ \midrule
-4                    & Transportschicht               & Nimmt Dienst von der Netzwerkschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, TCP, Ports                                   \\ \midrule
-3                    & Netzwerkschicht                & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, IPv4, IPv6                                     \\ \midrule
-2                    & Verbindungsschicht             & Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, MAC                            \\ \midrule
-1                    & Physische Schicht              & Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel                \\
-\end{tabular}
-\caption*{Übersicht der Netzwerkschichten und ihrer Funktionen}
-\end{table}
-
-\end{frame}
-
-\begin{frame}[fragile]{Heute: Schichtenmodell!}
-\begin{figure}[H]
-\href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Youtube-Video (13')}
-\end{figure}
-\end{frame}
-
-
-\begin{frame}[fragile]{Auftrag: Vertiefung}
-Lesen Sie zur Vertiefung des Schichtenmodells folgende Webseite: \url{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/} (ohne Übungen).
-\end{frame}
-
-\begin{frame}[fragile]{Auftrag: Filius \emoji{computer}}
-\begin{itemize}
-\item Filius Installieren: \href{https://oinf.ch/wp-content/uploads/Anleitung_Filius_Mac-OS.pdf}{Anleitung für MacOS} (etwas komplizierter...) (Credits: NKA)
-\item \href{https://informatik.mygymer.ch/base/?page=network/2-filius/1-peer/}{Aufträge 2.1 - 2.3 im Filius-Workshop} (Credits: Gymnasium Kirchenfeld)
-\end{itemize}
 \end{frame}
