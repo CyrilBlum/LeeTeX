@@ -196,31 +196,49 @@
 7                    & Anwendungsschicht              & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & \textbf{HTTP(S)}, FTP, SMTP...                                        \\ \midrule
 (6)                    & Präsentationsschicht           & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF, \textbf{HTML}...                            \\ \midrule
 (5)                    & Sitzungsschicht                & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP                                    \\ \midrule
-4                    & Transportschicht               & Nimmt Dienst von der Netzwerkschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, Ports                                   \\ \midrule
-3                    & Netzwerkschicht                & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ \midrule
+4                    & Transportschicht               & Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, Ports                                   \\ \midrule
+3                    & Vermittlungsschicht                & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ \midrule
 2                    & Verbindungsschicht             & Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}                            \\ \midrule
 (1)                    & Physische Schicht              & Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel                \\
 \end{tabular}
-\caption*{Übersicht der Netzwerkschichten und ihrer Funktionen}
+\caption*{Übersicht der Internet-Schichten (OSI) und ihrer Funktionen}
 \end{table}
 \end{frame}
 
 
 
-\begin{frame}[fragile]{Anwendungsschicht}{Client vs Server \emoji{computer}}
-Beides sind Computer!
+\begin{frame}[fragile]{Anwendungsschicht}{Client vs Server vs Host \emoji{computer}}
+Definitionen
 \begin{itemize}[<+->]
 \item \textbf{Client}
 \begin{itemize}
-\item Kunde (von en. \textit{client})
-\item Computer, der etwas will
+\item ``Kunde'' (von en. \textit{client})
+\item Computer-Programm, das etwas will
 \end{itemize}
 \item \textbf{Server}
 \begin{itemize}
-\item Diener (von en. \textit{to serve} = bedienen, $\neq$ ``surf'')
-\item Computer, der etwas hat, das andere Computer brauchen
+\item ``Diener'' (von en. \textit{to serve} = bedienen, $\neq$ ``surf'')
+\item Computer-Programm, das etwas hat, das andere Computer brauchen
 \item Kann Verbindungsanfragen von anderen Computern akzeptieren / ablehnen
 \end{itemize}
+\item \textbf{Host} 
+\begin{itemize}
+\item = Computer in einem Netzwerk, allgemein für ``server'' oder ``client''
+\item \textit{Host name} = Name eines Computers
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Browser}
+\begin{itemize}
+\item Browser = Programm, kann eine Datei (meist \texttt{.html})
+\begin{itemize}
+\item Über das Internet \textit{anfordern}
+\item Nach dem empfang \textit{darstellen}
+\end{itemize}
+\item Das Senden / Empfangen von Daten übernimmt das Betriebssystem (z.B. Windows, MacOS)
+\item Beispiele: Chrome, Firefox, Safari, Edge, etc.
 \end{itemize}
 \end{frame}
 
@@ -241,6 +259,15 @@ URL = Web-Adresse
 \node[below=of tld] (tldFull) {Top Level Domain};
 \draw[red,-stealth] (tld.north) to[bend right] (tldFull);
 \end{tikzpicture}
+
+\begin{itemize}[<+->]
+\item Erster Teil bezeichnet einen \textit{Server}
+\begin{itemize}
+\item z.B. 58.55.110.9 $\rightarrow$ \texttt{www.beispiel.ch}
+\end{itemize}
+\item Alles nach der TLD ist ein normaler Ordnerpfad auf dem Computer
+\end{itemize}
+
 \end{frame}
 
 
@@ -260,9 +287,8 @@ Beispiel: HTML (\textit{Hypertext Markup Language})
 \end{frame}
 
 
-
-
 \begin{frame}[fragile]{Transportschicht}{TCP (\textit{Transmission Control Protocol}) Header}
+TCP = Übertragungssteuerungsprotokoll
 \begin{figure}
 \centering
 \includegraphics[width=.8\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/tcp-header}
@@ -294,7 +320,7 @@ Beispiel: HTML (\textit{Hypertext Markup Language})
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Netzwerkschicht}{IP-Adresse}
+\begin{frame}[fragile]{Vermittlungsschicht}{IP-Adresse}
 
 \begin{itemize}[<+->]
 \item Netzwerk-Adresse eines Computers
@@ -333,6 +359,30 @@ Beispiel: HTML (\textit{Hypertext Markup Language})
 \begin{figure}[H]
 \href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Youtube-Video (13')}
 \end{figure}
+
+\begin{myexercise}
+Auftrag: 
+\begin{itemize}
+\item Notieren Sie sich die genannten \textbf{Schichten}, \textbf{Geräte} und \textbf{Protokolle}
+\begin{itemize}
+\item Namen (Abkürzung und ganz)
+\item Wofür sind sie zuständig?
+\item Welche Protokolle gehören zu welchen Schichten?
+\item Welche Geräte gehören zu welchen Protokollen / Schichten?
+\end{itemize}
+\item Notieren Sie Ihre \textbf{Fragen}: Welche anderen Begriffe verstehen Sie (noch) nicht?
+\end{itemize}
+\end{myexercise}
+\end{frame}
+
+\begin{frame}[fragile]{Gruppenauftrag}
+\begin{itemize}
+\item Was macht ``Mr. IP''?
+\item Was macht der Router?
+\item Was macht die Firewall?
+\item Was macht der Proxy Server? 
+\end{itemize}
+$\rightarrow$ 3-4er-Gruppen, ca. 5'
 \end{frame}
 
 
@@ -345,6 +395,7 @@ Beispiel: HTML (\textit{Hypertext Markup Language})
 \item Beantworten Sie danach die Zuordnungs-Fragen $\rightarrow$ \textbf{Abgabe Moodle}
 \end{itemize}
 \end{frame}
+
 
 \begin{frame}[fragile]{Auftrag: Filius \emoji{computer}}
 \begin{itemize}
