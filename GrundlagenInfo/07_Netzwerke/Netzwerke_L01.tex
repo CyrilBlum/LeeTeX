@@ -4,7 +4,7 @@
         \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
     \end{figure}
     Informatik: Data Science und Sicherheit\\
-     \textbf{Netzwerke} \emoji{computer} \emoji{globe-with-meridians}
+     \emoji{globe-with-meridians} \textbf{Netzwerke} 
 \end{frame}
 
 \begin{frame}[fragile]{Was sind Netzwerke?}
@@ -166,15 +166,29 @@
 %\end{frame}
 
 
+\begin{frame}[fragile]{Schichten \& Protokolle}
+\begin{columns}[t]
+\begin{column}{.5\textwidth}
+\textbf{Schichten}
+\begin{itemize}[<+->]
+\item Z.B. Anwendungs-, Transport-, Vermittlungs-, Netzzugangsschicht
+\item Erlauben es, spezialisierte Aufgaben in einzelne Schichten aufzuteilen: Z.B. Übermittlung von Signalen, Formaulsierung von Sprache etc.
+\end{itemize}
+\end{column}
 
-\begin{frame}[fragile]{Schichtenmodell (vereinfacht)}
-\begin{figure}[H]
-\centering
-\includegraphics[width=\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/Kommunikationsschichten}
-\caption*{Vereinfachtes Schichtenmodell (Quelle: \href{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}{OInf})}
-\end{figure}
+\begin{column}{.5\textwidth}
+\textbf{Protokolle}
+\begin{itemize}[<+->]
+\item Z.B. TCP, IP, etc.
+\item Definiert Ablauf einer Kommunikation
+\item Definiert den Aufbau der Datenpakete
+\item Wird von Computern / Prozessen verwendet
+\item Gibt es auf jeder Ebene des Schichtenmodells
+\item Im echten Leben: Begrüssung, \textit{small talk}, etc.
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
-
 
 \begin{frame}[fragile]{Schichtenmodell}{Vorteile}
 \begin{itemize}[<+->]
@@ -188,25 +202,25 @@
 
 \end{frame}
 
-\begin{frame}[fragile]{Schichtenmodell}{Übersicht}
+\begin{frame}[fragile]{Schichtenmodell: Übersicht}
 \begin{table}[h]
 \centering\tiny
-\begin{tabular}{c|p{2cm}|p{4cm}|p{1.5cm}|p{1.5cm}}
-\textbf{\#} & \textbf{Schichtname}           & \textbf{Verantwortlichkeit}                                                                                & \textbf{Informationsform (Dateneinheit)} & \textbf{Gerät oder Protokoll}               \\ \midrule\midrule
-7                    & Anwendungsschicht              & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & \textbf{HTTP(S)}, FTP, SMTP...                                        \\ \midrule
-(6)                    & Präsentationsschicht           & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF, \textbf{HTML}...                            \\ \midrule
-(5)                    & Sitzungsschicht                & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP                                    \\ \midrule
-4                    & Transportschicht               & Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, Ports                                   \\ \midrule
-3                    & Vermittlungsschicht                & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ \midrule
-2                    & Verbindungsschicht             & Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}                            \\ \midrule
-(1)                    & Physische Schicht              & Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel                \\
+\begin{tabular}{c|m{1.2cm}||m{1.2cm}||m{3.5cm}|m{1.3cm}|m{1.2cm}}
+\textbf{\#} & \textbf{Schicht (OSI)\newline \textit{Englisch}}& \textbf{Schicht \newline (TCP / IP)} & \textbf{Aufgabe}                                                                                & \textbf{Informationsform} & \textbf{Gerät / \newline Protokoll}               \\ \midrule\midrule
+\rowcolor{yellow!20}7                    & Anwendung \newline \textit{Application}              &\multirow{3}{*}{\shortstack{Anwendung\\\textit{Application}}}& Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & \textbf{HTTP(S)}, FTP, SMTP...                                        \\\cmidrule{1-2}\cmidrule{4-6}
+\rowcolor{yellow!20}6                    & Darstellung \newline \textit{Presentation}   && Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF, \textbf{HTML}...                            \\ \cmidrule{1-2}\cmidrule{4-6}
+\rowcolor{yellow!20}5                    & Sitzung \newline \textit{Session} && Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP                                    \\ \midrule
+\rowcolor{orange!20}4                    & Transport\newline \textit{Transport} &Transport\newline\textit{Transport}& Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, Ports                                   \\ \midrule
+\rowcolor{RoyalBlue!20}3                    & Vermittlung \newline \textit{Network} &Internet\newline\textit{Internet}& Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ \midrule
+\rowcolor{Gray!20}2                    & Sicherung \newline \textit{Data Link}             &\multirow{2}{*}{\shortstack{Netzzugriff\\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}                            \\ \cmidrule{1-2}\cmidrule{4-6}
+\rowcolor{Gray!20}1 & Bitübertragung \newline \textit{Physical}              && Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel                \\
 \end{tabular}
-\caption*{Übersicht der Internet-Schichten (OSI) und ihrer Funktionen}
+%\caption*{Internet-Schichten (OSI und TCP-IP) und deren Funktionen}
 \end{table}
 \end{frame}
 
 
-
+\setbeamercolor{frametitle}{bg=yellow!20}
 \begin{frame}[fragile]{Anwendungsschicht}{Client vs Server vs Host \emoji{computer}}
 Definitionen
 \begin{itemize}[<+->]
@@ -230,7 +244,7 @@ Definitionen
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Browser}
+\begin{frame}[fragile]{Anwendungsschicht}{Browser}
 \begin{itemize}
 \item Browser = Programm, kann eine Datei (meist \texttt{.html})
 \begin{itemize}
@@ -286,7 +300,7 @@ Beispiel: HTML (\textit{Hypertext Markup Language})
 \end{itemize}
 \end{frame}
 
-
+\setbeamercolor{frametitle}{bg=orange!20}
 \begin{frame}[fragile]{Transportschicht}{TCP (\textit{Transmission Control Protocol}) Header}
 TCP = Übertragungssteuerungsprotokoll
 \begin{figure}
@@ -320,6 +334,7 @@ TCP = Übertragungssteuerungsprotokoll
 \end{table}
 \end{frame}
 
+\setbeamercolor{frametitle}{bg=RoyalBlue!20}
 \begin{frame}[fragile]{Vermittlungsschicht}{IP-Adresse}
 
 \begin{itemize}[<+->]
@@ -345,6 +360,7 @@ TCP = Übertragungssteuerungsprotokoll
 
 \end{frame}
 
+\setbeamercolor{frametitle}{bg=gray!20}
 \begin{frame}[fragile]{Verbindungsschicht}{MAC-Adresse}
 \begin{itemize}[<+->]
 \item So etwas wie der ``Fingerabdruck'' eines Computers
@@ -355,6 +371,7 @@ TCP = Übertragungssteuerungsprotokoll
 \end{itemize}
 \end{frame}
 
+\setbeamercolor{frametitle}{bg=white}
 \begin{frame}[fragile]{Schichtenmodell}{Video}
 \begin{figure}[H]
 \href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Youtube-Video (13')}
@@ -376,6 +393,7 @@ Auftrag:
 \end{frame}
 
 \begin{frame}[fragile]{Gruppenauftrag}
+\begin{myexercise}
 \begin{itemize}
 \item Was macht ``Mr. IP''?
 \item Was macht der Router?
@@ -383,35 +401,34 @@ Auftrag:
 \item Was macht der Proxy Server? 
 \end{itemize}
 $\rightarrow$ 3-4er-Gruppen, ca. 5'
+\end{myexercise}
 \end{frame}
 
 
 \begin{frame}[fragile]{Auftrag: Vertiefung}
-\begin{itemize}
-\item Finden Sie Ihre eigene IP-Adresse heraus $\rightarrow$ \textbf{Abgabe Moodle}
-\item Lesen Sie zur Vertiefung des Schichtenmodells folgende Webseite, ohne Übungen: \url{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}.\\
+\begin{mysubmission}
+Finden Sie Ihre eigene IP-Adresse heraus $\rightarrow$ \textbf{Abgabe Moodle}\\
+\textbf{Tipp}: Verwenden Sie den Befehl \texttt{ipconfig} im Terminal / cmd
+\end{mysubmission}
 
-\qrcode{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}
+\begin{mysubmission}
+\begin{itemize}
+\item Lesen Sie zur Vertiefung des Schichtenmodells folgende Webseite, ohne Übungen:\\
+\qrcode[height=1.5cm]{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}
 \item Beantworten Sie danach die Zuordnungs-Fragen $\rightarrow$ \textbf{Abgabe Moodle}
 \end{itemize}
+\end{mysubmission}
 \end{frame}
 
 
 \begin{frame}[fragile]{Auftrag: Filius \emoji{computer}}
-\begin{itemize}
-\item Filius Installieren: \href{https://oinf.ch/wp-content/uploads/Anleitung_Filius_Mac-OS.pdf}{Anleitung für MacOS} (etwas komplizierter...) (Credits: NKA)
-\item \href{https://informatik.mygymer.ch/base/?page=network/2-filius/1-peer/}{Aufträge 2.1 - 2.3 im Filius-Workshop} (Credits: Gymnasium Kirchenfeld)\\
+\begin{myexercise}
+Installieren Sie das Programm Filius. \\
+MacOS: \qrcode[height=1.5cm]{https://informatik.mygymer.ch/base/?page=network/2-filius/macos/} Windows: \qrcode[height=1.5cm]{https://informatik.mygymer.ch/base/?page=network/2-filius/windows/}
+\end{myexercise}
+\begin{mysubmission}
+Aufträge 2.1 - 2.3 im Filius-Workshop:\hfill \qrcode[height=1.5cm]{https://informatik.mygymer.ch/base/?page=network/2-filius/1-peer/} \\
 $\rightarrow$ \textbf{Abgabe \texttt{.fls}-Dateien auf Moodle!}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Anhang}
-\end{frame}
-
-\begin{frame}{Vollständiges Schichtenmodell}
-\begin{figure}
-\centering
-\includegraphics[width=\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/layers-geeksforgeeks}
-\caption*{Vollständiges Schichtenmodell (Quelle: \href{https://www.geeksforgeeks.org/open-systems-interconnection-model-osi/}{GeeksForGeeks})}
-\end{figure}
+\end{mysubmission}
+Credits: Gymnasium Kirchenfeld
 \end{frame}
