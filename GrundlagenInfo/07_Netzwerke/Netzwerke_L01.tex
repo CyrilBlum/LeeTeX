@@ -299,6 +299,7 @@ TCP = Übertragungssteuerungsprotokoll
 \end{frame}
 
 \setbeamercolor{frametitle}{bg=RoyalBlue!20}
+
 \begin{frame}[fragile]{\faMapMarker{} IP-Adresse}{Vermittlungsschicht}
 
 \begin{itemize}[<+->]
@@ -323,8 +324,20 @@ TCP = Übertragungssteuerungsprotokoll
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+\includegraphics[width=0.3\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/Subnetz-2}\\
+\textbf{Subnetzwerke}
+\begin{itemize}[<+->]
+\item Verschiedene Geräte gehören zum gleichen Subnetz, falls Sie
+\begin{itemize}
+\item Physisch miteinander verbunden sind (WLAN, Kabel, etc.)
+\item Die gleiche Subnetzmaske teilen (später mehr dazu)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{\faGlobe{} Netzmasken}{Vermittlungsschicht}
-\includegraphics[width=0.3\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/Subnetz-2}
+\includegraphics[width=0.3\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/Subnetz-2}\\
 \textbf{Netzmaske}
 \begin{itemize}[<+->]
 \item Sieht ähnlich aus wie eine IP-Adresse: \commandBluebox|xxx.xxx.xxx.xxx|
@@ -337,6 +350,28 @@ Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, d
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Subnetze}{Übung}
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tabular}{l|l|l|p{2cm}}
+
+\textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+
+213.45.19.89 & 255.255.255.0 & 213.45.17.89 &  \\\midrule
+
+213.45.19.89 & 255.255.0.0 & 213.45.17.89 &  \\\midrule
+
+88.100.11.17 & 255.255.255.0 & 88.100.11.254 &  \\\midrule
+
+88.100.11.17 & 0.0.0.0 & 213.45.19.89 &  \\\midrule
+
+10.0.0.0 & 255.255.255.252 & 10.0.0.1 & 
+\end{tabular}
+\end{table}
+$\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) nullen stehen.
+\end{frame}
+
 \begin{frame}[fragile]{\faCompass{} \texttt{ping}}{Vermittlungsschicht}
 
 \begin{itemize}[<+->]
@@ -344,6 +379,11 @@ Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, d
 \commandbox|ping 159.233.1.22|
 \item Minimale Nachricht an andere IP schicken
 \item Ziel: schauen ob eine IP existiert, bzw. erreichbar ist
+\item \textcolor{red}{\faSkull{} Ping of Death}: Grösstenteils nicht mehr möglich
+\begin{itemize}
+\item Ein zu grosses Datenpaket wurde versendet, das beim Empfang zum Absturz führte
+\item Behoben (für Computer ca. $>$ 1998), indem z.B. Paketgrösse vor Zusammensetzen überprüft wird
+\end{itemize}
 \end{itemize}
 \end{frame}
 
