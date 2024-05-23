@@ -123,20 +123,20 @@
   }%
 }
 
-\begin{frame}[fragile,plain]%{Schichtenmodell: Übersicht}
+\begin{frame}[fragile]{Schichtenmodell: Übersicht}
 \Wider[3em]{\begin{center}
 \begin{table}[h]
 \centering\tiny
 \resizebox{\textwidth}{!}{
 \begin{tabular}{c|m{1.2cm}||m{1.2cm}||m{3.7cm}|m{1.3cm}|m{1.2cm}}
 \textbf{\#} & \textbf{Schicht (OSI)}& \textbf{Schicht \newline (TCP / IP)} & \textbf{Aufgabe}                                                                                & \textbf{Informationsform} & \textbf{Gerät / \newline Protokoll}               \\ \midrule\midrule
-\rowcolor{yellow!20}7                    & Anwendung \newline \textit{Application}              &\multirow{3}{*}{\shortstack{Anwendung\\\textit{Application}}}& Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & \textbf{HTTP(S)}, FTP, SMTP...                                        \\\cmidrule{1-2}\cmidrule{4-6}
-\rowcolor{yellow!20}6                    & Darstellung \newline \textit{Presentation}   && Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF, \textbf{HTML}...                            \\ \cmidrule{1-2}\cmidrule{4-6}
-\rowcolor{yellow!20}5                    & Sitzung \newline \textit{Session} && Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP                                    \\ \midrule
-\rowcolor{orange!20}4                    & Transport\newline \textit{Transport} &Transport\newline\textit{Transport}& Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, Ports                                   \\ \midrule
-\rowcolor{RoyalBlue!20}3                    & Vermittlung \newline \textit{Network} &Internet\newline\textit{Internet}& Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ \midrule
-\rowcolor{Gray!20}2                    & Sicherung \newline \textit{Data Link}             &\multirow{2}{*}{\shortstack{Netzzugriff\\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}                            \\ \cmidrule{1-2}\cmidrule{4-6}
-\rowcolor{Gray!20}1 & Bitübertragung \newline \textit{Physical}              && Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel                \\
+\rowcolor{yellow!10}7                    & Anwendung \newline \textit{Application}              && Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & \textbf{HTTP(S)}, FTP, SMTP...                                        \\
+\rowcolor{yellow!20}6                    & Darstellung \newline \textit{Presentation}   &Anwendung\newline\textit{Application}& Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF, \textbf{HTML}...                            \\ 
+\rowcolor{yellow!30}5                    & Sitzung \newline \textit{Session} && Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ... \\ 
+\rowcolor{orange!20}4                    & Transport\newline \textit{Transport} &Transport\newline\textit{Transport}& Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, Ports... \\ 
+\rowcolor{RoyalBlue!20}3                    & Vermittlung \newline \textit{Network} &Internet\newline\textit{Internet}& Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ 
+\rowcolor{Gray!15}2                    & Sicherung \newline \textit{Data Link}             &\multirow{2}{*}{\shortstack{Netzzugriff\\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}...                            \\
+\rowcolor{Gray!25}1 & Bitübertragung \newline \textit{Physical}              && Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel... \\
 \end{tabular}}
 \caption*{Internet-Schichten (OSI und TCP-IP) sowie deren Aufgaben und Protokolle}
 \end{table}
@@ -298,6 +298,48 @@ TCP = Übertragungssteuerungsprotokoll
 \end{table}
 \end{frame}
 
+\begin{frame}[fragile]{\faHandshake{} TCP: 3-way handshake}
+\begin{columns}[c]
+\begin{column}{.6\textwidth}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=Stealth, font=\sffamily, node distance=2cm and 4cm]
+    % Draw the entities
+    \tikzset{c/.append style={fill=RoyalBlue!30,rounded corners,above, align=center, text width=3cm}}
+    \tikzset{person/.append style={text width=1.2cm,fill=ForestGreen!30,rounded corners,align=center}}
+    \node[person](Bob) {\tiny \faMale{} Bob\\\texttt{10.0.0.2:21}};
+    \node[person, right=of Bob] (Alice) {\tiny \faFemale{} Alice\\\texttt{10.0.0.3:21}};
+
+    
+    
+
+    % Draw the arrows and labels
+    \draw[->, thick, red, dashed] (Bob.south) -- node[c] {\tiny Ich möchte mit dir sprechen, Alice, auf Port 21. Bist du offen?\\SYN=1, SEQ\# 10} ([yshift=-1.5cm]Alice.south);
+    \draw[->, thick, red, dashed] ([yshift=-1.5cm]Alice.south) -- node[c] {\tiny Ok, lass uns reden Bob! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-3cm]Bob.south);
+    \draw[->, thick, red, dashed] ([yshift=-3cm]Bob.south) -- node[c] {\tiny Ok, danke Alice.\\ACK=1, SEQ\#11} ([yshift=-4.5cm]Alice.south);
+	
+	\node[below of=Bob, yshift=-3.5cm] (BobZeit) {Zeit};
+	\node[below of=Alice, yshift=-3.5cm] (AliceZeit) {Zeit};
+	
+    % Time line
+    \draw[->, thick] (Bob.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
+    \draw[->, thick] (Alice.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+\end{tikzpicture}
+\end{figure}
+\end{column}\vrule{}
+\begin{column}{.4\textwidth}
+\footnotesize
+\begin{enumerate}
+\item Computer A (\textit{client}, \texttt{10.0.0.2}) erstellt eine Verbindungsanfrage zum Computer B (\textit{server}, \texttt{10.0.0.3}), mittels einem Paket, das nur das \texttt{SYN}-Flaggen gesetzt hat.
+\item Der Server antwortet sowohl mit einem gesetzten \texttt{SYN} und einem \texttt{ACK}-Flaggen
+\item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen\\
+$\rightarrow$ TCP-Verbindung ist nun erstellt!
+\end{enumerate}
+
+\end{column}
+\end{columns}
+\end{frame}
+
 \setbeamercolor{frametitle}{bg=RoyalBlue!20}
 
 \begin{frame}[fragile]{\faMapMarker{} IP-Adresse}{Vermittlungsschicht}
@@ -310,8 +352,9 @@ TCP = Übertragungssteuerungsprotokoll
 \item Übung: eigene IPv4-Adresse herausfinden
 \begin{itemize}
 \item MacOS, Terminal (via Spotlight-Suche): \\
-\texttt{ipconfig getifaddr en0}
-\item Windows, Programm ``cmd'': \\\texttt{ipconfig}
+\commandbox|ipconfig getifaddr en0|
+\item Windows, Programm ``cmd'': \\
+\commandbox|ipconfig|
 \end{itemize}
 \item Wie viele IPv4-Adressen gibt es?
 \begin{itemize}
@@ -350,7 +393,7 @@ Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, d
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Subnetze}{Übung}
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Übung}
 \begin{table}[h]
 \centering
 \footnotesize
@@ -366,10 +409,85 @@ Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, d
 
 88.100.11.17 & 0.0.0.0 & 213.45.19.89 &  \\\midrule
 
-10.0.0.0 & 255.255.255.252 & 10.0.0.1 & 
+10.0.0.0 & 255.255.255.252 & 10.0.0.1 & \\\midrule
+1.2.3.0 & 255.255.255.252 & 1.2.3.5 & 
 \end{tabular}
 \end{table}
-$\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) nullen stehen.
+\begin{itemize}
+\item $\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen. 
+\item Umrechner dezimal $\rightarrow$ binär: \qrcode[height=1cm]{https://www.rapidtables.com/convert/number/decimal-to-binary.html}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Übung (Lösung)}
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tabular}{l|l|l|p{2cm}}
+
+\textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+
+213.45.19.89 & 255.255.255.0 & 213.45.\textcolor{red}{17}.89 & Nein \\\midrule
+
+213.45.19.89 & 255.255.0.0 & \textcolor{green}{213.45}.17.89 &  Ja \\\midrule
+
+88.100.11.17 & 255.255.255.0 & \textcolor{green}{88.100}.11.254 & Ja \\\midrule
+
+88.100.11.17 & 0.0.0.0 & 213.45.19.89 &  Ja (alles \faCheck)\\\midrule
+
+10.0.0.0 & 255.255.255.252 & 10.0.0.1 & Ja ($252_{10}=11111100_{2}$) \\\midrule
+1.2.3.0 & 255.255.255.252 & 1.2.3.5 & Nein ($252_{10}=11111100_{2}$)
+\end{tabular}
+\end{table}
+\begin{itemize}
+\item $\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen. 
+\item Umrechner dezimal $\rightarrow$ binär: \qrcode[height=1cm]{https://oinf.ch/interactive/ips-und-netzmaske/}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Weitere Übungen}
+\begin{myexercise}
+\footnotesize
+Sechs Subnetze sind gegeben durch je eine Netzmaske und eine IP eines sich darin befindenden Rechners. Entscheiden Sie für jede links aufgeführte IP, zu welchen Subnetzen der entsprechende Rechner gehört.\vspace{-.2cm}
+\begin{table}[H]
+\centering
+\resizebox{.8\textwidth}{!}{
+\begin{tabular}{p{1.2cm}||c|c||c|c||c|c|}
+\textbf{Netzmaske Subnetz} & \multicolumn{2}{c||}{255.255.255.0} & \multicolumn{2}{c||}{255.255.0.0} & \multicolumn{2}{c|}{255.255.255.240} \\ 
+\cmidrule{2-7} 
+ & IP 3.4.5.6 & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 \\ 
+\midrule\midrule
+3.3.3.4  &  &  &  &  &  &  \\\midrule
+4.4.4.3  &  &  &  &  &  &  \\\midrule
+3.4.5.99 &  &  &  &  &  &  \\\midrule
+3.3.4.4  &  &  &  &  &  &  \\\midrule
+3.4.7.7  &  &  &  &  &  &  \\\midrule
+3.3.3.17 &  &  &  &  &  &  \\
+\end{tabular}}
+\end{table}
+\begin{center}
+\vspace{-.5cm}Überprüfen: \qrcode[height=1cm]{https://oinf.ch/interactive/ips-und-netzmaske/}\vspace{-.2cm}
+\end{center}
+\end{myexercise}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Weitere Übungen (Lösung)}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{p{1.2cm}||c|c||c|c||c|c|}
+\textbf{Netzmaske Subnetz} & \multicolumn{2}{c||}{255.255.255.0} & \multicolumn{2}{c||}{255.255.0.0} & \multicolumn{2}{c|}{255.255.255.240} \\ 
+\cmidrule{2-7} 
+ & IP 3.4.5.6 & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 \\ 
+\midrule\midrule
+3.3.3.4  & Nein & Ja & Nein & Ja & Nein & Ja \\\midrule
+4.4.4.3  & Nein & Nein & Nein & Nein & Nein & Nein \\\midrule
+3.4.5.99 & Ja & Nein & Ja & Nein & Nein & Nein \\\midrule
+3.3.4.4  & Nein & Nein & Nein & Ja & Nein & Nein \\\midrule
+3.4.7.7  & Nein & Ja & Ja & Nein & Nein & Nein \\\midrule
+3.3.3.17 & Nein & Ja & Nein & Ja & Nein & Nein \\
+\end{tabular}}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{\faCompass{} \texttt{ping}}{Vermittlungsschicht}
