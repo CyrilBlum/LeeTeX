@@ -133,7 +133,7 @@
 \rowcolor{yellow!10}7                    & Anwendung \newline \textit{Application}              && Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & \textbf{HTTP(S)}, FTP, SMTP...                                        \\
 \rowcolor{yellow!20}6                    & Darstellung \newline \textit{Presentation}   &Anwendung\newline\textit{Application}& Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF, \textbf{HTML}...                            \\ 
 \rowcolor{yellow!30}5                    & Sitzung \newline \textit{Session} && Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ... \\ 
-\rowcolor{orange!20}4                    & Transport\newline \textit{Transport} &Transport\newline\textit{Transport}& Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, Ports... \\ 
+\rowcolor{orange!20}4                    & Transport\newline \textit{Transport} &Transport\newline\textit{Transport}& Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, UDP, Ports... \\ 
 \rowcolor{RoyalBlue!20}3                    & Vermittlung \newline \textit{Network} &Internet\newline\textit{Internet}& Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ 
 \rowcolor{Gray!15}2                    & Sicherung \newline \textit{Data Link}             &\multirow{2}{*}{\shortstack{Netzzugriff\\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}...                            \\
 \rowcolor{Gray!25}1 & Bitübertragung \newline \textit{Physical}              && Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel... \\
@@ -272,6 +272,24 @@ TCP = Übertragungssteuerungsprotokoll
 \includegraphics[width=.8\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/tcp-header}
 \end{figure}
 \end{frame}
+
+\begin{frame}[fragile]{\faBoxOpen{} TCP (\textit{Transmission Control Protocol}) Header}{Transportschicht}
+TCP = Übertragungssteuerungsprotokoll
+\begin{table}[H]
+\centering
+\begin{tabular}{>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}}
+
+\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{TCP Header}} \\ \midrule
+Source Port & Destination Port \\ \midrule
+\multicolumn{2}{c}{Sequence \# (SEQ)} \\ \midrule
+\multicolumn{2}{c}{Acknoledgement \# (ACK)} \\ \midrule
+\multicolumn{2}{c}{Weitere TCP-Header-Felder} \\ \midrule
+\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{Nutzdaten}} \\ \midrule
+\multicolumn{2}{c}{Anwendungsdaten} \\ 
+\end{tabular}
+\end{table}
+\end{frame}
+
 \begin{frame}[fragile]{\faShip{} Ports}{Transportschicht}
 \begin{table}[H]
     \centering
@@ -294,7 +312,6 @@ TCP = Übertragungssteuerungsprotokoll
     \bottomrule
     \end{tabular}
     \caption*{Gängige TCP-Ports, Anwendungen und deren Verwendung}
-    \label{tab:tcp_ports_de_booktabs}
 \end{table}
 \end{frame}
 
@@ -394,7 +411,7 @@ Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, d
 \end{frame}
 
 \begin{frame}[fragile]{Subnetze \& Netzmasken}{Übung}
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \footnotesize
 \begin{tabular}{l|l|l|p{2cm}}
@@ -420,7 +437,7 @@ Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, d
 \end{frame}
 
 \begin{frame}[fragile]{Subnetze \& Netzmasken}{Übung (Lösung)}
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \footnotesize
 \begin{tabular}{l|l|l|p{2cm}}
@@ -516,6 +533,20 @@ Sechs Subnetze sind gegeben durch je eine Netzmaske und eine IP eines sich darin
 \item 48 bit, die normalerweise in hexadezimaler Weise angegeben werden
 \item Z.B. \commandbox{48-2C-6A-1E-59-3D}
 \item Jede Netzwerkkarte hat eine MAC-Adresse
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{ARP(\textit{Adress Resolution Protocol})}{Verbindungsschicht}
+\begin{itemize}[<+->]
+\item Daten werden zwar mit Ziel-IP versehen, können jedoch nur von MAC zu MAC übergeben werden!
+\item Muss verwendet werden, um herauszufinden, welche MAC-Adresse zu welcher IP-Adresse gehört.
+\item Beispiel
+\begin{itemize}
+\item Computer \commandbox|192.168.0.33| will Nachricht senden an \commandbox|192.168.0.34| im selben Subnetz (\commandBluebox|255.255.255.0|)
+\item \commandbox|192.168.0.33| sendet daher eine Nachricht an alle Computer in \commandbox|192.168.0.x|: ``Wer hat die IP \commandbox|192.168.0.34|''?
+\item Computer \commandbox|192.168.0.34| antwortet: ``Ich! Meine MAC ist \commandbox|60:4E:46:F5:08:09|.''
+\item Nun kann der Computer seine Nachricht direkt an den nächsten Empfänger (\textit{gateway}) übergeben.
+\end{itemize}
 \end{itemize}
 \end{frame}
 
