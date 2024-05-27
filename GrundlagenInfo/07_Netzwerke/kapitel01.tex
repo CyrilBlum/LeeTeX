@@ -371,17 +371,13 @@ Der schematische Ablauf eines Webseiten-Abrufs mit dem HTTP-Protokoll ist in \cr
 Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige weitere Schritte erfolgen. Wie werden beispielsweise die Daten vom Server zum Client transportiert? Dafür müssen wir uns näher mit der Transportschicht auseinandersetzen.
 
 \subsection{Transportschicht}
-In der Transportschicht...
-\subsubsection{TCP}
-% TCP
-\acrfull{TCP} = Übertragungssteuerungsprotokoll
-\begin{figure}
-\centering
-\includegraphics[width=.8\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/tcp-header}
-\end{figure}
+In der Transportschicht geht es, wie es der Name bereits sagt, darum, wie Daten von einem Host zum nächsten transportiert werden. 
 
-TCP = Übertragungssteuerungsprotokoll
-\begin{table}[H]
+Die Daten, die zwischen zwei Computern übertragen werden, werden häufig auch als \textbf{Nutzdaten} oder \textit{payload} bezeichnet. Zu diesen Nutzdaten, die zwischen zwei Computern hin- und hergesandt werden sollen, kommen nun noch verschiedene weitere Daten dazu, so genannte \textbf{Metadaten}. Metadaten sind dazu zuständig, wichtige Informationen zu den Ursprungsdaten hinzuzufügen, in diesem Falle Daten, um den Transport der Daten zu ermöglichen. Diese Metadaten werden vom Übertragungs-Steuerungs-Protocoll (\gls{TCP}) zur Verfügung gestellt und genutzt, in einem so genannten \textit{Header} (s. \cref{fig:tcp-header}). 
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.48\linewidth}
 \centering
 \begin{tabular}{>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}}
 
@@ -393,8 +389,50 @@ Source Port & Destination Port \\ \midrule
 \rowcolor{orange!20}\multicolumn{2}{c}{\textbf{Nutzdaten}} \\ \midrule
 \multicolumn{2}{c}{Anwendungsdaten} \\ 
 \end{tabular}
-\caption{Typischer \gls{TCP}-Paket-Aufbau}
+\caption{Vereinfachte Darstellung}
+\end{subfigure}
+\begin{subfigure}{.48\linewidth}
+\includegraphics[width=\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/tcp-header}
+\caption{Vollständige Abbildung}
+\end{subfigure}
+\caption{\gls{TCP}-Header}
+\label{fig:tcp-header}
+\end{figure}
+
+
+Einige der wichtigsten Metadaten sind:
+
+\begin{itemize}
+\item \textbf{Der Port} (von engl. \textit{port} = Hafen): Dies ist eine Zahl, mit der der Computer weiss, welche Anwendung (z.B. Mail, Browser, Gaming-Programm etc.) Daten verschickt. Ein Computer kann, wie Sie vermutlich wissen, gleichzeitig über mehrere Programme Daten von anderen Computern empfangen und an sie schicken: sie können beispielsweise gleichzeitig eine Nachricht über WhatsApp schicken und ein Video schauen. Damit der Computer weiss, welche Anwendung die Daten verschickt, verseht er die Daten typischerweise mit einem Port. Obschon Ports für jedes Programm frei gewählt werden können, werden für bekannte Protokolle typischerweise Standard-Portnummern verwendet (s. \cref{tab:tcp_ports}).
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccc}
+    \toprule
+    \textbf{Portnummer} & \textbf{Anwendung} & \textbf{Verwendung} \\
+    \midrule
+    20 & \acrfull{FTP} & Dateitransfer \\
+    21 & \acrfull{FTP} & Befehlssteuerung \\
+    22 & \acrfull{SSH} & Sichere Shell-Zugriffe \\
+    23 & Telnet & Unverschlüsselte Fernsteuerung \\
+    25 & \acrfull{SMTP} & E-Mail-Versand \\
+    53 & \acrfull{DNS} & Namensauflösung \\
+    80 & \acrfull{HTTP} & Webseiten-Abruf \\
+    110 & \acrfull{POP3} & E-Mail-Abholung \\
+    143 & \acrfull{IMAP} & E-Mail-Management \\
+    443 & \acrfull{HTTPS} & Verschlüsselter Webseiten-Abruf \\
+    993 & \acrfull{IMAP} & E-Mail-Management über \acrshort{SSL} \\
+    995 & \acrfull{POP3} & E-Mail-Abholung über \acrshort{SSL} \\
+    \bottomrule
+    \end{tabular}
+    \caption{Gängige \gls{TCP}-Ports, Anwendungen und deren Verwendung}
+    \label{tab:tcp_ports}
 \end{table}
+Sowohl der \textit{Client} wie auch der \textit{Server} versehen die Daten mit jeweils einer Zahl, die für den Ursprungs-Port (\textit{Source Port}), respektive den Ziel-Port (\textit{Destination Port}) stehen.
+\item \textbf{Ziffern} für die \textit{Sequence} (Sequenz) und \textit{Acknowledgement} (Anerkennung) von Paketen, die die richtige Reihenfolge der gesendeten und erhaltenen Daten gerantieren.
+\item Weitere Daten, die für den Transport notwendig sind.
+\end{itemize}
+
+Zusätzlich zur Steuerung der Datenübertragung können \gls{TCP}-Metadaten genutzt werden, um die erste Verbindung zwischen zwei Computern herzustellen. Dies erfolgt typischerweise über das 3-Wege-Handschlag-Protokoll (s. \cref{fig:threewayHandshake}).
 
 \begin{figure}[H]
 \centering
@@ -421,69 +459,50 @@ Source Port & Destination Port \\ \midrule
     \draw[->, thick] (Alice.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
 \end{tikzpicture}
 \caption{Drei-Wege-Handschlag im \gls{TCP}-Protokoll}
+\label{fig:threewayHandshake}
 \end{figure}
-
+Folgende Schritte des Drei-Wege-Handschlags werden in \cref{fig:threewayHandshake} illustriert:
 \begin{enumerate}
 \item Computer A (\textit{client}, \texttt{10.0.0.2}) erstellt eine Verbindungsanfrage zum Computer B (\textit{server}, \texttt{10.0.0.3}), mittels einem Paket, das nur das \texttt{SYN}-Flaggen gesetzt hat.
 \item Der Server antwortet sowohl mit einem gesetzten \texttt{SYN} und einem \texttt{ACK}-Flaggen
 \item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen\\
-$\rightarrow$ TCP-Verbindung ist nun erstellt!
 \end{enumerate}
+Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen können miteinander kommunizieren.
 
-\subsubsection{Ports}
-\begin{table}[H]
-    \centering
-    \begin{tabular}{ccc}
-    \toprule
-    \textbf{Portnummer} & \textbf{Anwendung} & \textbf{Verwendung} \\
-    \midrule
-    20 & \acrfull{FTP} & Dateitransfer \\
-    21 & \acrfull{FTP} & Befehlssteuerung \\
-    22 & \acrfull{SSH} & Sichere Shell-Zugriffe \\
-    23 & Telnet & Unverschlüsselte Fernsteuerung \\
-    25 & \acrfull{SMTP} & E-Mail-Versand \\
-    53 & \acrfull{DNS} & Namensauflösung \\
-    80 & \acrfull{HTTP} & Webseiten-Abruf \\
-    110 & \acrfull{POP3} & E-Mail-Abholung \\
-    143 & \acrfull{IMAP} & E-Mail-Management \\
-    443 & \acrfull{HTTPS} & Verschlüsselter Webseiten-Abruf \\
-    993 & \acrfull{IMAP} & E-Mail-Management über \acrshort{SSL} \\
-    995 & \acrfull{POP3} & E-Mail-Abholung über \acrshort{SSL} \\
-    \bottomrule
-    \end{tabular}
-    \caption*{Gängige \gls{TCP}-Ports, Anwendungen und deren Verwendung}
-    \label{tab:tcp_ports_de_booktabs}
-\end{table}
 \subsection{Internetschicht}
+Die Übertragungssicherungsschicht befasst sich mit der stabilen Übertragung von Daten zwischen zwei Rechnern. Wofür sie jedoch nicht zuständig ist, ist die Adressierung und Identifizierung von Computern im Netzwerk. Diesem Aspekt ist die Internetschicht gewidmet.
+
 \subsubsection{IP-Adressen}
 
-\acrfull{IP}-Adresse
-\begin{itemize}
-\item Netzwerk-Adresse eines Computers
-\item Analogie: Wohnadresse einer Person (Strasse \& Stadt)
-\item Häufig im IPv4-Format: 4 bytes, also 4 Zahlen von 0-255
-\item Wird meist dezimal angegeben, z.B. \texttt{192.168.0.1}
-\item Übung: eigene IPv4-Adresse herausfinden
+Eine \acrfull{IP}-Adresse ist eine Netzwerk-Adresse eines Computers. Somit ist sie in gewisser Weise der Wohnadresse einer Person ähnlich. Häufig werden IP-Adressen noch im \textbf{IPv4}-Format angegeben: Dieses besteht aus 4 bytes, also 4 Zahlen von 0 bis 255. Die IPv4-Adresse Wird meist dezimal angegeben (beispielsweise \texttt{192.168.0.1}).
+\begin{mysubmission}
+Finden Sie Ihre eigene IPv4-Adresse heraus. Tipps:
 \begin{itemize}
 \item MacOS, Terminal (via Spotlight-Suche): \\
 \commandbox|ipconfig getifaddr en0|
 \item Windows, Programm ``cmd'': \\
 \commandbox|ipconfig|
 \end{itemize}
-\item Wie viele IPv4-Adressen gibt es?
+\end{mysubmission}
+\begin{myexercise}
+Wie viele IPv4-Adressen gibt es?
+\begin{myanswer}
 \begin{itemize}
 \item $4\cdot 8 \text{ bytes} = 32 \text{ bytes}$
 \item $2^{32} \sim 4 \text{ Milliarden Adressen}$
 \item $\rightarrow \text{zu wenig!}$
 \end{itemize}
-\item IPv6: 128 bytes, fast unendlich viele Adressen
-\[2^{128} \sim 3.4\cdot 10^{38}\]
-\end{itemize}
+\end{myanswer}
+\end{myexercise}
+Wie wir in Übung ... gesehen haben, gibt es zu wenige Adressen bei IPv4. Daher wird IPv4 graduell durch einen neuen Standard abgelöst, \textbf{IPv6}, in welchem jede Adresse über 128 Bytes verfügt, womit fast unendlich viele Geräte addressiert werden können.
 
-\begin{mysubmission}
-Finden Sie Ihre eigene IP-Adresse heraus $\rightarrow$ \textbf{Abgabe Moodle}\\
-\textbf{Tipp}: Verwenden Sie den Befehl \texttt{ipconfig} im Terminal / cmd
-\end{mysubmission}
+\begin{myexercise}
+Wie viele Adressen gibt es bei IPv6?
+\begin{myanswer}
+\[2^{128} \sim 3.4\cdot 10^{38}\]
+\end{myanswer}
+\end{myexercise}
+
 
 \subsubsection{Netzmasken \& Subnetze}
 \includegraphics[width=0.3\linewidth]{GrundlagenInfo/07_Netzwerke/Figures/Subnetz-2}\\
