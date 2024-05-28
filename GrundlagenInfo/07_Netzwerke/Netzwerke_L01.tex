@@ -248,9 +248,49 @@ URL = Web-Adresse
 
 \end{frame}
 
+\begin{frame}[fragile]{\faServer{} HTTP(S)-Protokoll}
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tikzpicture}[
+    font=\sffamily,
+    every node/.style={align=center},
+    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 3.5cm},
+    process/.style={-Stealth, thick, draw},
+   arrowtext/.style={text width=2.5cm, align=center, text=black, font=\footnotesize}
+]
+
+% Nodes for user
+\node[entity] (userStart) {Eingabe der \acrshort{URL} am Bildschirm};
+\node[entity, below=of userStart] (userEnd) {Webseite am Bildschirm};
+% Draw a 2D rectangle around the users
+\node[fit=(userStart) (userEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](user) {User \\ \faUser};
+
+% nodes for 
+\node[entity, right=of userStart] (browserStart) {Übersetzt die URL in einen HTTP-Request};
+\node[entity, right=of userEnd] (browserEnd) {Sammelt Daten, setzt Website zusammen (rendern)};
+% Draw a 2D rectangle around the users
+\node[fit=(browserStart) (browserEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Browser\\ \faLaptop};
+
+% nodes for server
+\node[entity, right=of browserStart] (serverStart) {Interpretiert den Request und sucht die Dateien};
+\node[entity, right=of browserEnd] (serverEnd) {Sendet den Status der Suche und die Daten zur Webseite};
+% Draw a 2D rectangle around the users
+\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
+
+% Connections
+\draw[process, Crimson] (userStart.east) -- node[arrowtext, above] {1. URL \\ \texttt{http://\\www.beispiel.ch/\\index.html}} (browserStart.west);
+\draw[process, Crimson] (browserStart.east) -- node[arrowtext, above] {2. HTTP Request \\ \texttt{GET /index.html}} (serverStart.west);
+\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {3. HTTP Response \\ Statuscode + Daten} (browserEnd.east);
+\draw[process, ForestGreen] (browserEnd.west) -- node[arrowtext, below] {4. Webpage \\ Darstellung der Webseite \texttt{index.html}} (userEnd.east);
+
+\end{tikzpicture}}
+\end{figure}
+\end{frame}
 
 
-\begin{frame}[fragile]{\faSitemap{} Webseiten}{Präsentationsschicht}
+
+\begin{frame}[fragile]{\faLaptop{} Webseiten}{Präsentationsschicht}
 Beispiel: HTML (\textit{Hypertext Markup Language})
 \begin{itemize}[<+->]
 \item Demo (\textit{Inspect Element} oder \textit{View Page Source})
@@ -432,7 +472,7 @@ Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, d
 \end{table}
 \begin{itemize}
 \item $\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen. 
-\item Umrechner dezimal $\rightarrow$ binär: \qrcode[height=1cm]{https://www.rapidtables.com/convert/number/decimal-to-binary.html}
+\item Umrechner dezimal $\rightarrow$ binär: \qrcode[height=1cm]{https://oinf.ch/interactive/ips-und-netzmaske/}
 \end{itemize}
 \end{frame}
 
