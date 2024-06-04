@@ -381,13 +381,13 @@ Die Daten, die zwischen zwei Computern übertragen werden, werden häufig auch a
 \centering
 \begin{tabular}{>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}}
 
-\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{TCP Header}} \\ \midrule
+\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{TCP Header}} \\ \midrule\midrule
 Source Port & Destination Port \\ \midrule
 \multicolumn{2}{c}{Sequence \# (SEQ)} \\ \midrule
 \multicolumn{2}{c}{Acknoledgement \# (ACK)} \\ \midrule
 \multicolumn{2}{c}{Weitere TCP-Header-Felder} \\ \midrule
-\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{Nutzdaten}} \\ \midrule
-\multicolumn{2}{c}{Anwendungsdaten} \\ 
+\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{Nutzdaten}} \\ \midrule\midrule
+\multicolumn{2}{c}{Anwendungsdaten} \\
 \end{tabular}
 \caption{\gls{TCP}-Header (vereinfachte Darstellung)}
 \label{fig:tcp-header}
@@ -518,9 +518,12 @@ Installieren Sie das Programm Filius, welches wir zur Modellierung von Netzwerke
 \end{myexercise}
 
 \begin{mysubmission}
-Erledigen Sie Aufgaben 2.1 - 2.3 im Filius-Workshop: \href{https://informatik.mygymer.ch/base/?page=network/2-filius/1-peer/}{Link} (Credits: Gymnasium Kirchenfeld)
+Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.1 - 2.3 im Filius-Workshop: \href{https://informatik.mygymer.ch/base/?page=network/2-filius/1-peer/}{Link} (Credits: Gymnasium Kirchenfeld)
 
 $\rightarrow$ \textbf{Abgabe \texttt{.fls}-Dateien auf Moodle!}
+\begin{mycaution}
+Je nach Gerät ist die linke Seitenleiste nicht sichtbar und Sie können Aufgabe 2.2 daher nicht sehen. Klicken Sie auf ``Themenübersicht'' $\rightarrow$  ``IN GYM2'' $\rightarrow$ ``Netzwerke'' um die linke Seitenleiste korrekt zu sehen.
+\end{mycaution}
 \end{mysubmission}
 
 \begin{mychallenge}
@@ -547,33 +550,47 @@ Gegeben sei folgende Subnetzmaske:
 Subnetzmaske & \texttt{255.255.255.0}& \texttt{11111111.11111111.11111111.00000000}
 \end{tabular}
 \end{table}
-Um herauszufinden, welche IP-Adresse zum selben Netzwerk gehören, darf man die ursprüngliche IP-Adresse so verändern, dass alle stellen, an denen binär in der Subnetzmaske eine Null steht, eine Eins sein dürfen. Dies bedeutet, dass alle IP-Adressen, welche mit \texttt{159.233.1.[...]} anfangen zu diesem Netzwerk dazugehören.
+Um herauszufinden, welche IP-Adresse zum selben Netzwerk gehören, darf man die ursprüngliche IP-Adresse so verändern, dass alle stellen, an denen binär in der Subnetzmaske eine Null steht, eine Eins sein dürfen. Dies bedeutet, dass alle \gls{IP}-Adressen, welche mit \texttt{159.233.1.[...]} anfangen zu diesem Netzwerk dazugehören.
 \end{myexample}
+
+\begin{myexample}\label{ex:localhost}
+Typischerweise beginnen alle IP-Adressen, die auf das lokale Netzwerk (=das Netzwerk, in dem sich der eigene Computer befindet) mit \texttt{192.168.xxx.xxx}. Die Subnetzmaske lautet also:
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+& Dezimal & Binär\\\midrule\midrule
+\gls{IP}-Adresse & \texttt{192.168.0.0} & \texttt{11000000.10101000.00000000.00000000}\\\midrule
+Subnetzmaske & \texttt{255.255.0.0}& \texttt{11111111.11111111.00000000.00000000}
+\end{tabular}
+\end{table}
+\end{myexample}
+
 
 \begin{myexercise}
 \begin{table}[H]
 \centering
-\begin{tabular}{l|l|l|p{2cm}}
+\begin{tabular}{l|l|l|m{2cm}}
 
-\textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+\textbf{Eigene \gls{IP}} & \textbf{Netzmaske} & \textbf{Ziel-\gls{IP}} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
 
-213.45.19.89 & 255.255.255.0 & 213.45.17.89 &  \\\midrule
+213.45.19.89 & 255.255.255.0 & 213.45.17.89 & \fldT \\\midrule
 
-213.45.19.89 & 255.255.0.0 & 213.45.17.89 &  \\\midrule
+213.45.19.89 & 255.255.0.0 & 213.45.17.89 & \fldT \\\midrule
 
-88.100.11.17 & 255.255.255.0 & 88.100.11.254 &  \\\midrule
+88.100.11.17 & 255.255.255.0 & 88.100.11.254 & \fldT \\\midrule
 
-88.100.11.17 & 0.0.0.0 & 213.45.19.89 &  \\\midrule
+88.100.11.17 & 0.0.0.0 & 213.45.19.89 & \fldT \\\midrule
 
-10.0.0.0 & 255.255.255.252 & 10.0.0.1 & \\\midrule
-1.2.3.0 & 255.255.255.252 & 1.2.3.5 & 
+10.0.0.0 & 255.255.255.252 & 10.0.0.1 &\fldT \\\midrule
+1.2.3.0 & 255.255.255.252 & 1.2.3.5 & \fldT
 \end{tabular}
 \end{table}
 \begin{itemize}
-\item $\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen. 
+\item $\rightarrow$ \gls{IP}s dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen. 
 \item Umrechner dezimal $\rightarrow$ binär: \url{https://oinf.ch/interactive/ips-und-netzmaske/}
 \end{itemize}
 \begin{myanswer}
+
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|l|p{2cm}}
@@ -596,20 +613,28 @@ Um herauszufinden, welche IP-Adresse zum selben Netzwerk gehören, darf man die 
 \end{myexercise}
 
 \begin{myexercise}
+Wie viele Hosts haben im lokalen Netzwerk aus \cref{ex:localhost} Platz?
+\begin{myanswer}
+Zwei Bytes (die zwei letzten Byte-Gruppen) der Subnetzmaske sind reserviert für unterschiedliche Kombinationen von \gls{IP}-Adressen. Es können sich daher bis zu $2^{16}$ = 65'536 Hosts in einem solchen lokalen Netzwerk befinden.
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
 Sechs Subnetze sind gegeben durch je eine Netzmaske und eine IP eines sich darin befindenden Rechners. Entscheiden Sie für jede links aufgeführte IP, zu welchen Subnetzen der entsprechende Rechner gehört.\vspace{-.2cm}
+
 \begin{table}[H]
 \centering
-\begin{tabular}{p{1.2cm}||c|c||c|c||c|c|}
-\textbf{Netzmaske Subnetz} & \multicolumn{2}{c||}{255.255.255.0} & \multicolumn{2}{c||}{255.255.0.0} & \multicolumn{2}{c|}{255.255.255.240} \\ 
-\cmidrule{2-7} 
- & IP 3.4.5.6 & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 \\ 
+\begin{tabular}{m{1.5cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}}
+\textbf{Netzmaske Subnetz} & \multicolumn{2}{c|}{255.255.255.0} & \multicolumn{2}{c|}{255.255.0.0} & \multicolumn{2}{c}{255.255.255.240} \\ 
+\midrule
+IP & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\ 
 \midrule\midrule
-3.3.3.4  &  &  &  &  &  &  \\\midrule
-4.4.4.3  &  &  &  &  &  &  \\\midrule
-3.4.5.99 &  &  &  &  &  &  \\\midrule
-3.3.4.4  &  &  &  &  &  &  \\\midrule
-3.4.7.7  &  &  &  &  &  &  \\\midrule
-3.3.3.17 &  &  &  &  &  &  \\
+3.3.3.4  & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT \\\midrule
+4.4.4.3  & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT  \\\midrule
+3.4.5.99 & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT  \\\midrule
+3.3.4.4  & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT   \\\midrule
+3.4.7.7  & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT   \\\midrule
+3.3.3.17 & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT  \\
 \end{tabular}
 \end{table}
 \begin{center}
@@ -618,10 +643,10 @@ Sechs Subnetze sind gegeben durch je eine Netzmaske und eine IP eines sich darin
 \begin{myanswer}
 \begin{table}[H]
 \centering
-\begin{tabular}{p{1.2cm}||c|c||c|c||c|c|}
-\textbf{Netzmaske Subnetz} & \multicolumn{2}{c||}{255.255.255.0} & \multicolumn{2}{c||}{255.255.0.0} & \multicolumn{2}{c|}{255.255.255.240} \\ 
-\cmidrule{2-7} 
- & IP 3.4.5.6 & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 \\ 
+\begin{tabular}{m{1.5cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.7cm}}
+\textbf{Netzmaske Subnetz} & \multicolumn{2}{c|}{255.255.255.0} & \multicolumn{2}{c|}{255.255.0.0} & \multicolumn{2}{c}{255.255.255.240} \\ 
+\midrule
+IP & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\ 
 \midrule\midrule
 3.3.3.4  & Nein & Ja & Nein & Ja & Nein & Ja \\\midrule
 4.4.4.3  & Nein & Nein & Nein & Nein & Nein & Nein \\\midrule
@@ -645,7 +670,7 @@ Lesen Sie mehr über die Aufgaben und Funktionsweise von Routern und Gateways, i
 \end{myexercise}
 
 \begin{mysubmission}
-Erledigen Sie Aufgaben 2.4 - 2.6 im Filius-Workshop: \href{https://informatik.mygymer.ch/base/?page=network/2-filius/4-client-server/}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
+Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.4 - 2.6 im Filius-Workshop: \href{https://informatik.mygymer.ch/base/?page=network/2-filius/4-client-server/}{Link}. Laden Sie Ihre Lösung zu 2.6 als \texttt{.fls}-Datei auf Moodle hoch.
 \end{mysubmission}
 
 
@@ -662,11 +687,11 @@ Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|nslookup sbb.
 \end{myexercise}
 
 \begin{mysubmission}[Das Internet]
-Lösen Sie Aufgaben 2.7-2.9 auf folgendem \href{https://informatik.mygymer.ch/base/?page=network/2-filius/7-web/}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
+Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.7-2.9 auf folgendem \href{https://informatik.mygymer.ch/base/?page=network/2-filius/7-web/}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
 \end{mysubmission}
 
 \begin{mysubmission}[DNS-Server]
-Lösen Sie Aufgaben 2.10-2.12 auf folgendem \href{https://informatik.mygymer.ch/base/?page=network/2-filius/A-dns/}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
+Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.10-2.12 auf folgendem \href{https://informatik.mygymer.ch/base/?page=network/2-filius/A-dns/}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
 \end{mysubmission}
 
 
@@ -705,7 +730,7 @@ Lösen Sie Aufgaben 2.10-2.12 auf folgendem \href{https://informatik.mygymer.ch/
 \end{mysubmission}
 
 \begin{mysubmission}[Weitere Filius-Aufgaben (Troubleshooting)]
-Lösen Sie Aufgabe 2.13 auf folgendem \href{https://informatik.mygymer.ch/base/?page=network/2-filius/D-problems/}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
+Lösen Sie die Troubleshooting-Aufgaben 2.13 auf folgendem \href{https://informatik.mygymer.ch/base/?page=network/2-filius/D-problems/}{Link}.
 \end{mysubmission}
 
 
