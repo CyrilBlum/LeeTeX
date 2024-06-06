@@ -124,13 +124,18 @@ folgt
   \part[2]
 Formulieren Sie den Primzahlsatz.
 \begin{solution}
-  siehe Skript
+  \begin{align*}
+    \lim_{n\to\infty} \frac{\text{Prim}(n)}{n/\ln (n)} = 1.
+  \end{align*}
 \end{solution}
   \part[1] Eine Primzahllücke (prime gap) ist der Abstand zwischen zwei direkt aufeinanderfolgenden Primzahlen. Die ersten 5 Primzahllücken sind:
   \begin{align*}
     1, 2, 2, 4, 2.
   \end{align*}
   Erklären Sie, warum alle Primzahllücken (ausser der allerersten) gerade sind.
+  \begin{solution}
+    Die alle Primzahlen abgesehen von der $2$ sind ungerade. Sei $p \neq 2$ eine Primzahl. Angenommen es gäbe eine ungerade Primzahllücke (ausser der ersten) $g$, dann wäre $p + g$ als Summe zweier ungeraden Zahlen eine gerade Zahl und somit sicherlich keine Primzahl. Dann kann $g$ aber keine Primzahllücke sein.
+  \end{solution}
 \end{parts}
 \droptotalpoints
 
@@ -215,10 +220,26 @@ def sieb(n):
   Prim(20) sollte printen: 8
   Prim(21) sollte printen: 8
 \end{lstlisting}
+\begin{solution}
+\begin{lstlisting}[language=Python,caption=Prim,numbers=none]
+def prim(n):
+    return len(sieve(n))
+\end{lstlisting}
+\end{solution}
 
 \question[3]
 
-Ein Kommunikationsprotokoll hat eine Fehlerwahrscheinlichkeit von $r\in\io{0}{1}$. Wie oft muss das Protokoll mindestens wiederholt werden, bis die Fehlerwahrscheinlichkeit kleiner als $w$ ist. 
+Ein Kommunikationsprotokoll hat eine Fehlerwahrscheinlichkeit von $r\in\io{0}{1}$. Wie oft muss das Protokoll \underline{mindestens} wiederholt werden, bis die gesamte Fehlerwahrscheinlichkeit (nach wiederholter Durchführung des Protokolls) kleiner als $w$ ist. Dabei gilt $w\in\io{0}{1}$. 
+\begin{solution}
+  Wir suchen die kleinste natürliche Zahl (Anzahl) $n$, sodass
+  \begin{align*}
+    r^n < w.
+  \end{align*}
+  Auslösen der Ungleichung gibt uns
+  \begin{align*}
+    n = \ceil{\frac{\ln(w)}{\ln(r)}}.
+  \end{align*}
+\end{solution}
 
 \question[3] Gegeben sind die beiden Datensätze
 \begin{itemize}
@@ -226,6 +247,14 @@ Ein Kommunikationsprotokoll hat eine Fehlerwahrscheinlichkeit von $r\in\io{0}{1}
   \item $y := 101010$ in Boston.
 \end{itemize}
 Berechnen Sie die exakte Wahrscheinlichkeit, dass das Kommunikationsprotokoll in diesem Fall falsch entscheidet.
+\begin{solution}
+  Die beiden Datensätze $x$ und $y$ haben jeweils eine Länge von $n := 6$ Bits.
+  Wir berechenen die Grösse
+  \begin{align*}
+    w := \abs{\text{Nummer}(x) - \text{Nummer}(y)} = 42.
+  \end{align*}
+Die Zahl $42$ besitzt die Primfaktorisierung $42 = 2\cdot 3\cdot 7$. Es existieren also genau drei Primzahlen, welche die Differenz $w$ teilen. Insgesamt gibt es aber $11$ Primzahlen, die kleiner als $n^2 = 36$ sind (und gewählt werden könnten). Damit beträgt die Fehlerwahrscheinlichkeit $3/11$.  
+\end{solution}
 
 
 \end{questions}
