@@ -218,7 +218,6 @@ Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 	\begin{itemize}
 	    \item B=Verschiebung um 1 Position, C=Verschiebung um 2 Positionen, usw.
 	    \item Allgemein: Verschiebung = $\text{Ord}(\square)$, wobei $\text{Ord}(A)=0$
-	    \item 26 mögliche Schlüssel
 	    \item nicht \textbf{monoalphabetisch} sondern \textbf{polyalphabetisch}
 	    \item Galt über 300 Jahre lang als sicher!
 	\end{itemize}
@@ -279,6 +278,117 @@ Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 	}
 }
 \end{frame}
+
+
+\begin{frame}[fragile]{VIGINERE in Python}
+\begin{lstlisting}[language=Python,basicstyle=\ttfamily\tiny]
+def caesar_buchstabe(buchstabe, verschiebung):
+    return chr((ord(buchstabe) - ord("A") + verschiebung) % 26 + ord("A"))
+
+
+def caesar(text, verschiebung):
+    text_verschoben = ""
+
+    for buchstabe in text:
+        text_verschoben += caesar_buchstabe(buchstabe, verschiebung)
+
+    return text_verschoben
+
+def viginere(text, schluessel, richtung="verschluesslung"):
+    text_verschoben = ""
+    k = 0
+    for buchstabe in text:
+        k %= len(schluessel)
+        if richtung == "verschluesslung":
+            text_verschoben += caesar_buchstabe(
+                buchstabe, ord(schluessel[k]) - ord("A")
+            )
+        else:
+            text_verschoben += caesar_buchstabe(
+                buchstabe, -ord(schluessel[k]) - ord("A")
+            )
+        k += 1
+
+    return text_verschoben
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[label=kasiski]{Angriff auf Vigenère: Unbekannte Schlüssellänge}{\textbf{Kasiski-Test}}
+\emoji{key} Schlüssellänge unbekannt!\\[1cm]
+\texttt{DER KLAR\textbf{TEXT} WERDE GEHEIM\textbf{TEXT}\\
+PLU TOPL\textbf{UTOP} LUTOP LUTOPL\textbf{UTOP}\\
+SPL DZPC\textbf{NXLI} HYKRT RYASXX\textbf{NXLI}}\\[1cm]
+
+\begin{itemize}
+    \item ``\texttt{NXLI}'' kommt zweimal im Geheimtext vor
+    \item Distanz zwischen \texttt{NXLI} = Vielfaches der Schlüssellänge
+\end{itemize}
+\end{frame}
+\begin{frame}[label=kasiski2]{Angriff auf Vigenère: \textbf{Kasiski-Test}}
+\only<1>{
+Angenommen, wir haben folgenden Text, verschlüsselt mit dem Wort ``BALMER'':
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski1.png}
+\end{figure}
+}
+\only<2>{
+Wir suchen nun zuerst im Geheimtext nach Trigrammen, die mehrmals vorkommen:
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski2.png}
+\end{figure}
+}
+\only<3>{
+Wir notieren die Anfangs-Positionen der Trigramme:
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski3.png}
+\end{figure}
+}
+\only<4->{
+Wir notieren die Anfangs-Positionen der Trigramme:
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski4.png}
+\end{figure}
+}
+\only<5->{
+Nun können wir die Abstände zwischen den mehrfach vorkommenden Trigrammen berechnen:
+\begin{align*}
+62 - 14 = 48 = 2^4\cdot 3\\
+62 - 32 = 30 = 2 \cdot 3 \cdot 5\\
+32 - 14 = 18 = 2 \cdot 3^2
+\end{align*}
+GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
+}
+\end{frame}
+
+
+% \begin{frame}[label=keyFixed]{Angriff auf Vigenère: Bekannte Schlüssellänge}
+% 	\textbf{Beispiel}: Geheimtext mit Schlüssellänge 3
+% 	\only<1>{
+% 	\begin{figure}[H]
+% 	        \centering
+% 	        \includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenereKeyFixed1.png}
+% 	\end{figure}
+% 	}
+% 	
+% 	\only<2->{
+% 	\begin{figure}[H]
+% 	        \centering
+% 	        \includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenereKeyFixed2.png}
+% 	\end{figure}
+% 	}
+% 	\only<3>{\textbf{Häufigkeitsanalyse} pro Gruppe (rot, grün, blau):\\
+% 	\begin{figure}[H]
+% 	        \centering
+% 	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-geheimtext.png}}
+% 	        \raisebox{-0.5\height}{$\rightarrow$}
+% 	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-klartext.png}}
+% 	\end{figure}}
+% \end{frame}
 
 \begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
 Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\rightarrow$ \textbf{Idee:}
