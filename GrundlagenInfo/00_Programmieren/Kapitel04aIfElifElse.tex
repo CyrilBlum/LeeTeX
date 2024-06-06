@@ -14,13 +14,10 @@
 \end{frame}
 
 \begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
-\begin{lstlisting}
-def benote_Informatiklehrperson(note):
-    if note == 100:
-        print("Echt jetzt? Vielen Dank :)")
-        
+\begin{lstlisting}        
 note = input("Benoten Sie die Lehrperson (0-100).")
-benote_Informatiklehrperson(note)
+if note == 100:
+        print("Echt jetzt? Vielen Dank :)")
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -29,14 +26,14 @@ benote_Informatiklehrperson(note)
     \centering
     \tikzstyle{every node}=[font=\small]
     
-    \node (start) [code] {\pythoninline{note = input("Benoten Sie die Lehrperson.")}};
-    \node (dec1) [decision, below of=start] {\pythoninline{note == 100}};
-    \node (print) [code, below of=dec1] {\pythoninline{print("Echt jetzt? Vielen Dank :)"}};
+    \node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson.")|};
+    \node (dec1) [decision, below of=start] {\lstinline|note == 100|};
+    \node (print) [code, below of=dec1] {\lstinline|print("Echt jetzt? Vielen Dank :)"|};
     \node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
     
     \draw (start) -- (dec1);
-    \draw (dec1) -- node[anchor=east] {\pythoninline{True}} (print);
-    \draw (dec1) --++ (5cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\pythoninline{False}};
+    \draw (dec1) -- node[anchor=east] {\lstinline|True|} (print);
+    \draw (dec1) --++ (5cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\lstinline|False|};
     \draw (print) -- (end);
     
 \end{tikzpicture}
@@ -45,15 +42,12 @@ benote_Informatiklehrperson(note)
 \end{frame}
 
 \begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
-\begin{lstlisting}
-def benote_Informatiklehrperson(note):
-    if note == 100:
-        print("Echt jetzt? Vielen Dank :)")
-    else:
-        print("Geben Sie mir noch eine Chance")
-        
+\begin{lstlisting}        
 note = input("Benoten Sie die Lehrperson (0-100).")
-benote_Informatiklehrperson(note)
+if note == 100:
+    print("Echt jetzt? Vielen Dank :)")
+else:
+    print("Geben Sie mir noch eine Chance")
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -62,15 +56,15 @@ benote_Informatiklehrperson(note)
     \tikzstyle{every node}=[font=\small]
     % grid to easier see that the node centers line up while developing plot
     %\draw [help lines] (-5,-9) grid (9,1);
-    \node (start) [code] {\pythoninline{note = input("Benoten Sie die Lehrperson")}};
-    \node (dec1) [decision, below of=start] {\pythoninline{note == 100}};
-    \node (printif) [code, below left=2cm and 5cm of dec1] {\pythoninline{print("Echt jetzt? Vielen Dank :)"}};
-    \node (printelse) [code, below right=2cm and 5cm of dec1] {\pythoninline{print("Geben Sie mir noch eine Chance"}};
+    \node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
+    \node (dec1) [decision, below of=start] {\lstinline|note == 100|};
+    \node (printif) [code, below left=2cm and 5cm of dec1] {\lstinline|print("Echt jetzt? Vielen Dank :)"|};
+    \node (printelse) [code, below right=2cm and 5cm of dec1] {\lstinline|print("Geben Sie mir noch eine Chance"|};
     \node (end) [circle,draw=black, fill=black, below of=dec1, yshift=-2cm] {};
     
     \draw (start) -- (dec1);
-    \draw (dec1) -| node[anchor=top, above=.1cm] {\pythoninline{True}} (printif);
-    \draw (dec1) -| node[anchor=top, above=.1cm] {\pythoninline{False}} (printelse);
+    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|False|} (printelse);
     \draw (printif) |- (end);
     \draw (printelse) |- (end);
     
@@ -79,6 +73,50 @@ benote_Informatiklehrperson(note)
 \end{frame}
 
 \begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
+\raggedright
+
+\begin{lstlisting}        
+note = input("Benoten Sie die Lehrperson (0-100).")
+if note == 100:
+    print("Echt jetzt? Vielen Dank :)")
+elif note > 60:
+    print("Wie kann ich mich noch verbessern?")
+else:
+    print("Geben Sie mir noch eine Chance")
+\end{lstlisting}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2.5cm, scale=.5, transform shape, on grid, ->]
+    \tikzstyle{every node}=[font=\small]
+    % grid to easier see that the node centers line up while developing plot
+    %\draw [help lines] (-5,-9) grid (9,1);
+    \node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
+    \node (dec1) [decision, below of=start] {\lstinline|note == 100|};
+    \node (printif) [code, text width=7cm, right=7cm of dec1] {\lstinline|print("Echt jetzt? Vielen Dank :)")|};
+    \node (dec2) [decision, below of=dec1] {\lstinline|note > 60|};
+    \node (printelif) [code, text width=7cm, right=7cm of dec2] {\lstinline|print("Wie kann ich mich noch verbessern?")|};
+    \node (printelse) [code, text width=6cm, below of=dec2] {\lstinline|print("Geben Sie mir noch eine Chance")|};
+    \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
+    
+    \draw (start) -- (dec1);
+    \draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+    \draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
+    
+    \draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
+    \draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
+    
+    \draw (printif) --++ (4.5cm,0cm) |- (end);
+    \draw (printelif) --++ (4.5cm,0cm) |- (end);
+    
+    \draw (printelse) -- (end);
+    
+\end{tikzpicture}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}{mit Definition}
 \raggedright
 
 \begin{lstlisting}
@@ -94,55 +132,27 @@ note = input("Benoten Sie die Lehrperson (0-100).")
 benote_Informatiklehrperson(note)
 \end{lstlisting}
 
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=2.5cm, scale=.5, transform shape, on grid, ->]
-    \tikzstyle{every node}=[font=\small]
-    % grid to easier see that the node centers line up while developing plot
-    %\draw [help lines] (-5,-9) grid (9,1);
-    \node (start) [code] {\pythoninline{note = input("Benoten Sie die Lehrperson")}};
-    \node (dec1) [decision, below of=start] {\pythoninline{note == 100}};
-    \node (printif) [code, text width=7cm, right=7cm of dec1] {\pythoninline{print("Echt jetzt? Vielen Dank :)")}};
-    \node (dec2) [decision, below of=dec1] {\pythoninline{note > 60}};
-    \node (printelif) [code, text width=7cm, right=7cm of dec2] {\pythoninline{print("Wie kann ich mich noch verbessern?")}};
-    \node (printelse) [code, text width=6cm, below of=dec2] {\pythoninline{print("Geben Sie mir noch eine Chance")}};
-    \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
-    
-    \draw (start) -- (dec1);
-    \draw (dec1) -- node[anchor=top, above=.1cm] {\pythoninline{True}} (printif);
-    \draw (dec1) -- node[anchor=east] {\pythoninline{False}} (dec2);
-    
-    \draw (dec2) -- node[anchor=top, above=.1cm] {\pythoninline{True}} (printelif);
-    \draw (dec2) -- node[anchor=east] {\pythoninline{False}} (printelse);
-    
-    \draw (printif) --++ (4.5cm,0cm) |- (end);
-    \draw (printelif) --++ (4.5cm,0cm) |- (end);
-    
-    \draw (printelse) -- (end);
-    
-\end{tikzpicture}
-\end{figure}
-
 \end{frame}
 
 \begin{frame}[fragile]{Boolsche Ausdrücke}
 \begin{itemize}
-    \item \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\pythoninline{True}) oder \textit{falsch} (\pythoninline{False}). Beispiele:
+    \item \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele:
     \begin{itemize}
-        \item \pythoninline{3 == 5 # False}
-        \item \pythoninline{(9 + 3) < (2 * 8) # True}
+        \item \lstinline|3 == 5 # False|
+        \item \lstinline|(9 + 3) < (2 * 8) # True|
     \end{itemize}
     \item Weitere boolsche Relationen:
     \begin{table}[H]
         \centering
-        \begin{tabular}{r|l}
-        \textbf{Operator in Python} & \textbf{Mathematische Bedeutung} \\\midrule 
-             \pythoninline{==} & gleich ($=$)\\
-             \pythoninline{!=} & ungleich ($\neq$) \\
-             \pythoninline{<} & kleiner ($<$)\\
-             \pythoninline{<=} & kleiner oder gleich ($\leq$) \\
-             \pythoninline{>} & grösser ($>$) \\
-             \pythoninline{>=} & grösser oder gleich ($\geq$)
+        \footnotesize
+        \begin{tabular}{c||p{3.1cm}}
+        \textbf{Python} & \textbf{Mathematische\newline Bedeutung} \\\midrule 
+             \lstinline|==| & gleich ($=$)\\
+             \lstinline|!=| & ungleich ($\neq$) \\
+             \lstinline|<| & kleiner ($<$)\\
+             \lstinline|<=| & kleiner oder gleich ($\leq$) \\
+             \lstinline|>| & grösser ($>$) \\
+             \lstinline|>=| & grösser oder gleich ($\geq$)
         \end{tabular}
     \end{table}
     \item Verwendungsart
@@ -152,15 +162,46 @@ if BOOLSCHER_AUSDRUCK:
     # BOOLSCHER_AUSDRUCK wahr ist (True)
 \end{lstlisting}
 \end{itemize}
-   
+\end{frame}
+
+\begin{frame}[fragile]{Boolsche Ausdrücke}
+\begin{itemize}
+    \item \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele:
+    \begin{itemize}
+        \item \lstinline|3 == 5 # False|
+        \item \lstinline|(9 + 3) < (2 * 8) # True|
+    \end{itemize}
+    \item Weitere boolsche Relationen:
+    \begin{table}[H]
+        \centering
+        \footnotesize
+        \begin{tabular}{c|c||p{3.1cm}}
+        \textbf{(SQL)} &\textbf{Python} & \textbf{Mathematische\newline Bedeutung} \\\midrule 
+             \lstinline[style=sql]|=|&\lstinline|==| & gleich ($=$)\\
+             \lstinline[style=sql]|<>|&\lstinline|!=| & ungleich ($\neq$) \\
+             \lstinline[style=sql]|<|&\lstinline|<| & kleiner ($<$)\\
+             \lstinline[style=sql]|<=|&\lstinline|<=| & kleiner oder gleich ($\leq$) \\
+             \lstinline[style=sql]|>|&\lstinline|>| & grösser ($>$) \\
+             \lstinline[style=sql]|>=|&\lstinline|>=| & grösser oder gleich ($\geq$)
+        \end{tabular}
+    \end{table}
+    \item Verwendungsart
+\begin{lstlisting}
+if BOOLSCHER_AUSDRUCK:
+    # dieser Code wir höchstens dann ausgeführt, wenn 
+    # BOOLSCHER_AUSDRUCK wahr ist (True)
+\end{lstlisting}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Aufgaben}
 Lösen Sie folgende Aufgaben:
 \begin{itemize}
     \item Lesen Sie Beispiel 4.1
-    \item \abgabebox{4.8 $\rightarrow$ Abgabe}
-    \item \abgabebox{4.11 $\rightarrow$ Abgabe}
+    \item \aufgabebox{Aufgaben 4.3, 4.6}
+    \item \abgabebox{Aufgabe 4.8 $\rightarrow$ Abgabe}
+    \item \abgabebox{Aufgabe 4.11 $\rightarrow$ Abgabe}
+    \item \aufgabebox{Aufgaben 4.12 - 4.14}
     \item \challengebox{``Dynamisches Schachbrett'' (Moodle)}
 \end{itemize}
 
