@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 from collections import Counter    
 
-def viginere(text, key, encrypt=True):
+def vigenere(text, key, encrypt=True):
     text = text.upper()
     chars_replace = [" ", ".", ","]
     for c in chars_replace:
@@ -38,28 +38,28 @@ def display_text_in_groups(text, keylength=3, n_groups=11):
     print(text_out)
 
 
-def display_viginere_all(vigi_dec, vigi_enc, vigi_key, n_chars=10, with_delim=False):
-    p_vigi_key = vigi_key*int(np.ceil(n_chars/len(vigi_key)))
-    p_vigi_key = p_vigi_key[:n_chars]
-    p_vigi_dec = vigi_dec[:n_chars]
-    p_vigi_enc = vigi_enc[:n_chars]
+def display_vigenere_all(vige_dec, vige_enc, vige_key, n_chars=10, with_delim=False):
+    p_vige_key = vige_key*int(np.ceil(n_chars/len(vige_key)))
+    p_vige_key = p_vige_key[:n_chars]
+    p_vige_dec = vige_dec[:n_chars]
+    p_vige_enc = vige_enc[:n_chars]
     
     if with_delim:
         def insert_dash(string, index, symbol="|"):
             return string[:index] + symbol + string[index:]
 
         inserted=0
-        for i in range(len(vigi_key), n_chars, len(vigi_key)):
-            p_vigi_key=insert_dash(p_vigi_key, i+inserted)
-            p_vigi_dec=insert_dash(p_vigi_dec, i+inserted)
-            p_vigi_enc=insert_dash(p_vigi_enc, i+inserted)
+        for i in range(len(vige_key), n_chars, len(vige_key)):
+            p_vige_key=insert_dash(p_vige_key, i+inserted)
+            p_vige_dec=insert_dash(p_vige_dec, i+inserted)
+            p_vige_enc=insert_dash(p_vige_enc, i+inserted)
             inserted+=1
         
-        p_vigi_key = p_vigi_key[:n_chars]
-        p_vigi_dec = p_vigi_dec[:n_chars]
-        p_vigi_enc = p_vigi_enc[:n_chars]
+        p_vige_key = p_vige_key[:n_chars]
+        p_vige_dec = p_vige_dec[:n_chars]
+        p_vige_enc = p_vige_enc[:n_chars]
     
-    for name, value in zip(["Klartext", "Schlüssel", "Geheimtext"], [p_vigi_dec, p_vigi_key, p_vigi_enc]):
+    for name, value in zip(["Klartext", "Schlüssel", "Geheimtext"], [p_vige_dec, p_vige_key, p_vige_enc]):
         print(f'{name:>10}: {value}...')
 
 def show_letter_freq(text):
