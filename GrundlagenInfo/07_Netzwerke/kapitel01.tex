@@ -663,7 +663,33 @@ IP & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\
 
 Bis anhin haben wir gesehen, wie wir einzelne Rechner mittels einer IP adressieren und wie wir diese mittels einer Subnetze zu einem Netzwerk verbinden. Was, wenn wir jedoch zwei Subnetze zu einem grossen Netzwerk verbinden wollen? Genau dies geschieht im Internet, welches im Wesentlichen aus einem Netzwerk von Netzwerken besteht. Um mehrere Netzwerke miteinander zu verbinden, verwenden wir einen \textbf{Router}. Diesen schauen wir uns in diesem Abschnitt genauer an.
 
-Ähbnliche einer Haustür verbindet ein Router ein Subnetz (=Haus) mit der Aussenwelt, er befindet sich also an der Grenze zwischen zwei oder mehreren Subnetzen. Über die Routing-Tabelle kann ein Router entscheiden, auf welchen Weg ein Datenpaket an die Aussenwelt verschickt werden kann.
+Ähbnliche einer Haustür verbindet ein Router ein Subnetz (=Haus) mit der Aussenwelt, er befindet sich also an der Grenze zwischen zwei oder mehreren Subnetzen. Über die Routing-Tabelle kann ein Router entscheiden, auf welchen Weg ein Datenpaket an die Aussenwelt verschickt werden kann. Eine typische Routing-Tabelle enthält folgende Informationen:
+
+\begin{itemize}
+\item Ziel-IP und Netzmaske: Diese beiden Spalten definieren, welche Subnetze dem Router bekannt sind (sowohl eigenes Subnetz wie andere Subnetze).
+\item Gateway: Die Adresse, an die ein Paket geschickt werden muss, um sein Ziel zu erreichen.
+\item Interface: Der Name der Netzwerkkarte, die mit der Ziel-Adresse (Gateway) verbunden ist. 
+\end{itemize}
+
+Ein Beispiel einer Routing-Tabelle ist in \cref{table:routing} abgebildet.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ l | l || l | l}
+\textbf{Ziel-IP} & \textbf{Netzmaske} & \textbf{Gateway} & \textbf{Interface} \\
+\midrule\midrule
+0.0.0.0 & 0.0.0.0 & 192.168.1.1 & eth0 \\
+192.168.1.0 & 255.255.255.0 & 0.0.0.0 & eth0 \\
+192.168.2.0 & 255.255.255.0 & 0.0.0.0 & eth1 \\
+10.0.0.0 & 255.0.0.0 & 192.168.1.2 & eth0 \\
+172.16.0.0 & 255.240.0.0 & 192.168.2.2 & eth1 \\
+127.0.0.0 & 255.0.0.0 & 0.0.0.0 & lo \\
+\end{tabular}
+\caption{Beispiel einer Routing-Tabelle}
+\label{table:routing}
+\end{table}
+
+
 
 \begin{myexercise}
 Lesen Sie mehr über die Aufgaben und Funktionsweise von Routern und Gateways, indem Sie \href{https://inf-schule.de/rechnernetze/filius/vernetzungrechnernetze/konzept_router}{diese Webseite} genau durchlesen.
