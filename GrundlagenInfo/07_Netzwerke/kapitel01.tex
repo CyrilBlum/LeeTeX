@@ -486,7 +486,7 @@ Finden Sie Ihre eigene IPv4-Adresse heraus. Tipps:
 Wie viele IPv4-Adressen gibt es?
 \begin{myanswer}
 \begin{itemize}
-\item $4\cdot 8 \text{ bytes} = 32 \text{ bytes}$
+\item $4\cdot 8 \text{ bytes} = 32 \text{ bits}$
 \item $2^{32} \approx 4 \text{ Milliarden Adressen}$
 \item $\rightarrow \text{zu wenig!}$
 \end{itemize}
@@ -701,14 +701,65 @@ Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 
 
 
 \subsubsection{DNS}
-Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Webseiten-Adresse, aus der Angabe eines Server-Namens und einem Dateipfad. Allerdings werden Computer das \gls{IP}-Protokoll nicht mit einem Namen wie etwa \url{beispiel.ch} adressiert, sondern mit einer numerischen IP-Adresse. Wie weiss der Browser also, welcher Computer die Dateien für \url{beispiel.ch} besitzt? Hier kommen \gls{DNS} ins Spiel, also Server, welches eine Liste von Namen und den damit verbundenen IP-Adressen speichern.
+Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Webseiten-Adresse, aus der Angabe eines Server-Namens und einem Dateipfad. Allerdings werden Computer das \gls{IP}-Protokoll nicht mit einem Namen wie etwa \url{beispiel.ch} adressiert, sondern mit einer numerischen IP-Adresse. Wie weiss der Browser also, welcher Computer die Dateien für \url{beispiel.ch} besitzt? Hier kommen \gls{DNS} ins Spiel: Ein \gls{DNS} ist kurz gesagt ein Server, welcher allen Clients im Netzwerk eine Tabelle von Servern und damit verbundenen Namen zur Verfügung stellt. Eine DNS-Abfrage ist illustriert in \cref{fig:dns}.
+
+\begin{figure}[H]
+\begin{tikzpicture}[
+    server/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, fill=RoyalBlue, text=white, rounded corners, text width=2.3cm, align=center},
+    client/.style={rectangle, draw, minimum size=1cm, fill=ForestGreen, text=white, text width=2.3cm, rounded corners, align=center},
+    arrow/.style={-Stealth, thick, rounded corners,text width=4cm,align=center}
+]
+
+% Nodes
+\node[client] (client) {Client\\\texttt{192.168.0.10}};
+\node[server, right=4.2cm of client] (dns) {DNS-Server\\\texttt{192.168.2.1}};
+\node[server, right=4.2cm of dns] (web) {Webserver\\\texttt{192.168.0.11}};
+\node[text width=3cm, right=0cm of dns] (dnsTable) {\tiny \begin{tabular}{p{1.1cm}|p{1.2cm}}
+\textbf{Domain\newline Name} & \textbf{IP-\newline Addresse} \\
+\midrule\midrule
+\texttt{beispiel.ch} & 192.168.0.11 \\
+\midrule
+\texttt{schule.ch} & 192.168.0.12 \\
+\midrule
+\texttt{test.org} & 192.168.0.13 \\
+\midrule
+\texttt{insta.com} & 192.168.0.14 \\
+\midrule
+\texttt{...} & ... \\
+\end{tabular}};
+
+\node[fit=(dns) (dnsTable), inner sep=4pt, RoyalBlue, dotted, draw, line width=1pt,rounded corners](dnsArea) {};
+
+% Arrows
+\draw[arrow] ([yshift=5mm]client) -- node[above] {1. DNS-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''} ([yshift=5mm]dns);
+\draw[arrow] ([yshift=-5mm]dns) -- node[below] {2. DNS-Antwort\\\footnotesize``\texttt{192.168.0.11}''} ([yshift=-5mm]client);
+\draw[arrow] (client) -- ++(0,2cm) -| node[above] {3. HTTP-Anfrage} (web);
+\draw[arrow] (web) -- ++(0,-2cm) -| node[below] {4. HTTP-Antwort} (client);
+
+\end{tikzpicture}
+\centering
+\caption{Schematischer Ablauf einer DNS-Anfrage}
+\label{fig:dns}
+\end{figure}
+
+
+
+Mit dem Terminal-Befehl \texttt{host [ipadress]} kann nachgeschaut werden, welche IP-Adresse zu einer bestimmten Webseite gehört. Mit dem Befehl \texttt{nslookup [ipadress]} erhalten Sie dieselben Informationen und zusätzlich dazu noch die IP-Adresse des DNS-Servers, der Ihnen die Informationen geliefert hat.
+
+
+
 
 \begin{myexercise}
-Mit dem Terminal-Befehl \texttt{nslookup} kann nachgeschaut werden, welche IP-Adresse zu einer bestimmten Webseite gehört. 
-
-Verwenden Sie den Befehl \texttt{nslookup}, um herauszufinden, welche IP-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese IP im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
+Verwenden Sie die Befehle \texttt{host} oder \texttt{nslookup}, um herauszufinden, welche IP-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese IP im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
 \begin{myanswer}
-Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|nslookup sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
+Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+Weshalb kann der Client \texttt{192.168.0.1} bei \cref{fig:dns} nicht auf die Webseite \texttt{ksimlee.ch} zugreifen?
+\begin{myanswer}
+Die Webseite \texttt{ksimlee.ch} ist nicht in der Tabelle des DNS-Servers \texttt{192.168.2.1} abgespeichert, daher kann sie der Client auch nicht finden.
 \end{myanswer}
 \end{myexercise}
 
