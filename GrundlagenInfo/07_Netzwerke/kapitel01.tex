@@ -701,7 +701,7 @@ Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 
 
 
 \subsubsection{DNS}
-Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Webseiten-Adresse, aus der Angabe eines Server-Namens und einem Dateipfad. Allerdings werden Computer das \gls{IP}-Protokoll nicht mit einem Namen wie etwa \url{beispiel.ch} adressiert, sondern mit einer numerischen IP-Adresse. Wie weiss der Browser also, welcher Computer die Dateien für \url{beispiel.ch} besitzt? Hier kommen \gls{DNS} ins Spiel: Ein \gls{DNS} ist kurz gesagt ein Server, welcher allen Clients im Netzwerk eine Tabelle von Servern und damit verbundenen Namen zur Verfügung stellt. Eine DNS-Abfrage ist illustriert in \cref{fig:dns}.
+Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Webseiten-Adresse, aus der Angabe eines Server-Namens und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (s. \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Genauer gesagt ist ein \gls{DNS} ein Server, welcher den Clients eines Netzwerks eine Tabelle von Servern und damit verbundenen Namen zur Verfügung stellt. Eine DNS-Abfrage ist illustriert in \cref{fig:dns}. 
 
 \begin{figure}[H]
 \begin{tikzpicture}[
@@ -731,10 +731,10 @@ Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Webseiten-Adres
 \node[fit=(dns) (dnsTable), inner sep=4pt, RoyalBlue, dotted, draw, line width=1pt,rounded corners](dnsArea) {};
 
 % Arrows
-\draw[arrow] ([yshift=5mm]client) -- node[above] {1. DNS-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''} ([yshift=5mm]dns);
-\draw[arrow] ([yshift=-5mm]dns) -- node[below] {2. DNS-Antwort\\\footnotesize``\texttt{192.168.0.11}''} ([yshift=-5mm]client);
-\draw[arrow] (client) -- ++(0,2cm) -| node[above] {3. HTTP-Anfrage} (web);
-\draw[arrow] (web) -- ++(0,-2cm) -| node[below] {4. HTTP-Antwort} (client);
+\draw[arrow] ([yshift=5mm]client) -- node[above] {\textbf{1.} \gls{DNS}-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''} ([yshift=5mm]dns);
+\draw[arrow] ([yshift=-5mm]dns) -- node[below] {\textbf{2.} \gls{DNS}-Antwort\\\footnotesize``\texttt{192.168.0.11}''} ([yshift=-5mm]client);
+\draw[arrow] (client) -- ++(0,2cm) -- node[above] {\textbf{3.} \gls{HTTP}-Anfrage\\\footnotesize (Webseite wird angefragt)} ++($(web)$) -- (web);
+\draw[arrow] (web) -- ++(0,-2cm) -- node[below,midway] {\textbf{4.} \gls{HTTP}-Antwort\\\footnotesize (Webseite wird geliefert)} ++($(client)-(web)$) -- (client);
 
 \end{tikzpicture}
 \centering
@@ -742,24 +742,24 @@ Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Webseiten-Adres
 \label{fig:dns}
 \end{figure}
 
-
-
-Mit dem Terminal-Befehl \texttt{host [ipadress]} kann nachgeschaut werden, welche IP-Adresse zu einer bestimmten Webseite gehört. Mit dem Befehl \texttt{nslookup [ipadress]} erhalten Sie dieselben Informationen und zusätzlich dazu noch die IP-Adresse des DNS-Servers, der Ihnen die Informationen geliefert hat.
-
-
-
-
-\begin{myexercise}
-Verwenden Sie die Befehle \texttt{host} oder \texttt{nslookup}, um herauszufinden, welche IP-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese IP im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
-\begin{myanswer}
-Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
-\end{myanswer}
-\end{myexercise}
+Der Prozess der Beantwortung einer Frage nach der IP-Adresse einer Web-Adresse ist in Schritten 1 und 2 in \cref{fig:dns} gezeigt. Die Übersetzung eines Domain-Namens in eine \gls{IP}-Adresse wird auch als \textbf{Namensauflösung} bezeichnet.
 
 \begin{myexercise}
 Weshalb kann der Client \texttt{192.168.0.1} bei \cref{fig:dns} nicht auf die Webseite \texttt{ksimlee.ch} zugreifen?
 \begin{myanswer}
-Die Webseite \texttt{ksimlee.ch} ist nicht in der Tabelle des DNS-Servers \texttt{192.168.2.1} abgespeichert, daher kann sie der Client auch nicht finden.
+Die Webseite \texttt{ksimlee.ch} ist nicht in der Tabelle des \gls{DNS}-Servers \texttt{192.168.2.1} abgespeichert, daher kann sie der Client auch nicht finden.
+\end{myanswer}
+\end{myexercise}
+
+
+Mit dem Terminal-Befehl \texttt{host [ipadress]} kann nachgeschaut werden, welche \gls{IP}-Adresse zu einer bestimmten Webseite gehört. Mit dem Befehl \texttt{nslookup [ipadress]} erhalten Sie dieselben Informationen und zusätzlich dazu noch die \gls{IP}-Adresse des \gls{DNS}-Servers, der Ihnen die Informationen geliefert hat.
+
+
+
+\begin{myexercise}
+Verwenden Sie die Befehle \texttt{host} oder \texttt{nslookup}, um herauszufinden, welche \gls{IP}-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese \gls{IP} im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
+\begin{myanswer}
+Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
 \end{myanswer}
 \end{myexercise}
 
@@ -771,7 +771,9 @@ Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 
 Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.10-2.12 auf folgendem \href{https://informatik.mygymer.ch/base/?page=network/2-filius/A-dns/}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
 \end{mysubmission}
 
-
+\begin{mychallenge}
+Richten Sie sich Ihren eigenen Email-Server ein, indem Sie folgende Aufgaben ausführen: \href{https://inf-schule.de/rechnernetze/filius/internet/exkurs_email}{Link}.
+\end{mychallenge}
 
 \subsection{Vermittlungsschicht}
 \subsubsection{MAC-Adresse}
