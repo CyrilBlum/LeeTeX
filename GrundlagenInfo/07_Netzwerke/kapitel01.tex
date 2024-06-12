@@ -24,7 +24,7 @@ Wie können solch unterschiedliche Informationen auf eine ähnliche, systematisc
 Ein \textbf{Graph} $G=(V,E)$ ist ein Paar von zwei Mengen $V$ und $E$
 \begin{itemize}
     \item $V$ ist die \textbf{Menge der Knoten}. Diese werden gezeichnet als Punkte oder kleine Kreise. Alle Knoten haben Namen.
-    \item $E$ ist die \tib{Menge der Kanten}. Die Kanten verbinden Knoten und werden Bezeichnet durch ihre Endknoten
+    \item $E$ ist die \tib{Menge der Kanten}. Die Kanten verbinden Knoten und werden bezeichnet durch ihre Endknoten.
 \end{itemize}
 
 Ein Beispiel eines einfachen Graphen ist gegeben in \cref{fig:graph-ex}.
@@ -158,6 +158,101 @@ The web is more a social creation than a technical one.
 \end{quotation}
 
 Häufig werden die Begriffe ``Internet'' und ``Computer-Netze'', bzw. ``Rechner-Netze'' austauschbar verwendet. Dabei ist es jedoch wichtig zu verstehen, dass dies zwei unterschiedliche Konzepte sind: währenddem mit dem ``Internet'' ein höchst komplexes, den gesamten Globus umspannendes Netzwerk von Computern gemeint ist, können lediglich zwei miteinander verbundene Computer bereits ein Rechnernetz bilden. Das Internet wird häufig auch als ``Netz von (Rechner-)Netzen'' bezeichnet. Es ist daher wichtig, dass wir uns zuerst mit einfacheren Rechnernetzen befassen, da diese die Grundbausteine für das Internet bilden.
+
+\subsection{Topologie}
+Beim Erstellen eines Netzwerks stellt sich als erstes die Frage, welche Computer man mit welchen anderen Computern verbinden soll. Die Strukture der Verbindungen in einem Netzwerk kann als umformuliert werden als Graphen-Aufgabe, bei der es zu bestimmen gibt, welche Knoten eines Graphen miteinander über eine Kanten verbunden werden. Die verschiedenen möglichen Strukturen eines Netzwerks werden auch als \textbf{Topologie} bezeichnet. Einige Beispiel-Topologien sind in \cref{fig:topologie} gezeigt.
+\begin{figure}[H]
+\centering
+\centering
+% Bus Topology
+\begin{subfigure}[b]{0.25\textwidth}
+  \centering
+  \begin{tikzpicture}
+    \draw[ForestGreen, thick] (0,0) -- (2,0); % Bus
+    \foreach \x in {0.3, 0.9, 1.5} {
+      \filldraw[ForestGreen] (\x, 0) circle (2mm);
+    }
+  \end{tikzpicture}
+  \caption{Bus}
+\end{subfigure}%
+% Ring Topology
+\begin{subfigure}[b]{0.25\textwidth}
+  \centering
+  \begin{tikzpicture}
+    \draw[ForestGreen, thick] (0:1cm) \foreach \x in {60,120,...,360} {
+          -- (\x:1cm)
+    } -- cycle; % Completes the circle
+    \foreach \x in {0,60,...,300} {
+      \filldraw[ForestGreen] (\x:1cm) circle (2mm);
+    }
+  \end{tikzpicture}
+  \caption{Ring}
+\end{subfigure}
+% Stern
+\begin{subfigure}[b]{0.25\textwidth}
+  \centering
+  \begin{tikzpicture}
+    \node[fill=ForestGreen, circle, minimum size=5mm] at (0,0) (center) {};
+    \foreach \x in {0,45,...,315} {
+      \node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\x) {};
+      \draw[ForestGreen] (center) -- (node\x);
+    }
+  \end{tikzpicture}
+  \caption{Stern}
+\end{subfigure}%
+% Mesh Topology
+\begin{subfigure}[b]{0.25\textwidth}
+  \centering
+\begin{tikzpicture}
+  % Define nodes
+  \foreach \x [count=\i] in {18,90,...,306} {
+    \node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\i) {};
+  }
+  
+  % Connect nodes
+  \foreach \x in {1,2,3,4,5}{
+    \foreach \y in {\x,...,5}{
+      \ifnum\x=\y\relax % Skip self-connection
+      \else
+        \draw[ForestGreen, thick] (node\x) -- (node\y);
+      \fi
+      }}
+  
+\end{tikzpicture}
+  \caption{Vollvermascht}
+\end{subfigure}
+\begin{subfigure}{.25\textwidth}
+\centering
+\begin{tikzpicture}[
+    sibling distance=5mm, % Adjust spacing between siblings
+    level distance=8mm, % Adjust spacing between parent and child nodes
+    every node/.style={fill=ForestGreen, circle, thick, minimum size=2mm},
+    edge from parent/.style={ForestGreen, thick, draw}
+]
+% Define the tree
+\node {} % Root node
+  child {node {}
+    child {node {}}
+    child {node {}}
+  }
+  child {node {}
+    child {node {}}
+    child {node {}}
+  }
+  child {node {}
+    child {node {}}
+    child {node {}}
+  };
+
+\end{tikzpicture}
+\caption{Baum}
+\end{subfigure}
+\caption{Beispiele von Netzwerk-Topologien}
+\label{fig:topologie}
+\end{figure}
+
+Da Computer in Realität häufig nur über eine einzige Netzwerkkarte verfügen, können sie auch nur mit einem weiteren Computer verbunden werden. In einem lokalen Netzwerk trifft man daher häufig die Form einer Stern-Topologie an, bei der alle Computer mit einer zentralen \textbf{Switch} verbunden werden, also einem Gerät, welches mehrere Rechner an einem zentralen Punkt miteinander verbindet.
+
 
 \section{Internet-Schichten}
 \subsection{Schichtenmodell: Analogie}
@@ -666,9 +761,9 @@ Bis anhin haben wir gesehen, wie wir einzelne Rechner mittels einer IP adressier
 Ähbnliche einer Haustür verbindet ein Router ein Subnetz (=Haus) mit der Aussenwelt, er befindet sich also an der Grenze zwischen zwei oder mehreren Subnetzen. Über die Routing-Tabelle kann ein Router entscheiden, auf welchen Weg ein Datenpaket an die Aussenwelt verschickt werden kann. Eine typische Routing-Tabelle enthält folgende Informationen:
 
 \begin{itemize}
-\item Ziel-IP und Netzmaske: Diese beiden Spalten definieren, welche Subnetze dem Router bekannt sind (sowohl eigenes Subnetz wie andere Subnetze).
-\item Gateway: Die Adresse, an die ein Paket geschickt werden muss, um sein Ziel zu erreichen.
-\item Interface: Der Name der Netzwerkkarte, die mit der Ziel-Adresse (Gateway) verbunden ist. 
+\item \textbf{Ziel-IP und Netzmaske}: Diese beiden Spalten definieren, welche Subnetze dem Router bekannt sind (sowohl eigenes Subnetz wie andere Subnetze).
+\item \textbf{Gateway}: Die Adresse, an die ein Paket geschickt werden muss, um sein Ziel zu erreichen. Das Gateway kann als eine Art ``Tor zur Aussenwelt'' angeschaut werden und ist häufig die \gls{IP}-Adresse des Routers.
+\item \textbf{Interface}: Der Name der Netzwerkkarte, die mit der Ziel-Adresse (Gateway) verbunden ist. 
 \end{itemize}
 
 Ein Beispiel einer Routing-Tabelle ist in \cref{table:routing} abgebildet.
@@ -701,12 +796,34 @@ Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 
 
 
 \subsubsection{DNS}
-Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Webseiten-Adresse, aus der Angabe eines Server-Namens und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (s. \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Genauer gesagt ist ein \gls{DNS} ein Server, welcher den Clients eines Netzwerks eine Tabelle von Servern und damit verbundenen Namen zur Verfügung stellt. Eine DNS-Abfrage ist illustriert in \cref{fig:dns}. 
+Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer Webseiten, aus der Angabe eines Servers und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (s. \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Ein Beispiel einer solchen Tabelle ist in \cref{tab:dnsEntries} gezeigt. 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+\textbf{Domain Name} & \textbf{IP-Addresse} \\
+\midrule\midrule
+\texttt{beispiel.ch} & 192.168.0.11 \\
+\midrule
+\texttt{schule.ch} & 192.168.0.12 \\
+\midrule
+\texttt{test.org} & 192.168.0.13 \\
+\midrule
+\texttt{insta.com} & 192.168.0.14 \\
+\midrule
+\texttt{...} & ... \\
+\end{tabular}
+\caption{Beispiel einer \gls{DNS}-Tabelle}
+\label{tab:dnsEntries}
+\end{table}
+
+Wenn eine Adresse wie \texttt{insta.org} im Browser eingetippt und angefordert wird, schickt der Client eine Anfrage an einen nahegelegenen \gls{DNS}-Server, der die IP-Adresse retourniert (ähnlich einem Telefonbuch). Ein \gls{DNS} ist also ein Server, welcher den Clients eines Netzwerks eine Tabelle von Servern und damit verbundenen Namen zur Verfügung stellt. Eine solche \gls{DNS}-Abfrage ist illustriert in \cref{fig:dns}. 
 
 \begin{figure}[H]
 \begin{tikzpicture}[
-    server/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, fill=RoyalBlue, text=white, rounded corners, text width=2.3cm, align=center},
-    client/.style={rectangle, draw, minimum size=1cm, fill=ForestGreen, text=white, text width=2.3cm, rounded corners, align=center},
+	base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.3cm, align=center,inner sep=8pt},
+    server/.style={base, fill=RoyalBlue},
+    client/.style={base, fill=ForestGreen},
     arrow/.style={-Stealth, thick, rounded corners,text width=4cm,align=center}
 ]
 
@@ -728,11 +845,12 @@ Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Webseiten-Adres
 \texttt{...} & ... \\
 \end{tabular}};
 
+% draw box around DNS node and DNS table
 \node[fit=(dns) (dnsTable), inner sep=4pt, RoyalBlue, dotted, draw, line width=1pt,rounded corners](dnsArea) {};
 
 % Arrows
-\draw[arrow] ([yshift=5mm]client) -- node[above] {\textbf{1.} \gls{DNS}-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''} ([yshift=5mm]dns);
-\draw[arrow] ([yshift=-5mm]dns) -- node[below] {\textbf{2.} \gls{DNS}-Antwort\\\footnotesize``\texttt{192.168.0.11}''} ([yshift=-5mm]client);
+\draw[arrow] ($(client.east)+(0,0.15)$) -- ($(dns.west)+(0,0.15)$) node[midway, above] {\textbf{1.} \gls{DNS}-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''};
+\draw[arrow] ($(dns.west)-(0,0.15)$) -- ($(client.east)-(0,0.15)$) node[midway, below] {\textbf{2.} \gls{DNS}-Antwort\\\footnotesize``\texttt{192.168.0.11}''};
 \draw[arrow] (client) -- ++(0,2cm) -- node[above] {\textbf{3.} \gls{HTTP}-Anfrage\\\footnotesize (Webseite wird angefragt)} ++($(web)$) -- (web);
 \draw[arrow] (web) -- ++(0,-2cm) -- node[below,midway] {\textbf{4.} \gls{HTTP}-Antwort\\\footnotesize (Webseite wird geliefert)} ++($(client)-(web)$) -- (client);
 
@@ -776,29 +894,18 @@ Richten Sie sich Ihren eigenen Email-Server ein, indem Sie folgende Aufgaben aus
 \end{mychallenge}
 
 \subsection{Vermittlungsschicht}
-\subsubsection{MAC-Adresse}
+\subsubsection{MAC-Adressen}
+Bisher haben wir mehrheitlich darüber gesprochen, wie Datenpakete zwischen adressierten Empfängern (s. \gls{IP}-Adressen) hin- und hergeschickt werden, und wie Addressen in (Sub-)Netzwerke unterteilt und in verständliche Namen umgewandelt werden können. Eine \gls{IP}-Addresse kann mit der Adresse eines Hauses verglichen werden. Allerdings legt der Briefträger die Briefe und Pakete nicht an einer Adresse ab, sondern in einem Briefkasten, also einem konkreten Objekt. Falls sich der Briefkasten oder sogar das ganze Haus ändert, so bleibt die Adresse doch dieselbe. Ähnlich dieser Analogie kann in einem Computer die gesamte Hardware ausgetauscht werden, inklusive der Netzwerkkarte, welche sich um das Verschicken und Empfangen von Daten kümmert, und trotzdem sollte der Datentransport weiterhin funktionieren. Damit dies klappt, benötigen wir ein weiteres Protokoll, welches die \gls{IP}-Adresse in eine so genannte \gls{MAC}-Adresse umwandelt. Die \gls{MAC}-Adresse ist die physische Adresse der Netzwerkkarte in einem Computer, also sozusagen der ``Fingerabdruck'' der Netzwerkkarte. Sie wird normalerweise mit 48 bit angegeben, welche normalerweise der Kürze wegen in hexadezimaler Schreibweise notiert werden. Ein Beispiel einer \gls{MAC}-Adresse könnte wie folgt aussehen: \commandbox{48-2C-6A-1E-59-3D}
 
-\begin{itemize}
-\item So etwas wie der ``Fingerabdruck'' eines Computers
-\item Analogie: Übergabe Brief von einer Hand in die andere
-\item 48 bit, die normalerweise in hexadezimaler Weise angegeben werden
-\item Z.B. \commandbox{48-2C-6A-1E-59-3D}
-\item Jede Netzwerkkarte hat eine MAC-Adresse
-\end{itemize}
 \subsubsection{ARP}
-\acrfull{ARP}
-\begin{itemize}
-\item Daten werden zwar mit Ziel-IP versehen, können jedoch nur von MAC zu MAC übergeben werden!
-\item Muss verwendet werden, um herauszufinden, welche MAC-Adresse zu welcher IP-Adresse gehört.
-\item Beispiel
+Damit eine \gls{IP}-Adresse in eine \gls{MAC}-Adresse umgewandelt werden kann, wird ein weiteres Protokoll benötigt, das \gls{ARP}.
+
+Ein Beispiel, wie das \gls{ARP}-Protokoll funktioniert, könnte wie folgt aussehen:
 \begin{itemize}
 \item Computer \commandbox|192.168.0.33| will Nachricht senden an \commandbox|192.168.0.34| im selben Subnetz (\commandBluebox|255.255.255.0|)
-
-
 \item \commandbox|192.168.0.33| sendet daher eine Nachricht an alle Computer in \commandbox|192.168.0.x|: ``Wer hat die IP \commandbox|192.168.0.34|''?
 \item Computer \commandbox|192.168.0.34| antwortet: ``Ich! Meine MAC ist \commandbox|60:4E:46:F5:08:09|.''
 \item Nun kann der Computer seine Nachricht direkt an den nächsten Empfänger (\textit{gateway}) übergeben.
-\end{itemize}
 \end{itemize}
 
 \begin{mysubmission}
