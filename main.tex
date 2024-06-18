@@ -1,12 +1,12 @@
 %!TeX program = lualatex
 
-%% choose document class (book / exam / article / beamer)
+%% choose document class (book / article / exam / beamer)
 %% BOOK
 % \documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}
-% \documentclass[a4paper,11pt,svgnames,oneside]{book}
+\documentclass[a4paper,11pt,svgnames,oneside]{book}
 
 %% ARTICLE
- \documentclass[svgnames,hyphens]{article}
+ % \documentclass[svgnames,hyphens]{article}
 
 %% EXAM
 % \documentclass[11pt,addpoints,svgnames]{exam}
@@ -21,11 +21,11 @@
 %% set toggles (switches) for the document class
 \newtoggle{book} \newtoggle{article} \newtoggle{exam} \newtoggle{beamer} %% default value is 'false'
 
-\def\documentToggle{1} %% <---- choose number
-\ifnumequal{\documentToggle}{0}{\settoggle{book}{true}}{}     %% book
-\ifnumequal{\documentToggle}{1}{\settoggle{article}{true}}{}  %% article
-\ifnumequal{\documentToggle}{2}{\settoggle{exam}{true}}{}     %% exam
-\ifnumequal{\documentToggle}{3}{\settoggle{beamer}{true}}{}   %% beamer
+\def\documentToggle{0} %% <---- choose number
+\ifnumequal{\documentToggle}{0}{\settoggle{book}{true}}{}     %% book (0)
+\ifnumequal{\documentToggle}{1}{\settoggle{article}{true}}{}  %% article (1)
+\ifnumequal{\documentToggle}{2}{\settoggle{exam}{true}}{}     %% exam (2)
+\ifnumequal{\documentToggle}{3}{\settoggle{beamer}{true}}{}   %% beamer (3)
 
 %% Does the document contain at least one citation? (true / false)
 \newtoggle{citations} \settoggle{citations}{true}
@@ -61,7 +61,7 @@
 
 \begin{document}
 %% BOOK
-\iftoggle{book} {
+\iftoggle{book} {%
 	%% title for title page
 	% \newcommand{\thetopic}{Programmieren}
 	% \newcommand{\thetopic}{Randomisierte Algorithmen}
@@ -82,6 +82,7 @@
 	\markright{}
 	\cleardoublepage
 	\mainmatter
+  % \input{LaTeX_related/mwe.tex}
 	% \part{Environments}
 	% \input{LaTeX_related/example_file}
 	%% 01 Zahlendarstellungen und Kodierungen
@@ -89,7 +90,7 @@
 	% \include{GrundlagenInfo/01_TheoretischeInformatik/kapitel01.tex}
 	%% 03 Kryptologie
 	% \part{Kryptologie}
-  \input{GrundlagenInfo/03_Kryptologie/Skript_Kryptologie.tex}
+  % \input{GrundlagenInfo/03_Kryptologie/Skript_Kryptologie.tex}
 	%% 04 Kompression
 	% \input{GrundlagenInfo/04_Kompression/Kapitel 1}
 	%% 06 Datenbanken
@@ -104,12 +105,12 @@
 	% \part{Netzwerke}
 	% \include{GrundlagenInfo/07_Netzwerke/kapitel01}
 	%% Rekursion
-	% \part{Induktion und Rekursion}
-	% \input{EF/InduktionUndRekursion/kapitel00.tex}
-	% \input{EF/InduktionUndRekursion/kapitel01.tex}
-	% \input{EF/InduktionUndRekursion/kapitel02.tex}
-	% \input{EF/InduktionUndRekursion/kapitel03.tex}
-	% \input{EF/InduktionUndRekursion/kapitel04.tex}
+	\part{Induktion und Rekursion}
+	\input{EF/InduktionUndRekursion/kapitel00.tex}
+	\input{EF/InduktionUndRekursion/kapitel01.tex}
+	\input{EF/InduktionUndRekursion/kapitel02.tex}
+	\input{EF/InduktionUndRekursion/kapitel03.tex}
+	\input{EF/InduktionUndRekursion/kapitel04.tex}
   % \part{Randomisierte Algorithmen}	
   % \input{GrundlagenInfo/01_TheoretischeInformatik/randomisiertes_protokoll.tex}
 	% \appendix
@@ -124,8 +125,8 @@
 } {}
 
 %% ARTICLE
-\iftoggle{article} {
-	% \input{LaTeX_related/mwe.tex}
+\iftoggle{article} {%
+	\input{LaTeX_related/mwe.tex}
 	% \input{Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee}
 	% \input{Private/Handout GDI}
 	% \input{Private/Themenvertiefung GDI}
@@ -134,17 +135,17 @@
 	% \input{GrundlagenInfo/Various/Fun_Quotes}
 	% \input{GrundlagenInfo/01_TheoretischeInformatik/Lernziele}
 	% \input{GrundlagenInfo/03_Kryptologie/Lernziele}
-%	 \input{GrundlagenInfo/00_Programmieren/Lernziele}
+  % \input{GrundlagenInfo/00_Programmieren/Lernziele}
 	% \input{GrundlagenInfo/05_ErrorChecking/Lernziele}
 	% \input{GrundlagenInfo/06_Daten/Lernziele}
-	 \input{GrundlagenInfo/07_Netzwerke/Lernziele}
-%	 \input{GrundlagenInfo/03_Kryptologie/vigenere_tabelle.tex} 
+  % \input{GrundlagenInfo/07_Netzwerke/Lernziele}
+ \input{GrundlagenInfo/03_Kryptologie/vigenere_tabelle.tex} 
 	% \clearpage
 	% \printbibliography
 } {}
 
 %% EXAM
-\iftoggle{exam} {
+\iftoggle{exam} {%
 	% \input{GrundlagenInfo/ExamQuestions/Questions}
 	% \input{GrundlagenInfo/00_Programmieren/ExamQuestions/QuestionsProg}
 	% \input{EF/Exams/EA_00.tex}
@@ -154,7 +155,7 @@
 } {}
 
 %% BEAMER
-\iftoggle{beamer} {
+\iftoggle{beamer} {%
 	% \input{GrundlagenInfo/00_Programmieren/Examples_Exam}
 	% \input{GrundlagenInfo/00_Programmieren/Kapitel01Intro}
 	% \input{GrundlagenInfo/00_Programmieren/Kapitel02aDefinitionen}

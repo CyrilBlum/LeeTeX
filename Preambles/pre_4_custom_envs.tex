@@ -59,7 +59,7 @@
   }%
 }%
 
-% tcolorbox template to be reused in various enviroments.
+% tcolorbox baseline template
 \newtcolorbox{tcolorboxTemplate}[1][]{
   enhanced jigsaw,
   lines before break=9,
@@ -126,34 +126,6 @@
   \end{tcolorboxTemplate}
 }%
 
-% myanswer
-\newcounter{DummyCounter}
-\newcommand{\myanswerlabel}{-}
-\newenvironment{myanswer}[1][]
-{
-  \refstepcounter{DummyCounter}
-  \renewcommand{\AnswerHeader}{}
-  \ifblank{#1} {%
-      \renewcommand{\myanswerlabel}{Aufgabe~\theSharedCounter}
-    } {%
-      \renewcommand{\myanswerlabel}{\cref{#1}}
-    }
-  \begin{Answer}[ref=\theDummyCounter]
-    \begin{tcolorboxTemplate}[
-      opacityback=.5,
-      coltitle=white,
-      colback=ForestGreen!10,
-      colframe=ForestGreen,
-      colbacktitle=ForestGreen,
-      opacityback=1,
-      title=\faCheck{} Lösungsvorschlag zu~\myanswerlabel]
-  }%%
-  {%
-    \end{tcolorboxTemplate}
-  \end{Answer}
-}%
-
-
 % mysubmission
 \newaliascnt{SubmissionCounter}{SharedCounter}
 \aliascntresetthe{SubmissionCounter}
@@ -184,6 +156,48 @@
 }%%
 {%
   \end{tcolorboxTemplate}
+}%
+
+% myanswer
+\begin{@empty}
+\end{@empty}
+
+\newcounter{DummyCounter}
+\newcommand{\myanswerlabel}{-}
+\newenvironment{myanswer}[1][]
+{
+  \refstepcounter{DummyCounter}
+  
+    \ifblank{#1} {%
+      \renewcommand{\myanswerlabel}{Aufgabe~\theSharedCounter}
+      \renewcommand{\AnswerHeader}{}
+      \newcommand{\myanswercapsule}{tcolorboxTemplate}
+    } {%
+      \renewcommand{\myanswerlabel}{\cref{#1}}
+      \renewcommand{\AnswerHeader}{
+        \begin{center}
+      \textcolor{ForestGreen}{Lösungsvorschlag zu}~\myanswerlabel
+        \end{center}
+      }
+      \newcommand{\myanswercapsule}{@empty}
+    }%
+  \begin{Answer}[ref=\theDummyCounter]
+    \ifblank{#1} {%
+    \begin{\myanswercapsule}[
+      opacityback=.5,
+      coltitle=white,
+      colback=ForestGreen!10,
+      colframe=ForestGreen,
+      colbacktitle=ForestGreen,
+      opacityback=1,
+      title=\faCheck{}~Lösungsvorschlag zu~\myanswerlabel]
+    } {
+    \begin{\myanswercapsule}
+    }%
+}%
+{%
+    \end{\myanswercapsule}
+  \end{Answer}
 }%
 
 % names for clever references
