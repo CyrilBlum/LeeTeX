@@ -4,10 +4,10 @@
 declare -a classes=("book" "article" "exam" "beamer")
 declare -a toggles=("0" "1" "2" "3")
 declare -a class_commands=(
-    "\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
-    "\\documentclass[svgnames,hyphens]{article}"
-    "\\documentclass[11pt,addpoints,svgnames]{exam}"
-    "\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
+    "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
+    "\\\\documentclass[svgnames,hyphens]{article}"
+    "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
+    "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
 )
 
 # Declare associative arrays for book topics and their inputs
@@ -37,6 +37,7 @@ for i in "${!classes[@]}"; do
         continue
     fi
 
+    
 
     for topic in "${!current_class_topics[@]}"; do
         input_files=(${current_class_topics[$topic]})  # Split the string into an array
@@ -44,20 +45,29 @@ for i in "${!classes[@]}"; do
         # Prepare the file name
         output_file="${latex_dir_in}output_${classes[$i]}_${topic// /_}.tex"
         cp ${latex_dir_in}main.tex $output_file
-
-        # Replace the document class line and the topic
-        sed -i "s/\\\\documentclass.*{.*}/${class_commands[$i]}/" "$output_file"
+	
+	# Replace the document class line
+    	sed -i "s/\\\\documentclass.*{.*}/${class_commands[$i]}/" "$output_file"
+    	
+   	 # Replace the document class toggle line
+    	sed -i "s/\\\\def\\\\documentToggle{[0-9]}/\\\\def\\\\documentToggle{${toggles[$i]}}/" "$output_file"
+    	
+	# replace the topic line
         sed -i "s/\\\\newcommand{\\\\thetopic}{.*}/\\\\newcommand{\\\\thetopic}{${topic}}/" "$output_file"
 
         # Uncomment the necessary input lines
         for input_path in "${input_files[@]}"; do
-           	echo  sed -i "s|% \\\\input{${input_path}}|\\\\input{${input_path}}|" "$output_file"
 		sed -i "s|% \\\\input{${input_path}}|\\\\input{${input_path}}|" "$output_file"
         done
 
         # Compile the LaTeX document
         lualatex -output-directory="$latex_dir" "$output_file"
- 
+        
+
+	# copy final file to server
+	cp ${latex_dir}output_${classes[$i]}_${topic// /_}.pdf /var/www/in-form-atik.ch/public_html/pdfs/output_${classes[$i]}_${topic// /_}.pdf 
+
+	
         # Clean up if necessary
         # rm "$output_file"  # Uncomment to delete the intermediate .tex files
     done
