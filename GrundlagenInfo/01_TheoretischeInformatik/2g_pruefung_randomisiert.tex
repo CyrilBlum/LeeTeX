@@ -1,0 +1,167 @@
+\newtoggle{withbonus} \settoggle{withbonus}{false} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Informatik}
+% name of the class
+\newcommand{\myclass}{Klasse 2g}
+% set date
+\newcommand{\mydate}{19. Juni 2024}
+
+\title{\textbf{Theoretische Informatik: randomisierte Algorithmen}}
+\author{Thomas Graf\\
+\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}		
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $55$ Minuten
+				%\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item erlaubte Hilfsmittel:
+				\begin{itemize}
+				    \item Schreibzeug
+            \item \textbf{ohne Taschenrechner}
+				\end{itemize}
+	\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note: 
+	\vspace{10mm}
+	
+	\rule{8mm}{1.2pt}
+\end{center}
+%\thispagestyle{empty}
+\clearpage
+
+
+\begin{questions}
+% 2f
+\question
+\begin{parts}
+  \part[1] Es sei $x := 01111001$ ein binärer String. Bestimmen Sie $\text{Nummer}(x)$. 
+  \part[1] Bestimmen Sie $\text{Bin}(35)$.
+  \part[1] Für einen binären String $x$ gilt 
+  \begin{align*}
+   \text{Nummer}(x) = 2^k - 1.
+  \end{align*}
+  Dabei ist $k$ eine positive natürliche Zahl. Bestimmen Sie $\abs{x}$ in Abhängigkeit von $k$.
+  \part[1] Bestimmen Sie $\text{Prim}(17)$.
+  \part[1] Nennen Sie (konkrete) positive natürliche Zahlen $x, y$ und $z$, sodass zwar die Relation
+\begin{align*}
+  x < y < z
+\end{align*}
+gilt, aber nicht die Relation
+\begin{align*}
+  \abs{\text{Bin}(x)} < \abs{\text{Bin}(y)} < \abs{\text{Bin}(z)}.
+\end{align*}
+\part[1] Ronald Rivest möchte unser randomisierte Kommunikationsprotokoll für die beiden Datensätze $x := 001110$ und $y := 1110$ durchführen. Was ist hier das Problem? Welchen Rat würden Sie Ronald geben?
+\end{parts}
+\droptotalpoints
+
+\question[2] In Zürich sei der Datensatz $x := 001110$ auf dem Rechner $R_1$ abgespeichert. $R_1$ wird das Kommunikationsprotokoll mit einem Rechner $R_2$ in Boston durchführen.
+Dabei sei $y$ der Datensatz, welcher auf $R_2$ abgespeichert ist. In Zürich wurde zufällig die Primzahl $p := 11$ gewählt. Geben Sie ein konkretes Beispiel eines (sinnvollen) Datensatzes $y$, sodass das Protokoll falsch entscheiden wird.
+
+\question Gegeben seien zwei Datensätze $x$ und $y$ mit einer jeweiligen Länge von $10^{20}$ Bits. 
+\begin{parts}
+\part[2] Geben Sie eine vernünftige obere Schranke (Abschätzung gegen oben) für den Kommunikationsaufwand des Kommunikationsprotokolls zum Abgleich von $x$ und $y$ an.
+\part[1] Wie viele Bits müsste ein deterministischer Algorithmus zur Beantwortung der Frage $x\stackrel{?}{=}y$ mindestens kommunizieren?
+\end{parts}
+\droptotalpoints
+
+\question[2]
+Gegeben sind zwei Funktionen $f$ und $g$, welche auf ganz $\N$ definiert sind und $g(n) \neq 0$ für alle $n\in\N$. Es gelte die Gleichung
+\begin{align*}
+  \lim_{n\to\infty}\frac{f(n)}{g(n)} = 1.
+\end{align*}
+Ist es korrekt, dass daraus die Gleichung
+\begin{align*}
+  \lim_{n\to\infty} \abs{f(n) - g(n)} = 0
+\end{align*}
+folgt? Begründen Sie die Behauptung oder finden Sie ein Gegenbeispiel.
+
+\clearpage
+\question[2]
+Gegeben ist die (korrekte und vollständige) Ihnen vertraute Python-Funktion \pythoninline{sieb(n)}:
+\begin{lstlisting}[language=Python,caption=Sieb,numbers=none]
+def sieb(n):
+    primzahlen = []
+    nicht_gestrichen = (n + 1) * [True]
+
+    i = 2
+    while i * i <= n:
+        if nicht_gestrichen[i]:
+            j = 2 * i
+            while j <= n:
+                nicht_gestrichen[j] = False
+                j += i
+        i += 1
+
+    i = 2
+    while i <= n:
+        if nicht_gestrichen[i]:
+            primzahlen.append(i)
+        i += 1
+
+    return primzahlen
+\end{lstlisting}
+Verwenden Sie diese Funktion als Hilfsfunktion um eine Python-Funktion \pythoninline{prime_gaps(n)} zu definieren, welche die ersten $n$ Primzahllücken (prime gaps) printet.
+\begin{lstlisting}[language=Python,caption=prime gaps (noch zu vervollständigen),numbers=none]
+def prime_gaps(n):
+
+    .............
+
+    .............
+
+    .............
+
+    .............
+
+    .............
+
+    .............
+
+    .............
+\end{lstlisting}
+
+
+% \question[2]
+% Gegeben sind zwei Funktionen $f$ und $g$, welche auf ganz $\N$ definiert sind und $g(n) \neq 0$ für alle $n\in\N$. Es gelte die Gleichung
+% \begin{align*}
+%   \lim_{n\to\infty}\frac{f(n)}{g(n)} = 1.
+% \end{align*}
+% Ist es korrekt, dass daraus die Gleichung
+% \begin{align*}
+%   \lim_{n\to\infty} \abs{f(n) - g(n)} = 0
+% \end{align*}
+% folgt? Begründen Sie die Behauptung oder finden Sie ein Gegenbeispiel.
+
+
+% \question[2] Es sei $f$ eine Funktion von $\N$ nach $\N$. Sei $p>0$ eine natürliche Zahl. Welche Eigenschaft muss $f$ erfüllen, damit die Implikation
+% \begin{align*}
+%   (\quad f(x)\;\text{mod}\; p = f(y)\;\text{mod}\; p \quad) \Rightarrow (x = )
+% \end{align*}
+%
+% % \question[2]
+% Ein Primzahltest ist ein mathematisches Verfahren, um festzustellen, ob eine gegebene natürliche Zahl $n\geq 2$ eine Primzahl ist oder nicht.
+%
+% Unser Primzahltest aus dem Unterricht zeigt, dass es für einen Primzahltest sicherlich ausreicht, für alle Zahlen aus der Menge $\lrc{2, 3, \ldots, \floor{\sqrt{n}}}$ zu prüfen, ob sie Teiler von $n$ sind.
+
+\end{questions}
+
