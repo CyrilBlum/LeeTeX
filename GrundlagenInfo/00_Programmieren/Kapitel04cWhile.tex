@@ -44,14 +44,14 @@ Es geht auch einfacher$\ldots$
 \begin{frame}[fragile]{Spirale: Flussgesteuerter Abbruch (\lstinline[basicstyle=\ttfamily]|break|)}
 \begin{columns}
 \begin{column}{.7\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[escapechar=!]
 from gturtle import *
 makeTurtle()
 
 def spirale(seite, add, max_seite):
-    repeat: # unendliche Schleife
+    repeat:!\tikzmark{repeatFrom}!                            !\tikzmark{repeat}!
     	if seite > max_seite:
-    	    break
+    	    break!\tikzmark{breakFrom}!                       !\tikzmark{break}!
         fd(seite)
         rt(90)
         seite+=add
@@ -68,28 +68,78 @@ spirale(10, 10, 100)
 \end{column}
 \end{columns}
 
-% \begin{figure}[H]
-% \centering
-% \begin{tikzpicture}[node distance=2cm, scale=.6, transform shape, ->]
-%     \centering
-%     \tikzstyle{every node}=[font=\small]
-%     
-%     \node (start) [code] {\pythoninline{note = input("Benoten Sie die Lehrperson.")}};
-%     \node (dec1) [decision, below of=start] {\pythoninline{note == 100}};
-%     \node (print) [code, below of=dec1] {\pythoninline{print("Echt jetzt? Vielen Dank :)"}};
-%     \node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
-%     
-%     \draw (start) -- (dec1);
-%     \draw (dec1) -- node[anchor=east] {\pythoninline{True}} (print);
-%     \draw (dec1) --++ (5cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\pythoninline{False}};
-%     \draw (print) -- (end);
-%     
-% \end{tikzpicture}
-% \end{figure}
+\begin{tikzpicture}[overlay, remember picture,
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+    \drawArrow{repeatFrom}{repeat}{\footnotesize Unendliche Schleife}{CarnationPink};
+    \drawArrow{breakFrom}{break}{\footnotesize Schleifenabbruch}{CarnationPink};
+\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]{while vs. break}
+\begin{columns}
+\begin{column}{.4\textwidth}
+\begin{lstlisting}[escapechar=!,basicstyle=\tiny\ttfamily]
+from gturtle import *
+makeTurtle()
+
+def spirale(seite, add, max_seite):
+    repeat:                !\tikzmark{fromStart}!
+    	if seite > max_seite:
+    	    break          !\tikzmark{fromEnd}!
+        fd(seite)
+        rt(90)
+        seite+=add
+
+spirale(10, 10, 100)
+\end{lstlisting}
+\end{column}
+\begin{column}{.6\textwidth}
+\begin{lstlisting}[escapechar=!,basicstyle=\tiny\ttfamily]
+from gturtle import *
+makeTurtle()
+
+def spirale(seite, add, max_seite):
+    !\tikzmark{toStart}!!\tikzmark{toEnd}!while seite > max_seite:
+        fd(seite)
+        rt(90)
+        seite+=add
+        
+spirale(10, 10, 100)
+\end{lstlisting}
+\end{column}
+\end{columns}
+
+% annotate listings
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+	\only<2->{
+	\drawBrace{0em}{fromStart}{fromEnd}{}{.5}{}
+	\drawBrace{-.5em}{toStart}{toEnd}{}{.5}{mirror}
+	 % arrow pointing from one code to other
+  \draw[->, style={thick, >=stealth, red!70}] (fromStartfromEnd-coord-arrow) to (toStarttoEnd-coord-arrow);
+		}
+\end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile]{Wichtige Bemerkungen}
+\begin{itemize}[<+->]
+\item \lstinline|break| bricht nicht aus \lstinline|def| aus, sondern aus dem (aktuellen) \lstinline|repeat|!
+\item Ein \lstinline|repeat:| (unendliche Schleife) ohne \lstinline|break| kann zum Absturz des Programms führen \emoji{face-with-spiral-eyes}
+\item Je nachdem kann das auch in einem \lstinline|while| passieren, sofern die Bedingung nach dem \lstinline|while| so geschrieben ist, dass sie immer wahr (\lstinline|True|) ist.
+\item \textbf{Speichern Sie regelmässig Ihre Aufgaben!}
+\item Falls das Programm TigerJython hängenbleibt: Beenden mit \keys{Ctrl+Alt+\backdel} (Windows), bzw. Activity Monitor unter MacOS
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Aufträge}
 \begin{itemize}
-\item \lstinline|break| bricht nicht aus \lstinline|def| aus, sondern aus dem (aktuellen) \lstinline|repeat|
+\item \aufgabebox{Aufgaben 4.31}
+\item \readbox{S.82 (unten) - S.83}
+\item \readbox{Beispiel 4.8}
+\item \abgabebox{Aufgaben 4.33 (ohne Flussdiagramme)}
+\item \aufgabebox{Aufgaben 4.38-4.41, 4.43-4.45 (ohne Flussdiagramme)}
+\item \abgabebox{Aufgaben 4.46 (ohne Flussdiagramme)}
 \end{itemize}
 \end{frame}
