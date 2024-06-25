@@ -365,146 +365,143 @@ GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
 }
 \end{frame}
 
+\begin{frame}[label=keyFixed]{Angriff auf Vigenère: Bekannte Schlüssellänge}
+	\textbf{Beispiel}: Geheimtext mit Schlüssellänge 3
+	\only<1>{
+	\begin{figure}[H]
+	        \centering
+	        \includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenereKeyFixed1.png}
+	\end{figure}
+	}
+	
+	\only<2->{
+	\begin{figure}[H]
+	        \centering
+	        \includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenereKeyFixed2.png}
+	\end{figure}
+	}
+	\only<3>{\textbf{Häufigkeitsanalyse} pro Gruppe (rot, grün, blau):\\
+	\begin{figure}[H]
+	        \centering
+	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-geheimtext.png}}
+	        \raisebox{-0.5\height}{$\rightarrow$}
+	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-klartext.png}}
+	\end{figure}}
+\end{frame}
 
-% \begin{frame}[label=keyFixed]{Angriff auf Vigenère: Bekannte Schlüssellänge}
-% 	\textbf{Beispiel}: Geheimtext mit Schlüssellänge 3
-% 	\only<1>{
-% 	\begin{figure}[H]
-% 	        \centering
-% 	        \includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenereKeyFixed1.png}
-% 	\end{figure}
-% 	}
-% 	
-% 	\only<2->{
-% 	\begin{figure}[H]
-% 	        \centering
-% 	        \includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenereKeyFixed2.png}
-% 	\end{figure}
-% 	}
-% 	\only<3>{\textbf{Häufigkeitsanalyse} pro Gruppe (rot, grün, blau):\\
-% 	\begin{figure}[H]
-% 	        \centering
-% 	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-geheimtext.png}}
-% 	        \raisebox{-0.5\height}{$\rightarrow$}
-% 	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-klartext.png}}
-% 	\end{figure}}
-% \end{frame}
+\begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
+Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\rightarrow$ \textbf{Idee:}
+	\begin{itemize}\only<1>{
+	
+	\item<1> Die Häufigkeit der Buchstaben in einem Vigenère-Geheimtext ist wegen der \textit{polyalphabetischen} Verschlüsselung relativ \textit{gleichmässig}...
+		\begin{figure}[H]
+				\centering
+				\raisebox{-0.5\height}{\includegraphics[width=.85\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec_alletters}}
+				\raisebox{-0.5\height}{\includegraphics[width=.6\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere2.png}}
+			\end{figure}}
+			\only<2->{
+	\item<2-> ...ausser wir schauen die Buchstaben eben in \colorstring[ForestGreen,RoyalBlue,Crimson]{Gruppen} an!
+		\begin{figure}[H]
+			\centering
+			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec0}}
+			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec1}}
+			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec2}}\\
+			(Schrittgrösse=3)
+		\end{figure}
+		
+	\item<3> Kann man für die ``(Un-)Gleichmässigkeit'' der Verteilung eine einzige ``Zahl'' erfinden?}
+		\end{itemize}
+\end{frame}
 
-% \begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
-% Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\rightarrow$ \textbf{Idee:}
-% 	\begin{itemize}\only<1>{
-% 	
-% 	\item<1> Die Häufigkeit der Buchstaben in einem Vigenère-Geheimtext ist wegen der \textit{polyalphabetischen} Verschlüsselung relativ \textit{gleichmässig}...
-% 		\begin{figure}[H]
-% 				\centering
-% 				\raisebox{-0.5\height}{\includegraphics[width=.85\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec_alletters}}
-% 				\raisebox{-0.5\height}{\includegraphics[width=.6\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere2.png}}
-% 			\end{figure}}
-% 			\only<2->{
-% 	\item<2-> ...ausser wir schauen die Buchstaben eben in \colorstring[ForestGreen,RoyalBlue,Crimson]{Gruppen} an!
-% 		\begin{figure}[H]
-% 			\centering
-% 			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec0}}
-% 			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec1}}
-% 			\raisebox{-0.5\height}{\includegraphics[width=.45\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec2}}\\
-% 			(Schrittgrösse=3)
-% 		\end{figure}
-% 		
-% 	\item<3> Kann man für die ``(Un-)Gleichmässigkeit'' der Verteilung eine einzige ``Zahl'' erfinden?}
-% 		\end{itemize}
-% \end{frame}
-%
-%
-% \begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
-% 	Durchschnittliche Abweichung vom Mittelwert:
-% 	\begin{figure}[H]
-% 	        \centering
-% 	        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann2.png}
-% 	\end{figure}
-% 	\only<2>{
-% 	\begin{align*}
-% 	    FC(T)&=\Big(h_A(T)-\frac{1}{26}\big)^2+\Big(h_B(T)-\frac{1}{26}\Big)^2+\ldots+\Big(h_Z(T)-\frac{1}{26}\Big)^2\\
-% 	    &=\sum_{\Delta\in \text{Alphabet}}\Big(h_\Delta(T)-\frac{1}{26}\Big)^2
-% 	\end{align*}
-% 	\emoji{flag-germany} $FC(T)\sim 0.0388$ für deutsche Texte 
-% 	}
-% \end{frame}
-%
-% \begin{frame}{Angriff auf Vigenère: Beispiel}{Friedmann'sche Charakteristik + Häufigkeitsanalyse}
-% \texttt{MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIP\\
-% 		CQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB}\\[.2cm]
-% 	\only<2-9>{
-% 		\textit{Brute force}-Ansatz, um Wortlänge von Vigenère zu berechnen: 
-% 	\begin{enumerate}[<+->]
-% 		    \item Alle möglichen Schlüsselwortlängen von 1 bis $n$ ausprobieren
-% 		    \item Buchstaben jeweils in Gruppen unterteilen
-% 		    \begin{itemize}
-% 		   		\scriptsize
-% 		   		\item 2 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
-% 		   						MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 
-% 		   						PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
-% 		   		\item 3 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
-% 		   		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ
-% 		   		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
-% 		   		\item 4 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson,LightSlateBlue]{MUZ KJL QPA WJU MHY IILLCZ AUP MRL ZHL SVC MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
-% 		   		\item ...
-% 		   	\end{itemize}
-% 		    \item Durchschnittliche $FC(T)$ für alle Gruppen pro Schlüssellänge berechnen. 
-% 		    \item Wenn die richtige Schlüssellänge gewählt wurde, sollte $FC(T)\sim 0.0388$ sein.
-% 		\end{enumerate}}
-% 	    
-% \only<10>{	
-% 		\begin{figure}[H]
-% 			\centering
-% 			\includegraphics[width=.75\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann-ex3}
-% 		\end{figure}
-% 	$\rightarrow$ Zeigt, wie ungleich die Buchstaben verteilt sind, wenn wir sie in 1, 2, 3, 4, ... Gruppen aufteilen.\\
-% 	$\rightarrow$ Hier sehen wir visuell, dass die Wortlänge 3 sein muss.}
-% \end{frame}
-%
-% \begin{frame}{Angriff auf Vigenère: Beispiel}{Friedmann'sche Charakteristik + Häufigkeitsanalyse}
-% \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
-% 		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 
-% 		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
-% 		
-% 		$\rightarrow$ Häufigster Buchstaben pro Gruppe: \textcolor{ForestGreen}{M}, \textcolor{RoyalBlue}{G}, \textcolor{Crimson}{L}
-% 		
-% 		\begin{figure}[H]
-% 			\centering
-% 			\resizebox{.75\textwidth}{!}{\caesar[8] \caesar[2] \caesar[7]}
-% 		\end{figure}
-% \end{frame}
-%
-% \begin{frame}[label=auftrag]{Auftrag}
-% 	\begin{itemize}
-% 		\item Kopieren Sie den Geheimtext (Vigenère) von Moodle und versuchen Sie, ihn mit dem Analysetool zu entziffern
-% 		\item \emoji{trophy} Challenge: Versuchen Sie, die Challenge-Aufgabe auf Moodle zu lösen
-% 	\end{itemize}
-% \end{frame}
-%
-%
-% \begin{frame}[label=auftrag]{\emoji{trophy} Challenge-Auftrag}
-% 	\small
-% Teil 1: Verschlüsselung
-% \begin{itemize}
-% 	\item Erstellen Sie einen Text in deutscher Sprache mit mindestens 1000 Zeichen, beispielsweise mittels folgender Webseite: \url{https://www.blindtextgenerator.de/}
-% 	\item Wählen Sie ein \textit{geheimes} Schlüsselwort (3-7 Zeichen) und verschlüsseln Sie Ihren Text mit Vigenère (s. Moodle, Python-Datei 1).
-% \end{itemize}
-% Teil 2: Entschlüsselung
-% \begin{itemize}
-% 	\item Zuerst wird die Schlüssellänge per Friedmann-Test bestimmt  (s. Moodle, Python-Datei 2). 
-% 	\item Danach wird innerhalb jeder Gruppe der häufigste Buchstabe gesucht. Dieser entspricht mit hoher Wahrscheinlichkeit dem Buchstaben ``E'', somit haben wir die Verschiebung für diese Wort-Gruppe gefunden und damit auch das Schlüsselwort  (s. Moodle, Python-Datei 3).
-% 	\item Der Text kann nun wieder mit dem Vigenère-Programm entschlüsselt werden  (s. Python-Datei 1). 
-% \end{itemize}
-% \normalsize
-% \end{frame}
+\begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
+	Durchschnittliche Abweichung vom Mittelwert:
+	\begin{figure}[H]
+	        \centering
+	        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann2.png}
+	\end{figure}
+	\only<2>{
+	\begin{align*}
+	    FC(T)&=\Big(h_A(T)-\frac{1}{26}\Big)^2+\Big(h_B(T)-\frac{1}{26}\Big)^2+\ldots+\Big(h_Z(T)-\frac{1}{26}\Big)^2\\
+	    &=\sum_{\Delta\in \text{Alphabet}}\Big(h_\Delta(T)-\frac{1}{26}\Big)^2
+	\end{align*}
+	\emoji{flag-germany} $FC(T)\sim 0.0388$ für deutsche Texte 
+	}
+\end{frame}
 
-%\begin{frame}[label=auftrag]{Auftrag}
-%\begin{itemize}
-%    \item Aufgabe 2.27 (Häufigkeitsanalyse)
-%    \item Aufgabe 2.28 (Monoalphabetische Verschlüsselung)
-%    \item Aufgabe 2.35 (Vigenère)
-%    \item Aufgabe 2.40 (Kasiski-Test)
-%    \item Aufgabe 2.42 (Friedmann'sche Charakteristik)
-%\end{itemize}
-%\end{frame}
+\begin{frame}{Angriff auf Vigenère: Beispiel}{Friedmann'sche Charakteristik + Häufigkeitsanalyse}
+\texttt{MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIP\\
+		CQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB}\\[.2cm]
+	\only<2-9>{
+		\textit{Brute force}-Ansatz, um Wortlänge von Vigenère zu berechnen: 
+	\begin{enumerate}[<+->]
+		    \item Alle möglichen Schlüsselwortlängen von 1 bis $n$ ausprobieren
+		    \item Buchstaben jeweils in Gruppen unterteilen
+		    \begin{itemize}
+		   		\scriptsize
+		   		\item 2 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
+		   						MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 
+		   						PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		   		\item 3 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
+		   		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ
+		   		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		   		\item 4 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson,LightSlateBlue]{MUZ KJL QPA WJU MHY IILLCZ AUP MRL ZHL SVC MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		   		\item ...
+		   	\end{itemize}
+		    \item Durchschnittliche $FC(T)$ für alle Gruppen pro Schlüssellänge berechnen. 
+		    \item Wenn die richtige Schlüssellänge gewählt wurde, sollte $FC(T)\sim 0.0388$ sein.
+		\end{enumerate}}
+	    
+\only<10>{	
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=.75\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann-ex3}
+		\end{figure}
+	$\rightarrow$ Zeigt, wie ungleich die Buchstaben verteilt sind, wenn wir sie in 1, 2, 3, 4, ... Gruppen aufteilen.\\
+	$\rightarrow$ Hier sehen wir visuell, dass die Wortlänge 3 sein muss.}
+\end{frame}
+
+\begin{frame}{Angriff auf Vigenère: Beispiel}{Friedmann'sche Charakteristik + Häufigkeitsanalyse}
+\texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
+		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 
+		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		
+		$\rightarrow$ Häufigster Buchstaben pro Gruppe: \textcolor{ForestGreen}{M}, \textcolor{RoyalBlue}{G}, \textcolor{Crimson}{L}
+		
+		\begin{figure}[H]
+			\centering
+			\resizebox{.75\textwidth}{!}{\caesar[8] \caesar[2] \caesar[7]}
+		\end{figure}
+\end{frame}
+
+\begin{frame}[label=auftrag]{Auftrag}
+	\begin{itemize}
+		\item Kopieren Sie den Geheimtext (Vigenère) von Moodle und versuchen Sie, ihn mit dem Analysetool zu entziffern
+		\item \emoji{trophy} Challenge: Versuchen Sie, die Challenge-Aufgabe auf Moodle zu lösen
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[label=auftrag]{\emoji{trophy} Challenge-Auftrag}
+	\small
+Teil 1: Verschlüsselung
+\begin{itemize}
+	\item Erstellen Sie einen Text in deutscher Sprache mit mindestens 1000 Zeichen, beispielsweise mittels folgender Webseite: \url{https://www.blindtextgenerator.de/}
+	\item Wählen Sie ein \textit{geheimes} Schlüsselwort (3-7 Zeichen) und verschlüsseln Sie Ihren Text mit Vigenère (s. Moodle, Python-Datei 1).
+\end{itemize}
+Teil 2: Entschlüsselung
+\begin{itemize}
+	\item Zuerst wird die Schlüssellänge per Friedmann-Test bestimmt  (s. Moodle, Python-Datei 2). 
+	\item Danach wird innerhalb jeder Gruppe der häufigste Buchstabe gesucht. Dieser entspricht mit hoher Wahrscheinlichkeit dem Buchstaben ``E'', somit haben wir die Verschiebung für diese Wort-Gruppe gefunden und damit auch das Schlüsselwort  (s. Moodle, Python-Datei 3).
+	\item Der Text kann nun wieder mit dem Vigenère-Programm entschlüsselt werden  (s. Python-Datei 1). 
+\end{itemize}
+\normalsize
+\end{frame}
+
+\begin{frame}[label=auftrag]{Auftrag}
+\begin{itemize}
+   \item Aufgabe 2.27 (Häufigkeitsanalyse)
+   \item Aufgabe 2.28 (Monoalphabetische Verschlüsselung)
+   \item Aufgabe 2.35 (Vigenère)
+   \item Aufgabe 2.40 (Kasiski-Test)
+   \item Aufgabe 2.42 (Friedmann'sche Charakteristik)
+\end{itemize}
+\end{frame}
