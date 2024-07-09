@@ -93,33 +93,15 @@
 
 \pgfset{foreach/parallel foreach/.style args={#1in#2via#3}{evaluate=#3 as #1 using {{#2}[#3-1]}}}
 
-% macro for creating a title page
-\newcommand{\maketitlepage}[2]{
-  % arg1: title
-  % arg2: subtitle
-  \begin{titlepage}
-    \vspace*{0.25\textheight}
-    \begin{center}
+\newcommand{\makeSpiral}{
+\begin{center}
 
-      % logo
-      %	      \begin{figure}[H]
-      %	        \centering
-      %	        \includegraphics[height=.15\textwidth]{LeeLogo}
-      %	      \end{figure}
-      \textbf{Informatik}\\
-      % title
-      \newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
-      \HRule \\[0.5cm]
-      \ifblank{#2}{
-      % if no subtitle is given (#2 blank)
-      {\huge #1}\\[0.5cm]
-
-      \begin{tikzpicture}[remember picture,overlay]
+\begin{tikzpicture}[remember picture,overlay]
         % logo
         % Define the desired (x, y) coordinate	          
         % Create a scope for the centered image
         % Insert your external image
-        \node[draw=white!10,fill=white!20, opacity=0.3] at (0,4) {\includegraphics[width=.5\textwidth]{LeeLogo}};
+        \node[draw=white!10,fill=white!20, opacity=0.3] at (0,5) {\centering\includegraphics[width=.5\textwidth]{LeeLogo}};
 
 
         \begin{scope}[on background layer]
@@ -153,10 +135,35 @@
           \end{scope}
         \end{scope}
       \end{tikzpicture}
+      \end{center}
+}
+
+% macro for creating a title page
+\newcommand{\maketitlepage}[2]{
+  % arg1: title
+  % arg2: subtitle
+  \begin{titlepage}
+    \vspace*{0.25\textheight}
+    \begin{center}
+
+      % logo
+      %	      \begin{figure}[H]
+      %	        \centering
+      %	        \includegraphics[height=.15\textwidth]{LeeLogo}
+      %	      \end{figure}
+      \textbf{Informatik}\\
+      % title
+      \newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+      \HRule \\[0.5cm]
+      \ifblank{#2}{
+      % if no subtitle is given (#2 blank)
+      {\huge #1}\\[0.5cm]
+      \makeSpiral 
       {\large Skript}\\[0.2cm]
       }{
       % if #2 not blank
       {\huge #1}\\[0.5cm]
+      \makeSpiral
       {\large #2}\\[0.2cm]
       }
 
