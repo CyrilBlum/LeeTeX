@@ -69,17 +69,17 @@ for i in "${!classes[@]}"; do
         cp ${root_dir}/main.tex $output_file
 	
 	    # Replace the document class line
-    	sed -i '' "s/\\\\documentclass.*{.*}/${class_commands[$i]}/" "$output_file"
+    	sed -i "s/\\\\documentclass.*{.*}/${class_commands[$i]}/" "$output_file"
     	
    	    # Replace the document class toggle line
-    	sed -i '' "s/\\\\def\\\\documentToggle{[0-9]}/\\\\def\\\\documentToggle{${toggles[$i]}}/" "$output_file"
+    	sed -i "s/\\\\def\\\\documentToggle{[0-9]}/\\\\def\\\\documentToggle{${toggles[$i]}}/" "$output_file"
     	
 	    # replace the topic line
-        sed -i '' "s/\\\\newcommand{\\\\thetopic}{.*}/\\\\newcommand{\\\\thetopic}{${topic}}/" "$output_file"
+        sed -i "s/\\\\newcommand{\\\\thetopic}{.*}/\\\\newcommand{\\\\thetopic}{${topic}}/" "$output_file"
 
         # Uncomment the necessary input lines
         for input_path in "${input_files[@]}"; do
-		    sed -i ''  "s|[[:space:]]*%[[:space:]]*\\\\input{${input_path}}|\\\\input{${input_path}}|" "$output_file"
+		    sed -i "s|[[:space:]]*%[[:space:]]*\\\\input{${input_path}}|\\\\input{${input_path}}|" "$output_file"
         done
 
         # Compile the LaTeX document
