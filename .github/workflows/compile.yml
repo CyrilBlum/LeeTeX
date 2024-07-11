@@ -10,13 +10,25 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "greet"
-  greet:
+  # This workflow contains a single job called "compile"
+  compile:
     # The type of runner that the job will run on
     runs-on: self-hosted
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello World!"
+    # Check out the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Runs a single command using the runner's shell to make sure you have the latest version
+    - name: Ensure latest version
+      run: |
+        git fetch --all
+        git reset --hard origin/main
+
+    # Runs the compile_tex.sh script
+    - name: Run compile_tex.sh      
+      run: |
+        mkdir PDFs
+        ./compile.sh
