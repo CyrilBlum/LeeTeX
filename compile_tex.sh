@@ -39,6 +39,8 @@ declare -A beamer_topics=(
 
 # Directory where your LaTeX files are stored
 root_dir=$(pwd)
+pwd
+ls -la
 latex_dir="${root_dir}/PDFs/"
 server_dir="/var/www/in-form-atik.ch/public_html/pdfs/"
 
