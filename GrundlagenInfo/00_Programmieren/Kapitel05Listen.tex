@@ -1,0 +1,186 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=TigerJython, basicstyle=\scriptsize\ttfamily}
+
+\begin{frame}
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+    \end{figure}
+    Informatik: Programmieren\\
+    \emoji{clipboard} Kapitel 5: \textbf{Listen}
+\end{frame}
+
+\begin{frame}[fragile]{Beispiel}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{lstlisting}
+# zwei Zahlen summieren
+def summiere(x1, x2):
+	summe = x1 + x2
+	print(summe)
+	
+summiere(5, 16)
+\end{lstlisting}
+\end{column}
+
+\begin{column}{.5\textwidth}
+\begin{lstlisting}
+# viele Zahlen summieren
+def summiere(x1, x2, x3, x4, ...):
+	summe = x1 + x2 + x3 + x4 + ...
+	print(summe)
+	
+summiere(3, 18, 2, 4, ...)?
+\end{lstlisting}
+\end{column}
+\end{columns}
+\begin{itemize}
+\item Wie kann man \lstinline|summiere(x1, x2, …, x100)| umsetzen? $\rightarrow$ umständlich!
+\item \lstinline|summiere(...)| für eine beliebige Anzahl von Zahlen? $\rightarrow$ unmöglich mit aktuellem Wissen!
+\item Lösung: \textbf{Listen}
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Listen}{Listen erstellen und abfragen}
+\begin{lstlisting}
+# Neue Variable des Typs Liste erstellen
+daten = [4, 2, -6, 17, 5, 12] 
+print(daten[0])   # 4
+print(daten[1])   # 2
+...               # usw.
+\end{lstlisting}
+
+\begin{itemize}[<+->]
+\item Welche anderen Variablen-Typen kennen Sie?
+\begin{itemize}
+\item Zahl: \lstinline|x=3|
+\item Text: \lstinline|name="Hallo"|
+\end{itemize}
+\item Wie viele Werte enthält eine Liste?
+\begin{itemize}
+\item Automatiksch berechnet mit: \lstinline|len(daten) # 6|
+\item Erstes Element der Liste: \lstinline|daten[0]|
+\item Letztes Element der Liste: \lstinline|daten[len(daten)-1]|
+\item Weshalb nicht \lstinline|daten[len(daten)]|?
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Listen}{Listen verändern}
+\begin{lstlisting}
+# Neue Variable des Typs Liste erstellen
+daten = [4, 2, -6, 17, 5, 12] 
+print(daten)   # 4, 2, -6, 17, 5, 12
+daten[3] = 20  # Ein Element der Liste wird verändert (welches?)
+print(daten)   # ?
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Listen}{Listen verändern}
+\begin{lstlisting}
+# Neue Variable des Typs Liste erstellen
+daten = [4, 2, -6, 17, 5, 12] 
+print(daten)   # 4, 2, -6, 17, 5, 12
+daten[3] = 20  # Ein Element der Liste wird verändert (welches?)
+print(daten)   # 4, 2, -6, 20, 5, 12
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Durch jedes Element in einer Liste durchgehen}{Flexibler Summen-Befehl (Möglichkeit 1/2)}
+\begin{lstlisting}
+def summiere(daten):
+	i = 0           # Hilfs-Index, um auf Elemente von daten zuzugreifen
+	summe = 0       # Variable, um alle Elemente von "daten" zu summieren
+	n = len(daten)  # Anzahl Elemente in "daten" (Wert?)
+	
+	# Durch alle Elemente von Daten durchgehen und zu Summe hinzufügen
+	repeat n:
+		wert = daten[i] # Auf jedes Element von Daten zugreifen 
+		summe += wert   # Wert zu Summe hinzufügen
+		i += 1          # Hilfs-Index um 1 vergrössern (Werte?)
+		
+	print(summe)
+	
+daten = [4, 2, -6, 17, 5, 12] 
+summiere(daten)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Durch jedes Element in einer Liste durchgehen}{Flexibler Summen-Befehl (Möglichkeit 2/2)}
+\begin{lstlisting}
+def summiere(daten):
+	summe = 0       # Variable, um alle Elemente von "daten" zu summieren
+	
+	# Durch alle Elemente von Daten durchgehen und zu Summe hinzufügen
+	for d in daten:
+		summe += d   # Wert zu Summe hinzufügen
+
+	print(summe)
+	
+daten = [4, 2, -6, 17, 5, 12] 
+summiere(daten)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{4 Fehler}
+Wir wollen jedes Element von x um 2 vergrössern
+\begin{lstlisting}
+daten = [4, 2, -6, 17, 5, 12] 
+index = 1
+repeat 6:
+	index += 1
+	
+print(x)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{4 Fehler}
+Wir wollen jedes Element von x um 2 vergrössern
+\begin{lstlisting}
+daten = [4, 2, -6, 17, 5, 12] 
+index = 0
+repeat len(daten):
+	x[index] += 2
+	index += 1
+	
+print(x)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Überprüfen, ob etwas in einer Liste ist}{Mani Matter (\href{https://youtu.be/gQbF9Ck1ccc?feature=shared}{Link})}
+
+\begin{lstlisting}
+zutaten_sandwich = ["brot", "fleisch", "anke", "brot"]
+
+if "brot" not in zutaten_sandwich:
+    print("Was isch es Sandwich ohni Brot? S'isch nume Fleisch!")
+elif "fleisch" not in zutaten_sandwich:
+    print("Was isch es Sandwich ohni Fleisch? S'isch nume Brot!")
+elif "anke" not in zutaten_sandwich:
+    print("Anke fäut!")
+elif zutaten_sandwich[0] != zutaten_sandwich[len(zutaten_sandwich)-1]:
+    print("Es brucht es Brot obe und eis unte")
+else:
+    print("Guet, dass Du auem Rächnig treisch!")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag}
+\begin{itemize}
+\item \readbox{``Neue Konzepte und Begriffe'', S.95}
+\item \readbox{Beispiel 5.2 (S.95)}
+\item \aufgabebox{Aufgaben 5.4, 5.5}
+\item \abgabebox{Aufgabe 5.6}
+\item \aufgabebox{Aufgaben 5.7, 5.8}
+\item \abgabebox{Aufgabe 5.9}
+\item \aufgabebox{Aufgabe 5.13}
+\item \aufgabebox{Aufgabe 5.13}
+\end{itemize}
+\end{frame}

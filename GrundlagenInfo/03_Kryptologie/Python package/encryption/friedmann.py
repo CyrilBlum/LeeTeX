@@ -1,7 +1,4 @@
 ﻿from collections import Counter    
-#from gturtle import *
-#makeTurtle()
-#hideTurtle()
 import matplotlib.pyplot as plt
 import numpy as np
 

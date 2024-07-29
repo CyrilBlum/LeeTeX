@@ -1,16 +1,16 @@
 %!TeX program = lualatex
 
-%% choose document class (book / exam / article / beamer)
+%% choose document class (book / article / exam / beamer)
 %% BOOK
 % \documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}
-% \documentclass[a4paper,11pt,svgnames,oneside]{book}
+ \documentclass[a4paper,11pt,svgnames,oneside]{book}
 
 %% ARTICLE
 % \documentclass[svgnames,hyphens]{article}
 
 %% EXAM
 % \documentclass[11pt,addpoints,svgnames]{exam}
-\documentclass[11pt,addpoints,answers,svgnames]{exam}
+%\documentclass[11pt,addpoints,answers,svgnames]{exam}
 
 %% BEAMER
 % \documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}
@@ -21,11 +21,11 @@
 %% set toggles (switches) for the document class
 \newtoggle{book} \newtoggle{article} \newtoggle{exam} \newtoggle{beamer} %% default value is 'false'
 
-\def\documentToggle{2} %% <---- choose number
-\ifnumequal{\documentToggle}{0}{\settoggle{book}{true}}{}     %% book
-\ifnumequal{\documentToggle}{1}{\settoggle{article}{true}}{}  %% article
-\ifnumequal{\documentToggle}{2}{\settoggle{exam}{true}}{}     %% exam
-\ifnumequal{\documentToggle}{3}{\settoggle{beamer}{true}}{}   %% beamer
+\def\documentToggle{0} %% <---- choose number
+\ifnumequal{\documentToggle}{0}{\settoggle{book}{true}}{}     %% book (0)
+\ifnumequal{\documentToggle}{1}{\settoggle{article}{true}}{}  %% article (1)
+\ifnumequal{\documentToggle}{2}{\settoggle{exam}{true}}{}     %% exam (2)
+\ifnumequal{\documentToggle}{3}{\settoggle{beamer}{true}}{}   %% beamer (3)
 
 %% Does the document contain at least one citation? (true / false)
 \newtoggle{citations} \settoggle{citations}{true}
@@ -61,57 +61,91 @@
 
 \begin{document}
 %% BOOK
-\iftoggle{book} {
+\iftoggle{book} {%
 	%% title for title page
-	% \newcommand{\thetopic}{Programmieren}
+	 \newcommand{\thetopic}{Programmieren}
 	% \newcommand{\thetopic}{Randomisierte Algorithmen}
 	% \newcommand{\thetopic}{Zahlendarstellungen und Kodierungen}
 	% \newcommand{\thetopic}{Daten \& SQL}
 	% \newcommand{\thetopic}{Kompression}
-	\newcommand{\thetopic}{Induktion und Rekursion}
+	% \newcommand{\thetopic}{Induktion und Rekursion}
 	% \newcommand{\thetopic}{Kryptologie}
 	% \newcommand{\thetopic}{Netzwerke}
 	%% emojis on title page (see emoji package)
 	% \def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
-	\def\arrayB{"ledger","pencil","laptop","key","divide","satellite-antenna","infinity"}
+	\def\arrayB{"ledger","pencil","laptop","technologist","divide","satellite-antenna","globe-with-meridians"}
 	\frontmatter
+	
+	% special case to make "diplomas" using the title page template
+	%	\foreach \person/\platz/\mention in {Loris Alexander Amacker/2. Platz/{herausragendes },
+	%	Jan Sebastian Baik/Honorable Mention/,
+	%	Dennis Beck/3. Platz/{herausragendes },
+	%	Florian Boss/1. Platz/{herausragendes },
+	%	Matteo Esteban Ceccon/1. Platz/{herausragendes },
+	%	Marcel Debrunner/2. Platz/{herausragendes },
+	%	Felix Fischer/Honorable Mention/,
+	%	Lina Flückiger/Honorable Mention/,
+	%	Beatrice Fullagar/Honorable Mention/,
+	%	Niclas Graf/Honorable Mention/,
+	%	Ikarus Knoblauch/Honorable Mention/,
+	%	Bernard Rognon/2. Platz/{herausragendes },
+	%	Lenny Matteo Schmid/1. Platz/{herausragendes },
+	%	Julius Schöner/3. Platz/{herausragendes },,}{%	\maketitlepage{\textbf{\platz\\[.3cm]\person}}{Informatik-Interessenwoche zum Thema Web-Technologien\\[.3cm]Für ein \mention Projekt mit HTML, CSS und JS}
+	%	}
+	
+	%% Title Page
 	\maketitlepage{\thetopic}{}
-	% \include{titlepage}
-	% \include{vorwort}
 	\tableofcontents
 	\markright{}
 	\cleardoublepage
-	\mainmatter
+	\mainmatter  	
+	
+	%% Environemnts
 	% \part{Environments}
 	% \input{LaTeX_related/example_file}
-	%% 01 Zahlendarstellungen und Kodierungen
+	% \input{LaTeX_related/mwe.tex}
+	
+	%% Zahlendarstellungen und Kodierungen
 	% \part{Zahlendarstellungen und Kodierungen}
-	% \include{GrundlagenInfo/01_TheoretischeInformatik/kapitel01.tex}
-	%% 03 Kryptologie
+	% \input{GrundlagenInfo/01_TheoretischeInformatik/kapitel01.tex}
+	
+	%% Kryptologie
 	% \part{Kryptologie}
-  \input{GrundlagenInfo/03_Kryptologie/Skript_Kryptologie.tex}
-	%% 04 Kompression
+  	% \input{GrundlagenInfo/03_Kryptologie/Skript_Kryptologie.tex}
+	
+	%% Kompression
 	% \input{GrundlagenInfo/04_Kompression/Kapitel 1}
-	%% 06 Datenbanken
+
+	%% Datenbanken
 	% \part{Datenbanken}
 	% \input{GrundlagenInfo/06_Daten/Preface}\clearpage
-	% \input{GrundlagenInfo/06_Daten/Kapitel 1}\clearpage
-	% \input{GrundlagenInfo/06_Daten/Kapitel 2}\clearpage
-	% \input{GrundlagenInfo/06_Daten/Kapitel 3}\clearpage
-	% \input{GrundlagenInfo/06_Daten/Kapitel 4}\clearpage
+	% \input{GrundlagenInfo/06_Daten/Kapitel1}\clearpage
+	% \input{GrundlagenInfo/06_Daten/Kapitel2}\clearpage
+	% \input{GrundlagenInfo/06_Daten/Kapitel3}\clearpage
+	% \input{GrundlagenInfo/06_Daten/Kapitel4}\clearpage
 	% \input{GrundlagenInfo/06_Daten/Cheatsheet}\clearpage
-  %% Netzwerke
+  	
+  	% Netzwerke
 	% \part{Netzwerke}
-	% \include{GrundlagenInfo/07_Netzwerke/kapitel01}
-	%% Rekursion
+	% \input{GrundlagenInfo/07_Netzwerke/kapitel01}
+	% Rekursion
+
 	% \part{Induktion und Rekursion}
 	% \input{EF/InduktionUndRekursion/kapitel00.tex}
 	% \input{EF/InduktionUndRekursion/kapitel01.tex}
 	% \input{EF/InduktionUndRekursion/kapitel02.tex}
 	% \input{EF/InduktionUndRekursion/kapitel03.tex}
 	% \input{EF/InduktionUndRekursion/kapitel04.tex}
-  % \part{Randomisierte Algorithmen}	
-  % \input{GrundlagenInfo/01_TheoretischeInformatik/randomisiertes_protokoll.tex}
+
+	%% Randomisierte Algorithment
+  	% \part{Randomisierte Algorithmen}	
+  	% \input{GrundlagenInfo/01_TheoretischeInformatik/randomisiertes_protokoll.tex}
+
+	%% Programmieren
+  	% \part{Programmieren} 
+	% \input{GrundlagenInfo/00_Programmieren/Skript_Programmieren_K01_Zeichenketten}
+	
+	%% Appendices
 	% \appendix
 	% \input{appendix.tex}
 	% \backmatter
@@ -124,48 +158,56 @@
 } {}
 
 %% ARTICLE
-\iftoggle{article} {
+\iftoggle{article} {%
 	% \input{LaTeX_related/mwe.tex}
-	% \input{Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee}
+%	 \input{Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee}
+	 \input{Interessenwochen/Wn_Gf_Sommer_2024/Auftrag}
 	% \input{Private/Handout GDI}
 	% \input{Private/Themenvertiefung GDI}
 	% \input{Private/Semesterplanung Programmieren}
-	% \input{GrundlagenInfo/04_Kompression/Lernziele}
+%	 \input{GrundlagenInfo/04_Kompression/Lernziele}
 	% \input{GrundlagenInfo/Various/Fun_Quotes}
 	% \input{GrundlagenInfo/01_TheoretischeInformatik/Lernziele}
 	% \input{GrundlagenInfo/03_Kryptologie/Lernziele}
-	% \input{GrundlagenInfo/00_Programmieren/Lernziele}
+%  	 \input{GrundlagenInfo/00_Programmieren/Lernziele}
 	% \input{GrundlagenInfo/05_ErrorChecking/Lernziele}
 	% \input{GrundlagenInfo/06_Daten/Lernziele}
-	% \input{GrundlagenInfo/07_Netzwerke/Filius_MacOS}
+%  	 \input{GrundlagenInfo/07_Netzwerke/Lernziele}
+%  	\input{GrundlagenInfo/08_Gesellschaft/HannahFry}
+ 	% \input{GrundlagenInfo/03_Kryptologie/vigenere_tabelle.tex} 
 	% \clearpage
 	% \printbibliography
 } {}
 
 %% EXAM
-\iftoggle{exam} {
+\iftoggle{exam} {%
 	% \input{GrundlagenInfo/ExamQuestions/Questions}
 	% \input{GrundlagenInfo/00_Programmieren/ExamQuestions/QuestionsProg}
 	% \input{EF/Exams/EA_00.tex}
 	% \input{EF/Exams/EA_01.tex}
 	% \input{GrundlagenInfo/01_TheoretischeInformatik/probepruefung_randomisiertes_protokoll.tex}
-  \input{GrundlagenInfo/01_TheoretischeInformatik/pruefung_randomisiert.tex}
+	% \input{GrundlagenInfo/01_TheoretischeInformatik/2e_pruefung_randomisiert.tex}
+  % \input{GrundlagenInfo/01_TheoretischeInformatik/2f_pruefung_randomisiert.tex}
+  % \input{GrundlagenInfo/01_TheoretischeInformatik/2g_pruefung_randomisiert.tex}
+  % \input{GrundlagenInfo/01_TheoretischeInformatik/2b_pruefung_randomisiert.tex}
+  \input{GrundlagenInfo/01_TheoretischeInformatik/2e_np_pruefung_randomisiert.tex}
+ 	% \input{GrundlagenInfo/01_TheoretischeInformatik/pruefung_randomisiert.tex}
 } {}
 
 %% BEAMER
-\iftoggle{beamer} {
-	% \input{GrundlagenInfo/00_Programmieren/Examples_Exam}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel01Intro}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel02aDefinitionen}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel02bAnimationen}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel03aParameter}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel03bVariablen}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel03cZeitTabellen}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel03dInput}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel03eReturn}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel04aIfElifElse}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel04bLogischeOperatoren}
-	% \input{GrundlagenInfo/00_Programmieren/Kapitel04cWhile}
+\iftoggle{beamer} {%
+% \input{GrundlagenInfo/00_Programmieren/Examples_Exam}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel01Intro}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel02aDefinitionen}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel02bAnimationen}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel03aParameter}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel03bVariablen}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel03cZeitTabellen}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel03dInput}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel04aIfElifElse}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel04bLogischeOperatoren}
+%	 \input{GrundlagenInfo/00_Programmieren/Kapitel04cWhile}
+	 \input{GrundlagenInfo/00_Programmieren/Kapitel05Listen}
 	% \input{GrundlagenInfo/00_Programmieren/Kapitel07Funktionen}
 	% \input{GrundlagenInfo/00_Programmieren/TurtleGrafik}
 	% \input{GrundlagenInfo/01_TheoretischeInformatik/Zahlensysteme_L01}
@@ -178,15 +220,15 @@
 	% \input{GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01}
 	% \input{GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel02}
 	% \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L01}
-	% \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L02}
+%	\input{GrundlagenInfo/03_Kryptologie/Kryptologie_L02}
 	% \input{GrundlagenInfo/03_Kryptologie/Kryptologie_L03}
 	% \input{GrundlagenInfo/03_Kryptologie/Appendix}
 	% \input{GrundlagenInfo/04_Kompression/Kompression_L01}
 	% \input{GrundlagenInfo/04_Kompression/Kompression_L02}
 	% \input{GrundlagenInfo/05_ErrorChecking/ErrorChecking}
-	% \input{GrundlagenInfo/06_Daten/Presentation 1}
-	% \input{GrundlagenInfo/06_Daten/Presentation 2}
-	% \input{GrundlagenInfo/06_Daten/Presentation 3}
+%	 \input{GrundlagenInfo/06_Daten/Presentation 1}
+%	 \input{GrundlagenInfo/06_Daten/Presentation 2}
+%	 \input{GrundlagenInfo/06_Daten/Presentation 3}
 	% \input{GrundlagenInfo/06_Daten/Presentation 4}
 	% \input{GrundlagenInfo/07_Netzwerke/Netzwerke_L01}
 } {}
