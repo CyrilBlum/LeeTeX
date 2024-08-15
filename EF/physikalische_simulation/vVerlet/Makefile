@@ -1,21 +1,22 @@
-# credit to:
+# credit and thanks go to:
 # Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
-# and
 # https://makefiletutorial.com/#makefile-cookbook
-# and
 # https://github.com/repnz/auto-makefile/blob/master/Makefile
+# gnu.org
 
 # set C++ compiler
 CXX := g++
 
 # extra flags to give to the C++ compiler
-CXXFLAGS := -Wall -Wextra -pedantic -std=c++17
+CXXFLAGS := -Wall -Wextra -pedantic -std=c++17 -pthread
 
 # name of the target we wish to build with this makefile
-TARGET_EXEC := myExecuteable
+TARGET_EXEC := Pendel
 
 # extra flags to give to compilers when they are supposed to invoke the linker
-LDFLAGS :=
+# link the compiled file to the SFML libraries in order to get the final executable
+LDFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
+# LDFLAGS :=
 
 all: debug
 debug: CXXFLAGS += -g
@@ -44,7 +45,7 @@ endef
 BUILD_DIR := ./build
 
 # directory with the relevant source files (.h and .cpp)
-SRC_DIRS := .
+SRC_DIRS := ./src
 
 # Find all the C and C++ files we want to compile.
 # Note the single quotes around the * expressions. Make will incorrectly expand these otherwise.
