@@ -1,5 +1,9 @@
-\chapter{Differentialgleichungen}
+\chapter{Differentialgleichungen}\label{ch:Differentialgleichungen}
 
+In \cref{fig:pendel} ist eine Punktmasse $m$ dargestellt, welche an einem masselosen Seil der Länge $L$ befestigt von der Decke hängt. 
+Die Punktmasse hat zu jeder Zeit einen Abstand $L$ von dem Aufhängepunkt an der Decke. Damit ist die Bewegung des Pendels (Zeitevolution) vollständig beschrieben, falls wir den Winkel $\varphi$ zu jeder Zeit kennen. Der Winkel $\varphi$ wird sich natürlich mit der Zeit ändern, sofern sich das Pendel bewegt. Damit ist klar, dass der Winkel $\varphi$ eine Funktion der Zeit $t$ ist. Wir suchen also die Funktion $\varphi(t)$, da diese die Bewegung des Pendels vollständig beschreibt.
+
+Pendelbewegungen kommen zum Beispiel in vielen Games vor und führen teils zu klassischen Memes wie \url{https://www.youtube.com/watch?v=D-D8s7gLCMA} \emoji{zany-face}.
 
 \section{Fallstudie: mathematisches Pendel}
 \begin{figure}[H]
@@ -31,18 +35,19 @@
       node[below,inner sep=1]{$\vec{F}_\mathrm{tan}$};
     \end{tikzpicture}
   \end{center}
-  \caption{mathematisches Pendel mit Punktmasse mit Masse $m$, Länge $L$ des Seils und Auslenkungswinkel $\varphi$.}\label{fig:pendel}
+  \caption{(mathematisches) Pendel mit Punktmasse mit Masse $m$, Länge $L$ des Seils und Auslenkungswinkel $\varphi$.}\label{fig:pendel}
 \end{figure}
 
-Der Betrag der Rückstellkraft steigt mit dem Auslenkungswinkel $\varphi$ bezüglich der Ruhelage. Hierbei zeigt der Vektor der Rückstellkraft $F_{\text{tan}}$ immer in Richtung der Ruheposition, daher ergibt sich ein Minus in folgender Gleichung:
+Die radiale Kraft (entlang des Seils) wird \enquote{durch das Seil kompensiert} und ist daher für uns in der nachfolgenden Betrachtung nicht weiter interessant.
+
+Der Betrag der Rückstellkraft (tangentiale Kraft) steigt mit dem Auslenkungswinkel $\varphi$ bezüglich der Ruhelage. Hierbei zeigt der Vektor der Rückstellkraft $F_{\text{tan}}$ immer in Richtung der Ruheposition ($\varphi = 0$), daher ergibt sich ein Minus in folgender Gleichung:
 \begin{align*}
-  F_{\text{tan}}(t) = -mg\sin(\varphi (t)).
+  F_{\text{tan}}(t) = -m\cdot g\cdot \sin(\varphi (t)).
 \end{align*}
 Beim Betrachten eines schwingenden Fadenpendels zeigt sich, dass die Geschwindigkeit mit zunehmender Auslenkung abnimmt und nach Erreichen des Scheitelpunkts die Richtung wechselt. Die Geschwindigkeitsänderung bedeutet, dass die Pendelmasse eine Beschleunigung erfährt, genauer gesagt findet eine Tangentialbeschleunigung statt, da eine kreisförmige Bewegungsbahn vorliegt. Die Bewegungsgleichung lautet nach dem 2. Newtonschen Gesetz:
 \begin{align*}
   m\cdot a_{\text{tan}}(t) = F_{\text{tan}}(t).
 \end{align*}
-
 Die Tangentialbeschleunigung lässt sich durch die Winkelbeschleunigung $\ddot{\varphi}$ ausdrücken (zweite zeitliche Ableitung des Winkels nach der Zeit)
 \begin{align*}
   a_{\text{tan}}(t) = L\cdot\ddot{\varphi}(t).
@@ -52,8 +57,132 @@ Bei der ungestörten Schwingung stellt die Rückstellkraft des Pendels die einzi
   m\cdot L\cdot \ddot{\varphi}(t) = -m\cdot g\cdot \sin(\varphi (t)).
 \end{align*}
 Wir stellen fest, dass sich die Masse $m>0$ kürzen lässt. Die Bewegung ist also unabhängig von der Masse des Pendels! Schliesslich erhalten wir:
-\begin{align*}
-  \ddot{\varphi} (t) + \frac{g}{L}\cdot\sin(\varphi (t)) = 0,
-\end{align*}
-wobei $L$ die Länge des (masselosen) Seils ist, mit dem das Pendel an der Decke befestigt ist, $g$ ist die Gravitationskonstante und schliesslich ist der Auslenkungswinkel gemäss \cref{fig:pendel}.
+\begin{align}\label{eq:pendel}
+  \ddot{\varphi} (t) = -\frac{g}{L}\cdot\sin(\varphi (t)),
+\end{align}
+wobei $L$ die Länge des (masselosen) Seils ist, mit dem das Pendel an der Decke befestigt ist, $g$ ist die konstante Erdbeschleunigung und schliesslich ist der Auslenkungswinkel gemäss \cref{fig:pendel}.
 
+\subsection{Differentialgleichung des mathematischen Pendels}
+Wir haben soeben \cref{eq:pendel} hergeleitet. Darin kommen sowohl die Funktion $\textcolor{Blue}{\varphi (t)}$ als auch ihre zweite zeitliche Ableitung $\textcolor{Purple}{\ddot{\varphi} (t)}$ vor. Die Lösung dieser Gleichung ist nicht etwa eine Zahl, sondern eine Funktion $\textcolor{Blue}{\varphi (t)}$, welche die Gleichung
+\begin{align*}
+  \textcolor{Purple}{\ddot{\varphi} (t)} = -\frac{g}{L}\cdot\sin(\textcolor{Blue}{\varphi (t)})
+\end{align*}
+erfüllt. Eine solche Art von Gleichung wird \tib{Differentialgleichung}\index{Differentialgleichung} genannt\dots
+
+\cref{eq:pendel} lässt sich in Worten so verstehen:
+\begin{center}
+\enquote{Die zweite zeitliche Ableitung $\textcolor{Purple}{\ddot{\varphi} (t)}$ (die Winkelbeschleunigung) ist identisch zum $-\frac{g}{L}$-fachen des Sinus von $\textcolor{Blue}{\varphi (t)}$ (Winkel).
+Finde eine Funktion $\textcolor{Blue}{\varphi (t)}$, welche diesen Zusammenhang erfüllt.} 
+\end{center}
+
+Es ist im Allgemeinen sehr schwierig eine solche Lösung (Funktion) zu finden!
+
+\section{Einfache Differentialgleichungen und der Lösungen}
+Im Folgenden wollen wir ein paar einfache Beispiele von Differentialgleichungen anschauen. 
+\begin{myexercise}
+  Betrachte die Differentialgleichung
+  \begin{align*}
+    \dot{y} = y.
+  \end{align*}
+  Gesucht ist hier also eine Funktion $y$, welche identisch zu ihrer ersten Ableitung ist!
+  Du kennst eine besondere Funktion, welche diese Eigenschaft besitzt \emoji{light-bulb}. Tatsächlich gibt es undenlich viele solche Funktionen (welche alle sehr ähnlich sind). Kannst Du diese angeben?
+\end{myexercise}
+
+\begin{myexercise}
+  Betrachte die Differentialgleichung
+  \begin{align*}
+    \ddot{y} = -y.
+  \end{align*}
+  Zeige, dass die Funktion $y(t) = \sin(t) + \cos(t)$ eine Lösung dieser Differentialgleichung ist \emoji{check-mark-button}.
+\end{myexercise}
+
+\begin{myexample}[freier Fall \emoji{comet}]\label{myexample:freierfall}
+  Ein Massepunkt wird aus grosser Höhe fallen gelassen. Wir gehen davon aus, dass dieser die konstante Beschleinigung $-g$ erfährt (kein Luftwiderstand). Dabei ist $g$ die konstante Erdbeschleunigung. Die Geschwindigkeit $v(t)$ ändert sich dadurch natürlich mit der Zeit. Die Beschleunigung ist die erste zeitliche Ableitung der Geschwindigkeit $v$. Es gilt also die Differentialgleichung
+  \begin{align}\label{eq:freierfall}
+  \dot{v} = -g.
+\end{align}
+Zur Zeit $t = 0$ (zu Beginn) befindet sich der Massepunkt noch in Ruhe. Es gilt somit $v(0) = 0$. 
+\end{myexample}
+
+\begin{myexercise}[Lösung des freien Falls]
+  Diese Aufgabe bezieht sich auf \cref{myexample:freierfall}.
+  Zur Zeit $t = 0$ (zu Beginn) befindet sich der Massepunkt noch in Ruhe. Es gilt also $v(0) = 0$. 
+
+  Finde die Lösung der \cref{eq:freierfall} unter Berücksichtigung der Bedingung $v(0) = 0$.
+  
+  Tipp:
+
+  Welche Funktionen $v$ besitzen die Ableitung $-g$ (abgeleitet nach der Zeit)? Welche dieser Funktionen (diese ist dann eindeutig) erfüllt zusätzlich die Bedingung $v(0) = 0$? \emoji{parachute}
+\end{myexercise}
+
+\section{Definiton einer gewöhnlichen Differentialgleichung}
+Im Folgenden sei
+\begin{align*}
+  y: \R\quad &\to \quad\R,\\
+  t \quad &\mapsto \quad y(t)
+\end{align*}
+eine unbekannte (und gesuchte) Funktion.
+
+\begin{mydefinition}[gewöhnliche Differentialgleichung erster Ordnung]\label{mydefinition:ode1}
+  Eine gewöhnliche Differentialgleichung erster Ordnung ist eine Gleichung der Form
+  \begin{align*}
+    \dot{y} = f(t, y),
+  \end{align*}
+  wobei $f$ eine Funktion ist, welche (im Allgemeinen) von $t$ und der Funktion $y$ selbst abhängig sein darf.
+\end{mydefinition}
+
+\begin{myexample}
+  Die Gleichung
+  \begin{align*}
+    \dot{y}(t) = -3t\cos(5y) + 23
+  \end{align*}
+  ist eine gewöhnliche Differentialgleichung erster Ordnung. Dies sehen wir sofort ein, mit der Wahl:
+  \begin{align*}
+    f(t, y) := -3t\cos(5y) + 23.
+  \end{align*}
+\end{myexample}
+
+\begin{mydefinition}[gewöhnliche Differentialgleichung zweiter Ordnung]\label{mydefinition:ode2}
+  Eine gewöhnliche Differentialgleichung zweiter Ordnung ist eine Gleichung der Form
+  \begin{align*}
+    \ddot{y} = f(t, \dot{y}, y),
+  \end{align*}
+  wobei $f$ eine Funktion ist, welche (im Allgemeinen) von $t$, der ersten Ableitung $\dot{y}$ der Funktion und der Funktion $y$ selbst abhängig sein darf.
+\end{mydefinition}
+
+\begin{myexample}
+Die Gleichung
+\begin{align*}
+  \textcolor{Purple}{\ddot{\varphi} (t)} = -\frac{g}{L}\cdot\sin(\textcolor{Blue}{\varphi (t)})
+\end{align*}
+des mathematischen Pendels ist eine Differentialgleichung zweiter Ordnung. Bitte beachte, dass diese Gleichung ein Speziallfall ist, in dem die rechte Seite der Gleichung zwar von $y$ nicht jedoch weder von $\dot{y}$ noch explizit von $t$ abhängig ist. Die Pendelgleichung hat also die spezielle Form
+\begin{align*}
+  \ddot{y} = f(y),
+\end{align*}
+wobei
+\begin{align*}
+  f(y) := -\frac{g}{L}\cdot\sin(y).
+\end{align*}
+\end{myexample}
+
+\begin{myexample}
+  Newton's Bewegungsgesetzt
+  \begin{align*}
+    F(t) = m\cdot a(t)
+  \end{align*}
+  ist eine Differentialgleichung zweiter Ordnung, denn die Beschleunigung $a$ ist die zweite Zeitliche Ableitung der Position $x$. Die Position eines Körpers zu jeder Zeit ist also die Lösung der Differentialgleichung
+  \begin{align}
+    \ddot{x}(t) = F(t)/m.
+  \end{align}
+\end{myexample}
+
+
+\begin{myexercise}[konstante Beschleunigung]
+Ein Massepunkt mit Masse $m$ erfährt einzig und alleine die Kraft $F = ma$, wobei $a$ eine zeitlich konstante Beschleinigung ist. Gemäss Newton ist die Postion $x(t)$ des Massepunktes zur Zeit $t$ gegeben durch die Lösung der Differentialgleichung
+\begin{align}\label{eq:konstanteBesch}
+  \ddot{x}(t) = a.
+\end{align}
+Nehme an, dass für die Position $x(t)$ und die Geschwindigkeit $v(t)$ zur Zeit $t=0$ gelten: $x(0) = 50, v(0) = 13$.
+
+Finde die eindeutige Lösung der \cref{eq:konstanteBesch} unter den gegebenen Anfangsbedingungen bei $t = 0$. Welche Position hat der Massepunkt zur Zeit $t = 30$?
+\end{myexercise}
