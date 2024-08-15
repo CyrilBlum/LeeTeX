@@ -55,20 +55,22 @@ Wir haben also eine Funktion $f$ lokal durch eine (affin) lineare Funktion (Tang
 \end{align*}
 approximiert. Dabei sind $b_0$ und $b_1$ irgendwelche (reelle) Konstanten (Koeffizienten). 
 
-\emoji{light-bulb} Warum sollten wir uns jedoch auf lineare Terme Beschränken? Wir könnten doch versuchen $f$ lokal durch einen quadratischen Term der Form
+\emoji{light-bulb} Warum sollten wir uns jedoch auf lineare Terme Beschränken? Wir könnten doch zusätzlich zum linearen Anteil einen quadratischen Anteil zu unserer Approximation hinzuzufügen und versuchen $f$ lokal durch einen Ausdruck der Form
 \begin{align*}
   b_0 + b_1(x-x_0) + b_2(x-x_0)^2
 \end{align*}
-zu approximieren, wobei auch hier $b_0, b_1$ und $b_2$ Konstanten (Koeffizienten) sind. Dabei gibt $b_0$ intuitiv an, wie stark der konstante Anteil ist, $b_1$ wie stark der lineare Anteil ist und $b_2$ wie stark der quadratische Anteil ist.   
+zu approximieren, wobei auch hier $b_0, b_1$ und $b_2$ Konstanten (Koeffizienten) sind. Dabei gibt $b_0$ intuitiv an, wie stark der konstante Anteil ist, $b_1$ wie stark der lineare Anteil ist und schliesslich $b_2$ wie stark der quadratische Anteil ist.   
 
 % \begin{myexercise}
 %   Warum machen wir es so kompliziert und suchen eine Approximation der Form \[b_0 + b_1(x-x_0) + b_2(x-x_0)^2\] und nicht eine der (simpleren) Form \[c_0 + c_1x + c_2x^2?\] Welche wünschenswerte Eigenschaft hat die Form $b_0 + b_1(x-x_0) + b_2(x-x_0)^2$?
 % \end{myexercise}
+Nun ist es nur natürlich die Idee weiter zu ziehen und Ausdrücke der Form
+\begin{align*}
+  g(x) := b_0 + b_1(x-x_0) + b_2(x-x_0)^2 + b_3(x-x_0)^3 + \ldots + b_n(x-x_0)^n = \sum_{k=0}^n b_k(x-x_0)^k
+\end{align*}
+zur Approximation von $f$ in einer Umgebung der \enquote{Entwicklungsstelle} $x_0$ zu betrachten.
 
 Zum jetzigen Zeitpunkt ist völlig unklar, wie die Koeffizienten $b_0, b_1$ und $b_2$ gewählt werden sollten, um eine möglichst gute Approximation zu finden. Mit der Wahl dieser Koeffizienten gemäss Taylor (wie wir bald sehen werden) erhalten wir das Szenario in \cref{fig:Taylor2}.   
-
-\section{Idee von Taylor}
-
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}
@@ -100,65 +102,122 @@ Zum jetzigen Zeitpunkt ist völlig unklar, wie die Koeffizienten $b_0, b_1$ und 
       \end{axis}
     \end{tikzpicture}
   \end{center}
-  \caption{quadratische Approximation von $f$ durch an der \enquote{Entwicklungsstelle} $x_0 = -1$}\label{fig:Taylor2}
+  \caption{quadratische Approximation von $f$ an der \enquote{Entwicklungsstelle} $x_0 = -1$}\label{fig:Taylor2}
 \end{figure}
 
 
+\section{Idee von Taylor und Berechnung der Koeffizienten}
+Wir wollen eine Funktion $f$ durch einen Ausdruck der Form
+\begin{align*}
+  g(x) = \sum_{k=0}^n b_k(x-x_0)^k
+\end{align*}
+in einer Umgebung von $x_0$ approximieren. Jetzt stellt sich natürlich die Frage, wie die Koeffizienten
+\[b_0, b_1, \ldots, b_n\]
+zu bestimmen (berechnen) sind. \emoji{light-bulb} Taylor ist der folgenden Idee gefolgt: Betrachte vorerst nicht eine beliebige gegebene Funktion $f$, sondern den Spezialfall, dass $f$ selbst eine Polynomfunktion ist. Die Funktion $f$ sei also eine gegebene Polynomfunktion vom Grad $n$:
+\begin{align*}
+  f(x) = a_0 + a_1x + a_2x^2 + a_3x^3 + \ldots + a_nx^n = \sum_{k=0}^n a_kx^k.
+\end{align*}
+Der Ansatz von Taylor ist, die Koeffizienten
+\[b_0, b_1, \ldots, b_n\]
+von $g$ so zu wählen, dass die Gleichung
+\begin{align}
+   f(x) = \sum_{k=0}^n a_kx^k = \sum_{k=0}^n b_k(x-x_0)^k = g(x)
+\end{align}
+erfüllt ist, dass unsere Approximation $g$ also exakt (nicht nur ungefähr) der Funktion $f$ entspricht ($g = f$). 
 
+\begin{myexercise}\label{myexercise:KoeffizientenVergleich2}
+  Gegeben ist die Polynomfunktion $f(x) = a_0 + a_1x + a_2x^2$ vom Grad 2. Finde drei Koeffizienten $b_0, b_1$ und $b_2$ (in Abhängigkeit der Koeffizienten $a_0, a_1, a_2$ sowie der \enquote{Entwicklungsstelle} $x_0$), sodass die Gleichung
+  \begin{align*}
+    a_0 + a_1x + a_2x^2 = b_0 + b_1(x-x_0) + b_2(x-x_0)^2
+  \end{align*}
+  erfüllt ist. Gruppiere und vergleiche dazu immer Terme mit derselben Potenz von $x^2$ auf der linken und rechten Seite der Gleichung.
+\end{myexercise}
+
+Taylor hat gewusst, dass jedes Polynom
+\begin{align*}
+  f(x) = \sum_{k=0}^n a_kx^k 
+\end{align*}
+vom Grad $n$ dargestellt werden kann, als ein \enquote{um eine Stelle $x_0$ entwickelte} Polynomfunktion
+\begin{align*}
+  f(x) = \sum_{k=0}^n b_k(x-x_0)^k
+\end{align*}
+für eindeutig bestimmte Koeffizienten \[b_0, b_1, \ldots, b_n\]. Einen Beweis dieser Aussage findest Du im \cref{ch:Anhang}. Dort finden wir sogar eine elegante Darstellung dieser Koeffizienten.
 
 \clearpage
-\begin{tikzpicture}
-  \begin{axis}[
-      axis lines = middle,
-      xlabel = $x$,
-      ylabel = $y$,
-      domain=-6.4:2.6,
-      samples=100,
-      xmin=-6, xmax=2.2,
-      ymin=-60, ymax=90,
-      grid=both,
-      xtick={-6, -5, -1, 1, 2}
-    ]
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[
+          axis lines = middle,
+          xlabel = $x$,
+          ylabel = $y$,
+          domain=-6.4:2.6,
+          samples=100,
+          xmin=-6, xmax=2.2,
+          ymin=-60, ymax=90,
+          grid=both,
+          xtick={-6, -5, -1, 1, 2},
+          legend style={at={(1.03,0.5)}, anchor=west}
+        ]
 
-    % Plot the function f(x) = x^2
-    \addplot [thick, blue] {7 + 0.3*x^1 + 0.7*x^2 + 3*x^3 + 0.5*x^4};
-    \addlegendentry{$f(x)$}
+        % Plot the function f(x)
+        \addplot [thick, blue] {7 + 0.3*x^1 + 0.7*x^2 + 3*x^3 + 0.5*x^4};
+        \addlegendentry{$f$}
 
-    % Draw a point at x = 1
-    \addplot [only marks, mark=*, red] coordinates {(-1, 4.9)};
-    % \addlegendentry{Point of Tangency}
+        % Draw a point at x = -1
+        \addplot [only marks, mark=*, red] coordinates {(-1, 4.9)};
+        % \addlegendentry{quadratische Approx.}
+        \addlegendentry{\enquote{Entwicklungsstelle} $x_0 = -1$}
 
-    % Draw the tangent line at x = 1
-    \addplot [thick, dashed, red] {6/6*(x+1)^3 - 10.6/2*(x+1)^2 + 5.9*(x + 1) + 4.9};
-    \addlegendentry{Tangente an $f$ durch den Punkt $(-1, f(-1))$}
+        % Draw the tangent line at x = -1
+        \addplot [thick, dashed, red] {6/6*(x+1)^3 - 10.6/2*(x+1)^2 + 5.9*(x + 1) + 4.9};
+        \addlegendentry{Approx. 3. Grades}
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  \caption{Approximation von $f$ durch eine Polynomfunktion vom Grad 3 an der \enquote{Entwicklungsstelle} $x_0 = -1$}\label{fig:Taylor3}
+\end{figure}
 
-  \end{axis}
-\end{tikzpicture}
 
-\begin{tikzpicture}
-  \begin{axis}[
-      axis lines = middle,
-      xlabel = $x$,
-      ylabel = $y$,
-      domain=-6.4:2.6,
-      samples=100,
-      xmin=-6, xmax=2.2,
-      ymin=-60, ymax=90,
-      grid=both,
-      xtick={-6, -5, -1, 1, 2}
-    ]
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[
+          axis lines = middle,
+          xlabel = $x$,
+          ylabel = $y$,
+          domain=-6.4:2.6,
+          samples=100,
+          xmin=-6, xmax=2.2,
+          ymin=-60, ymax=90,
+          grid=both,
+          xtick={-6, -5, -1, 1, 2},
+          legend style={at={(1.03,0.5)}, anchor=west}
+        ]
 
-    % Plot the function f(x) = x^2
-    \addplot [thick, blue] {7 + 0.3*x^1 + 0.7*x^2 + 3*x^3 + 0.5*x^4};
-    \addlegendentry{$f(x)$}
+        % Plot the function f(x)
+        \addplot [thick, blue] {7 + 0.3*x^1 + 0.7*x^2 + 3*x^3 + 0.5*x^4};
+        \addlegendentry{$f$}
 
-    % Draw a point at x = 1
-    \addplot [only marks, mark=*, red] coordinates {(-1, 4.9)};
-    % \addlegendentry{Point of Tangency}
+        % Draw a point at x = -1
+        \addplot [only marks, mark=*, red] coordinates {(-1, 4.9)};
+        % \addlegendentry{quadratische Approx.}
+        \addlegendentry{\enquote{Entwicklungsstelle} $x_0 = -1$}
 
-    % Draw the tangent line at x = 1
-    \addplot [thick, dashed, red] {12/24*(x+1)^4 + 6/6*(x+1)^3 - 10.6/2*(x+1)^2 + 5.9*(x + 1) + 4.9};
-    \addlegendentry{Tangente an $f$ durch den Punkt $(-1, f(-1))$}
+        % Draw the tangent line at x = -1
+        \addplot [thick, dashed, red] {12/24*(x+1)^4 + 6/6*(x+1)^3 - 10.6/2*(x+1)^2 + 5.9*(x + 1) + 4.9};
+        \addlegendentry{Approx. 4. Grades}
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  \caption{Approximation von $f$ durch eine Polynomfunktion vom Grad 4 an der \enquote{Entwicklungsstelle} $x_0 = -1$. Die Approximation entspricht in diesem Fall exakt der gegebenen Funktion $f$. Dies ist kein Zufall, denn $f$ ist selbst eine Polynomfunktion vom Grad 4 (siehe \cref{ch:Anhang}).}\label{fig:Taylor4}
+\end{figure}
 
-  \end{axis}
-\end{tikzpicture}
+\begin{mychallenge}
+Finde die Koeffizienten $b_0, b_1, b_2$ und $b_3$ analog zum Vorgehen von \cref{myexercise:KoeffizientenVergleich2} aber diesmal für den Fall $n=3$. Genauer:
+Finde $b_0, b_1, b_2, b_3\in\R$, sodass
+\begin{align*}
+  \sum_{k=0}^3 a_kx^k = \sum_{k=0}^3 b_k(x-x_0)^k.
+\end{align*}
+\end{mychallenge}
+
