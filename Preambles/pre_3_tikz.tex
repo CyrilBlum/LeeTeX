@@ -178,3 +178,16 @@ fill=green!30
 \renewcommand{\tikzmark}[2][]{%
   \tikz[remember picture,overlay,baseline=-.5ex] \node[#1] (#2) {};%
 }
+
+
+\newcommand{\markangle}[6][0.25]{
+  \begin{scope}
+    \clip (#2)--(#3)--(#4);
+    \node (ANG) [draw, circle, minimum size=#5] at (#3){};
+  \end{scope}
+  \coordinate (E1) at (intersection 0 of ANG and #3--#2);
+  \coordinate (E2) at (intersection 0 of ANG and #3--#4);
+  \coordinate (EM) at ($ (E1)!0.5!(E2) $);
+  \coordinate (EM) at ($ (EM)!#1!(#3) $);
+  \node at (EM) {#6};
+}
