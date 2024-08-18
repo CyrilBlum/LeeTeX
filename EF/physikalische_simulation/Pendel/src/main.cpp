@@ -3,9 +3,9 @@
 int
 main ()
 {
-  const double tstart = 0.0;
+  const double tstart = 0;
   const double tend = 12.0;
-  const unsigned int steps = 900;
+  const unsigned int steps = 1200;
 
   const double v0 = 0.0;
   const double y0 = 1.570796;

@@ -6,7 +6,7 @@ VelocityVerletSolver::VelocityVerletSolver (double tstart, double tend, unsigned
   // compute (uniform) time grid
   for (unsigned int k = 0; k < time.size (); ++k)
     {
-      time[k] = h * k;
+      time[k] = h * k + tstart;
     }
 
   // set initial values of y and v
