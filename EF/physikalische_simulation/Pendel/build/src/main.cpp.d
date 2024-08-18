@@ -1,4 +1,2 @@
-build/./src/main.cpp.o: src/main.cpp src/Pendel.h \
- src/VelocityVerletSolver.h
-src/Pendel.h:
-src/VelocityVerletSolver.h:
+build/./src/main.cpp.o: src/main.cpp src/Pendulum.h
+src/Pendulum.h:

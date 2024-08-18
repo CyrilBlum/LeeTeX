@@ -3,7 +3,6 @@
 VelocityVerletSolver::VelocityVerletSolver (double tstart, double tend, unsigned int steps, double v0, double y0, std::function<double (double)> f)
     : tstart (tstart), tend (tend), steps (steps), y (steps + 1), v (steps + 1), time (steps + 1), f (f)
 {
-
   // compute (uniform) time grid
   for (unsigned int k = 0; k < time.size (); ++k)
     {
