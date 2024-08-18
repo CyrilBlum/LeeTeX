@@ -17,9 +17,10 @@ public:
   void write_data_to_files () const;
 
 private:
-  void write_vectors_to_file (const std::vector<double> &vec1, const std::vector<double> &vec2, const std::string &filename) const;
-  void write_vectors_to_file (const std::vector<double> &vec1, const std::vector<double> &vec2, const std::vector<double> &vec3, const std::vector<double> &vec4,
-                              const std::string &filename) const;
+  template <typename T, typename... Args> void write_vectors_to_file (const std::string &filename, const std::vector<T> &vec, const std::vector<Args> &...args) const;
+  // void write_vectors_to_file (const std::vector<double> &vec1, const std::vector<double> &vec2, const std::string &filename) const;
+  // void write_vectors_to_file (const std::vector<double> &vec1, const std::vector<double> &vec2, const std::vector<double> &vec3, const std::vector<double> &vec4,
+  //                             const std::string &filename) const;
   const double tstart;
   const double tend;
   const unsigned int steps;

@@ -8,39 +8,26 @@ Pendulum::Pendulum (double tstart, double tend, unsigned int steps, double v0, d
 {
   evolve_pendulum ();
 }
+
+// Variadic template function to handle multiple vectors
+template <typename T, typename... Args>
 void
-Pendulum::write_vectors_to_file (const std::vector<double> &vec1, const std::vector<double> &vec2, const std::string &filename) const
+Pendulum::write_vectors_to_file (const std::string &filename, const std::vector<T> &vec, const std::vector<Args> &...args) const
 {
   // Open the file in write mode
   std::string baseDir = "gnuplot_files/";
   std::ofstream outFile (baseDir + filename);
+  // Get the size of the vectors (all vectors are assumed to have the same length)
+  std::size_t size = vec.size ();
 
-  // Write the vectors to the file
-  for (size_t i = 0; i < vec1.size (); ++i)
+  // Iterate over the rows
+  for (std::size_t i = 0; i < size; ++i)
     {
-      outFile << vec1[i] << "\t" << vec2[i] << "\n";
+      // Write each vector's i-th element, followed by a tab
+      outFile << vec[i];
+      ((outFile << "\t" << args[i]), ...); // Fold expression to write the rest of the vectors
+      outFile << std::endl;
     }
-
-  // Close the file
-  outFile.close ();
-}
-
-void
-Pendulum::write_vectors_to_file (const std::vector<double> &vec1, const std::vector<double> &vec2, const std::vector<double> &vec3, const std::vector<double> &vec4,
-                                 const std::string &filename) const
-{
-  // Open the file in write mode  std::string baseDir = "../gnuplot_files/";
-  std::string baseDir = "gnuplot_files/";
-  std::ofstream outFile (baseDir + filename);
-
-  // Write the vectors to the file
-  for (size_t i = 0; i < vec1.size (); ++i)
-    {
-      outFile << vec1[i] << "\t" << vec2[i] << "\t" << vec3[i] << "\t" << vec4[i] << "\n";
-    }
-
-  // Close the file
-  outFile.close ();
 }
 
 void
@@ -78,8 +65,8 @@ void
 Pendulum::write_data_to_files () const
 {
   // write data to files
-  write_vectors_to_file (y, v, "phi_omega.dat");
-  write_vectors_to_file (time, y, "t_phi.dat");
-  write_vectors_to_file (time, v, "t_omega.dat");
-  write_vectors_to_file (time, Ekin, Epot, Etot, "time_energies.dat");
+  write_vectors_to_file ("phi_omega.dat", y, v);
+  write_vectors_to_file ("t_phi.dat", time, y);
+  write_vectors_to_file ("t_omega.dat", time, v);
+  write_vectors_to_file ("time_energies.dat", time, Ekin, Epot, Etot);
 }
