@@ -64,7 +64,18 @@ Pendulum::compute_energies ()
 void
 Pendulum::write_data_to_files () const
 {
+  // transform polar-coordinates to Cartisian-coordinates
+  std::vector<double> xcoords (steps + 1);
+  std::vector<double> ycoords (steps + 1);
+  double rotation = 1.5 * M_PI;
+  for (unsigned int k = 0; k < time.size (); ++k)
+    {
+      xcoords[k] = L * std::cos (y[k] + rotation);
+      ycoords[k] = L * std::sin (y[k] + rotation);
+    }
+
   // write data to files
+  write_vectors_to_file ("animation.dat", time, xcoords, ycoords);
   write_vectors_to_file ("phi_omega.dat", y, v);
   write_vectors_to_file ("t_phi.dat", time, y);
   write_vectors_to_file ("t_omega.dat", time, v);
