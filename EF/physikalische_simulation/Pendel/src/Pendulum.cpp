@@ -43,16 +43,12 @@ Pendulum::evolve_pendulum ()
   y = y_verlet;
   v = v_verlet;
   time = time_verlet;
-
-  // compute energies
-  std::vector<double> Ekin (steps + 1);
-  std::vector<double> Epot (steps + 1);
-  std::vector<double> Etot (steps + 1);
 }
 
 void
 Pendulum::compute_energies ()
 {
+  // compute energies
   for (unsigned int k = 0; k < time.size (); ++k)
     {
       Ekin[k] = 0.5 * m * (L * v[k]) * (L * v[k]);

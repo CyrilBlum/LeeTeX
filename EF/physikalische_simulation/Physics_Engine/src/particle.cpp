@@ -1,39 +1,23 @@
-#include "particle.hpp"
+#include "particle.h"
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/System/Vector2.hpp>
-Particle::Particle (sf::Vector2f current_position_, float radius_)
-    : last_position{ current_position_ }, current_position{ current_position_ }, acceleration{ 0.0f, 0.0f }, radius{ radius_ }
+
+Particle::Particle (sf::Vector2f y0, sf::Vector2f v0, sf::Vector2f a0, float radius, sf::Color color)
+    : y_particle (y0), v_particle (v0), a_particle (a0), radius (radius), color (color)
 {
 }
 
 void
-Particle::verlet_step (float Dt)
+Particle::single_verlet_step (const float h)
 {
-  // x_{n+1} = 2*x_n - x_{n-1} + A(x_n)*(Dt)^2
-  current_position = 2.0f * current_position - last_position + acceleration * Dt * Dt;
-  // update the last (previous) position
-  last_position = current_position;
-}
-
-void
-Particle::accelerate (sf::Vector2f a)
-{
-  acceleration += a;
-};
-
-void
-Particle::set_velocity (sf::Vector2f v, float Dt)
-{
-  last_position = current_position - v * Dt;
-}
-
-void
-Particle::add_velocity (sf::Vector2f v, float Dt)
-{
-  last_position -= v * Dt;
-}
-
-[[nodiscard]] sf::Vector2f
-Particle::get_velocity (float Dt) const
-{
-  return (current_position - last_position) / Dt;
+  // step 1: compute y_{k+1}
+  y_particle = y_particle + h * v_particle + h * h * a_particle / 2.0f;
+  // step 2: in general: derive a_{k+1} from y_{k+1} but here the acceleration is constant
+  // (we update the positions rather than have a force act upon the particle)
+  // a_particle_new = F(y_{k+1}) / m;
+  // step 3: compute v_{k+1}
+  // the general verlet step for v_{k+1} would be:
+  // v_particle = v_particle + h / 2.0f * (a_particle + a_particle_new);
+  // but here the acceleration is constant (a_particle = a_particle_new at all times):
+  v_particle = v_particle + h * a_particle;
 }
