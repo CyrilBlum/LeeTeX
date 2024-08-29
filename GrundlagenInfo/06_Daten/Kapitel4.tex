@@ -60,8 +60,51 @@ Zudem können folgende Eingeschaften für Kolonnen angegeben werden:
   \item \lstinline|UNIQUE|: Darf keine doppelten Werte enthalten
 \end{itemize}
 
+\begin{mycaution}
+	Je nach SQL-Version muss ein Fremdschlüssel erst \textit{nach dem Erstellen einer Tabelle} als Fremdschlüssel deklariert werden. Dies kann mit dem Befehl \lstinline|ALTER TABLE| gemacht werden. 
+	\begin{myexample}
+		In folgendem Beispiel wird in Tabelle \lstinline|table2| das Attribut \lstinline|fID| nachträglich als Fremdschlüssel deklariert, indem es auf das Attribut \lstinline|ID| bei \lstinline|table1| zeigt.
+		\begin{lstlisting}
+			CREATE TABLE table1 (
+				ID int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				...
+			);
+			
+			CREATE TABLE table2 (
+				`ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				`fID` int(10) UNSIGNED NOT NULL
+				...
+			);
+			
+			ALTER TABLE table2
+			ADD FOREIGN KEY (fID) REFERENCES table1(ID)
+		\end{lstlisting}
+	\end{myexample}
+\end{mycaution}
+
+\begin{myexercise}
+	Schreiben Sie die SQL-Befehle, um \cref{table:angestellte2} und \cref{table:abteilungen} zu erstellen. Sie müssen dabei lediglich eine leere Tabelle mit den korrekten Tabellentypen erstellen, Daten müssen Sie noch keine einfügen.
+	\begin{myanswer}
+		\begin{lstlisting}
+			CREATE TABLE abteilungen (
+				aID int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				abteilungsname varchar(191) NOT NULL UNIQUE
+			);
+			
+			CREATE TABLE angestellte (
+				`mID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				`name` varchar(191) NOT NULL UNIQUE,
+				`aID` int(10) UNSIGNED NOT NULL
+			);
+			
+			ALTER TABLE angestellte
+			ADD FOREIGN KEY (aID) REFERENCES abteilungen(aID)
+		\end{lstlisting}
+	\end{myanswer}		
+\end{myexercise}
+
 \subsection{Tabellen verändern: \texorpdfstring{\lstinline|ALTER table|}{ALTER table}}
-Mit dem Befehl \lstinline|ALTER table| können existierende Tabellen verändert werden.
+Mit dem Befehl \lstinline|ALTER table| können Tabellen und deren Attribute nachträglich, d.h. nach der Erstellung der Tabelle, verändert werden.
 
 \begin{myexample}
 Um eine weitere Kolonne hinzuzufügen, kann folgender Befehl verwendet werden:

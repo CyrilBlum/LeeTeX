@@ -399,57 +399,7 @@ mID & Name   & \rotCol{Angestellte.aID} & \rotCol{Abteilung.aID} & Abteilung \\\
 
 \end{frame}
 
-\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{Möglichkeit 2a: Verwendung von \lstinline[style=sql]|JOIN| (mit \lstinline[style=sql]|ON|)}
-\begin{lstlisting}
-SELECT *
-FROM Angestellte JOIN Abteilung
-ON Angestellte.aID = Abteilung.aID
-\end{lstlisting}
-\vspace{-.3cm}
-\footnotesize
-\begin{columns}
-\begin{column}{.35\textwidth}
-\begin{table}[H]
-\begin{tabular}{l|l|a}
-\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
-1  & Müller  & 31  \\
-2  & Schmidt & 32  \\
-3  & Kaufmann  & 32\\
-... & ... & ... 
-\end{tabular}
-\caption*{Tabelle ``\textbf{Angestellte}''}
-\end{table}
-\vspace{-.5cm}\begin{table}[H]
-\begin{tabular}{a|l}
-\emoji{key} \underline{aID} & Abteilungs \\\midrule
-31    & Verkauf   \\
-32    & Technik   \\
-33    & Marketing \\
-... & ... 
-\end{tabular}
-\caption*{Tabelle ``\textbf{Abteilungen}''}
-\end{table}
-
-\end{column}
-\begin{column}{.1\textwidth}
-\faArrowRight
-\end{column}
-\begin{column}{.55\textwidth}
-\begin{table}[H]
-\begin{tabular}{l|l|a|a|l}
-mID & Name   & \rotCol{Angestellte.aID} & \rotCol{Abteilung.aID} & Abteilung \\\midrule
-1  & Müller  & 31  &31  & Verkauf\\
-2  & Schmidt & 32 &32 & Technik\\
-3  & Kaufmann  & 32 &32 & Technik \\
-... & ... & ... & ... 
-\end{tabular}
-\end{table}
-\end{column}
-\end{columns}
-
-\end{frame}
-
-\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{Möglichkeit 2b: Verwendung von \lstinline[style=sql]|JOIN|  (mit \lstinline[style=sql]|USING|) \\\textit{$\rightarrow$ nur wenn Kolonnenname gleich in beiden Tabellen! Ansonsten \lstinline[style=sql]|ON| verwenden}}
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{Möglichkeit 2a: Verwendung von \lstinline[style=sql]|JOIN|  (mit \lstinline[style=sql]|USING|) \\\textit{$\rightarrow$ nur wenn Kolonnenname gleich in beiden Tabellen! Ansonsten \lstinline[style=sql]|ON| verwenden}}
 \begin{lstlisting}
 SELECT *
 FROM Angestellte JOIN Abteilung
@@ -548,6 +498,56 @@ mID & Name   & aID & Abteilung \\\midrule
 \end{column}
 \end{columns}
 
+\end{frame}
+
+\begin{frame}[fragile]{Mehrere Tabellen miteinander verbinden}{Möglichkeit 2b: Verwendung von \lstinline[style=sql]|JOIN| (mit \lstinline[style=sql]|ON|, falls Kolonnennamen ungleich)}
+	\begin{lstlisting}
+		SELECT *
+		FROM Angestellte JOIN Abteilung
+		ON Angestellte.aID = Abteilung.ID
+	\end{lstlisting}
+	\vspace{-.3cm}
+	\footnotesize
+	\begin{columns}
+		\begin{column}{.35\textwidth}
+			\begin{table}[H]
+				\begin{tabular}{l|l|a}
+					\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
+					1  & Müller  & 31  \\
+					2  & Schmidt & 32  \\
+					3  & Kaufmann  & 32\\
+					... & ... & ... 
+				\end{tabular}
+				\caption*{Tabelle ``\textbf{Angestellte}''}
+			\end{table}
+			\vspace{-.5cm}\begin{table}[H]
+				\begin{tabular}{a|l}
+					\emoji{key} \underline{ID} & Abteilungs \\\midrule
+					31    & Verkauf   \\
+					32    & Technik   \\
+					33    & Marketing \\
+					... & ... 
+				\end{tabular}
+				\caption*{Tabelle ``\textbf{Abteilungen}''}
+			\end{table}
+			
+		\end{column}
+		\begin{column}{.1\textwidth}
+			\faArrowRight
+		\end{column}
+		\begin{column}{.55\textwidth}
+			\begin{table}[H]
+				\begin{tabular}{l|l|a|a|l}
+					mID & Name   & \rotCol{Angestellte.aID} & \rotCol{Abteilung.ID} & Abteilung \\\midrule
+					1  & Müller  & 31  &31  & Verkauf\\
+					2  & Schmidt & 32 &32 & Technik\\
+					3  & Kaufmann  & 32 &32 & Technik \\
+					... & ... & ... & ... 
+				\end{tabular}
+			\end{table}
+		\end{column}
+	\end{columns}
+	
 \end{frame}
 
 
