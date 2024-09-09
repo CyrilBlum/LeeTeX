@@ -10,3 +10,92 @@
 
 \noindent
 Schreiben Sie ein Python-Programm, welches alle kanada-perfekten Zahlen kleiner als 600 findet. Hinweis: Es gibt genau zwei.
+
+\clearpage
+
+Dies ist eine etwas vereinfachte Version von Problem 56 von Project Euler (\url{https://projecteuler.net/problem=56}). Finden Sie natürliche Zahlen $a,b<10$, sodass
+\begin{align*}
+    a^b
+\end{align*}
+eine möglichst grosse Quersumme hat. Schreiben Sie ein Python-Programm, welches optimale $a$ und $b$ berechnet.
+
+
+\clearpage
+Eine natürliche Zahl heisst perfekt, falls sie der Summe aller ihrer natürlichen Teiler ausser sich selbst entspricht.
+
+\begin{itemize}
+    \item Die Zahl 6 ist eine perfekte Zahl. Sie besitzt genau die natürlichen Teiler $1, 2$ und $3$ (die Zahl $6$ selbst nicht inbegriffen). Die Summe $1 + 2 + 3 = 6$ dieser Teiler entspricht der Zahl selbst.
+    \item Die Zahl 28 ist ebenfalls perfekt, da $28 = 1 + 2 + 4 + 7 + 14$.
+    \item Die Zahl 10 ist nicht perfekt. Ihre Teiler sind $1, 2$ und $5$ aber $10 \neq 1 + 2 + 5 = 8$.
+\end{itemize}
+
+\noindent
+Schreiben Sie ein Python-Programm, welches genau die perfekten Zahlen $\leq 10^5$ ausgibt.
+
+\clearpage
+
+Wir möchten ein quadratisches Schachbrettmuster mit $n\times n$ Feldern erzeugen, wobei $n$ eine gerade positive natürliche Zahl ist.
+Jedes der $n^2$ Felder soll dabei eine Grösse von genau $s\times s$ Zeichen haben ($s\geq 1$). Die Zahl \pythoninline{1} repräsentiere die schwarzen Felder, die Zahl \pythoninline{0} die weissen Felder.
+
+\noindent
+Zur Vereinfachung dürfen Sie annehmen, dass das Feld in der linken oberen Ecke stets weiss ist. Die Aufgabe ist noch etwas schwieriger (soweit sind wir in der Theorie zur Zeit noch nicht), falls Sie zusätzlich wählen können, ob das linke obere Feld schwarz oder weiss sein soll (\pythoninline{upper_left = 'black'} oder \pythoninline{upper_left = 'white'}). Folgende Beispiele zeigen die entsprechenden Schachbrettmuster für verschiedene Wahlen der drei Parameter \pythoninline{n}, \pythoninline{s} und \pythoninline{upper_left}:
+
+\begin{lstlisting}[language=Python]
+# Schachbrettmuster für n = 2, s = 3, upper_left = 'white'
+000111
+000111
+000111
+111000
+111000
+111000
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+# Schachbrettmuster für n = 4, s = 1, upper_left = 'black'
+1010
+0101
+1010
+0101
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+# Schachbrettmuster für n = 6, s = 2, upper_left = 'black'
+110011001100
+110011001100
+001100110011
+001100110011
+110011001100
+110011001100
+001100110011
+001100110011
+110011001100
+110011001100
+001100110011
+001100110011
+\end{lstlisting}
+Allgemein soll das Muster immer genau $ns$ Zeichen breit und ebenso hoch sein. Schreiben Sie ein TigerJython-Programm, welches die drei oben beschriebenen Parameter akzeptiert und das entsprechende Schachbrettmuster ausgibt.
+
+\clearpage
+\section*{Musterlösung}
+\begin{lstlisting}[language=Python]
+n = 8
+s = 3
+upper_left = 'white'
+
+black_white = int(n/2) * (s * '1' + s * '0')
+white_black = int(n/2) * (s * '0' + s * '1')
+
+if upper_left == 'black':
+    first = black_white
+    second = white_black
+else:
+    first = white_black
+    second = black_white
+
+repeat int(n/2):
+    repeat s:
+        print(first)
+    repeat s:
+        print(second)
+\end{lstlisting}
+
