@@ -184,12 +184,38 @@ print(daten)
 	\end{itemize}
 \end{frame}
 
+
+\begin{frame}[fragile]{Auf Listen zugreifen}{Von hinten}
+Gegeben sei folgende Liste: \lstinline|x=[3, 10, 33, 2, 220, 11]|.\\
+
+Wie können wir auf das letzte Element von \lstinline|x| (= die Zahl \lstinline|11|) zugreifen?
+\begin{itemize}
+\item \lstinline|x[len(x)-1]|
+\item Einfacher: \lstinline|x[-1]|
+\item Vorletztes Element: \lstinline|x[-2]|
+\item Etc.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Skalarprodukt}
+Wo wird das Skalarprodukt verwendet?
+\begin{table}[H]
+\begin{tabular}{c||c|c}
+\textbf{Produkt} & \textbf{Menge} \only<2->{\lstinline|m|} & \textbf{Preis} \only<2->{\lstinline|p|} \\\midrule\midrule
+\emoji{banana} & 800 g & 2.- / Kg \\\midrule
+\emoji{apple} & 1200 g & 2.50 / Kg \\\midrule
+\emoji{peach} & 2300 g & 5.- / Kg \\
+\end{tabular}
+\end{table}
+\only<1>{Wie berechnen wir den \textbf{Gesamtpreis?}}
+\only<2>{\textbf{Skalarprodukt}: \lstinline|m[0]*p[0] + m[1]*p[1] + ... + m[-1]*p[-1]|}
+\end{frame}
+
 \begin{frame}[fragile]{Datenstrukturen: Stapel \emoji{books}}
 	\begin{itemize}
 		\item \lstinline|meineliste.append(zahl)|: Fügt \lstinline|zahl| am Ende der Liste \lstinline|meineliste| hinzu
 		\item \lstinline|meineliste.pop()|: Entfernt die letzte Zahl von \lstinline|meineliste|
 	\end{itemize}
-	TODO insert Fibonacci, etc.
 \end{frame}
 
 \begin{frame}[fragile]{Beispiel}
@@ -203,21 +229,50 @@ print(daten)
 		zahlen.pop()
 		print(zahlen) # Was wird gedruckt?
 	\end{lstlisting}
-	
+\end{frame}
+
+\begin{frame}[fragile]{Fibonacci-Serie}
+\begin{itemize}[<+->]
+\item Was ist die Fortsetzung folgender Zahlen? 1, 1, 2, 3, 5, ...?
+\item Wie würden wir einen Code dafür schreiben?
+	\begin{lstlisting}
+		fib = [1, 1]
+		repeat 100:
+			# berechne nächste Zahl
+			fib_neu = fib[-1] + fib[-2]
+			fib.append(fib_neu)
+		print(fib)
+	\end{lstlisting}
+\end{itemize}
+\def\spiral#1{%
+  \pgfmathparse{int(#1)}%
+  \ifnum\pgfmathresult>0
+    \draw [help lines] (0,0) rectangle ++(1,1);
+    \begin{scope}[shift={(1,1)}, rotate=90, scale=1/1.6180339887]
+      \spiral{#1-1}
+    \end{scope}
+    \draw [red] (0,0) arc (270:360:1);
+  \fi
+}
+
+\begin{figure}[H]
+\centering
+\tikz[scale=2]{\spiral{12}}
+\end{figure}
 \end{frame}
 
 \begin{frame}[fragile]{Durch jedes Element in einer Liste durchgehen}{Flexibler Summen-Befehl (Möglichkeit 2/2)}
 	\begin{lstlisting}
 		def summiere(daten):
-		summe = 0       # Variable, um alle Elemente von "daten" zu summieren
+			summe = 0       # Variable, um alle Elemente von "daten" zu summieren
 		
-		# Durch alle Elemente von Daten durchgehen und zu Summe hinzufügen
-		for d in daten:
-		summe += d   # Wert zu Summe hinzufügen
+			# Durch alle Elemente von Daten durchgehen und zu Summe hinzufügen
+			for d in daten:
+				summe += d   # Wert zu Summe hinzufügen
 		
-		print(summe)
+			print(summe)
 		
-		daten = [4, 2, -6, 17, 5, 12] 
+			daten = [4, 2, -6, 17, 5, 12] 
 		summiere(daten)
 	\end{lstlisting}
 \end{frame}
@@ -228,14 +283,14 @@ print(daten)
 		zutaten_sandwich = ["brot", "fleisch", "anke", "brot"]
 		
 		if "brot" not in zutaten_sandwich:
-		print("Was isch es Sandwich ohni Brot? S'isch nume Fleisch!")
+			print("Was isch es Sandwich ohni Brot? S'isch nume Fleisch!")
 		elif "fleisch" not in zutaten_sandwich:
-		print("Was isch es Sandwich ohni Fleisch? S'isch nume Brot!")
+			print("Was isch es Sandwich ohni Fleisch? S'isch nume Brot!")
 		elif "anke" not in zutaten_sandwich:
-		print("Anke fäut!")
+			print("Anke fäut!")
 		elif zutaten_sandwich[0] != zutaten_sandwich[len(zutaten_sandwich)-1]:
-		print("Es brucht es Brot obe und eis unte")
+			print("Es brucht es Brot obe und eis unte")
 		else:
-		print("Guet, dass Du auem Rächnig treisch!")
+			print("Guet, dass Du auem Rächnig treisch!")
 	\end{lstlisting}
 \end{frame}
