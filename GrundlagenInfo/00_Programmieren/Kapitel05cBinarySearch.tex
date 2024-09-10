@@ -1,0 +1,121 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=TigerJython, basicstyle=\scriptsize\ttfamily}
+
+\begin{frame}
+	\centering
+	\begin{figure}[H]
+		\includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+	\end{figure}
+	Informatik: Programmieren\\
+	\emoji{mag-right} Kapitel 5: \textbf{Listen} (Binäre Suche)
+\end{frame}
+
+\newcommand{\includesteps}[1]{%
+	\foreach \step in {1,...,#1}{%
+		\only<\step>{%
+			\begin{figure}[H]
+				\input{GrundlagenInfo/00_Programmieren/Python/step_\step.tex}
+			\end{figure}
+		}%
+	}
+}
+
+\begin{frame}[fragile]{Such-Algorithmen}
+\begin{itemize}[<+->]
+	\item Wie finden wir schnellstmöglich heraus, ob eine bestimmte Zahl in einer \textit{unsortierten} Liste enthalten ist?  Z.B., ist die Zahl 3 in der Liste \lstinline|x = [5, 3, 8, 20, 2, 10]|? \\
+	$\rightarrow$ Wir können nichts anderes machen, als jedes Element durchschauen...
+	\begin{figure}[H]
+			\centering
+			\raisebox{-0.5\height}{\includegraphics[width=.3\textwidth]{GrundlagenInfo/04_Kompression/Figures/messy_suitcase.jpg}}
+			\raisebox{-0.5\height}{$\rightarrow$}
+			\raisebox{-0.5\height}{\includegraphics[width=.3\textwidth]{GrundlagenInfo/00_Programmieren/Figures/prog-packing-cubes}}
+	\end{figure}
+	\item Wie finden wir schnellstmöglich heraus, ob eine bestimmte Zahl in einer \textit{sortierten} Liste enthalten ist? Z.B., ist die Zahl 3 in der Liste \lstinline|x = [2, 3, 5, 8, 10, 20]|?
+	\item \textbf{Suchen}: Vorgang, um ein Element in einer Menge von Daten \textit{effizient} zu finden.
+	\item Heute: \textbf{Binäre Suche}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Binäre Suche}{Visualisierung}
+Gesuchte Zahl: 3
+\only<1>{
+\begin{figure}[H]
+\input{GrundlagenInfo/00_Programmieren/Python/binary_search_step_1.tex}
+\caption*{Schritt 1}
+\end{figure}
+}
+
+\only<2>{
+\begin{figure}[H]
+\input{GrundlagenInfo/00_Programmieren/Python/binary_search_step_1-next.tex}
+\caption*{Schritt 1}
+\end{figure}
+}
+
+\only<3>{
+\begin{figure}[H]
+\input{GrundlagenInfo/00_Programmieren/Python/binary_search_step_2.tex}
+\caption*{Schritt 2}
+\end{figure}
+ }
+\end{frame}
+\begin{frame}[fragile]{Binäre Suche}
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def binaere_suche(liste, ziel):
+    # Definiere die Start- und Endpunkte des Suchbereichs
+    links = 0
+    rechts = len(liste) - 1
+
+    # Solange der Suchbereich gültig ist, also links <= rechts
+    while links <= rechts:
+        # Berechne das mittlere Element
+        mitte = links + (rechts - links) // 2
+
+        # Wenn das mittlere Element das gesuchte Ziel ist, gib den Index zurück
+        if liste[mitte] == ziel:
+            return mitte
+
+        # Wenn das Ziel größer ist als das mittlere Element,
+        # dann ist das Ziel im rechten Teil der Liste
+        elif liste[mitte] < ziel:
+            links = mitte + 1
+
+        # Wenn das Ziel kleiner ist als das mittlere Element,
+        # dann ist das Ziel im linken Teil der Liste
+        else:
+            rechts = mitte - 1
+
+    # Wenn das Ziel nicht gefunden wird, gib -1 zurück
+    return -1
+
+# Beispiel-Liste (muss sortiert sein)
+meine_liste = [2, 3, 4, 10, 40]
+ziel = 10
+
+# Binäre Suche aufrufen
+ergebnis = binaere_suche(meine_liste, ziel)
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag}
+\begin{itemize}
+\item \readbox{Beispiel auf S. 97}
+\item \aufgabebox{Aufgabe 5.14: Fertigen Sie sich Tabellen wie folgt an:}
+\begin{table}[H]
+\centering
+\tiny
+\lstset{style=TigerJython, basicstyle=\tiny\ttfamily}
+\begin{tabular}{p{2cm}|p{1.4cm}|p{1.4cm}|p{1.4cm}|p{1.4cm}}
+\diagbox[innerwidth=2cm]{\textbf{Variable}}{\textbf{Code-Zeile}} & \textbf{Vor erstem \lstinline|while|} (Z.6) & \textbf{Nach erstem \lstinline|while|} (Z.14) & \textbf{Nach zweitem \lstinline|while|} (Z.14) & \textbf{Nach drittem \lstinline|while|} (Z.14)
+\\\midrule\midrule
+\textbf{links} & & & & \\\midrule
+\textbf{mitte} & & & & \\\midrule
+\textbf{rechts} & & & & \\\midrule
+\end{tabular}
+\end{table}
+\item \challengebox{Aufgabe 5.15}
+\end{itemize}
+\end{frame}
