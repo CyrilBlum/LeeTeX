@@ -1,11 +1,11 @@
-\chapter{Netzwerke}
+\chapter{Graphen}
 
 \section{Einführung}
 Was geschieht, wenn Sie Ihren Freunden eine Nachricht schreiben? Ihre Freunde erhalten eine Benachrichtigung mit Ihrer Nachricht und können Ihnen darauf antworten. Was Ihnen möglicherweise weniger bewusst ist, sind die Schritte, die nötig sind, damit die Nachricht Ihren Weg von A (Ihnen) zu B (Ihren Freunden) findet und damit diese korrekt übermittelt wird. Vermutlich wissen Sie bereits, dass zwischen Ihrem Geräten und deren Ihrer Freunde das \textbf{Internet} liegt. Dieses Skript soll Ihnen ermöglichen, die Grundlagen des Internets zu verstehen.
 
 Dazu müssen wir zuerst verstehen, was ein Netzwerk ist. Ein \textbf{Netzwerk} ist im Grunde genommen ein \textbf{Graph} aus \textbf{Knoten} und \textbf{Kanten}. Bevor wir uns die Grundlagen von Netzwerken anschauen, setzen wir uns daher zuerst mit Graphen auseinander.
 
-\section{Graphen}
+\section{Anwendungsbeispiele von Graphen}
 Graphen sind abstrakte Informationsdarstellungen, die uns erlauben, Informationen unterschiedlichster Arten darzustellen, darunter:
 \begin{itemize}
     \item Verkehrsnetzwerke wie Strassen, Eisenbahnennetze etc., welche erlauben, Navigations-Apps oder Infrastrukturplanung zu betreiebn
@@ -20,7 +20,8 @@ Im Allgemeinen dienen Graphen in der Informatik \& Mathematik zur Darstellung Re
 \item Atom A ist mit Atom B zu einem Molekül verbunden
 \end{itemize}
 Wie können solch unterschiedliche Informationen auf eine ähnliche, systematische und für den Computer verständliche Art dargestellt werden? Dazu lernen wir im Folgenden das Konzept von \textbf{Graphen} kennen.
-\subsection{Graphen, Kanten und Knoten}
+\section{Darstellung von Graphen}
+\subsection{Kanten und Knoten}
 Ein \textbf{Graph} $G=(V,E)$ ist ein Paar von zwei Mengen $V$ und $E$
 \begin{itemize}
     \item $V$ ist die \textbf{Menge der Knoten}. Diese werden gezeichnet als Punkte oder kleine Kreise. Alle Knoten haben Namen.
@@ -55,7 +56,7 @@ Der Graph in \cref{fig:graph-ex} besteht aus folgenden Komponenten:
     \item Knoten $V=\lrc{A,B,C,D,F}$
     \item Kanten $E=\lrc{\lrc{A,B},\lrc{A,C},\lrc{B,C},\lrc{B,D},\lrc{C,F},\lrc{D,F}}$
 \end{itemize}
-\subsection{Wege und Kreise in Graphen}
+\subsection{Wege und Kreise}
 Ein \tib{Weg} oder ein \tib{Spaziergang} in einem Graphen $G=(V,E)$ besteht aus einer Folge benachbarter Knoten, die miteinander verbunden werden. Ein Beispiel eines Wegs im Graph aus \cref{fig:graph-ex} wäre: $A,B,C,F,D$ (s. \cref{fig:graph-ex-weg}). 
 
 \begin{figure}[H]
@@ -82,6 +83,7 @@ Ein \tib{Weg} oder ein \tib{Spaziergang} in einem Graphen $G=(V,E)$ besteht aus 
 
 Wir sagen dem ersten und letzten Knoten in diesem Weg ($A$ und $D$) \tib{Endknoten} und wir nennen den Weg einen \tib{Kreis}, wenn die Endknoten gleich sind (z.B. $A,C,F,D,B,A$). Eine spezielle Art von Kreisen ist ein \tib{einfacher Kreis}, bei welchem ausser dem Endknoten kein anderer Knoten zweimal vorkommt.
 
+\subsection{Spezielle Wege und Kreise}
 Darüber hinaus gibt es weitere, spezielle Wege in Graphen:
 
 Ein \tib{Euler'scher Weg} ist ein Weg, der alle Kanten eines Graphen genau einmal durchläuft. Graphen, die einen solchen Weg besitzen, nennen wir \tib{Euler'sche Graphen}.
@@ -107,7 +109,10 @@ In \cref{fig:stadtplanCropMitBuchstaben} haben wir die vier verschiedenen Stadtt
 
 Der Legende nach kursierte unter den Spaziergängerinnen und Spaziergängern von Königsberg damals die folgende Frage, welche heute als \tib{Königsberger Brückenproblem} bekannt ist:
 \begin{myexercise}[Königsberger Brückenproblem]\label{myBox:Problem}
-Gibt es einen Weg durch Königsberg, bei dem man alle sieben Brücken \textbf{genau einmal} überquert, und wenn ja, ist auch ein Rundweg möglich, bei dem man wieder zum Ausgangspunkt gelangt?    
+Gibt es einen Weg durch Königsberg, bei dem man alle sieben Brücken \textbf{genau einmal} überquert, und wenn ja, ist auch ein Rundweg möglich, bei dem man wieder zum Ausgangspunkt gelangt?
+\begin{myanswer}
+Nein, einen solchen Weg gibt es nicht. Weshalb dies so ist, werden wir in \cref{myBox:euler-allg} sehen.
+\end{myanswer}
 \end{myexercise}
 \noindent
 Euler realisierte vermutlich, dass es keine Rolle spielt, wie sich eine Spaziergängerin innerhalb eines Stadtteils bewegt. Relevant sind lediglich die Übergänge zwischen den Stadtteilen über die Brücken. Vermutlich abstrahierte er das Problem durch eine Skizze wie in \cref{fig:skizze}.
@@ -191,7 +196,7 @@ Der Graph besitzt nur Euler'schen Wege, aber keine Kreise. Ein möglicher Euler'
 Der Graph besitzt viele Hamilton'sche Wege und Kreise, z.B. $A,B,D,F,C$.
 \end{myexercise}
 
-\begin{mychallenge}
+\begin{mychallenge}\label{myBox:euler-allg}
 Versuchen Sie, eine allgemeine Regel zu finden, um für beliebige Graphen zu bestimmen, ob es Euler'schen Wege und Kreise gibt oder nicht.
 \begin{myanswer}
 Ein ungerichteter Graph besitzt genau dann einen Euler'schen Weg, wenn die folgenden Bedingungen erfüllt sind:
@@ -203,6 +208,132 @@ Ein ungerichteter Graph besitzt genau dann einen Euler'schen Weg, wenn die folge
 \end{itemize}
 \end{myanswer}
 \end{mychallenge}
+
+\newcommand{\tikzWinti}{
+\begin{tikzpicture}[inner sep=2pt]
+% 	\draw [help lines] (0,0) grid (10,10);
+ 	\tikzstyle{c} = [draw, shape=circle]
+	\node[c](1){1};
+	\node[c, right=1cm of 1](2){2} edge (1);
+	\node[c, below=1cm of 2](3){3} edge (2);
+	\node[c, left=1cm of 3](7){7} edge (3) edge (1) edge (2);
+	\node[c, left=1cm of 1](4){4} edge (1);
+	\node[c, above=1cm of 4](6){6} edge (1) edge (4);
+	\node[c, right=1cm of 6](5){5} edge (6) edge (1);
+\end{tikzpicture}
+}
+\newcommand{\tikzBern}{
+\begin{tikzpicture}
+% 	\draw [help lines] (0,0) grid (10,10);
+\scriptsize
+ 	\tikzstyle{c} = [draw, shape=circle, anchor=center, minimum width=.7cm]
+	\node[c](II){II};
+	\node[c, right=1cm of II](V){V} edge (II);
+	\node[c, below=1cm of V](IV){IV} edge (V);
+	\node[c, left=1cm of IV](III){III} edge (IV) edge (II);
+	\node[c](I) at ($(II)!0.5!(IV)$) {I} edge (II) edge (V) edge (IV) edge (III);
+	\node[c, left=1cm of I](VI){VI} edge (II) edge (III);
+\end{tikzpicture}
+}
+
+\newcommand{\tikzThurgau}{
+\begin{tikzpicture}[node distance=2cm]
+	\tikzstyle{c} = [draw, shape=circle, anchor=center, minimum width=.7cm]
+  % Bezirke
+  \node[c] (f) at (0,3) {F};
+  \node[c] (m) at (0,0) {M};
+  \node[c] (k) at (3,3) {K};
+  \node[c] (w) at (3,0) {W}; 
+  \node[c] (a) at (6,3) {A};
+
+  % Verbindungen
+  \draw (f) -- (k);
+  \draw (f) -- (w);
+  \draw (f) -- (m);
+  \draw (m) -- (w);
+  \draw (k) -- (w);
+  \draw (k) -- (a);
+  \draw (w) -- (a);
+\end{tikzpicture}
+
+}
+\newcommand{\matrixBern}{
+\begin{tabular}{c|c|c|c|c|c|c}
+&\textbf{I}&\textbf{II}&\textbf{III}&\textbf{IV}&\textbf{V}&\textbf{VI}\\\midrule
+\textbf{I}&0&1&1&1&1&0\\
+\textbf{II}&1&0&1&0&1&1\\
+\textbf{III}&1&1&0&1&0&1\\
+\textbf{IV}&1&0&1&0&1&0\\
+\textbf{V}&1&1&0&1&0&0\\
+\textbf{VI}&0&1&1&0&0&0\\
+\end{tabular}
+}
+
+\newcommand{\matrixWinti}{
+\begin{tabular}{c|c|c|c|c|c|c|c}
+&\textbf{1}&\textbf{2}&\textbf{3}&\textbf{4}&\textbf{5}&\textbf{6}&\textbf{7}\\\midrule
+\textbf{1}&0&1&0&1&1&1&1\\
+\textbf{2}&1&0&1&0&0&0&1\\
+\textbf{3}&0&1&0&0&0&0&1\\
+\textbf{4}&1&0&0&0&0&1&0\\
+\textbf{5}&1&0&0&0&0&1&0\\
+\textbf{6}&1&0&0&1&1&0&0\\
+\textbf{7}&1&1&1&0&0&0&0\\
+\end{tabular}
+}
+
+\newcommand{\matrixThurgau}{
+\begin{tabular}{c|c|c|c|c|c}
+&\textbf{F}&\textbf{M}&\textbf{K}&\textbf{W}&\textbf{A}\\\midrule
+\textbf{F}&0&1&1&1&0\\
+\textbf{M}&1&0&0&1&0\\
+\textbf{K}&1&0&0&1&1\\
+\textbf{W}&1&1&1&0&1\\
+\textbf{A}&0&0&1&1&0\\
+\end{tabular}
+}
+
+\foreach \ort/\einheitPl/\bspnummer/\bspname/\fgwdth/\tikzStadt/\solB/\solC/\solD in {
+Winterthur/Stadtkreise/6/Wülflingen/.75/\tikzWinti/{Nein, es gibt keinen Euler'schen Weg, da mehr als zwei Knoten einen ungeraden Grad haben. Es gibt viele Hamilton'sche Wege, beispielsweise 7-3-2-1-4-6-5-1, aber keinen Hamilton'schen Kreis.}/{Der Grad des Grafen ist 5 (von Knoten 1).}/\matrixWinti,
+Bern/Stadtteile/I/Innere Stadt/.95/\tikzBern/{Ja, der Graph enthält den Euler'schen Weg IV-I-V-IV-III-I-II-III-VI-II-V. Der Graph enthält viele Hamilton'sche Kreise, beispielsweise VI-II-V-I-IV-III-VI.}/{Der Grad des Grafen ist 4 (von Knoten I).}/\matrixBern,
+Thurgau/Bezirke/M/Münchenwilen/.95/\tikzThurgau/{Ja, der Graph enthält Euler'sche Wege, beispielsweise F-M-W-F-K-W-A-K. Der Graph enthält viele Hamilton'sche Kreise, beispielsweise W-M-F-K-A-W.}/{Der Grad des Grafen ist 4 (von Knoten W).}/\matrixThurgau
+%
+}{
+
+\begin{myexercise}[\textbf{\einheitPl{} von \ort}]
+Sie betrachten folgende Karte der \einheitPl{} von \ort.\\
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\fgwdth\textwidth]{GrundlagenInfo/ExamQuestions/Figures/Karte \ort\einheitPl}
+\end{figure}
+\begin{enumerate}
+\item Zeichnen Sie die Karte als Graphen, wobei jeder der \einheitPl{} ein Knoten sein soll und zwischen zwei Knoten jeweils eine Kante besteht, sofern zwei \einheitPl{} von \ort{} aneinandergrenzen. Als Namen der Knoten können Sie eine Abkürzung wählen (also z.B. ``\bspnummer'' für \bspname).
+\begin{myanswer}
+\begin{figure}[H]
+\centering
+\tikzStadt
+\end{figure}
+\end{myanswer}
+\item  Gibt es  auf diesem Graphen Euler'sche Wege? Gibt es Hamilton'sche Kreise? Falls ja, notieren Sie die Knotenfolge für einen Euler'schen Weg, beziehungsweise einen Hamilton'schen Kreis.
+\begin{myanswer}
+\solB
+\end{myanswer}
+\item Was ist der Grad dieses Graphen?
+\begin{myanswer}
+\solC
+\end{myanswer}
+\item Zeichnen Sie die Nachbarschaftsmatrix des Graphen.
+\begin{myanswer}
+\begin{table}[H]
+\centering
+\solD
+\end{table}
+\end{myanswer}
+\end{enumerate}
+\end{myexercise}
+}
+
+
 \subsection{Nachbarschafts-Matrizen}
 Bisher haben wir Graphen lediglich als Zeichnung sowie durch die Beschreibung deren Kanten und Knoten zu beschreiben gelernt. Wir können Grahen jedoch auch als Nachbarschafts-Matrize schreiben.
 
@@ -298,6 +429,7 @@ Bisher haben wir uns lediglich ungerichtete Graphen angeschaut, d.h., Graphen be
 
 \end{tikzpicture}
 \caption{Gerichter Graph, um Freundschaften darzustellen}.
+\label{fig:freundschaften}
 \end{figure}
 
 \begin{table}[H]
@@ -311,7 +443,44 @@ Wilson    & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
 Elia    & 1 & 1 & 0 & 1 & 0 & 1 \\ \hline
 Lara     & 0 & 1 & 0 & 1 & 1 & 0 \\
 \end{tabular}
+\caption{Nachbarschaftsmatrix des Graphen aus \cref{fig:freundschaften}}
+\label{tab:freundschaften-matrix}
 \end{table}
+
+\begin{myexercise}
+Schauen Sie sich den Graphen aus \cref{fig:freundschaften} und dessen Nachbarschaftsmatrix aus \cref{tab:freundschaften-matrix} an. Wie können Sie am einfachsten herausfinden, wer die meisten anderen Leute kennt, also die ``am besten vernetzte'' Person? Wie finden Sie heraus, wer den meisten anderen Leuten bekannt ist, also die ''berühmteste'' Person?
+\begin{myanswer}
+Sie können ganz einfach Ihrer Nachbarschaftsmatrix eine Kolonne und eine Zeile Summe hinzufügen, mit der Sie beide Fragen einfach beantworten können:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c||c|c|c|c|c|c||c}
+        & Sofia & Laura & Igor & Wilson & Elia & Lara & \textbf{Summe}\\ \midrule
+Sofia     & 0 & 1 & 0 & 1 & 1 & 0&3 \\ \hline
+Laura & 1 & 0 & 1 & 1 & 0 & 1 &4\\ \hline
+Igor     & 0 & 0 & 0 & 1 & 0 & 1&2 \\ \hline
+Wilson    & 0 & 0 & 0 & 0 & 0 & 0 & 0\\ \hline
+Elia    & 1 & 1 & 0 & 1 & 0 & 1&4 \\ \hline
+Lara     & 0 & 1 & 0 & 1 & 1 & 0 &3\\ \midrule\midrule
+\textbf{Summe} &2&3&1&5&2&3&/\\
+\end{tabular}
+\caption{Nachbarschaftsmatrix des Graphen aus \cref{fig:freundschaften} mit Summen-Kolonne und -Zeile}
+\label{tab:freundschaften-matrix-sum}
+\end{table}
+Wie wir aus \cref{tab:freundschaften-matrix-sum} sehen, sind Laura und Elia mit jeweils 4 Personen, die sie kennen, die am besten vernetzten Personen. Wilson ist die berühmteste Person, da er 5 anderen Personen bekannt ist.
+
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+Angenommen, jede Person in \cref{fig:freundschaften} kann allen anderen, die sie kennt, Informationen ins Ohr flüstern: Laura kann also beispielsweise Lara etwas ins Ohr flüstern, nicht aber Elia, da Sie ihn nicht kennt. 
+
+Wie viele Runden dauert es im besten und im schlechtesten Fall, bis alle Personen alle Informationen haben? Anders gefragt: wem sollte man eine Information als erstes ins Ohr flüstern, damit alle anderen die Information möglichst schnell erhalten und wen sollte man möglichst nicht als Start-Person auswählen?
+
+\begin{myanswer}
+Flüstert man die Information Laura ins Ohr, haben alle ausser Elia bereits in der ersten Runde die Antwort. Insgesamt würde es also zwei Runden dauern. Besser geht es nicht. Flüstert man die Information Wilson zu, gelangt sie gar nie zu allen.
+\end{myanswer}
+\end{myexercise}
 
 \subsection{Bäume}
 Definitionen
@@ -433,10 +602,598 @@ Nur der zweite Graph ist ein Baum. Der erste Graph ist nicht kreisfrei und der d
     \item Das Beispiel oben ist ein \textbf{gewurzelter Baum}: Es gibt eine einzige Wurzel, von der aus alle Knoten über gerichtete Kanten erreichbar sind
 \end{itemize}
 
-\subsection{Kürzeste Wege}
-Eine der wichtigsten und schwierigsten Aufgaben in einem Netzwerk ist es, den kürzesten Weg von A nach B zu finden.
+\begin{myexercise}
+Bestimmen Sie, welche der folgenden Graphen Bäume sind:
 
-\begin{mycaution}
-Dieser Abschnitt befindet sich noch im Aufbau und wird zu einem späteren Zeitpunkt vervollständigt.
-\end{mycaution}
+\begin{enumerate*}
+\item \begin{tikzpicture}
+	  \node[circle, draw] (1) at (0,0) {1};
+	  \node[circle, draw] (2) at (1,1) {2};
+	  \node[circle, draw] (3) at (2,1) {3};
+	  \node[circle, draw] (4) at (3,0) {4};
+	  
+	  \draw (1) -- (2);
+	  \draw (2) -- (3);
+	  \draw (3) -- (4);
+	  \draw (4) -- (1);
+	\end{tikzpicture}	
+	\item \begin{tikzpicture}
+	  \node[circle, draw] (1) at (0,0) {1};
+	  \node[circle, draw] (2) at (1,1) {2};
+	  \node[circle, draw] (3) at (1,-1) {3};
+	  \node[circle, draw] (4) at (2,0) {4};
+	  
+	  \draw (1) -- (2);
+	  \draw (1) -- (3);
+	  \draw (1) -- (4);
+	\end{tikzpicture}
+		\item \begin{tikzpicture}
+		  \node[circle, draw] (1) at (0,0) {1};
+		  \node[circle, draw] (2) at (1,1) {2};
+		  \node[circle, draw] (3) at (2,0) {3};
+		  \node[circle, draw] (4) at (1,-1) {4};
+		  \node[circle, draw] (5) at (3,0) {5};
+		  
+		  \draw (1) to [bend right=30] (2);
+		  \draw (1) -- (3);
+		  \draw (1) to [bend left=30] (4);
+		  \draw (1) to [bend left=30] (5);
+		\end{tikzpicture}
+	\item \begin{tikzpicture}
+	  \node[circle, draw] (1) at (0,0) {1};
+	  \node[circle, draw] (2) at (1,1) {2};
+	  \node[circle, draw] (3) at (1,-1) {3};
+	  \node[circle, draw] (4) at (2,0) {4};
+	  \node[circle, draw] (5) at (3,1) {5};
+	  \node[circle, draw] (6) at (3,-1) {6};
+	  
+	  \draw (1) -- (2);
+	  \draw (1) -- (3);
+	  \draw (3) -- (4);
+	  \draw (4) -- (2);
+	  \draw (4) -- (5);
+	  \draw (4) -- (6);
+	\end{tikzpicture}
+		\item \begin{tikzpicture}
+		  \node[circle, draw] (1) at (0,0) {1};
+		  \node[circle, draw] (2) at (1,1) {2};
+		  \node[circle, draw] (3) at (2,0) {3};
+		  \node[circle, draw] (4) at (1,-1) {4};
+		  
+		  \draw (1) -- (2);
+		  \draw (2) -- (3);
+		  \draw (2) -- (4);
+		\end{tikzpicture}
+	\item \begin{tikzpicture}
+	  \node[circle, draw] (1) at (0,0) {1};
+	  \node[circle, draw] (2) at (1,1) {2};
+	  \node[circle, draw] (3) at (2,0) {3};
+	  \node[circle, draw] (4) at (1,-1) {4};
+	  \node[circle, draw] (5) at (3,1) {5};
+	  \node[circle, draw] (6) at (3,-1) {6};
+	  
+	  \draw (1) -- (2);
+	  \draw (2) -- (3);
+	  \draw (3) -- (4);
+	  \draw (5) -- (6);
+	\end{tikzpicture}
+	
+\item 	\begin{tikzpicture}
+	% 	\draw [help lines] (0,0) grid (10,10);
+	\scriptsize
+     	\tikzstyle{c} = [draw, shape=circle, anchor=center, minimum width=.7cm]
+    	\node[c](II){II};
+    	\node[c, right=1cm of II](V){V} edge (II);
+    	\node[c, below=1cm of V](IV){IV} edge (V);
+    	\node[c, left=1cm of IV](III){III} edge (II);
+    	\node[c, left=1cm of II](VI){VI};
+    	\node[c, below=1cm of VI](I){I} edge (VI) edge (III);
+    	\node[c, left=1cm of VI](VII){VII} edge (VI);
+	\end{tikzpicture}
+	\end{enumerate*}
+	\begin{myanswer}
+Graphen 2, 3, 5, und 7 sind Bäume. Graphen 1 und 4 sind nicht kreisfrei, Graph 6 ist nicht zusammenhängend.
+	\end{myanswer}
+\end{myexercise}
+
+\section{Kürzeste Wege}
+Angenommen, Sie möchten auf einem möglichst kurzen Weg von einem Ort in einer Stadt zu einem anderen Ort gelangen. Dieses Problem tritt häufig in vielen Bereichen auf, z. B. bei der Navigation mit Karten-Apps, bei Netzwerkpaketrouting und in vielen weiteren Anwendungen. Das Finden des kürzesten Weges zwischen zwei Punkten in einem Netzwerk von Verbindungen wird als das \textit{Problem der kürzesten Wege} bezeichnet.
+
+Wie Sie bereits wissen, bestehen \tib{Graphen} $G = (V, E)$ aus einer Menge von Knoten $V$ und einer Menge von Kanten $E$. Jede Kante verbindet dabei zwei Knoten. Die Kanten können gerichtet oder ungerichtet sein. Zudem können die Kanten gewichtet sein, beispielsweise, um die Distanz von einer Kante zur nächsten anzugeben. Ein \tib{Weg} ist eine Folge von Kanten, die von einem Knoten zum anderen führen. Die \tib{Länge eines Weges} wird durch die Summe der Kantengewichte bestimmt.
+
+\cref{fig:simple_graph} zeigt einen einfachen, ungerichteten und gewichteten Graphen,
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \node[circle,draw] (A) at (0,0) {A};
+        \node[circle,draw] (B) at (2,1) {B};
+        \node[circle,draw] (C) at (4,0) {C};
+        \node[circle,draw] (D) at (2,-1) {D};
+        
+        \draw (A) -- (B) node[midway, above] {2};
+        \draw (B) -- (C) node[midway, above] {3};
+        \draw (A) -- (D) node[midway, below] {1};
+        \draw (D) -- (C) node[midway, below] {4};
+        \draw (B) -- (D) node[midway, right] {2};
+    \end{tikzpicture}
+    \caption{Ein einfacher gewichteter Graph}
+    \label{fig:simple_graph}
+\end{figure}
+
+In \cref{fig:simple_graph} ist der kürzeste Weg von A nach C der Pfad $A \rightarrow B \rightarrow C$, dessen Gesamtlänge $2 + 3 = 5$ ist.
+
+\subsection{Der Dijkstra-Algorithmus}
+
+Um den kürzesten Weg in einem Graphen zu finden, gibt es verschiedene Algorithmen. Einer der bekanntesten ist der \textbf{Dijkstra-Algorithmus}, der nach dem niederländischen Informatiker Edsger Dijkstra benannt ist. Dieser Algorithmus arbeitet, indem er schrittweise den kürzesten bekannten Weg zu jedem Knoten verbessert, bis der kürzeste Weg zum Zielknoten gefunden wurde.
+
+Die Grundidee des Dijkstra-Algorithmus ist es, von einem Startknoten ausgehend die Distanzen zu allen anderen Knoten zu berechnen, bis man den Zielknoten erreicht hat. Dabei nutzt der Algorithmus eine Prioritätswarteschlange, um den Knoten mit der momentan kürzesten Distanz zu verarbeiten.
+
+Der Algorithmus folgt diesen Schritten:
+
+\begin{enumerate}
+    \item Distanz zu jedem Knoten wird auf unendlich gesetzt, außer für den Startknoten, dessen Distanz auf 0 gesetzt wird.
+    \item Alle Knoten werden in eine ``Prioritäts-Warteschlange'' gesetzt, wobei der Startknoten am Anfang die höchste Priorität hat (kleinste Distanz).
+    \item Wählen Sie den Knoten mit der kleinsten bekannten Distanz und markiere ihn als besucht.
+    \item Aktualisieren Sie die Distanzen der benachbarten Knoten, indem die Kantengewichte hinzugefügt werden.
+    \item Wiederholen Sie Schritte 3 und 4, bis der Zielknoten markiert ist oder die Warteschlange leer ist.
+\end{enumerate}
+
+
+Ein vollständiges Schritt-für-Schritt-Beispiel für den Djikstra-Algorithmus ist in \cref{fig:alg} gezeigt.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state, fill=Yellow!50, align=center]         {$s$\\$0$};
+\node (t) [state, fill=Yellow!20, above right=of s,align=center]   {$t$\\$\infty$};
+\node (y) [state, fill=Yellow!20, below right=of s,align=center]         {$y$\\$\infty$};
+\node (x) [state, fill=Yellow!20, right=of t,align=center]   {$x$\\$\infty$};
+\node (z) [state, fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["10"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["1"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"3"]   (t)
+        (y) edge ["9"]  (x)
+        (y) edge ["2"]             (z)
+        (x) edge [bend right,"4"]  (z)
+        (z) edge [very near end,"7"]  (s)
+        (z) edge [bend right,"6"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(a)}
+\end{subfigure}
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state,fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state,fill=Blue!20, above right=of s,align=center]   {$t$\\$10$};
+\node (y) [state,fill=Blue!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state,fill=Yellow!20, right=of t,align=center]   {$x$\\$\infty$};
+\node (z) [state,fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["10"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["1"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"3"]   (t)
+        (y) edge ["9"]  (x)
+        (y) edge ["2"]             (z)
+        (x) edge [bend right,"4"]  (z)
+        (z) edge [very near end,"7"]  (s)
+        (z) edge [bend right,"6"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(b)}
+\end{subfigure}
+
+
+\bigskip
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state, fill=Blue!20, above right=of s,align=center]   {$t$\\$8$};
+\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$14$};
+\node (z) [state, fill=Blue!20, right=of y,align=center]   {$z$\\$7$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["10"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["1"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"3"]   (t)
+        (y) edge ["9"]  (x)
+        (y) edge ["2"]             (z)
+        (x) edge [bend right,"4"]  (z)
+        (z) edge [very near end,"7"]  (s)
+        (z) edge [bend right,"6"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(c)}
+\end{subfigure}
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state, fill=Blue!20, above right=of s,align=center]   {$t$\\$8$};
+\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$13$};
+\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["10"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["1"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"3"]   (t)
+        (y) edge ["9"]  (x)
+        (y) edge ["2"]             (z)
+        (x) edge [bend right,"4"]  (z)
+        (z) edge [very near end,"7"]  (s)
+        (z) edge [bend right,"6"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(d)}
+\end{subfigure}
+
+\bigskip
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state, fill=Red!20, above right=of s,align=center]   {$t$\\$8$};
+\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state, fill=Blue!20, right=of t,align=center]   {$x$\\$9$};
+\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["10"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["1"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"3"]   (t)
+        (y) edge ["9"]  (x)
+        (y) edge ["2"]             (z)
+        (x) edge [bend right,"4"]  (z)
+        (z) edge [very near end,"7"]  (s)
+        (z) edge [bend right,"6"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(e)}
+\end{subfigure}
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state, fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state, fill=Red!20, above right=of s,align=center]   {$t$\\$8$};
+\node (y) [state, fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state, fill=Red!20, right=of t,align=center]   {$x$\\$9$};
+\node (z) [state, fill=Red!20, right=of y,align=center]   {$z$\\$7$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["10"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["1"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"3"]   (t)
+        (y) edge ["9"]  (x)
+        (y) edge ["2"]             (z)
+        (x) edge [bend right,"4"]  (z)
+        (z) edge [very near end,"7"]  (s)
+        (z) edge [bend right,"6"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(f)}
+\end{subfigure}
+\caption{vollständiges Beispiel für das Vorgehen des Dijkstra-Algorithmus mit $s$ als Startknoten}
+\label{fig:alg}
+\end{figure}
+
+\begin{myexercise}\label{aufgabe:205}
+Führen Sie die Schritte des Dijkstra-Algorithmus für den folgenden Graphen analog zu \cref{fig:alg} durch. Verwenden Sie $s$ als Startknoten der Berechnung.
+\begin{figure}[H]
+\centering
+\adjustbox{width=0.5\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state, align=center]         {$s$};
+\node (t) [state, above right=of s,align=center]   {$t$};
+\node (y) [state, below right=of s,align=center]         {$y$};
+\node (x) [state, right=of t,align=center]   {$x$};
+\node (z) [state, right=of y,align=center]   {$z$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["3"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["6"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"1"]   (t)
+        (y) edge ["4"]  (x)
+        (y) edge ["6"]             (z)
+        (x) edge [bend right,"2"]  (z)
+        (z) edge [very near end,"3"]  (s)
+        (z) edge [bend right,"7"]    (x);
+\end{tikzpicture}
+}%
+\end{figure}
+\begin{myanswer}\label{aufgabe:205-sol}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state, fill=Yellow!50, align=center]         {$s$\\$0$};
+\node (t) [state, fill=Yellow!20, above right=of s,align=center]   {$t$\\$\infty$};
+\node (y) [state, fill=Yellow!20, below right=of s,align=center]         {$y$\\$\infty$};
+\node (x) [state, fill=Yellow!20, right=of t,align=center]   {$x$\\$\infty$};
+\node (z) [state, fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["3"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["6"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"1"]   (t)
+        (y) edge ["4"]  (x)
+        (y) edge ["6"]             (z)
+        (x) edge [bend right,"2"]  (z)
+        (z) edge [very near end,"3"]  (s)
+        (z) edge [bend right,"7"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(a)}
+\end{subfigure}
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state,fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state,fill=Blue!20, above right=of s,align=center]   {$t$\\$3$};
+\node (y) [state,fill=Blue!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state,fill=Yellow!20, right=of t,align=center]   {$x$\\$\infty$};
+\node (z) [state,fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["3"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["6"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"1"]   (t)
+        (y) edge ["4"]  (x)
+        (y) edge ["6"]             (z)
+        (x) edge [bend right,"2"]  (z)
+        (z) edge [very near end,"3"]  (s)
+        (z) edge [bend right,"7"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(b)}
+\end{subfigure}
+
+
+\bigskip
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state,fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state,fill=Red!20, above right=of s,align=center]   {$t$\\$3$};
+\node (y) [state,fill=Blue!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state,fill=Blue!20, right=of t,align=center]   {$x$\\$9$};
+\node (z) [state,fill=Yellow!20, right=of y,align=center]   {$z$\\$\infty$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["3"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["6"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"1"]   (t)
+        (y) edge ["4"]  (x)
+        (y) edge ["6"]             (z)
+        (x) edge [bend right,"2"]  (z)
+        (z) edge [very near end,"3"]  (s)
+        (z) edge [bend right,"7"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(c)}
+\end{subfigure}
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state,fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state,fill=Red!20, above right=of s,align=center]   {$t$\\$3$};
+\node (y) [state,fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state,fill=Blue!20, right=of t,align=center]   {$x$\\$9$};
+\node (z) [state,fill=Blue!20, right=of y,align=center]   {$z$\\$11$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["3"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["6"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"1"]   (t)
+        (y) edge ["4"]  (x)
+        (y) edge ["6"]             (z)
+        (x) edge [bend right,"2"]  (z)
+        (z) edge [very near end,"3"]  (s)
+        (z) edge [bend right,"7"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(d)}
+\end{subfigure}
+
+\bigskip
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state,fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state,fill=Red!20, above right=of s,align=center]   {$t$\\$3$};
+\node (y) [state,fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state,fill=Red!20, right=of t,align=center]   {$x$\\$9$};
+\node (z) [state,fill=Blue!20, right=of y,align=center]   {$z$\\$11$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["3"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["6"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"1"]   (t)
+        (y) edge ["4"]  (x)
+        (y) edge ["6"]             (z)
+        (x) edge [bend right,"2"]  (z)
+        (z) edge [very near end,"3"]  (s)
+        (z) edge [bend right,"7"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(e)}
+\end{subfigure}
+\begin{subfigure}[b]{0.4\textwidth}
+\adjustbox{width=0.8\textwidth}{%
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (s) [state,fill=Red!20, align=center]         {$s$\\$0$};
+\node (t) [state,fill=Red!20, above right=of s,align=center]   {$t$\\$3$};
+\node (y) [state,fill=Red!20, below right=of s,align=center]         {$y$\\$5$};
+\node (x) [state,fill=Red!20, right=of t,align=center]   {$x$\\$9$};
+\node (z) [state,fill=Red!20, right=of y,align=center]   {$z$\\$11$};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (s) edge ["3"]             (t)
+        (s) edge ["5"]              (y)
+        (t) edge ["6"]              (x)
+        (t) edge [bend right,"2"]    (y)
+        (y) edge [bend right,"1"]   (t)
+        (y) edge ["4"]  (x)
+        (y) edge ["6"]             (z)
+        (x) edge [bend right,"2"]  (z)
+        (z) edge [very near end,"3"]  (s)
+        (z) edge [bend right,"7"]    (x);
+\end{tikzpicture}
+}%
+\caption*{(f)}
+\end{subfigure}
+\end{figure}
+\end{myanswer}
+\end{myexercise}
+
 \newpage
