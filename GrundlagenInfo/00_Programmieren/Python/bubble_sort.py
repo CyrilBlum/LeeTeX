@@ -32,7 +32,7 @@ def bubble_sort_visualize(arr):
     filenames = []
     
     for i in range(n):
-        for j in range(0, n-i-1):
+        for j in range(0, n-1):
             filenames.append(generate_tikz_figure(arr, j, j+1, step, False, range=[0, n-i-1]))
             step += 1
             
@@ -92,7 +92,7 @@ def generate_tikz_binary_search_to_tex(array, target):
             filename = f"binary_search_step_{step}.tex"
             with open(f"{filename}", 'w') as file:
                 file.write(tikz_code_before)
-            # add curly brace to highlight part which still needs to be looked at
+            # add curly brace to highlight part which still needs to be looked atf
             tikz_code += f"\\draw[decorate,decoration={{brace,mirror,amplitude=10pt}}] ({left},-.5) -- ({right},-.5) node[midway, below=5pt] {{\emoji{{robot}}}};\n"
         else:
             right = mid - 1
