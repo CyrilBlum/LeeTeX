@@ -57,7 +57,7 @@ def generate_tikz_binary_search_to_tex(array, target):
     step = 1
 
     while left <= right:
-        mid = left + (right - left) // 2
+        mid = (left + right) // 2
         
         # Generate TikZ code for current step
         tikz_code = "\\begin{tikzpicture}\n"        
@@ -85,13 +85,18 @@ def generate_tikz_binary_search_to_tex(array, target):
                 file.write(tikz_code)
             break
         elif array[mid] < target:
-            left = mid + 1
             # save image before curly brace is added
             tikz_code_before = deepcopy(tikz_code) + "\\end{tikzpicture}\n"
+            left_before = deepcopy(left)
+            left = mid + 1
             # Save to .tex file
             filename = f"binary_search_step_{step}.tex"
             with open(f"{filename}", 'w') as file:
                 file.write(tikz_code_before)
+
+            # strikethrough old left and right
+            tikz_code += f"\\draw[thick,red] ({left_before-.25},0) -- ({mid+.25},0);\n"
+
             # add curly brace to highlight part which still needs to be looked atf
             tikz_code += f"\\draw[decorate,decoration={{brace,mirror,amplitude=10pt}}] ({left},-.5) -- ({right},-.5) node[midway, below=5pt] {{\emoji{{robot}}}};\n"
         else:
@@ -117,7 +122,7 @@ def generate_tikz_binary_search_to_tex(array, target):
         
 
 # Example usage
-array = [1, 3, 5, 7, 9, 11, 13, 15]
-target = 3
+array = [1, 2, 3, 5, 7, 8, 9, 11, 15, 17, 20]
+target = 15
 
 generate_tikz_binary_search_to_tex(array, target)
