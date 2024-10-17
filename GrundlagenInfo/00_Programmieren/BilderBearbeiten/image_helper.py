@@ -1,9 +1,9 @@
-from PIL import Image
 import random
 
+from PIL import Image
+
+
 # Monochrome Bilder
-
-
 def load_bw_pixels(filename):
     im = Image.open(filename)
     im = im.convert("1")
