@@ -1,0 +1,284 @@
+\newtoggle{withbonus} \toggletrue{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Grundlagenfach Informatik}
+% name of the class
+\newcommand{\myclass}{2. Klassen}
+% set date
+\newcommand{\mydate}{18. Oktober 2024}
+
+\title{\textbf{Bilder bearbeiten in Python}}
+\author{Fachschaft Informatik\\
+\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}		
+\clearpage
+
+\section*{Vorbereitung}
+\begin{questions}
+
+\question{getting started}
+
+\begin{itemize}
+    \item Laden die Dateien
+    \begin{itemize}
+        \item \pythoninline{aufgaben_bilder.py}
+        \item \pythoninline{image_helper.py}
+        \item \pythoninline{wohlen_bw.bmp}
+        \item \pythoninline{wohlenGray.png}
+        \item \pythoninline{wohlen_farbe.jpg}
+    \end{itemize}
+    von Moodle herunter und speichere sie alle in \textbf{demselben} Ordner auf Deinem Computer ab.
+    \item Öffne nun die Datei\pythoninline{aufgaben_bilder.py} und löse die Aufgaben.
+\end{itemize}
+
+\section*{Schwarz-Weiss-Bilder}
+\question{weisse und schwarze Pixel zählen}
+
+Schreiben Sie ein Python-Programm, welches das Schwarz-Weiss-Bild
+\begin{center}
+    \pythoninline{wohlen_bw.bmp}
+\end{center} als Liste einliest. Das Programm soll die Anzahl der weissen und die Anzahl der schwarzen Pixel des Bildes ausgeben.
+
+Vorgehen:
+\begin{itemize}
+    \item Lesen Sie das Bild als Pixelliste ein.
+    \item Gehen Sie mit einer Schleife durch die Pixelliste und erhöhen Sie einen Zähler, falls eine 1 (beziehungsweise eine 0) gelesen wird.
+    \item Geben Sie das Resultat aus.
+\end{itemize}
+
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+pixelListe = load_bw_pixels('wohlen_bw.bmp')
+anzahlPixelGesamt = len(pixelListe)
+anzahlWeissePixel = 0
+for pixel in pixelListe:
+        anzahlWeissePixel += 1
+
+anzahlSchwarzePixel = anzahlPixelGesamt - anzahlWeissePixel
+print('Anzahl weisse Pixel: ' + str(anzahlWeissePixel) + ', Anzahl schwarze Pixel: ' + str(anzahlSchwarzePixel))
+\end{lstlisting}
+\end{solution}
+
+\question{Pixelwerte invertieren}
+
+Schreiben Sie ein Python-Programm, welches das Schwarz-Weiss-Bild \pythoninline{wohlen_bw.bmp} als Bild und als Liste einliest. Die Aufgabe ist es, das Bild zu invertieren: Alle weissen Pixel sollen schwarz werden und alle schwarzen Pixel sollen weiss werden. Stellen Sie das originale Bild und das invertierte Bild nebeneinander dar.
+
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+import numpy as np
+pixelListeBild1 = load_bw_pixels('wohlen_bw.bmp')
+Bild1 = load_bw_image('wohlen_bw.bmp')
+
+pixelListeBild2 = []
+
+for pixel in pixelListeBild1:
+    if pixel == 0:
+        pixelListeBild2.append(1)
+    else:
+        pixelListeBild2.append(0)
+
+breite, hoehe = Bild1.size
+
+Bild2 = new_bw_image(breite,hoehe,pixelListeBild2)
+
+Image.fromarray(np.hstack((np.array(Bild1),np.array((Bild2))))).show()
+\end{lstlisting}
+\end{solution}
+
+\question{random image}
+
+Erstelle Sie ein eigenes Bild mit zufälligen Werten (0 oder 1) mit Hilfe des Python-Moduls \pythoninline{random} und lassen Sie dieses Bild anzeigen.
+
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+import random
+pixelListeRandom = []
+
+breite = 800
+hoehe = 508
+anzahlPixel = breite * hoehe
+
+for k in range(anzahlPixel):
+    zufallsbit = random.randint(0,1)
+    pixelListeRandom.append(zufallsbit)
+
+BildRandom = new_bw_image(breite,hoehe,pixelListeRandom)
+BildRandom.show()
+\end{lstlisting}
+\end{solution}
+
+
+\section*{Graustufenbilder}
+
+\question{Graustufen invertieren}
+Schreiben Sie ein Python-Programm, welches das Graustufenbild \pythoninline{wohlenGray.png} einliest. Das Programm soll die Graustufenwerte invertieren. Beispielsweise soll aus dem hellen (weissen) Pixel mit Wert 255  der dunkle (schwarze) Pixel mit Wert 0 werden. Der dunkle Pixel mit Werte 1 soll zum hellen Pixel mit Wert 254 werden und so weiter. Stellen Sie das originale Bild und das invertierte Bild nebeneinander dar.
+
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+pixelListeBild1 = load_grayscale_pixels('wohlenGray.png')
+Bild1 = load_grayscale_image('wohlenGray.png')
+pixelListeBild2 = []
+
+for pixel in pixelListeBild1:
+    wert = 255 - pixel
+    pixelListeBild2.append(wert)
+
+breite, hoehe = Bild1.size
+
+Bild2 = new_grayscale_image(breite,hoehe,pixelListeBild2)
+Image.fromarray(np.hstack((np.array(Bild1),np.array((Bild2))))).show()
+\end{lstlisting}
+\end{solution}
+
+\question{nur 8 verschiedene Graustufen}
+
+Schreiben Sie ein Python-Programm, welches das Graustufenbild \pythoninline{wohlenGray.png} einliest und mit nur 8 verschiedenen (anstelle von 256 verschiednen) Graustufen darstellt. Die Pixel mit Werten in $\lrc{0, 1, 2, \ldots, 31}$ sollen alle durch den Graustufenwert $0$ dargestellt werden, die Pixel mit Werten in $\lrc{32,33,34,\ldots, 63}$ durch den Wert $32$ und so weiter.
+
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+pixelListeBild1 = load_grayscale_pixels('wohlenGray.png')
+Bild1 = load_grayscale_image('wohlenGray.png')
+pixelListeBild2 = []
+
+for pixel in pixelListeBild1:
+    wert = (pixel // 32) * 32
+    pixelListeBild2.append(wert)
+
+breite, hoehe = Bild1.size
+
+Bild2 = new_grayscale_image(breite,hoehe,pixelListeBild2)
+Image.fromarray(np.hstack((np.array(Bild1),np.array((Bild2))))).show()
+\end{lstlisting}
+\end{solution}
+
+\section*{anspruchsvolle Aufgaben}
+
+% \question{Gitterstäbe}
+%
+% Schreiben Sie ein Python-Programm, welches ein Graustufenbild mit \enquote{Gitterstäben} belegt wie recht in \cref{fig:my_label}. Jeder Gitterstab hat eine Breite von zwei Pixeln und zwischen zwei aufeinanderfolgenden Stäben sind in der Breite jeweils 5 Pixel ohne Stäbe.
+%
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{gitter.png}
+%     \caption{Gitterstäbe}
+%     \label{fig:my_label}
+% \end{figure}
+%
+% \begin{solution}
+% \begin{lstlisting}[language=Python,numbers=none]
+% pixelListeBild1 = load_grayscale_pixels('wohlenGray.png')
+% Bild1 = load_grayscale_image('wohlenGray.png')
+% breite, hoehe = Bild1.size
+%
+% pixelListeBild2 = []
+%
+% for index in range(len(pixelListeBild1)):
+%     wert = (index % breite) % 7
+%     if wert == 0 or wert == 1:
+%         pixelListeBild2.append(0)
+%     else:
+%         pixelListeBild2.append(pixelListeBild1[index])
+%
+% Bild2 = new_grayscale_image(breite,hoehe,pixelListeBild2)
+% Image.fromarray(np.hstack((np.array(Bild1),np.array((Bild2))))).show()
+% \end{lstlisting}
+% \end{solution}
+
+
+\question{Primzahlen als Pixel}
+
+Schreiben Sie eine Python-Funktion
+\begin{lstlisting}[language=Python]
+def ist_primzahl(zahl),
+\end{lstlisting}
+welche für eine gegebene natürliche Zahl \pythoninline{zahl} entscheidet, ob \pythoninline{zahl} eine Primzahl ist (\pythoninline{return True}) oder nicht (\pythoninline{return False}).
+
+\begin{lstlisting}[language=Python,numbers=none]
+Testfälle:
+
+ist_primzahl(0) # return False
+ist_primzahl(23) # return True
+ist_primzahl(97) # return True
+ist_primzahl(91) # return False
+\end{lstlisting}
+
+Erstellen Sie eine leere Liste. Diese Liste soll am Ende ein Schwarz-Weiss-Bild von $200\times 200$ Pixeln kodieren und somit eine Länge von $40000$ haben. Der $k$-te Eintrag der Liste für
+\begin{align*}
+    k \in\lrc{0, 1, 2, \ldots, 39999}
+\end{align*}
+soll $0$ (schwarz) sein, falls $k$ eine Primzahl ist und $1$ (weiss) sonst.
+
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+def ist_primzahl(zahl):
+    for k in range(2,zahl):
+        if (zahl % k) == 0:
+            return False
+    return True
+
+breite = 200
+hoehe = 200
+anzahlPixel = breite * hoehe
+
+pixelListe = []
+
+for index in range(anzahlPixel):
+    pixelListe.append(ist_primzahl(index))
+
+Bild = new_bw_image(breite,hoehe,pixelListe)
+Bild.show()
+\end{lstlisting}
+\end{solution}
+
+\section*{Farbige Bilder}
+\question{grün verstärken}
+
+Schreiben Sie ein Python-Programm, welches das Farbbild \pythoninline{wohlen_farbe.jpg} und den Grünanteil um 20 Prozent verstärkt.
+
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+pixelListeBild1 = load_rgb_pixels("wohlen_farbe.jpg")
+Bild1 = load_rgb_image("wohlen_farbe.jpg")
+breite, hoehe = Bild1.size
+
+pixelListeBild2 = []
+
+for (r,g,b) in pixelListeBild1:
+    g *= 1.2
+    pixel = (int(r), int(g), int(b))
+    pixelListeBild2.append(pixel)
+
+Bild2 = new_rgb_image(breite,hoehe,pixelListeBild2)
+Image.fromarray(np.hstack((np.array(Bild1),np.array((Bild2))))).show()
+\end{lstlisting}    
+\end{solution}
+
+\question{Sepia-Filter}
+
+In dieser Aufgabe wollen wir einen Sepia-Filter erstellen und für das farbige Bild \pythoninline{wohlen_farbe.jpg} testen. Wie genau ein Bild durch diesen Filter verändert wird können Sie unter \url{https://de.wikipedia.org/wiki/Sepia_(Fotografie)} nachlesen.
+
+\begin{solution}
+\begin{lstlisting}[language=Python,numbers=none]
+pixelListeBild1 = load_rgb_pixels('wohlen_farbe.jpg')
+Bild1 = load_rgb_image('wohlen_farbe.jpg')
+breite, hoehe = Bild1.size
+
+pixelListeBild2 = []
+
+for (r,g,b) in pixelListeBild1:
+    r = r * 0.393 + g * 0.769 + b * 0.189
+    g = r * 0.349 + g * 0.686 + b * 0.168
+    b = r * 0.272 + g * 0.534 + b * 0.131
+    pixel = (int(r), int(g), int(b))
+    pixelListeBild2.append(pixel)
+
+Bild2 = new_rgb_image(breite,hoehe,pixelListeBild2)
+Image.fromarray(np.hstack((np.array(Bild1),np.array((Bild2))))).show()
+\end{lstlisting}    
+\end{solution}
+
+
+\end{questions}
+
