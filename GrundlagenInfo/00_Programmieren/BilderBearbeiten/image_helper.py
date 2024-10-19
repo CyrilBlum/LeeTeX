@@ -24,7 +24,7 @@ def get_1d_bw(filename):
 
 def get_2d_bw(filename):
     # returns a binary (black / white) 2d-list of all the pixels of the image given by 'filename'
-    im = load_bw_image(filename)
+    im = get_bw_image(filename)
     w, h = im.size
     data = im.getdata()
     return [[data[y * w + x] for y in range(h)] for x in range(w)]
