@@ -636,4 +636,36 @@ l_dauer += [919,1011,1102,1209,1308,1400]
 \end{lstlisting}
 \end{solution}
 
+\question[2]{\emoji{train} Zugreise}
+Schreiben Sie eine Definition \lstinline|reise_zu_bahnhof(start_bahnhof, stationen, anzahl_stopps)|, welche einen Startbahnhof (Text), eine Liste von Bahnhöfen und die Anzahl Stopps als Parameter nimmt und den neuen Bahnhof zurückgibt.
+\begin{itemize}
+\item Falls der Startbahnhof nicht Teil der Liste von Bahnhöfen (\lstinline|stationen|) ist, soll zurückgegeben werden ``Kann Start-Bahnhof nicht in Stationen finden''.
+\item Falls der Zielbahnhof weiter ist als möglich soll ebenfalls eine Fehlermeldung ausgegeben werden
+\item Andernfalls soll die Definition den neuen Bahnhof ausgeben wo man ankommt nach \lstinline|anzahl_stopps|.
+\end{itemize}
+\begin{solution}
+\begin{lstlisting}
+def reise_zu_bahnhof(start_bahnhof, stationen, anzahl_stopps):
+    if start_bahnhof not in stationen:
+        return "Kann Start-Bahnhof nicht in Stationen finden"
+    
+    # teste, ob man überhaupt noch anzahl_stopps vorwärts fahren kann
+    position_start = stationen.index(start_bahnhof, 0, len(stationen))
+    if (position_start + anzahl_stopps) > len(stationen) - 1:
+        return "Kann nicht so weit (vorwärts) reisen"
+
+    # teste, ob man überhaupt noch anzahl_stopps vorwärts fahren kann
+    if (position_start + anzahl_stopps) < 0:
+        return "Kann nicht so weit (rückwärts) reisen"
+
+    return stationen[position_start+anzahl_stopps]
+
+
+stationen = ["Bern", "Zürich", "Zürich Oerlikon", "Zürich Flughafen", "Winterthur", "St. Gallen"]
+neue_station = reise_zu_bahnhof("Zürich", stationen, -1)
+print(neue_station)
+\end{lstlisting}
+content
+\end{solution}
+
 \end{questions}

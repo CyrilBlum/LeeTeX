@@ -82,6 +82,10 @@ Zudem können folgende Eingeschaften für Kolonnen angegeben werden:
 	\end{myexample}
 \end{mycaution}
 
+	\begin{mycaution}
+Auf InstaHub kann immer nur ein Befehl pro Mal ausgeführt werden, das ``;''-Zeichen funktioniert also leider nicht. Stattdessen müssen Sie in InstaHub jeden Befehl einzeln eingeben.
+	\end{mycaution}
+
 \begin{myexercise}
 	Schreiben Sie die SQL-Befehle, um \cref{table:angestellte2} und \cref{table:abteilungen} zu erstellen. Sie müssen dabei lediglich eine leere Tabelle mit den korrekten Kolonnen-Namen und Kolonnen-Typen (Zahl, Text, etc.) erstellen, Daten müssen Sie noch keine einfügen.
 	\begin{myanswer}
@@ -219,7 +223,10 @@ username, email, password, name, role, is_active
     \begin{lstlisting}
 INSERT INTO users (id, username, email, password, 
 				   name, role, is_active) 
-VALUES (300, 'testuser', 'test@test.com', 'test123', 'Test-Vorname Test-Nachname', 'user', '1');
+VALUES (300, 'testuser', 'test@test.com', 'test123', 'Test-Vorname Test-Nachname', 'user', '1')
+\end{lstlisting}
+Das Resultat kann mit einer zweiten Abfrage überprüft werden:
+\begin{lstlisting}
 SELECT * FROM users WHERE username="testuser"
 \end{lstlisting}
   \end{myanswer}
@@ -248,17 +255,20 @@ WHERE city="Berlin"
 \end{myexercise}
 
 \begin{mysubmission}
-  Setzen Sie die Körpergrössen aller männlichen Mitglieder auf 190. Überprüfen Sie die Richtigkeit Ihres Befehls, indem Sie nach Ihrem Befehl die Kolonnen für die Körpergrösse, das Geschlecht und den Name aller männlichen Mitglieder abfragen. Verwenden Sie ein Semikolon (;), um mehrere Befehle voneinander abzutrennen.
+  Setzen Sie die Körpergrössen aller männlichen Mitglieder auf 190. Überprüfen Sie danach die Richtigkeit Ihres Befehls, die Kolonnen für die Körpergrösse, das Geschlecht und den Name aller männlichen Mitglieder abfragen.
   \begin{myanswer}
     \begin{lstlisting}
 UPDATE users
 SET centimeters=190
-WHERE gender="male"; 
-
+WHERE gender="male"
+\end{lstlisting}
+Um zu überprüfen, ob der Befehl funktioniert hat, können Sie danach einfach die Tabelle nochmals anzeigen:
+\begin{lstlisting}
 SELECT centimeters, gender, name
 FROM users
 WHERE gender="male"
 \end{lstlisting}
+
   \end{myanswer}
 \end{mysubmission}
 
