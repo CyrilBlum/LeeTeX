@@ -573,4 +573,67 @@ def dreierfenster(A):
     print(dreiersummen)
 \end{lstlisting}
 \end{solution}
+
+\clearpage
+\question[2]{\textbf{\emoji{tram} Tram-Fahrplan}\\}
+Sie leiten die Entwicklung des Tram-Fahrplans in der Stadt Zürich. Die aktuelle Glatttalbahn (Tram 12) fährt von Stettbach, bzw. Oerlikon, bis zum Flughafen (s. folgende Abbildungen). Ignorieren Sie die blaue Linie, die bei ``Glattpark'' nach rechts abbiegt.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.6\linewidth]{GrundlagenInfo/00_Programmieren/Figures/Glattalbahn_vbg}
+\end{figure}
+
+Sie haben sich folgende Stationen und die Fahrzeit vom Anfangsort (Sternen Oerlikon) zu jeder folgenden Station bis und mit ``Zürich Flughafen Fracht'' in Sekunden notiert:
+
+\begin{lstlisting}
+stationen = ["Sternen", "Messe", "Leutschenbach", "Oerlikerhus", "Glattpark", "Lindbergh", "Glattbrugg", "Bäuler", "Unterriet", "Kloten", "Flughafen", "Flughafen Fracht"]
+dauer = [0, 60, 122, 185, 241, 363, 543, 603, 666, 729, 786, 845]
+\end{lstlisting}
+
+Nehmen Sie einfachheitshalber an, dass alle Strecken immer in der Richtung Oerlikon $\rightarrow$ Flughafen zurückgelegt zurücklegt (Berechnungen müssen Sie nur in dieser Richtung machen).
+
+(1 Punkt) Schreiben Sie eine Definition, um die Fahrtzeit von einer beliebigen Station zu einer anderen zu berechnen. 
+
+(1 Punkt) Die Definition soll die Reisezeit in Minuten (ohne Dezimalstellen) von einer beliebigen Station zu einer anderen an das Hauptprogramm zurückgeben. Geben Sie das Resultat \textit{im Hauptprogramm} ()und nicht in der Definition) aus!
+
+(1 Punkt) Die Glattal-Tramlinie soll erweitert werden um die folgenden Stationen:
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{GrundlagenInfo/00_Programmieren/Figures/GTB_Karte_mit_Legende_Web_v02}
+\end{figure}
+
+Entfernen Sie die Station ``Flughafen Fracht'' aus der Liste \lstinline|stationen| und fügen Sie die neuen Stationen (Obstgartenstrasse) sowie die Reisezeiten (erfundene Werte) in Ihren Listen \lstinline|stationen| und \lstinline|dauer| ein.
+
+
+
+
+\begin{solution}
+\begin{lstlisting}
+def berechne_dauer(station_start, station_ende, stationen, l_dauer):
+    # berechne Indizes der Start- und Endstationen
+    i_start = l_stationen.index(station_start, 0, len(l_stationen))
+    i_end = l_stationen.index(station_ende, 0, len(l_stationen))
+    
+    # berechne Dauer zwischen Start und Ende
+    dauer_gesamt = l_dauer[i_end] - l_dauer[i_start]
+    # konvertiere Resultat in Minuten (Ganzzahl)
+    dauer_gesamt_min = dauer_gesamt//60
+    
+    return(dauer_gesamt_min)
+
+l_stationen = ["Sternen", "Messe", "Leutschenbach", "Oerlikerhus", "Glattpark", "Lindbergh", "Glattbrugg", "Bäuler", "Unterriet", "Kloten", "Flughafen", "Flughafen Fracht"]
+l_dauer = [0, 60, 122, 185, 241, 363, 543, 603, 666, 729, 786, 845]
+
+# Aufgabe a und b
+dauer_reise_min = berechne_dauer("Glattpark", "Lindbergh", l_stationen, l_dauer)
+print(dauer_reise_min)
+
+# Aufgabe c
+l_stationen.pop()
+l_stationen += ["Obstgarten","Stadthaus","Mühle", "Steinacker", "Oberfeld"]
+l_dauer += [919,1011,1102,1209,1308,1400]
+\end{lstlisting}
+\end{solution}
+
 \end{questions}
