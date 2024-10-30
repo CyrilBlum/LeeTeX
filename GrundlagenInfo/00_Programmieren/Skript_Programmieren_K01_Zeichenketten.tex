@@ -1,4 +1,4 @@
-\lstset{style=TigerJython, numbers=none}
+\lstset{style=TigerJython,escapeinside={(*@}{@*)}}
 
 \newtcolorbox{myExBox}[1][]{
   enhanced jigsaw,
@@ -507,8 +507,310 @@ In der zweiten Lektion arbeiten SuS weiter an den Beispielen aus der ersten Lekt
 \end{enumerate}
 \end{myExBox}
 \end{myExBox}
-\newpage\stepcounter{mycounter}
 
+Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden: Sie beschreiben einen Ablauf, ohne jedoch diesen auszuführen. Damit der Ablauf ausgeführt wird, müssen Sie die Definitionen aufrufen. Definitionen können zudem Inputs entgegennehmen, sogenannte \textbf{Parameter}. Wir zwar bisher einen Wert einer Variable mittels \lstinline|drucken|, Bisher konnten Sie jedoch nichts an das Hauptprogramm zurückgeben. In diesem Kapitel lernen wir, dass dies möglich ist mit dem Befehl \lstinline|return|.
+
+\newcommand{\drawCube}[3]{
+% Define cube coordinates
+\coordinate (A#1) at (#2,    0,     0);
+\coordinate (B#1) at ({#2+1},0,     0);
+\coordinate (C#1) at ({#2+1},1,0);
+\coordinate (D#1) at (#2,    1,0);
+\coordinate (E#1) at (#2,     0,1);
+\coordinate (F#1) at ({#2+1}, 0,1);
+\coordinate (G#1) at ({#2+1},1,1);
+\coordinate (H#1) at (#2,    1,1);
+
+
+% Draw cube
+\draw[thick] (A#1) -- (B#1) -- (C#1) -- (D#1) -- cycle;
+\draw[thick] (E#1) -- (F#1) -- (G#1) -- (H#1) -- cycle;
+\draw[thick] (A#1) -- (E#1);
+\draw[thick] (B#1) -- (F#1);
+\draw[thick] (C#1) -- (G#1);
+\draw[thick] (D#1) -- (H#1);
+% define lower left corner of doors
+\foreach \x in {1,...,#3} {
+\pgfmathsetmacro\emptyspace{(1-#3*0.2)/(#3+1)*\x+#2}
+\pgfmathsetmacro\doorsspace{0.2*(\x-1)}
+\pgfmathsetmacro\llCord{\emptyspace+\doorsspace}
+% lower door coordinate
+\coordinate (llD\x#1) at (\llCord,0,1);
+% Draw doors
+\fill[blue!50, rounded corners] (llD\x#1) -- ++(0,0.5,0) -- ++(0.2,0,0)node[pos=0.5, below](in#1\x){\textcolor{blue}{\tiny\texttt{x\x}\normalsize}} -- ++(0,-0.5,0);
+}
+
+% coordinate for result door
+\coordinate (llDOut#1) at ({#2+1},0,0.2);
+\fill[green!50, rounded corners] (llDOut#1) -- ++(0,0.5,0) -- ++(0,0,0.6)node[pos=0.8,rotate=45, below, align=center](out#1){\textcolor{black}{\tiny\texttt{out#1}\normalsize}} -- ++(0,-0.5,0);
+
+% Draw a 2D rectangle around the cube
+\node[fit=(E#1) (C#1), inner sep=4pt, red, dotted, draw, line width=1pt,rounded corners](dottedRect#1) {};
+% annotate the two-d rect
+\node[above=5pt of dottedRect#1.north west, anchor=west, align=left]{\textcolor{red}{\tiny\texttt{def a#1(\textcolor{blue}{\foreach\x in {1,...,#3}{x\x, }...})}\normalsize}};
+}
+
+\begin{figure}[H]
+% Use the \drawCube macro to draw various cubes
+\centering
+\begin{tikzpicture}[scale=2]
+\drawCube{1}{0}{2}
+% feed input values into a1
+\node[fill=blue!50, rounded corners] (input1) at (0.3,0,2){3};
+\node[fill=blue!50, rounded corners] (input2) at (0.7,0,2){12};
+\draw[thick,->] (input1) -- (in11);
+\draw[thick,->] (input2) -- (in12);
+\node[fill=green!50, rounded corners](outVal1) at (1.25,-0.6,0.5){36};
+\draw[thick,->] (out1) -- (outVal1);
+\drawCube{2}{1.75}{3}
+\drawCube{3}{3.5}{2}
+\draw[thick,->,rounded corners] (out1) -- ++(0,-1.5,0) -- ++(1.05,0,0)node[below]{\lstinline[language=Python,style=TigerJython,basicstyle=\ttfamily\tiny]{return out1}} -- ++(1.55,0,0) -- (in31);
+\end{tikzpicture}
+\caption*{Funktionen}
+\end{figure}
+
+
+Stellen Sie sich vor, Sie sind SportlerIn und möchten Ihren Kalorienbedarf berechnen, um sich für auf einen kommenden Wettkampf optimal zu ernähren. Eventuell möchten Sie auch noch etwas ab- oder zunehmen, da Ihre Sportart dies erfordert. Hierzu wollen Sie Ihren täglichen Kalorienbedarf berechnen. Ihr Kalorienbedarf berechnet sich wie folgt:
+\begin{enumerate}
+\item Ihr Grundumsatz (englisch \gls{BMR}), d.h., ihr Grundbedarf, falls Sie sich nicht bewegen.
+\item Ihr Leistungsumsatz, d.h., zusätzliche Energie, die Sie bei Aktivitäten wie Spazieren, Radfahren, Joggen usw. verbrennen.
+\end{enumerate}
+
+\begin{myexercise}
+Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel berechnen und geben Sie das Resultat auf der Konsole aus:
+\begin{enumerate}
+\item Für Männer:
+\begin{align*}
+\text{BMR} = & 88.362 +\\ 
+& (13.397 \times \text{Gewicht in kg}) +\\ 
+& (4.799 \times \text{Körpergrösse in cm}) -\\
+& (5.677 \times \text{Alter in Jahren})
+\end{align*}
+\item Für Frauen:
+\begin{align*}
+\text{BMR} = & 447.593  +\\ 
+& (9.247 \times \text{Gewicht in kg}) +\\ 
+& (3.098 \times \text{Körpergrösse in cm}) -\\
+& (4.330 \times \text{Alter in Jahren})
+\end{align*}
+\end{enumerate}
+\begin{myanswer}
+\begin{lstlisting}
+def grundumsatz(gewicht, groesse, alter, geschlecht):
+    """
+    Berechnet den Grundumsatz (BMR) nach der Harris-Benedict-Formel.
+    
+    Parameter:
+    - gewicht: Gewicht in kg
+    - groesse: Körpergrösse in cm
+    - alter: Alter in Jahren
+    - geschlecht: 'mann' oder 'frau'
+    
+    Rückgabe:
+    - BMR: Grundumsatz in Kalorien
+    """
+    if geschlecht == 'mann':
+        bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
+    elif geschlecht == 'frau':
+        bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
+    
+    print("Der Grundumsatz beträgt:", round(bmr, 2), "Kalorien")
+
+# Beispiel:
+gewicht = 75  # kg
+groesse = 180  # cm
+alter = 30  # jahre
+geschlecht = 'mann'
+
+# berechne grundumsatz
+grundumsatz(gewicht, groesse, alter, geschlecht)
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+Nun möchten wir im Code oben nach Zeile ... zum Grundumsatz auch noch unsere Aktivitäten hinzufügen, allerdings können wir nun nicht mehr auf die Variable bmr zurückgreifen. Wie können wir das ändern? Indem wir sie an das Programm zurückgeben und speichern (s. ...). Wichtige Änderungen gegebüber dem vorigen Code sind in \colorbox{CornflowerBlue}{blau} umrandet.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+def grundumsatz(gewicht, groesse, alter, geschlecht):
+    if geschlecht == 'mann':
+        bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
+    elif geschlecht == 'frau':
+        bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
+    
+     (*@\colorbox{CornflowerBlue}{return b\tikzmark{arrowFrom}mr}@*) # gib den bmr an das Programm zurück
+
+# Beispiel:
+gewicht = 75  # kg
+groesse = 180  # cm
+alter = 30  # jahre
+geschlecht = 'mann'
+
+# berechne grundumsatz(*@\colorbox{CornflowerBlue}{, speichere das Resultat in einer Variable "bmr"}@*)
+(*@\colorbox{CornflowerBlue}{bm\tikzmark{arrowTo}r = }@*) grundumsatz(gewicht, groesse, alter, geschlecht)
+(*@\colorbox{CornflowerBlue}{print("Der Grundumsatz beträgt:", round(bmr, 2), "Kalorien")}@*)
+\end{lstlisting}
+\end{minipage}
+
+\begin{tikzpicture}[overlay,remember picture]
+   % Wert zurückgeben
+	\draw[red,-stealth] (arrowFrom.north) to[bend left] node[right, fill=RoyalBlue,text=white,rounded corners] {Wert Zurückgeben} (arrowTo);
+\end{tikzpicture}
+
+Weshalb haben wir das gemacht? Nun können wir zum \gls{BMR} auch noch die Leistungsenergie hinzufügen, um den gesamten Energiebedarf zu berechnen.
+
+\begin{myexercise}
+Berechnen Sie Ihre Leistungsenergie anhand der Tabelle \ref{tab:kcal}, indem Sie für zwei Listen erstellen: 
+\begin{enumerate}
+\item Eine Liste für die Zeit, während der Sie täglich einer Aktivität nachgehen
+\item Eine Liste mit dem Kalorienverbrauch pro Minute für jede dieser Aktivitäten
+\end{enumerate} 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|*{10}{c}}
+\textbf{Gewicht (kg)} & 60 & 65 & 70 & 75 & 80 & 85 & 90 & 95 & 100 & 105 \\
+\midrule\midrule
+\textbf{Spazieren} & 4.5 & 5.1 & 5.4 & 5.7 & 6.0 & 6.4 & 6.7 & 7.3 & 8.0 & 9.0 \\
+\midrule
+\textbf{Schnelles Gehen} & 5.5 & 6.3 & 7.0 & 7.5 & 8.0 & 8.6 & 9.5 & 10.0 & 10.6 & 11.3 \\
+\midrule
+\textbf{Fahrradfahren} & 6.5 & 7.5 & 8.0 & 9.0 & 9.5 & 10.3 & 11.0 & 11.7 & 12.5 & 13.6 \\
+\midrule
+\textbf{Schwimmen} & 8.0 & 9.2 & 10.0 & 10.8 & 11.5 & 12.5 & 13.7 & 14.4 & 15.4 & 16.5 \\
+\midrule
+\textbf{Rudern} & 11.0 & 13.0 & 14.3 & 15.0 & 16.5 & 17.5 & 19.0 & 20.5 & 21.8 & 23.5 \\
+\midrule
+\textbf{Jogging} & 13.0 & 14.5 & 16.0 & 17.5 & 19.0 & 20.0 & 22.0 & 23.5 & 24.5 & 26.5 \\
+\midrule
+\textbf{Laufen} & 16.0 & 18.5 & 20.0 & 22.0 & 23.5 & 25.0 & 27.5 & 29.0 & 31.0 & 33.5 \\
+\midrule
+\textbf{Sprint} & 19.0 & 21.5 & 24.0 & 26.0 & 28.0 & 30.0 & 32.5 & 34.7 & 35.6 & 39.0 \\
+\end{tabular}
+\caption{Kalorienverbrauch für unterschiedliche Aktivitäten, pro Minute}
+\label{tab:kcal}
+\end{table}
+Wenn z.B. eine 80 kg schwere Person 1 Stunde lang rudert und 20 Minuten spaziert wären die Listen wie folgt:
+\begin{lstlisting}
+l_zeit = [60, 20] # Zeit in Minuten
+l_kcal = [16.5, 6] # Kalorien pro Aktivität
+\end{lstlisting}
+Schreiben Sie eine Python-Funktion, um eine neue Liste zu produzieren, die für jede Aktivität die Anzahl verbrannter Kalorien berechnet. Das erwartete Resultat für das Beispiel hier wäre: \lstinline|[990, 120]|.
+\begin{myanswer}
+\begin{lstlisting}
+def berechne_kalorien(l_zeit, l_kcal):
+    """
+    Berechnet den Kalorienverbrauch für jede Aktivität.
+
+    Parameter:
+    - l_zeit: Liste der Zeit in Minuten für jede Aktivität
+    - l_kcal: Liste des Kalorienverbrauchs pro Minute für jede Aktivität
+
+    Rückgabe:
+    - Liste mit dem Kalorienverbrauch pro Aktivität
+    """
+    kalorienverbrauch = []
+    for i in range(len(l_zeit)):
+        kalorien = l_zeit[i] * l_kcal[i]
+        kalorienverbrauch.append(kalorien)
+    
+    return kalorienverbrauch
+
+
+# Beispiel
+l_zeit = [60, 20]  # Zeit in Minuten
+l_kcal = [16.5, 6]  # Kalorien pro Minute
+
+kalorienverbrauch = berechne_kalorien(l_zeit, l_kcal)
+print(kalorienverbrauch)  # Erwartetes Ergebnis: [990, 120]
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+Schreiben Sie eine weitere Definition, die Ihren \gls{BMR} sowie alle Aktivitätsenergien summiert und zurückgibt.
+\end{myexercise}
+
+\begin{mychallenge}
+Schreiben Sie eine weitere Definitionen, um den \gls{BMR} anhand der Mifflin-St-Jeor-Gleichung und der Katch-McArdle-Formel zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
+\begin{enumerate}
+\item Mifflin-St-Jeor-Gleichung:
+\begin{enumerate}
+\item Männer: 
+\begin{align*}
+\text{BMR} &= 10 \times \text{Gewicht (kg)} \\
+&\quad + 6.25 \times \text{Größe (cm)} \\
+&\quad - 5 \times \text{Alter (Jahre)} \\
+&\quad + 5
+\end{align*}
+\item Frauen: 
+\begin{align*}
+\text{BMR} &= 10 \times \text{Gewicht (kg)} \\
+&\quad + 6.25 \times \text{Größe (cm)} \\
+&\quad - 5 \times \text{Alter (Jahre)} \\
+&\quad - 161
+\end{align*}
+\end{enumerate}
+\item Katch-McArdle-Formel:
+\begin{enumerate}
+\item Grundformel:
+\begin{align*}
+\text{BMR} &= 370 \\
+&\quad + (21.6 \times \text{FFM in kg})
+\end{align*}
+
+\item Fett-freie Masse (in kg): 
+\begin{align*}
+\text{FFM} &= \text{Körpergewicht (kg)} \\
+&\quad \times (1 - \text{Körperfettanteil})
+\end{align*}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\begin{myanswer}
+\begin{lstlisting}
+def harris_benedict(gewicht, groesse, alter, geschlecht):
+    if geschlecht == 'mann':
+        return 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
+    elif geschlecht == 'frau':
+        return 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
+
+def mifflin_st_jeor(gewicht, groesse, alter, geschlecht):
+    if geschlecht == 'mann':
+        return (10 * gewicht) + (6.25 * groesse) - (5 * alter) + 5
+    elif geschlecht == 'frau':
+        return (10 * gewicht) + (6.25 * groesse) - (5 * alter) - 161
+
+def katch_mcardle(gewicht, koerperfettanteil):
+    fettfreie_masse = gewicht * (1 - koerperfettanteil)
+    return 370 + (21.6 * fettfreie_masse)
+
+def durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil):
+    bmr_harris = harris_benedict(gewicht, groesse, alter, geschlecht)
+    bmr_mifflin = mifflin_st_jeor(gewicht, groesse, alter, geschlecht)
+    bmr_katch = katch_mcardle(gewicht, koerperfettanteil)
+    
+    durchschnitt = (bmr_harris + bmr_mifflin + bmr_katch) / 3
+    return durchschnitt
+
+# Beispiel
+gewicht = 75  # kg
+groesse = 180  # cm
+alter = 30  # jahre
+geschlecht = 'mann'
+koerperfettanteil = 0.12  # 12%
+
+durchschnitt = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
+print("Der durchschnittliche Grundumsatz beträgt:", round(durchschnitt, 2), "Kalorien")
+\end{lstlisting}
+\end{myanswer}
+\end{mychallenge}
+
+
+
+\newpage\stepcounter{mycounter}
 \section{DL \themycounter: Befehle / Funktionen mit Parameter, mit \texorpdfstring{\lstinline|return|}{return}}
 
 \begin{myExBox}[title=DL \themycounter]
