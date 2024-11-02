@@ -1,6 +1,6 @@
 \chapter{Kryptologie}\label{ch:Kryptologie}
 
-\lstset{style=TigerJython, numbers=none}
+\lstset{language=Python}
 
 \section{Zeichenketten in Python}
 Im Nachfolgenden schauen wir uns einige Python-Befehle an, die dazu dienen, mit Zeichenketten ($=$ engl. \textit{strings}) zu arbeiten.
@@ -323,57 +323,234 @@ Sei $\Sigma = \lrc{a,b,c}$. Das Wort $abc$ ist ein echtes Teilwort, echtes Präf
 %
 %
 %
-% \section{Motivation}
-%
-% Alice möchte Bob eine Nachricht zukommen lassen. Diese Nachricht wird \tib{Klartext}\index{Klartext} genannt. 
-% In der Praxis wird Alice 
-% \begin{figure}[H]
-%     \centering
-%     \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
-%     \node[alice, minimum width=1.5cm, 
-%         label={[mylabel, anchor=west]north east:{}}, 
-%         label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Chiffrierung)}$\\
-%         \textcolor{Red}{Geheimtext}}}] (alice) {Alice (Sender)};
-%     \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
-%         label={[mylabel, anchor=east]north west:{}}, 
-%         label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
-%         \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
-%     
-%     \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
-%     \textcolor{Red}{Geheimtext}} (aux-a-|bob.west);
-%
-%     \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
-%     \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
-%     \end{tikzpicture}
-%     \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger).}
-%     \label{fig:schema_geheimtext}
-% \end{figure}
-% \clearpage
-%
-% \section{Geheimschriften}
-% \section{Kryptosysteme}
-% \begin{figure}[H]
-%     \centering
-%     \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
-%     \node[alice, minimum width=1.5cm, 
-%         label={[mylabel, anchor=west]north east:{}}, 
-%         label={[mylabel, anchor=east]north west:{\textcolor{Blue}{(Klartext, Schlüssel)} $\big\downarrow\text{\tiny (Verschlüsselung)}$\\
-%         \textcolor{Red}{Kryptotext}}}] (alice) {Alice (Sender)};
-%     \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
-%         label={[mylabel, anchor=east]north west:{}}, 
-%         label={[mylabel, anchor=west]north east:{\textcolor{Red}{(Kryptotext, Schlüssel)} $\big\downarrow\text{\tiny (Entschlüsselung)}$\\
-%         \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
-%     
-%     \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
-%     \textcolor{Red}{Kryptotext}} (aux-a-|bob.west);
-%
-%     \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
-%     \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
-%     \end{tikzpicture}
-%     \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems.}
-%     \label{fig:schema_kryptotext}
-% \end{figure}
-%
-% \section{Kryptoanalyse}
-%
-% \section{Moderne Kryptologie}
+ \section{Motivation}
+
+ Alice möchte Bob eine Nachricht zukommen lassen. Diese Nachricht wird \tib{Klartext}\index{Klartext} genannt. 
+ In der Praxis wird Alice 
+ \begin{figure}[H]
+     \centering
+     \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+     \node[alice, minimum width=1.5cm, 
+         label={[mylabel, anchor=west]north east:{}}, 
+         label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Chiffrierung)}$\\
+         \textcolor{Red}{Geheimtext}}}] (alice) {Alice (Sender)};
+     \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
+         label={[mylabel, anchor=east]north west:{}}, 
+         label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
+         \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
+     
+     \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
+     \textcolor{Red}{Geheimtext}} (aux-a-|bob.west);
+
+     \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
+     \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+     \end{tikzpicture}
+     \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger).}
+     \label{fig:schema_geheimtext}
+ \end{figure}
+ \clearpage
+
+ \section{Geheimschriften}
+ \section{Kryptosysteme}
+ \begin{figure}[H]
+     \centering
+     \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+     \node[alice, minimum width=1.5cm, 
+         label={[mylabel, anchor=west]north east:{}}, 
+         label={[mylabel, anchor=east]north west:{\textcolor{Blue}{(Klartext, Schlüssel)} $\big\downarrow\text{\tiny (Verschlüsselung)}$\\
+         \textcolor{Red}{Kryptotext}}}] (alice) {Alice (Sender)};
+     \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
+         label={[mylabel, anchor=east]north west:{}}, 
+         label={[mylabel, anchor=west]north east:{\textcolor{Red}{(Kryptotext, Schlüssel)} $\big\downarrow\text{\tiny (Entschlüsselung)}$\\
+         \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
+     
+     \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
+     \textcolor{Red}{Kryptotext}} (aux-a-|bob.west);
+
+     \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
+     \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+     \end{tikzpicture}
+     \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems.}
+     \label{fig:schema_kryptotext}
+ \end{figure}
+
+ \section{Symmetrische Kryptosysteme}
+ \subsection{``Intuitive'' Ansätze zur Verschlüsselung}
+ \begin{myexercise}
+Entziffern Sie den folgenden Geheimtext durch ausprobieren:
+     \begin{center}
+     \small
+         \begin{enumerate}
+             \item RKPYOTOLIGEEMREOLGCITHEGEHMIINSSE
+             \item HCSFIRILTAHCZFUEBUHAWNERDNUKUZMMOINUEIZNER
+         \end{enumerate}
+         \normalsize
+     \end{center}
+     
+ \begin{myanswer}
+ Ursprünglicher Text:
+      \begin{center}
+      \small
+          \begin{enumerate}
+              \item KRYPTOLOGIE ERMOEGLICHT GEHEIMNISSE
+              \item SCHRIFTLICH AUFZUBEWAHREN UND ZU KOMMUNIZIEREN
+          \end{enumerate}
+          \normalsize
+      \end{center}
+      Der Geheimtext entsteht durch Austauschen der Positionen der Buchstaben.
+      \begin{figure}[H]
+          \centering
+          \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/krypto_swap_2.png}\caption{\enquote{Zweiertausch}}
+          \end{subfigure}
+          \hfill
+          \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/krypto_swap_3.png}\caption{\enquote{Dreiertausch}}
+          \end{subfigure}
+      \end{figure}
+ \end{myanswer}
+ \end{myexercise}
+ \begin{myexample}
+ Ein ``Zweiertausch'' könnte in Python wie folgt implementiert werden:
+ \begin{lstlisting}
+ def zweiertausch(klartext):
+     geheimtext = "" # leerer String
+     b = 0
+     while b < (len(klartext) - 1):
+         geheimtext += klartext[b + 1] + klartext[b]
+         b += 2
+ 
+     if len(klartext) % 2 != 0:
+         # Klartexte ungerader Länge
+         geheimtext += klartext[len(klartext) - 1]
+     print(geheimtext)
+ 
+ 
+ zweiertausch("KANTONSSCHULE")
+ \end{lstlisting}
+ \end{myexample}
+ \begin{mychallenge}
+ Implementieren Sie einen Python-Funktion \lstinline|def dreiertausch(klartext)|, welche den \enquote{Dreiertausch} aus der Einführungsaufgabe 2 implementiert.
+ \end{mychallenge}
+ 
+ \subsection{Skytale}
+ \begin{myexercise}
+ Die Geheimschrift
+ \begin{center}
+     WNGIAEIEMATSMKRTTEAGIEINANINTUGNDOJEEENL
+ \end{center}
+ wurde mit einer Tabelle mit 5 Zeilen und 8 Spalten erzeugt. Wie lautet der Klartext?
+\begin{myanswer}
+
+Wir beginnen mit einer leeren $5\times 8$ Tabelle und schreiben den Geheimtext spaltenweise (von rechts nach links und von oben nach unten) in die leere Tabelle. Damit erhalten wir:
+\begin{table}[H]
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+W & E & T & T & I & N & G & E \\ \hline
+N & I & S & T & E & I & N & E \\ \hline
+G & E & M & E & I & N & D & E \\ \hline
+I & M & K & A & N & T & O & N \\ \hline
+A & A & R & G & A & U & \red{J} & \red{L} \\ \hline
+\end{tabular}
+\end{table}
+Der Klartext
+\begin{center}
+    Wettingen ist eine Gemeinde im Kanton Aargau
+\end{center}
+lässt sich nun einfach ablesen.
+\end{myanswer}
+ \end{myexercise}
+ \begin{myexercise}
+ Sie möchten einen Klartext der Länge 87 mit Hilfe einer Tabelle mit 10 Zeilen chiffrieren. Wie viele Spalten benötigt diese Tabelle?
+ 
+\begin{myanswer}
+ Die Tabelle benötigt 9 Spalten. Allgemein lässt sich die Anzahl benötigter Spalten berechnen durch
+ \begin{align*}
+     \ceil{\frac{\text{Länge des Textes}}{\text{Anzahl Zeilen}}}\quad\text{(nach oben aufgerundet)}.
+ \end{align*}
+\end{myanswer}
+ \end{myexercise}
+ 
+ \begin{myexercise}
+ Der folgende Geheimtext der Länge 75 wurde mit SKYTALE verschlüsselt:
+ \begin{center}
+ ETIFIITNUTNFGENKURRELEODIERSILIMSEANIE\\
+ MRECREMRHSNSSAPSTCBRCRHEUHORRNHNIEGEG 
+ \end{center}
+ Dabei konnten \textbf{alle Zeilen der Tabelle vollständig aufgefüllt} werden.
+ \begin{description}
+ \item[(a)] Welches ist hier der Schlüssel (die Anzahl der Zeilen)? Tipp: Probieren Sie die Schlüssel 3 und 5 aus.
+ \item[(b)] Wie lautet der Klartext?
+ \item[(c)] Wie viele Schlüssel müssen im schlimmsten Fall ausprobiert werden, bis der korrekte Schlüssel gefunden wurde? Das heisst, wie viele potentielle Schlüssel gibt es?
+ \end{description}
+
+ \begin{myanswer}
+ \begin{table}[H]
+ \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+ \hline
+ E & I & N & K & L & E & I & N & E & R & S & C & H & R & I \\ \hline
+ T & T & F & U & E & R & M & I & C & H & A & B & E & R & E \\ \hline
+ I & N & G & R & O & S & S & E & R & S & P & R & U & N & G \\ \hline
+ F & U & E & R & D & I & E & M & E & N & S & C & H & H & E \\ \hline
+ I & T & N & E & I & L & A & R & M & S & T & R & O & N & G \\ \hline
+ \end{tabular}
+ \end{table}
+ \begin{description}
+ \item[(a)] Durch Ausprobieren finden wir, dass die Wahl des Schlüssels 5 zu einem sinnvollen Klartext führt, die Wahl des Schlüssels 3 jedoch nicht.
+ 
+ \item[(b)]
+ Der Klartext lautet also:
+ \begin{center}
+     {\small
+     EIN KLEINER SCHRITT FUER MICH ABER EIN GROSSER\\
+     SPRUNG FUER DIE MENSCHHEIT NEIL ARMSTRONG}
+ \end{center}
+ \item[(c)] Wir müssen $75=3\cdot 5\cdot 5$ Buchstaben auf ein Rechteck verteilen. Damit könnten $3, 5, 15$ und $25$ mögliche Schlüssel sein. $1$ und $75$ sind keine Schlüssel, da der gegebene Text kein Klartext ist.
+ \end{description}
+ \end{myanswer}
+ 
+ 
+ \end{myexercise}
+ \subsection{Caesar}
+ Eines der bekanntesten Verschlüsselungssysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dieses Verschlüsselungssystem besteht essentiell aus einer Verschiebung aller Buchstaben um eine vordefinierte Anzahl Positionen.
+ 
+ \begin{myexercise}
+  Der Geheimtext
+  \begin{center}
+    \texttt{X G T Y G P F G U E J N W G U U G N B Y G K}
+  \end{center}
+  wurde mit CAESAR verschlüsselt, der Schlüssel ist aber unbekannt.
+  Entschlüsseln Sie den Geheimtext, ohne alle Schlüssel auszuprobieren, wenn Sie wissen, dass der häufigste Buchstabe im Klartext \texttt{E} ist.
+  \begin{myanswer}
+	Der häufigste Buchstabe im Geheimtext ist ``G'' Wir können den Text mithilfe der folgenden Verschiebung entschlüsseln (G $\rightarrow$ E) :
+	  \begin{center}
+	  \caesar[2]\\
+	    \texttt{V E R W E N D E D E N S C H L U E S S E L Z W E I}
+	  \end{center}
+  \end{myanswer}
+ \end{myexercise}
+ 
+ \subsection{Vigenère}
+ 
+ \begin{myexercise}
+ 	\begin{itemize}
+ 		\item Kopieren Sie den Geheimtext (Vigenère) von Moodle und versuchen Sie, ihn mit dem Analysetool zu entziffern
+ 		\item \emoji{trophy} Challenge: Versuchen Sie, die Challenge-Aufgabe auf Moodle zu lösen
+ 	\end{itemize}
+ \end{myexercise}
+ 
+ \begin{mychallenge}
+ Teil 1: Verschlüsselung
+ \begin{itemize}
+ 	\item Erstellen Sie einen Text in deutscher Sprache mit mindestens 1000 Zeichen, beispielsweise mittels folgender Webseite: \url{https://www.blindtextgenerator.de/}
+ 	\item Wählen Sie ein \textit{geheimes} Schlüsselwort (3-7 Zeichen) und verschlüsseln Sie Ihren Text mit Vigenère (s. Moodle, Python-Datei 1).
+ \end{itemize}
+ Teil 2: Entschlüsselung
+ \begin{itemize}
+ 	\item Zuerst wird die Schlüssellänge per Friedmann-Test bestimmt  (s. Moodle, Python-Datei 2). 
+ 	\item Danach wird innerhalb jeder Gruppe der häufigste Buchstabe gesucht. Dieser entspricht mit hoher Wahrscheinlichkeit dem Buchstaben ``E'', somit haben wir die Verschiebung für diese Wort-Gruppe gefunden und damit auch das Schlüsselwort  (s. Moodle, Python-Datei 3).
+ 	\item Der Text kann nun wieder mit dem Vigenère-Programm entschlüsselt werden  (s. Python-Datei 1). 
+ \end{itemize}
+ \end{mychallenge}
+
+ \section{Moderne Kryptologie}

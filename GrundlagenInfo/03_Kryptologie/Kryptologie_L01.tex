@@ -8,6 +8,31 @@
     \textbf{Lektion 4} \emoji{computer}: \textbf{Geheimschriften}
 \end{frame}
 
+\begin{frame}[label=schemakrypto]{Geheime Kommunikation zwischen Bob und Alice}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+    \node[bob, minimum width=1.5cm, 
+        label={[mylabel, anchor=west]north east:{}}, 
+        label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Verschlüsselung)}$\\
+        \textcolor{Red}{Geheimtext}}}] (bob) {Bob (Sender)};
+    \node[alice, minimum width=1.5cm, right=5cm of bob, mirrored,
+        label={[mylabel, anchor=east]north west:{}}, 
+        label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Entschlüsselung)}$\\
+        \textcolor{Blue}{Klartext}}}] (alice) {Alice (Empfänger)};
+    
+    \draw[->, thick, black] ([yshift=0mm]bob.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{\textcolor{Red}{Geheimtext}} (aux-a-|alice.west);
+
+    \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of bob] (eve) {Eve (Gegner / Abhörer)};
+    \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+    \end{tikzpicture}
+    \begin{tcolorbox}
+    \small
+    \textbf{Sie} wollen Ihrer Freundin / Ihrem Freund eine geheime Nachricht senden, die nicht das ganze Internet mitlesen kann. Wie könnten Sie den Klartext so verschlüsseln, dass nur Alice bzw. Bob diese lesen kann?
+    \end{tcolorbox}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Inhalt}
     \begin{itemize}
         \item Weshalb Verschlüsselung?
@@ -33,27 +58,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}[label=schemakrypto]{Schematische Darstellung der Kommunikation zwischen Bob und Alice}
-\begin{figure}
-    \centering
-    \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
-    \node[bob, minimum width=1.5cm, 
-        label={[mylabel, anchor=west]north east:{}}, 
-        label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Verschlüsselung)}$\\
-        \textcolor{Red}{Geheimtext}}}] (bob) {Bob (Sender)};
-    \node[alice, minimum width=1.5cm, right=5cm of bob, mirrored,
-        label={[mylabel, anchor=east]north west:{}}, 
-        label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Entschlüsselung)}$\\
-        \textcolor{Blue}{Klartext}}}] (alice) {Alice (Empfänger)};
-    
-    \draw[->, thick, black] ([yshift=0mm]bob.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{\textcolor{Red}{Geheimtext}} (aux-a-|alice.west);
 
-    \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of bob] (eve) {Eve (Gegner / Abhörer)};
-    \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
-    \end{tikzpicture}
-    \\[1cm]$\rightarrow$ Vertraulichkeit, Integrität, Authentizität, Verbindlichkeit
-\end{figure}
-\end{frame}
 
 \begin{frame}{Anforderungen an kryptographische Systeme}
 \begin{enumerate}[<+->]
@@ -328,7 +333,7 @@ Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 	 \end{itemize}	 
 	 }
 	 \only<5-6>{
-	 \centering\scalebox{.7}{\caesar[6]}
+	 \centering\scalebox{.6}{\caesar[6]}
 	 }
 	 
 	 \only<6>{\verbTwo}	
@@ -351,7 +356,7 @@ Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 % \end{frame}
 %
 \begin{frame}[fragile]{CAESAR in Python}
-\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+\begin{lstlisting}
 def caesar_buchstabe(buchstabe, verschiebung):
     return chr((ord(buchstabe) - ord("A") + verschiebung) % 26 + ord("A"))
 
