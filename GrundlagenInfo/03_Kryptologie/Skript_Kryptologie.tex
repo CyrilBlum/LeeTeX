@@ -1,261 +1,120 @@
+% initialize new counter for DLs and set it to 1
+\newcounter{dlcounter}\stepcounter{dlcounter}
+
 \chapter{Kryptologie}\label{ch:Kryptologie}
 
-\lstset{language=Python}
-
-\section{Zeichenketten in Python}
-Im Nachfolgenden schauen wir uns einige Python-Befehle an, die dazu dienen, mit Zeichenketten ($=$ engl. \textit{strings}) zu arbeiten.
-Strings werden wir insbesondere benötigen, um eigene Python-Programme zu schreiben, mit denen wir Texte verschlüsseln und entschlüsseln können. 
-Genauer gesagt bezeichnen wir Texte in Python als Zeichenketten. 
-Zeichenketten werden in Python innerhalb von einfachen oder doppelten Anführungszeichen geschrieben, also entweder \lstinline|'...'| oder \lstinline|"..."|. 
-Innerhalb der Anführungszeichen können beliebige Zeichen stehen, beispielsweise Buchstaben, Leerzeichen, Spezialzeichen oder Zahlen.
-
-\begin{mychallenge}
-Was könnte der Nutzen davon sein, dass es zwei Möglichkeiten gibt und nicht nur eine, Zeichenketten zu schreiben (\lstinline|'...'| oder \lstinline|"..."|)? 
-\begin{myanswer}
-Eine Möglichkeit, die uns durch die unterschiedlichen Schreibweisen geboten wird, ist, Anführungszeichen auszugeben. Beispielsweise könnten Sie so einen Text, der Anführungszeichen beinhaltet, auf der Konsole drucken:
-\begin{lstlisting}
-print('Meine Freunde nennen mich "Mr. X"')
-\end{lstlisting}
-\end{myanswer}
-\end{mychallenge}
-
-Mit der \textbf{Länge} von Zeichenketten ist die Anzahl der Zeichen zwischen den Anführungszeichen gemeint: Die Zeichenkette \lstinline|"Hello World"| hat beispielsweise eine Länge von 11 Zeichen. Die Länge einer Zeichenkette kann mit dem Ausdruck \pythoninline{len(Klartext)} bestimmt werden.
-
-\begin{myexercise}
-  Bestimmen Sie die Länge Ihres vollen Namens mithilfe des Befehls \pythoninline{len()} in Python.
-\end{myexercise}
-
-Zeichenketten können verkettet, also aneinandergehängt werden mit dem Befehl \lstinline|"Text1" + "Text2" + "Text3"| usw. 
-Falls Sie eine Zeichenkette mehrfach drucken wollen, können Sie diesen mit einer Zahl multiplizieren, die dann die Anzahl Wiederholungen der Zeichenkette bestimmt. So ist der Ausdruck \lstinline|"a" * 3| beispielsweise gleichbedeutend mit einer Zeichenkette \lstinline|"aaa"|.
-
-\begin{myexercise}\label{myexercise:pfeil}
-Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
-  \begin{lstlisting}
-    print(" " * 3 + "X" * 1)
-    print(" " * 2 + "X" * 3)
-    print(" " * 1 + "X" * 5)
-    print(" " * 0 + "X" * 7)
-    print(" " * 3 + "X" * 1)
-    print(" " * 3 + "X" * 1)
-  \end{lstlisting}
-\end{myexercise}
-
-\begin{myexercise}
-Erstellen Sie nun ein Programm, das ein Herz zeichnet, ähnlich zu \cref{myexercise:pfeil}, also lediglich mit Zeichenketten-Ausdrücken und dem Befehl \pythoninline{print()}.
-\begin{myanswer}
-\begin{lstlisting}
-print(" " * 2 + "X" * 1 + " "*4 + "X" * 1 + " "*1)
-print(" " * 1 + "X" * 8 + " "*1)
-print(" " * 2 + "X" * 6 + " "*1)
-print(" " * 3 + "X" * 4 + " "*2)
-print(" " * 4 + "X" * 2 + " "*2)
-\end{lstlisting}
-\end{myanswer}
-\end{myexercise}
+\lstset{language=Python, style=TigerJython}
 
 
-\subsection{Zeichen aus Zeichenketten auslesen}
-Im Nachfolgenden schauen wir uns einige Übungen an, mit denen wir die einzelnen Zeichen aus Zeichenketten herauslesen können.
-
-\begin{myexercise}
-  Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
-  \begin{lstlisting}
-    text = "EASY"
-    for buchstabe in text:
-      print(buchstabe)
-  \end{lstlisting}
-  \begin{myanswer}
-    \begin{lstlisting}
-      E
-      A
-      S
-      Y
-    \end{lstlisting}
-    \pythoninline{for x in mystring} ist eine Schleife über die Zeichenkette \pythoninline{mystring}. Dabei nimmt \pythoninline{x} nacheinander jeden Buchstaben in dieser Zeichenkette genau einmal an.
-  \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}\label{myexercise:index}
-  Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
-  \begin{lstlisting}
-    Klartext = "Schweiz"
-    print(Klartext[0])
-    print(Klartext[1])
-    print(Klartext[2])
-    print(Klartext[3])
-    print(Klartext[4])
-    print(Klartext[5])
-    print(Klartext[6])
-  \end{lstlisting}
-  \begin{myanswer}
-    \begin{lstlisting}
-      S
-      c
-      h
-      w
-      e
-      i
-      z
-    \end{lstlisting}
-    \pythoninline{mystring[0]} ist der erste Buchstabe der Zeichenkette \pythoninline{mystring}, \pythoninline{mystring[1]} der zweite und so weiter.
-  \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}
-  Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
-  \begin{lstlisting}
-    Klartext = "Schweiz"
-    for i in range(len(Klartext)):
-      print(Klartext[i])
-  \end{lstlisting}
-  \begin{myanswer}
-    Dieses Programm ist äquivalent zum Programm in \cref{myexercise:index}. 
-    Hier wird allerdings eine \pythoninline{for}-Schleife über die Länge des Texts verwendet.
-  \end{myanswer}
-\end{myexercise}
-
-Der Befehl \pythoninline{for i in range(len(Klartext))} erstellt eine Variable \pythoninline{i} innerhalb der \pythoninline{for}-Schleife, welche jedes Zeichen von 0 bis zur Länge von \pythoninline{Klartext} minus 1 geht. Weshalb minus 1? Das erste Zeichen von \pythoninline{Klartext} wird in Python mit \pythoninline{Klartext[0]} ausgelesen, das letzte mit \pythoninline{Klartext[len(Klartext)-1]}, da wir bei 0 zu zählen beginnen und nicht bei 1. Mit dem Ausdruck \pythoninline{Klartext[i]} wird also das \pythoninline{i}-te Zeichen der Zeichenkette \pythoninline{Klartext} ausgelesen, wobei \pythoninline{i} von 0 bis zu (Länge des Klartexts minus 1) geht. 
-
-Der Befehl \pythoninline{for i in range(len(Klartext))} kann auch geschrieben werden also Befehl \pythoninline{for i in range(0, len(Klartext), 1)}, wobei dies meint:
-\begin{itemize}
-\item \pythoninline{i} beginnt bei 0
-\item \pythoninline{i} geht bis zu \pythoninline{len(Klartext)-1}
-\item \pythoninline{i} vergrössert sich in 1er-Schritten
-\end{itemize}
-Dieser Befehl könnte auch verwendet werden, um bei einer beliebigen Zahl zu starten (nicht notwendigerweise 0), und um \pythoninline{i} in Schritten grösser als 1 zu vergrössern. Die allgemeine Syntax des Befehls lässt sich also wie folgt zusammenfassen: \pythoninline{for i in range(start, ende, schrittgroesse)}.
-
-\begin{mychallenge}
-  Eine Person verrät uns lediglich die Vorwahl ihrer $10$-stelligen Mobiltelefonnummer. Zudem verrät sie Ihnen auch, dass ihre Telefonnummer gerade ist (also auf 2, 4, 6, 8 oder 0 endet).
-  Damit gibt es nur noch $5$ Millionen Kombinationen, die es (im schlimmsten Fall) auszuprobieren gilt. 
-  Schreiben Sie ein Python-Programm, welches die $2000$ kleinsten, geraden Nummern auflistet. 
-  Die erste Nummer sollte $0790000000$ sein, die letzte $0790003998$. 
-  Das Programm soll die Nummern als Zeichenkette (eine Nummer pro Zeile) ausgeben.
-  
-  Tipps:
-  \begin{itemize}
-    \item Mit \pythoninline{str(num)} 
-      wird aus der Zahl \pythoninline{num} eine Zeichenkette.
-      Beispielsweise gibt uns \pythoninline{str(15)}
-      die Zeichenkette \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"15"!.
-    \item Erinnern Sie sich, was die Operation \pythoninline{+} in dem Ausdruck \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"In" + "form" + "atik"! macht?
-  \end{itemize}
-  \begin{myanswer}
-    \begin{lstlisting}
-      for num in range(790000000, 790004000,2):
-        print("0" + str(num)) # füge die Zeichenkette "0" vorne an
-    \end{lstlisting}
-  \end{myanswer}
-\end{mychallenge}
-
-\section{Alphabete, Wörter, Sprachen}
-\begin{mydefinition}{\textbf{Alphabet}}\label{mydefinition:Alphabet}
-
-Eine endliche nichtleere Menge $\Sigma$ heisst \textit{Alphabet}. Die \textit{Elemente eines Alphabets} werden \textit{Buchstaben} (\textit{Zeichen, Symbole}) genannt.
-\end{mydefinition}
-\cref{mydefinition:Alphabet} entspricht unserer intuitiven Vorstellung eines Alphabets: 
-\begin{itemize}
-  \item Um Text darstellen zu können, muss ein Alphabet mindestens ein Symbol enthalten ($\to$ nichtleer).
-  \item Damit man sich auf einen Satz von Zeichen einigen kann, darf das Alphabet nicht unendlich gross sein ($\to$ endlich).
-\end{itemize}
-
-\clearpage
-\noindent
-Wir listen nun einige der Alphabete auf, die in der Mathematik und Informatik häufig verwendet werden:
-\begin{itemize}
-    \item $\Sigma_{\text{bool}} = \lrc{0,1}$ ist das Boole'sche Alphabet, mit dem digitale Rechner arbeiten.
-    \item $\Sigma_{\text{lat}} = \lrc{a,b,c,...,z,A,B,...,Z}$ ist das lateinische Alphabet.
-    \item $\Sigma_{\text{Tastatur}} = \lrc{a,b,c,...,z,A,B,C,...,Z,\text{\textvisiblespace}\,,>,<,(,),...,\#,?,!}$ ist das Alphabet aller Symbole, die mit der englischen Tastatur getippt werden können. Dabei ist \textvisiblespace\ das Symbol für das Leerzeichen / Leersymbol.
-    \item $\Sigma_{\text{greek}} = \lrc{\alpha, \beta, \gamma, ..., \omega, A, B, \Gamma, ..., \Omega}$ ist das griechische Alphabet.
-    \item $\Sigma_m = \lrc{0,1,2,...,m-1}$ für jedes $m\in\Nunit$ ($\N$ ohne $0$) ist ein Alphabet für die $m$-adische Darstellung von Zahlen.
-\end{itemize}
-\textit{Wörter} werden wir als endliche Folgen von Buchstaben ansehen.
-\begin{mydefinition}{\textbf{Wort}}\label{mydefinition:Wort}
-\begin{itemize}
-  \item Sei $\Sigma$ ein Alphabet. Ein \textit{Wort} über $\Sigma$ ist eine endliche (möglicherweise leere) Folge von Buchstaben aus $\Sigma$. 
-  \item Das \textit{leere Wort} $\lambda$ ist die leere Buchstabenfolge.
-  \item Die \textit{Länge} $|w|$ eines Wortes $w$ ist die Länge des Wortes als Folge, das heisst die Anzahl der Vorkommen von Buchstaben in $w$.
-\end{itemize}
-\end{mydefinition}
-
-\begin{myexample}
-  \begin{aenum}
-  \item $w := 1,0,0,1,0$ ist ein Wort über dem Alphabet $\Sigma_{\text{bool}}$ und $|w| = 5$, da $w$ eine Folge von $5$ Buchstaben ist.
-  \item $u := M,\text{\textvisiblespace}\,, j$ ist ein Wort über $\Sigma_{\text{Tastatur}}$ und $|u| = 3$, da $u$ eine Folge von $3$ Buchstaben ist.
-  \item Das leere Wort $\lambda$ ist ein Wort über jedem Alphabet und es gilt $\abs{\lambda} = 0$.
-  \end{aenum}
-\end{myexample}
-
-\begin{myexercise}
-Was ist $\Sigma_{10}$?
-\begin{myanswer}
-\noindent
-\begin{align*}
-    \Sigma_{10} = \lrc{0,1,2,...,9}
-\end{align*}
-ist das Alphabet für die Darstellung von Zahlen im Dezimalsystem.
-\end{myanswer}
-\end{myexercise}
-
-\begin{mydefinition}{\textbf{Sigma Stern}}
-
-Sei $\Sigma$ ein Alphabet. $\Sigma^*$ (gesprochen: \textit{Sigma Stern}) ist die Menge aller Wörter über $\Sigma$, also die Menge aller endlichen Folgen von Symbolen aus $\Sigma$.
-\end{mydefinition}
-
-\begin{myremark}
-  \begin{aenum}
-  \item Wir werden im Folgenden Wörter ohne Kommas schreiben. Anstelle von $1,0,0,1,0$ werden wir lediglich $10010$ schreiben. Allgemein, werden wir anstelle von $x_1,x_2,...,x_n$ einfach $x_1x_2...x_n$ schreiben.
-  \item In der deutschen Sprache existieren die zwei Ausdrücke \enquote{Wörter} und \enquote{Worte}. Dies sind keine Synonyme. \textit{Wörter} bezeichnet den Plural von \textit{Wort} (\enquote{Im Duden stehen viele Wörter}). Der Ausdruck \textit{Worte} bezieht sich auf Gedankenkonstrukte (\enquote{Sie sprach weise Worte}).
-  \end{aenum}
-\end{myremark}
-
-
-\begin{myexercise}\label{myexercise:2.6}
-Wie sieht die Menge $\lrc{1}^*$ aus und wie die Menge $\lr{\Sigma_{\text{bool}}}^*$?
-\begin{myanswer}
-\begin{align*}
-    \lrc{1}^* &= \lrc{\lambda, 1, 11, 111, 1111, 11111, ...} =\\
-    &= \lrc{\lambda}\cup\setcm{x_1x_2...x_i}{i\in\N,\; x_j = 1\;\text{für}\; j = 1,2,..., i}
-\end{align*}
-\begin{align*}
-  \lr{\Sigma_{\text{bool}}}^* = \lrc{0,1}^* &= \lrc{\lambda, 0, 1,, 00, 01, 10, 11, 000, 001, 010, 100, 011, ...} =\\
-    &= \lrc{\lambda}\cup \setcm{x_1x_2...x_i}{i\in\N,\; x_j\in\Sigma_{\text{bool}} \;\text{für}\; j = 1,2,..., i}
-\end{align*}
-\end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}
-In \cref{mydefinition:Wort} haben wir ein Wort als endliche Folge von Buchstaben definiert. Nun enthält zum Beispiel die Menge $\lrc{1}^*$ in \cref{myexercise:2.6} aber Wörter beliebiger Länge. Erklären Sie, warum dies kein Widerspruch ist.
-\end{myexercise}
-\begin{myanswer}
-\noindent
-Anhand dieser Frage lässt sich der Unterschied zwischen den Begriffen \textit{unbeschränkt} und \textit{unendlich} schön verdeutlichen. Betrachten wir dazu exemplarisch nochmals die Menge $\lrc{1}^*$ aus \cref{myexercise:2.6}:
-\begin{align*}
-    \lrc{1}^* &= \lrc{\lambda, 1, 11, 111, 1111, 11111, \ldots} =\\
-    &= \lrc{\lambda}\cup \setcm{x_1x_2\ldots x_i}{i\in\N,\; x_j = 1\;\text{für}\; j = 1,2,\ldots, i}
-\end{align*}
-\begin{itemize}
-  \item Für jede natürliche Zahl $n\in\N$, existiert in $\lrc{1}^*$ ein Wort $w$ mit $\abs{w} \geq n$, da für jedes $n\in\N$ (insbesondere) auch das Wort $w:=1^n$ in der Menge $\lrc{1}^*$ enthalten ist und $\abs{w}\geq n$. Damit gibt es \textbf{keine obere Schranke} für die Länge der Wörter in $\lrc{1}^*$.
-    \item Jedes Wort $w\in\lrc{1}^*$ hat die Form $w = 1^n$ für eine natürliche Zahl $n$. Damit hat jedes Wort in der Menge $\lrc{1}^*$ eine endliche Länge.
-\end{itemize}
-Die Länge der Wörter in $\lrc{1}^*$ können also nicht nach oben beschränkt werden, trotzdem hat jedes Wort in $\lrc{1}^*$ eine endliche Länge und ist somit tatsächlich ein Wort im Sinne von Definition \cref{mydefinition:Wort}.
-\end{myanswer}
-
-
-Mit der folgenden Definition wollen wir den Begriff \textit{Teilwort}, für den wir eine gute Intuition haben, formalisieren. Ein Teilwort eines Wortes $x$ ist ein zusammenhängender Teil von $x$.
-\begin{mydefinition}{\textbf{Teilwörter}}\label{mydefinition:Teilwort}
-
-Seien $u,w\in\Sigma^*$ für ein Alphabet $\Sigma$.
-\begin{itemize}
-    \item $v$ heisst \textbf{Teilwort} von $w$ $\Leftrightarrow$ es existieren $x,y\in\Sigma^*$, so dass $w = xvy$
-    \item $v$ heisst \textbf{Präfix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, so dass $w = vx$
-    \item $v$ heisst \textbf{Suffix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, so dass $w = xv$
-    \item $v\neq \lambda$ heisst \textbf{echtes} Teilwort (Präfix, Suffix) von $w$ $\Leftrightarrow$ $v\neq w$ und $v$ ein Teilwort (Präfix, Suffix) von $w$ ist
-\end{itemize}
-\end{mydefinition}
-
-\begin{myexample}
-Sei $\Sigma = \lrc{a,b,c}$. Das Wort $abc$ ist ein echtes Teilwort, echtes Präfix und ein echtes Suffix von $(abc)^3$. Das leere Wort $\lambda$ ist Teilwort von jedem Wort. Jedes Wort ist Teilwort von sich selbst (aber kein echtes Teilwort).
-\end{myexample}
+%\section{Alphabete, Wörter, Sprachen}
+%\begin{mydefinition}{\textbf{Alphabet}}\label{mydefinition:Alphabet}
+%
+%Eine endliche nichtleere Menge $\Sigma$ heisst \textit{Alphabet}. Die \textit{Elemente eines Alphabets} werden \textit{Buchstaben} (\textit{Zeichen, Symbole}) genannt.
+%\end{mydefinition}
+%\cref{mydefinition:Alphabet} entspricht unserer intuitiven Vorstellung eines Alphabets: 
+%\begin{itemize}
+%  \item Um Text darstellen zu können, muss ein Alphabet mindestens ein Symbol enthalten ($\to$ nichtleer).
+%  \item Damit man sich auf einen Satz von Zeichen einigen kann, darf das Alphabet nicht unendlich gross sein ($\to$ endlich).
+%\end{itemize}
+%
+%\clearpage
+%\noindent
+%Wir listen nun einige der Alphabete auf, die in der Mathematik und Informatik häufig verwendet werden:
+%\begin{itemize}
+%    \item $\Sigma_{\text{bool}} = \lrc{0,1}$ ist das Boole'sche Alphabet, mit dem digitale Rechner arbeiten.
+%    \item $\Sigma_{\text{lat}} = \lrc{a,b,c,...,z,A,B,...,Z}$ ist das lateinische Alphabet.
+%    \item $\Sigma_{\text{Tastatur}} = \lrc{a,b,c,...,z,A,B,C,...,Z,\text{\textvisiblespace}\,,>,<,(,),...,\#,?,!}$ ist das Alphabet aller Symbole, die mit der englischen Tastatur getippt werden können. Dabei ist \textvisiblespace\ das Symbol für das Leerzeichen / Leersymbol.
+%    \item $\Sigma_{\text{greek}} = \lrc{\alpha, \beta, \gamma, ..., \omega, A, B, \Gamma, ..., \Omega}$ ist das griechische Alphabet.
+%    \item $\Sigma_m = \lrc{0,1,2,...,m-1}$ für jedes $m\in\Nunit$ ($\N$ ohne $0$) ist ein Alphabet für die $m$-adische Darstellung von Zahlen.
+%\end{itemize}
+%\textit{Wörter} werden wir als endliche Folgen von Buchstaben ansehen.
+%\begin{mydefinition}{\textbf{Wort}}\label{mydefinition:Wort}
+%\begin{itemize}
+%  \item Sei $\Sigma$ ein Alphabet. Ein \textit{Wort} über $\Sigma$ ist eine endliche (möglicherweise leere) Folge von Buchstaben aus $\Sigma$. 
+%  \item Das \textit{leere Wort} $\lambda$ ist die leere Buchstabenfolge.
+%  \item Die \textit{Länge} $|w|$ eines Wortes $w$ ist die Länge des Wortes als Folge, das heisst die Anzahl der Vorkommen von Buchstaben in $w$.
+%\end{itemize}
+%\end{mydefinition}
+%
+%\begin{myexample}
+%  \begin{aenum}
+%  \item $w := 1,0,0,1,0$ ist ein Wort über dem Alphabet $\Sigma_{\text{bool}}$ und $|w| = 5$, da $w$ eine Folge von $5$ Buchstaben ist.
+%  \item $u := M,\text{\textvisiblespace}\,, j$ ist ein Wort über $\Sigma_{\text{Tastatur}}$ und $|u| = 3$, da $u$ eine Folge von $3$ Buchstaben ist.
+%  \item Das leere Wort $\lambda$ ist ein Wort über jedem Alphabet und es gilt $\abs{\lambda} = 0$.
+%  \end{aenum}
+%\end{myexample}
+%
+%\begin{myexercise}
+%Was ist $\Sigma_{10}$?
+%\begin{myanswer}
+%\noindent
+%\begin{align*}
+%    \Sigma_{10} = \lrc{0,1,2,...,9}
+%\end{align*}
+%ist das Alphabet für die Darstellung von Zahlen im Dezimalsystem.
+%\end{myanswer}
+%\end{myexercise}
+%
+%\begin{mydefinition}{\textbf{Sigma Stern}}
+%
+%Sei $\Sigma$ ein Alphabet. $\Sigma^*$ (gesprochen: \textit{Sigma Stern}) ist die Menge aller Wörter über $\Sigma$, also die Menge aller endlichen Folgen von Symbolen aus $\Sigma$.
+%\end{mydefinition}
+%
+%\begin{myremark}
+%  \begin{aenum}
+%  \item Wir werden im Folgenden Wörter ohne Kommas schreiben. Anstelle von $1,0,0,1,0$ werden wir lediglich $10010$ schreiben. Allgemein, werden wir anstelle von $x_1,x_2,...,x_n$ einfach $x_1x_2...x_n$ schreiben.
+%  \item In der deutschen Sprache existieren die zwei Ausdrücke \enquote{Wörter} und \enquote{Worte}. Dies sind keine Synonyme. \textit{Wörter} bezeichnet den Plural von \textit{Wort} (\enquote{Im Duden stehen viele Wörter}). Der Ausdruck \textit{Worte} bezieht sich auf Gedankenkonstrukte (\enquote{Sie sprach weise Worte}).
+%  \end{aenum}
+%\end{myremark}
+%
+%
+%\begin{myexercise}\label{myexercise:2.6}
+%Wie sieht die Menge $\lrc{1}^*$ aus und wie die Menge $\lr{\Sigma_{\text{bool}}}^*$?
+%\begin{myanswer}
+%\begin{align*}
+%    \lrc{1}^* &= \lrc{\lambda, 1, 11, 111, 1111, 11111, ...} =\\
+%    &= \lrc{\lambda}\cup\setcm{x_1x_2...x_i}{i\in\N,\; x_j = 1\;\text{für}\; j = 1,2,..., i}
+%\end{align*}
+%\begin{align*}
+%  \lr{\Sigma_{\text{bool}}}^* = \lrc{0,1}^* &= \lrc{\lambda, 0, 1,, 00, 01, 10, 11, 000, 001, 010, 100, 011, ...} =\\
+%    &= \lrc{\lambda}\cup \setcm{x_1x_2...x_i}{i\in\N,\; x_j\in\Sigma_{\text{bool}} \;\text{für}\; j = 1,2,..., i}
+%\end{align*}
+%\end{myanswer}
+%\end{myexercise}
+%
+%\begin{myexercise}
+%In \cref{mydefinition:Wort} haben wir ein Wort als endliche Folge von Buchstaben definiert. Nun enthält zum Beispiel die Menge $\lrc{1}^*$ in \cref{myexercise:2.6} aber Wörter beliebiger Länge. Erklären Sie, warum dies kein Widerspruch ist.
+%\end{myexercise}
+%\begin{myanswer}
+%\noindent
+%Anhand dieser Frage lässt sich der Unterschied zwischen den Begriffen \textit{unbeschränkt} und \textit{unendlich} schön verdeutlichen. Betrachten wir dazu exemplarisch nochmals die Menge $\lrc{1}^*$ aus \cref{myexercise:2.6}:
+%\begin{align*}
+%    \lrc{1}^* &= \lrc{\lambda, 1, 11, 111, 1111, 11111, \ldots} =\\
+%    &= \lrc{\lambda}\cup \setcm{x_1x_2\ldots x_i}{i\in\N,\; x_j = 1\;\text{für}\; j = 1,2,\ldots, i}
+%\end{align*}
+%\begin{itemize}
+%  \item Für jede natürliche Zahl $n\in\N$, existiert in $\lrc{1}^*$ ein Wort $w$ mit $\abs{w} \geq n$, da für jedes $n\in\N$ (insbesondere) auch das Wort $w:=1^n$ in der Menge $\lrc{1}^*$ enthalten ist und $\abs{w}\geq n$. Damit gibt es \textbf{keine obere Schranke} für die Länge der Wörter in $\lrc{1}^*$.
+%    \item Jedes Wort $w\in\lrc{1}^*$ hat die Form $w = 1^n$ für eine natürliche Zahl $n$. Damit hat jedes Wort in der Menge $\lrc{1}^*$ eine endliche Länge.
+%\end{itemize}
+%Die Länge der Wörter in $\lrc{1}^*$ können also nicht nach oben beschränkt werden, trotzdem hat jedes Wort in $\lrc{1}^*$ eine endliche Länge und ist somit tatsächlich ein Wort im Sinne von Definition \cref{mydefinition:Wort}.
+%\end{myanswer}
+%
+%
+%Mit der folgenden Definition wollen wir den Begriff \textit{Teilwort}, für den wir eine gute Intuition haben, formalisieren. Ein Teilwort eines Wortes $x$ ist ein zusammenhängender Teil von $x$.
+%\begin{mydefinition}{\textbf{Teilwörter}}\label{mydefinition:Teilwort}
+%
+%Seien $u,w\in\Sigma^*$ für ein Alphabet $\Sigma$.
+%\begin{itemize}
+%    \item $v$ heisst \textbf{Teilwort} von $w$ $\Leftrightarrow$ es existieren $x,y\in\Sigma^*$, so dass $w = xvy$
+%    \item $v$ heisst \textbf{Präfix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, so dass $w = vx$
+%    \item $v$ heisst \textbf{Suffix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, so dass $w = xv$
+%    \item $v\neq \lambda$ heisst \textbf{echtes} Teilwort (Präfix, Suffix) von $w$ $\Leftrightarrow$ $v\neq w$ und $v$ ein Teilwort (Präfix, Suffix) von $w$ ist
+%\end{itemize}
+%\end{mydefinition}
+%
+%\begin{myexample}
+%Sei $\Sigma = \lrc{a,b,c}$. Das Wort $abc$ ist ein echtes Teilwort, echtes Präfix und ein echtes Suffix von $(abc)^3$. Das leere Wort $\lambda$ ist Teilwort von jedem Wort. Jedes Wort ist Teilwort von sich selbst (aber kein echtes Teilwort).
+%\end{myexample}
 
 % \begin{mychallenge}
 % Sei $\Sigma = \lrc{a_1,a_2,...,a_m}$ ein Alphabet der Grösse $m\in\Nunit$.
@@ -323,35 +182,71 @@ Sei $\Sigma = \lrc{a,b,c}$. Das Wort $abc$ ist ein echtes Teilwort, echtes Präf
 %
 %
 %
- \section{Motivation}
+ \section{Einführung}
+\iftoggle{teacherToggle}{
+ \begin{myExBox}[title=DL \thedlcounter: Einführung]
+ \tcbsubtitle{Thema}
+ Die erste Doppel-Lektion macht den Einstieg in die Welt der Verschlüsselung. Dabei werden zuerst das Thema ``Verschlüsselung'' / Geheimschrift im Allgemeinen und danach einige antike Geheimschriften vorgestellt.
+ 
+ 
+ \tcbsubtitle{Operationalisierte Lernziele}
+ \begin{todolist}
+     \item Die SuS können Beispiele aus ihrem eigenen Alltag nennen, wo Verschlüsselung relevant ist.
+     \item Die SuS können Lebensbereiche identifizieren, in denen sie sensible Daten übermitteln.
+     \item Die SuS können Texte verschlüsseln, indem sie die antiken, symmetrischen Verschlüsselungstechnologien Sytale und Caesar verwenden
+ \end{todolist}
+ 
+ \tcbsubtitle{Grober Lektionsablauf}
+ 
+Die SuS sollen die Relevanz des Themas anhand einiger alltagsnaher Beispiele kennenlernen. Z.B. Können folgende Fragen gestellt werden:
+\begin{tcolorbox}
+\begin{itemize}
+\item \textbf{Sie} wollen Ihrer Freundin / Ihrem Freund eine geheime Nachricht senden, die nicht das ganze Internet mitlesen kann. Wie könnten Sie den Klartext so verschlüsseln, dass nur Alice bzw. Bob diese lesen kann?
+\item Bei welchen Alltagsdaten würde es sie besonders stören, wenn diese durch unbefugte Personen gelesen werden könnten?
+\end{itemize}
+\end{tcolorbox}
+Vermutlich wird es einfach sein, aufzuzeigen, dass die intuitiven Verschlüsselungs-Ideen der SuS nicht funktionieren. Daher werden die SuS sich in der kommenden DL mit einigen lange bewährten (aber ebenfalls bereits seit Langem als unsicher geltenden) antiken Verschlüsselungstechnologien auseinandersetzen, namentlich Skytale und Caesar. Die Lektion schliesst mit einigen Bemerkungen zu Sicherheit und Buchstabenhäufigkeit, die bereits die Grundlage für die nächste DL legt.
+ 
+ \begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+ \begin{enumerate}
+     \item Bei den Python-Codes sind bereits fortgeschrittene Programmierkenntnisse erforderlich. Allenfalls zuerst Tutorial zu Zeichenketten-Manipulation machen (oder parallel in HK durchführen)?
+     \item Was, wenn die SuS die Technologien bereits kennen? Lösungsvorschlag: Genügend Challenge-Aufgaben zur Verfügung haben.
+ \end{enumerate}
+ \end{myExBox}
+ \end{myExBox}
+\newpage\stepcounter{dlcounter}
+ }{}
+ Alice möchte Bob eine wichtige Nachricht zukommen lassen, beispielsweise zu einem gesundheitlichen Problem, oder um Ihre Bankkontoverbindung mit Bob zu teilen (s. \cref{fig:schema_geheimtext}). Da das Internet jedoch eine \textit{offene} und somit (grundsätzlich) unsichere Technologie ist, kann jedermann jede Nachricht mitlesen. Somit könnte eine bösartige Person, wie beispielsweise Eve, die Nachricht abhören, um beispielsweise auf das Bankkonto von Alice zuzugreifen. 
+ 
+Damit dies nicht passieren kann, muss Alice ihre Nachricht so verschlüsseln, dass nur Bob sie lesen kann. Dieses Problem hat sich bereits in der Antike (und vermutlich noch vorher gestellt) und entspricht einem grundsätzlichen, menschlichen Bedürfnis: Wie kann ein Feldherr seinen Soldaten Anweisungen geben, ohne dass der Gegner mithört? Oder, um eine andere Situation aufzugreifen: Wie können Sie sich mit Ihren Geschwistern austauschen, damit Ihre Eltern nicht verstehen, worum es geht?
 
- Alice möchte Bob eine Nachricht zukommen lassen. Diese Nachricht wird \tib{Klartext}\index{Klartext} genannt. 
- In der Praxis wird Alice 
- \begin{figure}[H]
-     \centering
-     \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
-     \node[alice, minimum width=1.5cm, 
-         label={[mylabel, anchor=west]north east:{}}, 
-         label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Chiffrierung)}$\\
-         \textcolor{Red}{Geheimtext}}}] (alice) {Alice (Sender)};
-     \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
-         label={[mylabel, anchor=east]north west:{}}, 
-         label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
-         \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
-     
-     \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
-     \textcolor{Red}{Geheimtext}} (aux-a-|bob.west);
-
-     \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
-     \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
-     \end{tikzpicture}
-     \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger).}
-     \label{fig:schema_geheimtext}
- \end{figure}
- \clearpage
-
- \section{Geheimschriften}
- \section{Kryptosysteme}
+In der Informatik spricht man hier davon, dass Alice aus Ihrem ``Klartext'' also dem für alle Menschen verständlichen Text, einen ``Geheimtext'' macht, also einen Text, den nur Bob entschlüsseln kann, d.h., nur Bob weiss, wie man aus diesem Text wieder einen verständlichen Text macht. Hierzu muss man sich auf eine Verschlüsselungsmethode einigen. In der Informatik spricht man hierbei von einem \textbf{Verschlüsselungs-Algorithmus} und \textbf{Entschlüsselungs-Algorithmus}. Die Methode, um eine Nachricht zu verschlüsseln, so dass sie durch Dritte unlesbar wird, wird häufig auch ``\textbf{Schlüssel}'' genannt, und das Verfahren, um eine Nachricht unlesbar zu machen ``Verschlüsselung'' oder ``Chiffrierung''. Im Allgemeinen wird der Bereich der Informatik, der sich mit Ver- und Entschlüsselung befässt, ``Kryptografie'' genannt, und die verschiedenen Algorithmen und Ansätze werden häufig als ``Kryptosysteme'' bezeichnet.
+%
+% \begin{figure}[H]
+%     \centering
+%     \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+%     \node[alice, minimum width=1.5cm, 
+%         label={[mylabel, anchor=west]north east:{}}, 
+%         label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Chiffrierung)}$\\
+%         \textcolor{Red}{Geheimtext}}}] (alice) {Alice (Sender)};
+%     \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
+%         label={[mylabel, anchor=east]north west:{}}, 
+%         label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
+%         \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
+%     
+%     \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
+%     \textcolor{Red}{Geheimtext}} (aux-a-|bob.west);
+%
+%     \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
+%     \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+%     \end{tikzpicture}
+%     \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger).}
+%     \label{fig:schema_geheimtext}
+% \end{figure}
+% \clearpage
+%
+% \section{Geheimschriften}
+% \section{Kryptosysteme}
  \begin{figure}[H]
      \centering
      \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
@@ -371,10 +266,20 @@ Sei $\Sigma = \lrc{a,b,c}$. Das Wort $abc$ ist ein echtes Teilwort, echtes Präf
      \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
      \end{tikzpicture}
      \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems.}
-     \label{fig:schema_kryptotext}
+     \label{fig:schema_geheimtext}
  \end{figure}
+ 
+ Im Folgenden setzen wir uns zuerst mit einigen Grundlegenden Verschlüsselungs-Methoden auseinander, um zu verstehen, was ein sicheres Krypto-System auszeichnet. Ganz allgemein sollte ein Krypto-System durch Dritte schwer zu knacken sein. Folgende sicherheits-bezogenen Anforderungen können zusätzlich an ein Krypto-System gestellt werden:
+ \begin{enumerate}
+     \item \textbf{Vertraulichkeit}: Es soll sichergestellt sein, dass wirklich nur diejenige eine Nachricht lesen kann, für die diese bestimmt ist.
+     \item \textbf{Integrität}: Die Empfängerin soll feststellen können, ob die Nachricht nach ihrer Erzeugung verändert wurde (wir wollen ja die originale Nachricht!).
+     \item \textbf{Authentizität}: Der Verfasser einer Nachricht soll identifizierbar sein, bzw. die Empfängerin soll nachprüfen können, wer der Verfasser ist.
+     \item \textbf{Verbindlichkeit}: Der Verfasser soll nicht abstreiten können, dass er der Verfasser der Nachricht ist.
+ \end{enumerate}
 
  \section{Symmetrische Kryptosysteme}
+ 
+ 
  \subsection{``Intuitive'' Ansätze zur Verschlüsselung}
  \begin{myexercise}
 Entziffern Sie den folgenden Geheimtext durch ausprobieren:
@@ -412,28 +317,24 @@ Entziffern Sie den folgenden Geheimtext durch ausprobieren:
  \end{myexercise}
  \begin{myexample}
  Ein ``Zweiertausch'' könnte in Python wie folgt implementiert werden:
- \begin{lstlisting}
- def zweiertausch(klartext):
-     geheimtext = "" # leerer String
-     b = 0
-     while b < (len(klartext) - 1):
-         geheimtext += klartext[b + 1] + klartext[b]
-         b += 2
- 
-     if len(klartext) % 2 != 0:
-         # Klartexte ungerader Länge
-         geheimtext += klartext[len(klartext) - 1]
-     print(geheimtext)
- 
- 
- zweiertausch("KANTONSSCHULE")
- \end{lstlisting}
+ \begin{myanswer}
+\lstinputlisting{GrundlagenInfo/03_Kryptologie/Python package/encryption/zweiertausch.py}
+ \end{myanswer}
  \end{myexample}
  \begin{mychallenge}
- Implementieren Sie einen Python-Funktion \lstinline|def dreiertausch(klartext)|, welche den \enquote{Dreiertausch} aus der Einführungsaufgabe 2 implementiert.
+ Schreiben Sie eine Python-Funktion \lstinline|def dreiertausch(klartext)|, welche den \enquote{Dreiertausch} aus der Einführungsaufgabe 2 implementiert.
+ \begin{myanswer}
+\lstinputlisting{GrundlagenInfo/03_Kryptologie/Python package/encryption/dreiertausch.py}
+ \end{myanswer}
  \end{mychallenge}
  
  \subsection{Skytale}
+ Die Geheimschrift Skytale wurde bereits von den Griechen für militärische Zwecke verwendet. Der Verschlüsselungsalgorithmus kann wie folgt beschrieben werden:
+ \begin{itemize}
+     \item Schreibe den Klartext zeilenweise in eine Tabelle (Matrix) von links nach rechts.
+     \item Der Geheimtext erhalten wir, indem wir die Buchstaben Spalte für Spalte von links nach rechts lesen.
+ \end{itemize}
+ 
  \begin{myexercise}
  Die Geheimschrift
  \begin{center}
@@ -444,13 +345,13 @@ Entziffern Sie den folgenden Geheimtext durch ausprobieren:
 
 Wir beginnen mit einer leeren $5\times 8$ Tabelle und schreiben den Geheimtext spaltenweise (von rechts nach links und von oben nach unten) in die leere Tabelle. Damit erhalten wir:
 \begin{table}[H]
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline
+\centering
+\begin{tabular}{c|c|c|c|c|c|c|c}
 W & E & T & T & I & N & G & E \\ \hline
 N & I & S & T & E & I & N & E \\ \hline
 G & E & M & E & I & N & D & E \\ \hline
 I & M & K & A & N & T & O & N \\ \hline
-A & A & R & G & A & U & \red{J} & \red{L} \\ \hline
+A & A & R & G & A & U & \red{J} & \red{L} \\
 \end{tabular}
 \end{table}
 Der Klartext
@@ -466,7 +367,7 @@ lässt sich nun einfach ablesen.
 \begin{myanswer}
  Die Tabelle benötigt 9 Spalten. Allgemein lässt sich die Anzahl benötigter Spalten berechnen durch
  \begin{align*}
-     \ceil{\frac{\text{Länge des Textes}}{\text{Anzahl Zeilen}}}\quad\text{(nach oben aufgerundet)}.
+     \ceil{\frac{\text{Länge des Textes}}{\text{Anzahl Zeilen}}}\quad(\text{``}\ceil{...}\text{'' bedeutet ``nach oben aufgerundet'')}.
  \end{align*}
 \end{myanswer}
  \end{myexercise}
@@ -486,13 +387,13 @@ lässt sich nun einfach ablesen.
 
  \begin{myanswer}
  \begin{table}[H]
- \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
- \hline
+ \centering
+ \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
  E & I & N & K & L & E & I & N & E & R & S & C & H & R & I \\ \hline
  T & T & F & U & E & R & M & I & C & H & A & B & E & R & E \\ \hline
  I & N & G & R & O & S & S & E & R & S & P & R & U & N & G \\ \hline
  F & U & E & R & D & I & E & M & E & N & S & C & H & H & E \\ \hline
- I & T & N & E & I & L & A & R & M & S & T & R & O & N & G \\ \hline
+ I & T & N & E & I & L & A & R & M & S & T & R & O & N & G \\
  \end{tabular}
  \end{table}
  \begin{description}
@@ -512,7 +413,15 @@ lässt sich nun einfach ablesen.
  
  \end{myexercise}
  \subsection{Caesar}
- Eines der bekanntesten Verschlüsselungssysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dieses Verschlüsselungssystem besteht essentiell aus einer Verschiebung aller Buchstaben um eine vordefinierte Anzahl Positionen.
+ Eines der bekanntesten Verschlüsselungssysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dieses Verschlüsselungssystem besteht essentiell aus einer Verschiebung aller Buchstaben um eine vordefinierte Anzahl Positionen. Der \tib{Schlüssel} bezeichnet dabei die Anzahl Positionen, um die ein Text verschoben wird.
+ 
+ \begin{myexample}
+ Mit dem Schlüssel 3 würde das Wort ``HALLO'' als ``KDOOR'' geschrieben:
+ \begin{figure}[H]
+         \centering
+         \caesar[3]
+     \end{figure}
+ \end{myexample}
  
  \begin{myexercise}
   Der Geheimtext
@@ -530,13 +439,100 @@ lässt sich nun einfach ablesen.
   \end{myanswer}
  \end{myexercise}
  
+ \begin{mychallenge}
+ Implementieren Sie die Caesar-Verschlüsselung in Python. Einige Tipps:
+ \begin{itemize}
+\item Mit \lstinline|ord(...)| erhalten Sie die Unicode-Zahl, die ein Zeichen repräsentiert. Z.B. ist \lstinline|ord("A")| = 65 und \lstinline|ord("B")| = 66. Wenn Sie beispielsweise bestimmen wollen, um wie viele Positionen zwei Buchstaben K und A auseinanderliegen, können Sie \lstinline|ord("K") - ord("A")| verwenden.
+\item Mit \lstinline|chr(...)| können Sie eine Zahl in einen Buchstaben ``zurückwandeln''. Mit \lstinline|chr(65)| erhalten Sie beispielsweise den Buchstaben ``A''.
+ \end{itemize}
+ \begin{myanswer}
+ \lstinputlisting{GrundlagenInfo/03_Kryptologie/Python package/encryption/caesar.py}
+ \end{myanswer}
+ \end{mychallenge}
+ 
+ Inwiefern könnte Caesar angegriffen werden? 
+ \begin{itemize}
+ \item Einerseits reicht es, alle 25 möglichen Verschiebungen auszuprobieren. Ein moderner Computer hat dies in einigen Milisekunden erledigt. 
+ \item Andererseits kann, wenn der Text genügend lange ist, anhand der Häufigkeit der verschlüsselten Buchstaben mittels Häufigeitsanalyse in kürzester Zeit bestimmt werden, was der Schlüssel war (s. \cref{tab:trigramme-haeufigkeit}). Damit setzen wir uns im nächsten Kapitel genauer auseinander.
+ \end{itemize}
+ 
+ \begin{table}[H]
+ \centering
+ \begin{subtable}[t]{0.3\textwidth}
+ \centering
+ \begin{tabular}{c|p{1.9cm}}
+ \textbf{Buchstabe} & Relative Häufigkeit (\%) \\ \midrule
+ E & 17.40 \\ \midrule
+ N & 9.78 \\ \midrule
+ I & 7.55 \\ \midrule
+ S & 7.27 \\ \midrule
+ R & 7.00 \\ \midrule
+ A & 6.51 \\ \midrule
+ T & 6.15 \\ \midrule
+ D & 5.08 \\ \midrule
+ H & 4.76 \\ \midrule
+ U & 4.35 \\ 
+ \end{tabular}
+ \caption{Buchstabenhäufigkeit}
+ \label{tab:buchstaben-haeufigkeit}
+ \end{subtable}
+ \hspace{0.5cm}
+ \begin{subtable}[t]{0.3\textwidth}
+ \centering
+ \begin{tabular}{c|p{1.9cm}}
+ \textbf{Bigramm} & Relative Häufigkeit (\%) \\ \midrule
+ ER & 3.94 \\ \midrule
+ EN & 3.07 \\ \midrule
+ CH & 2.73 \\ \midrule
+ DE & 2.41 \\ \midrule
+ EI & 2.29 \\ \midrule
+ ND & 2.07 \\ \midrule
+ IE & 1.97 \\ \midrule
+ GE & 1.88 \\ \midrule
+ TE & 1.88 \\ \midrule
+ IN & 1.82 \\ 
+ \end{tabular}
+ \caption{Bigrammhäufigkeit}
+ \label{tab:bigramme-haeufigkeit}
+ \end{subtable}
+ \hspace{0.5cm}
+ \begin{subtable}[t]{0.3\textwidth}
+ \centering
+ \begin{tabular}{c|p{1.9cm}}
+ \textbf{Trigramm} & Relative Häufigkeit (\%) \\ \midrule
+ DER & 1.44 \\ \midrule
+ SCH & 1.21 \\ \midrule
+ ICH & 1.08 \\ \midrule
+ DIE & 0.98 \\ \midrule
+ UND & 0.95 \\ \midrule
+ DEN & 0.78 \\ \midrule
+ CHE & 0.77 \\ \midrule
+ EIN & 0.75 \\ \midrule
+ NDE & 0.74 \\ \midrule
+ GEN & 0.72 \\ 
+ \end{tabular}
+ \caption{Trigrammhäufigkeit}
+ \label{tab:trigramme-haeufigkeit}
+ \end{subtable}
+ \caption{Relative Häufigkeiten der Buchstaben, Bigramme und Trigramme im Deutschen}
+ \label{tab:alle-haeufigkeiten}
+ \end{table}
+ 
+ 
  \subsection{Vigenère}
  
+
  \begin{myexercise}
- 	\begin{itemize}
- 		\item Kopieren Sie den Geheimtext (Vigenère) von Moodle und versuchen Sie, ihn mit dem Analysetool zu entziffern
- 		\item \emoji{trophy} Challenge: Versuchen Sie, die Challenge-Aufgabe auf Moodle zu lösen
- 	\end{itemize}
+
+Kopieren Sie den folgenden Geheimtext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz}{Analysetool} zu entziffern:
+
+\verb|WORBHHHLUQOWWLDSYSQOWOUKSUDSNEGAAZAEBKISMRILHGPCVLIBZTRLMHYUSIEBILWJKULZSPGH|
+
+\verb|CEFZUQOIQOWCOLSBCVKISZMOSFSZTNBHOSTSUFILHZPCVTEWUHSYZBVCVQEBLMKHHBNEBLIUAIVY|
+
+\verb|DFHEBNTSBCVGUBBNUBTGVMCLGHPHFDAZAEBDISPHFHUGKUBZTIUDBLBSSUATIQOSHLIUAMSPNPBS|
+
+\verb|SUFILHZASWJHXBGSUDZPCVLRGJHILTHLRHCOAGAIIEFOAIJHRLRSBRSUZINUADIHAEFA|
  \end{myexercise}
  
  \begin{mychallenge}
