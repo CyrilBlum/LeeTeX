@@ -494,25 +494,16 @@ Eine (Sub-)Netzmaske hat fast dasselbe Format wie eine IP-Adresse und fasst mehr
 Gegeben sei folgende Subnetzmaske:
 \begin{table}[H]
 \centering
-\begin{tabular}{ccc}
+\begin{tabular}{r|l|l}
 & Dezimal & Binär\\\midrule\midrule
-\gls{IP}-Adresse & \texttt{159.233.1.22} & \texttt{10011111.11101001.00000001.00010110}\\\midrule
-Subnetzmaske & \texttt{255.255.255.0}& \texttt{11111111.11111111.11111111.00000000}
+\acrshort{IP}-Adresse von Computer 1 & \texttt{159.233.1.22} & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00010110}\\\midrule
+\acrshort{IP}-Adresse von Computer 2 & \texttt{159.233.1.1} & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00000001}\\\midrule
+Subnetzmaske & \texttt{255.255.255.0} & \texttt{\textcolor{ForestGreen}{11111111.11111111.11111111}.00000000}
 \end{tabular}
+\caption{Beispiel einer Subnetzmaske mit zwei IP-Adressen}
+\label{table:ex-subnet}
 \end{table}
-Um herauszufinden, welche IP-Adresse zum selben Netzwerk gehören, darf man die ursprüngliche IP-Adresse so verändern, dass alle stellen, an denen binär in der Subnetzmaske eine Null steht, eine Eins sein dürfen. Dies bedeutet, dass alle \gls{IP}-Adressen, welche mit \texttt{159.233.1.[...]} anfangen zu diesem Netzwerk dazugehören.
-\end{myexample}
-
-\begin{myexample}\label{ex:localhost}
-Typischerweise beginnen alle IP-Adressen, die auf das lokale Netzwerk (=das Netzwerk, in dem sich der eigene Computer befindet) mit \texttt{192.168.xxx.xxx}. Die Subnetzmaske lautet also:
-\begin{table}[H]
-\centering
-\begin{tabular}{ccc}
-& Dezimal & Binär\\\midrule\midrule
-\gls{IP}-Adresse & \texttt{192.168.0.0} & \texttt{11000000.10101000.00000000.00000000}\\\midrule
-Subnetzmaske & \texttt{255.255.0.0}& \texttt{11111111.11111111.00000000.00000000}
-\end{tabular}
-\end{table}
+Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben Netzwerk gehören, muss überprüft werden, ob die binäre IP-Adresse an all denjenigen Stellen gleich ist, wo die Subnetzmaske = ``1'' ist (also an allen grün markierten Stellen in Tabelle \cref{table:ex-subnet}). In diesem Beispiel bedeutet dies, dass alle \gls{IP}-Adressen, welche mit \texttt{159.233.1.[...]} beginnen zum selben Netzwerk dazugehören.
 \end{myexample}
 
 
@@ -563,7 +554,7 @@ Subnetzmaske & \texttt{255.255.0.0}& \texttt{11111111.11111111.00000000.00000000
 \end{myexercise}
 
 \begin{myexercise}
-Wie viele Hosts haben im lokalen Netzwerk aus \cref{ex:localhost} Platz?
+Typischerweise beginnen alle IP-Adressen, die auf das lokale Netzwerk (=das Netzwerk, in dem sich der eigene Computer befindet) mit \texttt{192.168.xxx.xxx}. Die Subnetzmaske lautet also \texttt{255.255.0.0}. Wie viele Hosts haben in so einem Netzwerk Platz? Schreiben Sie die Subnetzmaske binär auf und rechnen Sie aus, wie viele unterschiedliche Geräte sich in diesem lokalen Netzwerk befinden können.
 \begin{myanswer}
 Zwei Bytes (die zwei letzten Byte-Gruppen) der Subnetzmaske sind reserviert für unterschiedliche Kombinationen von \gls{IP}-Adressen. Es können sich daher bis zu $2^{16}$ = 65'536 Hosts in einem solchen lokalen Netzwerk befinden.
 \end{myanswer}
@@ -616,9 +607,9 @@ Bis anhin haben wir gesehen, wie wir einzelne Rechner mittels einer IP adressier
 Ähbnliche einer Haustür verbindet ein Router ein Subnetz (=Haus) mit der Aussenwelt, er befindet sich also an der Grenze zwischen zwei oder mehreren Subnetzen. Über die Routing-Tabelle kann ein Router entscheiden, auf welchen Weg ein Datenpaket an die Aussenwelt verschickt werden kann. Eine typische Routing-Tabelle enthält folgende Informationen:
 
 \begin{itemize}
-\item \textbf{Ziel-IP und Netzmaske}: Diese beiden Spalten definieren, welche Subnetze dem Router bekannt sind (sowohl eigenes Subnetz wie andere Subnetze).
-\item \textbf{Gateway}: Die Adresse, an die ein Paket geschickt werden muss, um sein Ziel zu erreichen. Das Gateway kann als eine Art ``Tor zur Aussenwelt'' angeschaut werden und ist häufig die \gls{IP}-Adresse des Routers.
-\item \textbf{Interface}: Der Name der Netzwerkkarte, die mit der Ziel-Adresse (Gateway) verbunden ist. 
+\item \textbf{Ziel-\gls{IP} und Netzmaske}: Diese beiden Spalten definieren, welche Subnetze dem Router bekannt sind (sowohl eigenes Subnetz wie andere Subnetze).
+\item \textbf{Gateway} = Tor, Einfahrt: Der nächstgelegene Zielort, an den ein Paket geschickt werden muss, um eine gewisse Ziel-\gls{IP} zu erreichen. Das Gateway kann als eine Art ``Tor zur Aussenwelt'' angeschaut werden und ist häufig die \gls{IP}-Adresse des Routers der Ziel-\gls{IP}.
+\item \textbf{Interface} = Schnittstelle: Die physikalische Schnittstelle am Router (z.B. Ethernet-Stecker), über die eine Ziel-Adresse (Gateway) erreichbar ist. 
 \end{itemize}
 
 Ein Beispiel einer Routing-Tabelle ist in \cref{table:routing} abgebildet.
