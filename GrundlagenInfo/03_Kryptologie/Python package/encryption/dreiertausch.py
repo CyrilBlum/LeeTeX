@@ -14,4 +14,5 @@ def dreiertausch(klartext):
 
     print(geheimtext)
 
-dreiertausch("KANTONSSCHULE")
+# Verwendung: 
+# dreiertausch("KANTONSSCHULE")

@@ -453,73 +453,66 @@ lässt sich nun einfach ablesen.
  Inwiefern könnte Caesar angegriffen werden? 
  \begin{itemize}
  \item Einerseits reicht es, alle 25 möglichen Verschiebungen auszuprobieren. Ein moderner Computer hat dies in einigen Milisekunden erledigt. 
- \item Andererseits kann, wenn der Text genügend lange ist, anhand der Häufigkeit der verschlüsselten Buchstaben mittels Häufigeitsanalyse in kürzester Zeit bestimmt werden, was der Schlüssel war (s. \cref{tab:trigramme-haeufigkeit}). Damit setzen wir uns im nächsten Kapitel genauer auseinander.
+ \item Andererseits kann, wenn der Text genügend lange ist, anhand der Häufigkeit der verschlüsselten Buchstaben mittels Häufigeitsanalyse in kürzester Zeit bestimmt werden, was der Schlüssel war. \cref{fig:caesar-freq} zeigt die Häufigkeiten der Buchstaben eines langen, mit Caesar verschlüsselten Texts im Geheimtext.
  \end{itemize}
  
- \begin{table}[H]
- \centering
- \begin{subtable}[t]{0.3\textwidth}
- \centering
- \begin{tabular}{c|p{1.9cm}}
- \textbf{Buchstabe} & Relative Häufigkeit (\%) \\ \midrule
- E & 17.40 \\ \midrule
- N & 9.78 \\ \midrule
- I & 7.55 \\ \midrule
- S & 7.27 \\ \midrule
- R & 7.00 \\ \midrule
- A & 6.51 \\ \midrule
- T & 6.15 \\ \midrule
- D & 5.08 \\ \midrule
- H & 4.76 \\ \midrule
- U & 4.35 \\ 
- \end{tabular}
- \caption{Buchstabenhäufigkeit}
- \label{tab:buchstaben-haeufigkeit}
- \end{subtable}
- \hspace{0.5cm}
- \begin{subtable}[t]{0.3\textwidth}
- \centering
- \begin{tabular}{c|p{1.9cm}}
- \textbf{Bigramm} & Relative Häufigkeit (\%) \\ \midrule
- ER & 3.94 \\ \midrule
- EN & 3.07 \\ \midrule
- CH & 2.73 \\ \midrule
- DE & 2.41 \\ \midrule
- EI & 2.29 \\ \midrule
- ND & 2.07 \\ \midrule
- IE & 1.97 \\ \midrule
- GE & 1.88 \\ \midrule
- TE & 1.88 \\ \midrule
- IN & 1.82 \\ 
- \end{tabular}
- \caption{Bigrammhäufigkeit}
- \label{tab:bigramme-haeufigkeit}
- \end{subtable}
- \hspace{0.5cm}
- \begin{subtable}[t]{0.3\textwidth}
- \centering
- \begin{tabular}{c|p{1.9cm}}
- \textbf{Trigramm} & Relative Häufigkeit (\%) \\ \midrule
- DER & 1.44 \\ \midrule
- SCH & 1.21 \\ \midrule
- ICH & 1.08 \\ \midrule
- DIE & 0.98 \\ \midrule
- UND & 0.95 \\ \midrule
- DEN & 0.78 \\ \midrule
- CHE & 0.77 \\ \midrule
- EIN & 0.75 \\ \midrule
- NDE & 0.74 \\ \midrule
- GEN & 0.72 \\ 
- \end{tabular}
- \caption{Trigrammhäufigkeit}
- \label{tab:trigramme-haeufigkeit}
- \end{subtable}
- \caption{Relative Häufigkeiten der Buchstaben, Bigramme und Trigramme im Deutschen}
- \label{tab:alle-haeufigkeiten}
- \end{table}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/caesar-freq}
+\caption{Buchstabenhäufigkeit in einem nach Caesar verschlüsselten Text}
+\label{fig:caesar-freq}
+\end{figure}
+ 
+ \begin{myexercise}
+Können Sie aus \cref{fig:caesar-freq} entschlüsseln, was der Klartext ist, wenn der häufigste Buchstabe in deutschen Texten ``E'' ist?
+\begin{myanswer}
+Offensichtlich ist der häufigste Buchstabe ``G'', wir haben hier also eine Verschiebung von ``E'' zu ``G'', also eine Verschiebung um 2.
+\end{myanswer}
+ \end{myexercise}
+ 
+ 
  
  
  \subsection{Vigenère}
+ Wie wir in \cref{fig:caesar-freq} gesehen haben, ist es extrem einfach, Text, die mit Caesar verschlüsselt worden sind, anzugreifen, entweder mittels Buchstabenhäufigkeitsanalyse oder indem man alle 25 möglichen Verschiebungen ausprobiert. 
+ 
+ Vigenère hatte eine andere Idee: Statt den ganzen Text mit e
+ 
+ \begin{table}[H]
+\centering
+\tiny
+\begin{tabular}{c||c*{25}{|p{.2cm}}}
+ & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+\midrule\midrule
+A & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+B & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A \\
+C & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B \\
+D & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C \\
+E & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D \\
+F & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E \\
+G & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F \\
+H & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G \\
+I & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H \\
+J & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I \\
+K & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J \\
+L & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K \\
+M & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L \\
+N & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M \\
+O & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N \\
+P & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O \\
+Q & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P \\
+R & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q \\
+S & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R \\
+T & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S \\
+U & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T \\
+V & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U \\
+W & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V \\
+X & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W \\
+Y & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X \\
+Z & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y \\
+\end{tabular}
+\caption{Vigenère-Tabelle}
+ \end{table}
  
 
  \begin{myexercise}
@@ -548,5 +541,67 @@ Kopieren Sie den folgenden Geheimtext und versuchen Sie, ihn mit dem \href{https
  	\item Der Text kann nun wieder mit dem Vigenère-Programm entschlüsselt werden  (s. Python-Datei 1). 
  \end{itemize}
  \end{mychallenge}
+ 
+ \begin{table}[H]
+  \centering
+  \begin{subtable}[t]{0.3\textwidth}
+  \centering
+  \begin{tabular}{c|p{1.9cm}}
+  \textbf{Buchstabe} & Relative Häufigkeit (\%) \\ \midrule
+  E & 17.40 \\ \midrule
+  N & 9.78 \\ \midrule
+  I & 7.55 \\ \midrule
+  S & 7.27 \\ \midrule
+  R & 7.00 \\ \midrule
+  A & 6.51 \\ \midrule
+  T & 6.15 \\ \midrule
+  D & 5.08 \\ \midrule
+  H & 4.76 \\ \midrule
+  U & 4.35 \\ 
+  \end{tabular}
+  \caption{Buchstabenhäufigkeit}
+  \label{tab:buchstaben-haeufigkeit}
+  \end{subtable}
+  \hspace{0.5cm}
+  \begin{subtable}[t]{0.3\textwidth}
+  \centering
+  \begin{tabular}{c|p{1.9cm}}
+  \textbf{Bigramm} & Relative Häufigkeit (\%) \\ \midrule
+  ER & 3.94 \\ \midrule
+  EN & 3.07 \\ \midrule
+  CH & 2.73 \\ \midrule
+  DE & 2.41 \\ \midrule
+  EI & 2.29 \\ \midrule
+  ND & 2.07 \\ \midrule
+  IE & 1.97 \\ \midrule
+  GE & 1.88 \\ \midrule
+  TE & 1.88 \\ \midrule
+  IN & 1.82 \\ 
+  \end{tabular}
+  \caption{Bigrammhäufigkeit}
+  \label{tab:bigramme-haeufigkeit}
+  \end{subtable}
+  \hspace{0.5cm}
+  \begin{subtable}[t]{0.3\textwidth}
+  \centering
+  \begin{tabular}{c|p{1.9cm}}
+  \textbf{Trigramm} & Relative Häufigkeit (\%) \\ \midrule
+  DER & 1.44 \\ \midrule
+  SCH & 1.21 \\ \midrule
+  ICH & 1.08 \\ \midrule
+  DIE & 0.98 \\ \midrule
+  UND & 0.95 \\ \midrule
+  DEN & 0.78 \\ \midrule
+  CHE & 0.77 \\ \midrule
+  EIN & 0.75 \\ \midrule
+  NDE & 0.74 \\ \midrule
+  GEN & 0.72 \\ 
+  \end{tabular}
+  \caption{Trigrammhäufigkeit}
+  \label{tab:trigramme-haeufigkeit}
+  \end{subtable}
+  \caption{Relative Häufigkeiten der Buchstaben, Bigramme und Trigramme im Deutschen}
+  \label{tab:alle-haeufigkeiten}
+  \end{table}
 
  \section{Moderne Kryptologie}

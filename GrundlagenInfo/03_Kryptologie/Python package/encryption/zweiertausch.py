@@ -8,7 +8,7 @@
      if len(klartext) % 2 != 0:
          # Klartexte ungerader Länge
          geheimtext += klartext[len(klartext) - 1]
-     print(geheimtext)
+    print(geheimtext)
  
- 
- zweiertausch("KANTONSSCHULE")
+# Verwendung: 
+# zweiertausch("KANTONSSCHULE")

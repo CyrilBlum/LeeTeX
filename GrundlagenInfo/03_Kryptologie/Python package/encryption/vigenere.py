@@ -1,14 +1,32 @@
 ﻿import numpy as np
-import string  
+import string
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
-from collections import Counter    
+from collections import Counter
+import re
+
+
+def preprocess_text(text):
+    # Capitalize the entire text
+    text = text.upper()
+    
+    # Replace capitalized umlauts with the corresponding letter combinations
+    replacements = {
+        'Ä': 'AE',
+        'Ö': 'OE',
+        'Ü': 'UE',
+    }
+    
+    for original, replacement in replacements.items():
+        text = text.replace(original, replacement)
+
+    # Remove all characters other than A-Z
+    text = re.sub(r'[^A-Z]', '', text)
+    
+    return text
 
 def vigenere(text, key, encrypt=True):
-    text = text.upper()
-    chars_replace = [" ", ".", ","]
-    for c in chars_replace:
-        text = text.replace(c, "")
+    text = preprocess_text(text)
     text_encrypted = []
     for i in range(len(text)):
         if text[i] != " ":
@@ -64,7 +82,12 @@ def display_vigenere_all(vige_dec, vige_enc, vige_key, n_chars=10, with_delim=Fa
 
 def show_letter_freq(text):
     fig, ax = plt.subplots()
-    c = Counter(text)
+    
+    # Initialize the dictionary for all letters from A to Z with a count of 0
+    c = Counter({letter: 0 for letter in string.ascii_uppercase})
+    
+    # Count the actual frequencies in the text
+    c.update(text)
     freq_perc = [(i, c[i] / len(text)) for i in c]
     freq_perc = np.array(freq_perc)[np.argsort([i[0] for i in freq_perc])]
                                                
