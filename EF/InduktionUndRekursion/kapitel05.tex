@@ -53,7 +53,7 @@ Eines der häufigsten algorithmischen Probleme ist das \textit{Sortieren}.
 \section{Sortieren mit dem \textit{merge sort} Algorithmus}
 Natürlich ist das Bedürfnis nach schnellen Algorithmen besonders gross, falls diese Probleme lösen, die zeitkritisch sind und häufig auftreten. Mittlerweile sind viele Sortieralgorithmen bekannt. Ein berühmter Vertreter dieser Algorithmen ist \textit{merge sort}. Der Algorithmus \textit{merge sort} arbeitet rekursiv. Dabei macht er insbesondere von der Tatsache Gebrauch, dass sich zwei sortierte Listen recht effizient zu einer ebenfalls sortierten Liste zusammenfügen lassen. Es seien also zwei jeweils \textbf{bereits sortierte} Listen \pythoninline{L} und \pythoninline{R} gegeben. Diese Listen besitzen die Längen (Anzahl von Elementen) \pythoninline{len(L)} und \pythoninline{len(R)}. Es ist nun nicht besonders aufwändig, die beiden Listen \pythoninline{L} und \pythoninline{R} zu einer neuen \textbf{sortierten} Liste \pythoninline{M} der Länge \pythoninline{len(L) + len(R)} zu vereinen (englisch: \textit{to merge}).
 
-\begin{aufgabe}{aufgabe:0501}
+\begin{myexercise}\label{myexercise:0501}
 Angenommen wir haben zwei jeweils \textbf{bereits sortierte} Listen \pythoninline{L} und \pythoninline{R} gegeben. Schreiben Sie eine Python-Funktion \pythoninline{merge(L,R)}, welche \pythoninline{L} und \pythoninline{R} zu einer einzigen sortierten Liste vereint. Ihre Funktion soll unbedingt Gebrauch von der Tatsache machen, dass \pythoninline{L} und \pythoninline{R} bereits sortiert sind.
 \begin{lstlisting}[language=Python,caption=Testfälle für die Funktion \pythoninline{merge},numbers=none]
 Testfall 0
@@ -69,13 +69,13 @@ Eingabe: L = [1,10,100,1000], R = [0,5,50]
 Ausgabe: [0, 1, 5, 10, 50, 100, 1000]
 \end{lstlisting}
 Ihre Funktion braucht nicht zu überprüfen, ob \pythoninline{L} und \pythoninline{R} tatsächlich sortiert sind.
-\end{aufgabe}
+\end{myexercise}
 
-\begin{aufgabe}{aufgabe:0502}
-Analysieren Sie den Algorithmus, welchen Sie in \cref{aufgabe:0501} geschrieben haben. Welche Laufzeit hat dieser Algorithmus in Abhängigkeit von \pythoninline{n = len(L) + len(R)}?
-\end{aufgabe}
+\begin{myexercise}\label{myexercise:0502}
+Analysieren Sie den Algorithmus, welchen Sie in \cref{myexercise:0501} geschrieben haben. Welche Laufzeit hat dieser Algorithmus in Abhängigkeit von \pythoninline{n = len(L) + len(R)}?
+\end{myexercise}
 \noindent
-Der \textit{merge sort} Algorithmus teilt eine zu sortierende Liste rekursiv so lange in zwei Teile, bis nur noch Listen der Länge 1 vorliegen. Offensichtlich ist jede Liste der Länge 1 bereits sortiert. Schliesslich werden bereits sortierte Listen mit Hilfe des \textit{merge} Algorithmus zu der gesuchten sortierten Liste zusammengefügt. Mit Hilfe der bereits in \cref{aufgabe:0501} erstellten Routine \textit{merge} lässt sich der berühmte \textit{merge sort} Algorithmus in nur wenigen Zeilen in Python beschreiben. Eine mögliche Implementation ist in \cref{listing:mergesort} gegeben.
+Der \textit{merge sort} Algorithmus teilt eine zu sortierende Liste rekursiv so lange in zwei Teile, bis nur noch Listen der Länge 1 vorliegen. Offensichtlich ist jede Liste der Länge 1 bereits sortiert. Schliesslich werden bereits sortierte Listen mithilfe des \textit{merge} Algorithmus zu der gesuchten sortierten Liste zusammengefügt. Mithilfe der bereits in \cref{myexercise:0501} erstellten Routine \textit{merge} lässt sich der berühmte \textit{merge sort} Algorithmus in nur wenigen Zeilen in Python beschreiben. Eine mögliche Implementation ist in \cref{listing:mergesort} gegeben.
 \begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{merge_sort},label=listing:mergesort]
 def merge_sort(A):
     # sortiert die Liste A
@@ -133,7 +133,7 @@ Die Laufzeit des \textit{merge sort} Algorithmus setzt sich aus drei einzelnen T
 \begin{description}
   \item[Divide:] Dieser Teil berechnet lediglich die Mitte der zu sortierenden Liste. Dazu ist offensichtlich nur eine konstante Zeit $\Theta(1)$ notwendig.
   \item[Conquer:] Beim Aufruf des \textit{merge sort} Algorithmus mit Problemgrösse $n$ werden rekursiv \textcolor{Blue}{zwei} Teilprobleme (derselben Art) mit jeweils halber Grösse $\textcolor{Green}{n/2}$ aufgerufen. Dies trägt $\textcolor{Blue}{2}T(\textcolor{Green}{n/2})$ zur Laufzeit bei.
-  \item[Combine:] Wie wir in \cref{aufgabe:0502} bereits festgestellt haben, benötigt \textit{merge sort} die lineare Zeit $\Theta(n)$ für die Vereinigung zweier Listen mit summierter Länge \pythoninline{n = len(L) + len(R)}.
+  \item[Combine:] Wie wir in \cref{myexercise:0502} bereits festgestellt haben, benötigt \textit{merge sort} die lineare Zeit $\Theta(n)$ für die Vereinigung zweier Listen mit summierter Länge \pythoninline{n = len(L) + len(R)}.
 \end{description}
 Zusammengefasst ist die Laufzeit $T(n)$ von \textit{merge sort} im schlimmsten Fall also gegeben durch
 
@@ -263,8 +263,8 @@ und somit $\Theta\lr{n\log(n)}$.
     \label{fig:mergesortBaum}
 \end{figure}
 
-\begin{aufgabe}{aufgabe:0503}
-Zeigen Sie mit Hilfe der vollständigen Induktion, dass
+\begin{myexercise}\label{myexercise:0503}
+Zeigen Sie mithilfe der vollständigen Induktion, dass
 \begin{align*}
     T(n) = n\log_2(n)
 \end{align*}
@@ -276,7 +276,7 @@ die rekursive Gleichung (Rekurrenz)
     2T(n/2) + n, & \text{falls $n = 2^k$ für ein $k\in\N, k\geq 2$ erfüllt.}
   \end{cases}
 \]
-\end{aufgabe}
+\end{myexercise}
 
 \begin{comment}
 \section{\textit{merge sort} ist optimal}
@@ -286,7 +286,10 @@ Wir können die Arbeit vergleichsbasierter Sortieralgorithmen durch binäre Ents
 \end{comment}
 
 
-\begin{antwort}{aufgabe:0501}
+\clearpage
+\section{Lösungen der Aufgaben}
+
+\begin{myanswer}[myexercise:0501]
 \begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{merge},label=listing:merge]
 def merge(L,R):
     # L und R sind jeweils bereits sortierte Listen.
@@ -315,19 +318,18 @@ def merge(L,R):
         r = r + 1
     return M
 \end{lstlisting}     
-\end{antwort}
+\end{myanswer}
 
-
-\begin{antwort}{aufgabe:0502}
-Wir beziehen uns hier auf den Algorithmus in der Musterlösung zu \cref{aufgabe:0501}. Der Algorithmus besteht im Wesentlichen in einer Schleife über die summierte Länge
+\begin{myanswer}[myexercise:0502]
+Wir beziehen uns hier auf den Algorithmus in der Musterlösung zu \cref{myexercise:0501}. Der Algorithmus besteht im Wesentlichen in einer Schleife über die summierte Länge
 \begin{center}
     \pythoninline{n = len(L) + len(R)}
 \end{center}
 der beiden gegebenen Listen. Somit ist die Laufzeit gegeben durch $\Theta(n)$.
-\end{antwort}
+\end{myanswer}
 
 
-\begin{antwort}{aufgabe:0503}
+\begin{myanswer}[myexercise:0503]
 Sei also $T(n) := n\log_2(n)$. Es ist zu zeigen, dass diese Wahl von $T$ die Rekurrenz in der Aufgabenstellung erfüllt. Wir untersuchen den Fall $T(2) = T\lr{2^1}$ separat.
 Wegen $2\log_2(2) = 2$ ist die Behauptung für $T\lr{2^1}$ korrekt. Nun zeigen wir durch Induktion, dass für alle $k\in\N$ mit $k\geq 2$ die Aussage
 \begin{align*}
@@ -346,7 +348,7 @@ und damit ist $\mathcal{A}(2)$ gezeigt. Sei $\mathcal{A}(n)$ nun für ein $n\in\
     &2T\lr{2^{k}} + 2^{k+1}.
 \end{align*}
 Dies zeigt den Induktionsschritt.
-\end{antwort}
+\end{myanswer}
 
 
 \clearpage
