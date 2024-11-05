@@ -3,60 +3,6 @@
 
 \section{Befehle / Funktionen mit Parameter, mit \texorpdfstring{\lstinline|return|}{return}}
 \subsection{Einzelne Funktionen}
-\newcommand{\drawCube}[4]{
-% first argument: ll position
-% second argument: x shift
-% 3rd argument: # of arguments
-% 4th argument: size (default = 1)
-% Define cube coordinates
-\coordinate (A#1) at (#2,    0,     0);
-\coordinate (B#1) at ({#2+#4},0,     0);
-\coordinate (C#1) at ({#2+#4},#4,0);
-\coordinate (D#1) at (#2,    #4,0);
-\coordinate (E#1) at (#2,     0,#4);
-\coordinate (F#1) at ({#2+#4}, 0,#4);
-\coordinate (G#1) at ({#2+#4},#4,#4);
-\coordinate (H#1) at (#2,    #4,#4);
-
-
-% Draw cube
-\draw[thick] (A#1) -- (B#1) -- (C#1) -- (D#1) -- cycle;
-\draw[thick] (E#1) -- (F#1) -- (G#1) -- (H#1) -- cycle;
-\draw[thick] (A#1) -- (E#1);
-\draw[thick] (B#1) -- (F#1);
-\draw[thick] (C#1) -- (G#1);
-\draw[thick] (D#1) -- (H#1);
-% define lower left corner of doors
-% door with is defined to always be 0.2*size wide and 0.5*size high. We also define that the space between each door is the remaining width,
-% i.e., if we have three doors, then the remaining space is (size-0.2*size*3)/(3+1)
-
-% calculate how much empty space to leae between each door
-\pgfmathsetmacro\emptyspace{(#4-0.2*#4*#3)/(#3+1)}
-
-% define amount of space per door
-\pgfmathsetmacro\doorsspace{0.2*#4}
-
-\foreach \x in {1,...,#3} {	
-	\pgfmathsetmacro\llCord{\emptyspace*\x+\doorsspace*(\x-1)}
-	% lower door coordinate
-	\coordinate (llD\x#1) at ({\llCord+#2},0,#4);
-	
-	% Draw doors
-	\fill[blue!50, rounded corners] (llD\x#1) -- ++(0,{#4/2},0) -- ++({0.2*#4},0,0)node[pos=.5, below](in#1\x){\textcolor{blue}{\texttt{x\x}}} -- ++(0,{-#4/2},0);
-	
-	% lower door coordinate for value (for later annotation)
-	\coordinate (llD\x#1val) at ({\llCord-.1*#4+#2},{-.2*#4},#4); % the coordinate is simple .1*size to the left of the ll corner and .2*size below.
-}
-
-% coordinate for result door
-\coordinate (llDOut#1) at ({#2+#4},0,{#4*.2});
-\fill[green!50, rounded corners] (llDOut#1) -- ++(0,{#4/2},0) -- ++(0,0,{#4/2})node[pos=0.8,rotate=45, below, align=center](out#1){\textcolor{black}{\tiny\texttt{out#1}\normalsize}} -- ++(0,{-#4/2},0);
-
-% Draw a 2D rectangle around the cube
-\node[fit=(E#1) (C#1), inner sep=4pt, red, dotted, draw, line width=1pt,rounded corners](dottedRect#1) {};
-% annotate the two-d rect
-\node[above=5pt of dottedRect#1.north west, anchor=west, align=left]{\textcolor{red}{\texttt{def a#1(\textcolor{blue}{\foreach\x in {1,...,#3}{x\x, }...})}\normalsize}};
-}
 
 Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden: Sie beschreiben einen Ablauf, ohne jedoch diesen auszuführen. Damit der Ablauf ausgeführt wird, müssen Sie die Definition aufrufen. Dies kann nützlich sein, wenn sie eine Aufgabe mehrmals und in unterschiedlichen Varianten ausführen wollen, wie beispielsweise das Zeichnen einer Spirale. Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen, jedoch keine Werte an das Hauptprogramm zurückgeben konnten. In diesem Kapitel lernen wir, wie Funktionen wie ``Sous-Chefs'' in einer komplexen Küche Zutaten (Parameter) entgegennehmen und Resultate an andere ``Sous-Chefs''  (Definitionen) weitergeben können.
 
@@ -171,8 +117,49 @@ def ist_sortiert(liste):
 \end{lstlisting}
 \end{myanswer}
 \end{mysubmission}
+
+\begin{myexercise}
+Eine Supermarkt-Kette bittet Sie, die Rabatte auf ausgewählte Produkte zu berechnen. Sie gibt Ihnen hierzu zwei Listen: die erste Liste enthaltet die Preise der Produkte \textit{ohne Rabatt} und die zweite Liste enthaltet die Rabatte in Prozent.
+
+\begin{lstlisting}
+# Preise in Franken
+liste_preise = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95] 
+# Rabatte in Prozent
+liste_rabatte = [30, 40, 30, 35, 20, 15, 35] 
+\end{lstlisting}
+
+Das Beispiel bedeutet, dass das erste Produkt nicht 39.95, sondern 30\% weniger als 39.95 kosten sollte, also 70\% von 39.95 = 27.965.
+
+Der rabattierte Preis eines einzelnen Produkts wird folgendermassen berechnet:
+\begin{lstlisting}
+preis_rabattiert = preis_normal * (1 - rabatt_in_prozent / 100)
+\end{lstlisting}
+Schreiben Sie eine Definition, die die rabattierten Preise für alle Produkte berechnet und als Liste zurückgibt. Sie müssen die Preise nicht runden. 
+
+\begin{myanswer}
+\begin{lstlisting}
+def berechne_rabatte(liste_preise, liste_rabatte):
+    liste_rabattiert = []
+    
+    i = 0
+    repeat len(liste_rabatte):
+        preis_rabattiert=liste_preise[i]*(1-liste_rabatte[i]/100)
+        liste_rabattiert.append(preis_rabattiert)
+        i += 1
+        
+    return liste_rabattiert
+
+# berechne Rabatte
+liste_preise = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95]
+liste_rabatte = [30, 40, 30, 35, 20, 15, 35]
+liste_rabattiert = berechne_rabatte(liste_preise, liste_rabatte)
+print(liste_rabattiert)
+\end{lstlisting}
+\end{myanswer}
+ 
+\end{myexercise}
 \subsection{Mehrere Funktionen}
-Wozu kann so ein \lstinline|return|-Ausdruck dienen? Wenn Sie Code schreiben, wird dieser oftmals schnell komplizierter. Somit kann es hilfreich sein, die einzelnen Schritte in Unter-Programme aufzuteilen.
+Wozu kann ein \lstinline|return| eigentlich nützlich sein? Wenn Sie Code schreiben, wird dieser oftmals schnell komplizierter. Somit kann es hilfreich sein, die einzelnen Schritte in Unter-Programme aufzuteilen. Dies erleichtert zudem die \textbf{Modularisierung} und \textbf{Wiederverwendbarkeit} von Code: Beispielsweise könnte eine Funktion, die das Maximum einer Liste berechnet, an verschiedenen Orten in einem längeren Programm mehrmals zum Einsatz kommen
 
 Zum Vergleich: stellen Sie sich vor, Sie arbeiten in einer edlen Michelin-Sterne-Küche an einem raffinierten Gericht, in das viele Arbeitsschritte involviert sind. Häufig müssen in solchen Restaurants bis zu 200 Schritte pro Gericht ausgeführt werden. Daher könnte es sinnvoll sein, einzelne Aufgaben, wie beispielsweise die Herstellung der Saucen, an Ihre Sous-Chefs zu delegieren, und eine Person zu bestimmen, die das ganze Gericht zusammenfügt. Häufig werden Funktionen genau mit solchen komplexen Aufgaben im Hinterkopf geschrieben. Diese Idee ist in \cref{fig:funktionen-mehrere} illustriert.
 
@@ -207,6 +194,7 @@ Folgender Code berechnet den Endpreis, für den Sie ihre Waren verkaufen werden,
 \item \lstinline|berechnet_gesamtpreis| ruft \lstinline|berechne_rabatt| auf und fügt zum rabattierten Preis die Mehrwertsteuer hinzu.
 \end{enumerate}
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 def berechne_rabatt(preis, rabatt_prozent):
     rabatt = preis * (rabatt_prozent / 100)
@@ -230,8 +218,9 @@ print("Der Endpreis nach Rabatt und Mehrwertsteuer ist:", endpreis)
 \begin{tikzpicture}[overlay,remember picture]
    % Wert zurückgeben
 	\draw[red,-stealth] (arrowFromEx11.north) to[bend left] node[pos=.3, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben (und speichern)} (arrowToEx11);
-		\draw[red,-stealth] (arrowFromEx12.north) to[bend left] node[pos=.2, right, fill=RoyalBlue, fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben  (und speichern)} (arrowToEx12);
+	\draw[red,-stealth] (arrowFromEx12.north) to[bend left] node[pos=.2, right, fill=RoyalBlue, fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben  (und speichern)} (arrowToEx12);
 \end{tikzpicture}
+\end{minipage}
 \end{myexample}
 
 
@@ -302,7 +291,7 @@ Folgendes Beispiel soll dieses Prinzip konkret veranschaulichen. Stellen Sie sic
 
 Beide Komponenten scheinen schwierig abzuschätzen, Sie möchten jedoch eine erste Einschätzung Ihrer \gls{BMR} haben, indem sie einige bekannte Formeln auf sich selber anwenden und diese vergleichen.
 
-\begin{myexercise}\label{ex:bmr-simple}
+\begin{mysubmission}\label{ex:bmr-simple}
 Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel berechnen und geben Sie das Resultat auf der Konsole aus.
 \begin{enumerate}
 \item Für Männer:
@@ -352,7 +341,7 @@ geschlecht = 'mann'
 grundumsatz(gewicht, groesse, alter, geschlecht)
 \end{lstlisting}
 \end{myanswer}
-\end{myexercise}
+\end{mysubmission}
 
 Nun möchten wir zum Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zum Grundumsatz auch noch unsere Aktivitäten hinzufügen, allerdings können wir nun nicht mehr auf die Variable \texttt{bmr} zurückgreifen. Wie können wir das ändern? Indem wir sie an das Programm zurückgeben und speichern. Wichtige Änderungen gegebüber den Lösungs-Code aus \cref{ex:bmr-simple} sind in \colorbox{CornflowerBlue}{blau} umrandet.
 
@@ -481,4 +470,44 @@ Schreiben Sie nun eine weitere Funktion, die Ihren gesamten Energieumsatz berech
 Schreiben Sie eine weitere Definition, die Ihren \gls{BMR} sowie alle Aktivitätsenergien summiert und zurückgibt.
 \end{myexercise}
 
-\subsection{Weitere Anwendungen}
+\subsection{Weitere Übungen}
+
+\begin{myexercise}[\emoji{robot} \textbf{R2-D2}]
+
+Der Mikrocontroller einer R2-D2 Roboter-Einheit wurde beschädigt. Der Roboter kann deshalb nur noch einzelne, geradlinige \enquote{Schritte} nach links (l), rechts (r), oben (o) oder unten (u) (um jeweils eine Längeneinheit) durchführen. Die Bewegungsanweisung erhält der Roboter in Form des Strings \tjinline{bewegung}. Der String \tjinline{bewegung = 'lollru'} würde zum Beispiel dem Bewegungsablauf links, oben, links, links, rechts und unten (um jeweils eine Längeneinheit) entsprechen. Die R2-D2-Einheit bewegt sich auf dem zweidimensionalen Koordinatensystem und startet im Ursprung $(0,0)$.
+
+
+Schreiben Sie eine Python-Funktion \tjinline{def r2d2(bewegung)}, welche für eine gegebene beliebige Be\-we\-gungs\-an\-wei\-sung \tjinline{bewegung} entscheidet, ob sich der Roboter nach den Bewegungen wieder im Ursprung befindet (\tjinline{return True}) oder nicht (\tjinline{return False}). Hinweis: Auf die einzelnen Buchstaben eines Strings kann ebenso zugegriffen werden wie auf Listenelemente. Falls zum Beispiel \tjinline{wort = "Hallo"}, dann ist \tjinline{wort[0] == "H", wort[1], == "a"} und so weiter. Wie auch bei Listen, kann mit dem Befehl \tjinline{len(wort)} die Länge (Anzahl Buchstaben) eines Worts bestimmt werden.
+
+\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
+Beispiel 1:
+Input: bewegung = 'uurol'
+Output: False
+
+Beispiel 2:
+Input: bewegung = 'rloulr'
+Output: True
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{lstlisting}
+def count_symbol(symbol, word):
+    count = 0
+    for buchstabe in word:
+        if buchstabe == symbol:
+            count += 1
+    return(count)
+
+
+def r2d2(move):
+    l = count_symbol('l', move)
+    r = count_symbol('r', move)
+    o = count_symbol('o', move)
+    u = count_symbol('u', move)
+    if (l-r == 0 and o-u == 0):
+        return True
+    else:
+        return False
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
