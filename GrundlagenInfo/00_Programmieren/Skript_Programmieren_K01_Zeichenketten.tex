@@ -573,7 +573,7 @@ In der zweiten Lektion sollen die SuS sich Überlegungen zu Schleifen und Verzwe
 
 % coordinate for result door
 \coordinate (llDOut#1) at ({#2+#4},0,{#4*.2});
-\fill[green!50, rounded corners] (llDOut#1) -- ++(0,{#4/2},0) -- ++(0,0,{#4/2})node[pos=0.8,rotate=45, below, align=center](out#1){\textcolor{black}{\texttt{out#1}}} -- ++(0,{-#4/2},0);
+\fill[green!50, rounded corners] (llDOut#1) -- ++(0,{#4/2},0) -- ++(0,0,{#4/2})node[pos=0.8,rotate=45, below, align=center](out#1){\textcolor{black}{\tiny\texttt{out#1}\normalsize}} -- ++(0,{-#4/2},0);
 
 % Draw a 2D rectangle around the cube
 \node[fit=(E#1) (C#1), inner sep=4pt, red, dotted, draw, line width=1pt,rounded corners](dottedRect#1) {};
@@ -581,7 +581,45 @@ In der zweiten Lektion sollen die SuS sich Überlegungen zu Schleifen und Verzwe
 \node[above=5pt of dottedRect#1.north west, anchor=west, align=left]{\textcolor{red}{\texttt{def a#1(\textcolor{blue}{\foreach\x in {1,...,#3}{x\x, }...})}\normalsize}};
 }
 
-Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden: Sie beschreiben einen Ablauf, ohne jedoch diesen auszuführen. Damit der Ablauf ausgeführt wird, müssen Sie die Definitionen aufrufen. Dies kann nützlich sein, wenn sie eine Aufgabe mehrmals und in unterschiedlichen Varianten ausführen wollen, wie beispielsweise das Zeichnen einer Spirale.
+Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden: Sie beschreiben einen Ablauf, ohne jedoch diesen auszuführen. Damit der Ablauf ausgeführt wird, müssen Sie die Definition aufrufen. Dies kann nützlich sein, wenn sie eine Aufgabe mehrmals und in unterschiedlichen Varianten ausführen wollen, wie beispielsweise das Zeichnen einer Spirale. Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen, jedoch keine Werte an das Hauptprogramm zurückgeben konnten. In diesem Kapitel lernen wir, wie Funktionen wie ``Sous-Chefs'' in einer komplexen Küche Zutaten (Parameter) entgegennehmen und Resultate an andere ``Sous-Chefs''  (Definitionen) weitergeben können.
+
+\begin{myexample}
+Stellen Sie sich vor, Sie arbeiten für einen Supermarkt und sollten den Preis Ihrer Produkte berechnen. Sie kaufen Ihre Artikel bei einem Grossverteiler ein, daher erhalten Sie auf alle Produkte 10\% Rabatt. Der Grossverteiler befindet sich im Ausland, Sie müssen also noch 7\% Mehrwertsteuer hinzufügen. Der Grossverteiler gibt Ihnen den Original-Preis Ihrer Waren \textit{vor} Rabatt und \textit{vor} Mehrwertsteuer.
+
+Folgender Code berechnet den Endpreis, für den Sie ihre Waren verkaufen werden, indem folgende zwei Funktionen aufgerufen werden:
+\begin{enumerate}
+\item \lstinline|berechne_rabatt| berechnet den Preis nach Abzug eines Rabatts für ein Produkt.
+\item \lstinline|berechnet_gesamtpreis| ruft \lstinline|berechne_rabatt| auf und fügt zum rabattierten Preis die Mehrwertsteuer hinzu.
+\end{enumerate}
+
+\begin{lstlisting}
+def berechne_rabatt(preis, rabatt_prozent):
+    rabatt = preis * (rabatt_prozent / 100)
+    (*@\colorbox{CornflowerBlue}{return preis - \tikzmark{arrowFromEx11} rabatt}@*) # Gibt den Preis nach Abzug des Rabatts zurück
+
+
+def berechne_gesamtpreis(preis, rabatt_prozent, mehrwertsteuer_prozent):
+    (*@\colorbox{CornflowerBlue}{rabatt\tikzmark{arrowToEx11}preis}@*) = berechne_rabatt(preis, rabatt_prozent)
+    mwst = rabattpreis * (mehrwertsteuer_prozent / 100)
+    return (*@\colorbox{CornflowerBlue}{rabattpre\tikzmark{arrowFromEx12}is + mwst}@*)  # Gibt den Gesamtpreis inklusive Mwst. zurück
+
+
+# Anwendung
+preis = 100  # Basispreis in CHF
+rabatt_prozent = 10  # Rabatt in %
+mehrwertsteuer_prozent = 7.7  # Mehrwertsteuer in %
+
+(*@\colorbox{CornflowerBlue}{endp\tikzmark{arrowToEx12}reis}@*) = berechne_gesamtpreis(preis, rabatt_prozent, mehrwertsteuer_prozent)
+print("Der Endpreis nach Rabatt und Mehrwertsteuer ist:", endpreis)
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+   % Wert zurückgeben
+	\draw[red,-stealth] (arrowFromEx11.north) to[bend left] node[pos=.3, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben (und speichern)} (arrowToEx11);
+		\draw[red,-stealth] (arrowFromEx12.north) to[bend left] node[pos=.2, right, fill=RoyalBlue, fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben  (und speichern)} (arrowToEx12);
+\end{tikzpicture}
+\end{myexample}
+
+
 
 \begin{myexample}
 Mit folgendem Code können wir die Turtle eine Spirale aus mehreren Kreisen zeichnen lassen:\\
@@ -653,10 +691,10 @@ Eine Funktion kann man sich vorstellen wie ein Kochrezept, das einige Zutaten en
 \node[fill=blue!50, rounded corners] (input2) at (llD21val){12};
 \draw[thick,->] (input1) -- (in11);
 \draw[thick,->] (input2) -- (in12);
-\node[fill=green!50, rounded corners](outVal1) at (4,-.6,3){36};
+\node[fill=green!50, rounded corners](outVal1) at (5,-.6,3){36};
 \draw[thick,->] (out1) -- (outVal1);
 \end{tikzpicture}
-\caption{Illustration einer Funktion}
+\caption{Illustration einer Funktion mit Inputs (Parametern) und Outputs (\lstinline|return|-Wert)}
 \label{fig:funktion-einzeln}
 \end{figure}
 
@@ -678,7 +716,7 @@ Wozu dient dies? Nun, stellen Sie sich vor, Sie arbeiten in einer edlen Michelin
 \drawCube{3}{10.5}{2}{3}
 \draw[thick,->,rounded corners] (out1) -- ++(0,-3.25,0) -- ++(3.15,0,0)node[below]{\lstinline[language=Python,style=TigerJython,basicstyle=\ttfamily]{return out1}} -- ++(4.65,0,0) -- (in31);
 \end{tikzpicture}
-\caption{Illustration eines Codes, bei dem sich mehrere Funktionen ergänzen}
+\caption{Illustration einer Code-Struktur, bei welcher mehrere Funktionen zusammenarbeiten}
 \label{fig:funktionen-mehrere}
 \end{figure}
 

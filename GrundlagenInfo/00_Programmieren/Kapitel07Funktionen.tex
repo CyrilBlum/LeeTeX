@@ -12,69 +12,33 @@
 
 \begin{frame}[fragile]{Funktionen}{Ein einfaches Beispiel}
 \begin{lstlisting}
-def summiere(x1, x2):
-	summe = x1 + x2
-	return summe
-	
-res = summiere(3,5)
-print(res)
+def berechne_rabatt(preis, rabatt_prozent):
+    rabatt = preis * (rabatt_prozent / 100)
+    (*@\colorbox{CornflowerBlue}{return preis - \tikzmark{arrowFromEx11} rabatt}@*) # Gibt den Preis nach Abzug des Rabatts zurück
+
+
+def berechne_gesamtpreis(preis, rabatt_prozent, mehrwertsteuer_prozent):
+    (*@\colorbox{CornflowerBlue}{rabatt\tikzmark{arrowToEx11}preis}@*) = berechne_rabatt(preis, rabatt_prozent)
+    mwst = rabattpreis * (mehrwertsteuer_prozent / 100)
+    return (*@\colorbox{CornflowerBlue}{rabattpre\tikzmark{arrowFromEx12}is + mwst}@*)  # Gibt den Gesamtpreis inklusive Mwst. zurück
+
+
+# Anwendung
+preis = 100  # Basispreis in CHF
+rabatt_prozent = 10  # Rabatt in %
+mehrwertsteuer_prozent = 7.7  # Mehrwertsteuer in %
+
+(*@\colorbox{CornflowerBlue}{endp\tikzmark{arrowToEx12}reis}@*) = berechne_gesamtpreis(preis, rabatt_prozent, mehrwertsteuer_prozent)
+print("Der Endpreis nach Rabatt und Mehrwertsteuer ist:", endpreis)
 \end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+   % Wert zurückgeben
+	\draw[red,-stealth] (arrowFromEx11.north) to[bend left] node[pos=.3, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben (und speichern)} (arrowToEx11);
+		\draw[red,-stealth] (arrowFromEx12.north) to[bend left] node[pos=.2, right, fill=RoyalBlue, fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben  (und speichern)} (arrowToEx12);
+\end{tikzpicture}
 
 \end{frame}
 
-\begin{frame}[fragile]{Funktionen}{Beispiel mit Turtle \emoji{turtle}}
-\begin{minipage}{.7\textwidth}
-\begin{lstlisting}
-from gturtle import *
-makeTurtle()
-hideTurtle()
-
-def vieleck(umfang, ecken):
-    repeat ecken:
-        fd(umfang/ecken)
-        rt(360/ecken)
-
-def vieleck_muster(umfang, ecken):
-	(*@\only<2->{\colorbox{CornflowerBlue}{gesamtdistanz=0}}@*)
-    while umfang>50:
-        vieleck(umfang, ecken)
-        (*@\only<3->{\colorbox{CornflowerBlue}{gesamtdistanz+=umfang}}@*)
-        umfang-=10
-        rt(10)
-    (*@\only<4->{\colorbox{CornflowerBlue}{return gesamtdistanz}}@*)
-    
-(*@\only<5->{\colorbox{CornflowerBlue}{gesamtdistanz = }}@*)vieleck_muster(500,35)
-(*@\only<6->{\colorbox{CornflowerBlue}{print(gesamtdistanz)}}@*)
-\end{lstlisting}
-% Clean code
-%from gturtle import * 
-%makeTurtle() 
-%hideTurtle()
-%gesamtdistanz=0
-%def vieleck(umfang, ecken): 
-%    repeat ecken:
-%        fd(umfang/ecken)
-%        rt(360/ecken)
-%
-%def vieleck_muster(umfang, ecken , gesamtdistanz ):
-%    while umfang>50: 
-%        vieleck(umfang, ecken)
-%        gesamtdistanz+=umfang
-%        umfang-=10 
-%        rt(10)
-%    return gesamtdistanz
-%
-%gesamtdistanz = vieleck_muster(500,35 , gesamtdistanz )
-
-\end{minipage}
-\begin{minipage}{.25\textwidth}
-\begin{figure}[H]
-	\centering
-    \includegraphics[keepaspectratio, width=\textwidth]{GrundlagenInfo/00_Programmieren/Figures/spirale.png}
-\end{figure}
-
-\end{minipage}
-\end{frame}
 
 
 \begin{frame}[fragile]{\tjinline{return}: Analogie \emoji{cook}}
@@ -279,4 +243,62 @@ else:
 	    \end{itemize}
 	    \item \challengebox{Buch, Aufgabe 7.5 lösen}
 	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Appendix}
+
+\end{frame}
+\begin{frame}[fragile]{Funktionen}{Beispiel mit Turtle \emoji{turtle}}
+\begin{minipage}{.7\textwidth}
+\begin{lstlisting}
+from gturtle import *
+makeTurtle()
+hideTurtle()
+
+def vieleck(umfang, ecken):
+    repeat ecken:
+        fd(umfang/ecken)
+        rt(360/ecken)
+
+def vieleck_muster(umfang, ecken):
+	(*@\only<2->{\colorbox{CornflowerBlue}{gesamtdistanz=0}}@*)
+    while umfang>50:
+        vieleck(umfang, ecken)
+        (*@\only<3->{\colorbox{CornflowerBlue}{gesamtdistanz+=umfang}}@*)
+        umfang-=10
+        rt(10)
+    (*@\only<4->{\colorbox{CornflowerBlue}{return gesamtdistanz}}@*)
+    
+(*@\only<5->{\colorbox{CornflowerBlue}{gesamtdistanz = }}@*)vieleck_muster(500,35)
+(*@\only<6->{\colorbox{CornflowerBlue}{print(gesamtdistanz)}}@*)
+\end{lstlisting}
+% Clean code
+%from gturtle import * 
+%makeTurtle() 
+%hideTurtle()
+%gesamtdistanz=0
+%def vieleck(umfang, ecken): 
+%    repeat ecken:
+%        fd(umfang/ecken)
+%        rt(360/ecken)
+%
+%def vieleck_muster(umfang, ecken , gesamtdistanz ):
+%    while umfang>50: 
+%        vieleck(umfang, ecken)
+%        gesamtdistanz+=umfang
+%        umfang-=10 
+%        rt(10)
+%    return gesamtdistanz
+%
+%gesamtdistanz = vieleck_muster(500,35 , gesamtdistanz )
+
+\end{minipage}
+\begin{minipage}{.25\textwidth}
+\begin{figure}[H]
+	\centering
+    \includegraphics[keepaspectratio, width=\textwidth]{GrundlagenInfo/00_Programmieren/Figures/spirale.png}
+\end{figure}
+
+\end{minipage}
 \end{frame}
