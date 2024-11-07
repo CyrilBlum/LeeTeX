@@ -11,6 +11,7 @@ def berechne_leistungsumsatz(l_zeit, l_kcal):
     """
     kalorienverbrauch = 0
     i = 0
+    print("TESTE2", l_zeit)
     for i in range(len(l_zeit)):
         kalorienverbrauch += l_zeit[i] * l_kcal[i]
         i += 1
@@ -19,8 +20,8 @@ def berechne_leistungsumsatz(l_zeit, l_kcal):
 
 
 # Beispiel
-l_zeit = [60, 20]  # Zeit in Minuten
-l_kcal = [16.5, 6]  # Kalorien pro Minute
+#l_zeit = [60, 20]  # Zeit in Minuten
+#l_kcal = [16.5, 6]  # Kalorien pro Minute
 
-kalorienverbrauch = berechne_leistungsumsatz(l_zeit, l_kcal)
-print(kalorienverbrauch)  # Erwartetes Ergebnis: 1110
+#kalorienverbrauch = berechne_leistungsumsatz(l_zeit, l_kcal)
+#print(kalorienverbrauch)  # Erwartetes Ergebnis: 1110

@@ -29,5 +29,5 @@ alter = 30  # jahre
 geschlecht = 'mann'
 koerperfettanteil = 0.12  # 12%
 
-durchschnitt = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
-print("Der durchschnittliche Grundumsatz beträgt:", round(durchschnitt, 2), "Kalorien")
+#durchschnitt = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
+#print("Der durchschnittliche Grundumsatz beträgt:", round(durchschnitt, 2), "Kalorien")

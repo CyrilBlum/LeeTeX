@@ -471,7 +471,57 @@ Schreiben Sie nun eine weitere Funktion, die Ihren gesamten Energieumsatz berech
 
 \begin{myexercise}
 Schreiben Sie eine weitere Definition, die Ihren \gls{BMR} sowie alle Aktivitätsenergien summiert und zurückgibt.
+\begin{myanswer}
+\begin{lstlisting}
+bmr = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
+l = berechne_leistungsumsatz(l_zeit, l_kcal)
+
+def berechne_total(bmr, l):
+    return bmr + l
+
+total = berechne_total(bmr, l)
+\end{lstlisting}
+\end{myanswer}
 \end{myexercise}
+
+\begin{myexercise}
+Sie hatten zum Mittagessen ein Sandwich sowie einen Energy-Drink. Sie möchten gerne wissen, wie viele Kalorien das gesamte Mittagessen hatte, die Nährwerte sind jedoch nur pro 100 Gramm (=100 Mililiter) angegeben. Berechnen Sie die Gesamt-Kalorien, indem Sie folgende zwei Listen erstellen:
+\begin{itemize}
+\item \lstinline|l_kcal|: Liste der Kalorien pro 100 Gramm (bzw. 100 Militer) für das Sandwich und den Energy-Drink.
+\item \lstinline|l_gram|: Liste der Mengen in Gramm, bzw. Mililiter für das Sandwich und den Energy Drink.
+\end{itemize}
+Die Nährwert-Informationen entnehmen Sie dem Bild \cref{fig:lunch-kcal}
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.2\paperheight]{GrundlagenInfo/00_Programmieren/Figures/el-tony-mate-ginger.png}
+\includegraphics[height=0.2\paperheight]{GrundlagenInfo/00_Programmieren/Figures/el-tony-kcal}
+\includegraphics[height=0.2\paperheight]{GrundlagenInfo/00_Programmieren/Figures/sandwich}
+\includegraphics[height=0.2\paperheight]{GrundlagenInfo/00_Programmieren/Figures/sandwich-back}
+\caption{Mittagessen und dazugehörige Kalorien-Informationen}
+\label{fig:lunch-kcal}
+\end{figure}
+
+\begin{myanswer}
+\begin{lstlisting}
+l_kcal = [229, 26]
+l_gram = [230, 33]
+
+def berechne_kcal_tot(l_kcal, l_gram):
+	kcal_total = 0
+	index = 0
+	for i in range(len(l_kcal)):
+		# jedes Element miteinander multiplizieren und durch 100 Gramm rechnen
+		kcal_total += l_kcal[index] * l_gram[index] / 100
+		index += 1
+	return kcal_total
+
+kcal = berechne_kcal_tot(l_kcal, l_gram)
+print(kcal)
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+
 
 \subsection{Weitere Übungen}
 
