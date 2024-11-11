@@ -1,0 +1,736 @@
+\chapter{Einleitung}
+\section{Der Begriff \textit{Theoretische Informatik}}
+In diesem Freifach werden wir die Grundlagen der \textit{Theoretischen Informatik} kennenlernen. Was verstehen wir unter dem Begriff \textit{Theoretische Informatik}? Es ist häufig schwierig, eine genaue und konkrete Definition einer wissenschaftlichen Disziplin zu geben. Wie würde man beispielsweise die Begriffe \textit{Mathematik} oder \textit{Informatik} definieren? Vermutlich würde man sich damit zufrieden geben, die typischen Problemstellungen und Untersuchungsgegenstände der wissenschaftlichen Disziplin aufzulisten, um die Disziplin dadurch grob zu umschreiben und abzugrenzen. Auf diese Weise wollen wir auch die Disziplin der \textit{Theoretischen Informatik} beschreiben.\\
+Die \textit{Theoretische Informatik} ist eine Unterdisziplin der Informatik und Mathematik, die (insbesondere) versucht, Antworten auf folgende fundamentalen Fragen zu geben:
+\begin{itemize}
+	\item Was ist ein Computer und welche Operationen muss eine Maschine mindestens ausführen können, um als Computer zu gelten?
+	\item Was bedeutet \textit{Zufall}?
+	\item Wie lassen sich Berechnungsmodelle mathematisch definieren?
+	\item Wie kann man die \textit{Schwierigkeit} einer Aufgabe definieren?
+	\item Worin unterscheiden sich \quotes{schwierige} von \quotes{einfachen} Problemen?
+	\item Was bedeutet es, ein Problem \quotes{zu lösen}?
+	\item Existieren Probleme, die nicht automatisch (von einem Algorithmus) gelöst werden können?
+	\item Existieren Probleme, zu deren Lösung mehr Energie benötigt würde, als im gesamten bekannten Universum vorhanden ist?
+	\item Was ist ein mathematischer Beweis?
+	\item Ist es schwieriger, einen mathematischen Beweis zu finden, als (lediglich) einen bereits gegebenen Beweis auf Korrektheit zu überprüfen?
+\end{itemize}
+In diesem Kurs werden wir Antworten (oder zumindest partielle Antworten) auf einige der oben formulierten Fragen finden. Ein paar dieser Fragen lassen sich bis heute nicht beantworten.
+\clearpage
+
+
+\section{Entstehung}
+Der Inhalt dieses Freifachs orientiert sich stark an dem Inhalt der bekannten Vorlesung \textit{Theoretischen Informatik} von Prof. Dr. Juraj Hromkovi\v{c} an der ETH Zürich.\\
+Wir werden die Schreibweise (Notation) und Teile des Inhaltes des exzellenten Buches\footnote{J. Hromkovic: Theoretische Informatik. 5. Auflage, Springer Vieweg 2014., ISBN: 978-3-658-06432-7} zur Vorlesung übernehmen.\\
+Natürlich werden wir in diesem Kurs nur einen kleinen Teil des Inhaltes der Vorlesung behandeln. Den anspruchsvollen Inhalt der Vorlesung für das Gymnasium geeignet zu präsentieren, ist eine didaktische Herausforderung, die wir mit Freude annehmen.
+
+\section{Mathematische Werkzeuge}
+In diesem Abschnitt werden wir fundamentale mathematische Konzepte präsentieren, die wir später wiederholt verwenden möchten.\\
+Einige Konzepte werden Ihnen bereits bekannt sein.
+
+\subsection{Aussagen}
+Wir werden verschiedene interessante Aussagen kennenlernen. An dieser Stelle wollen wir deshalb zunächst klarstellen, was wir unter einer \textit{Aussage} verstehen.
+\begin{mydefinition}[Aussage]{mydefinition:Aussage}
+Eine Aussage ist ein feststellender Satz, dem eindeutig einer der beiden Wahrheitswerte \textit{wahr} ($w$) oder \textit{falsch} ($f$) zugeordnet werden kann.
+\end{mydefinition}
+\underline{Beispiele von Aussagen}:
+\begin{itemize}
+	\item Der 24. Dezember 2019 fiel auf einen Montag.
+	\item 4 ist eine ungerade Zahl.
+	\item 3 ist eine Primzahl.
+	\item Die Tigerpython (\textit{Python molurus}) ist ein Säugetier.
+\end{itemize}
+Man beachte, dass ein feststellender Satz nicht wahr sein muss, um eine Aussage zu sein.\\
+Zur Vereinfachung und kürzeren Notation, werden wir Aussagen oft durch einzelne Grossbuchstaben wie etwa $A, B, C$ kennzeichnen. Wir werden also beispielsweise schreiben
+\begin{align}
+	A := \text{\quotes{Bern ist die Hauptstadt der Schweiz.}}
+\end{align}
+Der Ausdruck $x := y$ bedeutet, dass $x$ definitionsgemäss gleich $y$ sein soll. Das Symbol $:=$ nennt man \textit{definierendes Gleichheitszeichen} und man sagt, dass $x$ definitionsgemäss gleich $y$ ist. Wir werden $:=$ verwenden, wenn wir deutlich hervorheben wollen, dass wir einen Ausdruck definieren möchten.
+
+\clearpage
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Entscheiden Sie, welche der folgenden Sätze gemäss Definition \cref{mydefinition:Aussage} Aussagen sind und welche nicht. Begründen Sie Ihre Antworten.
+	\begin{enumerate}[label=(\alph*)]
+		\item Die Zahl $10$ ist grösser als die Zahl $34$.
+		\item Brot ist gesund.
+		\item Xzibit ist der beste Rapper aller Zeiten.
+		\item Das \textit{Karfreitagabkommen} wurde am 10. April 1998 unterzeichnet.
+	\end{enumerate}
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	\begin{enumerate}[label=(\alph*)]
+		\item Der Satz ist eine Aussage. Für zwei Zahlen $a$ und $b$ ist der Ausdruck $a > b$ entweder wahr oder falsch.
+		\item Der Satz ist keine Aussage. Der Begriff \quotes{gesund} erlaubt keine eindeutige Definition. Deshalb lässt sich dem Satz auch nicht eindeutig ein Wahrheitswert zuordnen.
+		\item Der Satz ist keine Aussage. Das Attribut \quotes{beste Rapper aller Zeiten} ist nicht eindeutig definiert. Deshalb lässt sich dem Satz auch nicht eindeutig ein Wahrheitswert zuordnen.
+		\item Der Satz ist eine Aussage. Entweder wurde das Abkommen am 10. April 1998 unterzeichnet (wahr) oder nicht (falsch).
+	\end{enumerate}
+\end{myanswer}
+\noindent
+\begin{mydefinition}[Negation]{mydefinition:Komplement}
+Sei $A$ eine Aussage. Dann bezeichnet $\Bar{A}$ die \textit{Negation} / das \textit{Komplement} von $A$. Die Negation einer Aussage ist die Umkehrung der Aussage.
+\end{mydefinition}
+Der Ausdruck $\Bar{A}$ wird typischerweise als \quotes{nicht $A$}, \quotes{$A$ Komplement} oder \quotes{$A$ quer} ausgesprochen.
+
+\begin{example}{example:Aquer}
+	Wenn $A$ die Aussage \quotes{\blue{Sandra ist kleiner als $1.60$ m}} ist, dann ist $\Bar{A}$ die Aussage \quotes{\red{Sandra ist grösser oder gleich $1.60$ m}}.\\
+\end{example}
+Manchmal verwendet man anstelle des Ausdrucks $\Bar{A}$ auch $\neg A$. Man sollte beide Schreibweisen kennen und wissen, dass beide die gleiche Bedeutung haben.\\
+Offensichtlich ist $\Bar{A}$ falsch, wenn $A$ wahr ist und umgekehrt.\\
+Man definiert
+\begin{align}
+	\overline{(\overline{A})} := A
+\end{align}
+oder in der anderen Schreibweise
+\begin{align*}
+	\neg (\neg A) := A.
+\end{align*}
+\gray{Die Negation von $\Bar{A}$ (Negation der Negation) ist $A$. Dies gilt auch im allgemeinen Sprachgebrauch. Wenn jemand sagt, \quotes{Heute wird es nicht nicht regnen}, dann bedeutet dies, dass es heute regnen wird.}
+
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Bestimmen Sie die Negationen folgender Aussagen:
+	\begin{enumerate}[label=(\alph*)]
+		\item Heute ist Mittwoch.
+		\item Jede positive ganze Zahl lässt sich als Produkt von Primzahlen darstellen.
+	\end{enumerate}
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	\begin{enumerate}[label=(\alph*)]
+		\item Heute ist nicht Mittwoch.
+		\item Es existiert (mindestens) eine positive ganze Zahl, welche sich nicht als Produkt von Primzahlen darstellen lässt.
+	\end{enumerate}
+\end{myanswer}
+
+\subsection{Logik}
+\subsubsection{Logische Verknüpfungen}
+Durch logische Verknüpfungen von Aussagen erhält man eine neue Aussage.\\
+
+\noindent
+\underline{\textit{oder}-Verknüpfung}\\
+Für \textit{oder}-Verknüpfung schreiben wir das Symbol $\lor$. Seien $A$ und $B$ zwei Aussagen.\\
+Die \textit{oder}-Verknüpfung $A\lor B$  von $A$ und $B$ ist eine neue Aussage ($A$ oder $B$) definiert durch folgende Wahrheitstabelle:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{c|c|c}
+			$A$ & $B$ & $A\lor B$ \\ \hline
+			$w$ & $w$ & $w$       \\
+			$w$ & $f$ & $w$       \\
+			$f$ & $w$ & $w$       \\
+			$f$ & $f$ & $f$
+		\end{tabular}
+	\end{center}
+	\caption{Wahrheitstabelle der logischen \textit{oder}-Verknüpfung.}
+	\label{table:oder}
+\end{table}
+
+\noindent
+Die Wahrheitstabelle zeigt alle möglichen Zuordnungen der Wahrheitswerte \textit{wahr} ($w$) und \textit{falsch} ($f$) zu den Aussagen $A$ und $B$ und die entsprechenden Wahrheitswerte der Verknüpfung $A\lor B$ auf. Deshalb definiert die Wahrheitstabelle die logische \textit{oder}-Verknüpfung (Operation) eindeutig.\\
+Die Zeile in der Wahrheitstabelle mit dem Inhalt $\quad w \quad | \quad f \quad | \quad w \quad$ (die zweite Zeile) zum Beispiel hat die Bedeutung, dass $A$ wahr, $B$ falsch und die Verknüpfung $A\lor B$ der beiden wahr ist.\\
+\gray{Der Wahrheitstabelle entnehmen wir, dass $A\lor B$ genau dann wahr ist, wenn mindestens eine der beiden Aussagen der Verknüpfung wahr ist (nicht beide falsch sind).}\\
+
+\noindent
+Man bemerke, dass die durch die Wahrheitstabelle \cref{table:oder} definierte Operation $\lor$ unserer intuitiven Vorstellung von \textit{oder} entspricht.\\
+
+\noindent
+\underline{\textit{und}-Verknüpfung}\\
+Für die \textit{und}-Verknüpfung schreiben wir das Symbol $\land$. Die \textit{und}-Verknüpfung $A  \land B$  von $A$ und $B$ ist eine neue Aussage ($A$ und $B$) definiert durch folgende Wahrheitstabelle:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{c|c|c}
+			$A$ & $B$ & $A\land B$ \\ \hline
+			$w$ & $w$ & $w$        \\
+			$w$ & $f$ & $f$        \\
+			$f$ & $w$ & $f$        \\
+			$f$ & $f$ & $f$
+		\end{tabular}
+	\end{center}
+	\caption{Wahrheitstabelle der logischen \textit{und}-Verknüpfung.}
+	\label{table:und}
+\end{table}
+\noindent
+\gray{$A\land B$ ist also genau dann wahr, wenn beide Aussagen der Verknüpfung wahr sind.}\\
+
+\noindent
+Auch die Definition der \textit{und}-Verknüpfung $\land$ entspricht der alltäglichen Vorstellung von \textit{und}.
+\clearpage
+
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	\begin{enumerate}[label=(\alph*)]
+		\item Betrachten wir folgende Aussagen:\\
+		      $A := \text{\quotes{Andreas besucht das Freifach Informatik.}}$,\\
+		      $B := \text{\quotes{Andreas besucht das Freifach Englisch.}}$\\
+		      Die Verknüpfung $C := A\; \text{xor}\; B$ soll die Bedeutung\\
+		      $C = \text{\quotes{Andreas besucht genau entweder das Freifach Informatik oder Englisch}}$ (aber nicht beide) haben.\\
+
+		      \noindent
+		      Diese \textit{entweder oder}-Verknüpfung bezeichnet man als \textit{exklusives Oder} und gibt ihr das Symbol xor (steht für \textit{e\textbf{x}clusive \textbf{or}}). Erstellen Sie die Wahrheitstabelle für die Verknüpfung $A\; \text{xor}\; B$.
+		\item Für welche Zuweisungen von Wahrheitswerten der drei Aussagen $A$, $B$ und $C$ ist die Aussage $A\lor B\lor C$ wahr und für welche falsch?
+	\end{enumerate}
+\end{myexercise}
+\vspace{0.3cm}
+\begin{myanswer}
+	\noindent
+	\begin{enumerate}[label=(\alph*)]
+		\item Die Wahrheitstabelle ist bis auf eine Zeile identisch mit der Tabelle der \textit{oder}-Verknüpfung.
+		      \begin{table}[H]
+			      \begin{center}
+				      \begin{tabular}{c|c|c}
+					      $A$ & $B$ & $A$ xor $B$ \\ \hline
+					      $w$ & $w$ & $f$         \\
+					      $w$ & $f$ & $w$         \\
+					      $f$ & $w$ & $w$         \\
+					      $f$ & $f$ & $f$
+				      \end{tabular}
+			      \end{center}
+			      \caption*{Wahrheitstabelle der logischen \textit{xor}-Verknüpfung (exklusives Oder / entweder oder).}
+			      \label{table:xor}
+		      \end{table}
+		      \gray{$A\; \text{xor}\; B$ ist also genau dann wahr, wenn genau eine der beiden Aussagen der Verknüpfung wahr ist.}\\
+		\item Die Verknüpfung ist für alle Zuweisungen von $A$, $B$ und $C$ wahr, ausser in dem einen Fall, in dem alle drei Aussagen den Wert \textit{falsch} haben.
+	\end{enumerate}
+\end{myanswer}
+
+\noindent
+\underline{\textit{nicht}-Operator}\\
+In Definition \cref{mydefinition:Komplement} haben wir die Negation einer Aussage kennengelernt. Die Wahrheitstabelle der Negation ist simpel:
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{c|c}
+			$A$ & $\Bar{A}$ \\ \hline
+			$w$ & $f$       \\
+			$f$ & $w$
+		\end{tabular}
+	\end{center}
+	\caption{Wahrheitstabelle der logischen Negation.}
+	\label{table:not}
+\end{table}
+\noindent
+\gray{$\Bar{A}$ ist also genau das Gegenteil von $A$.}\\
+
+\noindent
+\underline{Unäre und binäre Operatoren}\\
+Logische Verknüpfungen wie \textit{oder}, \textit{und} sowie \textit{xor} verknüpfen immer genau zwei Aussagen. Dies gilt auch für Terme wie zum Beispiel
+\begin{align}\label{eq:Term1}
+	A\lor B\lor C\lor D.
+\end{align}
+Auch hier verknüpft jede $\lor$-Operation immer genau zwei Aussagen. Beispielsweise verknüpft das erste $\lor$-Symbol in Term \cref{eq:Term1} genau die zwei Aussagen $A$ mit $B\lor C\lor D$. Dies sieht man einfach durch entsprechendes Setzen von Klammern:
+\begin{align*}
+	(A)\lor (B\lor C\lor D).
+\end{align*}
+Der Beweis, dass bei \textit{oder}-Verknüpfungen Klammern beliebig gesetzt werden dürfen (das heisst, dass die \textit{oder}-Operation assoziativ ist) überlassen wir den Lesenden als Übung.\\
+Operatoren / Verknüpfungen, welche auf genau zwei Aussagen wirken, bezeichnet mal als \textbf{binäre Operatoren}.\\
+
+\noindent
+Anders ist die Situation bei der Negation. Die Negation verknüpf keine Aussagen, sondern operiert nur auf einer einzigen Aussage. Die Negation wirkt also auf genau eine Aussage. Solche Operatoren bezeichnet man als \textbf{unäre Operatoren}. Offensichtlich ergibt eine Verknüpfung von Aussagen durch unäre Operatoren keinen Sinn.
+\clearpage
+
+\subsubsection{Implikation und Äquivalenz}
+\textbf{\underline{Implikation}}\\
+Der Begriff \textit{Implikation} beschreibt eine notwendige / zwingende Folgerung. Der Ausdruck $A \Rightarrow B$ bedeutet, dass die Aussage $A$ die Aussage $B$ impliziert, dass also $B$ zwingend aus $A$ folgt.
+\begin{mydefinition}[Implikation]{mydefinition:Implikation}
+Seien $A$ und $B$ zwei Aussagen. Wir sagen, dass die Aussage $A$ die Aussage $B$ \textit{impliziert}, wenn $B$ zwingend aus $A$ folgt. Dann schreibt man $A \Rightarrow B$ oder (gleichwertig) $B \Leftarrow A$. Man sagt, dass $A$ \textit{hinreichend} für $B$ ist und $B$ \textit{notwendig} für $A$.\\
+\end{mydefinition}
+
+\begin{example}{example:implikation1}
+	Seien $A$, $B$ die Aussagen:\\
+	$A := \text{\quotes{$X$ ist ein Auto}}$, $B := \text{\quotes{$X$ ist ein Fahrzeug}}$.\\
+	Da jedes Auto insbesondere ein Fahrzeug ist, impliziert $A$ offensichtlich $B$, also gilt $A \Rightarrow B$. Für $X$ ist die Eigenschaft $A$ (ein Auto zu sein) hinreichend für $B$ (ein Fahrzeug zu sein).\\
+	Gleichzeitig ist $B$ (ein Fahrzeug zu sein) notwendig für $A$ (ein Auto zu sein), da $X$ sicherlich kein Auto sein kann, wenn $X$ kein Fahrzeug ist.\\
+	Man bemerke, dass die Implikation $A \Rightarrow B$ über die Umgekehrte Richtung $B \Rightarrow A$ keine Aussage macht. In diesem Beispiel stimmt die Umgekehrte Richtung nicht. Beispielsweise ist ein Tieflader zwar ein Fahrzeug, aber keine Auto.\\
+\end{example}
+
+\clearpage
+%Todo: Grafik mit Teilmengen (Autos Teilmenge von Fahrzeugen) hinzufügen
+\begin{example}{example:implikation2}
+	Sei $n$ eine natürliche Zahl und $A$ die Aussage $\blue{A} := \text{\quotes{$n$ ist durch $10$ ohne Rest teilbar}}$. Wenn $B$ die Aussage
+	$\red{B} := \text{\quotes{$n$ ist durch $5$ ohne Rest teilbar}}$ ist, dann ist $B$ eine zwingende Folgerung von $A$. Es gilt somit $A \Rightarrow B$. Teilbarkeit durch $10$ impliziert Teilbarkeit durch $5$.\\
+
+	\noindent
+	Man bemerke, dass im Zusammenhang mit Aussagen durch den Kontext häufig eine bestimmte Grundmenge $G$ gegeben ist. In diesem Beispiel ist dies die Menge der natürlichen Zahlen $\mathbb{N}$. Die Menge der natürlichen Zahlen, für welche die Aussage $A$ wahr ist (die durch 10 teilbaren Zahlen), ist eine Teilmenge $\blue{A'}$ von $\mathbb{N}$ (der Grundmenge). Damit stellt die Aussage $A$ eine einschränkende Bedingung dar. Analog definieren wir $\red{B'}$ als die Menge aller natürlichen Zahlen, für die Aussage $B$ wahr ist. Ganz konkret:
+	\begin{itemize}
+		\item $\blue{A'} := \setcm{n\in\mathbb{N}}{n\;\text{ist durch $10$ ohne Rest teilbar}} = \setcm{n\in\mathbb{N}}{\blue{A}}$
+		\item $\red{B'} := \setcm{n\in\mathbb{N}}{n\;\text{ist durch $5$ ohne Rest teilbar }} = \setcm{n\in\mathbb{N}}{\red{B}}$
+	\end{itemize}
+	\noindent
+	In dieser Betrachtungsweise ist die Implikation $A\Rightarrow B$ gleichbedeutend mit der Aussage $A'\subseteq B'$.\\
+	Die linke Seite der Implikation $A\Rightarrow B$ zu erfüllen ist entsprechend eine mindestens so starke Forderung, wie die rechte Seite zu erfüllen. Diese Anschauung lässt sich durch Abbildung \cref{fig:subset_implication} illustrieren.
+\end{example}
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+		\draw [black, ultra thick] (0,0) rectangle (8,7);
+		\path (0,7) --  (8,7) node[midway,above] {$\mathbb{N}$};
+		\draw [red, ultra thick] (3.5,4.0) circle [radius=2.4];
+		\node [above] at (5.4,5.6) {$\red{B'}$};
+		\draw [blue, ultra thick] (3.2,3.6) circle [radius=1.6];
+		\node [below] at (2.1,4.7) {$\blue{A'}$};
+		\draw [fill] (5.3,4.4) circle [radius=0.05];
+		\node [below] at (5.3,4.4) {$x_1$};
+		\draw [fill] (2.7,3.2) circle [radius=0.05];
+		\node [below] at (2.7,3.2) {$x_2$};
+	\end{tikzpicture}
+	\caption{Veranschaulichung der Implikation $A\Rightarrow B$ aus Beispiel \cref{example:implikation2}. Da $\blue{A'}\subseteq \red{B'}$ gilt, liegt jede Zahl, die in $A'$ liegt auch in $B'$. Für die natürliche Zahl $x_2$ gilt $x_2\in\blue{A'}$ und damit auch $x_2\in\red{B'}$. Die Zahl $x_1$ liegt zwar in $\red{B'}$, jedoch nicht in $\blue{A'}$.}
+	\label{fig:subset_implication}
+\end{figure}
+\clearpage
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Nennen sie jeweils ein Beispiel von Aussagen $A$ und $B$ aus dem Alltag, so dass:
+	\begin{itemize}
+		\item $A$ hinreichend aber nicht notwendig für $B$ ist.
+		\item $A$ notwendig aber nicht hinreichend für $B$ ist.
+	\end{itemize}
+	\vspace{0.4cm}
+\end{myexercise}
+\begin{myanswer}
+	\begin{itemize}
+		\item Brot zu essen ist hinreichend, um den Hunger zu stillen, aber nicht notwendig. Man könnte auch Reis essen.
+		\item Volljährig zu sein, ist notwendig um in der Schweiz das Wahlrecht zu erhalten, aber nicht hinreichend. Es müssen zusätzliche Bedingungen erfüllt sein, wie zum Beispiel die schweizerische Staatsbürgerschaft zu haben.
+	\end{itemize}
+	\noindent
+\end{myanswer}
+
+\noindent
+Um zu beweisen, dass eine Implikation $A \Rightarrow B$ nicht gilt, genügt es ein einziges \textbf{Gegenbeispiel} zu nennen, welches $A$ erfüllt, aber nicht $B$.\\
+\begin{example}{example:Gegenbeispiel}
+	Um die Implikation
+	\begin{center}
+		Für jede natürliche Zahl $n$ gilt:\\
+		$n$ ist eine Primzahl $\Rightarrow$ $n$ ist ungerade
+	\end{center}
+	zu widerlegen, genügt es ein einziges Gegenbeispiel zu finden. Die Zahl $2$ ist ein solches Gegenbeispiel (hier sogar das einzige), denn $2$ ist eine Primzahl, aber $2$ ist nicht ungerade. Damit ist bewiesen, dass die Implikation falsch ist.
+\end{example}
+
+\begin{myexercise}\label{implikation}%[difficulty={1}]
+	\noindent
+	Seien $A$ und $B$ zwei Aussagen. Erstellen Sie die Wahrheitstabelle für die Implikation $A \Rightarrow B$.
+	\vspace{1cm}
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}{c|c|c}
+				$A$ & $B$ & $A\Rightarrow B$ \\ \hline
+				$w$ & $w$ & $w$              \\
+				$w$ & $f$ & $f$              \\
+				$f$ & $w$ & $w$              \\
+				$f$ & $f$ & $w$
+			\end{tabular}
+		\end{center}
+	\end{table}
+	\noindent
+	\gray{$A \Rightarrow B$ ist also nur dann falsch, wenn $A$ wahr und $B$ falsch ist. Man beachte, dass falsches $A$ alles implizieren kann. Ist also $A$ von vornherein falsch, dann ist die Aussage $A\Rightarrow B$ immer wahr.}\\
+\end{myanswer}
+
+
+
+\noindent
+\textbf{\underline{Äquivalenz}}\\
+\begin{mydefinition}[Äquivalenz]{mydefinition:Aequivalenz}
+Seien $A$ und $B$ zwei Aussagen. Wir sagen, dass $A$ und $B$ \textit{äquivalent} oder \textit{gleichwertig} sind, wenn sich $A$ und $B$ gegenseitig implizieren, wenn also $A \Rightarrow B$ und $A \Leftarrow B$ gilt. Die Äquivalenz wird durch einen Doppelpfeil $A \Leftrightarrow B$ ausgedrückt. Man sagt dann, dass $A$ \textit{\textbf{genau dann}} gilt, \textit{\textbf{wenn}} $B$ gilt.
+\end{mydefinition}
+Sind zwei Aussagen äquivalent, so ist die eine notwendig und hinreichend für die jeweils Andere.
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Seien $A$ und $B$ zwei Aussagen. Erstellen Sie die Wahrheitstabelle für die Äquivalenz $A \Leftrightarrow B$.\\
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}{c|c|c}
+				$A$ & $B$ & $A\Leftrightarrow B$ \\ \hline
+				$w$ & $w$ & $w$                  \\
+				$w$ & $f$ & $f$                  \\
+				$f$ & $w$ & $f$                  \\
+				$f$ & $f$ & $w$
+			\end{tabular}
+		\end{center}
+	\end{table}
+	\noindent
+	\gray{$A \Leftrightarrow B$ ist also genau dann wahr, wenn $A$ und $B$ den gleichen Wahrheitswert haben.}\\
+\end{myanswer}
+
+\clearpage
+\noindent
+\textbf{Ein häufiges Vorgehen zum Beweis der Äquivalenz $A \Leftrightarrow B$, ist beide Implikationen (Richtungen) \quotes{$\Rightarrow$} und \quotes{$\Leftarrow$} separat zu zeigen.}
+\begin{example}{example:Aequivalenz}
+	Um die Äquivalenz
+	\begin{center}
+		Für jede ganze Zahl $n$ gilt:\\
+		\red{$n$ ist durch 3 teilbar}\\
+		$\Leftrightarrow$ \\
+		\blue{$n$ besitzt die Darstellung $n = 3m$ für eine ganze Zahl $m$}
+	\end{center}
+	zu beweisen, zeigen wir beide Richtungen separat.\\
+
+	\noindent
+	\quotes{$\Rightarrow$} (aus \red{rot} folgt \blue{blau}):\\
+	Weil $n$ durch 3 teilbar ist, muss der Quotient $m = n/3$ eine ganze Zahl sein. Damit folgt die Existenz der Darstellung $n = 3m$ für $n$.\\
+
+	\noindent
+	\quotes{$\Leftarrow$} (aus \blue{blau} folgt \red{rot}):\\
+	Sei $n = 3m$ für eine ganze Zahl $m$. Dann ist der Quotient $n / 3 = (3m)/3 = m$ eine ganze Zahl und somit ist $n$ durch 3 teilbar.
+\end{example}
+\clearpage
+
+\subsection{Beweistechniken}
+Wir werden in diesem Abschnitt einige Techniken zum Beweisen von Behauptungen kennenlernen, die man immer wieder antrifft.
+\subsubsection{Direkter Beweis}
+Viele Beweise kann man \textit{direkt} führen. Immer dann, wenn man eine Formel so umformt, das man letztlich eine wahre Aussage erhält, ist man den direkten Weg gegangen.\\
+
+\noindent
+Insbesondere haben interessante Aussagen häufig die Form $A\Rightarrow B$, also \quotes{aus $A$ folgt $B$}. Bei einem direkten Beweis zeigt man in diesem Fall, dass sich aus den Voraussetzungen $A$ unmittelbar die Folgerungen $B$ ergeben.\\
+Im Beispiel \cref{example:Aequivalenz} haben wir zum Beispiel einen direkten Beweis geführt. Oft ist diese Methode aber nicht anwendbar oder mit grossen Schwierigkeiten verbunden.
+
+\subsubsection{Kontraposition}
+Logisch äquivalent (genau dann, wenn) zur Behauptung $A\Rightarrow B$ ist die Behauptung $\Bar{B}\Rightarrow \Bar{A}$ (Kontraposition). Der Beweis für $A\Rightarrow B$ ist demnach auch erbracht, wenn man zeigen kann, dass aus der Annahme, die Folgerungen seien nicht erfüllt, folgt, dass auch die Voraussetzungen nicht erfüllt sein können.
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Beweisen sie die Äquivalenz
+	\begin{align*}
+		(A\Rightarrow B) \Leftrightarrow (\Bar{B}\Rightarrow\Bar{A})
+	\end{align*}
+	mithilfe einer Wahrheitstabelle.
+	\vspace{1.3cm}
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	Um die Äquivalenz
+	\begin{align*}
+		(A\Rightarrow B) \quad \red{\Leftrightarrow} \quad (\Bar{B}\Rightarrow\Bar{A})
+	\end{align*}
+	zu beweisen, zeigen wir, dass die beiden Ausdrücke die gleiche Wahrheitstabelle haben.
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}{c|c|c|c|c|c|c}
+				$A$ & $B$ & $A\Rightarrow B$ & $\Leftrightarrow $ & $\Bar{B}$ & $\Bar{A}$ & $\Bar{B}\Rightarrow\Bar{A}$ \\ \hline
+				$w$ & $w$ & $w$              & $\red{w}$          & $f$       & $f$       & $w$                         \\
+				$w$ & $f$ & $f$              & $\red{w}$          & $w$       & $f$       & $f$                         \\
+				$f$ & $w$ & $w$              & $\red{w}$          & $f$       & $w$       & $w$                         \\
+				$f$ & $f$ & $w$              & $\red{w}$          & $w$       & $w$       & $w$
+			\end{tabular}
+		\end{center}
+	\end{table}
+\end{myanswer}
+
+\noindent
+Man nimmt also an, $\Bar{B}$ sei wahr und zeigt, dass sich daraus zwangsläufig $\Bar{A}$ ergibt.
+\begin{example}{example:regen}
+	Sei $A$ die Aussage \quotes{Es hat geregnet.} und $B$ die Aussage \quotes{Die Strasse ist nass.}. Die Implikation $A\Rightarrow B$ bedeutet: \quotes{Wenn es geregnet hat, dann ist die Strasse nass.}\\
+	Wenn die Strasse nass ist, muss das umgekehrt nicht bedeuten, dass es geregnet hat, es gibt ja auch die Strassenreinigung oder über die Ufer getretene Flüsse.\\
+	Was wir aber sicherlich sagen können, ist, dass wenn die Strasse \textit{nicht} nass ist, es auch nicht geregnet haben kann, was genau
+	$\Bar{B}\Rightarrow \Bar{A}$ bedeutet.
+\end{example}
+\subsubsection{Indirekter Beweis / Beweis durch Widerspruch}\label{subsubsec:widerspruch}
+Wir wollen die Implikation $A\Rightarrow B$ beweisen. Betrachten wir nochmals die Wahrheitstabelle der Implikation, die wir in Übung \cref{implikation} gefunden haben.
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{c|c|c}
+			$A$ & $B$ & $A\Rightarrow B$ \\ \hline
+			$w$ & $w$ & $w$              \\
+			$w$ & $f$ & $f$              \\
+			$f$ & $w$ & $w$              \\
+			$f$ & $f$ & $w$
+		\end{tabular}
+	\end{center}
+\end{table}
+\noindent
+Die Implikation ist nur in dem einen Fall falsch, wenn $A$ wahr \textbf{und} $B$ falsch ist, also wenn $P:=(A\land \Bar{B})$ gilt.\\
+
+\noindent
+Wenn wir beweisen können, dass dieser Fall nicht auftreten kann, dann haben wir die Korrektheit der Implikation gezeigt.\\
+
+\noindent
+Beim \textit{Beweis durch Widerspruch} nehmen wir an, $P$  sei wahr. Ausgehend von der Annahme, dass $P$ gilt, versuchen wir durch mathematisch / logisch korrekte Argumentation zu erklären, dass die Annahme, $P$ sei wahr, zu einem Widerspruch führt. Damit kann $P$ nicht wahr sein und stattdessen muss zwingen $\Bar{P}$ gelten. Damit ist gezeigt, dass nicht gleichzeitig $A$ wahr und $B$ falsch sein kann und somit die Implikation $A\Rightarrow B$ gilt.
+\begin{example}{example:wurzel_irrational}
+	Die Zahl $\sqrt{2}$ ist keine rationale Zahl. Das heisst, sie ist nicht als Bruch ganzer Zahlen darstellbar.\\
+
+	\noindent
+	Wir setzen $x = \sqrt{2}$ bzw. fordern, dass $x^2 = 2$ und $x$ positiv ist. Unsere Aussagen sind
+	\begin{align*}
+		 & A: \, x = \sqrt{2}                               \\
+		 & B: \, x \neq \frac{a}{b}, \quad a,b\in\mathbb{Z}
+	\end{align*}
+	und wir behaupten $A\Rightarrow B$.\\
+	Für den Widerspruchsbeweis nehmen wir nun $P:= (A\land \Bar{B})$ an, es gelte also $x^2 = 2$ \textbf{und} $x$ sei rational. Dann könnte man diese Zahl als
+	\begin{align*}
+		x = \frac{a}{b}
+	\end{align*}
+	mit ganzen Zahlen $a$ und $b$ schreiben. Diese Darstellung könnte man so weit kürzen, bis man einen teilerfremden, nicht weiter kürzbaren Bruch
+	\begin{align*}
+		x = \frac{p}{q}
+	\end{align*}
+	erhält. Jede rationale Zahl lässt sich (per Definitionem) als ein solcher teilerfremder Bruch darstellen. Nun ist
+	\begin{align*}
+		x^2 = \frac{p^2}{q^2} = 2,
+	\end{align*}
+	also gilt
+	\begin{align*}
+		p^2 = 2q^2.
+	\end{align*}
+	Damit ist $p^2$ eine gerade Zahl. Das Produkt zweier ungeraden Zahlen wäre aber wieder ungerade, also muss auch $p$ selbst gerade sein. Eine gerade Zahl kann man weiter als $p=2r$ mit einer ganzen Zahl $r$ darstellen. Das bedeutet,
+	\begin{align*}
+		p^2 = (2r)^2 = 4r^2,
+	\end{align*}
+	andererseits ist aber
+	\begin{align*}
+		p^2 = 2q^2.
+	\end{align*}
+	Damit ist
+	\begin{align*}
+		q^2 = 2r^2,
+	\end{align*}
+	also ist auch $q$ gerade. Wenn aber $p$ und $q$ beide gerade sind, ist
+	\begin{align*}
+		x = \frac{p}{q}
+	\end{align*}
+	keine teilerfremde Darstellung. Wir haben ausgehend von der Annahme $P$ einen Widerspruch erhalten. Somit muss $P$ falsch sein und die Implikation $A\Rightarrow B$ ist dadurch bewiesen.
+\end{example}
+Der \textit{Beweis durch Widerspruch} ist sehr allgemein anwendbar und beschränkt sich nicht auf Implikationen. Allgemein ist das Vorgehen beim \textit{Beweis durch Widerspruch} wie folgt:
+\begin{mdframed}[backgroundcolor=green!20,nobreak=true]\label{vorgehen_widerspruch}
+	\textbf{Beweis durch Widerspruch}\\
+	Sei $S$ eine Aussage, deren Korrektheit wir beweisen wollen.\\
+	Der \textit{Beweis durch Widerspruch} verläuft dann in folgenden Schritten:
+	\begin{enumerate}
+		\item Wir nehmen an, dass $S$ \textbf{nicht gilt}, dass also $\Bar{S}$ wahr ist.
+		\item Ausgehen von der Annahme, dass $\Bar{S}$ gilt, müssen wir durch eine Kette korrekter logischer und mathematischer Schritte (ohne weitere Annahmen zu treffen) zu einem offensichtlichen Widerspruch gelangen.
+		\item Wir sind ausgehend von unserer einzigen Annahme, $\Bar{S}$ sei wahr, durch korrekte Schritte zu einem Widerspruch gelangt. Damit muss unsere Annahme $\Bar{S}$ zu Beginn falsch gewesen sein.
+		\item Da $\Bar{S}$ falsch ist, muss $S$ wahr sein. Damit ist die Aussage $S$ bewiesen.
+	\end{enumerate}
+\end{mdframed}
+\clearpage
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Beweisen Sie indirekt (durch Widerspruch), dass es unendlich viele Primzahlen gibt.
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	Wir nehmen an, es gäbe nur endliche viele Primzahlen. Dann muss es eine grösste Primzahl geben, die wir mit $p$ bezeichnen. Nun bilden wir das Produkt aller Primzahlen von $2$ bis $p$ und addieren die Zahl $1$:
+	\begin{align*}
+		m := 2\cdot 3\cdot 5\cdot 7\cdot 11\cdot \ldots  \cdot p + 1
+	\end{align*}
+	Die Zahl $m$ ist durch keine der Primzahlen von $2$ bis $p$ teilbar, da bei der Division immer ein Rest von eins bleibt. Entweder gibt es eine Primzahl, die grösser ist als $p$ und durch die $m$ teilbar ist, oder $m$ ist selbst eine Primzahl - in beiden Fällen ergibt sich ein Widerspruch zur Annahme, dass $p$ die grösste Primzahl ist.
+\end{myanswer}
+\subsubsection{vollständige Induktion}
+Wir widmen uns nun einer sehr mächtigen Beweistechnik, die sich in vielen Fällen anwenden lässt, wenn eine Aussage $A$ von einer ganzen Zahl $n$ abhängt. Eine solche Aussage ist zum Beispiel $A:$ \quotes{alle Zahlen der Form $a_n = 5^n-1$ sind für $n\in\mathbb{N}, \, n > 0$ durch $4$ teilbar}. Wenn eine Aussage $A$ von einem Parameter $n$ abhängt, dann schreibt man häufig $A(n)$.\\
+
+\noindent
+Die Idee der vollständigen Induktion lässt sich durch die folgende Metapher veranschaulichen:\\
+
+\noindent
+\quotes{Die vollständige Induktion beweist, dass wir auf einer Leiter beliebig weit hochsteigen können, indem sie beweist, dass wir den untersten Tritt (Induktionsanfang) erreichen können und, dass wir von jedem Tritt den nächst höheren erreichen können.}\\
+
+\noindent
+Wir wollen an dieser Stelle noch bemerken, dass in der Theoretischen Informatik die Zahl $0$ (Null) in der Menge $\mathbb{N}$ der natürlichen Zahlen enthalten ist.
+
+\begin{mydefinition}[Natürliche Zahlen]{mydefinition:natuerliche_zahl}
+Wir bezeichnen mit $\mathbb{N} := \lrc{0,1,2,\ldots }$ die Menge der natürlichen Zahlen. Man beachte, dass die Null in der Menge enthalten ist.
+\end{mydefinition}
+
+\begin{mdframed}[backgroundcolor=green!20,nobreak=true]\label{vorgehen_induktion}
+	\textbf{vollständige Induktion}\\
+	Sei $A(n)$ eine Aussage, die von einer ganzen Zahl $n$ abhängig ist. Wir wollen beweisen, dass $A(n)$ für alle ganzen Zahlen, die grösser oder gleich einer Zahl $k\in\mathbb{Z}$ sind, gilt.\\
+	Der Beweis mittels vollständiger Induktion verläuft dann in folgenden Schritten:
+	\begin{enumerate}
+		\item $n = k$: Der \textbf{Induktionsanfang} $A(k)$ muss eine wahre Aussage sein (wir müssen beweisen, dass wir den ersten Tritt der Leiter erreichen können).
+		\item \textbf{Induktionsschritt}, $n\to n+1$: Nun zeigen wir, dass aus der Gültigkeit von $A(n)$ die Gültigkeit von $A(n+1)$ folgt (wir müssen beweisen, dass wir von einem Tritt der Leiter den nächst höhere erreicht können).
+		      \begin{enumerate}
+			      \item \textbf{Induktionsannahme} $A(n)$: Wir setzen $A(n)$ für allgemeines $n$ als wahr voraus (wir setzen voraus, dass wir alle Tritte bis (und mit) dem $n$-ten Tritt auf der Leiter erreichen können).
+			      \item Wir wollen nun die \textbf{Induktionsbehauptung} $A(n+1)$ zeigen. Schreiben Sie die Aussage $A(n+1)$ explizit auf.
+			      \item Entscheidend ist nun der \textbf{Beweis der Behauptung}. Durch geschickte Umformungen muss man zeigen, dass die Induktionsbehauptung aus der Induktionsannahme folgt.
+		      \end{enumerate}
+	\end{enumerate}
+\end{mdframed}
+
+
+\begin{example}{example:induktion}
+	Wir behaupten, dass alle Zahlen der Form
+	\begin{align*}
+		a_n = 5^n -1
+	\end{align*}
+	mit $n\in\mathbb{N},\, n > 0$ durch $4$ teilbar sind.\\
+	\underline{Beweis}:
+	\begin{enumerate}
+		\item Für $n = 1$ erhalten wir $a_1 = 5-1 = 4$ und das ist sicher durch $4$ teilbar.
+		\item \begin{enumerate}
+			      \item Wir nehmen an, $a_n = 5^n - 1$ sei durch $4$ teilbar.
+			      \item Beweisen wollen wir die Behauptung, auch $a_{n+1} = 5^{n+1} - 1$ sei durch $4$ teilbar.
+			      \item Nun wollen wir den Induktionsschritt vollziehen. Dazu müssen wir die Behauptung so aufschreiben, dass wir unsere Annahme irgendwie sinnvoll einsetzen können:
+			            \begin{align*}
+				            a_{n+1} = 5^{n+1} - 1 = 5\cdot 5^n -1 = (4+1)5^n -1 = \red{4\cdot 5^n} + \blue{5^n -1}
+			            \end{align*}
+			            Wir haben $a_{n+1}$ in zwei Teile aufgespalten. Der rote Teil ist als ganzzahliges Vielfaches von $4$ sicherlich durch $4$ teilbar. Der blaue Teil ist gemäss der Induktionsannahme durch $4$ teilbar. Somit ist $a_{n+1}$ durch $4$ teilbar.
+		      \end{enumerate}
+	\end{enumerate}
+	Wir haben gezeigt, dass die Aussage $A(1)$ gilt und, dass aus $A(n)$ stehts $A(n+1)$ folgt. Damit stimmt die Aussage $A(n)$ für alle ganzen Zahlen $n > 0$.
+\end{example}
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Die Gausssche Summenformel besagt:\\
+	Für alle natürlichen Zahlen $n\geq 1$ gilt:
+	\begin{align*}
+		S(n):\quad 1+2+3+\ldots +n = \frac{n(n+1)}{2}
+	\end{align*}
+	Beweisen Sie die Behauptung mithilfe der vollständigen Induktion.
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	\underline{Beweis}:
+	\begin{enumerate}
+		\item \textbf{Induktionsanfang}\\
+		      $n = 1$:
+		      \begin{align*}
+			      S(1):\quad 1 = \frac{1(1+1)}{2} \quad \checkmark
+		      \end{align*}
+		\item \textbf{Induktionsschritt}, $n\to n+1$:\\
+		      Nun zeigen wir, dass aus der Gültigkeit von $\blue{S(n)}$ die Gültigkeit von $S(n+1)$ folgt.
+		      \begin{enumerate}
+			      \item \textbf{Induktionsannahme}:\\
+			            Wir nehmen an, dass $\blue{S(n)}$ gilt.
+			      \item \textbf{Induktionsbehauptung}:\\
+			            Wir möchten zeigen, dass auch $\red{S(n+1)} = \red{\frac{(n+1)((n+1)+1)}{2}}$ (mit $n+1$ an der Stelle von $n$) gilt.
+			      \item \textbf{Beweis der Behauptung}:
+			            \begin{align*}
+				             & \blue{1+2+3+\ldots +n}+(n+1) \stackrel{\text{Induktionsannahme}}{=} \blue{\frac{n(n+1)}{2}} + (n+1) = \\
+				             & = \frac{n(n+1)+2(n+1)}{2} \stackrel{(n+1)\; \text{ausklammern}}{=} \frac{(n+1)(n+2)}{2} =             \\
+				             & = \red{\frac{(n+1)((n+1)+1)}{2}}
+			            \end{align*}
+		      \end{enumerate}
+	\end{enumerate}
+\end{myanswer}
+
+
+\clearpage
+\subsection{Mengen}
+In der Mengenlehre verwendet man den Begriff der \textit{Mächtigkeit} oder \textit{Kardinalität} (das sind Synonyme). Wir werden diesen Begriff vorerst nur für endliche Mengen (Mengen, die endlich viele Elemente enthalten) definieren.
+
+\begin{mydefinition}[Kardinalität endlicher Mengen]{mydefinition:Kardinalitaet}
+Sei $A$ eine endliche Menge. Dann steht $|A|$ für die Anzahl der Elemente in $A$. Der Ausdruck $|A|$ wird \textit{Kardinalität} von $A$ genannt.
+\end{mydefinition}
+\underline{Beispiel}:\\
+Sei $A = \lrc{4, 11, -2}$, dann ist $|A| = 3$, weil $A$ genau drei Elemente enthält. Die Kardinalität $|\emptyset|$ der leeren Menge ist $0$, da $\emptyset$ keine Elemente enthält.
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Wir betrachten die Menge $B = \setcm{n\in\mathbb{N}}{n \text{ ist gerade und } n < 10}$.\\ Der Strich $|$ wird als \quotes{für die gilt} gelesen. Bestimmen Sie $|B|$.\\
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	Die Menge $B$ enthält alle natürlichen Zahlen, die gerade und strikt kleiner als $10$ sind. Damit gilt $B = \lrc{0,2,4,6,8}$ und somit $|B| = 5$.\\
+\end{myanswer}
+\subsubsection{Tupel und das kartesische Produkt}
+Es gibt viele Möglichkeiten, aus zwei Mengen eine neue Menge zu bilden. Sie kennen den Durchschnitt ($A\cap B$), die Vereinigung ($A\cup B$) und Differenz ($A - B$) von Mengen.\\
+Wir betrachten nun ein mathematisches Konstrukt, welches uns erlaubt, mathematische Objekte in einer bestimmten Reihenfolge zusammenzufassen.
+\begin{mydefinition}[Tupel]{mydefinition:Tupel}
+Für $n\in\mathbb{N}$ ist ein $n$-Tupel eine Zusammenfassung von $n$ mathematischen Objekten $x_1,x_2,\ldots , x_n$ zu einer geordneten Liste $(x_1, x_2, \ldots  , x_n)$. \textbf{Im Gegensatz zu Mengen müssen die Objekte nicht notwendigerweise voneinander verschieden sein und die Reihenfolge der Objekte ist von Bedeutung}. Tupel werden mit runden Klammern geschrieben. Aufeinander folgende Objekte werden durch Kommata getrennt. Das an der $i$-ten Stelle stehende Objekt $x_i$ wird als die $i$-te Komponente des Tupels bezeichnet. Ein $2$-Tupel wird manchmal auch als \textit{geordnetes Paar} bezeichnet. Das $0$-Tupel heisst \textit{leeres Tupel} und wird durch $()$ dargestellt.\\
+\end{mydefinition}
+\clearpage
+Nun können wir das \textit{kartesische Produkt} $A\times B$ von zwei Mengen $A$ und $B$ definieren.
+\begin{mydefinition}[Kartesisches Produkt]{mydefinition:kartesisches_produkt}
+Das kartesische Produkt $A\times B$ zweier Mengen $A$ und $B$ ist die Menge aller geordneten Paare $(a,b)$ mit $a\in A$ und $b\in B$:
+\begin{align*}
+	A\times B := \setcm{(a,b)}{a\in A, b\in B}
+\end{align*}
+\end{mydefinition}
+\underline{Beispiele}:
+\begin{itemize}
+	\item Die Menge $\R\times \R$ (abgekürzt: $\R^2$) ist die Menge aller geordneten paare von reellen Zahlen. Geometrisch ist dies die reelle zweidimensionale Ebene. Ein geordnetes Paar $(x,y)\in\R^2$ ist ein Punkt in der Ebene.
+	\item Die Menge $\mathbb{Z}\times \mathbb{Z} \times \mathbb{Z}$ (abgekürzt: $\mathbb{Z}^3$) ist die Menge aller $3$-Tupel mit ganzzahligen Komponenten. Geometrische gesprochen, ist ein $3$-Tupel $(x,y,z)\in\mathbb{Z}^3$ ist ein Punkt im dreidimensionalen Raum, der nur ganzzahlige Komponenten hat.
+\end{itemize}
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Wir betrachten die Mengen $A = \lrc{a,b}$ und $B = \lrc{a}$. Bestimmen Sie die Menge $A\times B$.
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	Die Menge $A\times B$ ist die Menge aller geordneten Paare $(x,y)$ mit $x\in A$ und $y\in B$. Damit gilt $A\times B = \lrc{(a,a), (b,a)}$.
+\end{myanswer}
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Wir betrachten die Mengen $B = \lrc{0,1}$ der binären Ziffern. Wie viele unterschiedliche $n$-Tupel lassen sich über der Menge $B$ bilden?
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	Ein $n$-Tupel über der Menge $B = \lrc{0,1}$ hat die Form $(b_1,b_2,\ldots ,b_n)$ mit $b_i\in\lrc{0,1}$ für $i\in \lrc{1,2,\ldots ,n}$. Wir müssen uns überlegen, wie viele unterschiedliche solche Tupel gebildet werden können. Jede Komponente des Tupels kann entweder durch $0$ oder $1$ besetzt werden (dies ist wie ein Zahlenschloss für das Fahrrad mit $n$ Stellen und $2$ Ziffern). Gemäss elementarer Kombinatorik (Variation mit Zurücklegen) gibt es $2^n$ viele unterschiedliche solche binären $n$-Tupel.
+\end{myanswer}
+
+\begin{comment}
+\subsubsection{Potenzmenge}
+Wir möchten nun eine ganz spezielle Menge betrachten. Diese Menge heisst \textit{Potenzmenge}. Sei $A$ eine Menge. Dann ist die Potenzmenge $\mathcal{P}(A)$ der Menge $A$ eine neue Menge, die aus allen Teilmengen $U$ von $A$ besteht.\\
+
+\noindent
+Diese abstrakte Beschreibung lässt sich durch ein einfaches Beispiel ganz einfach veranschaulichen:\\
+Sei $A = \lrc{1,2}$, dann ist $\mathcal{P}(A)$ die Menge aller Teilmengen von $A$. Diese sind die vier Mengen $\lrc{1}$, $\lrc{2}$, $\lrc{1,2}$, $\emptyset$. Man beachte, dass jede Menge insbesondere Teilmenge von sich selbst ist. Die leere Menge ist Teilmenge jeder Menge. Also ist $\mathcal{P}(A) = \lrc{\emptyset, \lrc{1}, \lrc{2}, A}$. Man bemerke, dass die Potzenmenge eine Menge ist, deren Elemente selbst Mengen sind.
+
+
+\begin{mydefinition}[Potenzmenge]{mydefinition:Potenzmenge}
+Sei $A$ eine Menge. Dann bezeichnet $\mathcal{P}(A) = \setcm{U}{U\subseteq A}$ die Potenzmenge von $A$. $\mathcal{P}(A)$ ist also die Menge aller Teilmengen von $A$.
+\end{mydefinition}
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Wir betrachten die Menge $X = \lrc{1,2,3}$. Bestimmen sie $\mathcal{P}(X)$ und $|\mathcal{P}(X)|$.\\
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	$\mathcal{P}(X) = \lrc{\emptyset, \lrc{1}, \lrc{2}, \lrc{3}, \lrc{1,2}, \lrc{2,3}, \lrc{1,3}, X}$\\
+	$\mathcal{P}(X)$ ist eine Menge von $8$ Elementen (die hier Mengen sind), also gilt $|\mathcal{P}(X)| = 8$.\\
+\end{myanswer}
+
+\begin{myexercise}%[difficulty={1}]
+	\noindent
+	Bestimmen Sie $\mathcal{P}(B)$ und $|\mathcal{P}(B)|$ für die Menge $B = \lrc{a,b,c,d}$.\\
+\end{myexercise}
+\begin{myanswer}
+	\noindent
+	\begin{align*}
+		\mathcal{P}(B) & = \left\{ \emptyset, \lrc{a}, \lrc{b}, \lrc{c}, \lrc{d}, \lrc{a,b}, \lrc{a,c}, \lrc{a,d}, \lrc{b,c}, \lrc{b,d}, \lrc{c,d},\right. \\
+		               & \left. \lrc{a,b,c}, \lrc{a,c,d}, \lrc{a,b,d}, \lrc{b,c,d}, B\right\}
+	\end{align*}
+	$\mathcal{P}(B)$ ist eine Menge von $16$ Elementen (die hier Mengen sind), also gilt $|\mathcal{P}(B)| = 16$.
+\end{myanswer}
+
+\clearpage
+\noindent
+Sei $X$ eine Menge. Wir sehen, dass
+\begin{itemize}
+	\item $|\mathcal{P}(X)| = 1$, falls $|X| = 0$
+	\item $|\mathcal{P}(X)| = 2$, falls $|X| = 1$
+	\item $|\mathcal{P}(X)| = 4$, falls $|X| = 2$
+	\item $|\mathcal{P}(X)| = 8$, falls $|X| = 3$
+	\item $|\mathcal{P}(X)| = 16$, falls $|X| = 4$.
+\end{itemize}
+Man könnte vermuten, dass für endliche Mengen allgemein die Formel $|\mathcal{P}(X)| = 2^{|X|}$ gilt. Diese Vermutung ist korrekt und wir fassen sie in einem Satz zusammen.
+\clearpage
+\begin{theo}[Anzahl Elemente in der Potenzmenge]{theo:anzahl_potenzmenge}
+	Sei $X$ eine endliche Menge. Dann ist $|\mathcal{P}(X)| = 2^{|X|}$.
+\end{theo}
+\begin{prf}{prf:anzahl_potenzmenge}
+	Da $X$ endlich ist, gilt  $|X| = n$ für ein $n\in\mathbb{N}$. Seien $x_1, x_2, \ldots , x_n$ die $n$ verschiedenen Elemente von $X$. Dann hat $X$ die Darstellung $X = \lrc{x_1, x_2, \ldots , x_n}$. Sei $U\subseteq X$ eine beliebige Teilmenge von $X$.\\
+	Jede dieser Teilmengen $U$ lässt sich durch eine geordnete (binäre) Liste der Form $(b_1, b_2, \ldots , b_n)$, mit $b_i\in\lrc{0,1}$ für $i\in\lrc{1,2, \ldots , n}$ darstellen. Dabei ist $b_i = 1$, genau dann, wenn $x_i\in U$ und $b_i = 0$, genau dann, wenn $x_i\notin U$. Der $i$-te Eintrag der Liste ($b_i$) ist also genau dann gleich $1$, wenn das $i$-te Element aus $X$ auch in der Teilmenge $U$ enthalten ist.\\
+
+	\noindent
+	\gray{Beispiel:\\
+		Sei $X = \lrc{14, 5, 9, 1}$. Dann kann die Teilmenge $U = \lrc{5, 9}$ von $X$ mit der geordneten (binären) Liste $(0, 1, 1, 0)$ identifiziert werden. Die leere Menge (auch Teilmenge von $X$) wird mit der Liste $(0, 0, 0, 0)$ identifiziert.}\\
+
+	\noindent
+	Für jede Teilmenge $U$ von $X$ existiert offensichtlich genau eine solche geordnete Liste und zu jeder geordneten solchen Liste existiert eine eindeutige Teilmenge $U$ von $X$. Um die Anzahl aller Teilmengen $U\subseteq X$ (und somit $|\mathcal{P}(X)|$) zu bestimmen, genügt es, die Anzahl unterschiedlicher, geordneter binären Listen der Länge $|X| = n$ zu bestimmen.\\
+
+	\noindent
+	Diese Aufgabe ist nicht schwierig. An jeder der $n$ Stellen haben wir die Wahl zwischen $0$ und $1$ (zwei Möglichkeiten). Dies ist wie ein Zahlenschloss für das Fahrrad mit $n$ Stellen und $2$ Ziffern. Nach elementarer Kombinatorik (Variation mit Zurücklegen) gibt es $2^n$ viele solche (unterschiedliche) Listen.\\
+	Damit ist $|\mathcal{P}(X)| = 2^n = 2^{|X|}$ bewiesen.
+\end{prf}
+\end{comment}

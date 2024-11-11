@@ -1,381 +1,662 @@
-\chapter{Algorithmische Probleme}
+\chapter{Endliche Automaten}
+Endliche Automaten sind das einfachste Berechnungsmodell, das man in der Informatik
+betrachtet. In einer ersten Phase möchten wir eine gute intuitive Vorstellung der Arbeitsweise von endlichen Automaten gewinnen. Dazu werden wir in Unterabschnitt \cref{subsec:graphenDarstellung} endliche Automaten mit (leicht modifizierten) gerichteten Graphen identifizieren. In Unterabschnitt \cref{subsec:Programmdarstellung} werden wir sehen, dass endliche Automaten äquivalent zu einer Darstellung durch spezielle Programme sind. Diese speziellen Programme lösen gewisses Entscheidungsproblem, ohne bei ihrer Arbeit Variablen zu benutzen.
 
-Der Titel dieses Kapitels stellt uns vor ein kleines Dilemma. Wir möchten in diesem Kapitel bereits über \textit{algorithmische Probleme} sprechen, bevor wird den Begriff \textit{Algorithmus} in einem späteren Kapitel formal durch das Modell der Turingmaschine definieren werden. Aus diesem Grund werden wir anstelle von \textit{Algorithmus} den Begriff \textit{Programm} verwenden. Dabei setzen wir voraus, dass die Leserin / der Leser eine gewisse intuitive Vorstellung von Programmen hat (die Programmiersprache spielt dabei keine Rolle).\\
+Mithilfe dieser Intuition wird uns die formale Definition endlicher Automaten in Unterabschnitt \cref{subsec:formaleDefinitionEA} elegant und natürlich erscheinen.
 
-\noindent
-Wenn wir Programme als Algorithmen anschauen, werden wir jedoch zusätzlich fordern, dass solch ein Programm für jede zulässige Eingabe seine Arbeit in endlicher Zeit beendet (also nicht unendlich lange läuft) und eine Ausgabe liefert. Insbesondere ist es einem Algorithmus nicht gestattet in einer Endlosschleife zu laufen. Wenn ein Programm nach endlicher Zeit seine Arbeit beendet, sagt man auch, dass das Programm \textit{hält}.\\
+Die Betrachtung endlicher Automaten ist hervorragend dazu geeignet, zentrale Begriffe der Informatik wie \textit{Konfiguration}, \textit{Berechnungsschritt}, \textit{Simulation} und \textit{Berechnung} schonend einzuführen.
 
-\noindent
-Unter diesen Bedingungen realisiert ein Programm (Algorithmus) $A$ typischerweise eine Abbildung
-\begin{align*}
-	A:\, \Sigma_1^* \to \Sigma_2^*
-\end{align*}
-für Alphabete $\Sigma_1$ und $\Sigma_2$. Dies sagt aus, dass
+\section{Darstellung endlicher Automaten}
+Wir werden drei verschiedene Möglichkeiten zur Darstellung endlicher Automaten kennenlernen:
+\begin{enumerate}
+	\item Darstellung durch gerichtete Graphen (Graphendarstellung)
+	\item Darstellung durch Programme (Programmdarstellung)
+	\item Formale Definition (durch Mengen und Funktionen)
+\end{enumerate}
+
+\subsection{Darstellung durch gerichtete Graphen}\label{subsec:graphenDarstellung}
+Die Darstellung endlicher Automaten durch (etwas modifizierte) gerichtete Graphen ist besonders prägnant und anschaulich. Wir werden deshalb endliche Automaten mit gerichteten Graphen identifizieren (Graphendarstellung). Wir werden im Folgenden nicht mehr zwischen einem endlichen Automaten $A$ und seiner Darstellung $G(A)$ als gerichteter Graph unterscheiden.
+
+Wenn man ein Berechnungsmodell definieren möchte, muss man folgende vier Fragen beantworten können:
+\begin{enumerate}
+	\item Welcher Speicher steht zur Verfügung und wie wird dieser verwendet?
+	\item Wie wird die Eingabe (Input) eingegeben?
+	\item Wie wird die (Output) ausgegeben?
+	\item Welche elementaren Rechenoperationen kann das Berechnungsmodell durchführen?
+\end{enumerate}
+Bei endlichen Automaten hat man keinen Speicher zur Verfügung ausser dem Speicher, in dem der (modifizierte) gerichtete Graph gespeichert ist und einem \textit{Zeiger}, der auf den aktuell betrachteten Knoten des Graphen zeigt. Die einzige wechselnde (nicht statische) Information ist der Name des Knoten, auf den der Zeiger aktuell zeigt.
+
+Um konkret über endliche Automaten sprechen zu können, betrachten wir den einfachen endlichen Automaten $A$ in \cref{fig:EA1}. Wir werden den Aufbau und die Funktionsweise endlicher Automaten anhand dieses konkreten endlichen Automaten $A$ erklären.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+			semithick]
+		\tikzstyle{every state}=[fill=blue!10,draw=black,text=black]
+
+		\node[initial,state] (A) {$q_0$};
+		\node[state, accepting] (B) [right of=A] {$q_1$};
+		\path (A) edge [loop above] node {$0$} (A)
+		(A) edge node {$1$} (B)
+		(B) edge [loop above] node {$0,1$} (B);
+	\end{tikzpicture}
+	\caption{Darstellung von $A$ als gerichteter Graph.}
+	\label{fig:EA1}
+\end{figure}
 \begin{itemize}
-	\item sowohl die Eingaben als auch die Ausgaben für das Programm (Algorithmus) als Wörter kodiert sind und
-	\item $A$ für jede Eingabe eine eindeutige Ausgabe bestimmt.
+	\item $A$ hat zwei \textbf{Zustände} $q_0$ und $q_1$. Die \textbf{Zustandsmenge} $Q$ von $A$ ist somit $Q = \lrc{q_0,q_1}$. Allgemein, entspricht die Zustandsmenge $Q$ der Knotenmenge $V$ des Graphen.
+	\item Der Zeiger zeigt zu Beginn auf einen Zustand und ist mit dem Label \enquote{start} besonders markiert. Der Zustand, auf den der Zeiger zu Beginn zeigt, wird \textbf{Anfangszustand} genannt. Manchmal schreibt man anstelle des Labels \enquote{start} auch \enquote{$\lambda$}, weil sich der Automat nach dem Lesen des leeren Wortes $\lambda$ im Anfangszustand befindet. Man darf auf das Label des Zeigers auch verzichten. Der Anfangszustand von $A$ ist $q_0$.
+	\item Wenn der Zeiger des endlichen Automaten auf den Zustand $q$ zeigt, dann sagt man, dass sich der Automat im Zustand $q$ befindet.
+	\item Jedem endlichen Automaten ist ein \textbf{Eingabealphabet} $\Sigma$ zugeordnet. Das Eingabealphabet von $A$ ist $\Sigma = \lrc{0,1}$. Alle zulässigen Eingaben $w$ für eines endlichen Automaten müssen Wörter über seinem Eingabealphabet sein. Der endliche Automat erhält ein \textbf{Eingabewort} $w$ über $\Sigma$ und liest dieses Buchstabe um Buchstabe von links nach rechts. Wenn der endliche Automat das gesamte Wort $w$ gelesen hat, ist seine Arbeit auf $w$ beendet.
+	\item Falls sich $A$ zum Beispiel im Zustand $q_0$ befindet und das Symbol $1$ liest, dann folgt $A$ der Kante des Graphen, welche mit $1$ beschriftet ist. Dadurch gelangt $A$ in den Zustand $q_1$. Mit dem Lesen von $0$ im Zustand $q_0$ bleibt $A$ im Zustand $q_0$.
+
+	      Allgemein gilt: Falls sich ein endlicher Automat im Zustand $q$ befindet und ein Symbol $\alpha$ von der Eingabe liest, dann folgt der Automat der Kante des Graphen, welche mit $\alpha$ beschriftet ist. Die Destination der Kante wird sein neuer Zustand sein. Mental kann man sich vorstellen, dass der Zeiger nun auf diesen neuen Zustand zeigt.
+	\item Falls sich ein endlicher Automat \textbf{nach dem vollständigen Lesen} eines Eingabewortes $w$ in einem doppelt umkreisten Zustand befindet, dann akzeptiert der Automat die Eingabe $w$, ansonsten akzeptiert der Automat die Eingabe $w$ nicht (verwirft die Eingabe).\\
+	      $A$ hat nur einen \textbf{akzeptierend Zustand}, nämlich $q_1$. Der Zustand $q_0$ ist \textbf{nicht akzeptierend}.
 \end{itemize}
-Für jeden Algorithmus $A$ und jede Eingabe $x$ bezeichnen wir mit $A(x)$ die Ausgabe des Algorithmus $A$ für die Eingabe $x$ (das Resultat, welches der Algorithmus für die Eingabe $x$ berechnet).\\
-\clearpage
-\begin{mydefinition}[Äquivalenz von Algorithmen]{mydefinition:equivalence_algorithms}
-Man sagt, dass zwei Algorithmen (Programme) $A$ und $B$ \textbf{äquivalent} sind, falls beide über dem gleichen Eingabealphabet $\Sigma$ arbeiten und $A(x) = B(x)$ für alle $x\in\Sigma^*$ gilt.\\
-\gray{Zwei Algorithmen sind also genau dann äquivalent, wenn sie das gleiche Eingabealphabet haben und auf allen möglichen Eingaben die gleiche Ausgabe liefern. Dabei spielt es keine Rolle, wie die jeweiligen Algorithmen ihre Ausgaben berechnen.}
-\end{mydefinition}
-Wir werden im Folgenden einige sehr bekannte und wichtige algorithmische Probleme kennenlernen.\\
-
-\clearpage
-\noindent
-\section{Das Entscheidungsproblem}
-Das \textit{Entscheidungsproblem} hat eine besonders simple Formulierung und wird typischerweise verwendet um die Theorie der Berechenbarkeit zu entwickeln.
-\begin{mydefinition}[Entscheidungsproblem]{mydefinition:Entscheidungsproblem}
-Das \textbf{Entscheidungsproblem} $(\Sigma,L)$ für ein gegebenes Alphabet $\Sigma$ und eine gegebene Sprache $L\subseteq \Sigma^*$ ist, für jedes $x\in\Sigma^*$ zu entscheiden, ob
-\begin{align*}
-	x\in L\quad \text{oder}\quad x\notin L.
-\end{align*}
-Ein Algorithmus $A$ \textbf{löst} das Entscheidungsproblem $(\Sigma,L)$, falls für \textbf{alle} $x\in\Sigma^*$ gilt:
-\[
-	A(x) =
-	\begin{cases}
-		1, & \text{falls } x\in L     \\
-		0, & \text{falls } x\notin L.
-	\end{cases}
-\]
-\gray{Das Entscheidungsproblem ist also ein geordnetes Paar $(\Sigma,L)$ eines Alphabets $\Sigma$ und einer Sprache $L$ (über $\Sigma$).}
-\end{mydefinition}
-Man sagt auch, dass $A$ die Sprache $L$ \textbf{erkennt}.\\
-
-\noindent
-Wenn für eine Sprache $L$ ein Algorithmus existiert, der $L$ erkennt, dann nennt man die Sprache $L$ \textbf{rekursiv}.\\
-
-\noindent
-Wir verwenden eine Sprache $L\subseteq \Sigma^*$ häufig um gewisse Eigenschaften von Wörtern zu erzwingen. Die Wörter in der Sprache $L$ haben diese geforderte Eigenschaft und alle Wörter im mengen-theoretischen Komplement $L^{\tt C} = \Sigma^* - L$ haben diese Eigenschaft nicht.\\
-In dieser Betrachtungsweise kann man ein Entscheidungsproblem auch wie folgt darstellen:
-\begin{itemize}
-	\item \textbf{Eingabe}: $x\in\Sigma^*$.
-	\item \textbf{Ausgabe}: $A(x)\in\Sigma_{\text{bool}} = \lrc{0,1}$, wobei gilt
-\end{itemize}
-\[
-	A(x) =
-	\begin{cases}
-		1, & \text{falls } x\in L\quad \text{(Ja, $x$ hat die Eigenschaft)},            \\
-		0, & \text{falls } x\notin L\quad \text{(Nein, $x$ hat die Eigenschaft nicht)}.
-	\end{cases}
-\]
-
-
-\clearpage
-
-\noindent
-Wir werden nun einige Beispiele von Sprachen geben, welche gewisse (interessante) Eigenschaften fordern.
-\begin{example}{example:begin_with_one}
-	Sei $\Sigma_1 = \lrc{0,1} = \Sigma_{\text{bool}}$. Wir definieren $L_1 = \setcm{x\in\Sigma_1^*}{x = 1v,\;\text{für ein}\; v\in\lrc{0,1}^*}$.\\
-	In der Sprache $L_1$ liegen alle binären Wörter (alle endlichen Folgen von Nullen und Einsen), die mit einer $1$ beginnen (die $1$ als Präfix haben).\\
-	Seien beispielsweise $x_1 = 110011$, $x_2 = 1$ und $x_3 = 011110$. Dann gilt $x_1, x_2\in L_1$ aber $x_3\notin L_1$.\\
-	Das zugehörige Entscheidungsproblem ist das geordnete Paar $(\Sigma_1,L_1)$.
-\end{example}
-
-\begin{example}{example:alternating}
-	Sei $\Sigma_2 = \lrc{\#,\alpha,\beta}$. Wir definieren $L_2 = \setcm{x\in\Sigma_2^*}{x = (\alpha\#)^n,\;\text{für ein}\; n\in\mathbb{N}}$.\\
-	In der Sprache $L_2$ liegen also alle Wörter der Form $(\alpha\#)^n$ für eine natürliche Zahl $n$. Das zugehörige Entscheidungsproblem lautet $(\Sigma_2,L_2)$.\\
-	Das kürzeste Wort in $L_2$ ist $\lambda$, das zweit kürzeste ist $\alpha\#$ und das dritt kürzeste ist $\alpha\#\alpha\# = (\alpha\#)^2$.
-\end{example}
-
-\begin{example}{example:is_prime}
-	Eines der bekanntesten Entscheidungsprobleme ist der \textit{Primzahltest}. Für eine natürliche Zahl $n$ möchte man entscheiden, ob $n$ eine Primzahl ist. Der Primzahltest entspricht dem Entscheidungsproblem
-	\begin{align*}
-		\left(\Sigma_{\text{bool}},\setcm{x\in(\Sigma_{\text{bool}})^*}{\text{Nummer}(x)\;\text{ist eine Primzahl}}\right).
-	\end{align*}
-	Häufig wird dieses wichtige Entscheidungsproblem wie folgt dargestellt:
-	\begin{itemize}
-		\item \textbf{Eingabe}: $x\in(\Sigma_{\text{bool}})^*$.
-		\item \textbf{Ausgabe}:
-		      \begin{itemize}
-			      \item Ja, falls $\text{Nummer}(x)$ eine Primzahl ist.
-			      \item Nein, sonst.
-		      \end{itemize}
-	\end{itemize}
-\end{example}
-\clearpage
-
-\begin{example}{example:check_program}
-	Die \textit{GNU Compiler Collection}\footnote{\url{https://de.wikipedia.org/wiki/GNU_Compiler_Collection}} (GCC) ist (unter anderem) ein {\tt C++} Compiler. Ein {\tt C++} Compiler ist ein spezielles Computerprogramm, welches als Input ein in der Programmiersprache {\tt C++} geschriebenes Programm erhält, und dieses Programm in ein, für den Computer \quotes{verständliches} Programm, umwandelt.\\
-
-	\noindent
-	Eine Teilaufgabe des Compilers ist zu prüfen, ob ein gegebenes {\tt C++} Programm syntaktisch korrekt ist. Ein Programm ist syntaktisch korrekt, wenn es keine zwingenden Regeln seiner entsprechenden Programmiersprache verletzt. Ein typisches Beispiel eines syntaktischen Fehlers ist das Öffnen einer linken Klammer ``('', die aber nirgends im Programm durch eine rechte Klammer ``)'' geschlossen wird.\\
-	\gray{Achtung: Syntaktische Korrektheit eines Programms $P$ garantiert lediglich, dass $P$ die zwingenden Regeln seiner Programmiersprache nicht verletzt. Es wird nicht garantiert, dass $P$ ein sinnvolles Programm ist.}\\
-
-	\noindent
-	Wir definieren $L_{\text{{\tt C++}}}$ als die Sprache aller syntaktisch korrekter {\tt C++} Programme:
-	\begin{align*}
-		L_{\text{{\tt C++}}} = \setcm{x\in(\Sigma_{\text{Tastatur}})^*}{x\;\text{ist ein syntaktisch korrektes Programm in {\tt C++} }}
-	\end{align*}
-	Das entsprechende Entscheidungsproblem lautet:
-	\begin{itemize}
-		\item \textbf{Eingabe}: $x\in(\Sigma_{\text{Tastatur}})^*$.
-		\item \textbf{Ausgabe}:
-		      \begin{itemize}
-			      \item Ja, falls $x\in L_{\text{{\tt C++}}}$.
-			      \item Nein, sonst.
-		      \end{itemize}
-	\end{itemize}
-	\gray{Man beachte, dass jedes Computerprogramm als ein Wort über dem Alphabet der Computertastatur aufgefasst werden kann - schliesslich ist jedes Programm nichts weiter als eine endliche Folge von Symbolen der Tastatur.}
-\end{example}
-
-\clearpage
-\section{Graphen}
-Einige sehr interessante Probleme und Konzepte lassen sich besonders gut durch \textit{Graphen} modellieren.\\
-Um ein Gefühl für Graphen zu erhalten, betrachten wir Zugverbindungen zwischen den drei Städten Zürich (Z), Effretikon (E) und Winterthur (W).\\
-Jede der drei Städte ist jeweils mit den anderen beiden verbunden. Diese Situation lässt sich mit einem Graphen wie in Abbildung \cref{fig:cities} darstellen.
-\begin{figure}[h!]
-	\centering
-	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
-		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
-
-		\node[state] (A)                    {Z};
-		\node[state] (B) [above right of=A] {E};
-		\node[state] (C) [below right of=B] {W};
-
-		\path (A) edge node {} (B)
-		(B) edge node {} (C)
-		(A) edge node {} (C);
-	\end{tikzpicture}
-	\caption{Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
-	\label{fig:cities}
-\end{figure}
-
-\noindent
-Die grünen Kreise (die Städte) bezeichnet man als \textit{Knoten}, die schwarzen Verbindungslinien zwischen den Knoten nennt man \textit{Kanten}. \textbf{Einen Graphen, in dem jeder Knoten mit jedem anderen Knoten verbunden ist, bezeichnet man als \textit{vollständigen Graphen}} (der Graph in Abbildung \cref{fig:cities} ist ein vollständiger Graph).\\
-\begin{mydefinition}[Graph]{mydefinition:Graph}
-Ein Graph $G$ ist ein geordnetes Paar $(V,E)$, wobei $V$ eine (endliche) nichtleere Menge von Knoten (englisch: \textit{vertices}) ist. Die Menge $E$ ist eine Teilmenge
-der zweielementigen Teilmengen von $V$, also $E\subseteq \setcm{\lrc{x,y}}{x,y\in V, x\neq y}$. Die Elemente der Menge $E$ bezeichnet man als Kanten (englisch: \textit{edges}).\\
-Falls die Knotenmenge $V$ eine endliche Menge ist, nennt man den Graphen $G = (V,E)$ einen endlichen Graphen.\\
-\gray{Eine Kante in einem Graphen verbindet zwei verschiedene Knoten. Die Kantenmenge $E$ eines Graphen ist deshalb irgend eine Teilmenge (Auswahl) aller möglichen zweielementigen Teilmengen $\lrc{x,y}$ der Knotenmenge $V$. Dabei muss aber $x \neq y$ gelten, da wir die Verbindung eines Knoten zu sich selbst nicht als Kante anschauen möchten.}
-\end{mydefinition}
-Für $V = \lrc{a,b,c,d}$ und $E = \lrc{\lrc{a,b},\lrc{a,c},\lrc{b,c},\lrc{c,d}}$ würde der Zugehörige Graph $G = (V,E)$ beispielsweise so aussehen:
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
-		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
-
-		\node[state] (A)              {a};
-		\node[state] (B) [right of=A] {b};
-		\node[state] (C) [below of=A] {c};
-		\node[state] (D) [below of=B] {d};
-
-		\path (A) edge node {} (B)
-		(A) edge node {} (C)
-		(B) edge node {} (C)
-		(C) edge node {} (D);
-	\end{tikzpicture}
-\end{figure}
-\noindent
-Falls wir in unserem Beispiel mit den Zugverbindungen auch die Dauer der Verbindungen darstellen, dann könnten wir das wie in Abbildung \cref{fig:cities2} tun. Man sagt dann, dass die Kanten \textit{gewichtet} sind. In diesem Beispiel sind die Gewichte die Fahrzeiten. Ein Graph mit gewichteten Kanten bezeichnet man als \textit{gewichteten Graphen}. Graphen, ohne gewichtete Kanten nennt man \textit{ungewichtete Graphen}.
-\begin{figure}[h!]
-	\centering
-	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
-		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
-
-		\node[state] (A)                    {Z};
-		\node[state] (B) [above right of=A] {E};
-		\node[state] (C) [below right of=B] {W};
-
-		\path (A) edge node {15} (B)
-		(B) edge node {9} (C)
-		(A) edge node {21} (C);
-	\end{tikzpicture}
-	\caption{Gewichtete (ungerichtete) Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
-	\label{fig:cities2}
-\end{figure}
-
-\noindent
-Stellen wir uns nun vor, dass die Verbindung von Zürich nach Effretikon (und somit auch von Zürich nach Winterthur) aktuell unterbrochen ist, aber weiterhin Züge von Effretikon und Winterthur nach Zürich fahren können. Desweiteren, haben wir bemerkt, dass die Verbindung von Effretikon nach Winterthur nur 9 Minuten dauert, die Verbindung von Winterthur (wegen Stopp in Kemptthal) jedoch 11 Minuten. Diese Situation lässt sich durch \textit{gerichtete} Kanten wie in Abbildung \cref{fig:cities3} veranschaulichen.
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4.0cm, semithick]
-		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
-
-		\node[state] (A)                    {Z};
-		\node[state] (B) [above right of=A] {E};
-		\node[state] (C) [below right of=B] {W};
-
-		\path (B) edge [bend left] node {9} (C)
-		(C) edge [bend left] node {11} (B)
-		(B) edge node {15} (A)
-		(C) edge node {21} (A);
-	\end{tikzpicture}
-	\caption{Gerichtete und gewichtete Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
-	\label{fig:cities3}
-\end{figure}
-
-\noindent
-Natürlich ist es auch erlaubt Graphen zu konstruieren, die zwar gerichtet, aber nicht gewichtet sind.\\
-Um zu verdeutlichen, dass bei einer Gerichteten Kante die Reihenfolge (die Richtung) eine Rolle spielt, schreiben wir für Gerichteten Kanten nicht eine zweielementige Menge $\lrc{\text{Effretikon},\text{Zürich}}$, sondern ein geordnetes Paar $(\text{Effretikon},\text{Zürich})$.
-\clearpage
-
-\subsection{Adjazenzmatrix}
-Jeder endliche Graph $G = (V,E)$, egal ob gerichtet / ungerichtet oder gewichtet / ungewichtet, lässt sich einfach durch die ihm zugehörige \textit{Adjazenzmatrix} $A^G$ repräsentieren.\\
-Wir wollen für einen gegebenen Graphen $G$ die Adjazenzmatrix $A^G$ finden. Bevor wir das Vorgehen für einen beliebigen endlichen Graphen beschreiben werden, möchten wir die Adjazenzmatrix für den Graphen in Abbildung \cref{fig:cities3} finden.\\
-Wir führen diesen Graphen hier nochmals auf, allerdings haben wir zu didaktischen Zwecken die Kantengewichte des Graphen gefärbt und die Knoten (Städte) neu beschriftet (nummeriert). Dazu haben wir die Bezeichnungen $v_1 = \text{Zürich}$, $v_2 = \text{Effretikon}$ und $v_3 = \text{Winterthur}$ gewählt.
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4.0cm, semithick]
-		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
-
-		\node[state] (A)                    {$v_1$};
-		\node[state] (B) [above right of=A] {$v_2$};
-		\node[state] (C) [below right of=B] {$v_3$};
-
-		\path (B) edge [bend left] node {\red{9}} (C)
-		(C) edge [bend left] node {\blue{11}} (B)
-		(B) edge node {\darkgreenone{15}} (A)
-		(C) edge node {\pinkone{21}} (A);
-	\end{tikzpicture}
-\end{figure}
-\noindent
-Die zu diesem Graphen zugehörige Adjazenzmatrix $A_G$ ist:
-\begin{align}\label{eq:adjazenz}
-	A^G = \left( \begin{matrix} 0 & 0 & 0 \\ \darkgreenone{15} & 0 & \red{9} \\ \pinkone{21} & \blue{11} & 0 \end{matrix} \right)
+Um den Umgang mit endlichen Automaten zu üben, betrachten wir die Arbeit von $A$ auf dem konkreten Eingabewort $w = 00101$.\\
+$A$ befindet sich zu Beginn in seinem Anfangszustand $q_0$. Nun beginnt er damit das Eingabewort von links nach recht zu lesen (Buchstabe um Buchstabe). Halten Sie sich im Folgenden \cref{fig:EA1} vor Augen.
+\begin{enumerate}
+	\item Der erste Buchstabe (der Buchstabe ganz links) des Eingabeworts ist $0$. Wir müssen nun schauen, wohin die gerichtete Kante, ausgehend vom aktuellen Zustand $q_0$, beim Lesen von $0$ führt. Wie wir sehen, führt uns die Kante, die mit einer $0$ markiert ist, zurück in den Zustand $q_0$. Wir bleiben also im Zustand $q_0$.
+	\item Danach liest $A$ nochmals den Buchstaben $0$. Genau wie im ersten Schritt, werden wieder der Kanten mit der $0$, die vom Zustand $q_0$ ausgeht, folgen. Damit befindet sich $A$ nach dem Lesen des Präfixes $\mathbf{00}$ von $w = \mathbf{00}101$ noch immer im Zustand $q_0$. Es bleibt noch das Suffix $101$ von $w$ zu lesen.
+	\item Nun liest $A$ das Symbol $1$ und wir müssen von unserem aktuellen Zustand $q_0$ aus, der mit $1$ markierten Kante folgen. Dadurch gelangt $A$ in den Zustand $q_1$.
+	\item $A$ liest im Zustand $q_1$ das Symbol $0$. Die mit $0$ markierte Kante, die von $q_1$ ausgeht, führt zurück nach $q_1$.
+	\item $A$ liest im Zustand $q_1$ das Symbol $1$. Die mit $1$ markierte Kante, der von $q_1$ ausgeht, führt ebenfalls zurück nach $q_1$.
+	\item $A$ hat das Eingabewort $w$ nun vollständig gelesen und beendet seine Arbeit im akzeptierenden Zustand $q_1$. Damit akzeptiert $A$ das Eingabewort $w = 00101$.
+\end{enumerate}
+$A$ akzeptiert genau die Eingabewörter aus $\lrc{0,1}^*$, die mindestens eine $1$ enthalten. Die Menge aller Wörter, welche von $A$ akzeptiert werden ist somit
+\begin{align}\label{eq:akezeptierte_sprache1}
+	\setcm{w\in\lrc{0,1}^*}{w = x1y\;\text{mit}\;x,y\in\lrc{0,1}^*}
 \end{align}
-Die Matrix $A_G$ ist wie folgt zu verstehen:\\
-
 \noindent
-Falls im Graphen eine Kantenverbindung vom Knoten $v_i$ ($i\in\lrc{1,2,3}$) zum Knoten $v_j$ ($j\in\lrc{1,2,3}$) besteht, dann setzt man den Matirx Eintrag $A^G_{i,j}$ (Eintrag in der $i$-ten Zeile und $j$-ten Spalte) auf das der Kante entsprechende Kantengewicht. Zum Beispiel besteht im Graphen die Kantenverbindung von  Effretikon ($v_2$) nach Winterthur ($v_3$), mit einem Kantengewicht von $\red{9}$. Damit wird der Eintrag $A^G_{2,3}$ der Adjazenzmatrix in der zweiten Zeile und der dritten Spalte auf den Wert $\red{9}$ gesetzt.\\
-Besteht keine Verbindung von Knoten $v_i$ nach $v_j$, so wird $A^G_{i,j} = 0$ gesetzt.\\
+Dies kann man wie folgt einsehen:
 
-\noindent
-Bei ungewichteten Graphen ist der Matrix Eintrag $A^G_{i,j} = 1$, falls eine Kante vom Knoten $v_i$ zum Knoten $v_j$ besteht und $A^G_{i,j} = 1$, falls keine Verbindung besteht.\\
+$A$ hat nur den einen akzeptierenden Zustand $q_1$. Beginnend im Anfangszustand $q_0$, wird der $A$ solange im Zustand $q_0$ bleiben (solange Nullen lesen), bis er das erste Mal eine $1$ liest. Durch das Lesen dieser $1$ gelangt $A$ in den Zustand $q_1$. Beide (alle) von $q_1$ ausgehenden Kanten führen direkt zurück zu $q_1$. Deshalb wird der $A$ nach dem erstmaligen Lesen einer $1$, solange im akzeptierenden Zustand $q_1$ verbleiben, bis er die gesamte Eingabe gelesen hat und somit seine Arbeit in dem akzeptierenden Zustand beendet.\\
+$A$ akzeptiert somit alle binären Eingabewörter, die mindestens eine $1$ enthalten\footnote{Die Funktionsweise dieses endlichen Automaten könnte in Computer-Hardware zum Beispiel durch einen sogenannten \textit{Latch} (\textit{to latch} heisst auf Deutsch \enquote{einrasten}, \enquote{einklinken}) umgesetzt werden.}, was genau der Menge in Ausdruck \cref{eq:akezeptierte_sprache1} entspricht.
 
-\noindent
-Es spielt keine Rolle, welche konkrete Nummerierung der Knoten im Graphen gewählt wird. Die Adjazenzmatrix wird immer genau eine vollständige Beschreibung des ihr entsprechenden Graphen liefern.
+Man bemerke, dass die Menge
+\begin{align}\label{eq:L}
+	L := \setcm{w\in\lrc{0,1}^*}{w = x1y\;\text{mit}\;x,y\in\lrc{0,1}^*} \subseteq \lrc{0,1}^*
+\end{align}
+eine Teilmenge von $\lrc{0,1}^*$ ist. Somit ist $L$ eine Sprache über dem Alphabet $\lrc{0,1}$. Die Menge $L$ ist die Sprache aller Wörter, die von dem endlichen Automaten $A$ akzeptiert werden.\\
 
-\begin{mdframed}[backgroundcolor=green!20,nobreak=true]\label{vorgehen_adjazenz}
-	\textbf{Aufstellen der Adjazenzmatrix bei gegebenem Graphen}\\
-	Gegeben sei ein Graph $G = (V,E)$ als Bild oder als Beschreibung durch Mengen.\\
-	Die zu $G$ gehörige Adjazenzmatrix $A^G$ wird wie folgt aufgestellt:
-	\begin{enumerate}
-		\item Sei $n:= |V|$ die Anzahl der Knoten in $G$. Dann hat $A^G$ eine Anzahl von $n$ Zeilen und $n$ Spalten (und ist somit eine quadratische Matrix).
-		\item Wähle eine beliebige Nummerierung der $n$ Knoten von $G$ und beschrifte den $i$-ten Knoten mit $v_i$ für $i\in\lrc{1,2,\ldots ,n}$.\\
-		      \gray{Die genaue Form von $A^G$ hängt von der konkreten Wahl der Nummerierung ab, die von $A^G$ festgehaltene Information über $G$ jedoch nicht.}
-		\item Falls in $G$ \textbf{keine} Kantenverbindung von $v_i$, $i\in\lrc{1,2,\ldots ,n}$,  nach $v_j$, $j\in\lrc{1,2,\ldots ,n}$, existiert, dann setze $A^G_{i,j} = 0$. Falls eine solche Kantenverbindung existiert, dann setze
-		      \begin{itemize}
-			      \item bei ungewichteten Graphen: $A^G_{i,j} = 1$,
-			      \item bei gewichteten Graphen: $A^G_{i,j} = w_{i,j}$, wobei $w_{i,j}$ das Gewicht der Kante von $v_i$ nach $v_j$ ist.
-		      \end{itemize}
-	\end{enumerate}
-\end{mdframed}
+\begin{myexample}\label{myexample:Aabb}
+Sei $L_{abb}$ die Sprache aller Wörter über $\Sigma = \lrc{a,b,c}$, welche mit $a$ beginnen und mit $bb$ enden, genauer:
+\begin{align}\label{eq:Aabb}
+	L_{abb} := \setcm{w\in\lrc{a,b,c}^*}{w = axbb, \text{ für ein } x\in\lrc{a,b,c}^*}.
+\end{align}
+Entwerfen Sie einen endlichen Automaten (in grafischer Form), welcher die Sprache $L$ akzeptiert.
 
-\noindent
-Wir haben gesehen, wie ein gegebener Graph mit nummerierten Knoten eindeutig durch eine Adjazenzmatrix dargestellt werden kann. Umgekehrt, lässt sich aus einer gegebener Adjazenzmatrix ein eindeutiger Graph gewinnen. Damit ist eine Adjazenzmatrix eine alternative Repräsentation eines Graphen.\\
-Adjazenzmatrizen ungewichteter lassen sich einfach durch ein Wort über dem Alphabet $\lrc{0,1,\#}$ darstellen (für gewichtete Graphen ist die Darstellung etwas weniger offensichtlich). Beispielsweise ist die Kodierung der Matrix
-\begin{align*}
-	\left( \begin{matrix} 0 & 0 & 0 & 1 \\ 1 & 0 & 1 & 0 \\ 1 & 0 & 0 & 1 \\ 1 & 1 & 0 & 0 \end{matrix} \right)
-\end{align*}
-gegeben durch das Wort
-\begin{align*}
-	0001\#1010\#1001\#1100
-\end{align*}
+\textbf{Lösung}:
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+			semithick]
+		\tikzstyle{every state}=[fill=blue!10,draw=black,text=black]
 
-\begin{myexercise}%[difficulty={1}]
+		\node[initial,state] (A) {$q_0$};
+		\node[state] (B) [below right of=A] {$q_t$};
+		\node[state] (C) [right of=A] {$q_{a}$};
+		\node[state] (D) [right of=C] {$q_{ab}$};
+		\node[state, accepting] (E) [right of=D] {$q_{abb}$};
+		\path (A) edge node {$a$} (C)
+		(A) edge node {$b,c$} (B)
+
+		(B) edge [loop right] node {$a,b,c$} (B)
+
+		(C) edge [loop above] node {$a,c$} (D)
+		(C) edge [bend left] node {$b$} (D)
+
+		(D) edge node {$b$} (E)
+		(D) edge node {$a,c$} (C)
+
+		(E) edge [loop above] node {$b$} (E)
+		(E) edge [bend left] node {$a,c$} (C);
+	\end{tikzpicture}
+	\caption{Endlicher Automat $A$ für die Sprache $L_{abb}$ in Ausdruck \cref{eq:Aabb}.}
+	\label{fig:Aabb}
+\end{figure}
+\textbf{Erklärung}:
+
+Sei $w\in\lrc{a,b,c}^*$ ein Eingabewort für den endlichen Automaten $A$ in \cref{fig:Aabb}. $A$ beginnt seine Arbeit im Zustand $q_0$ und liest den ersten Buchstaben von $w$.
+\begin{itemize}
+	\item Falls $w$ nicht mit $a$ beginnt (sondern mit $b$ oder $c$), geht $A$ beim Lesen des ersten Buchstabens von $w$ in den nicht akzeptierend \textit{Abfallzustand} (trash) $q_t$ über. Dort wird der Automat bleiben, egal welche weiteren Buchstaben von $w$ er liest. $A$ wird für $w$ im nicht akzeptierenden Zustand $q_t$ seine Arbeit beenden ($\to w$ wird verworfen).
+	\item Falls $w$ mit $a$ beginnt, wechselt $A$ in den Zustand $q_a$.
+	\item Falls $A$ im Zustand $q_a$ die Buchstaben $a$ oder $c$ liest, dann bleibt $A$ im Zustand $q_a$.
+	\item Falls $A$ im Zustand $q_a$ den Buchstaben $b$ liest, geht er in den Zustand $q_{ab}$ über.
+	\item Die Wörter, welche den endlichen Automaten $A$ in den Zustand $q_{ab}$ führen, beginnen mit $a$, enden mit $b$, haben aber an ihrer zweitletzten Stelle nicht das Symbol $b$ (siehe dazu \cref{myexercise:0402}).
+	\item Falls $A$ in $q_{ab}$ die Buchstaben $a$ oder $c$ liest, dann kann das bislang gelesene Präfix von $w$ nicht mit $b$ enden und $A$ geht zurück zu $q_a$.
+	\item Falls $A$ in $q_{ab}$ nochmals ein $b$ liest, endet das bislang gelesene Präfix von $w$ mit $bb$ und $A$ wechselt in den akzeptierenden Zustand $q_{abb}$.
+	\item $A$ bleibt beim weiteren Lesen von $b$ in $q_{abb}$ (das gelesene Präfix von $w$ endet dann immer noch mit $bb$), ansonsten muss der Automat zurück in den Zustand $q_a$.
+\end{itemize}
+\end{myexample}
+
+\begin{myremark}
+	Beachten Sie, dass ein endlicher Automat ein Eingabewort $w$ nicht sofort akzeptiert, nur weil er während seiner Arbeit auf $w$ akzeptierenden Zustände (einmal oder mehrfach) durchläuft. Die Entscheidung \enquote{\textit{akzeptieren} oder \textit{verwerfen}} wird erst mit dem Lesen des letzten Buchstabens von $w$ getroffen. Befindet sich der Automat nach dem Lesen des letzten Buchstabens von $w$ in einem verwerfenden Zustand, dann verwirft der Automat $w$. Befindet er sich dann in einem akzeptieren Zustand, dann akzeptiert der Automat $w$.
+
+	Bei der Arbeit auf dem Wort $w = abbc$ zum Beispiel, durchläuft der endliche Automat in \cref{fig:Aabb} zwar den akzeptierenden Zustand $q_{abb}$, beendet seine Arbeit aber im nicht akzeptierenden Zustand $q_a$. Dies ist auch richtig, denn $w = abbc$ liegt nicht in der Sprache $L_{abb}$.
+\end{myremark}
+
+Bei der Graphendarstellung, müssen von jedem Knoten genauso viele Kanten (Pfeile) ausgehen, wie das Eingabealphabet des Automaten Symbole hat. Wenn der endliche Automat das Eingabealphabet $\Sigma$ hat, dann muss der Ausgangsgrad (Anzahl der gerichteten Kanten, welche von dem Knoten ausgehen) jedes Knoten genau $|\Sigma|$ sein. Wäre der Ausgangsgrad eines Knoten kleiner, dann wäre die Arbeit des endlichen Automaten auf mindestens einem Symbol seines Eingabealphabets nicht definiert, was man natürlich nicht möchte.
+
+\begin{myexercise}\label{myexercise:0400}
 	\noindent
-	Überlegen Sie sich eine mögliche Kodierung der Adjazenzmatrix
-	\begin{align*}
-		\left( \begin{matrix} 0 & 7 & 3 & 5 \\ 8 & 0 & 1 & 4 \\ 7 & 6 & 6 & 2 \\ 4 & 9 & 2 & 0 \end{matrix} \right)
-	\end{align*}
-	über dem Alphabet $\lrc{0,1,\#}$
+	Entwerfen Sie einen endlichen Automaten für die Sprache
+	\begin{align}\label{eq:L1}
+		L_1 := \setcm{w\in\lrc{0,1}^*}{w = x0100y\;\text{mit}\;x,y\in\lrc{0,1}^*}
+	\end{align}
 \end{myexercise}
-\begin{myanswer}
-	\noindent
-	Jedes Kantengewicht $w$ kodieren wir durch $\text{Bin}(w)$, die einzelnen Kodierungen der Gewichte werden durch $\#$ abgetrennt. Das Ende einer Zeile wird durch $\#\#$ markiert. Damit erhalten wir folgende Kodierung der gegebenen Adjazenzmatrix:
-	\begin{align*}
-		0 \# 111 \# 11 \# 101 \#\# 1000 \# 0 \# 1 \# 100 \#\# 111 \# 110 \# 110 \# 10 \#\# 100 \# 1001 \# 10 \# 0
-	\end{align*}
-\end{myanswer}
 
-\begin{myexercise}%[difficulty={1}]
-	\noindent
-	Welche Einträge haben bei jeder Adjazenzmatrix immer den Wert 0?\\
+
+\begin{myexercise}\label{myexercise:0401}
+	Beschreiben Sie die Sprache $L_2$, der von dem endlichen Automaten in \cref{fig:L2} akzeptierten Wörter.
 \end{myexercise}
-\begin{myanswer}
-	\noindent
-	Die sogenannten \textit{Diagonalemente}. Dies sind die Einträge, bei denen die Zeilennummer mit der Spaltennummer übereinstimmt, also alle Einträge der Form $A^G_{i,i}$.\\
-	Angenommen, ein Diagonalelement wäre nicht 0. Dann würde im zur Adjazenzmatrix gehörenden Graphen eine Verbindung der Form $\lrc{v_i,v_i}$ beziehungsweise $(v_i,v_i)$ bestehen. Dies darf aber gemäss der Definition der Kantenmenge nicht sein, weil sie Kantenverbindungen von einem Knoten zu sich selbst ausschliesst.
-\end{myanswer}
+%
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
+			semithick]
+		\tikzstyle{every state}=[fill=blue!10,draw=black,text=black]
 
-\subsubsection{Knotenüberdeckung (vertex cover)}
-Nun haben wir genügend Wissen über Graphen um ein sehr interessantes Entscheidungsproblem in Zusammenhang mit Graphen elegant beschreiben zu können. In diesem Unterabschnitt werden wir uns auf ungerichtete Graphen beschränken.\\
-\begin{mydefinition}[Knotenüberdeckung (vertex cover)]{mydefinition:knotenueberdeckung}
-Man sagt, dass eine Kante $\lrc{u,v}$ \textbf{\textit{inzident}} zu genau ihren Endpunkten $u$ und $v$ ist.\\
-Eine \textbf{\textit{Knotenüberdeckung}} (englisch: \textit{vertex cover}) eines Graphen $G = (V,E)$ ist jede Knotenmenge $U\subseteq V$, so dass jede Kante aus $E$ zu mindestens einem Knoten aus $U$ inzident ist.\\
-\gray{Eine Teilmenge $U$ der Knotenmenge $V$ eines Graphen $G=(V,E)$ ist also eine Knotenüberdeckung, falls jede Kante $e\in E$ mindestens einen ihrer beiden Endpunkte in $U$ hat.}
+		\node[initial,state, accepting] (A) {$p_0$};
+		\node[state] (B) [right of=A] {$p_1$};
+		\node[state] (C) [below of=A] {$p_2$};
+		\node[state, accepting] (D) [right of=C] {$p_3$};
+		\path (A) edge [bend right, below] node {$b$} (B)
+		(A) edge [bend right, left] node {$a$} (C)
+
+		(B) edge [bend right,above] node {$b$} (A)
+		(B) edge [bend right, left] node {$a$} (D)
+
+		(C) edge [bend right, right] node {$a$} (A)
+		(C) edge [bend right, below] node {$b$} (D)
+
+		(D) edge [bend right, right] node {$a$} (B)
+		(D) edge [bend right, above] node {$b$} (C);
+	\end{tikzpicture}
+	\caption{Endlicher Automat für die Sprache $L_2$.}
+	\label{fig:L2}
+\end{figure}
+
+\begin{myexercise}\label{myexercise:0402}
+	Betrachten Sie den endlichen Automaten in \cref{fig:Aabb}. Beschreiben Sie mathematisch präzise die Teilmenge $M_{ab}$ aller Wörter über $\lrc{a,b,c}$, welche in den Zustand $q_{ab}$ führen.
+\end{myexercise}
+
+\subsection{Darstellung durch Programme}\label{subsec:Programmdarstellung}
+In diesem Unterabschnitt werden wir sehen, dass die Graphendarstellung von endlichen Automaten äquivalent zur Darstellung durch gewisse spezielle Programme (Programmdarstellung) ist.
+
+Die Programme sind speziell in dem Sinne, dass sie lediglich Speicher zur Abspeicherung des Programms und zum Speichern eines \enquote{Zeigers}, der auf die aktuell auszuführende Zeile des Programms zeigt. Dies bedeutet aber, dass das Programm keinen Speicher für Variablen zur Verfügung hat. Der Inhalt des Zeigers, also die Nummer der aktuellen Programmzeile, ist die einzige wechselnde Information.
+
+Um die Äquivalenz einzusehen, werden wir eine Methode demonstrieren, welche jede Graphendarstellung in ein äquivalentes Programm übersetzt (und umgekehrt). Bevor wir die Methode allgemein beschreiben, möchten wir das Vorgehen anhand eines Beispiels entwickeln. Betrachten Sie dazu den endlichen Automaten in \cref{fig:EA2}.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+			semithick]
+		\tikzstyle{every state}=[fill=blue!10,draw=black,text=black]
+
+		\node[initial, accepting, state] (A) {$q$};
+		\node[state] (B) [right of=A] {$p$};
+		\node[state] (C) [below of=A] {$r$};
+		\path (A) edge node {$a,b$} (B)
+		(A) edge [bend right, right] node {$c$} (C)
+		(B) edge [loop right] node {$a,b,c$} (B)
+		(C) edge [right] node {$a,c$} (B)
+		(C) edge [bend right, left] node {$\strut b$} (A);
+	\end{tikzpicture}
+	\caption{Endlicher Automat mit der Zustandsmenge $\lrc{q,p,r}$.}
+	\label{fig:EA2}
+\end{figure}
+In einem ersten Schritt möchten wir die Zustände $q,p,r$ durch die Nummern $0,1,2$ ersetzen. Die Vergabe der Nummern kann beliebig gewählt werden\footnote{Die zugehörigen Programme werden die gleichen Entscheidungen treffen und bis auf einfache Vertauschungen von Nummern identisch sein. Siehe dazu auch \cref{myexercise:0403}.}, aber dem Anfangszustand muss die Nummer $0$ zugewiesen werden. Wir wählen für $p$ die Nummer $1$ und für $r$ die Nummer $2$. Damit erhalten wir den \enquote{nummerierten Graphen} in \cref{fig:EA3}.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+			semithick]
+		\tikzstyle{every state}=[fill=blue!10,draw=black,text=black]
+
+		\node[initial, accepting, state] (A) {$0$};
+		\node[state] (B) [right of=A] {$1$};
+		\node[state] (C) [below of=A] {$2$};
+		\path (A) edge node {$a,b$} (B)
+		(A) edge [bend right, right] node {$c$} (C)
+		(B) edge [loop right] node {$a,b,c$} (B)
+		(C) edge [right] node {$a,c$} (B)
+		(C) edge [bend right, left] node {$\strut b$} (A);
+	\end{tikzpicture}
+	\caption{Nummerierte Version des endlichen Automaten in \cref{fig:EA2} mit Zustandsmenge $\lrc{0,1,2}$.}
+	\label{fig:EA3}
+\end{figure}
+
+Wir möchten nun ein Programm entwerfen, welches den endlichen Automaten in \cref{fig:EA3} beschreibt, jedoch ohne Variablen auskommt. Das Programm soll genau so viele Zeilen haben, wie der endliche Automat Zustände (Knoten) hat. In diesem Fall wird das Programm entsprechend genau drei Zeilen haben. Die Nummerierung der Zustände wird dabei genau der Nummerierung der Programmzeilen entsprechen. Deshalb ist es wichtig, dass der Anfangszustand die Nummer $0$ erhält, da das Programm von oben nach unten abgearbeitet wird und somit bei Zeile $0$ seine Arbeit beginnt. Das Programm erhält das Eingabewort des endlichen Automaten als Input.
+
+Falls das erste Symbol des Input $a$ oder $b$ ist, dann soll das Programm zu Zeile $1$ springen. Falls das erste Symbol ein $c$ ist, soll das Programm zu Zeile $2$ springen. Nach dem Lesen eines Symbols des Eingabebandes wird dieses automatisch gelöscht und das nächste wird gelesen. Analog ist das Vorgehen für die anderen beiden Zeilen $1$ und $2$ des Programms. Insgesamt wird die Programmdarstellung des endlichen Automaten in \cref{fig:EA3} durch folgendes Programm beschrieben:
+\begin{lstlisting}[language=C++, firstnumber=0]
+if input = a goto 1, if input = b goto 1, if input = c goto 2;
+if input = a goto 1, if input = b goto 1, if input = c goto 1;
+if input = a goto 1, if input = b goto 0, if input = c goto 1;
+\end{lstlisting}
+Falls der endliche Automat in \cref{fig:EA3} im Zustand $0$ das Symbol $a$ oder $b$ liest, dann wechselt er in den Zustand $1$. Falls er das Symbol $c$ liest, dann wechselt er in den Zustand $2$. Genau so geht auch unser obiges Programm vor:
+
+Falls (\cppinline{if}) das Programm in Zeile $0$ das Symbol $a$ vom Input erhält (liest), springt es mit dem \cppinline{goto} Befehl zur Zeile $1$. Dasselbe gilt, wenn in Zeile $0$ der Input $b$ gelesen wird. Falls in Zeile $0$ der Input $c$ gelesen wird, springt das Programm zur Zeile $2$. Das Vorgehen für die Programmzeilen $1$ und $2$ (beziehungsweise die Zustände $1$ und $2$) ist völlig analog.
+
+\begin{myexercise}\label{myexercise:0403}
+	Wie müsste obiges Programm angepasst werden, falls wir für die Zustände in \cref{fig:EA2} die Nummerierung $q \leftrightarrow 0$, $r \leftrightarrow 1$ und $p \leftrightarrow 2$ gewählt hätten?
+\end{myexercise}
+
+Nun sollte deutlicher geworden sein, wie auch ein beliebiger endlicher Automat in ein solch spezielles Programm ohne Variablen transformiert werden kann. Das zu einem endlichen Automaten $A$ (beziehungsweise seiner Graphendarstellung $G(A)$) gehörige Programm werden wir mit $P(A)$ bezeichnen.
+
+Sei $\Sigma = \lrc{s_1,\ldots ,s_m}$ das Eingabealphabet eines endlichen Automaten $A$. \textbf{Eine Zeile} von $P(A)$ hat die Form:
+\begin{align}\label{eq:erlauberBefehl}
+	 & \text{\textbf{erlaubter Befehl (eine Zeile)}:}\nonumber                                                  \\
+	 & \text{\textbf{\textcolor{DarkGreen}{if}} input }= s_1 \text{ \textbf{\textcolor{DarkGreen}{goto}} } i_1,
+	\text{ \textbf{\textcolor{DarkGreen}{if}} input }= s_2 \text{ \textbf{\textcolor{DarkGreen}{goto}} } i_2,\text{ \ldots  },
+	\text{ \textbf{\textcolor{DarkGreen}{if}} input }= s_m \text{ \textbf{\textcolor{DarkGreen}{goto}} } i_m;
+\end{align}
+Die Bedeutung dieses Befehls ist, dass man das nächste Symbol der Eingabe liest und mit $s_1,s_2,\ldots ,s_m$ vergleicht. Falls dieses Symbol gleich $s_j$ ist, setzt das Programm seine Arbeit in der Zeile $i_j$ fort. Dabei wird das gelesene Symbol gelöscht und in der Zeile $i_j$ wird das nächste Symbol der Eingabe gelesen. Man beachte, dass die Zeilen des Programms nummeriert sind, wobei die Nummerierung bei $0$ beginnt.\\
+Diese Programme lösen Entscheidungsprobleme. Die Ausgabe des Programms ist bestimmt durch die Zeilennummer, in der das Programm seine Arbeit beendet. Falls das Programm aus $k$ Zeilen besteht, wählt man eine Teilmenge $F$ von $\lrc{0,1,\ldots ,k-1}$ aus. Wenn das Programm nach dem vollständigen Lesen der Eingabe in der $j$-ten Zeile endet, und $j\in F$, dann akzeptiert das Programm die Eingabe. Falls $j\in (\lrc{0,1,\ldots ,k-1} \setminus F)$, dann akzeptiert das Programm die Eingabe nicht.
+
+Die eins-zu-eins-Korrespondenz zwischen einem endlichen Automaten $A$ und seiner Programmdarstellung $P(A)$ sollte nun offensichtlich sein:
+
+Man nummeriert die Zustände von $A$. $P(A)$ hat genau so viele Zeilen wie der $A$ Zustände hat, und jedem Zustand von $A$ ist genau eine Zeile in $P(A)$ zugeordnet, welche die Nummer des Zustands trägt. Falls $A$ beim Lesen eines Symbols $\alpha$ von Zustand $i$ in Zustand $j$ übergeht (eine gerichtete Kante mit Markierung $\alpha$ von $i$ nach $j$ hat), dann springt das Programm in Zeile $i$ beim Lesen von $\alpha$ in die Zeile $j$.
+
+Aufgrund dieser Äquivalenz kann ein endlicher Automat auch durch sein Programm $P(A)$ identifiziert werden.
+
+Mit endlichen Automaten verbindet man oft die schematische Darstellung in \cref{fig:EA_schema}. Das Modell besteht aus den drei Hauptkomponenten \textbf{Eingabeband}, \textbf{Lesekopf} und \textbf{Programm}. Das Programm haben wir oben im Detail beschrieben. Das Eingabeband besteht aus einzelnen Feldern. Ein Feld ist eine atomare Speichereinheit, die ein Symbol des betrachteten Alphabets beinhalten kann. Das Eingabeband hat in diesem Modell die Bedeutung des Eingabeworts. Der Lesekopf kann sich entlang des Eingabebandes nur von links nach recht bewegen. Der Lesekopf liest den Inhalt des Feldes, auf das er zeigt.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\node (X) at (0,0) {x};
+		% \begin{scope}[start chain, node distance=-0.15mm]
+		% 	\node [tmtape] (inputbegin) {$a_1$};
+		% 	\node [tmtape] {$a_2$};
+		% 	\node [tmtape] {$a_3$};
+		% 	\node [tmtape, minimum width=2\tmtapesize] {$\ldots $};
+		% 	\node [tmtape] (inputcursor) {$a_i$};
+		% 	\node [tmtape, minimum width=2\tmtapesize] {$\ldots $};
+		% 	\node [tmtape] {$a_{n-1}$};
+		% 	\node [tmtape] (inputend) {$a_n$};
+		% \end{scope}
+		%
+		% 	\node [tmtapecursor] (inputcursor) at (inputcursor) {};
+		%
+		% \node [draw, align=center, inner sep=5mm] (control) [below=2cm of inputcursor] {\textbf{Programm}\\(Zustand)};
+		% \node [align=left, font=\scriptsize, inner sep=0pt, above=2mm of inputcursor] {Lesekopf, bewegt\\sich nach rechts $\to$};
+		% \node at (3.8,-1.1) [font=\scriptsize] {\textbf{Lesekopf}};
+		%
+		% \node [inner sep=0pt, left=4mm of inputbegin] {\textbf{Eingabeband}};
+		%
+		% \begin{scope}[->, >=stealth', shorten >=1pt, auto]
+		% 	\draw (control.north) -- ++(0,0.75) -| (inputcursor);
+		% \end{scope}
+	\end{tikzpicture}
+	\caption{Schematische Darstellung eines endlichen Automaten.}
+	\label{fig:EA_schema}
+\end{figure}
+
+\subsection{Formale Definition}\label{subsec:formaleDefinitionEA}
+Nach den Betrachtungen in den Unterabschnitten \cref{subsec:graphenDarstellung} und \cref{subsec:Programmdarstellung} wollen wir nun eine formale Definition von endlichen Automaten angeben. Diese Definition wird uns sehr natürlich erscheinen.
+\begin{mydefinition}[endlicher Automat]\label{mydefinition:endlicherAutomat}
+Ein (deterministischer) \textit{\textbf{endlicher Automat}} $M$ ist ein $5$-Tupel $M = (Q,\Sigma, \delta, q_0, F)$, wobei die einzelnen Komponenten des $5$-Tupels wie folgt zu verstehen sind:
+\begin{enumerate}[label=(\roman*)]
+	\item $Q$ ist eine endliche Menge von \textit{\textbf{Zuständen}}.
+
+	      \textcolor{Gray}{Die Zustände entsprechen der Menge der Zeilen in der Programmdarstellung und der Knotenmenge in der Graphendarstellung.}
+	\item $\Sigma$ ist ein Alphabet, genannt \textit{\textbf{Eingabealphabet}.}
+
+	      \textcolor{Gray}{Die Zulässigen Eingaben für den endlichen Automaten sind alle Wörter über $\Sigma$. Die Bedeutung des Eingabealpabets ist bei der Programmdarstellung und Graphendarstellung genau gleich.}
+	\item $q_0$ ist der \textit{\textbf{Anfangszustand}}.
+
+	      \textcolor{Gray}{$q_0$ entspricht dem mit \enquote{start} markierten Knoten in der Graphendarstellung und der Zeile $0$ in der Programmdarstellung.}
+	\item $F\subseteq Q$ ist die \textit{\textbf{Menge der akzeptierenden Zustände}}.
+
+	      \textcolor{Gray}{Dies entspricht der Menge der akzeptierenden Knoten in der Graphendarstellung und Menge der akzeptierenden Programmzeilen in der Programmdarstellung.}
+	\item $\delta$ ist eine Funktion $Q\times \Sigma \to Q$, die \textit{\textbf{Übergangsfunktion}} genannt wird.
+
+	      \textcolor{Gray}{Die Übergangsfunktion erhält zwei Argumente. Das erste Argument $q\in Q$  ist der Zustand, in dem sich der endliche Automat $M$ aktuell befindet. Das zweite Argument $a\in \Sigma$ ist ein Symbol (des Eingabeworts), welches der $M$ aktuell liest. $\delta (q,a) = p$ bedeutet, dass $M$ in den Zustand $p$ übergeht, falls $M$ im Zustand $q$ das Symbol $a$ gelesen hat. In der Graphendarstellung von $M$ existiert eine gerichtete Kante (Knoten), welche mit $a$ beschriftet ist und vom Zustand (Knoten) $q$ zum Zustand (Knoten) $p$ führt. In der Programmdarstellung von $M$ existiert eine Programmzeile $q$\footnote{Genauer gesagt, eine Programmzeile mit der Nummer, welcher dem Zustand $q$ bei der Nummerierung der Zustände zugeordnet wird.} der Form \cref{eq:erlauberBefehl}, welche durch einem \cppinline{goto} Befehl beim Lesen des Inputs $a$ zur Zeile $p$ (der Zeilennummer, welche $p$ zugeordnet ist).}
+\end{enumerate}
 \end{mydefinition}
-Betrachten wir zum Beispiel den Graphen in Abbildung \cref{fig:VC}.
+Eine \textit{\textbf{Konfiguration}} von $M$ ist ein Element aus $Q\times \Sigma^*$.
 
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
-		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+\textcolor{Gray}{Wenn sich $M$ in einer Konfiguration $(q,w)\in (Q\times \Sigma^*$) befindet, bedeutet dies, dass sich $M$ im Zustand $q$ befindet und noch das Suffix $w$ eines Eingabewortes lesen muss.}\\
 
-		\node[state] (A)                    {$v_1$};
-		\node[state,fill=red!20] (B) [above right of=A] {$v_2$};
-		\node[state,fill=red!20] (C) [right of=B]       {$v_3$};
-		\node[state,fill=red!20] (D) [right of=C]       {$v_4$};
-		\node[state,fill=red!20] (E) [below right of=A] {$v_5$};
-		\node[state] (F) [right of=E]       {$v_6$};
+Die Konfiguration $(q_0,w)\in (\lrc{q_0}\times \Sigma)$ ist die \textit{\textbf{Startkonfiguration von $M$ auf $w$}}.
 
-		\path (A) edge node {} (B)
-		edge node {} (E)
-		(B) edge node {} (C)
-		edge node {} (E)
-		(C) edge node {} (D)
-		edge node {} (F)
-		(E) edge node {} (F);
-	\end{tikzpicture}
-	\caption{Graph mit $6$ Knoten. Die Menge $\lrc{v_2,v_3,v_4,v_5}$ (rot markierte Knoten) ist eine Knotenüberdeckung des Graphen.}
-	\label{fig:VC}
-\end{figure}
-\noindent
-Die Menge $\lrc{v_2,v_3,v_4,v_5}$ der $4$ rot markierten Knoten ist eine Knotenüberdeckung des Graphen, da jede der $7$ Kanten des Graphen mindestens einer ihrer Endpunkte in dieser Menge hat.\\
-Jedoch ist die Menge $\lrc{v_2,v_3,v_4,v_5}$ keine \textbf{minimale} Knotenüberdeckung, denn die Knotenmenge $\lrc{v_2,v_3,v_5}$ (siehe Abbildung \cref{fig:VC1}) enthält einen Knoten weniger und ist ebenfalls eine Knotenüberdeckung .
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
-		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+\textcolor{Gray}{$M$ beginnt seine Arbeit auf dem Wort $w$ im Zustand $q_0$.}
 
-		\node[state] (A)                    {$v_1$};
-		\node[state,fill=red!20] (B) [above right of=A] {$v_2$};
-		\node[state,fill=red!20] (C) [right of=B]       {$v_3$};
-		\node[state] (D) [right of=C]       {$v_4$};
-		\node[state,fill=red!20] (E) [below right of=A] {$v_5$};
-		\node[state] (F) [right of=E]       {$v_6$};
+Jede Konfiguration aus $Q\times\lrc{\lambda}$ wird \textit{\textbf{Endkonfiguration}} genannt.
+\textcolor{Gray}{Das gesamte Eingabewort wurde gelesen. Es bleibt nichts mehr (nur noch das leere Wort $\lambda$) zu lesen.}
 
-		\path (A) edge node {} (B)
-		edge node {} (E)
-		(B) edge node {} (C)
-		edge node {} (E)
-		(C) edge node {} (D)
-		edge node {} (F)
-		(E) edge node {} (F);
-	\end{tikzpicture}
-	\caption{Die Menge $\lrc{v_2,v_3,v_5}$ (rot markierte Knoten) ist eine \textbf{minimale} Knotenüberdeckung des Graphen.}
-	\label{fig:VC1}
-\end{figure}
+Der Ausdruck $(q,w)\step{M} (p,v)$ soll die Bedeutung haben, dass die Konfiguration $(p,v)$ in einem \textit{\textbf{Schritt}} von $M$ aus der Konfiguration $(q,w)$ erreicht wird:
+\begin{align*}
+	(q,w)\step{M} (p,v) \quad \Longleftrightarrow \quad w = av, a\in\Sigma\text{ und } \delta(q,a) = p
+\end{align*}
+Da $w = av$, ist $a$ das vorderste Symbol in $w$ und wird deshalb als nächstes gelesen.
 
-\begin{mydefinition}[Entscheidungsproblem der Knotenüberdeckung]{mydefinition:entscheidungVC}
-Das \textbf{Entscheidungsproblem der Knotenüberdeckung}, besteht darin für einen gegebenen Graphen $G$ und eine feste natürliche Zahl $k$ zu entscheiden, ob $G$ ein ungerichteter Graph ist, der eine Knotenüberdeckung mit maximal $k$ vielen Knoten besitzt. Man möchte also für einen Graphen $G$ und eine natürliche Zahl $k$ entscheiden, ob das geordnete Paar $(G,k)$ in der Menge
+\textcolor{Gray}{Ein Schritt entspricht der Anwendung der Übergangsfunktion auf die Konfiguration, in der sich $M$ im Zustand $q$ befindet und das Symbol $a$ liest.}
+
+Eine \textit{\textbf{Berechnung}} $C$ von $M$ ist eine endliche Folge $C = C_0, C_1, \ldots , C_n$ von Konfigurationen, mit $C_i\step{M} C_{i+1}$ für alle $i\in\lrc{0,1,\ldots , n-1}$.
+
+$C$ ist \textbf{die Berechnung von $M$ auf einem Eingabewort $x\in\Sigma^*$}, falls $C_0 = (q_0,x)$ und $C_n\in (Q\times \lrc{\lambda})$ (das heisst, $C_n$ ist eine Endkonfiguration).
+
+\begin{itemize}
+	\item Falls $C_n\in (F\times \lrc{\lambda})$ (zur Erinnerung: $F$ ist die Menge der akzeptierenden Zustände), dann ist $C$ eine \textbf{akzeptierende Berechnung} von $M$ auf $x$. Man sagt dann, dass \textbf{$M$ das Wort $x$ akzeptiert.}
+
+	      \textcolor{Gray}{$M$ endet seine Arbeit auf dem Eingabewort $x$ in einem akzeptierenden Zustand.}
+	\item Falls $C_n\in ((Q-F)\times \lrc{\lambda})$, dann ist $C$ eine \textbf{verwerfende Berechnung} von $M$ auf $x$. Man sagt dann, dass \textbf{$M$ das Wort $x$ verwirft} (oder \textbf{nicht akzeptiert}).
+	      \textcolor{Gray}{$M$ endet seine Arbeit auf dem Eingabewort $x$ in einem verwerfenden Zustand.}
+\end{itemize}
+An dieser Stelle möchten wir betonen, dass ein endlicher Automat $M$ auf einem Wort $x\in\Sigma^*$ offensichtlich genau eine Berechnung hat.
+
+Wir möchten nun eine sehr interessante und wichtige Sprache definieren.
+\begin{mydefinition}[akzeptiere Sprache eines endlichen Automaten]\label{mydefinition:akzeptiereSpracheEA}
+Die \textbf{von $M$ akzeptierte Sprache $L(M)$} ist definiert als
 \begin{equation*}
 	\begin{split}
-		\text{VC} =\{ (G,k) \;|\; & \text{$G$ ist ein ungerichteter Graph mit einer Knotenüberdeckung } \\
-		                          & \text{(vertex cover) der Mächtigkeit höchstens $k$} \}
+		L(M) =\{ w\in\Sigma^* \; ; \; & \text{die Berechnung von $M$ auf $w$ endet in einer }  \\
+		                              & \text{Endkonfiguration $(q,\lambda)$, mit $q\in F$} \}
 	\end{split}
 \end{equation*}
-liegt oder nicht.\\
-\gray{Noch etwas genauer ausgedrückt:
-	\begin{equation*}
-		\begin{split}
-			\text{VC} =\{ w\in\lrc{0,1,\#}^* \;|\; & \text{$w$ ist die Kodierung eines ungerichteten Graph mit einer } \\
-			                                       & \text{Knotenüberdeckung (vertex cover) der }                      \\
-			                                       & \text{Mächtigkeit höchstens $k$} \}
-		\end{split}
-	\end{equation*}}
 \end{mydefinition}
-Wie man überprüfen kann, lässt der Graph in Abbildung \cref{fig:VC1} zum Beispiel keine Knotenüberdeckung der Mächtigkeit höchstens $3$ zu.
+
+\begin{mydefinition}[Klasse der regulären Sprachen]\label{mydefinition:regulaereSprachen}
+$\mathcal{L}_{EA} = \setcm{L(M)}{\text{$M$ ist ein endlicher Automat}}$ ist die Klasse der Sprachen, welche von endlichen Automaten akzeptiert werden. $\mathcal{L}_{EA}$ wird als die \textbf{Klasse der regulären Sprachen} bezeichnet. Jede Sprache $L$ aus $\mathcal{L}_{EA}$ wird \textbf{regulär} (\textbf{reguläre Sprache}) genannt.
+\end{mydefinition}
+\clearpage
+\noindent
+Betrachten wir nochmals den endlichen Automaten in \cref{fig:EA2}. Diesen Automaten wollen wir nun \textbf{formal} beschreiben. Dazu genügt es, die $5$ Komponenten des $5$-Tupels $(Q,\Sigma, \delta, q_0, F)$ gemäss Definition \cref{mydefinition:endlicherAutomat}, anzugeben. Der zur Graphendarstellung in \cref{fig:EA2} äquivalente endliche Automat  ist $M = (Q,\Sigma, \delta, q_0, F)$, wobei:
+\begin{align*}
+	 & Q = \lrc{q,p,r}, \Sigma = \lrc{a,b,c}, q_0 = q, F = \lrc{q}\text{ und } \\
+	 & \delta(q,a) = p, \delta(q,b) = p, \delta(q,c) = r                       \\
+	 & \delta(p,a) = p, \delta(p,b) = p, \delta(p,c) = p                       \\
+	 & \delta(r,a) = p, \delta(r,b) = q, \delta(r,c) = p
+\end{align*}
+Man beachte, dass sich die Übergangsfunktion $\delta$ vollständig definieren lässt, indem man den Wert der Funktion für alle möglichen Argumente angibt.
+
+\begin{myexercise}\label{myexercise:0404}
+	Geben Sie die formale Definition des in \cref{fig:L2} dargestellten endlichen Automaten an.
+\end{myexercise}
+Zum Abschluss dieses Unterabschnitts wollen wir noch zwei nützliche Definitionen vorstellen.
+
+Die Schreibweise
+\begin{equation*}
+	(q,w) \hull{M} (p,u)
+\end{equation*}
+soll bedeuten, dass eine Berechnung von $M$ existiert, die von der Konfiguration $(q,w)$ zur Konfiguration $(p,u)$ führt. Diese Intuition wollen wir etwas genauer in einer Definition festhalten.
+\begin{mydefinition}[Stern-Operation (transitive Hülle der Schrittrelation)]{mydefinition:transitive_hull}
+Sei $M = (Q,\Sigma, \delta, q_0, F)$ ein endlicher Automat. Die Operation $\hull{M}$  werden wir \textit{Stern-Operation} nennen. Die Stern-Operation ist wie folgt definiert:
+\begin{align*}
+	(q,w) \hull{M} (p,u) \Longleftrightarrow (q = p\text{ und } w = u)\text{ oder es existiert ein } k\in\mathbb{N}-\lrc{0},
+\end{align*}
+sodass
+\begin{enumerate}[label=(\roman*)]
+	\item $w = a_1a_2\ldots a_ku$, $a_i\in\Sigma$, fü $i = 1,2,\ldots ,k$ und
+	\item es existieren $(k-1)$ Zustände $r_1, r_2, \ldots , r_{k-1}\in Q$, sodass
+
+	      $(q,w)\step{M}(r_1,a_2a_3\ldots a_ku)\step{M}(r_2,a_3a_4\ldots a_ku)\step{M}\ldots (r_{k-1},a_ku)\step{M} (p,u)$.
+\end{enumerate}
+\textcolor{Gray}{Gemäss dieser Definition gilt $(q,w) \hull{M} (p,u)$ genau dann, wenn entweder $q = p $ und $w = u$ (dann sind die Konfigurationen $(q,w)$ und $(p,u)$ identisch und $M$ hat $(p,u)$ trivialerweise schon erreicht) oder wenn Zwischenzustände existieren, über welche $M$ bei seiner Berechnung auf $w$ zur Konfiguration $(p,u)$ gelangt.}
+\end{mydefinition}
+
+Im engen Zusammenhang mit der Stern-Operation steht die Schreibweise
+\begin{equation*}
+	\deltah{q}{w} = p.
+\end{equation*}
+Diese soll die Bedeutung haben, dass wenn $M$ im Zustand $q$ das Wort $w$ zu lesen beginnt, dann endet $M$ im Zustand $p$. Dies ist gleichbedeutend mit der Aussage $(q,w)\hull{M} (p,\lambda)$. Man kann sich die Operation $\deltah{q}{w} = p$ so vorstellen, dass ausgehend von der Konfiguration $(q,w)$ so lange (iterativ) die Übergangsfunktion $\delta$ angewendet wird, bis die gesamte Eingabe $w$ abgearbeitet ist (auf das leere Wort $\lambda$ geschrumpft ist). Die Aussage $\deltah{q}{w} = p$ sagt aus, dass diese iterative Anwendung der Übergangsfunktion den endlichen Automaten schliesslich in den Endzustand $p$ (Endkonfiguration $(p,\lambda)$ führen wird.
+\begin{mydefinition}[Dach-Operation]{mydefinition:dach_operation}
+Sei $M = (Q,\Sigma, \delta, q_0, F)$ ein endlicher Automat. Wir definieren die Dach-Operation $\widehat{\delta}: Q\times \Sigma^* \to Q$ rekursiv wie folgt:
+\begin{enumerate}[label=(\roman*)]
+	\item $\deltah{q}{\lambda} = q$ für alle $q\in Q$ und\\
+	      \textcolor{Gray}{Beim Lesen des leeren Wortes bleibt der endliche Automat in seinem Zustand.}
+	\item $\deltah{q}{wa} = \delta (\deltah{q}{w},a)$\\
+	      \textcolor{Gray}{Der Ausdruck $\deltah{q}{w}$ entspricht einem Zustand. Wenn wir diesen mit $p$ bezeichnen, also $p:= \deltah{q}{w}$, dann sehen wir sofort, dass $\delta(\deltah{q}{w},a) = \delta(p,a)$ der normalen Anwendung der Übergangsfunktion $\delta$ (ohne Dach) beim Lesen des Symbols $a$ im Zustand $p$ entspricht.}
+\end{enumerate}
+\end{mydefinition}
+Mithilfe dieser zwei neuen Operationen lässt sich die von einem endlichen Automaten $M$ akzeptierte Sprache $L(M)$ (siehe Definition \cref{eq:akezeptierte_sprache1}) alternativ ausdrücken als:
+\begin{equation*}
+	\begin{split}
+		L(M) & = \{ w\in\Sigma^* \; ; \; (q_0,w) \hull{M} (p,\lambda) \text{ mit } q\in F\} \\
+		     & = \{ w\in\Sigma^* \; ; \; \deltah{q_0}{w}\in F\}.
+	\end{split}
+\end{equation*}
+%
+% \begin{myexample}{myexample:hat}
+% 	Wir führen hier nochmals den endlichen Automaten aus \cref{fig:EA2} auf:
+% 	\begin{figure}[H]
+% 		\centering
+% 		\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+% 				semithick]
+% 			\tikzstyle{every state}=[fill=blue!10,draw=black,text=black]
+% 			\node[initial, accepting, state] (A) {$q$};
+% 			\node[state] (B) [right of=A] {$p$};
+% 			\node[state] (C) [below of=A] {$r$};
+% 			\path (A) edge node {$a,b$} (B)
+% 			(A) edge [bend right, right] node {$c$} (C)
+% 			(B) edge [loop right] node {$a,b,c$} (B)
+% 			(C) edge [right] node {$a,c$} (B)
+% 			(C) edge [bend right, left] node {$\strut b$} (A);
+% 		\end{tikzpicture}
+% 		\caption{Endlicher Automat $A$.}
+% 		\label{fig:hat}
+% 	\end{figure}
+% 	\noindent
+% 	Wie wir bereits festgestellt haben, ist der zu dieser Graphendarstellung äquivalente endliche Automat $A = (Q,\Sigma, \delta, q_0, F)$, mit:
+% 	\begin{align*}
+% 		 & Q = \lrc{q,p,r}, \Sigma = \lrc{a,b,c}, q_0 = q, F = \lrc{q}\text{ und } \\
+% 		 & \delta(q,a) = p, \delta(q,b) = p, \delta(q,c) = r                       \\
+% 		 & \delta(p,a) = p, \delta(p,b) = p, \delta(p,c) = p                       \\
+% 		 & \delta(r,a) = p, \delta(r,b) = q, \delta(r,c) = p
+% 	\end{align*}
+% 	Für diesen endlichen Automaten gilt zum Beispiel die Aussage
+% 	\begin{align*}
+% 		(q,cbcbcabac) \hull{A} (r,abac),
+% 	\end{align*}
+% 	da eine Berechnung von $A$ auf dem Wort $cbcbcabac$ existiert, welche die Konfiguration $(q,cbcbcabac)$ zur Konfiguration $(r,abac)$ führt. Diese Berechnung lautet:
+% 	\begin{align*}
+% 		(q,cbcbcabac) \step{A} (r,bcbcabac) \step{A} (q,cbcabac) \step{A} (r,bcabac) \step{A} (q,cabac) \step{A} (r,abac).
+% 	\end{align*}
+% 	Für $M$ gilt auch
+% 	\begin{align*}
+% 		\deltah{r}{bcac} = p.
+% 	\end{align*}
+% 	Dies sehen wir ein, indem wir Punkt $(ii)$ der Definition \cref{mydefinition:dach_operation} wiederholt anwenden:
+% 	\begin{align*}
+% 		 & \deltah{r}{bcac} = \delta(\deltah{r}{bca},c) = \delta(\delta(\deltah{r}{bc},a),c) = \delta(\delta(\delta(\deltah{r}{bc},c),a),c) = \\
+% 		 & = \delta(\delta(\delta(\delta(\blue{\deltah{r}{\lambda}},b),c),a),c)
+% 	\end{align*}
+% 	Gemäss Punkt $(i)$ der Definition \cref{mydefinition:dach_operation} ist $\blue{\deltah{r}{\lambda}} = r$  und somit verschwinden alle Dach-Operationen aus dem Ausdruck (wir haben den Basis-Fall der Rekusion erreicht). Die Übergangsfunktionen $\delta$ lassen sich nun schrittweise von innen nach aussen auflösen:
+% 	\begin{align*}
+% 		 & \deltah{r}{bcac} = \delta(\deltah{r}{bca},c) = \delta(\delta(\deltah{r}{bc},a),c) = \delta(\delta(\delta(\deltah{r}{bc},c),a),c) = \\
+% 		 & = \delta(\delta(\delta(\delta(\deltah{r}{\lambda},b),c),a),c) = \quad\quad / \textcolor{Pink}{\to \deltah{r}{\lambda} = r}                 \\
+% 		 & = \delta(\delta(\delta(\delta(r,b),c),a),c) = \quad\quad / \textcolor{Pink}{\to \delta(r,b) = q}                                           \\
+% 		 & = \delta(\delta(\delta(q,c),a),c) = \quad\quad / \textcolor{Pink}{\to \delta(q,c) = r}                                                     \\
+% 		 & = \delta(\delta(r,a),c) = \quad\quad / \textcolor{Pink}{\to \delta(r,a) = p}                                                               \\
+% 		 & = \delta(p,c) = \quad\quad / \textcolor{Pink}{\to \delta(p,c) = p}                                                                         \\
+% 		 & = p
+% 	\end{align*}
+% \end{myexample}
+%
+% \section{Beweise der Nichtexistenz}
+% In Definition \cref{mydefinition:regulaereSprachen} haben wir die Klasse $\mathcal{L}_{EA}$ der regulären Sprachen kennengelernt. Eine Sprache $L$ ist regulär ($L\in\mathcal{L}_{EA}$), genau dann, wenn ein endlicher Automat $A$ existiert, welcher die Sprache $L$ akzeptiert ($L(A) = L$).\\
+% Um zu beweisen, dass eine gegebene Sprache $L$ regulär ist, genügt es also einen endlichen Automaten $A$ zu konstruieren und zu begründen, dass $L$ die von $A$ akzeptierte Sprache ist. Dieses Vorgehen haben wir bereits mehrfach demonstriert.
+%
+% Nun stellt sich natürlich die Frage, ob jede Sprache regulär ist, oder existieren Sprachen, die nicht regulär sind? Wie könnte man beweisen, dass eine Sprache nicht regulär ist?\\
+% Nur weil wir nicht in der Lage sind, einen endlichen Automaten, für eine Sprache zu finden, bedeutet dies nicht, dass die Sprache nicht regulär ist. Es könnte schliesslich sein, dass die Sprache zwar regulär ist, wir jedoch nicht die passende Idee für die Konstruktion eines entsprechenden endlichen Automaten gefunden haben. Unsere Unzulänglichkeit einen endlichen Automaten konstruieren zu können, ist kein Beweis dafür, dass die Sprache nicht regulär ist. Um korrekt zu beweisen, dass eine Sprache nicht regulär ist, müssen wir begründen, warum es keinen endlichen Automaten für diese Sprache geben kann.
+%
+% Im Unterschied zu konstruktiven Beweisen, bei denen man die Existenz
+% eines Objekts mit gewissen Eigenschaften direkt durch eine Konstruktion eines solchen
+% Objekts beweist (wir konstruieren zum Beispiel einen endlichen Automaten $M$ mit vier Zuständen, der
+% eine gegebene Sprache akzeptiert), kann man bei den Beweisen der Nichtexistenz mit
+% einer unendlichen Menge von Kandidaten (zum Beispiel allen endlichen Automaten)
+% nicht so vorgehen, dass man alle Kandidaten einen nach dem anderen betrachtet und
+% überprüft, dass keiner die gewünschten Eigenschaften hat. Um die Nichtexistenz eines
+% Objekts mit gegebenen Eigenschaften in einer unendlichen Klasse von Kandidaten zu
+% beweisen, muss man für gewöhnlich eine tiefgreifende Kenntnis über diese Klasse haben,
+% die im Widerspruch zu den gewünschten Eigenschaften steht.
+%
+% Beweise der Nichtexistenz gehören zu den schwierigsten Aufgaben der Informatik und der Mathematik überhaupt. Das $P$ vs $NP$ Problem, welches eines der bekanntesten offenen Probleme der Informatik ist, befasst sich ebenfalls mit der Problematik des Beweisens von Existenz oder Nichtexistenz\footnote{\url{https://www.claymath.org/millennium-problems/p-vs-np-problem}}.\\
+% Da endliche Automaten sehr stark eingeschränkte Programme sind (siehe Unterabschnitt \cref{subsec:Programmdarstellung}), ist der Beweis der Nichtexistenz eines endlichen Automaten für eine gegebene Sprache eine relativ einfache Aufgabe. Wir nutzen diese Tatsache, um eine einfache
+% Einführung in die Methodik der Erstellung von Beweisen der Nichtexistenz zu geben.\\
+% \clearpage
+%
+% \noindent
+% Das charakteristische Merkmal endlicher Automaten ist, dass sie zu jeder Zeit nur abgespeichert haben, in welchem Zustand sie sich aktuell befinden und welches Eingabesymbol sie als nächstes lesen werden. Ansonsten verfügen sie über keinen Speicher. Dies bedeutet insbesondere, dass ein endlicher Automat nicht abgespeichert hat (sich nicht erinnern kann), auf welchem Wege er in seinen aktuellen Zustand gelangt ist. Betrachten wir nochmal den endlichen Automaten in \cref{fig:hat}. Die zwei verschiedenen Wörter $x:= cbcbcba$ und $y := b$ führen beide in den Zustand $p$. In Zukunft wird $A$ nicht mehr zwischen $x$ und $y$ unterscheiden können. Auf welchem Wege der endliche Automat in einen Zustand gekommen ist, spielt also keine Rolle. Der endliche Automat hat kein \enquote{Gedächtnis}. Wenn $A$ also nach dem Lesen zweier Wörter $x$ und $y$ jeweils in demselben Zustand $q_0$ endet (also $\deltah{q_0}{x} = \deltah{q_0}{y}$), dann gilt für alle Wörter $z\in\Sigma^*$ (alle zukünftigen Eingaben), dass
+% \begin{align*}
+% 	\deltah{q_0}{xz} = \deltah{q_0}{yz}.
+% \end{align*}
+% In diesem Sinne, können somit bereits gelesene Eingaben, welche in denselben Zustand führen, als gleichwertig angesehen werden.\\
+% Diese wichtige Eigenschaft wollen wir in einem Satz formulieren und formal beweisen.
+%
+% \begin{theo}[Pfad-Invarianz endlicher Automaten]{theo:pfad_invarianz}
+% 	Sei $A = (Q,\Sigma,\delta,q_0,F)$ ein endlicher Automat. Seien $x,y\in\Sigma^*$ unterschiedliche Wörter ($x\neq y$) über $\Sigma$ , mit der Eigenschaft:
+% 	\begin{align*}
+% 		(q_0,x)\hull{A} (p,\lambda) \quad \text{ und } \quad (q_0,y)\hull{A} (p,\lambda)
+% 	\end{align*}
+% 	für ein Zustand $p\in Q$ (dies ist gleichbedeutend mit $\deltah{q_0}{x} = \deltah{q_0}{y} = p$). Dann existiert für jedes Wort $z\in\Sigma^*$ ein Zustand $r\in Q$, so dass $A$ seine Arbeit auf $xz$ und $yz$ jewils im Zustand $r$ beendet ($A$ landet für $xz$ und $yz$ in demselben Zustand). Damit gilt insbesondere, dass
+% 	\begin{align*}
+% 		xz \in L(A) \Longleftrightarrow yz \in L(A)
+% 	\end{align*}
+% 	\textcolor{Gray}{Entweder liegen beide Wörter $xz$ und $yz$ in der von $A$ akzeptierten Sprache $L(M)$, oder keines der beiden Wörter liegt in $L(A)$. Es kann nicht sein, dass eines der Beiden Wörter in der Sprache liegt und das andere nicht.}\\
+
+% 	\underline{Beweis}:\\
+% 	Aus der Existenz der zwei Berechnungen
+% 	\begin{align*}
+% 		(q_0,x)\hull{A} (p,\lambda) \quad \text{ und } \quad (q_0,y)\hull{A} (p,\lambda)
+% 	\end{align*}
+% 	von $A$ folgt sofort die Existenz folgender zwei Berechnungen auf $xz$ und $yz$:
+% 	\begin{align*}
+% 		(q_0,xz)\hull{A} (p,z) \quad \text{ und } \quad (q_0,yz)\hull{A} (p,z)
+% 	\end{align*}
+% 	für alle Wörter $z\in\Sigma^*$. Wenn wir den Zustand, in den die Berechnung von $A$ auf $z$ ausgehende vom Zustand $p$ führt, mit $r$ bezeichnen (also $r:= \deltah{p}{z}$), dann ist die Berechnung von $A$ auf $xz$
+% 	\begin{align*}
+% 		(q_0,xz)\hull{A} (p,z)\hull{A} (r,\lambda)
+% 	\end{align*}
+% 	und die Berechnung von $A$ auf $yz$
+% 	\begin{align*}
+% 		(q_0,yz)\hull{A} (p,z)\hull{A} (r,\lambda).
+% 	\end{align*}
+% 	Falls $r$ ein akzeptierender Zustand ist ($r\in F$), dann sind beide Wörter $xz$ und $yz$ in $L(A)$. Falls $r\notin F$, dann sind beide Wörter $xz$ und $yz$ nicht in $L(A)$.
+% \end{theo}
+%
+% \noindent
+% Wir werden nun zeigen, wie Satz \cref{theo:pfad_invarianz} benutze werden kann um, indirekt (durch Widerspruch) zu beweisen, dass eine Sprache nicht regulär ist. Dieses indirekte Vorgehen wollen wir auch hier anwenden. Betrachten wir die Sprache
+% \begin{align*}
+% 	L_{count} := \setcm{w\in \lrc{0,1}^*}{w = 0^n 1^n\text{ für ein } n\in\mathbb{N}}.
+% \end{align*}
+% Die Sprache $L$ ist die Menge aller binären Wörter, welche gleich viele Nullen und Einsen enthalten und in denen alle Nullen vor dem ersten Auftreten einer Eins stehen. Das kürzeste Wort in $L_{count}$ ist das leere Wort $\lambda$. Die weiteren Wörter in $L_{count}$ sind $01, 0011, 000111, 00001111, \ldots $ (aufsteigende Längen). Wir werden nun beweisen, dass $L_{count}$ keine reguläre Sprache ist, also $L_{count}\notin \mathcal{L}_{EA}$ gilt. Intuitiv scheint es so, dass jeder endliche Automat, welcher $L_{count}$ akzeptieren würde, die Anzahl der Nullen abspeichern müsste, um diese Anzahl später mit der Anzahl Einsen abgleichen zu können. Ein endlicher Automat hat jedoch keinen Speicher, um die Anzahl der Nullen speicher zu können. Wir werden nun formal beweisen, dass diese Intuition genau richtig ist.\\
+%
+% \noindent
+% \underline{Behauptung:}\\
+% Die Sprache $L_{count}$ ist nicht regulär ($L_{count}\notin \mathcal{L}_{EA}$).\\
+%
+% \noindent
+% \underline{Beweis:}\\
+% Wir beweisen die Behauptung durch Widerspruch. Wir nehmen also an, $L_{count}$ sei regulär. Dann existiert ein endlicher Automat $A = (Q,\lrc{0,1}, \delta, q_0, F)$ mit $L(A) = L_{count}$. Die Anzahl der Zustände $Q$ von $A$ ist $|Q|$. Wir betrachten nun die $|Q|+1$ Wörter (ein Wort mehr als $A$ Zustände hat):
+% \begin{align}\label{eq:list}
+% 	0^1, 0^2, 0^3, \ldots , 0^{|Q|}, 0^{|Q|+1}.
+% \end{align}
+% Weil in der Auflistung \cref{eq:list} mehr Wörter stehen, als $A$ Zustände hat, müssen sich in der Liste mindesten zwei unterschiedliche Wörter finden lassen, welche den Automaten in denselben Zustand führen. Damit existieren also zwei Zahlen $i,j\in\lrc{1,2,\ldots ,|Q|, |Q|+1}$ mit $i<j$, so dass
+% \begin{align*}
+% 	\deltah{q_0}{0^i} = \deltah{q_0}{0^j}.
+% \end{align*}
+% Gemäss Satz \cref{theo:pfad_invarianz} muss für jedes Wort $z\in\lrc{0,1}^*$ gelten, dass
+% \begin{align*}
+% 	0^iz\in L_{count} \Longleftrightarrow 0^jz\in L_{count}.
+% \end{align*}
+% Doch dies ist ein Widerspruch, denn für die Wahl $z := 1^j$ liegt das Wort $0^jz = 0^j1^j$ in der Sprache $L_{count}$ ($0^j1^j$ hat gleich viele Nullen und Einsen), doch das Wort $0^iz = 0^i1^j$ liegt nicht in $L_{count}$, da $i<j$ gilt und $0^i1^j$ somit mehr Einsen als Nullen enthält. Weil wir einen Widerspruch erhalten haben, muss unsere Annahme, $L_{count}$ sei regulär verworfen werden und wir haben $L_{count}\notin \mathcal{L}_{EA}$ bewiesen.
+%
+% \begin{myexercise}%[difficulty={1}]
+% 	\noindent
+% 	Beweisen Sie mithilfe des Satzes \cref{theo:pfad_invarianz}, dass die Sprache
+% 	\begin{align}\label{eq:L2}
+% 		L := \setcm{a^n b^m c^n}{n,m\in\mathbb{N}}
+% 	\end{align}
+% 	nicht regulär ist.
+% \end{myexercise}
+
+\clearpage
+\section{Lösungen der Aufgaben}
+
+\begin{myanswer}[myexercise:0400]
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+				semithick]
+			\tikzstyle{every state}=[fill=blue!10,draw=black,text=black]
+
+			\node[initial,state] (A) {$q_0$};
+			\node[state] (B) [right of=A] {$q_1$};
+			\node[state] (C) [right of=B] {$q_2$};
+			\node[state] (D) [right of=C] {$q_3$};
+			\node[state, accepting] (E) [right of=D] {$q_4$};
+			\path (A) edge [loop above] node {$1$} (A)
+			(A) edge node {$0$} (B)
+
+			(B) edge [loop above] node {$0$} (B)
+			(B) edge node {$1$} (C)
+
+			(C) edge [bend left] node {$1$} (A)
+			(C) edge node {$0$} (D)
+
+			(D) edge node {$0$} (E)
+			(D) edge [bend left] node {$1$} (C)
+
+			(E) edge [loop above] node {$0,1$} (E);
+		\end{tikzpicture}
+		\caption{Endlicher Automat für die Sprache $L_1$ in Ausdruck \cref{eq:L1}.}
+	\end{figure}
+\end{myanswer}
+
+\begin{myanswer}[myexercise:0401]
+	Der endliche Automat in \cref{fig:L2} akzeptiert genau die Eingabewörter, für die der endliche Automat seine Arbeit in einem der beiden akzeptierenden Zuständen $p_0$ \textbf{oder} $p_3$ beendet. Man kann den Graphen mental wie folgt aufteilen:
+	\begin{itemize}
+		\item obere Hälfte: Zustände $p_0, p_1$
+		\item untere Hälfte: Zustände $p_2, p_3$
+		\item linke Hälfte: Zustände $p_0, p_2$
+		\item rechte Hälfte: Zustände $p_1, p_3$
+	\end{itemize}
+	In die \textit{untere Hälfte }gelangt man nach dem erstmaligen Lesen eines Symbols $a$. Wenn ein weiteres $a$ gelesen wird, gelangt man wieder zurück in die \textit{obere Hälfte}. Man von der \textit{oberen Hälfte} in die \textit{untere Hälfte} (und umgekehrt) nur durch Lesen des Symbols $a$ gelangen. Da der endliche Automat in der \textit{oberen Hälfte} im Zustand $p_0$ beginnt, ist klar, dass sich der endliche Automat genau dann in einem der Zustände der \textit{oberen Hälfte} ($p_0,p_1$) befindet, wenn er eine \textbf{gerade Anzahl} von $a\text{'s}$ gelesen hat.
+
+	Mit einer völlig analogen Argumentation begründet man, dass sich der endliche Automat genau dann in einem der Zustände der \textit{linken Hälfte} ($p_0,p_2$) befinden kann, wenn er eine \textbf{gerade Anzahl} von $b\text{'s}$ gelesen hat.
+
+	Der endliche Automat befindet sich somit genau dann im Zustand $p_0$, wenn er eine gerade Anzahl von $a\text{'s}$ \textbf{und} eine gerade Anzahl $b\text{'s}$ gelesen hat, wenn also für das Eingabewort $w$ gilt: $|w|_a$ ist gerade \textbf{und} $|w|_b$ ist gerade.
+
+	Der endliche Automat befindet sich somit genau dann im Zustand $p_3$, wenn er eine ungerade Anzahl von $a\text{'s}$ \textbf{und} eine ungerade Anzahl $b\text{'s}$ gelesen hat, wenn also für das Eingabewort $w$ gilt: $|w|_a$ ist ungerade \textbf{und} $|w|_b$ ist ungerade.
+
+	Zusammengefasst, entspricht die vom endlichen Automaten akzeptierte Sprache $L_2$ der Menge
+	\begin{align*}
+		L_2 = \setcm{w\in\lrc{a,b}^*}{\text{Das Wort $w$ hat eine gerade Länge ($|w|$ ist eine gerade Zahl).}}
+	\end{align*}
+\end{myanswer}
+
+
+\begin{myanswer}[myexercise:0402]
+	Intuitiv gesprochen, ist $M_{ab}$ die Menge aller Wörter aus $\lrc{a,b,c}^*$ welche zwar auf $b$ enden, aber nicht auf $bb$. Wir erhalten $M_{ab}$ durch das Abziehen der Menge $L_{abb}$ von der Menge aller Wörter $M_{axb}$, die mit $a$ beginnen und auf $b$ enden:
+	\begin{align*}
+		 & M_{axb} := \setcm{w\in\lrc{a,b,c}^*}{w = axb,\text{ für ein } x\in\lrc{a,b,c}^*} \\
+		 & M_{ab} = M_{axb} \setminus L_{abb}
+	\end{align*}
+	\underline{Alternative Lösung}:
+
+	Die Wörter $w$ in $M_{ab}$ haben die Form $w = axyb$, mit $x\in\lrc{a,b,c}^*$ und $y\in\lrc{a,c}$. Dies sind genau die Wörter, welche mit $a$ beginnen, an letzter Stelle das Symbol $b$ steht, aber an der zweitletzten Stelle nicht das Symbol $b$. Folglich gilt auch:
+	\begin{align*}
+		 & M_{ab} := \setcm{w\in\lrc{a,b,c}^*}{w = axyb,\text{ für ein } x\in\lrc{a,b,c}^* \text{ und ein } y\in\lrc{a,c}}
+	\end{align*}
+\end{myanswer}
+
+\begin{myanswer}[myexercise:0403]
+	\begin{lstlisting}[language=C++, firstnumber=0]
+if input = a goto 2, if input = b goto 2, if input = c goto 1;
+if input = a goto 2, if input = b goto 0, if input = c goto 2;
+if input = a goto 2, if input = b goto 2, if input = c goto 2;
+\end{lstlisting}
+\end{myanswer}
+
+\begin{myanswer}[myexercise:0404]
+	Der zur Graphendarstellung in \cref{fig:L2} äquivalente endliche Automat  ist $M = (Q,\Sigma, \delta, q_0, F)$, wobei:
+	\begin{align*}
+		 & Q = \lrc{p_0, p_1, p_2, p_3}, \Sigma = \lrc{a,b}, q_0 = p_0, F = \lrc{p_0, p_3}\text{ und } \\
+		 & \delta(p_0,a) = p_2, \delta(p_0,b) = p_1                                                    \\
+		 & \delta(p_1,a) = p_3, \delta(p_1,b) = p_0                                                    \\
+		 & \delta(p_2,a) = p_0, \delta(p_2,b) = p_3                                                    \\
+		 & \delta(p_3,a) = p_1, \delta(p_3,b) = p_2
+	\end{align*}
+\end{myanswer}
+

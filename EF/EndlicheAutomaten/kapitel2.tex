@@ -1,471 +1,357 @@
-\chapter{Alphabete, Wörter, Sprachen}
-Wenn man sich mit der Funktionsweise von Rechnern (Computern) genauer beschäftigt, stellt man fest, dass Rechner im Grunde eine Transformation von Eingabedaten in Ausgabedaten realisieren. Sowohl die Eingabedaten als auch die Ausgabedaten lassen sich als Texte darstellen. Die Texte sind nichts anderes als Folgen von Symbolen aus einem bestimmten Alphabet. Programme können als Folge von Symbolen der Computertastatur dargestellt werden. In digitalen Rechnern sind alle Informationen als Folgen von Einsen und Nullen gespeichert. Damit realisiert der Rechner eine Transformation von Eingabetexten in Ausgabetexte.
+\chapter{Algorithmische Probleme}
 
-In diesem Kapitel wollen wir den Formalismus für den Umgang mit Texten kennenlernen. Wir werden die fundamentalen Begriffe \textit{Alphabet}, \textit{Wort} und \textit{Sprache} einführen. Diese werden uns später helfen, bekannte Probleme der Informatik wie beispielsweise das \textit{Entscheidungsproblem} mathematisch sauber zu formulieren.
+Der Titel dieses Kapitels stellt uns vor ein kleines Dilemma. Wir möchten in diesem Kapitel bereits über \textit{algorithmische Probleme} sprechen, bevor wird den Begriff \textit{Algorithmus} in einem späteren Kapitel formal durch das Modell der Turingmaschine definieren werden. Aus diesem Grund werden wir anstelle von \textit{Algorithmus} den Begriff \textit{Programm} verwenden. Dabei setzen wir voraus, dass die Leserin / der Leser eine gewisse intuitive Vorstellung von Programmen hat (die Programmiersprache spielt dabei keine Rolle).
 
-Dieses Kapitel folgt dem Abschnitt 2.2 aus dem Buch\footnote{J. Hromkovic: Theoretische Informatik. 5. Auflage, Springer Vieweg 2014., ISBN: 978-3-658-06432-7} sehr  nahe. Es wurden einige Aufgaben, welche als Hilfestellung dienen, hinzugefügt und kleine Teile ausgelassen.
+Wenn wir Programme als Algorithmen anschauen, werden wir jedoch zusätzlich fordern, dass solch ein Programm für jede zulässige Eingabe seine Arbeit in endlicher Zeit beendet (also nicht unendlich lange läuft) und eine Ausgabe liefert. Insbesondere ist es einem Algorithmus nicht gestattet in einer Endlosschleife zu laufen. Wenn ein Programm nach endlicher Zeit seine Arbeit beendet, sagt man auch, dass das Programm \textit{hält}.
 
-\section{Alphabete, Wörter, Sprachen}
-\begin{mydefinition}{Alphabet}\label{mydefinition:Alphabet}
-Eine \textbf{endliche nichtleere} Menge $\Sigma$ heisst \textit{Alphabet}. Die \textit{Elemente eines Alphabets} werden \textit{Buchstaben} (\textit{Zeichen, Symbole}) genannt.
-\end{mydefinition}
-Wir werden später Alphabete verwenden, um eine schriftliche Darstellung einer Sprache zu erzeugen. \cref{mydefinition:Alphabet}, entspricht unserer intuitiven Vorstellung eines Alphabets:
-Um Text darstellen zu können, muss ein Alphabet mindestens ein Symbol enthalten ($\to$ nichtleer). Damit man sich auf einen Satz von Zeichen einigen kann, darf das Alphabet nicht unendlich gross sein ($\to$ endlich).
-
-Wir listen nun einige der Alphabete auf, die in der Mathematik und Informatik häufig verwendet werden.
-\begin{myexample}
-\begin{aenum}
-	\item $\Sigma_{\text{bool}} = \lrc{0,1}$ ist das Boole'sche Alphabet, mit dem digitale Rechner arbeiten.
-	\item $\Sigma_{\text{lat}} = \lrc{a,b,c,\ldots ,z,A,B,\ldots ,Z}$ ist das lateinische Alphabet.
-	\item $\Sigma_{\text{Tastatur}} = \lrc{a,b,c,\ldots ,z,A,B,C,\ldots ,Z,\text{\textvisiblespace}\,,>,<,(,),\ldots ,\#,?,!}$ ist das Alphabet aller Symbole, die mit der englischen Tastatur getippt werden können. Dabei ist \textvisiblespace\ das Symbol für das Leerzeichen / Leersymbol.
-	\item $\Sigma_{\text{greek}} = \lrc{\alpha, \beta, \gamma, \ldots , \omega, A, B, \Gamma, \ldots , \Omega}$ ist das griechische Alphabet.
-	\item $\Sigma_m = \lrc{0,1,2,\ldots ,m-1}$ für jedes $m\in\mathbb{N}\setminus\lrc{0}$ ist ein Alphabet für die $m$-adische Darstellung von Zahlen.
-\end{aenum}
-\end{myexample}
-
-\textit{Wörter} werden wir als endliche Folgen von Buchstaben ansehen.
-\begin{mydefinition}{Wort}\label{mydefinition:Wort}
-Sei $\Sigma$ ein Alphabet. Ein \textit{Wort} über $\Sigma$ ist eine endliche (möglicherweise leere) Folge von Buchstaben aus $\Sigma$. Das \textit{leere Wort} $\lambda$ ist die leere Buchstabenfolge.
-\end{mydefinition}
-Die \textit{Länge} $|w|$ eines Wortes $w$ ist die Länge des Wortes als Folge, das heisst die Anzahl der Vorkommen von Buchstaben in $w$.
-
-\begin{myexample}
-\begin{aenum}
-	\item $w = 1,0,0,1,0$ ist ein Wort über dem Alphabet $\Sigma_{\text{bool}}$ und $\abs{w} = 5$, da $w$ eine Folge von $5$ Buchstaben ist.
-	\item $u = M,\text{\textvisiblespace}\,, j$ ist ein Wort über $\Sigma_{\text{Tastatur}}$ und $\abs{u} = 3$, da $u$ eine Folge von $3$ Buchstaben ist.
-	\item Das leere Wort $\lambda$ ist ein Wort über jedem Alphabet und es gilt $\abs{\lambda} = 0$.
-\end{aenum}
-\end{myexample}
-\begin{myexercise}\label{myexercise:0200}
-	\noindent
-	Was ist $\Sigma_{10}$?\\
-\end{myexercise}
-
-\begin{mydefinition}[Stern-Operator]
-Sei $\Sigma$ ein Alphabet. $\Sigma^*$ (gesprochen: \textit{Sigma Stern}) ist \textbf{die Menge aller Wörter} über $\Sigma$, also die Menge aller endlichen Folgen von Symbolen aus $\Sigma$. Man nennt $\Sigma^{*}$ auch den\textbf{Kleene'schen Stern}\footnote{benannt nach dem US-Amerikanischen Mathematiker Stephen Cole Kleene} von $\Sigma$.
-
-$\Sigma^+ = \Sigma^*\setminus\lrc{\lambda}$ ist die Menge aller Wörter über $\Sigma$ ohne das leere Wort.
-\end{mydefinition}
-
-Wir werden im Folgenden Wörter ohne Kommmas schreiben. Anstelle von $1,0,0,1,0$ werden wir lediglich $10010$ schreiben. Allgemein, werden wir anstelle von $x_1,x_2,\ldots ,x_n$ einfach $x_1x_2\ldots x_n$ schreiben.
-\begin{myremark}
-	In der deutschen Sprache existieren die zwei Ausdrücke \enquote{Wörter} und \enquote{Worte}. Dies sind keine Synonyme. \textit{Wörter} bezeichnet den Plural von \textit{Wort} (\enquote{Im Duden stehen viele Wörter}). Der Ausdruck \textit{Worte} bezieht sich auf Gedankenkonstrukte (\enquote{Sie sprach weise Worte}).
-\end{myremark}
-
-% \noindent
-% Wir können Wörter benutzen, um mathematische Objekte wie Zahlen, Formeln, Graphen und Computerprogramme darzustellen.\\
-% Ein Wort $x = x_1x_2\ldots x_n\in (\Sigma_{\text{bool}})^*$ kann als binäre Darstellung der Zahl
-% \begin{align}\label{eq:Nummer}
-% 	\text{Nummer}(x)=\displaystyle\sum_{i=1}^n x_i\cdot 2^{n-i}
-% \end{align}
-% betrachtet werden.
-%
-% \begin{myexercise}%[difficulty={1}]
-% 	\noindent
-% 	Sei $x = 1011$. Berechnen Sie $\text{Nummer}(x)$.\\
-% 	\vspace{0.6cm}
-% \end{myexercise}
-% \begin{myanswer}
-% 	\noindent
-% 	\begin{align*}
-% 		\text{Nummer}(x) = \text{Nummer}(\red{1}\blue{0}\green{1}\gray{1}) = \displaystyle\sum_{i=1}^4 x_i\cdot 2^{4-i} = \red{1}\cdot 2^3+\blue{0}\cdot 2^2 + \green{1}\cdot 2^1+\gray{1}\cdot 2^0 = 8 + 2 + 1 = 11
-% 	\end{align*}
-% \end{myanswer}
-% \noindent
-% Für eine Zahl $m\in\mathbb{N}-\lrc{0}$ wird mit $\text{Bin}(m)\in (\Sigma_{\text{bool}})^*$ die kürzeste binäre Darstellung von $m$ bezeichnet, also gilt $\text{Nummer}(\text{Bin}(m)) = m$. Man setzt $\text{Bin}(0) = 0$.
-%
-% \begin{myexercise}%[difficulty={1}]
-% 	\noindent
-% 	Sei $m\in\mathbb{N}-\lrc{0}$. Welche Bedingung muss gelten, damit $\text{Bin}(m)$ die \textbf{kürzeste} binäre Darstellung von $m$ ist.\\
-% \end{myexercise}
-% \begin{myanswer}
-% 	\noindent
-% 	Die Bedingung ist lediglich, dass die Darstellung mit dem Symbol $1$ beginnt, da führende Nullen die Bedeutung der Darstellung nicht verändern, sondern die Darstellung lediglich länger machen. Zum Beispiel beschreiben $101$, $0101$ und $000000101$ dieselbe Zahl. Die erste ist aber die kürzeste Darstellung.
-% \end{myanswer}
-%
-% \begin{theo}[Länge der binären Darstellung]{theo:laenge_binaer}
-% 	Sei $m\in\mathbb{N}-\lrc{0}$. Dann ist die Länge $|\text{Bin}(m)|$ der kürzesten binären Darstellung von $m$ gegeben durch
-% 	\begin{align*}
-% 		|\text{Bin}(m)| = \ceil{\log_2(m+1)}
-% 	\end{align*}
-% \end{theo}
-% Dabei bezeichnet für eine reelle Zahl $x$ der Ausdruck $\ceil{x}$ die nächste ganze Zahl $\geq x$. Genauer:\\
-% Sei $x$ eine reelle Zahl, dann definiert man
-% \begin{align*}
-% 	\ceil{x} = \min\setcm{k\in\mathbb{Z}}{k\geq x}
-% \end{align*}
-% und analog
-% \begin{align*}
-% 	\floor{x} = \max\setcm{k\in\mathbb{Z}}{k\leq x}.
-% \end{align*}
-% \begin{myexercise}%[difficulty={1}]
-% 	\noindent
-% 	Bestimmen Sie mithilfe der Formel aus Satz \cref{theo:laenge_binaer} die Länge der kürzesten binären Darstellung der Zahl 58902.
-% \end{myexercise}
-% \begin{myanswer}
-% 	\noindent
-% 	Mithilfe eines Taschenrechners finden wir
-% 	\begin{align*}
-% 		\log_2(58902 + 1)\approx 15.846
-% 	\end{align*}
-% 	und damit
-% 	\begin{align*}
-% 		\ceil{\log_2(58902 + 1)} = 16
-% 	\end{align*}
-%
-% \end{myanswer}
-%
-% \clearpage
-% \begin{myexercise}%[difficulty={1}]
-% 	\noindent
-% 	Beweisen Sie Satz \cref{theo:laenge_binaer}.\\
-% 	Tipp:
-% 	\begin{itemize}
-% 		\item Setzen Sie $k = |\text{Bin}(m)|$.
-% 		\item Erklären Sie, warum die Sandwich Beziehung $2^k-1 \geq m > 2^{k-1} - 1$ gilt, indem Sie folgende Fragen beantworten:
-% 		      \begin{itemize}
-% 			      \item Was ist der Dezimalwert der kleinsten binären Zahl der Länge $k+1$ (ohne führende Nullen)?
-% 			      \item Was ist der Dezimalwert der kleinsten binären Zahl der Länge $k$ (ohne führende Nullen)?
-% 		      \end{itemize}
-% 	\end{itemize}
-% \end{myexercise}
-% \begin{myanswer}
-% 	\noindent
-% 	Sei $k = |\text{Bin}(m)|$. Wir wollen $k$ ermitteln.\\
-%
-% 	\noindent
-% 	Die kleinste binäre Zahl der Länge $k+1$ ist $1\underbrace{00\ldots 0}_{k\;\text{mal}}$. Diese hat gemäss der Gleichung \cref{eq:Nummer} den dezimalen Wert (Nummer) $2^{k}$. Dann kann der Dezimalwert der grössten binäre Zahl der Länge $k$ höchstens $2^{k-1}-1$ sein ($1$ weniger). Damit ist $2^k-1 \geq m$ begründet.\\
-%
-% 	\noindent
-% 	Die kleinste binäre Zahl der Länge $k$ ist $1\underbrace{00\ldots 0}_{(k-1)\;\text{mal}}$, was dem dezimalen Wert $2^{k-1}$ entspricht. Also muss auch $m > 2^{k-1} - 1$ gelten, was die Sandwich-Beziehung aus dem Tipp begründet.\\
-%
-% 	\noindent
-% 	Offensichtlich gilt nun also für $m$ die Beziehung
-% 	\begin{align*}
-% 		2^k-1 \geq m > 2^{k-1} - 1 \Rightarrow \\
-% 		2^k \geq m+1 > 2^{k-1} \Rightarrow     \\
-% 		k \geq \log_2(m+1) > k-1.
-% 	\end{align*}
-% 	Die Beziehung $k \geq \log_2(m+1) > k-1$ sagt aus, dass $\log_2(m+1)\in (k-1,k]$ und damit folgt:
-% 	\begin{align*}
-% 		k = \ceil{\log_2(m+1)}.
-% 	\end{align*}
-% \end{myanswer}
-
-\begin{myexercise}\label{myexercise:0201}
-	Wie sehen die folgenden Mengen aus?
-	\begin{aenum}
-		\item $\lrc{1}^{*}$
-		\item $\lrc{\Sigma_{\text{bool}}}^{*}$
-	\end{aenum}
-\end{myexercise}
-
-
-\begin{myexercise}\label{myexercise:0202}
-	In Definition \cref{mydefinition:Wort}, haben wir ein Wort als endliche Folge von Buchstaben definiert. Nun enthält zum Beispiel die Menge $\lrc{1}^{*}$ in \cref{myexercise:0201} aber Wörter beliebiger Länge. Erklären Sie, warum dies kein Widerspruch ist.
-\end{myexercise}
-
-Da Alphabete insbesondere auch Mengen sind, kann man auch das kartesische Produkt von Alphabeten bilden.
-
-\begin{myexample}
-Sei $\Sigma_1 = \lrc{g,h}$ und $\Sigma_1 = \lrc{x,y}$, dann ist das kartesische Produkt $\Sigma_1\times \Sigma_2 = \lrc{(g,x),(g,y),(h,x),(h,y)}$.
-\end{myexample}
-
-Wir werden nun eine Operation einführen, welche uns erlaubt Wörter zu verketten. Diese Operation werden wir sehr häufig verwenden.
-\begin{mydefinition}[Verkettung / Konkatenation]\label{mydefinition:Konkat}
-Die \textbf{Verkettung} (\textbf{Konkatenation}) für ein Alphabet $\Sigma$ ist eine Abbildung
-Kon: $\Sigma^*\times \Sigma^*\rightarrow\Sigma^*$, sodass
+Unter diesen Bedingungen realisiert ein Programm (Algorithmus) $A$ typischerweise eine Abbildung
 \begin{align*}
-	\text{Kon}(x,y) = x\cdot y = xy
+	A:\, \Sigma_1^* \to \Sigma_2^*
 \end{align*}
-für alle $x,y\in\Sigma^{*}$.
+für Alphabete $\Sigma_1$ und $\Sigma_2$. Dies sagt aus, dass
+\begin{itemize}
+	\item sowohl die Eingaben als auch die Ausgaben für das Programm (Algorithmus) als Wörter kodiert sind und
+	\item $A$ für jede Eingabe eine eindeutige Ausgabe bestimmt.
+\end{itemize}
+
+Für jeden Algorithmus $A$ und jede Eingabe $x$ bezeichnen wir mit $A(x)$ die Ausgabe des Algorithmus $A$ für die Eingabe $x$ (das Resultat, welches der Algorithmus für die Eingabe $x$ berechnet).
+
+\begin{mydefinition}[Äquivalenz von Algorithmen]\label{mydefinition:equivalence_algorithms}
+Man sagt, dass zwei Algorithmen (Programme) $A$ und $B$ \textbf{äquivalent} sind, falls beide über dem gleichen Eingabealphabet $\Sigma$ arbeiten und $A(x) = B(x)$ für alle $x\in\Sigma^*$ gilt.
+\textcolor{Gray}{Zwei Algorithmen sind also genau dann äquivalent, wenn sie das gleiche Eingabealphabet haben und auf allen möglichen Eingaben die gleiche Ausgabe liefern. Dabei spielt es keine Rolle, wie die jeweiligen Algorithmen ihre Ausgaben berechnen.}
 \end{mydefinition}
-\begin{myexample}
-Sei $\Sigma = {8,9,d,e}$ und seien $x = e899dd$ und $y = de8$, dann ist $\text{Kon}(x,y) = x\cdot y = e899ddde8$.
+Wir werden im Folgenden einige sehr bekannte und wichtige algorithmische Probleme kennenlernen.
+
+\section{Das Entscheidungsproblem}
+Das \textit{Entscheidungsproblem} hat eine besonders simple Formulierung und wird typischerweise verwendet, um die Theorie der Berechenbarkeit zu entwickeln.
+\begin{mydefinition}[Entscheidungsproblem]\label{mydefinition:Entscheidungsproblem}
+Das \textbf{Entscheidungsproblem} $(\Sigma,L)$ für ein gegebenes Alphabet $\Sigma$ und eine gegebene Sprache $L\subseteq \Sigma^*$ ist, für jedes $x\in\Sigma^*$ zu entscheiden, ob
+\begin{align*}
+	x\in L\quad \text{oder}\quad x\notin L.
+\end{align*}
+Ein Algorithmus $A$ \textbf{löst} das Entscheidungsproblem $(\Sigma,L)$, falls für \textbf{alle} $x\in\Sigma^*$ gilt:
+\[
+	A(x) =
+	\begin{cases}
+		1, & \text{falls } x\in L     \\
+		0, & \text{falls } x\notin L.
+	\end{cases}
+\]
+\textcolor{Gray}{Das Entscheidungsproblem ist also ein geordnetes Paar $(\Sigma,L)$ eines Alphabets $\Sigma$ und einer Sprache $L$ (über $\Sigma$).}
+\end{mydefinition}
+Man sagt auch, dass $A$ die Sprache $L$ \textbf{erkennt}.
+
+Wenn für eine Sprache $L$ ein Algorithmus existiert, der $L$ erkennt, dann nennt man die Sprache $L$ \textbf{rekursiv}.
+
+Wir verwenden eine Sprache $L\subseteq \Sigma^*$ häufig, um gewisse Eigenschaften von Wörtern zu erzwingen. Die Wörter in der Sprache $L$ haben diese geforderte Eigenschaft und alle Wörter im mengen-theoretischen Komplement $L^{\tt C} = \Sigma^* - L$ haben diese Eigenschaft nicht. In dieser Betrachtungsweise kann man ein Entscheidungsproblem auch wie folgt darstellen:
+\begin{itemize}
+	\item \textbf{Eingabe}: $x\in\Sigma^*$.
+	\item \textbf{Ausgabe}: $A(x)\in\Sigma_{\text{bool}} = \lrc{0,1}$, wobei gilt
+\end{itemize}
+\[
+	A(x) =
+	\begin{cases}
+		1, & \text{falls } x\in L\quad \text{(Ja, $x$ hat die Eigenschaft)},            \\
+		0, & \text{falls } x\notin L\quad \text{(Nein, $x$ hat die Eigenschaft nicht)}.
+	\end{cases}
+\]
+
+Wir werden nun einige Beispiele von Sprachen geben, welche gewisse (interessante) Eigenschaften fordern.
+\begin{myexample}\label{myexample:begin_with_one}
+Sei $\Sigma_1 = \lrc{0,1} = \Sigma_{\text{bool}}$. Wir definieren $L_1 = \setcm{x\in\Sigma_1^*}{x = 1v,\;\text{für ein}\; v\in\lrc{0,1}^*}$. In der Sprache $L_1$ liegen alle binären Wörter (alle endlichen Folgen von Nullen und Einsen), die mit einer $1$ beginnen (die $1$ als Präfix haben). Seien beispielsweise $x_1 = 110011$, $x_2 = 1$ und $x_3 = 011110$. Dann gilt $x_1, x_2\in L_1$ aber $x_3\notin L_1$.	Das zugehörige Entscheidungsproblem ist das geordnete Paar $(\Sigma_1,L_1)$.
 \end{myexample}
 
-Wir werden fast ausnahmslos $xy$ schreiben und nur selten $x\cdot y$ oder $\text{Kon}(x,y)$.
+\begin{myexample}\label{myexample:alternating}
+Sei $\Sigma_2 = \lrc{\#,\alpha,\beta}$. Wir definieren $L_2 = \setcm{x\in\Sigma_2^*}{x = (\alpha\#)^n,\;\text{für ein}\; n\in\mathbb{N}}$. In der Sprache $L_2$ liegen also alle Wörter der Form $(\alpha\#)^n$ für eine natürliche Zahl $n$. Das zugehörige Entscheidungsproblem lautet $(\Sigma_2,L_2)$. Das kürzeste Wort in $L_2$ ist $\lambda$, das zweitkürzeste ist $\alpha\#$ und das drittkürzeste ist $\alpha\#\alpha\# = (\alpha\#)^2$.
+\end{myexample}
 
-\begin{myexercise}\label{myexercise:0203}
-	Erläutern Sie in Ihren eigenen Worten, was die Bedeutung des Ausdrucks $\Sigma^*\times \Sigma^*\rightarrow\Sigma^*$ in \cref{mydefinition:Konkat} der Verkettung ist.
-\end{myexercise}
-
-Die Verkettung $\text{Kon}$ über $\Sigma$ ist assoziativ über $\Sigma^*$, da offensichtlich
+\begin{myexample}\label{myexample:is_prime}
+Eines der bekanntesten Entscheidungsprobleme ist der \textit{Primzahltest}. Für eine natürliche Zahl $n$ möchte man entscheiden, ob $n$ eine Primzahl ist. Der Primzahltest entspricht dem Entscheidungsproblem
 \begin{align*}
-	\text{Kon}(x,\text{Kon}(y,z)) = x\cdot (y\cdot z) = xyz = (x\cdot y)\cdot z = \text{Kon}(\text{Kon}(x,y),z)
+	\left(\Sigma_{\text{bool}},\setcm{x\in(\Sigma_{\text{bool}})^*}{\text{Nummer}(x)\;\text{ist eine Primzahl}}\right).
 \end{align*}
-gilt, für alle $x,y,z\in\Sigma^*$.
+Häufig wird dieses wichtige Entscheidungsproblem wie folgt dargestellt:
+\begin{itemize}
+	\item \textbf{Eingabe}: $x\in(\Sigma_{\text{bool}})^*$.
+	\item \textbf{Ausgabe}:
+	      \begin{itemize}
+		      \item Ja, falls $\text{Nummer}(x)$ eine Primzahl ist.
+		      \item Nein, sonst.
+	      \end{itemize}
+\end{itemize}
+\end{myexample}
+\clearpage
 
-Bei der Multiplikation in den reellen Zahlen ist die Zahl $1\in\R$ das neutrale Element, da $1\cdot x = x\cdot 1 = x$ für alle $x\in\R$ gilt.
-\begin{myexercise}\label{myexercise:0204}
-	Welches ist das neutrale Element der Addition in den reellen Zahlen?
-\end{myexercise}
+\begin{myexample}\label{myexample:check_program}
+Die \textit{GNU Compiler Collection}\footnote{\url{https://de.wikipedia.org/wiki/GNU_Compiler_Collection}} (GCC) ist (unter anderem) ein {\tt C++} Compiler. Ein {\tt C++} Compiler ist ein spezielles Computerprogramm, welches als Input ein in der Programmiersprache {\tt C++} geschriebenes Programm erhält, und dieses Programm in ein, für den Computer \enquote{verständliches} Programm, umwandelt.
 
-Für jedes $x \in\Sigma^*$ gilt
+Eine Teilaufgabe des Compilers ist zu prüfen, ob ein gegebenes {\tt C++} Programm syntaktisch korrekt ist. Ein Programm ist syntaktisch korrekt, wenn es keine zwingenden Regeln seiner entsprechenden Programmiersprache verletzt. Ein typisches Beispiel eines syntaktischen Fehlers ist das Öffnen einer linken Klammer \enquote{(}, die aber nirgends im Programm durch eine rechte Klammer \enquote{)} geschlossen wird.
+
+\textcolor{Gray}{Achtung: Syntaktische Korrektheit eines Programms $P$ garantiert lediglich, dass $P$ die zwingenden Regeln seiner Programmiersprache nicht verletzt. Es wird nicht garantiert, dass $P$ ein sinnvolles Programm ist.}
+
+Wir definieren $L_{\text{{\tt C++}}}$ als die Sprache aller syntaktisch korrekter {\tt C++} Programme:
 \begin{align*}
-	x\cdot\lambda = \lambda\cdot x = x.
+	L_{\text{{\tt C++}}} = \setcm{x\in(\Sigma_{\text{Tastatur}})^*}{x\;\text{ist ein syntaktisch korrektes Programm in {\tt C++} }}
 \end{align*}
-Damit ist $\lambda$ das neutrale Element der Verkettung über $\Sigma^*$.
+Das entsprechende Entscheidungsproblem lautet:
+\begin{itemize}
+	\item \textbf{Eingabe}: $x\in(\Sigma_{\text{Tastatur}})^*$.
+	\item \textbf{Ausgabe}:
+	      \begin{itemize}
+		      \item Ja, falls $x\in L_{\text{{\tt C++}}}$.
+		      \item Nein, sonst.
+	      \end{itemize}
+\end{itemize}
+\textcolor{Gray}{Man beachte, dass jedes Computerprogramm als ein Wort über dem Alphabet der Computertastatur aufgefasst werden kann --- schliesslich ist jedes Programm nichts weiter als eine endliche Folge von Symbolen der Tastatur.}
+\end{myexample}
 
-\begin{myexercise}\label{myexercise:0205}
-	Sei $x = a01b$ und $y = c21$. Bestimmen Sie $\abs{x}$, $\abs{y}$ und $\abs{xy}$.
-	Seien allgemein $x,y\in\Sigma^*$ zwei Wörter für ein Alphabet $\Sigma$. Finden Sie einen Ausdruck für $\abs{xy}$.
-\end{myexercise}
+\section{Graphen}
+Einige sehr interessante Probleme und Konzepte lassen sich besonders gut durch \textit{Graphen} modellieren. Um ein Gefühl für Graphen zu erhalten, betrachten wir Zugverbindungen zwischen den drei Städten Zürich (Z), Effretikon (E) und Winterthur (W). Jede der drei Städte ist jeweils mit den anderen beiden verbunden. Diese Situation lässt sich mit einem Graphen wie in Abbildung \cref{fig:cities} darstellen.
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
 
+		\node[state] (A)                    {Z};
+		\node[state] (B) [above right of=A] {E};
+		\node[state] (C) [below right of=B] {W};
 
-\begin{mydefinition}[Umkehrung / Reversal]{mydefinition:reversal}
-Sei $n$ eine natürliche Zahl. Für ein Wort $x=x_1x_2\ldots x_n$, mit $x_i\in\Sigma$ für $i\in\lrc{1,2,\ldots ,n}$ bezeichnet $x^R = x_nx_{n-1}\ldots x_1$ die \textbf{Umkehrung} (\textbf{Reversal}) von $x$.
+		\path (A) edge node {} (B)
+		(B) edge node {} (C)
+		(A) edge node {} (C);
+	\end{tikzpicture}
+	\caption{Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
+	\label{fig:cities}
+\end{figure}
+
+\noindent
+Die grünen Kreise (die Städte) bezeichnet man als \textit{Knoten}, die schwarzen Verbindungslinien zwischen den Knoten nennt man \textit{Kanten}. \textbf{Einen Graphen, in dem jeder Knoten mit jedem anderen Knoten verbunden ist, bezeichnet man als \textit{vollständigen Graphen}} (der Graph in Abbildung \cref{fig:cities} ist ein vollständiger Graph).
+\begin{mydefinition}[Graph]\label{mydefinition:Graph}
+Ein Graph $G$ ist ein geordnetes Paar $(V,E)$, wobei $V$ eine (endliche) nichtleere Menge von Knoten (englisch: \textit{vertices}) ist. Die Menge $E$ ist eine Teilmenge
+der zweielementigen Teilmengen von $V$, also $E\subseteq \setcm{\lrc{x,y}}{x,y\in V, x\neq y}$. Die Elemente der Menge $E$ bezeichnet man als Kanten (englisch: \textit{edges}).
+Falls die Knotenmenge $V$ eine endliche Menge ist, nennt man den Graphen $G = (V,E)$ einen endlichen Graphen.
+
+\textcolor{Gray}{Eine Kante in einem Graphen verbindet zwei verschiedene Knoten. Die Kantenmenge $E$ eines Graphen ist deshalb irgendeine Teilmenge (Auswahl) aller möglichen zweielementigen Teilmengen $\lrc{x,y}$ der Knotenmenge $V$. Dabei muss aber $x \neq y$ gelten, da wir die Verbindung eines Knotens zu sich selbst nicht als Kante anschauen möchten.}
 \end{mydefinition}
+Für $V = \lrc{a,b,c,d}$ und $E = \lrc{\lrc{a,b},\lrc{a,c},\lrc{b,c},\lrc{c,d}}$ würde der zugehörige Graph $G = (V,E)$ beispielsweise so aussehen:
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
 
-\begin{myexercise}\label{myexercise:0206}
-	\noindent
-	Sei $\Sigma$ ein Alphabet und $u,v\in\Sigma^*$ zwei Wörter. Beweisen oder widerlegen Sie die Aussage:
+		\node[state] (A)              {a};
+		\node[state] (B) [right of=A] {b};
+		\node[state] (C) [below of=A] {c};
+		\node[state] (D) [below of=B] {d};
+
+		\path (A) edge node {} (B)
+		(A) edge node {} (C)
+		(B) edge node {} (C)
+		(C) edge node {} (D);
+	\end{tikzpicture}
+\end{figure}
+\noindent
+Falls wir in unserem Beispiel mit den Zugverbindungen auch die Dauer der Verbindungen darstellen, dann könnten wir das wie in \cref{fig:cities2} tun. Man sagt dann, dass die Kanten \textit{gewichtet} sind. In diesem Beispiel sind die Gewichte die Fahrzeiten. Ein Graph mit gewichteten Kanten bezeichnet man als \textit{gewichteten Graphen}. Graphen, ohne gewichtete Kanten nennt man \textit{ungewichtete Graphen}.
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+		\node[state] (A)                    {Z};
+		\node[state] (B) [above right of=A] {E};
+		\node[state] (C) [below right of=B] {W};
+
+		\path (A) edge node {15} (B)
+		(B) edge node {9} (C)
+		(A) edge node {21} (C);
+	\end{tikzpicture}
+	\caption{Gewichtete (ungerichtete) Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
+	\label{fig:cities2}
+\end{figure}
+
+Stellen wir uns nun vor, dass die Verbindung von Zürich nach Effretikon (und somit auch von Zürich nach Winterthur) aktuell unterbrochen ist, aber weiterhin Züge von Effretikon und Winterthur nach Zürich fahren können. Desweiteren, haben wir bemerkt, dass die Verbindung von Effretikon nach Winterthur nur 9 Minuten dauert, die Verbindung von Winterthur (wegen Stopp in Kemptthal) jedoch 11 Minuten. Diese Situation lässt sich durch \textit{gerichtete} Kanten wie in \cref{fig:cities3} veranschaulichen.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4.0cm, semithick]
+		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+		\node[state] (A)                    {Z};
+		\node[state] (B) [above right of=A] {E};
+		\node[state] (C) [below right of=B] {W};
+
+		\path (B) edge [bend left] node {9} (C)
+		(C) edge [bend left] node {11} (B)
+		(B) edge node {15} (A)
+		(C) edge node {21} (A);
+	\end{tikzpicture}
+	\caption{Gerichtete und gewichtete Zugverbindungen zwischen Zürich (Z), Effretikon (E) und Winterthur (W).}
+	\label{fig:cities3}
+\end{figure}
+
+Natürlich ist es auch erlaubt Graphen zu konstruieren, die zwar gerichtet, aber nicht gewichtet sind. Um zu verdeutlichen, dass bei einer Gerichteten Kante die Reihenfolge (die Richtung) eine Rolle spielt, schreiben wir für gerichteten Kanten nicht eine zweielementige Menge $\lrc{\text{Effretikon},\text{Zürich}}$, sondern ein geordnetes Paar $(\text{Effretikon},\text{Zürich})$.
+
+\subsection{Adjazenzmatrix}
+Jeder endliche Graph $G = (V,E)$, egal ob gerichtet / ungerichtet oder gewichtet / ungewichtet, lässt sich einfach durch die ihm zugehörige \textit{Adjazenzmatrix} $A^G$ repräsentieren. Wir wollen für einen gegebenen Graphen $G$ die Adjazenzmatrix $A^G$ finden. Bevor wir das Vorgehen für einen beliebigen endlichen Graphen beschreiben werden, möchten wir die Adjazenzmatrix für den Graphen in \cref{fig:cities3} finden. Wir führen diesen Graphen hier nochmals auf, allerdings haben wir zu didaktischen Zwecken die Kantengewichte des Graphen gefärbt und die Knoten (Städte) neu beschriftet (nummeriert). Dazu haben wir die Bezeichnungen $v_1 = \text{Zürich}$, $v_2 = \text{Effretikon}$ und $v_3 = \text{Winterthur}$ gewählt.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4.0cm, semithick]
+		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+		\node[state] (A)                    {$v_1$};
+		\node[state] (B) [above right of=A] {$v_2$};
+		\node[state] (C) [below right of=B] {$v_3$};
+
+		\path (B) edge [bend left] node {\textcolor{Red}{9}} (C)
+		(C) edge [bend left] node {\blue{11}} (B)
+		(B) edge node {\textcolor{DarkGreen}{15}} (A)
+		(C) edge node {\textcolor{Pink}{21}} (A);
+	\end{tikzpicture}
+\end{figure}
+\noindent
+Die zu diesem Graphen zugehörige Adjazenzmatrix $A_G$ ist:
+\begin{align}\label{eq:adjazenz}
+	A^G = \left( \begin{matrix} 0 & 0 & 0 \\ \textcolor{DarkGreen}{15} & 0 & \textcolor{Red}{9} \\ \textcolor{Pink}{21} & \blue{11} & 0 \end{matrix} \right)
+\end{align}
+Die Matrix $A_G$ ist wie folgt zu verstehen:
+
+Falls im Graphen eine Kantenverbindung vom Knoten $v_i$ ($i\in\lrc{1,2,3}$) zum Knoten $v_j$ ($j\in\lrc{1,2,3}$) besteht, dann setzt man den Matirx Eintrag $A^G_{i,j}$ (Eintrag in der $i$-ten Zeile und $j$-ten Spalte) auf das der Kante entsprechende Kantengewicht. Zum Beispiel besteht im Graphen die Kantenverbindung von  Effretikon ($v_2$) nach Winterthur ($v_3$), mit einem Kantengewicht von $\textcolor{Red}{9}$. Damit wird der Eintrag $A^G_{2,3}$ der Adjazenzmatrix in der zweiten Zeile und der dritten Spalte auf den Wert $\textcolor{Red}{9}$ gesetzt. Besteht keine Verbindung von Knoten $v_i$ nach $v_j$, so wird $A^G_{i,j} = 0$ gesetzt.
+
+Bei ungewichteten Graphen ist der Matrix Eintrag $A^G_{i,j} = 1$, falls eine Kante vom Knoten $v_i$ zum Knoten $v_j$ besteht und $A^G_{i,j} = 1$, falls keine Verbindung besteht.
+
+Es spielt keine Rolle, welche konkrete Nummerierung der Knoten im Graphen gewählt wird. Die Adjazenzmatrix wird immer genau eine vollständige Beschreibung des ihr entsprechenden Graphen liefern.
+
+\begin{myprocedure}\label{vorgehen_adjazenz}
+	\textbf{Aufstellen der Adjazenzmatrix bei gegebenem Graphen}
+
+	Gegeben sei ein Graph $G = (V,E)$ als Bild oder als Beschreibung durch Mengen. Die zu $G$ gehörige Adjazenzmatrix $A^G$ wird wie folgt aufgestellt:
+	\begin{enumerate}
+		\item Sei $n:= \abs{V}$ die Anzahl der Knoten in $G$. Dann hat $A^G$ eine Anzahl von $n$ Zeilen und $n$ Spalten (und ist somit eine quadratische Matrix).
+		\item Wähle eine beliebige Nummerierung der $n$ Knoten von $G$ und beschrifte den $i$-ten Knoten mit $v_i$ für $i\in\lrc{1,2,\ldots ,n}$.
+
+		      \textcolor{Gray}{Die genaue Form von $A^G$ hängt von der konkreten Wahl der Nummerierung ab, die von $A^G$ festgehaltene Information über $G$ jedoch nicht.}
+		\item Falls in $G$ \textbf{keine} Kantenverbindung von $v_i$, $i\in\lrc{1,2,\ldots ,n}$,  nach $v_j$, $j\in\lrc{1,2,\ldots ,n}$, existiert, dann setze $A^G_{i,j} = 0$. Falls eine solche Kantenverbindung existiert, dann setze
+		      \begin{itemize}
+			      \item bei ungewichteten Graphen: $A^G_{i,j} = 1$,
+			      \item bei gewichteten Graphen: $A^G_{i,j} = w_{i,j}$, wobei $w_{i,j}$ das Gewicht der Kante von $v_i$ nach $v_j$ ist.
+		      \end{itemize}
+	\end{enumerate}
+\end{myprocedure}
+
+Wir haben gesehen, wie ein gegebener Graph mit nummerierten Knoten eindeutig durch eine Adjazenzmatrix dargestellt werden kann. Umgekehrt, lässt sich aus einer gegebener Adjazenzmatrix ein eindeutiger Graph gewinnen. Damit ist eine Adjazenzmatrix eine alternative Repräsentation eines Graphen. Adjazenzmatrizen ungewichteter lassen sich einfach durch ein Wort über dem Alphabet $\lrc{0,1,\#}$ darstellen (für gewichtete Graphen ist die Darstellung etwas weniger offensichtlich). Beispielsweise ist die Kodierung der Matrix
+\begin{align*}
+	\left( \begin{matrix} 0 & 0 & 0 & 1 \\ 1 & 0 & 1 & 0 \\ 1 & 0 & 0 & 1 \\ 1 & 1 & 0 & 0 \end{matrix} \right)
+\end{align*}
+gegeben durch das Wort
+\begin{align*}
+	0001\#1010\#1001\#1100
+\end{align*}
+
+\begin{myexercise}\label{myexercise:0300}
+	Überlegen Sie sich eine mögliche Kodierung der Adjazenzmatrix
 	\begin{align*}
-		(uv)^R = v^Ru^R
+		\left( \begin{matrix} 0 & 7 & 3 & 5 \\ 8 & 0 & 1 & 4 \\ 7 & 6 & 6 & 2 \\ 4 & 9 & 2 & 0 \end{matrix} \right)
 	\end{align*}
+	über dem Alphabet $\lrc{0,1,\#}$
 \end{myexercise}
 
-\begin{mydefinition}[Iteration eines Wortes]\label{mydefinition:Iteration_Wort}
-Sei $\Sigma$ ein Alphabet. Für alle $x\in\Sigma^*$ und alle $i\in\mathbb{N}$ definieren wir die $i$-te \textbf{Iteration} $x^i$ von $x$ als
-\begin{align*}
-	x^0 = \lambda,\quad x^1 = x, \quad x^i = xx^{i-1}.
-\end{align*}
+\begin{myexercise}\label{myexercise:0301}
+	Welche Einträge haben bei jeder Adjazenzmatrix immer den Wert 0?
+\end{myexercise}
+
+\subsubsection{Knotenüberdeckung (vertex cover)}
+Nun haben wir genügend Wissen über Graphen um ein sehr interessantes Entscheidungsproblem in Zusammenhang mit Graphen elegant beschreiben zu können. In diesem Unterabschnitt werden wir uns auf ungerichtete Graphen beschränken.
+\begin{mydefinition}[Knotenüberdeckung (vertex cover)]\label{mydefinition:knotenueberdeckung}
+Man sagt, dass eine Kante $\lrc{u,v}$ \textbf{\textit{inzident}} zu genau ihren Endpunkten $u$ und $v$ ist.
+
+Eine \textbf{\textit{Knotenüberdeckung}} (englisch: \textit{vertex cover}) eines Graphen $G = (V,E)$ ist jede Knotenmenge $U\subseteq V$, sodass jede Kante aus $E$ zu mindestens einem Knoten aus $U$ inzident ist.
+\textcolor{Gray}{Eine Teilmenge $U$ der Knotenmenge $V$ eines Graphen $G=(V,E)$ ist also eine Knotenüberdeckung, falls jede Kante $e\in E$ mindestens einen ihrer beiden Endpunkte in $U$ hat.}
 \end{mydefinition}
-\begin{myexample}
-Sei $\Sigma = \lrc{a,b,c}$. Wir können nun schreiben:
-\begin{align*}
-	aa       & = a^2                 \\
-	abababab & = (ab)^4              \\
-	cbbbbbab & = cb^5ab = c(bb)^2bab
-\end{align*}
-\end{myexample}
+Betrachten wir zum Beispiel den Graphen in \cref{fig:VC}.
 
-Mit der folgenden Definition wollen wir den Begriff \textit{Teilwort}, für den wir eine gute Intuition haben, formalisieren. Ein Teilwort eines Wortes $x$ ist ein zusammenhängender Teil von $x$.
-\begin{mydefinition}[Teilwörter]\label{mydefinition:Teilwort}
-Seien $u,w\in\Sigma^*$ für ein Alphabet $\Sigma$.
-\begin{itemize}
-	\item $v$ heisst \textbf{Teilwort} von $w$ $\Leftrightarrow$ es existieren $x,y\in\Sigma^*$, sodass $w = xvy$
-	\item $v$ heisst \textbf{Präfix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, sodass $w = vx$
-	\item $v$ heisst \textbf{Suffix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, sodass $w = xv$
-	\item $v\neq \lambda$ heisst \textbf{echtes} Teilwort (Präfix, Suffix) von $w$ $\Leftrightarrow$ $v\neq w$ und $v$ ein Teilwort (Präfix, Suffix) von $w$ ist
-\end{itemize}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+		\node[state] (A)                    {$v_1$};
+		\node[state,fill=red!20] (B) [above right of=A] {$v_2$};
+		\node[state,fill=red!20] (C) [right of=B]       {$v_3$};
+		\node[state,fill=red!20] (D) [right of=C]       {$v_4$};
+		\node[state,fill=red!20] (E) [below right of=A] {$v_5$};
+		\node[state] (F) [right of=E]       {$v_6$};
+
+		\path (A) edge node {} (B)
+		edge node {} (E)
+		(B) edge node {} (C)
+		edge node {} (E)
+		(C) edge node {} (D)
+		edge node {} (F)
+		(E) edge node {} (F);
+	\end{tikzpicture}
+	\caption{Graph mit $6$ Knoten. Die Menge $\lrc{v_2,v_3,v_4,v_5}$ (rot markierte Knoten) ist eine Knotenüberdeckung des Graphen.}
+	\label{fig:VC}
+\end{figure}
+\noindent
+Die Menge $\lrc{v_2,v_3,v_4,v_5}$ der $4$ rot markierten Knoten ist eine Knotenüberdeckung des Graphen, da jede der $7$ Kanten des Graphen mindestens einer ihrer Endpunkte in dieser Menge hat.
+
+Jedoch ist die Menge $\lrc{v_2,v_3,v_4,v_5}$ keine \textbf{minimale} Knotenüberdeckung, denn die Knotenmenge $\lrc{v_2,v_3,v_5}$ (siehe \cref{fig:VC1}) enthält einen Knoten weniger und ist ebenfalls eine Knotenüberdeckung.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[-,>=stealth',shorten >=1pt,auto,node distance=2.0cm, semithick]
+		\tikzstyle{every state}=[fill=green!20,draw=black,text=black]
+
+		\node[state] (A)                    {$v_1$};
+		\node[state,fill=red!20] (B) [above right of=A] {$v_2$};
+		\node[state,fill=red!20] (C) [right of=B]       {$v_3$};
+		\node[state] (D) [right of=C]       {$v_4$};
+		\node[state,fill=red!20] (E) [below right of=A] {$v_5$};
+		\node[state] (F) [right of=E]       {$v_6$};
+
+		\path (A) edge node {} (B)
+		edge node {} (E)
+		(B) edge node {} (C)
+		edge node {} (E)
+		(C) edge node {} (D)
+		edge node {} (F)
+		(E) edge node {} (F);
+	\end{tikzpicture}
+	\caption{Die Menge $\lrc{v_2,v_3,v_5}$ (rot markierte Knoten) ist eine \textbf{minimale} Knotenüberdeckung des Graphen.}
+	\label{fig:VC1}
+\end{figure}
+
+\begin{mydefinition}[Entscheidungsproblem der Knotenüberdeckung]\label{mydefinition:entscheidungVC}
+Das \textbf{Entscheidungsproblem der Knotenüberdeckung}, besteht darin für einen gegebenen Graphen $G$ und eine feste natürliche Zahl $k$ zu entscheiden, ob $G$ ein ungerichteter Graph ist, der eine Knotenüberdeckung mit maximal $k$ vielen Knoten besitzt. Man möchte also für einen Graphen $G$ und eine natürliche Zahl $k$ entscheiden, ob das geordnete Paar $(G,k)$ in der Menge
+\begin{equation*}
+	\begin{split}
+		\text{VC} =\{ (G,k) \; ; \; & \text{$G$ ist ein ungerichteter Graph mit einer Knotenüberdeckung } \\
+		                            & \text{(vertex cover) der Mächtigkeit höchstens $k$} \}
+	\end{split}
+\end{equation*}
+liegt oder nicht.\\
+\textcolor{Gray}{Noch etwas genauer ausgedrückt:
+	\begin{equation*}
+		\begin{split}
+			\text{VC} =\{ w\in\lrc{0,1,\#}^* \; ; \; & \text{$w$ ist die Kodierung eines ungerichteten Graph mit einer } \\
+			                                         & \text{Knotenüberdeckung (vertex cover) der }                      \\
+			                                         & \text{Mächtigkeit höchstens $k$} \}
+		\end{split}
+	\end{equation*}}
 \end{mydefinition}
-
-\begin{myexample}
-Sei $\Sigma = \lrc{a,b,c}$. Das Wort $abc$ ist ein echtes Teilwort, echtes Präfix und ein echtes Suffix von $(abc)^3$. Das leere Wort $\lambda$ ist Teilwort von jedem Wort. Jedes Wort ist Teilwort von sich selbst (aber kein echtes Teilwort).
-\end{myexample}
-
-\begin{myexercise}\label{myexercise:0207}
-	Sei $\Sigma = \lrc{a_1,a_2,\ldots ,a_m}$ ein Alphabet der Grösse $m\in\mathbb{N}\setminus\lrc{0}$.
-	\begin{aenum}
-		\item Welche Bedingungen muss ein Wort $x$ der Länge $n\leq m$ über $\Sigma$ erfüllen, damit es die maximale Anzahl von verschiedenen Teilwörtern hat?
-		\item Wie viele verschiedene Teilwörter hat ein solches $x$?
-	\end{aenum}
-\end{myexercise}
-
-Wir wollen an dieser Stelle noch eine weitere nützliche Schreibweise definieren.
-
-Sei $x\in\Sigma^*$ und $a\in\Sigma$, dann ist $\abs{x}_a$ definiert als die Anzahl der Vorkommen von $a$ in $x$.
-\begin{myexample}
-Sei $v = babaac$, dann ist $\abs{v}_a = 3$, $\abs{v}_b = 2$ und $\abs{v}_c = 1$. Offensichtlich gilt für alle $x\in\Sigma^*$
-\begin{align*}
-	\abs{x} = \sum_{a\in\Sigma}\abs{x}_a.
-\end{align*}
-\end{myexample}
-
-Nun kommen wir zur Definition einer Sprache. Dies wird für uns einer der wichtigsten Begriffe sein.
-\begin{mydefinition}[Sprache]\label{mydefinition:Sprache}
-Eine \textbf{Sprache} $L$ über einem Alphabet $\Sigma$ ist eine Teilmenge von $\Sigma^*$. Das Komplement $L^C$ der Sprache $L$ bezüglich $\Sigma$ ist die Sprache $\Sigma^*-L$.
-\begin{itemize}
-	\item $L_{\emptyset} = \emptyset$ ist die leere Sprache.
-	\item $L_{\lambda} = \lrc{\lambda}$ ist die einelementige Sprache, die nur aus dem leeren Wort besteht.
-\end{itemize}
-Sind $L_1$ und $L_2$ Sprachen über $\Sigma$, so bezeichnet
-\begin{align*}
-	L_1\cdot L_2 = L_1L_2 = \setcm{vw}{v\in L_1\; \text{und}\; w\in L_2}
-\end{align*}
-die \textbf{Konkatenation} von $L_1$ und $L_2$.
-
-Ist $L$ eine Sprache über $\Sigma$, so definieren wir die Iterationen
-\begin{align*}
-	L^0 & = L_{\lambda}, L^{i+1} = L^i\cdot L\;\text{für alle}\; i\in\mathbb{N},                \\
-	L^* & = \bigcup_{i\in\mathbb{N}}L^i\;\text{und}\; L^+ = \bigcup_{i\in\mathbb{N}}L^i\cdot L.
-\end{align*}
-\end{mydefinition}
-
-\begin{myexample}
-Die folgenden Mengen sind Beispiele von Sprachen über $\Sigma = \lrc{a,b}$.
-\begin{itemize}
-	\item $L_1 = \emptyset$
-	\item $L_2 = \lrc{\lambda}$
-	\item $L_3 = \Sigma^* = \lrc{\lambda, a,b,aa,\ldots }$
-	\item $L_4 = \Sigma^+ = \lrc{a,b,aa,\ldots }$
-	\item $L_5 = \Sigma$
-	\item $L_6 = \setcm{a^p}{a\;\text{ist eine Primzahl}}$
-	\item $L_5 = \lrc{a}^* = \lrc{\lambda, a, aa, aaa, aaaa, \ldots }$
-	\item $\Sigma^2 = \lrc{aa,ab,ba,bb}$
-\end{itemize}
-Man beachte, dass $\Sigma^i = \setcm{x\in\Sigma^*}{|x| = i}$ für eine natürliche Zahl $i$, und dass $L_{\emptyset}\cdot L = \emptyset$, $L_{\lambda}\cdot L = L$.
-
-\begin{itemize}
-	\item Die Menge aller grammatisch korrekten englischen Texte ist eine Sprache über $\Sigma_{\text{Tastatur}}$.
-	\item Die Menge aller syntaktisch korrekten Programme in {\tt C++} ist auch eine Sprache über $\Sigma_{\text{Tastatur}}$.
-\end{itemize}
-\end{myexample}
-\begin{myexercise}\label{myexercise:0208}
-	Sei $L_1 = \lrc{\lambda, a, b}$ und sei $L_2 = \lrc{a^4, a^2b}$. Welche Wörter Liegen in der Sprache $L_3 = L_1L_2$?
-\end{myexercise}
-
-\begin{myexercise}\label{myexercise:0209}
-	Sei $k\in\mathbb{N}$. Geben Sie ein Alphabet $\Sigma$ und zwei Sprachen $L_1$ und $L_2$ über $\Sigma$ an, sodass
-	\begin{align*}
-		\abs{L_1} = k\quad \text{und} \quad \abs{L_1L_2} = k + 1.
-	\end{align*}
-\end{myexercise}
+Wie man überprüfen kann, lässt der Graph in \cref{fig:VC1} zum Beispiel keine Knotenüberdeckung der Mächtigkeit höchstens $3$ zu.
 
 
 \clearpage
 \section{Lösungen der Aufgaben}
-\begin{myanswer}[myexercise:0200]
-	\noindent
-	\begin{align*}
-		\Sigma_{10} = \lrc{0,1,2,\ldots ,9}
-	\end{align*}
-	ist das Alphabet für die Darstellung von Zahlen im Dezimalsystem.
-\end{myanswer}
 
 
-\begin{myanswer}[myexercise:0201]
-	\noindent
+\begin{myanswer}[myexercise:0300]
+	Jedes Kantengewicht $w$ kodieren wir durch $\text{Bin}(w)$, die einzelnen Kodierungen der Gewichte werden durch $\#$ abgetrennt. Das Ende einer Zeile wird durch $\#\#$ markiert. Damit erhalten wir folgende Kodierung der gegebenen Adjazenzmatrix:
 	\begin{align*}
-		\lrc{1}^* & = \lrc{\lambda, 1, 11, 111, 1111, 11111, \ldots } =                                                       \\
-		          & = \lrc{\lambda}\cup \setcm{x_1x_2\ldots  x_i}{i\in\mathbb{N},\; x_j = 1\;\text{für}\; j = 1,2,\ldots , i}
-	\end{align*}
-	\begin{align*}
-		\lr{\Sigma_{\text{bool}}}^* = \lrc{0,1}^* & = \lrc{\lambda, 0, 1,, 00, 01, 10, 11, 000, 001, 010, 100, 011, \ldots } =                                                    \\
-		                                          & = \lrc{\lambda}\cup \setcm{x_1x_2\ldots  x_i}{i\in\mathbb{N},\; x_j\in\Sigma_{\text{bool}} \;\text{für}\; j = 1,2,\ldots , i}
+		0 \# 111 \# 11 \# 101 \#\# 1000 \# 0 \# 1 \# 100 \#\# 111 \# 110 \# 110 \# 10 \#\# 100 \# 1001 \# 10 \# 0
 	\end{align*}
 \end{myanswer}
 
-\begin{myanswer}[myexercise:0202]
-	Anhand dieser Frage lässt sich der Unterschied zwischen den Begriffen \textit{unbeschränkt} und \textit{unendlich} schön verdeutlichen. Betrachten wir dazu exemplarisch nochmals die Menge $\lrc{1}^*$ aus \cref{myexercise:0201}:
-	\begin{align*}
-		\lrc{1}^* & = \lrc{\lambda, 1, 11, 111, 1111, 11111, \ldots } =                                                      \\
-		          & = \lrc{\lambda}\cup \setcm{x_1x_2\ldots x_i}{i\in\mathbb{N},\; x_j = 1\;\text{für}\; j = 1,2,\ldots , i}
-	\end{align*}
-	\begin{itemize}
-		\item Für jede natürliche Zahl $n\in\mathbb{N}$, existiert in $\lrc{1}^*$ ein Wort $w$ mit $\abs{w} \geq n$, da für jedes $n\in\mathbb{N}$ (insbesondere) auch das Wort $w:=1^n$ in der Menge $\lrc{1}^*$ enthalten ist und $\abs{w}\geq n$. Damit gibt es \textbf{keine obere Schranke} für die Länge der Wörter in $\lrc{1}^*$.
-		\item Jedes Wort $w\in\lrc{1}^*$ hat die Form $w = 1^n$ für eine natürliche Zahl $n$. Damit hat jedes Wort in der Menge $\lrc{1}^*$ eine endliche Länge.
-	\end{itemize}
-	Die Länge der Wörter in $\lrc{1}^*$ können also nicht nach oben beschränkt werden, trotzdem hat jedes Wort in $\lrc{1}^*$ eine endliche Länge und ist somit tatsächlich ein Wort im Sinne von Definition \cref{mydefinition:Wort}.
+\begin{myanswer}[myexercise:0301]
+	Die sogenannten \textit{Diagonalemente}. Dies sind die Einträge, bei denen die Zeilennummer mit der Spaltennummer übereinstimmt, also alle Einträge der Form $A^G_{i,i}$. Angenommen, ein Diagonalelement wäre nicht 0. Dann würde im zur Adjazenzmatrix gehörenden Graphen eine Verbindung der Form $\lrc{v_i,v_i}$ beziehungsweise $(v_i,v_i)$ bestehen. Dies darf aber gemäss der Definition der Kantenmenge nicht sein, weil sie Kantenverbindungen von einem Knoten zu sich selbst ausschliesst.
 \end{myanswer}
 
-\begin{myanswer}[myexercise:0203]
-	Wir haben zwei Wörter $x$ und $y$ über dem Alphabet $\Sigma$. Weil $\Sigma^*$ die Menge aller Wörter über $\Sigma$ ist, gilt offensichtlich $x,y\in\Sigma^*$. Aus den zwei Wörtern $x$ und $y$ wird nun ein neues Wort $xy$ gebildet. Man beachte, dass die Reihenfolge $xy\neq yx$ (im Allgemeinen) eine Rolle spielt.	Die Verkettung nimmt also ein geordnetes Paar $(x,y)\in \lr{\Sigma^*\times \Sigma^*}$ (dies ist gerade die Menge aller geordneten Paare von Wörtern über $\Sigma$) und bildet dieses auf ein neues Wort $xy\in\Sigma^*$ ab.
-\end{myanswer}
-
-\begin{myanswer}[myexercise:0204]
-	Die Zahl $0\in\R$, da $0+x = x+0 = x$ für alle $x\in\R$.
-\end{myanswer}
-
-\begin{myanswer}[myexercise:0205]
-	Offensichtlich sind $\abs{x} = \abs{a01b}= 4$ und $\abs{y} = \abs{c21} = 3$ und somit $\abs{xy} = \abs{a01bc21} = 7$.
-
-	Seien  $x,y\in\Sigma^*$ zwei Wörter für ein Alphabet $\Sigma$. Dann gilt
-	\begin{align*}
-		\abs{xy} = \abs{x}+\abs{y}.
-	\end{align*}
-\end{myanswer}
-
-\begin{myanswer}[myexercise:0206]
-	Da $u$ und $v$ Wörter sind, haben sie endliche Längen. Wir definieren $n$ und $m$ als $n =|u|$ und $m = |v|$. Dann hat $u$ die Form $u = u_1u_2\ldots u_n$ und $v = v_1v_2\ldots v_m$, wobei $u_1,u_2,\ldots ,u_n,v_1,v_2,\ldots ,v_m\in\Sigma$. Damit ist
-	\begin{align*}
-		uv = u_1u_2\ldots u_nv_1v_2\ldots v_m
-	\end{align*}
-	und somit
-	\begin{align*}
-		(uv)^R = v_m\ldots v_2v_1u_n\ldots u_2u_1 = v^Ru^R,
-	\end{align*}
-	da $v^R = v_m\ldots v_2v_1$ und $u^R = u_n\ldots u_2u_1$ gilt.
-\end{myanswer}
-
-
-\begin{myanswer}[myexercise:0207]
-	\begin{aenum}
-		\item Die Bedingung ist, dass $x$ (Länge $n$) aus $n$ verschiedenen Buchstaben besteht (also aus lauter verschiedenen Buchstaben). Dann (und nur dann) sind offensichtlich alle möglichen Teilwörter paarweise verschieden und wir erreichen die maximale Anzahl von Teilwörtern. Ein solches Wort ist beispielsweise $w = a_1a_2\ldots a_n$.
-		\item Es genügt also, die Anzahl der Teilwörter von $w$ zu zählen. Wir werden die Anzahl der Teilwörter der Länge $i = 1, i = 2$ bis zur Länge $i = n$ zählen.
-
-		\underline{$i = 1$}:
-		\begin{align*}
-			1:\quad     & \blue{\underline{a_1}}a_2a_3a_4\ldots a_{n-3}a_{n-2}a_{n-1}a_n \\
-			2:\quad     & a_1\blue{\underline{a_2}}a_3a_4\ldots a_{n-3}a_{n-2}a_{n-1}a_n \\
-			3:\quad     & a_1a_2\blue{\underline{a_3}}a_4\ldots a_{n-3}a_{n-2}a_{n-1}a_n \\
-			            & \ldots                                                         \\
-			(n-3):\quad & a_1a_2a_3a_4\ldots \blue{\underline{a_{n-3}}}a_{n-2}a_{n-1}a_n \\
-			(n-2):\quad & a_1a_2a_3a_4\ldots a_{n-3}\blue{\underline{a_{n-2}}}a_{n-1}a_n \\
-			(n-1):\quad & a_1a_2a_3a_4\ldots a_{n-3}a_{n-2}\blue{\underline{a_{n-1}}}a_n \\
-			n: \quad    & a_1a_2a_3a_4\ldots a_{n-3}a_{n-2}a_{n-1}\blue{\underline{a_n}}
-		\end{align*}
-		Offensichtlich gibt es $n$ viele Teilwörter der Länge $1$, nämlich genau die Teilwörter $\blue{a_1},\blue{a_2},\ldots ,\blue{a_n}$. Wir haben jeweils die Anfangsposition des Teilwortes in $w$ unterstrichen.
-	\end{aenum}
-	\underline{$i = 2$}:
-	\begin{align*}
-		1: \quad    & \blue{\underline{a_1}a_2}a_3a_4\ldots a_{n-3}a_{n-2}a_{n-1}a_n \\
-		2: \quad    & a_1\blue{\underline{a_2}a_3}a_4\ldots a_{n-3}a_{n-2}a_{n-1}a_n \\
-		3: \quad    & a_1a_2\blue{\underline{a_3}a_4}\ldots a_{n-3}a_{n-2}a_{n-1}a_n \\
-		            & \ldots                                                         \\
-		(n-3):\quad & a_1a_2a_3a_4\ldots \blue{\underline{a_{n-3}}a_{n-2}}a_{n-1}a_n \\
-		(n-2):\quad & a_1a_2a_3a_4\ldots a_{n-3}\blue{\underline{a_{n-2}}a_{n-1}}a_n \\
-		(n-1):\quad & a_1a_2a_3a_4\ldots a_{n-3}a_{n-2}\blue{\underline{a_{n-1}}a_n}
-	\end{align*}
-	Es gibt $n-1$ viele Teilwörter der Länge $2$. Man beachte, dass sich die Anfangsposition der Teilwörter in $w$ um eine Position nach links verschoben hat, da das letzte Teilwort (ganz rechts) der Länge $2$ beim zweitletzten Symbol in $w$ beginnen muss.
-
-	\underline{$i = 3$}:
-	\begin{align*}
-		1: \quad    & \blue{\underline{a_1}a_2}a_3a_4\ldots a_{n-3}a_{n-2}a_{n-1}a_n \\
-		2: \quad    & a_1\blue{\underline{a_2}a_3a_4}\ldots a_{n-3}a_{n-2}a_{n-1}a_n \\
-		            & \ldots                                                         \\
-		(n-3):\quad & a_1a_2a_3a_4\ldots \blue{\underline{a_{n-3}}a_{n-2}a_{n-1}}a_n \\
-		(n-2):\quad & a_1a_2a_3a_4\ldots a_{n-3}\blue{\underline{a_{n-2}}a_{n-1}a_n}
-	\end{align*}
-	Es gibt $n-2$ viele Teilwörter der Länge $3$.
-
-	Es ist nun nicht mehr schwierig zu sehen, dass es für ein Teilwort der Länge $i\in\lrc{1,2,\ldots ,n}$ genau $n-i+1$ mögliche Anfangspositionen in $w$ gibt, da die Positionen $n-i+2,3,\ldots ,n$ nicht möglich sind (\enquote{zu wenig Platz}). Nun summieren wir die Anzahl aller unterschiedlichen (nicht leeren) Teilwörter von $w$ der Längen $i=1,2,\ldots n$ auf:
-	\begin{align*}
-		\sum_{i=1}^n (n-i+1) = n(n+1)-\sum_{i=1}^n i = n(n+1) - \frac{n(n+1)}{2}=\frac{n(n+1)}{2}
-	\end{align*}
-	Hinzu kommt noch das leere Wort (welches Teilwort jedes Wortes ist) und als Resultat finden wir, dass es
-	\begin{align*}
-		\frac{n(n+1)}{2} + 1
-	\end{align*}
-	viele verschiedene Teilwörter von $w$ gibt.
-\end{myanswer}
-
-\begin{myanswer}[myexercise:0208]
-	\begin{align*}
-		L_3 = \lrc{a^4, a^2b, a^5, a^3b,ba^4, ba^2b}
-	\end{align*}
-\end{myanswer}
-
-\begin{myanswer}[myexercise:0209]
-	\noindent
-	Wir wählen $\Sigma = \lrc{0}$ und
-	\begin{align*}
-		L_1 = \lrc{0,00,\ldots ,0^k} = \setcm{0^i}{1\leq i \leq k}
-	\end{align*}
-	und
-	\begin{align*}
-		L_2 = \lrc{\lambda,0}.
-	\end{align*}
-	Dann gilt
-	\begin{align*}
-		L_1\cdot L_2 & = L_1\cdot \lrc{\lambda}\cup L_1\cdot \lrc{0} \\
-		             & = L_1 \cup \setcm{0^i0}{1\leq i\leq k}        \\
-		             & = L_1 \cup \setcm{0^i}{2\leq i \leq k+1}      \\
-		             & = \setcm{0^i}{1\leq i\leq k+1},
-	\end{align*}
-	und somit $\abs{L_1L_2} = k+1$.
-\end{myanswer}
-
-\clearpage
-\shipoutAnswer
