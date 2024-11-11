@@ -598,8 +598,50 @@ Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, z
 \end{table}
 \end{frame}
 
+\begin{frame}[fragile]{Webserver}
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tikzpicture}[
+    font=\sffamily,
+    every node/.style={align=center},
+    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 6.5cm},
+    process/.style={-Stealth, thick, draw},
+	arrowtext/.style={text width=5.5cm, align=center, text=black, font=\footnotesize}
+]
 
-\begin{frame}[fragile]{Subnetze \& Netzmasken}{DNS}
+% nodes for client
+\node[entity] (clientStart) {Eingabe der \acrshort{URL} am Bildschirm};
+\node[entity, below=of clientStart] (clientEnd) {Sammelt Daten, setzt Website zusammen (Darstellung)};
+% Draw a 2D rectangle around the users
+\node[fit=(clientStart) (clientEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Client\\ \faLaptop};
+
+% nodes for server
+\node[entity, right=of clientStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
+\node[entity, right=of clientEnd] (serverEnd) {Sendet den Status der Suche und die Dateien der Webseite};
+% Draw a 2D rectangle around the users
+\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
+
+% Connections
+\draw[process, Crimson] (clientStart.east) -- node[arrowtext, above] {\texttt{http://192.168.10.2/index.html}\\(HTTP-Anfrage \texttt{GET /index.html})} (serverStart.west);
+\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {HTTP-Antwort \\(Statuscode + Daten)} (clientEnd.east);
+\end{tikzpicture}
+}
+\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
+\label{fig:http-request-simple}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Webserver}{Aufträge (Skript)}
+\begin{itemize}
+\item \abgabebox{Aufgabe 2.15}
+\item \challengebox{Aufgabe 2.16}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{DNS}
 DNS = \textit{Domain Name Server}
 \begin{itemize}
 \item Wenn Sie auf eine Webseite wie \url{https://sbb.ch} gehen, woher weiss der Client, von welchem Server er die Informationen anfragen soll?
@@ -607,11 +649,54 @@ DNS = \textit{Domain Name Server}
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{DNS}
+\begin{figure}[H]
+\resizebox{\linewidth}{!}{
+\begin{tikzpicture}[
+	base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.3cm, align=center,inner sep=8pt},
+    server/.style={base, fill=RoyalBlue},
+    client/.style={base, fill=ForestGreen},
+    arrow/.style={-Stealth, thick, rounded corners,text width=4cm,align=center}
+]
+
+% Nodes
+\node[client] (client) {Client\\\texttt{192.168.0.10}};
+\node[server, right=4.2cm of client] (dns) {DNS-Server\\\texttt{192.168.2.1}};
+\node[server, right=4.2cm of dns] (web) {Webserver\\\texttt{192.168.0.11}};
+\node[text width=3cm, right=0cm of dns] (dnsTable) {\tiny \begin{tabular}{p{1.1cm}|p{1.2cm}}
+\textbf{Domain\newline Name} & \textbf{IP-\newline Addresse} \\
+\midrule\midrule
+\texttt{beispiel.ch} & 192.168.0.11 \\
+\midrule
+\texttt{schule.ch} & 192.168.0.12 \\
+\midrule
+\texttt{test.org} & 192.168.0.13 \\
+\midrule
+\texttt{insta.com} & 192.168.0.14 \\
+\midrule
+\texttt{...} & ... \\
+\end{tabular}};
+
+% draw box around DNS node and DNS table
+\node[fit=(dns) (dnsTable), inner sep=4pt, RoyalBlue, dotted, draw, line width=1pt,rounded corners](dnsArea) {};
+
+% Arrows
+\draw[arrow] ($(client.east)+(0,0.15)$) -- ($(dns.west)+(0,0.15)$) node[midway, above] {\textbf{1.} \gls{DNS}-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''};
+\draw[arrow] ($(dns.west)-(0,0.15)$) -- ($(client.east)-(0,0.15)$) node[midway, below] {\textbf{2.} \gls{DNS}-Antwort\\\footnotesize``\texttt{192.168.0.11}''};
+\draw[arrow] (client) -- ++(0,2cm) -- node[above] {\textbf{3.} \gls{HTTP}-Anfrage\\\footnotesize (Webseite wird angefragt)} ++($(web)$) -- (web);
+\draw[arrow] (web) -- ++(0,-2cm) -- node[below,midway] {\textbf{4.} \gls{HTTP}-Antwort\\\footnotesize (Webseite wird geliefert)} ++($(client)-(web)$) -- (client);
+
+\end{tikzpicture}}
+\centering
+\caption{Schematischer Ablauf einer DNS-Anfrage}
+\label{fig:dns}
+\end{figure}
+\end{frame}
+
 \begin{frame}[fragile]{DNS}{Aufträge (Skript)}
 \begin{itemize}
-\item \aufgabebox{Aufgaben 2.15, 2.16}
-\item \abgabebox{Aufgaben 2.17, 2.18}
-\item \challengebox{Aufgabe 2.19}
+\item \aufgabebox{Aufgaben 2.17, 2.18}
+\item \abgabebox{Aufgabe 2.19}
 \end{itemize}
 \end{frame}
 

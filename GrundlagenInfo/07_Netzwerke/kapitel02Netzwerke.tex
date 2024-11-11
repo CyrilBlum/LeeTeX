@@ -253,79 +253,6 @@ Bevor wir uns näher mit den Dimensionen der Anwendungsschicht sowie der darunte
 \item Bei einem \textbf{Host} (von englisch \textit{host} = ``Wirt'' / ``Gastgeber'') ist im allgemeinen ein Computer in einem Netzwerk gemeint, der je nach Situation die Rolle des Servers oder Clients einnehmen kann. Der Name eines Computers in einem Netzwerk wird häufig als \textbf{Host Name} bezeichnet.
 \end{itemize}
 
-Eine Ihnen bekannte Situation findet sich vor, wenn ein Client $\mathcal{C}$ eine Webseite von einem Server $\mathcal{S}$ anfordert. Dies geschieht beispielsweise, wenn Sie von Ihrem Mobiltelefon oder Laptop aus eine Webseite über den Browser aufrufen. Im Folgenden werden wir auf vereinfachte Weise veranschaulichen, welche Schritte geschehen müssen, damit Sie ihre Webseite sehen können.
-
-
-\begin{enumerate}
-\item Als erstes rufen Sie Ihren \textbf{Browser} (von en. \textit{to browse} = ``stöbern'') auf, dies können beispielsweise sein: 
-\begin{enumerate*}
-\item \faChrome{} Chrome
-\item \faFirefox{} Firefox
-\item \faSafari{} Safari
-\item \faEdge{} Edge
-\item  etc.
-\end{enumerate*}
-Dabei handelt es sich um Programme, die eine Datei (meist \texttt{.html}) aus dem Internet anfordern und diese nach dem Empfang darstellen können.  Die angeforderten Dateien enthalten dabei Informationen zu Inhalten, Struktur, Darstellung und Interaktivität einer Webseite. Das Senden / Empfangen von Webseite-Dateien selber übernimmt das Betriebssystem (z.B. Windows, MacOS), nachdem es durch den Browser dazu aufgefordert wurde.
-\item Sobald Sie Ihren Browser aufgerufen haben, geben Sie eine Web-Adresse ein. Eine solche Web-Adresse wird im Allgemeinen \gls{URL} genannt und besteht aus folgenden Komponenten:
-\[
-\underbrace{\text{http://}}_{\text{Protokoll}}
-\underbrace{\text{www.}}_{\text{Server}}
-\underbrace{\text{beispiel.}}_{\text{Domain}}
-\underbrace{\text{ch}}_{\text{\acrshort{TLD}\tikzmark{tld}}}
-\underbrace{\text{/dokumente/}}_{\text{Ordner}}
-\underbrace{\text{reglemente.html}}_{\text{Dateiname}}
-\]
-
-\begin{itemize}
-\item Der erste Teil (in diesem Fall \texttt{http://}) bestimmt das Protokoll, mit welchem die Datei vom Server angefordert wird.
-\item Der zweite Teil (\texttt{www.beispiel.ch}) bezeichnet dabei den \textit{Server} $\mathcal{S}$, von dem wir die Datei anfordern. Die Endung (\texttt{.ch}) steht für eine sogenannte \gls{TLD}, in diesem Fall wird durch ``\texttt{.ch}'' eine Schweizer Webseite bezeichnet.
-\item Alles nach der \gls{TLD} ist ein gewöhnlicher Ordnerpfad auf dem Computer, der schlussendlich zur Datei ``\texttt{reglemente.html}'' führt, die den Inhalt der Webseite enthält
-\end{itemize}
-
-Der schematische Ablauf eines Webseiten-Abrufs mit dem HTTP-Protokoll ist in \cref{fig:http-request} abgebildet.
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[
-    font=\sffamily,
-    every node/.style={align=center},
-    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 3.5cm},
-    process/.style={-Stealth, thick, draw},
-   arrowtext/.style={text width=2.5cm, align=center, text=black, font=\footnotesize}
-]
-
-% Nodes for user
-\node[entity] (userStart) {Eingabe der \acrshort{URL} am Bildschirm};
-\node[entity, below=of userStart] (userEnd) {Webseite am Bildschirm};
-% Draw a 2D rectangle around the users
-\node[fit=(userStart) (userEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](user) {User \\ \faUser};
-
-% nodes for 
-\node[entity, right=of userStart] (browserStart) {Übersetzt die URL in einen HTTP-Request};
-\node[entity, right=of userEnd] (browserEnd) {Sammelt Daten, setzt Website zusammen (rendern)};
-% Draw a 2D rectangle around the users
-\node[fit=(browserStart) (browserEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Browser\\ \faLaptop};
-
-% nodes for server
-\node[entity, right=of browserStart] (serverStart) {Interpretiert den Request und sucht die Dateien};
-\node[entity, right=of browserEnd] (serverEnd) {Sendet den Status der Suche und die Daten zur Webseite};
-% Draw a 2D rectangle around the users
-\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
-
-% Connections
-\draw[process, Crimson] (userStart.east) -- node[arrowtext, above] {1. URL \\ \texttt{http://\\www.beispiel.ch/\\index.html}} (browserStart.west);
-\draw[process, Crimson] (browserStart.east) -- node[arrowtext, above] {2. HTTP Request \\ \texttt{GET /index.html}} (serverStart.west);
-\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {3. HTTP Response \\ Statuscode + Daten} (browserEnd.east);
-\draw[process, ForestGreen] (browserEnd.west) -- node[arrowtext, below] {4. Webpage \\ Darstellung der Webseite \texttt{index.html}} (userEnd.east);
-
-\end{tikzpicture}
-\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
-\label{fig:http-request}
-\end{figure}
-\end{enumerate}
-
-Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige weitere Schritte erfolgen. Wie werden beispielsweise die Daten vom Server zum Client transportiert? Dafür müssen wir uns näher mit der Transportschicht auseinandersetzen.
-
 \subsection{Transportschicht}
 In der Transportschicht geht es, wie es der Name bereits sagt, darum, wie Daten von einem Host zum nächsten transportiert werden. 
 
@@ -641,6 +568,121 @@ Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 
 \end{mysubmission}
 
 
+\subsubsection{Clients \& Servers}
+Eine Ihnen bekannte Situation findet sich vor, wenn ein Client $\mathcal{C}$ eine Webseite von einem Server $\mathcal{S}$ anfordert. Dies geschieht beispielsweise, wenn Sie von Ihrem Mobiltelefon oder Laptop aus eine Webseite über den Browser aufrufen. Im Folgenden werden wir auf vereinfachte Weise veranschaulichen, welche Schritte geschehen müssen, damit Sie ihre Webseite sehen können.
+
+
+\begin{enumerate}
+\item Als erstes rufen Sie Ihren \textbf{Browser} (von en. \textit{to browse} = ``stöbern'') auf, dies können beispielsweise sein: 
+\begin{enumerate*}
+\item \faChrome{} Chrome
+\item \faFirefox{} Firefox
+\item \faSafari{} Safari
+\item \faEdge{} Edge
+\item  etc.
+\end{enumerate*}
+Dabei handelt es sich um Programme, die eine Datei (meist \texttt{.html}) aus dem Internet anfordern und diese nach dem Empfang darstellen können.  Die angeforderten Dateien enthalten dabei Informationen zu Inhalten, Struktur, Darstellung und Interaktivität einer Webseite. Das Senden / Empfangen von Webseite-Dateien selber übernimmt das Betriebssystem (z.B. Windows, MacOS), nachdem es durch den Browser dazu aufgefordert wurde.
+\item Sobald Sie Ihren Browser aufgerufen haben, geben Sie eine Web-Adresse ein. Eine solche Web-Adresse wird im Allgemeinen \gls{URL} genannt und besteht aus folgenden Komponenten:
+\[
+\underbrace{\text{http://}}_{\text{Protokoll}}
+\underbrace{\text{www.}}_{\text{Server}}
+\underbrace{\text{beispiel.}}_{\text{Domain}}
+\underbrace{\text{ch}}_{\text{\acrshort{TLD}\tikzmark{tld}}}
+\underbrace{\text{/dokumente/}}_{\text{Ordner}}
+\underbrace{\text{reglemente.html}}_{\text{Dateiname}}
+\]
+
+\begin{itemize}
+\item Der erste Teil (in diesem Fall \texttt{http://}) bestimmt das Protokoll, mit welchem die Datei vom Server angefordert wird.
+\item Der zweite Teil (\texttt{www.beispiel.ch}) bezeichnet dabei den \textit{Server} $\mathcal{S}$, von dem wir die Datei anfordern. Dieser Name entspricht in der Regel einer einfachen \gls{IP}-Adresse, wie beispielsweise \texttt{192.168.10.2}. Die Endung (\texttt{.ch}) steht für eine sogenannte \gls{TLD}, in diesem Fall wird durch ``\texttt{.ch}'' eine Schweizer Webseite bezeichnet.
+\item Alles nach der \gls{TLD} ist ein gewöhnlicher Ordnerpfad auf dem Computer, der schlussendlich zur Datei ``\texttt{reglemente.html}'' führt, die den Inhalt der Webseite enthält
+\end{itemize}
+\end{enumerate}
+
+Der schematische Ablauf eines Webseiten-Abrufs mit dem HTTP-Protokoll ist in \cref{fig:http-request-simple} abgebildet.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    font=\sffamily,
+    every node/.style={align=center},
+    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 6.5cm},
+    process/.style={-Stealth, thick, draw},
+	arrowtext/.style={text width=5.5cm, align=center, text=black, font=\footnotesize}
+]
+
+% nodes for client
+\node[entity] (clientStart) {Eingabe der \acrshort{URL} am Bildschirm};
+\node[entity, below=of clientStart] (clientEnd) {Sammelt Daten, setzt Website zusammen (Darstellung)};
+% Draw a 2D rectangle around the users
+\node[fit=(clientStart) (clientEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Client\\ \faLaptop};
+
+% nodes for server
+\node[entity, right=of clientStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
+\node[entity, right=of clientEnd] (serverEnd) {Sendet den Status der Suche und die Dateien der Webseite};
+% Draw a 2D rectangle around the users
+\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
+
+% Connections
+\draw[process, Crimson] (clientStart.east) -- node[arrowtext, above] {\texttt{http://192.168.10.2/index.html}\\(HTTP-Anfrage \texttt{GET /index.html})} (serverStart.west);
+\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {HTTP-Antwort \\(Statuscode + Daten)} (clientEnd.east);
+\end{tikzpicture}
+\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
+\label{fig:http-request-simple}
+\end{figure}
+
+Wir können den Ablauf einer Abfrage etwas detaillierter aufzeigen, indem wir eine weitere Stufe für den End-Benutzer des Clients einfügen. Hierdurch wird ersichtlich, dass der Browser sich um die Kommunikation mit dem Server kümmert, indem er das \gls{HTTP}-Protokoll verwendet, um Datei-Anfragen  an den Server zu schicken und um diese zu erhalten (s. \cref{fig:http-request}).
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    font=\sffamily,
+    every node/.style={align=center},
+    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 3.5cm},
+    process/.style={-Stealth, thick, draw},
+   arrowtext/.style={text width=2.5cm, align=center, text=black, font=\footnotesize}
+]
+
+% Nodes for user
+\node[entity] (userStart) {Eingabe der \acrshort{URL} am Bildschirm};
+\node[entity, below=of userStart] (userEnd) {Webseite am Bildschirm};
+% Draw a 2D rectangle around the users
+\node[fit=(userStart) (userEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](user) {User \\ \faUser};
+
+% nodes for 
+\node[entity, right=of userStart] (browserStart) {Übersetzt die URL in einen HTTP-Request};
+\node[entity, right=of userEnd] (browserEnd) {Sammelt Daten, setzt Website zusammen (Darstellung)};
+% Draw a 2D rectangle around the users
+\node[fit=(browserStart) (browserEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Browser\\ \faLaptop};
+
+% nodes for server
+\node[entity, right=of browserStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
+\node[entity, right=of browserEnd] (serverEnd) {Sendet den Status der Suche und die Datein der Webseite};
+% Draw a 2D rectangle around the users
+\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
+
+% Connections
+\draw[process, Crimson] (userStart.east) -- node[arrowtext, above] {1. URL \\ \texttt{http://\\192.168.10.2/\\index.html}} (browserStart.west);
+\draw[process, Crimson] (browserStart.east) -- node[arrowtext, above] {2. HTTP-Anfrage \\ \texttt{GET /index.html}} (serverStart.west);
+\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {3. HTTP-Antwort \\ Statuscode + Daten} (browserEnd.east);
+\draw[process, ForestGreen] (browserEnd.west) -- node[arrowtext, below] {4. Webpage \\ Darstellung der Webseite \texttt{index.html}} (userEnd.east);
+
+\end{tikzpicture}
+\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
+\label{fig:http-request}
+\end{figure}
+
+Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige weitere Schritte erfolgen. Wie werden beispielsweise die Daten vom Server zum Client transportiert? Dafür müssen wir uns näher mit der Transportschicht auseinandersetzen.
+
+\begin{mysubmission}[Das Internet]
+Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.7-2.9 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
+\end{mysubmission}
+
+\begin{mychallenge}
+Richten Sie sich Ihren eigenen Email-Server ein, indem Sie folgende Aufgaben ausführen: \href{https://inf-schule.de/rechnernetze/filius/internet/exkurs_email}{Link}.
+\end{mychallenge}
+
 \subsubsection{DNS}
 Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer Webseiten, aus der Angabe eines Servers und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (s. \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Ein Beispiel einer solchen Tabelle ist in \cref{tab:dnsEntries} gezeigt. 
 
@@ -727,17 +769,9 @@ Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|host sbb.ch| 
 \end{myanswer}
 \end{myexercise}
 
-\begin{mysubmission}[Das Internet]
-Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.7-2.9 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
-\end{mysubmission}
-
 \begin{mysubmission}[DNS-Server]
 Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.10-2.12 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
 \end{mysubmission}
-
-\begin{mychallenge}
-Richten Sie sich Ihren eigenen Email-Server ein, indem Sie folgende Aufgaben ausführen: \href{https://inf-schule.de/rechnernetze/filius/internet/exkurs_email}{Link}.
-\end{mychallenge}
 
 \subsection{Vermittlungsschicht}
 \subsubsection{MAC-Adressen}
