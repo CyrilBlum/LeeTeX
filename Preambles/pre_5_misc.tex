@@ -59,9 +59,43 @@
 \newcommand*\rot{\multicolumn{1}{R{90}}}
 
 
-
-% Turing machine
-\edef\sizetape{0.7cm}
-\tikzstyle{tmtape}=[draw,minimum size=\sizetape]
-\tikzstyle{tmhead}=[arrow box,draw,minimum size=.5cm,arrow box
-arrows={east:.25cm, west:0.25cm}]
+% Turing machines
+\newlength{\tmtapesize}
+\setlength{\tmtapesize}{9mm}
+\tikzset{tmtape/.style={
+			draw,
+			minimum size=\tmtapesize,
+			inner sep=0,
+			text height=1.8ex,
+			text depth=0.25ex,
+			on chain
+		}
+}
+\tikzset{tmtapehend/.style={
+			minimum size=\tmtapesize,
+			line width=0pt,
+			on chain,
+			append after command={
+					(\tikzlastnode.north west) edge (\tikzlastnode.north east)
+					(\tikzlastnode.south west) edge (\tikzlastnode.south east)
+				}
+		}
+}
+\tikzset{tmtapevend/.style={
+			minimum size=\tmtapesize,
+			line width=0pt,
+			on chain,
+			append after command={
+					(\tikzlastnode.north west) edge (\tikzlastnode.south west)
+					(\tikzlastnode.north east) edge (\tikzlastnode.south east)
+				}
+		}
+}
+\tikzset{tmtapecursor/.style={
+			minimum size=\dimexpr\tmtapesize+2mm,
+			draw=black,
+			rounded corners=1mm,
+			fill=blue,
+			fill opacity=0.1
+		}
+}
