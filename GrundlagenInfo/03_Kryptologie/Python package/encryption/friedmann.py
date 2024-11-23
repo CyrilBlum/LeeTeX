@@ -1,15 +1,14 @@
 ﻿from collections import Counter    
-import matplotlib.pyplot as plt
-import numpy as np
 
 def friedman(text):
-    freq = countocc(text.lower())
+    # Determine the Friedman Characteristic for a given text
     summe = 0
     for letter_freq in freq:
         summe += (letter_freq - (1/26))**2
     return summe
       
 def countocc(eingabe):
+    # Helper function, used for calculating the Friedman Characteristic
     length = len(eingabe)
     counter = Counter(eingabe)
     alphabet = []
@@ -20,6 +19,7 @@ def countocc(eingabe):
     return alphabet
 
 def friedmann_slice(text, keylength):
+    # Based on a text encrypted with Friedman and a given keylength, determine the average Friedman characteristic for all subgroups of the text.
     i=0
     fc_avg=0
     for i in range(keylength):
@@ -31,26 +31,3 @@ def friedmann_slice(text, keylength):
     fc_avg/=keylength
     
     return fc_avg
-    
-def draw_friedmann(i, fc, turtle=False):
-    if turtle:
-        xshift=150
-        setPos(-xshift+50, 150)
-        label("Friedmann'sche Charakteristik:")
-        setPos(-xshift,0)
-        pd()
-        fd(200)
-        bk(200)
-        rt(90)
-        fd(400)
-        bk(400)
-        
-        for  i in n:
-            setPos(i*40-xshift, fc[i-1]*1000)
-            dot(10)
-            setPos(i*40-xshift, fc[i-1]*1000+40)
-            label(i)
-    else:
-        fig, ax = plt.subplots()
-        ax.plot(i, fc, 'o')
-        return fig, ax

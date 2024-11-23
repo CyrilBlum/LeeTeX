@@ -90,9 +90,9 @@ def show_letter_freq(text):
     c.update(text)
     freq_perc = [(i, c[i] / len(text)) for i in c]
     freq_perc = np.array(freq_perc)[np.argsort([i[0] for i in freq_perc])]
-                                               
-    ax.bar(freq_perc[:,0], freq_perc[:,1].astype(float), width=.5, color='g')
-    ax.yaxis.set_major_formatter(mtick.PercentFormatter())
+
+    ax.bar(freq_perc[:,0], freq_perc[:,1].astype(float)*100, width=.5, color='g')
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
     return fig, ax
 
 def show_letter_freq_multiple(text_enc, text_dec, add_hline=True):
