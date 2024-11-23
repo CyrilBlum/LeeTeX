@@ -184,33 +184,36 @@
 %
  \section{Einführung}
 \iftoggle{teacherToggle}{
- \begin{myExBox}[title=DL \thedlcounter: Einführung]
+ \begin{myExBox}[title=Thema \thedlcounter: Einführung]
  \tcbsubtitle{Thema}
- Die erste Doppel-Lektion macht den Einstieg in die Welt der Verschlüsselung. Dabei werden zuerst das Thema ``Verschlüsselung'' / Geheimschrift im Allgemeinen und danach einige antike Geheimschriften vorgestellt.
+ Die ersten drei Lektionenen (Ganz-Klassenlektion und Programmier-Lektion) machen den Einstieg in die Welt der Verschlüsselung. Dabei werden zuerst das Thema ``Verschlüsselung'' / Geheimschrift im Allgemeinen und danach die antiken Geheimschriften Skytale und Caesar vorgestellt.
  
  
  \tcbsubtitle{Operationalisierte Lernziele}
  \begin{todolist}
      \item Die SuS können Beispiele aus ihrem eigenen Alltag nennen, wo Verschlüsselung relevant ist.
      \item Die SuS können Lebensbereiche identifizieren, in denen sie sensible Daten übermitteln.
-     \item Die SuS können Texte verschlüsseln, indem sie die antiken, symmetrischen Verschlüsselungstechnologien Sytale und Caesar verwenden
+     \item Die SuS können einen Text mittels einer Zweier- oder Dreiertausch-Verschlüsslungsmethoden ver- und entschlüsseln.
+     \item Die SuS können Zweier- und Dreiertausch-Methoden in Python implementieren.
+     \item Die SuS können Texte verschlüsseln, indem sie die antiken, symmetrischen Verschlüsselungstechnologien Skytale und Caesar verwenden.
+     \item Die SuS können Verschlüsselungs-Funktionen zu Skytale und Casear in Python implementieren
  \end{todolist}
  
  \tcbsubtitle{Grober Lektionsablauf}
- 
 Die SuS sollen die Relevanz des Themas anhand einiger alltagsnaher Beispiele kennenlernen. Z.B. Können folgende Fragen gestellt werden:
 \begin{tcolorbox}
 \begin{itemize}
 \item \textbf{Sie} wollen Ihrer Freundin / Ihrem Freund eine geheime Nachricht senden, die nicht das ganze Internet mitlesen kann. Wie könnten Sie den Klartext so verschlüsseln, dass nur Alice bzw. Bob diese lesen kann?
 \item Bei welchen Alltagsdaten würde es sie besonders stören, wenn diese durch unbefugte Personen gelesen werden könnten?
+\item Wenn Sie eine Firma hätten und gehackt würden, würden Sie die Erpressungsgebühr zahlen?
 \end{itemize}
 \end{tcolorbox}
-Vermutlich wird es einfach sein, aufzuzeigen, dass die intuitiven Verschlüsselungs-Ideen der SuS nicht funktionieren. Daher werden die SuS sich in der kommenden DL mit einigen lange bewährten (aber ebenfalls bereits seit Langem als unsicher geltenden) antiken Verschlüsselungstechnologien auseinandersetzen, namentlich Skytale und Caesar. Die Lektion schliesst mit einigen Bemerkungen zu Sicherheit und Buchstabenhäufigkeit, die bereits die Grundlage für die nächste DL legt.
+Vermutlich wird es einfach sein, aufzuzeigen, dass die intuitiven Verschlüsselungs-Ideen der SuS nicht funktionieren. Daher werden die SuS sich in der kommenden DL mit einigen antiken Verschlüsselungstechnologien auseinandersetzen, namentlich Skytale und Caesar. Diese sind einfach verständlich, gelten jedoch als unsicher. Die Lektion schliesst mit einigen Bemerkungen zu Sicherheit und Buchstabenhäufigkeit, die bereits die Grundlage für die nächste DL legen.
  
  \begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
  \begin{enumerate}
      \item Bei den Python-Codes sind bereits fortgeschrittene Programmierkenntnisse erforderlich. Allenfalls zuerst Tutorial zu Zeichenketten-Manipulation machen (oder parallel in HK durchführen)?
-     \item Was, wenn die SuS die Technologien bereits kennen? Lösungsvorschlag: Genügend Challenge-Aufgaben zur Verfügung haben.
+     \item Was, wenn die SuS die Verschlüsslungs-Technologien bereits kennen? Lösungsvorschlag: Genügend Challenge-Aufgaben zur Verfügung haben.
  \end{enumerate}
  \end{myExBox}
  \end{myExBox}
@@ -281,7 +284,7 @@ In der Informatik spricht man hier davon, dass Alice aus Ihrem ``Klartext'' also
  
  
  \subsection{``Intuitive'' Ansätze zur Verschlüsselung}
- \begin{myexercise}
+ \begin{myexercise}\label{ex:zweiertausch}
 Entziffern Sie den folgenden Geheimtext durch ausprobieren:
      \begin{center}
      \small
@@ -316,10 +319,9 @@ Entziffern Sie den folgenden Geheimtext durch ausprobieren:
  \end{myanswer}
  \end{myexercise}
  \begin{myexample}
- Ein ``Zweiertausch'' könnte in Python wie folgt implementiert werden:
- \begin{myanswer}
+Die Lösung für \cref{ex:zweiertausch} könnte in Python wie folgt implementiert werden:
 \lstinputlisting{GrundlagenInfo/03_Kryptologie/Python package/encryption/zweiertausch.py}
- \end{myanswer}
+
  \end{myexample}
  \begin{mychallenge}
  Schreiben Sie eine Python-Funktion \lstinline|def dreiertausch(klartext)|, welche den \enquote{Dreiertausch} aus der Einführungsaufgabe 2 implementiert.
@@ -361,16 +363,6 @@ Der Klartext
 lässt sich nun einfach ablesen.
 \end{myanswer}
  \end{myexercise}
- \begin{myexercise}
- Sie möchten einen Klartext der Länge 87 mit Hilfe einer Tabelle mit 10 Zeilen chiffrieren. Wie viele Spalten benötigt diese Tabelle?
- 
-\begin{myanswer}
- Die Tabelle benötigt 9 Spalten. Allgemein lässt sich die Anzahl benötigter Spalten berechnen durch
- \begin{align*}
-     \ceil{\frac{\text{Länge des Textes}}{\text{Anzahl Zeilen}}}\quad(\text{``}\ceil{...}\text{'' bedeutet ``nach oben aufgerundet'')}.
- \end{align*}
-\end{myanswer}
- \end{myexercise}
  
  \begin{myexercise}
  Der folgende Geheimtext der Länge 75 wurde mit SKYTALE verschlüsselt:
@@ -379,11 +371,11 @@ lässt sich nun einfach ablesen.
  MRECREMRHSNSSAPSTCBRCRHEUHORRNHNIEGEG 
  \end{center}
  Dabei konnten \textbf{alle Zeilen der Tabelle vollständig aufgefüllt} werden.
- \begin{description}
- \item[(a)] Welches ist hier der Schlüssel (die Anzahl der Zeilen)? Tipp: Probieren Sie die Schlüssel 3 und 5 aus.
- \item[(b)] Wie lautet der Klartext?
- \item[(c)] Wie viele Schlüssel müssen im schlimmsten Fall ausprobiert werden, bis der korrekte Schlüssel gefunden wurde? Das heisst, wie viele potentielle Schlüssel gibt es?
- \end{description}
+ \begin{enumerate}
+ \item Welches ist hier der Schlüssel (die Anzahl der Windungen, also Spalten)? Tipp: Probieren Sie die Schlüssel 10 und 15 aus. Sie können \href{https://legacy.cryptool.org/de/cto/scytale}{diesen Link} dazu verwenden.
+ \item Wie lautet der Klartext?
+ \item Wie viele Schlüssel müssen im schlimmsten Fall ausprobiert werden, bis der korrekte Schlüssel gefunden wurde? Das heisst, wie viele potentielle Schlüssel gibt es?
+ \end{enumerate}
 
  \begin{myanswer}
  \begin{table}[H]
@@ -396,32 +388,58 @@ lässt sich nun einfach ablesen.
  I & T & N & E & I & L & A & R & M & S & T & R & O & N & G \\
  \end{tabular}
  \end{table}
- \begin{description}
- \item[(a)] Durch Ausprobieren finden wir, dass die Wahl des Schlüssels 5 zu einem sinnvollen Klartext führt, die Wahl des Schlüssels 3 jedoch nicht.
+ \begin{enumerate}
+ \item Durch Ausprobieren finden wir, dass die Wahl des Schlüssels 5 zu einem sinnvollen Klartext führt, die Wahl des Schlüssels 3 jedoch nicht.
  
- \item[(b)]
+ \item
  Der Klartext lautet also:
  \begin{center}
      {\small
      EIN KLEINER SCHRITT FUER MICH ABER EIN GROSSER\\
      SPRUNG FUER DIE MENSCHHEIT NEIL ARMSTRONG}
  \end{center}
- \item[(c)] Wir müssen $75=3\cdot 5\cdot 5$ Buchstaben auf ein Rechteck verteilen. Damit könnten $3, 5, 15$ und $25$ mögliche Schlüssel sein. $1$ und $75$ sind keine Schlüssel, da der gegebene Text kein Klartext ist.
- \end{description}
+ \item Wir müssen $75=3\cdot 5\cdot 5$ Buchstaben auf ein Rechteck verteilen. Damit könnten $3, 5, 15$ und $25$ mögliche Schlüssel sein. $1$ und $75$ sind keine Schlüssel, da der gegebene Text kein Klartext ist.
+ \end{enumerate}
  \end{myanswer}
  
  
  \end{myexercise}
+  \begin{mychallenge}
+  Sie möchten einen Klartext der Länge 87 mit Hilfe einer Tabelle mit 10 Zeilen chiffrieren. Wie viele Spalten benötigt diese Tabelle?
+  
+ \begin{myanswer}
+  Die Tabelle benötigt 9 Spalten. Allgemein lässt sich die Anzahl benötigter Spalten berechnen durch
+  \begin{align*}
+      \ceil{\frac{\text{Länge des Textes}}{\text{Anzahl Zeilen}}}\quad(\text{``}\ceil{...}\text{'' bedeutet ``nach oben aufgerundet'')}.
+  \end{align*}
+ \end{myanswer}
+  \end{mychallenge}
+ 
  \subsection{Caesar}
  Eines der bekanntesten Verschlüsselungssysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dieses Verschlüsselungssystem besteht essentiell aus einer Verschiebung aller Buchstaben um eine vordefinierte Anzahl Positionen. Der \tib{Schlüssel} bezeichnet dabei die Anzahl Positionen, um die ein Text verschoben wird.
  
  \begin{myexample}
- Mit dem Schlüssel 3 würde das Wort ``HALLO'' als ``KDOOR'' geschrieben:
+ Mit dem Schlüssel ``D'' (3 Positionen) würde das Wort ``HALLO'' als ``KDOOR'' geschrieben:
  \begin{figure}[H]
          \centering
          \caesar[3]
      \end{figure}
  \end{myexample}
+ 
+Der Schlüssel ``B'' bedeutet also eine Verschiebung um 1 Position, ``C'' um 2 Positionen, ``D'' um drei Positionen usw. Im Allgemeinen lässt sich die Verschiebung folgendermassen schreiben:
+
+$\text{Verschiebung = Ord}(\square)$, wobei $\text{Ord}(A)=0$.
+
+\begin{myexample}
+Folgender Text wurde mit dem Schlüssel ``G'' (6 Positionen) verschlüsselt:
+
+\begin{verbatim}
+  Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
+ Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
+Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+\end{verbatim}
+
+\end{myexample}
  
  \begin{myexercise}
   Der Geheimtext
@@ -450,7 +468,7 @@ lässt sich nun einfach ablesen.
  \end{myanswer}
  \end{mychallenge}
  
- Inwiefern könnte Caesar angegriffen werden? 
+\subsubsection{Knacken von Caesar}
  \begin{itemize}
  \item Einerseits reicht es, alle 25 möglichen Verschiebungen auszuprobieren. Ein moderner Computer hat dies in einigen Milisekunden erledigt. 
  \item Andererseits kann, wenn der Text genügend lange ist, anhand der Häufigkeit der verschlüsselten Buchstaben mittels Häufigeitsanalyse in kürzester Zeit bestimmt werden, was der Schlüssel war. \cref{fig:caesar-freq} zeigt die Häufigkeiten der Buchstaben eines langen, mit Caesar verschlüsselten Texts im Geheimtext.
@@ -458,25 +476,119 @@ lässt sich nun einfach ablesen.
  
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/caesar-freq}
+\includegraphics[width=0.7\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/caesar-freq-exercise}
 \caption{Buchstabenhäufigkeit in einem nach Caesar verschlüsselten Text}
 \label{fig:caesar-freq}
 \end{figure}
+
  
- \begin{myexercise}
+ \begin{myexercise}\label{ex:caesar}
 Können Sie aus \cref{fig:caesar-freq} entschlüsseln, was der Klartext ist, wenn der häufigste Buchstabe in deutschen Texten ``E'' ist?
+
+Geheimtext:
+
+\texttt{UKGJCDGPGUIGUEJCHHVFKGUGPVGZVBWMPCEMGP}
+
 \begin{myanswer}
-Offensichtlich ist der häufigste Buchstabe ``G'', wir haben hier also eine Verschiebung von ``E'' zu ``G'', also eine Verschiebung um 2.
+Offensichtlich ist der häufigste Buchstabe ``G'', wir haben hier also eine Verschiebung von ``E'' zu ``G'', also eine Verschiebung um 2 Stellen. Der Klartext lautet daher: \texttt{SIEHABENESGESCHAFFTDIESENTEXTZUKNACKEN}
 \end{myanswer}
  \end{myexercise}
  
  
- 
+%\subsection{Andere monoalphabetische Verschlüsslungssysteme} 
  
  \subsection{Vigenère}
- Wie wir in \cref{fig:caesar-freq} gesehen haben, ist es extrem einfach, Text, die mit Caesar verschlüsselt worden sind, anzugreifen, entweder mittels Buchstabenhäufigkeitsanalyse oder indem man alle 25 möglichen Verschiebungen ausprobiert. 
+ \iftoggle{teacherToggle}{
+  \begin{myExBox}[title=Thema \thedlcounter: Einführung]
+  \tcbsubtitle{Thema}
+  Das zweite Modul (Ganz-Klassenlektion und Programmier-Doppellektion) zeigt den SuS zuerst auf, dass alle monoalphabetischen Kryptosysteme mittels Häufigkeitsanalyse geknackt werden können. Die SuS werden danach in polyalphabetische Verschlüsselungsverfahren eingeführt. Schlussendlich wird aufgezeigt, dass auch diese mit Häufigkeitsanalyse geknackt werden können, solange die Schlüssellänge deutlich kürzer als die Klartextlänge ist..
+  
+  
+  \tcbsubtitle{Operationalisierte Lernziele}
+  \begin{todolist}
+      \item Die SuS können mit einen beliebigen monoalphabetischen Text ausreichender Länge mittels Häufigkeitsanalyse knacken.
+      \item Die SuS können einen Text mit Vigenère ver- und entschlüsseln.
+      \item Die SuS können die Friedmann'sche Charakteristik anwenden, um die Schlüssellänge eines mit Vigenère verschlüsselten Geheimtexts zu bestimmen
+      \item Die SuS können einen Vigenère-Geheimtext, dessen Schlüssellänge bekannt ist, mittels Häufigkeitsanalyse entschlüsseln.
+      \item Die SuS können einen Text mittels OTP verschlüsseln und wissen, weshalb diese Verschlüsselungsmethode als sicher gilt.
+  \end{todolist}
+  
+  \tcbsubtitle{Grober Lektionsablauf}
+...
+  \begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
+  \begin{enumerate}
+      \item ...
+  \end{enumerate}
+  \end{myExBox}
+  \end{myExBox}
+ \newpage\stepcounter{dlcounter}
+  }{}
+ Wie wir in \cref{ex:caesar} gesehen haben, ist es extrem einfach, Text, die mit Caesar verschlüsselt worden sind, anzugreifen, entweder mittels Buchstabenhäufigkeitsanalyse oder indem man einfach alle 25 möglichen Verschiebungen ausprobiert.
  
- Vigenère hatte eine andere Idee: Statt den ganzen Text mit e
+ Vigenère hatte eine andere Idee: Statt den ganzen Text mit einem einzigen Schlüssel zu verschlüsseln, verwendete er ein Wort, mit welchem er den Text ``zyklisch'', also gruppenweise verschlüsselte.
+ 
+ \begin{myexample}\label{ex:vigenere}
+Wenn der Schlüssel beispielsweise ``KEY'' war, wurden die Buchstaben folgendermassen verschlüsselt (s. Beispiel unterhalb):
+\begin{itemize}
+\item Buchstaben 1, 4, 7, 10 etc. mit ``K''
+\item Buchstaben 2, 5, 8, 11 etc. mit ``E''
+\item Buchstaben 3, 6, 9, 12 etc. mit ``Y''
+\end{itemize}
+
+\begin{figure}[H]
+\begin{verbatim}
+  Klartext: JEM|AND|MUS|STE|JOS|EFK|VER|LE...
+ Schlüssel: KEY|KEY|KEY|KEY|KEY|KEY|KEY|KE...
+Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
+\end{verbatim}
+\end{figure}
+
+Wie Sie wissen, ist der Buchstabe ``E'' der häufigste Buchstabe in deutschen Texten. Diese Eigenschaft haben wir uns in \cref{ex:caesar} zunutze gemacht, um den Text zu knacken. Da bei Vigenère jedoch der Buchstaben nun nicht mehr immer mit demselben Schlüssel verschlüsselt ist, sondern je nach Position mit dem Schlüssel ``K'', ``E'', oder ``Y'', wird der Buchstabe ``E'' im Geheimtext nun breiter auf andere Buchstaben verteilt (s. \cref{fig:ex-vigenere-e}).
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+    % Klartext und Kryptotext Labels
+    \node at (0, 0) {\textbf{E}};
+    \node at (4, 1.5) {\textbf{O}};
+    \node at (4, 0) {\textbf{I}};
+    \node at (4, -1.5) {\textbf{C}};
+
+    % Verbindungspfeile mit Schlüsseln
+    \draw[->, thick] (0.3, 0) -- (3.7, 1.5) node[midway, above] {\textbf{K}};
+    \draw[->, thick] (0.3, 0) -- (3.7, 0) node[midway, above] {\textbf{E}};
+    \draw[->, thick] (0.3, 0) -- (3.7, -1.5) node[midway, above] {\textbf{Y}};
+
+    % Labels Klartext und Kryptotext
+    \node[align=center] at (0, -2) {Klartext};
+    \node[align=center] at (4, -2) {Kryptotext};
+\end{tikzpicture}
+\caption{Verschlüsselungs-Möglichkeiten für den Buchstaben ``E'', mit dem Schlüssel ``KEY'' \cref{ex:vigenere}}
+\label{fig:ex-vigenere-e}
+\end{figure}
+Aus der breiteren Verteilung der Klartext-Buchstaben ergibt sich nun eine homogenere Verteilung im Geheimtext. \cref{fig:langer-text-vig-caesar} zeigt die Buchstabenhäufigkeit im Geheimtext für einen langen Text, welcher einmal mit Caesar und einmal mit Vigenère verschlüsselt wurde.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/caesar-freq}
+\caption{Caesar}
+\end{subfigure}
+\begin{subfigure}{.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-freq}
+\caption{Vigenère}
+
+\end{subfigure}
+\caption{Buchstabenhäufigkeit in einem langen Text, welcher mit unterschiedlichen Verfahren verschlüsselt wurde}
+\label{fig:langer-text-vig-caesar}
+\end{figure}
+
+
+Diese Verschlüsslungsmethode galt während mehreren Jahrehunderten als sicher und war der Gold-Standard in vielen militärischen Verschlüsslungs-Anwendungen. Um einen Text zu verschlüsseln, wurde jeder Buchstabe durchgegangen, und je nach Schlüssel (z.B. ``K'', ``E'' oder ``Y'' in \cref{ex:vigenere}) wurde der entsprechende Buchstabe aus einer Tabelle herausgelesen (s. \cref{tab:vigenere})
+
+\end{myexample}
  
  \begin{table}[H]
 \centering
@@ -512,6 +624,7 @@ Y & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & 
 Z & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y \\
 \end{tabular}
 \caption{Vigenère-Tabelle}
+\label{tab:vigenere}
  \end{table}
  
 
@@ -527,7 +640,14 @@ Kopieren Sie den folgenden Geheimtext und versuchen Sie, ihn mit dem \href{https
 
 \verb|SUFILHZASWJHXBGSUDZPCVLRGJHILTHLRHCOAGAIIEFOAIJHRLRSBRSUZINUADIHAEFA|
  \end{myexercise}
- 
+
+\subsubsection{Knacken von Vigenère mit der Friedmann'schen Charakteristik}
+
+Wie sie in \cref{fig:langer-text-vig-caesar} gesehen haben, ermöglicht eine stark ungleiche Verteilung von Buchstaben in Geheimtexten Rückschlüsse auf die Buchstaben im Klartext. Die Ungleichheit in einem Geheimtext kann mathematisch mit der Friedmann'schen Charakteristik berechnet werden, wie folgt:
+
+
+
+
  \begin{mychallenge}
  Teil 1: Verschlüsselung
  \begin{itemize}
