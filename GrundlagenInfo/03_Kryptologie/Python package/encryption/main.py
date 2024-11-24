@@ -1,6 +1,7 @@
 from vigenere import *
 from caesar import *
 from friedmann import *
+from friedmann_aux import *
 from monoalphabetic import *
 plt.style.use('ggplot')
 
@@ -15,17 +16,22 @@ def caesar_main():
 def vigenere_main():
     # langer Text, mit Caesar und Vigenère
     # langer Text einlesen aus .txt-Datei
+    text_kurz = "BRAVOGUTGEMACHT"
+    text_kurz_v = vigenere(text_kurz, "ABC")
+    print("V",text_kurz_v)
+
     text_lang = open("Texts/Kafka.txt").readlines()[0]
     text_lang = preprocess_text(text_lang)
     text_lang_c = caesar(text_lang, 2)
     fig, ax = show_letter_freq(text_lang_c)
     #plt.show()
-    # plt.savefig("../../Figures/caesar-freq.pdf", format="pdf", bbox_inches="tight")
+    plt.savefig("../../Figures/caesar-freq.pdf", format="pdf", bbox_inches="tight")
 
-    text_lang_v = vigenere(text_lang, "KEY")
+    text_lang_v = vigenere(text_lang, "KSLEE")
+    print("LANGER TEXT", text_lang_v[:400])
     fig, ax = show_letter_freq(text_lang_v)
     #plt.show()
-    # plt.savefig("../../Figures/vigenere-freq.pdf", format="pdf", bbox_inches="tight")
+    plt.savefig("../../Figures/vigenere-freq.pdf", format="pdf", bbox_inches="tight")
 
     # vigenere frequencies by group
 
@@ -35,7 +41,7 @@ def vigenere_main():
     print(text_lang[:20])
     print(text_lang_v[:20])
 
-    #print(vigenere("MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIPCQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB", "ICH", False))
+    print(vigenere("MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIPCQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB", "ICH", False))
 
 # generate friedman figures
 def friedman_main():
@@ -72,4 +78,4 @@ def monoalphabetic_main():
     print(ciphertext_new)
     print(shifts)
 
-friedman_main()
+vigenere_main()
