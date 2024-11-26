@@ -111,7 +111,7 @@
 
 
 			\begin{scope}[on background layer]
-				\begin{scope}[opacity=0.25]
+				\begin{scope}
 					% Initialize a scaling factor for the emojis
 					\newcommand{\scaleFactor}{4}
 					\newcommand{\spacing}{0.3} % smaller number = emojis closer together
@@ -132,10 +132,11 @@
 								\pgfmathsetmacro{\angle}{\startAngle + \i * \rotateAngle}
 								\pgfmathsetmacro{\radius}{\spacing * \i}
 								\pgfmathsetmacro{\scale}{\scaleFactor * (\i/\numberEmojis)} % Adjust the divisor for size variation
+								\pgfmathsetmacro{\emojiopacity}{\i /  \numberEmojis} % Adjust the divisor for size variation
 								% Increase spacing gradually
 								\pgfmathsetmacro{\spacing}{\spacing + \i/\numberEmojis} % Adjust the divisor for spacing variation
 								% Select the emoji to be placed in the spiral
-								\node[scale=\scale] at (\angle:\radius) {\emoji{\theemoji}};
+								\node[scale=\scale,opacity=\emojiopacity] at (\angle:\radius) {\emoji{\theemoji}};
 							}
 					}
 				\end{scope}
@@ -157,25 +158,33 @@
 			%	        \centering
 			%	        \includegraphics[height=.15\textwidth]{LeeLogo}
 			%	      \end{figure}
-			\textbf{\thesubject}\\
+			\thesubject\\
 			% title
 			\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
-			\HRule \\[0.5cm]
+%			\HRule \\[0.5cm]
+			\begin{tcolorbox}[enhanced,colframe=RoyalBlue!80,colback=RoyalBlue!20, hbox,lifted shadow={1mm}{-2mm}{3mm}{0.1mm}%
+			       {Black!50!white}]
+			       \begin{varwidth}{\textwidth}
+			\begin{center}
 			\ifblank{#2}{
-				% if no subtitle is given (#2 blank)
-				{\huge #1}\\[0.5cm]
-				\makeSpiral
-				{\large Skript}\\[0.2cm]
-			}{
-				% if #2 not blank
-				{\huge #1}\\[0.5cm]
-				\makeSpiral
-				{\large #2}\\[0.2cm]
-			}
+							% if no subtitle is given (#2 blank)
+							{\huge \textbf{#1}}\\[0.3cm]
+							\makeSpiral
+							{\large \textbf{Skript}}\\[0.2cm]
+						}{
+							% if #2 not blank
+							{\huge \textbf{#1}}\\[0.5cm]
+							\makeSpiral
+							{\large \textbf{#2}}\\[0.2cm]
+						}
+			\end{center}
+			\end{varwidth}
+			\end{tcolorbox}
+			
 
-			\HRule \\[0.5cm]
+%			\HRule \\[0.5cm]
 			\href{mailto:\mainauthormail}{\color{black}{\mainauthor}}\\[0.5cm]
-			{\large \textcopyleft{} Winterthur, \today}
+			{\large \textcopyleft{} \theplace, \today}
 
 			%      \tikz[remember picture,overlay] \node[opacity=0.3,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{LeeLogo}};
 
