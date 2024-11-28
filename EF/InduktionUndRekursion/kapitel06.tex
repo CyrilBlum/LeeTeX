@@ -2,276 +2,273 @@
 \textit{Sudokus} sind Rätsel, welche sich seit den frühen 2000er Jahren international grosser Beliebtheit erfreuen. Seit vielen Jahren gibt es Sudoku-Apps und man findet Sudokus auch oft abgedruckt in Zeitschriften und Gratiszeitungen. Eines der zentralen Ziele dieses Kapitels wird sein, einen rekursiven Lösungsalgorithmus für Sudokus zu entwickeln. Zuerst müssen wir kurz erklären, was Sudokus überhaupt sind und wie die Spielregeln aussehen.
 
 \section{Spielregeln}
- Die Spielregeln für Sudokus lassen sich ganz einfach erklären. Wir illustrieren sie anhand eines konkreten (sehr schwierigen) Sudokus. Ein Sudoku besteht immer aus einem $9\times 9$-Gitter. In \cref{fig:sudoku0} ist links das noch ungelöste Sudoku gezeigt und rechts das gelöste (ausgefüllte). Bei einem Sudoku sind zu Beginn einige Zahlen (Felder) vorgegeben. Diese, zu Beginn vorgegebenen Zahlen, dürfen nicht geändert werden. Das Sudoku ist gelöst, wenn jedes der 81 Felder genau eine der 9 Ziffern $1,2,\ldots, 9$ enthält und zusätzlich die folgenden zwei Bedingungen erfüllt sind:
+Die Spielregeln für Sudokus lassen sich ganz einfach erklären. Wir illustrieren sie anhand eines konkreten (sehr schwierigen) Sudokus. Ein Sudoku besteht immer aus einem $9\times 9$-Gitter. In \cref{fig:sudoku0} ist links das noch ungelöste Sudoku gezeigt und rechts das gelöste (ausgefüllte). Bei einem Sudoku sind zu Beginn einige Zahlen (Felder) vorgegeben. Diese, zu Beginn vorgegebenen Zahlen, dürfen nicht geändert werden. Das Sudoku ist gelöst, wenn jedes der 81 Felder genau eine der 9 Ziffern $1,2,\ldots, 9$ enthält und zusätzlich die folgenden zwei Bedingungen erfüllt sind:
 \begin{enumerate}
-\item In jeder Zeile und jeder Spalte muss jede der 9 Ziffern $1,2,\ldots, 9$ genau einmal vorkommen.
-\item Beachten Sie, dass das $9\times 9$-Gitter (siehe die fetten Linien) wiederum in 9 verschiedene $3\times 3$-Blöcke aufgeteilt ist. In jedem dieser $3\times 3$-Blöcke müssen ebenfalls alle 9 Ziffern $1,2,\ldots, 9$ genau einmal vorkommen.
+	\item In jeder Zeile und jeder Spalte muss jede der 9 Ziffern $1,2,\ldots, 9$ genau einmal vorkommen.
+	\item Beachten Sie, dass das $9\times 9$-Gitter (siehe die fetten Linien) wiederum in 9 verschiedene $3\times 3$-Blöcke aufgeteilt ist. In jedem dieser $3\times 3$-Blöcke müssen ebenfalls alle 9 Ziffern $1,2,\ldots, 9$ genau einmal vorkommen.
 \end{enumerate}
 
 \begin{figure}[H]
-  \centering
-\begin{tikzpicture}[scale=.5]
-\begin{scope}
-  \draw (0, 0) grid (9, 9);
-  \draw[very thick, scale=3] (0, 0) grid (3, 3);
+	\centering
+	\begin{tikzpicture}[scale=.5]
+		\begin{scope}
+			\draw (0, 0) grid (9, 9);
+			\draw[very thick, scale=3] (0, 0) grid (3, 3);
 
-  \setcounter{row}{1}
-\setrow{}{}{7}{}{}{3}{9}{}{2}
+			\setcounter{row}{1}
+			\setrow{}{}{7}{}{}{3}{9}{}{2}
 
-\setrow{}{}{}{8}{}{}{}{}{}
+			\setrow{}{}{}{8}{}{}{}{}{}
 
-\setrow{9}{4}{3}{}{}{}{}{}{7}
+			\setrow{9}{4}{3}{}{}{}{}{}{7}
 
-\setrow{6}{9}{}{}{}{}{}{}{}
+			\setrow{6}{9}{}{}{}{}{}{}{}
 
-\setrow{3}{}{}{5}{2}{7}{}{}{}
+			\setrow{3}{}{}{5}{2}{7}{}{}{}
 
-\setrow{}{}{}{}{}{}{8}{4}{}
+			\setrow{}{}{}{}{}{}{8}{4}{}
 
-\setrow{}{}{}{}{4}{8}{}{}{}
+			\setrow{}{}{}{}{4}{8}{}{}{}
 
-\setrow{2}{6}{}{}{}{}{}{}{}
+			\setrow{2}{6}{}{}{}{}{}{}{}
 
-\setrow{}{}{}{}{}{}{1}{2}{9}
+			\setrow{}{}{}{}{}{}{1}{2}{9}
 
-\node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 0};
-\end{scope}
+			\node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 0};
+		\end{scope}
 
-\begin{scope}[xshift=12cm]
-  \draw (0, 0) grid (9, 9);
-  \draw[very thick, scale=3] (0, 0) grid (3, 3);
+		\begin{scope}[xshift=12cm]
+			\draw (0, 0) grid (9, 9);
+			\draw[very thick, scale=3] (0, 0) grid (3, 3);
 
-  \setcounter{row}{1}
-\setrow{}{}{7}{}{}{3}{9}{}{2}
+			\setcounter{row}{1}
+			\setrow{}{}{7}{}{}{3}{9}{}{2}
 
-\setrow{}{}{}{8}{}{}{}{}{}
+			\setrow{}{}{}{8}{}{}{}{}{}
 
-\setrow{9}{4}{3}{}{}{}{}{}{7}
+			\setrow{9}{4}{3}{}{}{}{}{}{7}
 
-\setrow{6}{9}{}{}{}{}{}{}{}
+			\setrow{6}{9}{}{}{}{}{}{}{}
 
-\setrow{3}{}{}{5}{2}{7}{}{}{}
+			\setrow{3}{}{}{5}{2}{7}{}{}{}
 
-\setrow{}{}{}{}{}{}{8}{4}{}
+			\setrow{}{}{}{}{}{}{8}{4}{}
 
-\setrow{}{}{}{}{4}{8}{}{}{}
+			\setrow{}{}{}{}{4}{8}{}{}{}
 
-\setrow{2}{6}{}{}{}{}{}{}{}
+			\setrow{2}{6}{}{}{}{}{}{}{}
 
-\setrow{}{}{}{}{}{}{1}{2}{9}
+			\setrow{}{}{}{}{}{}{1}{2}{9}
 
-  \node[anchor=center] at (4.5, -0.9) {gelöstes Sudoku Nr. 0};
+			\node[anchor=center] at (4.5, -0.9) {gelöstes Sudoku Nr. 0};
 
-  \begin{scope}[FireBrick, font=\sffamily\slshape]
-    \setcounter{row}{1}
-\setrow{8}{1}{}{4}{5}{}{}{6}{}
+			\begin{scope}[FireBrick, font=\sffamily\slshape]
+				\setcounter{row}{1}
+				\setrow{8}{1}{}{4}{5}{}{}{6}{}
 
-\setrow{5}{2}{6}{}{7}{9}{3}{1}{4}
+				\setrow{5}{2}{6}{}{7}{9}{3}{1}{4}
 
-\setrow{}{}{}{1}{6}{2}{5}{8}{}
+				\setrow{}{}{}{1}{6}{2}{5}{8}{}
 
-\setrow{}{}{1}{3}{8}{4}{2}{7}{5}
+				\setrow{}{}{1}{3}{8}{4}{2}{7}{5}
 
-\setrow{}{8}{4}{}{}{}{6}{9}{1}
+				\setrow{}{8}{4}{}{}{}{6}{9}{1}
 
-\setrow{7}{5}{2}{9}{1}{6}{}{}{3}
+				\setrow{7}{5}{2}{9}{1}{6}{}{}{3}
 
-\setrow{1}{3}{9}{2}{}{}{7}{5}{6}
+				\setrow{1}{3}{9}{2}{}{}{7}{5}{6}
 
-\setrow{}{}{5}{7}{9}{1}{4}{3}{8}
+				\setrow{}{}{5}{7}{9}{1}{4}{3}{8}
 
-\setrow{4}{7}{8}{6}{3}{5}{}{}{}
-  \end{scope}
+				\setrow{4}{7}{8}{6}{3}{5}{}{}{}
+			\end{scope}
 
-\end{scope}
+		\end{scope}
 
-\end{tikzpicture}
-  \caption{Sudoku Nr. 0}
-  \label{fig:sudoku0}
+	\end{tikzpicture}
+	\caption{Sudoku Nr. 0}
+	\label{fig:sudoku0}
 \end{figure}
 
-\noindent
 Normale $9\times 9$-Sudokus sind mit ihren $81$ Feldern recht gross und für didaktische Betrachtungen eher unhandlich. Wir werden deshalb zuerst kleinere Sudokus der Grösse $4\times 4$ untersuchen. Lassen Sie uns zunächst die Regeln für Sudokus für allgemeine Dimensionen festhalten.
 \begin{myBox}[Spielregeln des (verallgemeinerten) Sudokus]{myBox:Regeln}
-Ein (verallgemeinertes) Sudoku ist ein $n^2 \times n^2$-Gitter, wobei $n$ eine natürliche Zahl ist. Bei einem Sudoku sind zu Beginn einige Zahlen (Felder) vorgegeben. Diese zu Beginn vorgegebenen Zahlen dürfen nicht geändert werden. Das Sudoku ist gelöst, wenn jedes der $n^2\cdot n^2 = n^4$ Felder genau eine der Ziffern $1,2,\ldots, n^4$ enthält und zusätzlich die folgenden zwei Bedingungen erfüllt sind:
-    \begin{enumerate}
-    \item In jeder Zeile und in jeder Spalte muss jede der $n^2$ Ziffern $1,2,\ldots, n^2$ genau einmal vorkommen.
-    \item Beachten Sie, dass das $n^2\times n^2$-Gitter (siehe die fetten Linien) wiederum in $n^2$ verschiedene $n\times n$-Blöcke aufgeteilt ist. In jedem dieser $n\times n$-Blöcke müssen ebenfalls alle $n^2$ Ziffern $1,2,\ldots, n^2$ genau einmal vorkommen.
-\end{enumerate}
+	Ein (verallgemeinertes) Sudoku ist ein $n^2 \times n^2$-Gitter, wobei $n$ eine natürliche Zahl ist. Bei einem Sudoku sind zu Beginn einige Zahlen (Felder) vorgegeben. Diese zu Beginn vorgegebenen Zahlen dürfen nicht geändert werden. Das Sudoku ist gelöst, wenn jedes der $n^2\cdot n^2 = n^4$ Felder genau eine der Ziffern $1,2,\ldots, n^4$ enthält und zusätzlich die folgenden zwei Bedingungen erfüllt sind:
+	\begin{enumerate}
+		\item In jeder Zeile und in jeder Spalte muss jede der $n^2$ Ziffern $1,2,\ldots, n^2$ genau einmal vorkommen.
+		\item Beachten Sie, dass das $n^2\times n^2$-Gitter (siehe die fetten Linien) wiederum in $n^2$ verschiedene $n\times n$-Blöcke aufgeteilt ist. In jedem dieser $n\times n$-Blöcke müssen ebenfalls alle $n^2$ Ziffern $1,2,\ldots, n^2$ genau einmal vorkommen.
+	\end{enumerate}
 \end{myBox}
 Das übliche Sudoku (mit 81 Feldern) erhalten wir für $n=3$. Wir werden zunächst kleine Sudokus mit $n=2$, also mit nur $2^4 = 16$ Feldern anschauen.
 
-\begin{aufgabe}{aufgabe:0601}
-  Finden Sie die (eindeutige) Lösung des Sudokus in \cref{fig:sudoku2}. Dieses Sudoku wird als \textit{einfach} eingestuft.
-  \begin{figure}[H]
-      \centering
-  \begin{tikzpicture}[scale=.5]
-    \begin{scope}
-      \draw (0, 0) grid (9, 9);
-      \draw[very thick, scale=3] (0, 0) grid (3, 3);
-  
-      \setcounter{row}{1}
-  \setrow{}{9}{5}{}{}{}{}{7}{}
-  
-  \setrow{}{7}{}{1}{2}{}{8}{}{}
-  
-  \setrow{}{2}{4}{6}{7}{}{3}{9}{1}
-  
-  \setrow{}{}{}{}{}{1}{2}{5}{3}
-  
-  \setrow{}{1}{}{3}{}{4}{}{}{9}
-  
-  \setrow{7}{3}{9}{8}{}{}{}{}{4}
-  
-  \setrow{}{}{}{9}{8}{6}{}{}{}
-  
-  \setrow{}{}{}{}{4}{}{}{1}{6}
-  
-  \setrow{2}{4}{}{}{}{}{}{}{}
-  
-      \node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 2};
-  
-  \end{scope}
-  
-  \end{tikzpicture}
-      \caption{Sudoku Nr. 2}
-      \label{fig:sudoku2}
-  \end{figure}
-  \end{aufgabe}
-  
+\begin{myexercise}\label{myexercise:0601}
+	Finden Sie die (eindeutige) Lösung des Sudokus in \cref{fig:sudoku2}. Dieses Sudoku wird als \textit{einfach} eingestuft.
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[scale=.5]
+			\begin{scope}
+				\draw (0, 0) grid (9, 9);
+				\draw[very thick, scale=3] (0, 0) grid (3, 3);
+
+				\setcounter{row}{1}
+				\setrow{}{9}{5}{}{}{}{}{7}{}
+
+				\setrow{}{7}{}{1}{2}{}{8}{}{}
+
+				\setrow{}{2}{4}{6}{7}{}{3}{9}{1}
+
+				\setrow{}{}{}{}{}{1}{2}{5}{3}
+
+				\setrow{}{1}{}{3}{}{4}{}{}{9}
+
+				\setrow{7}{3}{9}{8}{}{}{}{}{4}
+
+				\setrow{}{}{}{9}{8}{6}{}{}{}
+
+				\setrow{}{}{}{}{4}{}{}{1}{6}
+
+				\setrow{2}{4}{}{}{}{}{}{}{}
+
+				\node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 2};
+
+			\end{scope}
+
+		\end{tikzpicture}
+		\caption{Sudoku Nr. 2}
+		\label{fig:sudoku2}
+	\end{figure}
+\end{myexercise}
+
 \section{Sudokus können mehr als eine Lösung haben!}
 Betrachten Sie nochmals \cref{fig:sudoku0} und vergewissern Sie sich, dass die Lösung auf der rechten Seite tatsächlich alle geforderten Bedingungen erfüllt. Sudoku Nr. 0 erlaubt übrigens nur diese eine Lösung. Die in Zeitschriften und Sudoku-Apps aufgeführten Sudokus sind meist absichtlich so konstruiert, dass sie eine eindeutige Lösung besitzen. Entfernen wir aber beispielsweise die 9 in der rechten unteren Ecke von Sudoku Nr. 0, so erhalten wir ein neues Rätsel:
 \begin{figure}[H]
-    \centering
-\begin{tikzpicture}[scale=.5]
-  \begin{scope}
-    \draw (0, 0) grid (9, 9);
-    \draw[very thick, scale=3] (0, 0) grid (3, 3);
+	\centering
+	\begin{tikzpicture}[scale=.5]
+		\begin{scope}
+			\draw (0, 0) grid (9, 9);
+			\draw[very thick, scale=3] (0, 0) grid (3, 3);
 
-    \setcounter{row}{1}
-\setrow{}{}{7}{}{}{3}{9}{}{2}
+			\setcounter{row}{1}
+			\setrow{}{}{7}{}{}{3}{9}{}{2}
 
-\setrow{}{}{}{8}{}{}{}{}{}
+			\setrow{}{}{}{8}{}{}{}{}{}
 
-\setrow{9}{4}{3}{}{}{}{}{}{7}
+			\setrow{9}{4}{3}{}{}{}{}{}{7}
 
-\setrow{6}{9}{}{}{}{}{}{}{}
+			\setrow{6}{9}{}{}{}{}{}{}{}
 
-\setrow{3}{}{}{5}{2}{7}{}{}{}
+			\setrow{3}{}{}{5}{2}{7}{}{}{}
 
-\setrow{}{}{}{}{}{}{8}{4}{}
+			\setrow{}{}{}{}{}{}{8}{4}{}
 
-\setrow{}{}{}{}{4}{8}{}{}{}
+			\setrow{}{}{}{}{4}{8}{}{}{}
 
-\setrow{2}{6}{}{}{}{}{}{}{}
+			\setrow{2}{6}{}{}{}{}{}{}{}
 
-\setrow{}{}{}{}{}{}{1}{2}{}
+			\setrow{}{}{}{}{}{}{1}{2}{}
 
-    \node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 1};
-  \end{scope}
+			\node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 1};
+		\end{scope}
 
-  \begin{scope}[xshift=12cm]
-    \draw (0, 0) grid (9, 9);
-    \draw[very thick, scale=3] (0, 0) grid (3, 3);
+		\begin{scope}[xshift=12cm]
+			\draw (0, 0) grid (9, 9);
+			\draw[very thick, scale=3] (0, 0) grid (3, 3);
 
-    \setcounter{row}{1}
-\setrow{}{}{7}{}{}{3}{9}{}{2}
+			\setcounter{row}{1}
+			\setrow{}{}{7}{}{}{3}{9}{}{2}
 
-\setrow{}{}{}{8}{}{}{}{}{}
+			\setrow{}{}{}{8}{}{}{}{}{}
 
-\setrow{9}{4}{3}{}{}{}{}{}{7}
+			\setrow{9}{4}{3}{}{}{}{}{}{7}
 
-\setrow{6}{9}{}{}{}{}{}{}{}
+			\setrow{6}{9}{}{}{}{}{}{}{}
 
-\setrow{3}{}{}{5}{2}{7}{}{}{}
+			\setrow{3}{}{}{5}{2}{7}{}{}{}
 
-\setrow{}{}{}{}{}{}{8}{4}{}
+			\setrow{}{}{}{}{}{}{8}{4}{}
 
-\setrow{}{}{}{}{4}{8}{}{}{}
+			\setrow{}{}{}{}{4}{8}{}{}{}
 
-\setrow{2}{6}{}{}{}{}{}{}{}
+			\setrow{2}{6}{}{}{}{}{}{}{}
 
-\setrow{}{}{}{}{}{}{1}{2}{}
+			\setrow{}{}{}{}{}{}{1}{2}{}
 
-    \node[anchor=center] at (4.5, -0.9) {gelöstes Sudoku Nr. 1};
+			\node[anchor=center] at (4.5, -0.9) {gelöstes Sudoku Nr. 1};
 
-    \begin{scope}[FireBrick, font=\sffamily\slshape]
-      \setcounter{row}{1}
-\setrow{8}{1}{}{4}{5}{}{}{6}{}
+			\begin{scope}[FireBrick, font=\sffamily\slshape]
+				\setcounter{row}{1}
+				\setrow{8}{1}{}{4}{5}{}{}{6}{}
 
-\setrow{5}{2}{6}{}{7}{9}{4}{3}{1}
+				\setrow{5}{2}{6}{}{7}{9}{4}{3}{1}
 
-\setrow{}{}{}{6}{1}{2}{5}{8}{}
+				\setrow{}{}{}{6}{1}{2}{5}{8}{}
 
-\setrow{}{}{1}{3}{8}{4}{2}{7}{5}
+				\setrow{}{}{1}{3}{8}{4}{2}{7}{5}
 
-\setrow{}{8}{4}{}{}{}{6}{1}{9}
+				\setrow{}{8}{4}{}{}{}{6}{1}{9}
 
-\setrow{7}{5}{2}{1}{9}{6}{}{}{3}
+				\setrow{7}{5}{2}{1}{9}{6}{}{}{3}
 
-\setrow{1}{7}{5}{2}{}{}{3}{9}{6}
+				\setrow{1}{7}{5}{2}{}{}{3}{9}{6}
 
-\setrow{}{}{8}{9}{3}{1}{7}{5}{4}
+				\setrow{}{}{8}{9}{3}{1}{7}{5}{4}
 
-\setrow{4}{3}{9}{7}{6}{5}{}{}{8}
-    \end{scope}
+				\setrow{4}{3}{9}{7}{6}{5}{}{}{8}
+			\end{scope}
 
-\end{scope}
+		\end{scope}
 
-\end{tikzpicture}
-    \caption{Sudoku Nr. 1}
-    \label{fig:sudoku1}
+	\end{tikzpicture}
+	\caption{Sudoku Nr. 1}
+	\label{fig:sudoku1}
 \end{figure}
-\noindent
 Sudoku Nr. 1 besitzt ebenfalls die Lösung, welche bereits Lösung von Sudoku Nr. 0 war (siehe \cref{fig:sudoku0}). Neben dieser Lösung besitzt Sudoku Nr. 1 aber noch weitere Lösungen. Eine davon ist rechts in \cref{fig:sudoku1} gezeigt.
 
-\noindent
 In \cref{fig:Mini0} ist ein Beispiel eines $4\times 4$-Sudokus (\enquote{Mini-Sudoku}) gegeben. Dieses besitzt übrigens 4 verschiedene Lösungen.
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale=.5]
-\begin{scope}
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{}{1}{}{}
-\setminirow{}{}{}{}
-\setminirow{}{3}{}{2}
-\setminirow{}{}{3}{}
-\node[anchor=center] at (2, -0.9) {ungelöstes Mini-Sudoku Nr. 0};
-\end{scope}
+	\centering
+	\begin{tikzpicture}[scale=.5]
+		\begin{scope}
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{1}{}{}
+			\setminirow{}{}{}{}
+			\setminirow{}{3}{}{2}
+			\setminirow{}{}{3}{}
+			\node[anchor=center] at (2, -0.9) {ungelöstes Mini-Sudoku Nr. 0};
+		\end{scope}
 
-\begin{scope}[xshift=12cm]
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{}{1}{}{}
-\setminirow{}{}{}{}
-\setminirow{}{3}{}{2}
-\setminirow{}{}{3}{}
-\node[anchor=center] at (2, -0.9) {eine Lösung des Mini-Sudokus Nr. 0};
+		\begin{scope}[xshift=12cm]
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{1}{}{}
+			\setminirow{}{}{}{}
+			\setminirow{}{3}{}{2}
+			\setminirow{}{}{3}{}
+			\node[anchor=center] at (2, -0.9) {eine Lösung des Mini-Sudokus Nr. 0};
 
-\begin{scope}[FireBrick, font=\sffamily\slshape]
-\setcounter{row}{1}
-\setminirow{2}{}{4}{3}
-\setminirow{3}{4}{2}{1}
-\setminirow{4}{}{1}{}
-\setminirow{1}{2}{}{4}
-\end{scope}
-\end{scope}
+			\begin{scope}[FireBrick, font=\sffamily\slshape]
+				\setcounter{row}{1}
+				\setminirow{2}{}{4}{3}
+				\setminirow{3}{4}{2}{1}
+				\setminirow{4}{}{1}{}
+				\setminirow{1}{2}{}{4}
+			\end{scope}
+		\end{scope}
 
-\end{tikzpicture}
-\caption{Mini-Sudoku Nr. 0}
-\label{fig:Mini0}
+	\end{tikzpicture}
+	\caption{Mini-Sudoku Nr. 0}
+	\label{fig:Mini0}
 \end{figure}
 
 
-\begin{aufgabe}{aufgabe:0677}
-Finden Sie die drei weiteren Lösungen des Sudokus in \cref{fig:Mini0}.
-\end{aufgabe}
+\begin{myexercise}\label{myexercise:0677}
+	Finden Sie die drei weiteren Lösungen des Sudokus in \cref{fig:Mini0}.
+\end{myexercise}
 
 \section{Darstellung von Sudokus in Python}
-In Python können wir ein Sudoku durch eine \enquote{zweidimensionale} Liste (oder Array) angeben. Beispielsweise kann Sudoku Nr. 2 aus \cref{aufgabe:0601} in der folgenden Form in Python gespeichert werden:
+In Python können wir ein Sudoku durch eine \enquote{zweidimensionale} Liste (oder Array) angeben. Beispielsweise kann Sudoku Nr. 2 aus \cref\label{myexercise:0601} in der folgenden Form in Python gespeichert werden:
 \begin{lstlisting}[language=Python,caption=Abspeichern von Sudoku-Gittern in Python,numbers=none]
 sudokuNo2 = [
 [0,9,5,0,0,0,0,7,0],
@@ -285,7 +282,6 @@ sudokuNo2 = [
 [2,4,0,0,0,0,0,0,0]
 ]
 \end{lstlisting}
-\noindent
 Das Mini-Sudoku in \cref{fig:Mini0} kann folgendermassen in Python abgespeichert werden:
 \begin{lstlisting}[language=Python,caption=Abspeichern von Mini-Sudoku-Gittern in Python,numbers=none]
 mini_sudokuNo0 = [
@@ -305,96 +301,95 @@ Es sei also ein konkretes Gitter gegeben. Wir sagen, dass das Setzen einer Ziffe
 diese Ziffer $Z$ weder in der entsprechenden Zeile noch der Spalte noch dem entsprechenden $n\times n$-Block von $F$ in dem gegebenen Gitter vorkommt.
 
 \begin{figure}[H]
-  \centering
-\begin{tikzpicture}[scale=.5]
-\begin{scope}
-  \draw (0, 0) grid (9, 9);
-  \draw[very thick, scale=3] (0, 0) grid (3, 3);
+	\centering
+	\begin{tikzpicture}[scale=.5]
+		\begin{scope}
+			\draw (0, 0) grid (9, 9);
+			\draw[very thick, scale=3] (0, 0) grid (3, 3);
 
-  \setcounter{row}{1}
-\setrow{}{}{7}{}{}{3}{9}{}{2}
+			\setcounter{row}{1}
+			\setrow{}{}{7}{}{}{3}{9}{}{2}
 
-\setrow{}{}{}{8}{}{}{}{}{}
+			\setrow{}{}{}{8}{}{}{}{}{}
 
-\setrow{9}{4}{3}{}{}{}{}{}{7}
+			\setrow{9}{4}{3}{}{}{}{}{}{7}
 
-\setrow{6}{9}{}{}{\textcolor{Blue}{?}}{}{}{}{}
+			\setrow{6}{9}{}{}{\textcolor{Blue}{?}}{}{}{}{}
 
-\setrow{3}{}{}{5}{2}{7}{}{}{}
+			\setrow{3}{}{}{5}{2}{7}{}{}{}
 
-\setrow{}{}{}{}{}{}{8}{4}{}
+			\setrow{}{}{}{}{}{}{8}{4}{}
 
-\setrow{}{}{}{}{4}{8}{}{}{}
+			\setrow{}{}{}{}{4}{8}{}{}{}
 
-\setrow{2}{6}{}{}{}{}{}{}{}
+			\setrow{2}{6}{}{}{}{}{}{}{}
 
-\setrow{}{}{}{}{}{}{1}{2}{9}
+			\setrow{}{}{}{}{}{}{1}{2}{9}
 
-  \node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 0};
-\end{scope}
+			\node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 0};
+		\end{scope}
 
-\begin{scope}[xshift=12cm]
-  \draw (0, 0) grid (9, 9);
-  \draw[very thick, scale=3] (0, 0) grid (3, 3);
+		\begin{scope}[xshift=12cm]
+			\draw (0, 0) grid (9, 9);
+			\draw[very thick, scale=3] (0, 0) grid (3, 3);
 
-  \setcounter{row}{1}
-\setrow{}{}{7}{}{}{3}{9}{}{2}
+			\setcounter{row}{1}
+			\setrow{}{}{7}{}{}{3}{9}{}{2}
 
-\setrow{}{}{}{8}{}{}{}{}{}
+			\setrow{}{}{}{8}{}{}{}{}{}
 
-\setrow{9}{4}{3}{}{}{}{}{}{7}
+			\setrow{9}{4}{3}{}{}{}{}{}{7}
 
-\setrow{6}{9}{}{}{}{}{}{}{}
+			\setrow{6}{9}{}{}{}{}{}{}{}
 
-\setrow{3}{}{}{5}{2}{7}{}{}{}
+			\setrow{3}{}{}{5}{2}{7}{}{}{}
 
-\setrow{}{}{}{}{}{}{8}{4}{}
+			\setrow{}{}{}{}{}{}{8}{4}{}
 
-\setrow{}{}{}{}{4}{8}{}{}{}
+			\setrow{}{}{}{}{4}{8}{}{}{}
 
-\setrow{2}{6}{}{}{}{}{}{}{}
+			\setrow{2}{6}{}{}{}{}{}{}{}
 
-\setrow{}{}{}{}{}{}{1}{2}{9}
+			\setrow{}{}{}{}{}{}{1}{2}{9}
 
-  \node[anchor=center] at (4.5, -0.9) {gelöstes Sudoku Nr. 0};
+			\node[anchor=center] at (4.5, -0.9) {gelöstes Sudoku Nr. 0};
 
-  \begin{scope}[FireBrick, font=\sffamily\slshape]
-    \setcounter{row}{1}
-\setrow{8}{1}{}{4}{5}{}{}{6}{}
+			\begin{scope}[FireBrick, font=\sffamily\slshape]
+				\setcounter{row}{1}
+				\setrow{8}{1}{}{4}{5}{}{}{6}{}
 
-\setrow{5}{2}{6}{}{7}{9}{3}{1}{4}
+				\setrow{5}{2}{6}{}{7}{9}{3}{1}{4}
 
-\setrow{}{}{}{1}{6}{2}{5}{8}{}
+				\setrow{}{}{}{1}{6}{2}{5}{8}{}
 
-\setrow{}{}{1}{3}{8}{4}{2}{7}{5}
+				\setrow{}{}{1}{3}{8}{4}{2}{7}{5}
 
-\setrow{}{8}{4}{}{}{}{6}{9}{1}
+				\setrow{}{8}{4}{}{}{}{6}{9}{1}
 
-\setrow{7}{5}{2}{9}{1}{6}{}{}{3}
+				\setrow{7}{5}{2}{9}{1}{6}{}{}{3}
 
-\setrow{1}{3}{9}{2}{}{}{7}{5}{6}
+				\setrow{1}{3}{9}{2}{}{}{7}{5}{6}
 
-\setrow{}{}{5}{7}{9}{1}{4}{3}{8}
+				\setrow{}{}{5}{7}{9}{1}{4}{3}{8}
 
-\setrow{4}{7}{8}{6}{3}{5}{}{}{}
-  \end{scope}
+				\setrow{4}{7}{8}{6}{3}{5}{}{}{}
+			\end{scope}
 
-\end{scope}
+		\end{scope}
 
-\end{tikzpicture}
-  \caption{nochmals Sudoku Nr. 2}
-  \label{fig:sudoku0again}
+	\end{tikzpicture}
+	\caption{nochmals Sudoku Nr. 2}
+	\label{fig:sudoku0again}
 \end{figure}
-\noindent
 
 \clearpage
-\begin{aufgabe}{aufgabe:0688}
-Wir befassen uns in dieser Aufgabe nur mit $4\times 4$-Gittern. Entwickeln Sie eine Python-Funktion
-\begin{center}
-  \pythoninline{def erlaubt(zeile, spalte, ziffer, gitter)},  
-\end{center}
-welche für ein gegebenes noch \textbf{leeres} (markiert durch die Zahl 0) Feld mit Zeilenindex \pythoninline{zeile} (von 0 bis 3) und Spaltenindex \pythoninline{spalte} (von 0 bis 3) prüft, ob das Platzieren einer gegebenen Ziffer \pythoninline{ziffer} (von 1 bis 4) in einem gegebenen Gitter erlaubt ist. Hier sind einige Testfälle:
-\begin{lstlisting}[language=Python,caption=erlaubt oder nicht,numbers=none]
+\begin{myexercise}\label{myexercise:0688}
+	Wir befassen uns in dieser Aufgabe nur mit $4\times 4$-Gittern. Entwickeln Sie eine Python-Funktion
+	\begin{center}
+		\pythoninline{def erlaubt(zeile, spalte, ziffer, gitter)},
+	\end{center}
+	welche für ein gegebenes noch \textbf{leeres} (markiert durch die Zahl 0) Feld mit Zeilenindex \pythoninline{zeile} (von 0 bis 3) und Spaltenindex \pythoninline{spalte} (von 0 bis 3) prüft, ob das Platzieren einer gegebenen Ziffer \pythoninline{ziffer} (von 1 bis 4) in einem gegebenen Gitter erlaubt ist. Hier sind einige Testfälle:
+	\begin{lstlisting}[language=Python,caption=erlaubt oder nicht,numbers=none]
 print(erlaubt(0,3,4,mini_sudokuNo0)) # True
 
 print(erlaubt(1,0,1,mini_sudokuNo0)) # False
@@ -403,421 +398,416 @@ print(erlaubt(1,0,1,mini_sudokuNo0)) # False
 print(erlaubt(1,1,3,mini_sudokuNo0)) # False
 # (bereits eine 3 in der entsprechenden Spalte)
 \end{lstlisting}
-Testen Sie Ihre Funktion genau!
-\end{aufgabe}
+	Testen Sie Ihre Funktion genau!
+\end{myexercise}
 
-\begin{aufgabe}{aufgabe:0689}
-Verallgemeinern Sie die Funktion
-\begin{center}
-  \pythoninline{def erlaubt(zeile, spalte, ziffer, gitter)}  
-\end{center}
-auf $n^2\times n^2$-Gitter.
-\end{aufgabe}
-  
+\begin{myexercise}\label{myexercise:0689}
+	Verallgemeinern Sie die Funktion
+	\begin{center}
+		\pythoninline{def erlaubt(zeile, spalte, ziffer, gitter)}
+	\end{center}
+	auf $n^2\times n^2$-Gitter.
+\end{myexercise}
+
 
 \clearpage
 \section{Backtracking}
 Wir wollen uns nun an die Entwicklung eines rekursiven Algorithmus zum Lösen von
-Sudokus herantasten. Dazu beginnen wir mit der einführenden \cref{aufgabe:0632}, in der Sie einige gedankliche Vorarbeit leisten.
+Sudokus herantasten. Dazu beginnen wir mit der einführenden \cref\label{myexercise:0632}, in der Sie einige gedankliche Vorarbeiten leisten.
 
-\begin{aufgabe}{aufgabe:0632}
-Betrachten Sie das folgende Sudoku.
+\begin{myexercise}\label{myexercise:0632}
+	Betrachten Sie das folgende Sudoku.
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[scale=.5]
+			\begin{scope}
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{}{3}{}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
+		\end{tikzpicture}
+	\end{figure}
+
+	\begin{aenum}
+		\item Füllen Sie die noch leeren Felder Zeile für Zeile von links nach rechts und von oben nach unten aus. Beginnen Sie also mit dem Feld mit den Koordinaten $(0,0)$ (oben links) und beenden Sie Ihre Arbeit mit dem Feld $(3,3)$ (unten rechts). Zeichnen Sie dabei die einzelnen \enquote{Stationen} (Gitter) auf, indem Sie das Diagramm in \cref{fig:treeA} systematisch vervollständigen.
+		\item Warum ist unser Vorgehen in Teil (a) für das gegebene Sudoku suboptimal? Schlagen Sie eine effizientere Strategie vor.
+	\end{aenum}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[scale=.5]
+			\begin{scope}
+				%\node at (3,4.5) {(0)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{}{3}{}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
+
+			\begin{scope}[xshift=-6cm,yshift=-6cm]
+				%\node at (2,4.5) {(1)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{\textcolor{Red}{2}}{3}{}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
+
+			\begin{scope}[xshift=-6cm,yshift=-12cm]
+				\draw[Blue] (2,2) node {$\vdots$};
+			\end{scope}
+
+			\begin{scope}[xshift=6cm,yshift=-6cm]
+				%\node at (3,4.5) {(8)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{\textcolor{Red}{4}}{3}{}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
+
+			\begin{scope}[xshift=6cm,yshift=-12cm]
+				\draw[Blue] (2,2) node {$\vdots$};
+			\end{scope}
+
+
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (-4,-2);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-4,-8);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-12) -- (-4,-14);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-18) -- (-4,-20);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-24) -- (-4,-26);
+
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-10,-8);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-10,-12) -- (-10,-14);
+
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (8,-2);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-6) -- (8,-8);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-12) -- (8,-14);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-18) -- (8,-20);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-24) -- (8,-26);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (8,-32);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-36) -- (8,-38);
+
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (14,-32);
+			% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (14,-36) -- (14,-38);
+		\end{tikzpicture}
+		\caption{einzelne Stationen}
+		\label{fig:treeA}
+	\end{figure}
+\end{myexercise}
+
+\clearpage
+Nun wollen wir die in \cref\label{myexercise:0632} gemachten Beobachtungen etwas vertiefen. Betrachten Sie dazu das neue Mini-Sudoku in \cref{fig:Mini1}.
+
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[scale=.5]
-	\begin{scope}
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{3}{}{}
-	\setminirow{}{1}{}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}		
-	\end{scope}
+		\begin{scope}
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{\textcolor{Blue}{?}}
+			\setminirow{}{2}{}{}
+			\node[anchor=center] at (2, -0.9) {ungelöstes Mini-Sudoku Nr. 1};
+		\end{scope}
+
+		\begin{scope}[xshift=12cm]
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{}
+			\setminirow{}{2}{}{}
+			\node[anchor=center] at (2, -0.9) {Lösung des Mini-Sudoku Nr. 1};
+
+			\begin{scope}[FireBrick, font=\sffamily\slshape]
+				\setcounter{row}{1}
+				\setminirow{1}{3}{}{2}
+				\setminirow{2}{}{3}{}
+				\setminirow{}{1}{2}{4}
+				\setminirow{4}{}{1}{3}
+			\end{scope}
+		\end{scope}
+
 	\end{tikzpicture}
+	\caption{Mini-Sudoku Nr. 1}
+	\label{fig:Mini1}
 \end{figure}
-
-\begin{aenum}
-	\item Füllen Sie die noch leeren Felder Zeile für Zeile von links nach rechts und von oben nach unten aus. Beginnen Sie also mit dem Feld mit den Koordinaten $(0,0)$ (oben links) und beenden Sie Ihre Arbeit mit dem Feld $(3,3)$ (unten rechts). Zeichnen Sie dabei die einzelnen \enquote{Stationen} (Gitter) auf, indem Sie das Diagramm in \cref{fig:treeA} systematisch vervollständigen.
-	\item Warum ist unser Vorgehen in Teil (a) für das gegebene Sudoku suboptimal? Schlagen Sie eine effizientere Strategie vor.
-\end{aenum}	
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale=.5]
-\begin{scope}
-%\node at (3,4.5) {(0)};
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{}{3}{}{}
-\setminirow{}{1}{}{4}
-\setminirow{3}{}{1}{}
-\setminirow{}{}{}{}
-\end{scope}
-	
-\begin{scope}[xshift=-6cm,yshift=-6cm]
-%\node at (2,4.5) {(1)};
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{\textcolor{Red}{2}}{3}{}{}
-\setminirow{}{1}{}{4}
-\setminirow{3}{}{1}{}
-\setminirow{}{}{}{}
-\end{scope}
-
-\begin{scope}[xshift=-6cm,yshift=-12cm]
-	\draw[Blue] (2,2) node {$\vdots$};
-\end{scope}
-
-\begin{scope}[xshift=6cm,yshift=-6cm]
-%\node at (3,4.5) {(8)};
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{\textcolor{Red}{4}}{3}{}{}
-\setminirow{}{1}{}{4}
-\setminirow{3}{}{1}{}
-\setminirow{}{}{}{}
-\end{scope}
-
-\begin{scope}[xshift=6cm,yshift=-12cm]
-	\draw[Blue] (2,2) node {$\vdots$};
-\end{scope}
-
-
-\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (-4,-2);
-\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-4,-8);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-12) -- (-4,-14);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-18) -- (-4,-20);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-24) -- (-4,-26);
-
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-10,-8);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-10,-12) -- (-10,-14);
-
-\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (8,-2);
-\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-6) -- (8,-8);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-12) -- (8,-14);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-18) -- (8,-20);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-24) -- (8,-26);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (8,-32);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-36) -- (8,-38);
-
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (14,-32);
-% \draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (14,-36) -- (14,-38);
-\end{tikzpicture}
-\caption{einzelne Stationen}
-\label{fig:treeA}
-\end{figure}
-\end{aufgabe}
-
-\clearpage
-\noindent
-Nun wollen wir die in \cref{aufgabe:0632} gemachten Beobachungen etwas vertiefen. Betrachten Sie dazu das neue Mini-Sudoku in \cref{fig:Mini1}. 
-
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}[scale=.5]
-  \begin{scope}
-  \draw (0, 0) grid (4, 4);
-  \draw[very thick, scale=2] (0, 0) grid (2, 2);
-  \setcounter{row}{1}
-  \setminirow{}{}{4}{}
-  \setminirow{}{4}{}{1}
-  \setminirow{3}{}{}{\textcolor{Blue}{?}}
-  \setminirow{}{2}{}{}
-  \node[anchor=center] at (2, -0.9) {ungelöstes Mini-Sudoku Nr. 1};
-  \end{scope}
-  
-  \begin{scope}[xshift=12cm]
-  \draw (0, 0) grid (4, 4);
-  \draw[very thick, scale=2] (0, 0) grid (2, 2);
-  \setcounter{row}{1}
-  \setminirow{}{}{4}{}
-  \setminirow{}{4}{}{1}
-  \setminirow{3}{}{}{}
-  \setminirow{}{2}{}{}
-  \node[anchor=center] at (2, -0.9) {Lösung des Mini-Sudoku Nr. 1};
-  
-  \begin{scope}[FireBrick, font=\sffamily\slshape]
-  \setcounter{row}{1}
-  \setminirow{1}{3}{}{2}
-  \setminirow{2}{}{3}{}
-  \setminirow{}{1}{2}{4}
-  \setminirow{4}{}{1}{3}
-  \end{scope}
-  \end{scope}
-  
-  \end{tikzpicture}
-  \caption{Mini-Sudoku Nr. 1}
-  \label{fig:Mini1}
-\end{figure}
-\noindent
 Beim Lösen eines Sudokus dürfen wir die Reihenfolge, in der wir die (noch) leeren Felder auffüllen, beliebig wählen. Um ganz konkret ein mögliches Vorgehen zu untersuchen, nehmen wir an, dass wir die 11 leeren Felder des Sudokus in \cref{fig:Mini1} in der Reihenfolge
 \begin{align*}
-  (2,3)\rightarrow (3,3)\rightarrow (0,3)\rightarrow (1,2)\rightarrow (1,0)\rightarrow (2,2)\rightarrow\\
-   (3,2)\rightarrow (2,1)\rightarrow (3,0)\rightarrow (0,0)\rightarrow (0,1)
+	(2,3)\rightarrow (3,3)\rightarrow (0,3)\rightarrow (1,2)\rightarrow (1,0)\rightarrow (2,2)\rightarrow \\
+	(3,2)\rightarrow (2,1)\rightarrow (3,0)\rightarrow (0,0)\rightarrow (0,1)
 \end{align*}
 auszufüllen versuchen.
 
 Wir betrachten also zuerst das leere Feld mit den Koordinaten $(2,3)$, welches mit einem blauen Fragezeichen \textcolor{Blue}{?} markiert ist. Sie werden schnell erkennen, dass in diesem leeren Feld genau das Setzen der beiden Ziffern 2 und 4 erlaubt ist. Wir stehen hier also vor einer Wahl. Die Situation ist in \cref{fig:tree} dargestellt. Die Wahl der Ziffer 2 führt uns zu Station (1). Hier haben wir für das Feld $(3,3)$ ebenfalls eine Wahl, und zwar zwischen den Ziffern 3 und 4. Die Wahl der Ziffer 3 führt uns zu Station (2). Bei Station (3) stellen wir fest, dass für das leere Feld $(0,3)$ keine der vier Ziffern gesetzt werden darf. Somit sind wir in eine Sackgasse geraten. Mindestens an einer \enquote{Abzweigung} müssen wir also eine falsche Wahl getroffen haben! Wir gehen deshalb so weit den \enquote{Pfad} entlang zurück, bis wir zur jüngst angetroffenen Abzweigung gelangen. Dies war in diesem Fall die Station (1). Nun folgen wir von Station (1) aus der Wahl der Ziffer 4 zu Station (4). Bei Station (7) erkennen wir, dass auch die zweite Wahl (die der Ziffer 4) bei Station (1) uns nicht weiterbringt. Erst jetzt können wir sicher sein, dass die ursprüngliche Wahl der Ziffer 2 bei Station (0) falsch gewesen war. Dies führt uns zur korrekten Wahl der Ziffer 4 für das Feld $(2,3)$ und somit zu Station (8).
 
-Der Vorgang des \enquote{Zurückgehens} entlang der gegangenen Wege wird \tib{Backtracking}\index{Backtracking} genannt. Im nächsten Abschnitt werden wir einen eleganten Algorithmus vorstellen, welcher mit Hilfe von Backtracking auf rekursive Weise die Lösungen eines Sudokus findet.
+Der Vorgang des \enquote{Zurückgehens} entlang der gegangenen Wege wird \tib{Backtracking}\index{Backtracking} genannt. Im nächsten Abschnitt werden wir einen eleganten Algorithmus vorstellen, welcher mithilfe von Backtracking auf rekursive Weise die Lösungen eines Sudokus findet.
 
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[scale=.5]
-	\begin{scope}
-	\node at (3,4.5) {(0)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{}
-	\setminirow{}{2}{}{}
-	\end{scope}
-	  
-	\begin{scope}[xshift=-6cm,yshift=-6cm]
-	\node at (2,4.5) {(1)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{\textcolor{Red}{2}}
-	\setminirow{}{2}{}{}
-	\end{scope}
-	
-	\begin{scope}[xshift=6cm,yshift=-6cm]
-	\node at (3,4.5) {(8)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{\textcolor{Red}{4}}
-	\setminirow{}{2}{}{}
-	\end{scope}
-	
-	\begin{scope}[xshift=6cm,yshift=-12cm]
-	  \node at (3,4.5) {(9)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{4}
-	\setminirow{}{2}{}{\textcolor{Red}{3}}
-	\end{scope}
-	
-	\begin{scope}[xshift=6cm,yshift=-18cm]
-	  \node at (3,4.5) {(10)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{\textcolor{Red}{2}}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{4}
-	\setminirow{}{2}{}{3}
-	\end{scope}
-	
-	\begin{scope}[xshift=6cm,yshift=-24cm]
-	  \node at (3,4.5) {(11)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{2}
-	\setminirow{}{4}{\textcolor{Red}{3}}{1}
-	\setminirow{3}{}{}{4}
-	\setminirow{}{2}{}{3}
-	\end{scope}
-	
-	\begin{scope}[xshift=6cm,yshift=-30cm]
-	  \node at (3,4.5) {(12)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{2}
-	\setminirow{\textcolor{Red}{2}}{4}{3}{1}
-	\setminirow{3}{}{}{4}
-	\setminirow{}{2}{}{3}
-	\end{scope}
-	
-	\begin{scope}[xshift=6cm,yshift=-36cm]
-	  \node at (3,4.5) {(13)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{2}
-	\setminirow{2}{4}{3}{1}
-	\setminirow{3}{}{\textcolor{Red}{1}}{4}
-	\setminirow{}{2}{}{3}
-	\end{scope}
-	
-	\begin{scope}[xshift=12cm,yshift=-36cm]
-	  \node at (3,4.5) {(15)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{2}
-	\setminirow{2}{4}{3}{1}
-	\setminirow{3}{}{\textcolor{Red}{2}}{4}
-	\setminirow{}{2}{}{3}
-	\end{scope}
-	
-	\begin{scope}[xshift=6cm,yshift=-42cm]
-	  \node at (3,4.5) {(14)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{2}
-	\setminirow{2}{4}{3}{1}
-	\setminirow{3}{}{1}{4}
-	\setminirow{}{2}{\textcolor{Red}{$\times$}}{3}
-	\end{scope}
-	
-	\begin{scope}[xshift=12cm,yshift=-42cm]
-	  \node at (3,4.5) {(16)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{2}
-	\setminirow{2}{4}{3}{1}
-	\setminirow{3}{}{2}{4}
-	\setminirow{}{2}{\textcolor{Red}{1}}{3}
-	\end{scope}
-	
-	\begin{scope}[xshift=12cm,yshift=-44.5cm]
-	\draw[Blue] (2,2) node {{\tiny $\vdots$}};
-	\end{scope}
-	
-	\begin{scope}[xshift=-12cm,yshift=-12cm]
-	  \node at (2,4.5) {(2)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{\textcolor{Red}{2}}
-	\setminirow{}{2}{}{\textcolor{Red}{3}}
-	\end{scope}
-	
-	\begin{scope}[xshift=-12cm,yshift=-18cm]
-	  \node at (3,4.5) {(3)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{\textcolor{Red}{$\times$}}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{\textcolor{Red}{2}}
-	\setminirow{}{2}{}{\textcolor{Red}{3}}
-	\end{scope}
-	
-	\begin{scope}[xshift=-6cm,yshift=-12cm]
-	  \node at (3,4.5) {(4)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{\textcolor{Red}{2}}
-	\setminirow{}{2}{}{\textcolor{Red}{4}}
-	\end{scope}
-	
-	\begin{scope}[xshift=-6cm,yshift=-18cm]
-	  \node at (3,4.5) {(5)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{\textcolor{Red}{3}}
-	\setminirow{}{4}{}{1}
-	\setminirow{3}{}{}{\textcolor{Red}{2}}
-	\setminirow{}{2}{}{\textcolor{Red}{4}}
-	\end{scope}
-	
-	\begin{scope}[xshift=-6cm,yshift=-24cm]
-	  \node at (3,4.5) {(6)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{\textcolor{Red}{3}}
-	\setminirow{}{4}{\textcolor{Red}{2}}{1}
-	\setminirow{3}{}{}{\textcolor{Red}{2}}
-	\setminirow{}{2}{}{\textcolor{Red}{4}}
-	\end{scope}
-	
-	\begin{scope}[xshift=-6cm,yshift=-30cm]
-	  \node at (3,4.5) {(7)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{}{4}{\textcolor{Red}{3}}
-	\setminirow{\textcolor{Red}{$\times$}}{4}{\textcolor{Red}{2}}{1}
-	\setminirow{3}{}{}{\textcolor{Red}{2}}
-	\setminirow{}{2}{}{\textcolor{Red}{4}}
-	\end{scope}
-	
-	\begin{scope}[xshift=12cm,yshift=-47.3cm]
-	  \node at (3,4.5) {(20)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{1}{\textcolor{Red}{3}}{4}{2}
-	\setminirow{2}{4}{3}{1}
-	\setminirow{3}{1}{2}{4}
-	\setminirow{4}{2}{1}{3}
-	\end{scope}
-	
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (-4,-2);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-4,-8);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-12) -- (-4,-14);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-18) -- (-4,-20);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-24) -- (-4,-26);
-	
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-10,-8);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-10,-12) -- (-10,-14);
-	
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (8,-2);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-6) -- (8,-8);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-12) -- (8,-14);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-18) -- (8,-20);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-24) -- (8,-26);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (8,-32);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-36) -- (8,-38);
-	
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (14,-32);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (14,-36) -- (14,-38);
-	
+		\begin{scope}
+			\node at (3,4.5) {(0)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{}
+			\setminirow{}{2}{}{}
+		\end{scope}
+
+		\begin{scope}[xshift=-6cm,yshift=-6cm]
+			\node at (2,4.5) {(1)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{\textcolor{Red}{2}}
+			\setminirow{}{2}{}{}
+		\end{scope}
+
+		\begin{scope}[xshift=6cm,yshift=-6cm]
+			\node at (3,4.5) {(8)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{\textcolor{Red}{4}}
+			\setminirow{}{2}{}{}
+		\end{scope}
+
+		\begin{scope}[xshift=6cm,yshift=-12cm]
+			\node at (3,4.5) {(9)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{4}
+			\setminirow{}{2}{}{\textcolor{Red}{3}}
+		\end{scope}
+
+		\begin{scope}[xshift=6cm,yshift=-18cm]
+			\node at (3,4.5) {(10)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{\textcolor{Red}{2}}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{4}
+			\setminirow{}{2}{}{3}
+		\end{scope}
+
+		\begin{scope}[xshift=6cm,yshift=-24cm]
+			\node at (3,4.5) {(11)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{2}
+			\setminirow{}{4}{\textcolor{Red}{3}}{1}
+			\setminirow{3}{}{}{4}
+			\setminirow{}{2}{}{3}
+		\end{scope}
+
+		\begin{scope}[xshift=6cm,yshift=-30cm]
+			\node at (3,4.5) {(12)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{2}
+			\setminirow{\textcolor{Red}{2}}{4}{3}{1}
+			\setminirow{3}{}{}{4}
+			\setminirow{}{2}{}{3}
+		\end{scope}
+
+		\begin{scope}[xshift=6cm,yshift=-36cm]
+			\node at (3,4.5) {(13)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{2}
+			\setminirow{2}{4}{3}{1}
+			\setminirow{3}{}{\textcolor{Red}{1}}{4}
+			\setminirow{}{2}{}{3}
+		\end{scope}
+
+		\begin{scope}[xshift=12cm,yshift=-36cm]
+			\node at (3,4.5) {(15)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{2}
+			\setminirow{2}{4}{3}{1}
+			\setminirow{3}{}{\textcolor{Red}{2}}{4}
+			\setminirow{}{2}{}{3}
+		\end{scope}
+
+		\begin{scope}[xshift=6cm,yshift=-42cm]
+			\node at (3,4.5) {(14)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{2}
+			\setminirow{2}{4}{3}{1}
+			\setminirow{3}{}{1}{4}
+			\setminirow{}{2}{\textcolor{Red}{$\times$}}{3}
+		\end{scope}
+
+		\begin{scope}[xshift=12cm,yshift=-42cm]
+			\node at (3,4.5) {(16)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{2}
+			\setminirow{2}{4}{3}{1}
+			\setminirow{3}{}{2}{4}
+			\setminirow{}{2}{\textcolor{Red}{1}}{3}
+		\end{scope}
+
+		\begin{scope}[xshift=12cm,yshift=-44.5cm]
+			\draw[Blue] (2,2) node {{\tiny $\vdots$}};
+		\end{scope}
+
+		\begin{scope}[xshift=-12cm,yshift=-12cm]
+			\node at (2,4.5) {(2)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{\textcolor{Red}{2}}
+			\setminirow{}{2}{}{\textcolor{Red}{3}}
+		\end{scope}
+
+		\begin{scope}[xshift=-12cm,yshift=-18cm]
+			\node at (3,4.5) {(3)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{\textcolor{Red}{$\times$}}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{\textcolor{Red}{2}}
+			\setminirow{}{2}{}{\textcolor{Red}{3}}
+		\end{scope}
+
+		\begin{scope}[xshift=-6cm,yshift=-12cm]
+			\node at (3,4.5) {(4)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{\textcolor{Red}{2}}
+			\setminirow{}{2}{}{\textcolor{Red}{4}}
+		\end{scope}
+
+		\begin{scope}[xshift=-6cm,yshift=-18cm]
+			\node at (3,4.5) {(5)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{\textcolor{Red}{3}}
+			\setminirow{}{4}{}{1}
+			\setminirow{3}{}{}{\textcolor{Red}{2}}
+			\setminirow{}{2}{}{\textcolor{Red}{4}}
+		\end{scope}
+
+		\begin{scope}[xshift=-6cm,yshift=-24cm]
+			\node at (3,4.5) {(6)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{\textcolor{Red}{3}}
+			\setminirow{}{4}{\textcolor{Red}{2}}{1}
+			\setminirow{3}{}{}{\textcolor{Red}{2}}
+			\setminirow{}{2}{}{\textcolor{Red}{4}}
+		\end{scope}
+
+		\begin{scope}[xshift=-6cm,yshift=-30cm]
+			\node at (3,4.5) {(7)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{}{}{4}{\textcolor{Red}{3}}
+			\setminirow{\textcolor{Red}{$\times$}}{4}{\textcolor{Red}{2}}{1}
+			\setminirow{3}{}{}{\textcolor{Red}{2}}
+			\setminirow{}{2}{}{\textcolor{Red}{4}}
+		\end{scope}
+
+		\begin{scope}[xshift=12cm,yshift=-47.3cm]
+			\node at (3,4.5) {(20)};
+			\draw (0, 0) grid (4, 4);
+			\draw[very thick, scale=2] (0, 0) grid (2, 2);
+			\setcounter{row}{1}
+			\setminirow{1}{\textcolor{Red}{3}}{4}{2}
+			\setminirow{2}{4}{3}{1}
+			\setminirow{3}{1}{2}{4}
+			\setminirow{4}{2}{1}{3}
+		\end{scope}
+
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (-4,-2);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-4,-8);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-12) -- (-4,-14);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-18) -- (-4,-20);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-24) -- (-4,-26);
+
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-10,-8);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-10,-12) -- (-10,-14);
+
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (8,-2);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-6) -- (8,-8);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-12) -- (8,-14);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-18) -- (8,-20);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-24) -- (8,-26);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (8,-32);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-36) -- (8,-38);
+
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (14,-32);
+		\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (14,-36) -- (14,-38);
+
 	\end{tikzpicture}
 	\caption{Visualisierung von Backtracking bei Sudoku}
 	\label{fig:tree}
-	\end{figure}
-	\clearpage
+\end{figure}
 
 \clearpage
 \begin{myBox}[Backtracking in einem Labyrinth]{myBox:Metapher2}
-Die Situation beim Backtracking in Sudokus kann vage mit der (rekursiven) Suche eines Ausgangs (oder aller Ausgänge) aus einem Labyrinth verglichen werden. Wir suchen, beginnend bei \textit{Start}, einen der \textbf{A}usgänge aus einem Labyrinth. Dazu gehen wir so lange die Gänge entlang, bis wir entweder herausgefunden haben oder in einer \textbf{S}ackgasse angelangt sind. In \cref{fig:Labyrinth} ist die Situation veranschaulicht. Der Weg \textit{Start} $\to 0 \to 1$ ist eine Sackgasse. Wir gehen darum einen Gang zurück (also zu 0). Von $0$ aus gibt es keine weitere Abzweigung und wir gehen nochmals einen Gang zurück, also zum \textit{Start}. Nun gehen wir den neuen Weg \textit{Start} $\to 2\to 3 \to 4$. Doch auch $4$ ist eine Sackgasse. Deshalb gehen wir einen Gang zurück zu $2$. Von 2 aus nehmen wir den neuen Weg $2\to 5\to 6$ und haben einen Ausgang gefunden. Diesen gefundenen Weg \textit{Start} $\to 2\to 5\to 6$ können wir als Lösung ausgeben. Falls wir (wie beim Sudoku) alle Lösungen (Ausgänge) finden wollen, würden wir hier nicht bereits abbrechen, sondern (rekursiv) weitersuchen.
-\begin{figure}[H]
-\centering
-\begin{forest}
-sn edges/.style={for tree={
-parent anchor=south, child anchor=north}},
-sn edges
-[\textit{Start},
-[0[1 (S),tier=word]]
-[2
-[3[4 (S),tier=word]]
-[5[6 (A),tier=word]]
-[7[8[9 (S),tier=word]][10[11 (A),tier=word]]]]]
-\end{forest}
-\caption{Navigation in einem Labyrinth}
-\label{fig:Labyrinth}
-\end{figure}
+	Die Situation beim Backtracking in Sudokus kann vage mit der (rekursiven) Suche eines Ausgangs (oder aller Ausgänge) aus einem Labyrinth verglichen werden. Wir suchen, beginnend bei \textit{Start}, einen der \textbf{A}usgänge aus einem Labyrinth. Dazu gehen wir so lange die Gänge entlang, bis wir entweder herausgefunden haben oder in einer \textbf{S}ackgasse angelangt sind. In \cref{fig:Labyrinth} ist die Situation veranschaulicht. Der Weg \textit{Start} $\to 0 \to 1$ ist eine Sackgasse. Wir gehen darum einen Gang zurück (also zu 0). Von $0$ aus gibt es keine weitere Abzweigung und wir gehen nochmals einen Gang zurück, also zum \textit{Start}. Nun gehen wir den neuen Weg \textit{Start} $\to 2\to 3 \to 4$. Doch auch $4$ ist eine Sackgasse. Deshalb gehen wir einen Gang zurück zu $2$. Von 2 aus nehmen wir den neuen Weg $2\to 5\to 6$ und haben einen Ausgang gefunden. Diesen gefundenen Weg \textit{Start} $\to 2\to 5\to 6$ können wir als Lösung ausgeben. Falls wir (wie beim Sudoku) alle Lösungen (Ausgänge) finden wollen, würden wir hier nicht bereits abbrechen, sondern (rekursiv) weitersuchen.
+	\begin{figure}[H]
+		\centering
+		\begin{forest}
+			sn edges/.style={for tree={
+					parent anchor=south, child anchor=north}},
+			sn edges
+				[\textit{Start},
+					[0[1 (S),tier=word]]
+						[2
+								[3[4 (S),tier=word]]
+								[5[6 (A),tier=word]]
+								[7[8[9 (S),tier=word]][10[11 (A),tier=word]]]]]
+		\end{forest}
+		\caption{Navigation in einem Labyrinth}
+		\label{fig:Labyrinth}
+	\end{figure}
 \end{myBox}
-
 \clearpage
-
 
 \section{Lösungsalgorithmus für Sudoku}
 Unser Lösungsalgorithmus verwendet die Funktion \pythoninline{erlaubt} sowie Backtracking in Kombination mit Rekursion. Diese drei Komponenten sind Ihnen inzwischen bekannt. Der vollständige Algorithmus zum Lösen von Sudokus ist in \cref{listing:sudoku} gegeben. Mit der Definition
@@ -834,7 +824,7 @@ Unser Lösungsalgorithmus verwendet die Funktion \pythoninline{erlaubt} sowie Ba
     [0,0,0,0,0,0,1,2,9]
     ]
 \end{lstlisting}
-wird Ihnen der Aufruf \pythoninline{sudoku(sudokuNo0)} alle (es gibt hier nur eine) Lösungen von Sudoku Nr. 0 ausgeben. Die Funktion in \cref{listing:sudoku} verwendet die Funktion \pythoninline{erlaubt}, welche Sie in \cref{aufgabe:0689} geschrieben haben.
+wird Ihnen der Aufruf \pythoninline{sudoku(sudokuNo0)} alle (es gibt hier nur eine) Lösungen von Sudoku Nr. 0 ausgeben. Die Funktion in \cref{listing:sudoku} verwendet die Funktion \pythoninline{erlaubt}, welche Sie in \cref\label{myexercise:0689} geschrieben haben.
 
 \lstset{style=mystyle}
 \begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{sudoku},label=listing:sudoku]
@@ -869,162 +859,159 @@ def sudoku(gitter):
 	# gültige Lösung gefunden
 	print(np.array(gitter))
 	return
-\end{lstlisting} 
+\end{lstlisting}
 
-\begin{aufgabe}{aufgabe:0681}
-Betrachten Sie die \pythoninline{sudoku}-Funktion in \cref{listing:sudoku}. Es gibt genau zwei verschiedene Möglichkeiten, die Zeile 24 in dieser Funktion zu erreichen. Nennen Sie diese beiden Möglichkeiten und erklären Sie jeweils die Bedeutung des Entfernens der gesetzten Ziffer in dem entsprechenden Fall.
-\end{aufgabe}
+\begin{myexercise}\label{myexercise:0681}
+	Betrachten Sie die \pythoninline{sudoku}-Funktion in \cref{listing:sudoku}. Es gibt genau zwei verschiedene Möglichkeiten, die Zeile 24 in dieser Funktion zu erreichen. Nennen Sie diese beiden Möglichkeiten und erklären Sie jeweils die Bedeutung des Entfernens der gesetzten Ziffer in dem entsprechenden Fall.
+\end{myexercise}
 
-\begin{aufgabe}{aufgabe:0603}
-(!) Ändern Sie die \pythoninline{sudoku}-Funktion in \cref{listing:sudoku} dahingehend ab, dass genau eine Lösung ausgegeben wird, falls das Sudoku mindestens eine Lösung besitzt. Falls das Sudoku keine Lösung besitzt, so soll auch nichts ausgegeben werden.
-\end{aufgabe}
+\begin{myexercise}\label{myexercise:0603}
+	(!) Ändern Sie die \pythoninline{sudoku}-Funktion in \cref{listing:sudoku} dahingehend ab, dass genau eine Lösung ausgegeben wird, falls das Sudoku mindestens eine Lösung besitzt. Falls das Sudoku keine Lösung besitzt, so soll auch nichts ausgegeben werden.
+\end{myexercise}
 
 %\lstset{basicstyle=\ttfamily\tiny}
-\begin{aufgabe}{aufgabe:0604}
-(!) Dies ist eine besonders schwierige Aufgabe. Wir betrachten das bekannte \textit{Damenproblem}. Das Problem besteht darin, 8 Damen auf einem $8\times 8$-Schachbrett so zu platzieren, dass sich keine zwei Damen gegenseitig bedrohen. Finden Sie Inspiration an unserem Sudoku-Löser und schreiben Sie ein rekursives Programm, welches alle Lösungen des Damenproblems ausgibt. Es gibt genau 92 unterschiedliche Lösungen für den $8\times 8$-Fall. Betrachten Sie auch \url{https://en.wikipedia.org/wiki/Eight\_queens\_puzzle#Counting\_solutions\_for\_other\_sizes\_n}. Gelingt es Ihnen, das allgemeine $n\times n$-Problem für $n\in\N$ zu lösen?
-\end{aufgabe}
+\begin{myexercise}\label{myexercise:0604}
+	(!) Dies ist eine besonders schwierige Aufgabe. Wir betrachten das bekannte \textit{Damenproblem}. Das Problem besteht darin, 8 Damen auf einem $8\times 8$-Schachbrett so zu platzieren, dass sich keine zwei Damen gegenseitig bedrohen. Finden Sie Inspiration an unserem Sudoku-Löser und schreiben Sie ein rekursives Programm, welches alle Lösungen des Damenproblems ausgibt. Es gibt genau 92 unterschiedliche Lösungen für den $8\times 8$-Fall. Betrachten Sie auch \url{https://en.wikipedia.org/wiki/Eight\_queens\_puzzle#Counting\_solutions\_for\_other\_sizes\_n}. Gelingt es Ihnen, das allgemeine $n\times n$-Problem für $n\in\N$ zu lösen?
+\end{myexercise}
 
-\begin{antwort}{aufgabe:0601}
-\begin{figure}[H]
-	\centering
-\begin{tikzpicture}[scale=.5]
-	\begin{scope}
-	\draw (0, 0) grid (9, 9);
-	\draw[very thick, scale=3] (0, 0) grid (3, 3);
+\begin{myanswer}[myexercise:0601]
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[scale=.5]
+			\begin{scope}
+				\draw (0, 0) grid (9, 9);
+				\draw[very thick, scale=3] (0, 0) grid (3, 3);
 
-	\setcounter{row}{1}
-\setrow{}{9}{5}{}{}{}{}{7}{}
+				\setcounter{row}{1}
+				\setrow{}{9}{5}{}{}{}{}{7}{}
 
-\setrow{}{7}{}{1}{2}{}{8}{}{}
+				\setrow{}{7}{}{1}{2}{}{8}{}{}
 
-\setrow{}{2}{4}{6}{7}{}{3}{9}{1}
+				\setrow{}{2}{4}{6}{7}{}{3}{9}{1}
 
-\setrow{}{}{}{}{}{1}{2}{5}{3}
+				\setrow{}{}{}{}{}{1}{2}{5}{3}
 
-\setrow{}{1}{}{3}{}{4}{}{}{9}
+				\setrow{}{1}{}{3}{}{4}{}{}{9}
 
-\setrow{7}{3}{9}{8}{}{}{}{}{4}
+				\setrow{7}{3}{9}{8}{}{}{}{}{4}
 
-\setrow{}{}{}{9}{8}{6}{}{}{}
+				\setrow{}{}{}{9}{8}{6}{}{}{}
 
-\setrow{}{}{}{}{4}{}{}{1}{6}
+				\setrow{}{}{}{}{4}{}{}{1}{6}
 
-\setrow{2}{4}{}{}{}{}{}{}{}
+				\setrow{2}{4}{}{}{}{}{}{}{}
 
-	\node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 2};
-	\end{scope}
+				\node[anchor=center] at (4.5, -0.9) {ungelöstes Sudoku Nr. 2};
+			\end{scope}
 
-	\begin{scope}[xshift=12cm]
-	\draw (0, 0) grid (9, 9);
-	\draw[very thick, scale=3] (0, 0) grid (3, 3);
+			\begin{scope}[xshift=12cm]
+				\draw (0, 0) grid (9, 9);
+				\draw[very thick, scale=3] (0, 0) grid (3, 3);
 
-	\setcounter{row}{1}
-\setrow{}{9}{5}{}{}{}{}{7}{}
+				\setcounter{row}{1}
+				\setrow{}{9}{5}{}{}{}{}{7}{}
 
-\setrow{}{7}{}{1}{2}{}{8}{}{}
+				\setrow{}{7}{}{1}{2}{}{8}{}{}
 
-\setrow{}{2}{4}{6}{7}{}{3}{9}{1}
+				\setrow{}{2}{4}{6}{7}{}{3}{9}{1}
 
-\setrow{}{}{}{}{}{1}{2}{5}{3}
+				\setrow{}{}{}{}{}{1}{2}{5}{3}
 
-\setrow{}{1}{}{3}{}{4}{}{}{9}
+				\setrow{}{1}{}{3}{}{4}{}{}{9}
 
-\setrow{7}{3}{9}{8}{}{}{}{}{4}
+				\setrow{7}{3}{9}{8}{}{}{}{}{4}
 
-\setrow{}{}{}{9}{8}{6}{}{}{}
+				\setrow{}{}{}{9}{8}{6}{}{}{}
 
-\setrow{}{}{}{}{4}{}{}{1}{6}
+				\setrow{}{}{}{}{4}{}{}{1}{6}
 
-\setrow{2}{4}{}{}{}{}{}{}{}
+				\setrow{2}{4}{}{}{}{}{}{}{}
 
-	\node[anchor=center] at (4.5, -0.9) {gelöstes Sudoku Nr.2};
+				\node[anchor=center] at (4.5, -0.9) {gelöstes Sudoku Nr.2};
 
-	\begin{scope}[FireBrick, font=\sffamily\slshape]
-		\setcounter{row}{1}
-\setrow{1}{}{}{4}{3}{8}{6}{}{2}
+				\begin{scope}[FireBrick, font=\sffamily\slshape]
+					\setcounter{row}{1}
+					\setrow{1}{}{}{4}{3}{8}{6}{}{2}
 
-\setrow{6}{}{3}{}{}{9}{}{4}{5}
+					\setrow{6}{}{3}{}{}{9}{}{4}{5}
 
-\setrow{8}{}{}{}{}{5}{}{}{}
+					\setrow{8}{}{}{}{}{5}{}{}{}
 
-\setrow{4}{6}{8}{7}{9}{}{}{}{}
+					\setrow{4}{6}{8}{7}{9}{}{}{}{}
 
-\setrow{5}{}{2}{}{6}{}{7}{8}{}
+					\setrow{5}{}{2}{}{6}{}{7}{8}{}
 
-\setrow{}{}{}{}{5}{2}{1}{6}{}
+					\setrow{}{}{}{}{5}{2}{1}{6}{}
 
-\setrow{3}{5}{1}{}{}{}{4}{2}{7}
+					\setrow{3}{5}{1}{}{}{}{4}{2}{7}
 
-\setrow{9}{8}{7}{2}{}{3}{5}{}{}
+					\setrow{9}{8}{7}{2}{}{3}{5}{}{}
 
-\setrow{}{}{6}{5}{1}{7}{9}{3}{8}
-	\end{scope}
+					\setrow{}{}{6}{5}{1}{7}{9}{3}{8}
+				\end{scope}
 
-	\end{scope}
+			\end{scope}
 
-\end{tikzpicture}
-	\caption{Sudoku Nr. 2 (mit Lösungen)}
-	\label{fig:sudoku2sol}
-\end{figure}
-\end{antwort}
+		\end{tikzpicture}
+		\caption{Sudoku Nr. 2 (mit Lösungen)}
+		\label{fig:sudoku2sol}
+	\end{figure}
+\end{myanswer}
 
+\begin{myanswer}[myexercise:0677]
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[scale=.5]
 
+			\begin{scope}
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{2}{1}{4}{3}
+				\setminirow{3}{4}{2}{1}
+				\setminirow{4}{3}{1}{2}
+				\setminirow{1}{2}{3}{4}
+			\end{scope}
 
+			\begin{scope}[yshift=-6cm]
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{3}{1}{2}{4}
+				\setminirow{2}{4}{1}{3}
+				\setminirow{1}{3}{4}{2}
+				\setminirow{4}{2}{3}{1}
+			\end{scope}
 
-\begin{antwort}{aufgabe:0677}
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale=.5]
+			\begin{scope}[yshift=-12cm]
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{3}{1}{2}{4}
+				\setminirow{4}{2}{1}{3}
+				\setminirow{1}{3}{4}{2}
+				\setminirow{2}{4}{3}{1}
+			\end{scope}
 
-\begin{scope}
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{2}{1}{4}{3}
-\setminirow{3}{4}{2}{1}
-\setminirow{4}{3}{1}{2}
-\setminirow{1}{2}{3}{4}
-\end{scope}
+			\begin{scope}[yshift=-18cm]
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{1}{2}{3}
+				\setminirow{3}{2}{1}{4}
+				\setminirow{1}{3}{4}{2}
+				\setminirow{2}{4}{3}{1}
+			\end{scope}
 
-\begin{scope}[yshift=-6cm]
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{3}{1}{2}{4}
-\setminirow{2}{4}{1}{3}
-\setminirow{1}{3}{4}{2}
-\setminirow{4}{2}{3}{1}
-\end{scope}
+		\end{tikzpicture}
+		\caption{alle Lösungen des Sudokus in \cref{fig:Mini0}}
+		\label{fig:aufgabe0677}
+	\end{figure}
+\end{myanswer}
 
-\begin{scope}[yshift=-12cm]
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{3}{1}{2}{4}
-\setminirow{4}{2}{1}{3}
-\setminirow{1}{3}{4}{2}
-\setminirow{2}{4}{3}{1}
-\end{scope}
-
-\begin{scope}[yshift=-18cm]
-\draw (0, 0) grid (4, 4);
-\draw[very thick, scale=2] (0, 0) grid (2, 2);
-\setcounter{row}{1}
-\setminirow{4}{1}{2}{3}
-\setminirow{3}{2}{1}{4}
-\setminirow{1}{3}{4}{2}
-\setminirow{2}{4}{3}{1}
-\end{scope}
-
-\end{tikzpicture}
-\caption{alle Lösungen des Sudokus in \cref{fig:Mini0}}
-\label{fig:aufgabe0677}
-\end{figure}
-\end{antwort}
-
-\begin{antwort}{aufgabe:0688}
-\lstset{basicstyle=\ttfamily\footnotesize}
-\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{erlaubt}]
+\begin{myanswer}[myexercise:0688]
+	\lstset{basicstyle=\ttfamily\footnotesize}
+	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{erlaubt}]
 def erlaubt(zeile, spalte, ziffer, gitter):
 	# Prüfe, ob 'ziffer' bereits in der gegeben Zeile vorkommt.
 	# (Fixiere die Zeile und gehe durch alle Spalten.)
@@ -1048,13 +1035,12 @@ def erlaubt(zeile, spalte, ziffer, gitter):
 				return False
 	return True
 \end{lstlisting}
-\lstset{style=mystyle}
-\end{antwort}
+	\lstset{style=mystyle}
+\end{myanswer}
 
-
-\begin{antwort}{aufgabe:0689}
-\lstset{basicstyle=\ttfamily\footnotesize}
-\begin{lstlisting}[language=Python,caption=Funktion \pythoninline{erlaubt} für allgemeine Sudokus]
+\begin{myanswer}[myexercise:0689]
+	\lstset{basicstyle=\ttfamily\footnotesize}
+	\begin{lstlisting}[language=Python,caption=Funktion \pythoninline{erlaubt} für allgemeine Sudokus]
 def erlaubt(zeile, spalte, ziffer, gitter):
 	n = int(np.sqrt(len(gitter[0])))
 
@@ -1073,191 +1059,186 @@ def erlaubt(zeile, spalte, ziffer, gitter):
 			if gitter[zeile_block+i_block][spalte_block+j_block] == ziffer:
 				return False
 	return True
-\end{lstlisting} 
-\lstset{style=mystyle}
-\end{antwort}
+\end{lstlisting}
+	\lstset{style=mystyle}
+\end{myanswer}
 
+\begin{myanswer}[myexercise:0632]
+	\begin{aenum}
+		\item Die Stationen sind in \cref{fig:treeB} gegeben.
+		\item Beim Zeichnen des Diagramms in Teilaufgabe (a) werden Sie festgestellt haben, dass die Arbeit mit Feldern, die das Setzen von mehr als einer Ziffer erlauben, den Aufwand erheblich erhöht. Es ist deshalb intuitiv klar, dass man zuerst alle Felder besetzen möchte, die nur eine Ziffer erlauben. Danach sollte man die Felder besetzen, welche nur zwei Ziffern erlauben und so weiter. Unser Vorgehen in Teilaufgabe (a) ist suboptimal, da wir beispielsweise als Erstes ein Feld zu füllen versuchen, welches zwei Ziffern erlaubt.
+	\end{aenum}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[scale=.5]
+			\begin{scope}
+				\node at (3,4.5) {(0)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{}{3}{}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-\begin{antwort}{aufgabe:0632}
-\begin{aenum}
-	\item Die Stationen sind in \cref{fig:treeB} gegeben.
-	\item Beim Zeichnen des Diagramms in Teilaufgabe (a) werden Sie festgestellt haben, dass die Arbeit mit Feldern, die das Setzen von mehr als einer Ziffer erlauben, den Aufwand erheblich erhöht. Es ist deshalb intuitiv klar, dass man zuerst alle Felder besetzen möchte, die nur eine Ziffer erlauben. Danach sollte man die Felder besetzen, welche nur zwei Ziffern erlauben und so weiter. Unser Vorgehen in Teilaufgabe (a) ist suboptimal, da wir beispielsweise als Erstes ein Feld zu füllen versuchen, welches zwei Ziffern erlaubt.
-\end{aenum}
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[scale=.5]
-	\begin{scope}
-	\node at (3,4.5) {(0)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{}{3}{}{}
-	\setminirow{}{1}{}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
-		
-	\begin{scope}[xshift=-6cm,yshift=-6cm]
-	\node at (2,4.5) {(1)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{\textcolor{Red}{2}}{3}{}{}
-	\setminirow{}{1}{}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=-6cm,yshift=-6cm]
+				\node at (2,4.5) {(1)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{\textcolor{Red}{2}}{3}{}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=-6cm,yshift=-12cm]
-	\node at (3,4.5) {(2)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{2}{3}{\textcolor{Red}{$\times$}}{}
-	\setminirow{}{1}{}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
-	
-	\begin{scope}[xshift=6cm,yshift=-6cm]
-	\node at (3,4.5) {(3)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{\textcolor{Red}{4}}{3}{}{}
-	\setminirow{}{1}{}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=-6cm,yshift=-12cm]
+				\node at (3,4.5) {(2)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{2}{3}{\textcolor{Red}{$\times$}}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=6cm,yshift=-12cm]
-	\node at (3,4.5) {(4)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{4}{3}{\textcolor{Red}{2}}{}
-	\setminirow{}{1}{}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=6cm,yshift=-6cm]
+				\node at (3,4.5) {(3)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{\textcolor{Red}{4}}{3}{}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=6cm,yshift=-18cm]
-	\node at (3,4.5) {(5)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{4}{3}{2}{\textcolor{Red}{1}}
-	\setminirow{}{1}{}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=6cm,yshift=-12cm]
+				\node at (3,4.5) {(4)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{3}{\textcolor{Red}{2}}{}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=6cm,yshift=-24cm]
-	\node at (3,4.5) {(6)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{4}{3}{2}{1}
-	\setminirow{\textcolor{Red}{2}}{1}{}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=6cm,yshift=-18cm]
+				\node at (3,4.5) {(5)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{3}{2}{\textcolor{Red}{1}}
+				\setminirow{}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=6cm,yshift=-30cm]
-	\node at (3,4.5) {(7)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{4}{3}{2}{1}
-	\setminirow{2}{1}{\textcolor{Red}{3}}{4}
-	\setminirow{3}{}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=6cm,yshift=-24cm]
+				\node at (3,4.5) {(6)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{3}{2}{1}
+				\setminirow{\textcolor{Red}{2}}{1}{}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=6cm,yshift=-36cm]
-	\node at (3,4.5) {(8)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{4}{3}{2}{1}
-	\setminirow{2}{1}{3}{4}
-	\setminirow{3}{\textcolor{Red}{2}}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=6cm,yshift=-30cm]
+				\node at (3,4.5) {(7)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{3}{2}{1}
+				\setminirow{2}{1}{\textcolor{Red}{3}}{4}
+				\setminirow{3}{}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=6cm,yshift=-42cm]
-	\node at (3,4.5) {(9)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{4}{3}{2}{1}
-	\setminirow{2}{1}{3}{4}
-	\setminirow{3}{2}{1}{\textcolor{Red}{$\times$}}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=6cm,yshift=-36cm]
+				\node at (3,4.5) {(8)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{3}{2}{1}
+				\setminirow{2}{1}{3}{4}
+				\setminirow{3}{\textcolor{Red}{2}}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=12cm,yshift=-36cm]
-	\node at (3,4.5) {(10)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{4}{3}{2}{1}
-	\setminirow{2}{1}{3}{4}
-	\setminirow{3}{\textcolor{Red}{4}}{1}{}
-	\setminirow{}{}{}{}
-	\end{scope}
+			\begin{scope}[xshift=6cm,yshift=-42cm]
+				\node at (3,4.5) {(9)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{3}{2}{1}
+				\setminirow{2}{1}{3}{4}
+				\setminirow{3}{2}{1}{\textcolor{Red}{$\times$}}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=12cm,yshift=-41cm]
-		\draw[Blue] (2,2) node {{\tiny$\vdots$}};
-	\end{scope}
+			\begin{scope}[xshift=12cm,yshift=-36cm]
+				\node at (3,4.5) {(10)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{3}{2}{1}
+				\setminirow{2}{1}{3}{4}
+				\setminirow{3}{\textcolor{Red}{4}}{1}{}
+				\setminirow{}{}{}{}
+			\end{scope}
 
-	\begin{scope}[xshift=12cm,yshift=-46cm]
-	\node at (3,4.5) {(15)};
-	\draw (0, 0) grid (4, 4);
-	\draw[very thick, scale=2] (0, 0) grid (2, 2);
-	\setcounter{row}{1}
-	\setminirow{4}{3}{2}{1}
-	\setminirow{2}{1}{3}{4}
-	\setminirow{3}{4}{1}{2}
-	\setminirow{1}{2}{4}{\textcolor{Red}{3}}
-	\end{scope}
+			\begin{scope}[xshift=12cm,yshift=-41cm]
+				\draw[Blue] (2,2) node {{\tiny$\vdots$}};
+			\end{scope}
 
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (-4,-2);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-4,-8);
-	
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (8,-2);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-6) -- (8,-8);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-12) -- (8,-14);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-18) -- (8,-20);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-24) -- (8,-26);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (8,-32);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-36) -- (8,-38);
+			\begin{scope}[xshift=12cm,yshift=-46cm]
+				\node at (3,4.5) {(15)};
+				\draw (0, 0) grid (4, 4);
+				\draw[very thick, scale=2] (0, 0) grid (2, 2);
+				\setcounter{row}{1}
+				\setminirow{4}{3}{2}{1}
+				\setminirow{2}{1}{3}{4}
+				\setminirow{3}{4}{1}{2}
+				\setminirow{1}{2}{4}{\textcolor{Red}{3}}
+			\end{scope}
 
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (14,-32);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (14,-36) -- (14,-38);
-	\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (14,-40) -- (14,-42);
-	
-	\end{tikzpicture}
-	\caption{alle Stationen}
-	\label{fig:treeB}
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (-4,-2);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (-4,-6) -- (-4,-8);
+
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (2,0) -- (8,-2);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-6) -- (8,-8);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-12) -- (8,-14);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-18) -- (8,-20);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-24) -- (8,-26);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (8,-32);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-36) -- (8,-38);
+
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (8,-30) -- (14,-32);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (14,-36) -- (14,-38);
+			\draw[ForestGreen, -{Stealth[length=4mm, width=1.5mm]}] (14,-40) -- (14,-42);
+
+		\end{tikzpicture}
+		\caption{alle Stationen}
+		\label{fig:treeB}
 	\end{figure}
-\end{antwort}
+\end{myanswer}
 
+\begin{myanswer}[myexercise:0681]
+	Zeile 24 wird genau dann erreicht, wenn der rekursive Aufruf auf Zeile 21 abgeschlossen werden konnte. Dies ist genau dann der Fall, wenn der rekursive Aufruf einen \pythoninline{return} lieferte. Dazu gibt es exakt zwei Möglichkeiten:
+	\begin{description}
+		\item[return auf Zeile 28:] Der \pythoninline{return} auf Zeile 28 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in eine \enquote{Sackgasse} gelangt ist. Dies geschieht genau dann, wenn dieser Aufruf ein noch leeres Feld gefunden hat, in welches keine der 10 Ziffern gesetzt werden darf (Widerspruch). Die gesetzte Ziffer muss also wieder entfernt werden und wir versuchen es mit einer anderen Ziffer.
+		\item[return auf Zeile 31:] Der \pythoninline{return} auf Zeile 31 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in kein leeres Feld gefunden hat. Das bedeutet aber, dass dieser Aufruf eine gültige Lösung gefunden (und ausgegeben) hat. Durch das Entfernen der gesetzten Ziffer können rekursiv (falls vorhanden) weitere Lösungen gefunden werden (siehe auch \cref{myBox:Metapher2}).
+	\end{description}
+\end{myanswer}
 
-
-\begin{antwort}{aufgabe:0681}
-Zeile 24 wird genau dann erreicht, wenn der rekursive Aufruf auf Zeile 21 abgeschlossen werden konnte. Dies ist genau dann der Fall, wenn der rekursive Aufruf einen \pythoninline{return} lieferte. Dazu gibt es exakt zwei Möglichkeiten:
-\begin{description}
-	\item[return auf Zeile 28:] Der \pythoninline{return} auf Zeile 28 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in eine \enquote{Sackgasse} gelangt ist. Dies geschieht genau dann, wenn dieser Aufruf ein noch leeres Feld gefunden hat, in welches keine der 10 Ziffern gesetzt werden darf (Widerspruch). Die gesetzte Ziffer muss also wieder entfernt werden und wir versuchen es mit einer anderen Ziffer.
-	\item[return auf Zeile 31:] Der \pythoninline{return} auf Zeile 31 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in kein leeres Feld gefunden hat. Das bedeutet aber, dass dieser Aufruf eine gültige Lösung gefunden (und ausgegeben) hat. Durch das Entfernen der gesetzten Ziffer können rekursiv (falls vorhanden) weitere Lösungen gefunden werden (siehe auch \cref{myBox:Metapher2}).
-\end{description}
-\end{antwort}
-
-
-
-\begin{antwort}{aufgabe:0603}
-Diese Funktion bricht ihre Berechnung ab, sobald eine Lösung gefunden wurde.
-\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{sudoku},label=listing:sudokuUnique]
+\begin{myanswer}[myexercise:0603]
+	Diese Funktion bricht ihre Berechnung ab, sobald eine Lösung gefunden wurde.
+	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{sudoku},label=listing:sudokuUnique]
 def sudoku(gitter):
 	for zeile in range(9):
 		for spalte in range(9):
@@ -1272,27 +1253,22 @@ def sudoku(gitter):
 				return
 	print(np.array(gitter))
 	return True
-\end{lstlisting} 
-\end{antwort}
+\end{lstlisting}
+\end{myanswer}
 
+\begin{myanswer}[myexercise:0604]
+	\lstset{basicstyle=\ttfamily\footnotesize}
+	Wir geben eine Lösung in \verb|Python| und eine alternative Lösung in \verb|C++| an. Das Python-Programm verwendet eine globale Variable, was sehr unschön ist. Diese könnte man beispielsweise durch \textit{Python-Klassen} vermeiden. Wir wollen an dieser Stelle aber nicht auf diese eingehen.
+	\vspace{1cm}
 
+	\textbf{Lösung in Python}
+	\lstinputlisting[language=Python]{n_queen_problem.py}
 
-
-\begin{antwort}{aufgabe:0604}
-\lstset{basicstyle=\ttfamily\footnotesize}
-Wir geben eine Lösung in \verb|Python| und eine alternative Lösung in \verb|C++| an. Das Python-Programm verwendet eine globale Variable, was sehr unschön ist. Diese könnte man beispielsweise durch \textit{Python-Klassen} vermeiden. Wir wollen an dieser Stelle aber nicht auf diese eingehen.
-\vspace{1cm}
-
-\noindent
-\textbf{Lösung in Python}
-\lstinputlisting[language=Python]{n_queen_problem.py}
-
-\noindent
-\textbf{Lösung in C++}
-\lstinputlisting[language=C++]{./src/main.cpp}
-\lstinputlisting[language=C++]{./src/n_queen_problem.h}
-\lstinputlisting[language=C++]{./src/n_queen_problem.cpp}
-\end{antwort}
+	\textbf{Lösung in C++}
+	\lstinputlisting[language=C++]{./src/main.cpp}
+	\lstinputlisting[language=C++]{./src/n_queen_problem.h}
+	\lstinputlisting[language=C++]{./src/n_queen_problem.cpp}
+\end{myanswer}
 
 \lstset{style=mystyle}
 
