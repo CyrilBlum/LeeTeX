@@ -488,7 +488,7 @@ die im Widerspruch zu den gewünschten Eigenschaften steht.
 
 Beweise der Nichtexistenz gehören zu den schwierigsten Aufgaben der Informatik und der Mathematik überhaupt. Das $P$ vs $NP$ Problem, welches eines der bekanntesten offenen Probleme der Informatik ist, befasst sich ebenfalls mit der Problematik des Beweisens von Existenz oder Nichtexistenz\footnote{\url{https://www.claymath.org/millennium-problems/p-vs-np-problem}}.
 
-Da endliche Automaten sehr stark eingeschränkte Programme sind (siehe Unterabschnitt \cref{subsec:Programmdarstellung}), ist der Beweis der Nichtexistenz eines endlichen Automaten für eine gegebene Sprache eine relativ einfache Aufgabe. Wir nutzen diese Tatsache, um eine einfache
+Da endliche Automaten sehr stark eingeschränkte Programme sind (siehe \cref{subsec:Programmdarstellung}), ist der Beweis der Nichtexistenz eines endlichen Automaten für eine gegebene Sprache eine relativ einfache Aufgabe. Wir nutzen diese Tatsache, um eine einfache
 Einführung in die Methodik der Erstellung von Beweisen der Nichtexistenz zu geben.
 
 Das charakteristische Merkmal endlicher Automaten ist, dass sie zu jeder Zeit nur abgespeichert haben, in welchem Zustand sie sich aktuell befinden und welches Eingabesymbol sie als nächstes lesen werden. Ansonsten verfügen sie über keinen Speicher. Dies bedeutet insbesondere, dass ein endlicher Automat nicht abgespeichert hat (sich nicht erinnern kann), auf welchem Wege er in seinen aktuellen Zustand gelangt ist. Betrachten wir nochmal den endlichen Automaten in \cref{fig:hat}. Die zwei verschiedenen Wörter $x:= cbcbcba$ und $y := b$ führen beide in den Zustand $p$. In Zukunft wird $A$ nicht mehr zwischen $x$ und $y$ unterscheiden können. Auf welchem Wege der endliche Automat in einen Zustand gekommen ist, spielt also keine Rolle. Der endliche Automat hat kein \enquote{Gedächtnis}. Wenn $A$ also nach dem Lesen zweier Wörter $x$ und $y$ jeweils in demselben Zustand $q_0$ endet (also $\deltah{q_0}{x} = \deltah{q_0}{y}$), dann gilt für alle Wörter $z\in\Sigma^*$ (alle zukünftigen Eingaben), dass
@@ -531,7 +531,7 @@ Diese wichtige Eigenschaft wollen wir in einem Satz formulieren und formal bewei
 	\end{myproof}
 \end{mytheorem}
 
-Wir werden nun zeigen, wie Satz \cref{mytheorem:pfad_invarianz} benutze werden kann um, indirekt (durch Widerspruch) zu beweisen, dass eine Sprache nicht regulär ist. Dieses indirekte Vorgehen wollen wir auch hier anwenden. Betrachten wir die Sprache
+Wir werden nun zeigen, wie \cref{mytheorem:pfad_invarianz} benutze werden kann um, indirekt (durch Widerspruch) zu beweisen, dass eine Sprache nicht regulär ist. Dieses indirekte Vorgehen wollen wir auch hier anwenden. Betrachten wir die Sprache
 \begin{align*}
 	L_{count} := \setcm{w\in \lrc{0,1}^*}{w = 0^n 1^n\text{ für ein } n\in\mathbb{N}}.
 \end{align*}
@@ -550,20 +550,47 @@ Die Sprache $L_{count}$ ist nicht regulär $\lr{L_{count}\notin \mathcal{L}_{EA}
 	\begin{align*}
 		\deltah{q_0}{0^i} = \deltah{q_0}{0^j}.
 	\end{align*}
-	Gemäss Satz \cref{mytheorem:pfad_invarianz} muss für jedes Wort $z\in\lrc{0,1}^*$ gelten, dass
+	Gemäss \cref{mytheorem:pfad_invarianz} muss für jedes Wort $z\in\lrc{0,1}^*$ gelten, dass
 	\begin{align*}
 		0^iz\in L_{count} \Longleftrightarrow 0^jz\in L_{count}.
 	\end{align*}
 	Doch dies ist ein Widerspruch, denn für die Wahl $z := 1^j$ liegt das Wort $0^jz = 0^j1^j$ in der Sprache $L_{count}$ ($0^j1^j$ hat gleich viele Nullen und Einsen), doch das Wort $0^iz = 0^i1^j$ liegt nicht in $L_{count}$, da $i<j$ gilt und $0^i1^j$ somit mehr Einsen als Nullen enthält. Da wir einen Widerspruch erhalten haben, muss unsere Annahme, $L_{count}$ sei regulär verworfen werden und wir haben $L_{count}\notin \mathcal{L}_{EA}$ bewiesen.
 \end{myproof}
 
+
+
 \begin{myexercise}\label{myexercise:0405}
-	Beweisen Sie mithilfe des Satzes \cref{mytheorem:pfad_invarianz}, dass die Sprache
+	Beweisen Sie mithilfe des \cref{mytheorem:pfad_invarianz}, dass die Sprache
 	\begin{align}\label{eq:L2}
 		L := \setcm{a^n b^m c^n}{n,m\in\mathbb{N}}
 	\end{align}
 	nicht regulär ist.
 \end{myexercise}
+
+\begin{myexercise}\label{myexercise:0406}
+	Beweisen Sie mithilfe des \cref{mytheorem:pfad_invarianz}, dass die Sprache
+	\begin{align}\label{eq:L3}
+		L := \setcm{a^n b^m c^h}{n,m,h\in\mathbb{N} \text{ und } m > n + 2h}
+	\end{align}
+	nicht regulär ist.
+\end{myexercise}
+
+\begin{myexercise}\label{myexercise:0407}
+	Beweisen Sie mithilfe des \cref{mytheorem:pfad_invarianz}, dass die Sprache
+	\begin{align}\label{eq:L4}
+		L := \setcm{w\#w}{w\in\lrc{a,b}^*}.
+	\end{align}
+	nicht regulär ist.
+\end{myexercise}
+
+\begin{myexercise}\label{myexercise:0408}
+	Beweisen Sie, dass die Sprache
+	\begin{align}\label{eq:L5}
+		L := \setcm{0^i1^j}{i,j\in\N}
+	\end{align}
+	regulär ist.
+\end{myexercise}
+
 
 \clearpage
 \section{Lösungen der Aufgaben}

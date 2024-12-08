@@ -91,13 +91,13 @@ Die Spielregeln für Sudokus lassen sich ganz einfach erklären. Wir illustriere
 \end{figure}
 
 Normale $9\times 9$-Sudokus sind mit ihren $81$ Feldern recht gross und für didaktische Betrachtungen eher unhandlich. Wir werden deshalb zuerst kleinere Sudokus der Grösse $4\times 4$ untersuchen. Lassen Sie uns zunächst die Regeln für Sudokus für allgemeine Dimensionen festhalten.
-\begin{myBox}[Spielregeln des (verallgemeinerten) Sudokus]{myBox:Regeln}
+\begin{myremark}{Spielregeln des (verallgemeinerten) Sudokus}{myremark:Regeln}
 	Ein (verallgemeinertes) Sudoku ist ein $n^2 \times n^2$-Gitter, wobei $n$ eine natürliche Zahl ist. Bei einem Sudoku sind zu Beginn einige Zahlen (Felder) vorgegeben. Diese zu Beginn vorgegebenen Zahlen dürfen nicht geändert werden. Das Sudoku ist gelöst, wenn jedes der $n^2\cdot n^2 = n^4$ Felder genau eine der Ziffern $1,2,\ldots, n^4$ enthält und zusätzlich die folgenden zwei Bedingungen erfüllt sind:
 	\begin{enumerate}
 		\item In jeder Zeile und in jeder Spalte muss jede der $n^2$ Ziffern $1,2,\ldots, n^2$ genau einmal vorkommen.
 		\item Beachten Sie, dass das $n^2\times n^2$-Gitter (siehe die fetten Linien) wiederum in $n^2$ verschiedene $n\times n$-Blöcke aufgeteilt ist. In jedem dieser $n\times n$-Blöcke müssen ebenfalls alle $n^2$ Ziffern $1,2,\ldots, n^2$ genau einmal vorkommen.
 	\end{enumerate}
-\end{myBox}
+\end{myremark}
 Das übliche Sudoku (mit 81 Feldern) erhalten wir für $n=3$. Wir werden zunächst kleine Sudokus mit $n=2$, also mit nur $2^4 = 16$ Feldern anschauen.
 
 \begin{myexercise}\label{myexercise:0601}
@@ -262,13 +262,12 @@ In \cref{fig:Mini0} ist ein Beispiel eines $4\times 4$-Sudokus (\enquote{Mini-Su
 	\label{fig:Mini0}
 \end{figure}
 
-
 \begin{myexercise}\label{myexercise:0677}
 	Finden Sie die drei weiteren Lösungen des Sudokus in \cref{fig:Mini0}.
 \end{myexercise}
 
 \section{Darstellung von Sudokus in Python}
-In Python können wir ein Sudoku durch eine \enquote{zweidimensionale} Liste (oder Array) angeben. Beispielsweise kann Sudoku Nr. 2 aus \cref\label{myexercise:0601} in der folgenden Form in Python gespeichert werden:
+In Python können wir ein Sudoku durch eine \enquote{zweidimensionale} Liste (oder Array) angeben. Beispielsweise kann Sudoku Nr. 2 aus \cref{myexercise:0601} in der folgenden Form in Python gespeichert werden:
 \begin{lstlisting}[language=Python,caption=Abspeichern von Sudoku-Gittern in Python,numbers=none]
 sudokuNo2 = [
 [0,9,5,0,0,0,0,7,0],
@@ -292,7 +291,6 @@ mini_sudokuNo0 = [
 ]
 \end{lstlisting}
 Um ein $n^2\times n^2$-Gitter ansehnlich in Python auszugeben (\enquote{pretty-print}), empfehlen wir, am Anfang des Programms die Bibliothek \pythoninline{numpy} durch den Befehl \pythoninline{import numpy as np} einzubinden. Danach kann das Gitter durch \pythoninline{print(np.array(gitter))} übersichtlich ausgegeben werden.
-
 
 \section{Erlaubte Felder}
 In \cref{fig:sudoku0again} ist nochmals das Sudoku vom Anfang des Kapitels gezeigt. Betrachten Sie das mit einem blauen Fragezeichen \textcolor{Blue}{?} markierte Feld. Wir wissen (aufgrund der Eindeutigkeit der Lösung dieses konkreten Sudokus), dass in das markierte Feld die Ziffer 8 gesetzt werden muss. Nach den Spielregeln von Sudoku würde jedoch im Moment nichts dagegen sprechen, eine \textcolor{Red}{1} in dieses Feld zu schreiben --- auch wenn sich diese Wahl im Verlauf des Spiels als falsch herausstellen wird. Wir sagen, dass die Wahl der Ziffer 1 für das blau markierte Feld (bei dem aktuellen Spielstand) \textit{erlaubt} ist. Die Wahl der Ziffer 6 ist beispielsweise nicht erlaubt, da diese Ziffer in der entsprechenden Zeile bereits vorkommt. Ebenso wäre die Wahl der Ziffer 5 nicht erlaubt, da diese Ziffer bereits im entsprechenden $3\times 3$-Block enthalten ist.
@@ -409,11 +407,10 @@ print(erlaubt(1,1,3,mini_sudokuNo0)) # False
 	auf $n^2\times n^2$-Gitter.
 \end{myexercise}
 
-
 \clearpage
 \section{Backtracking}
 Wir wollen uns nun an die Entwicklung eines rekursiven Algorithmus zum Lösen von
-Sudokus herantasten. Dazu beginnen wir mit der einführenden \cref\label{myexercise:0632}, in der Sie einige gedankliche Vorarbeiten leisten.
+Sudokus herantasten. Dazu beginnen wir mit der einführenden \cref{myexercise:0632}, in der Sie einige gedankliche Vorarbeiten leisten.
 
 \begin{myexercise}\label{myexercise:0632}
 	Betrachten Sie das folgende Sudoku.
@@ -507,7 +504,7 @@ Sudokus herantasten. Dazu beginnen wir mit der einführenden \cref\label{myexerc
 \end{myexercise}
 
 \clearpage
-Nun wollen wir die in \cref\label{myexercise:0632} gemachten Beobachtungen etwas vertiefen. Betrachten Sie dazu das neue Mini-Sudoku in \cref{fig:Mini1}.
+Nun wollen wir die in \cref{myexercise:0632} gemachten Beobachtungen etwas vertiefen. Betrachten Sie dazu das neue Mini-Sudoku in \cref{fig:Mini1}.
 
 \begin{figure}[H]
 	\centering
@@ -788,7 +785,7 @@ Der Vorgang des \enquote{Zurückgehens} entlang der gegangenen Wege wird \tib{Ba
 \end{figure}
 
 \clearpage
-\begin{myBox}[Backtracking in einem Labyrinth]{myBox:Metapher2}
+\begin{myremark}{Backtracking in einem Labyrinth}\label{myremark:Metapher2}
 	Die Situation beim Backtracking in Sudokus kann vage mit der (rekursiven) Suche eines Ausgangs (oder aller Ausgänge) aus einem Labyrinth verglichen werden. Wir suchen, beginnend bei \textit{Start}, einen der \textbf{A}usgänge aus einem Labyrinth. Dazu gehen wir so lange die Gänge entlang, bis wir entweder herausgefunden haben oder in einer \textbf{S}ackgasse angelangt sind. In \cref{fig:Labyrinth} ist die Situation veranschaulicht. Der Weg \textit{Start} $\to 0 \to 1$ ist eine Sackgasse. Wir gehen darum einen Gang zurück (also zu 0). Von $0$ aus gibt es keine weitere Abzweigung und wir gehen nochmals einen Gang zurück, also zum \textit{Start}. Nun gehen wir den neuen Weg \textit{Start} $\to 2\to 3 \to 4$. Doch auch $4$ ist eine Sackgasse. Deshalb gehen wir einen Gang zurück zu $2$. Von 2 aus nehmen wir den neuen Weg $2\to 5\to 6$ und haben einen Ausgang gefunden. Diesen gefundenen Weg \textit{Start} $\to 2\to 5\to 6$ können wir als Lösung ausgeben. Falls wir (wie beim Sudoku) alle Lösungen (Ausgänge) finden wollen, würden wir hier nicht bereits abbrechen, sondern (rekursiv) weitersuchen.
 	\begin{figure}[H]
 		\centering
@@ -806,7 +803,7 @@ Der Vorgang des \enquote{Zurückgehens} entlang der gegangenen Wege wird \tib{Ba
 		\caption{Navigation in einem Labyrinth}
 		\label{fig:Labyrinth}
 	\end{figure}
-\end{myBox}
+\end{myremark}
 \clearpage
 
 \section{Lösungsalgorithmus für Sudoku}
@@ -824,9 +821,9 @@ Unser Lösungsalgorithmus verwendet die Funktion \pythoninline{erlaubt} sowie Ba
     [0,0,0,0,0,0,1,2,9]
     ]
 \end{lstlisting}
-wird Ihnen der Aufruf \pythoninline{sudoku(sudokuNo0)} alle (es gibt hier nur eine) Lösungen von Sudoku Nr. 0 ausgeben. Die Funktion in \cref{listing:sudoku} verwendet die Funktion \pythoninline{erlaubt}, welche Sie in \cref\label{myexercise:0689} geschrieben haben.
+wird Ihnen der Aufruf \pythoninline{sudoku(sudokuNo0)} alle (es gibt hier nur eine) Lösungen von Sudoku Nr. 0 ausgeben. Die Funktion in \cref{listing:sudoku} verwendet die Funktion \pythoninline{erlaubt}, welche Sie in \cref{myexercise:0689} geschrieben haben.
 
-\lstset{style=mystyle}
+\lstset{style=BaselineStyle}
 \begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{sudoku},label=listing:sudoku]
 def sudoku(gitter):
 	# Gehe durch alle Felder im Gitter.
@@ -852,7 +849,7 @@ def sudoku(gitter):
 
 						# Entferne die gesetzte Ziffer wieder.
 						gitter[zeile][spalte] = 0
-						
+
 				# leeres Feld, für welches keine Ziffer passt
 				# => Sackgasse gefunden => Backtracking
 				return
@@ -1035,7 +1032,7 @@ def erlaubt(zeile, spalte, ziffer, gitter):
 				return False
 	return True
 \end{lstlisting}
-	\lstset{style=mystyle}
+	\lstset{style=BaselineStyle}
 \end{myanswer}
 
 \begin{myanswer}[myexercise:0689]
@@ -1060,7 +1057,7 @@ def erlaubt(zeile, spalte, ziffer, gitter):
 				return False
 	return True
 \end{lstlisting}
-	\lstset{style=mystyle}
+	\lstset{style=BaselineStyle}
 \end{myanswer}
 
 \begin{myanswer}[myexercise:0632]
@@ -1232,7 +1229,7 @@ def erlaubt(zeile, spalte, ziffer, gitter):
 	Zeile 24 wird genau dann erreicht, wenn der rekursive Aufruf auf Zeile 21 abgeschlossen werden konnte. Dies ist genau dann der Fall, wenn der rekursive Aufruf einen \pythoninline{return} lieferte. Dazu gibt es exakt zwei Möglichkeiten:
 	\begin{description}
 		\item[return auf Zeile 28:] Der \pythoninline{return} auf Zeile 28 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in eine \enquote{Sackgasse} gelangt ist. Dies geschieht genau dann, wenn dieser Aufruf ein noch leeres Feld gefunden hat, in welches keine der 10 Ziffern gesetzt werden darf (Widerspruch). Die gesetzte Ziffer muss also wieder entfernt werden und wir versuchen es mit einer anderen Ziffer.
-		\item[return auf Zeile 31:] Der \pythoninline{return} auf Zeile 31 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in kein leeres Feld gefunden hat. Das bedeutet aber, dass dieser Aufruf eine gültige Lösung gefunden (und ausgegeben) hat. Durch das Entfernen der gesetzten Ziffer können rekursiv (falls vorhanden) weitere Lösungen gefunden werden (siehe auch \cref{myBox:Metapher2}).
+		\item[return auf Zeile 31:] Der \pythoninline{return} auf Zeile 31 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in kein leeres Feld gefunden hat. Das bedeutet aber, dass dieser Aufruf eine gültige Lösung gefunden (und ausgegeben) hat. Durch das Entfernen der gesetzten Ziffer können rekursiv (falls vorhanden) weitere Lösungen gefunden werden (siehe auch \cref{myremark:Metapher2}).
 	\end{description}
 \end{myanswer}
 
@@ -1262,15 +1259,15 @@ def sudoku(gitter):
 	\vspace{1cm}
 
 	\textbf{Lösung in Python}
-	\lstinputlisting[language=Python]{n_queen_problem.py}
+	\lstinputlisting[language=Python]{EF/InduktionUndRekursion/n_queen_problem.py}
 
 	\textbf{Lösung in C++}
-	\lstinputlisting[language=C++]{./src/main.cpp}
-	\lstinputlisting[language=C++]{./src/n_queen_problem.h}
-	\lstinputlisting[language=C++]{./src/n_queen_problem.cpp}
+	% \lstinputlisting[language=C++]{EF/InduktionUndRekursion/src/main.cpp}
+	% \lstinputlisting[language=C++]{EF/InduktionUndRekursion//src/n_queen_problem.h}
+	% \lstinputlisting[language=C++]{EF/InduktionUndRekursion//src/n_queen_problem.cpp}
 \end{myanswer}
 
-\lstset{style=mystyle}
+\lstset{style=BaselineStyle}
 
 
 \clearpage
