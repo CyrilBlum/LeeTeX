@@ -1,8 +1,8 @@
 \chapter{Endliche Automaten}
 Endliche Automaten sind das einfachste Berechnungsmodell, das man in der Informatik
-betrachtet. In einer ersten Phase möchten wir eine gute intuitive Vorstellung der Arbeitsweise von endlichen Automaten gewinnen. Dazu werden wir in Unterabschnitt \cref{subsec:graphenDarstellung} endliche Automaten mit (leicht modifizierten) gerichteten Graphen identifizieren. In Unterabschnitt \cref{subsec:Programmdarstellung} werden wir sehen, dass endliche Automaten äquivalent zu einer Darstellung durch spezielle Programme sind. Diese speziellen Programme lösen gewisses Entscheidungsproblem, ohne bei ihrer Arbeit Variablen zu benutzen.
+betrachtet. In einer ersten Phase möchten wir eine gute intuitive Vorstellung der Arbeitsweise von endlichen Automaten gewinnen. Dazu werden wir in \cref{subsec:graphenDarstellung} endliche Automaten mit (leicht modifizierten) gerichteten Graphen identifizieren. In \cref{subsec:Programmdarstellung} werden wir sehen, dass endliche Automaten äquivalent zu einer Darstellung durch spezielle Programme sind. Diese speziellen Programme lösen gewisses Entscheidungsproblem, ohne bei ihrer Arbeit Variablen zu benutzen.
 
-Mithilfe dieser Intuition wird uns die formale Definition endlicher Automaten in Unterabschnitt \cref{subsec:formaleDefinitionEA} elegant und natürlich erscheinen.
+Mithilfe dieser Intuition wird uns die formale Definition endlicher Automaten in \cref{subsec:formaleDefinitionEA} elegant und natürlich erscheinen.
 
 Die Betrachtung endlicher Automaten ist hervorragend dazu geeignet, zentrale Begriffe der Informatik wie \textit{Konfiguration}, \textit{Berechnungsschritt}, \textit{Simulation} und \textit{Berechnung} schonend einzuführen.
 
@@ -49,12 +49,12 @@ Um konkret über endliche Automaten sprechen zu können, betrachten wir den einf
 	\item Jedem endlichen Automaten ist ein \textbf{Eingabealphabet} $\Sigma$ zugeordnet. Das Eingabealphabet von $A$ ist $\Sigma = \lrc{0,1}$. Alle zulässigen Eingaben $w$ für eines endlichen Automaten müssen Wörter über seinem Eingabealphabet sein. Der endliche Automat erhält ein \textbf{Eingabewort} $w$ über $\Sigma$ und liest dieses Buchstabe um Buchstabe von links nach rechts. Wenn der endliche Automat das gesamte Wort $w$ gelesen hat, ist seine Arbeit auf $w$ beendet.
 	\item Falls sich $A$ zum Beispiel im Zustand $q_0$ befindet und das Symbol $1$ liest, dann folgt $A$ der Kante des Graphen, welche mit $1$ beschriftet ist. Dadurch gelangt $A$ in den Zustand $q_1$. Mit dem Lesen von $0$ im Zustand $q_0$ bleibt $A$ im Zustand $q_0$.
 
-	      Allgemein gilt: Falls sich ein endlicher Automat im Zustand $q$ befindet und ein Symbol $\alpha$ von der Eingabe liest, dann folgt der Automat der Kante des Graphen, welche mit $\alpha$ beschriftet ist. Die Destination der Kante wird sein neuer Zustand sein. Mental kann man sich vorstellen, dass der Zeiger nun auf diesen neuen Zustand zeigt.
+	      Allgemein gilt: Falls sich ein endlicher Automat im Zustand $q$ befindet und ein Symbol $\alpha$ von der Eingabe liest, dann folgt der Automat der Kante des Graphen, welche mit $\alpha$ beschriftet ist. Die Destination der Kante wird sein neuer Zustand sein. Mental kann man sich vorstellen, dass der Zeiger auf diesen neuen Zustand zeigt.
 	\item Falls sich ein endlicher Automat \textbf{nach dem vollständigen Lesen} eines Eingabewortes $w$ in einem doppelt umkreisten Zustand befindet, dann akzeptiert der Automat die Eingabe $w$, ansonsten akzeptiert der Automat die Eingabe $w$ nicht (verwirft die Eingabe). $A$ hat nur einen \textbf{akzeptierend Zustand}, nämlich $q_1$. Der Zustand $q_0$ ist \textbf{nicht akzeptierend}.
 \end{itemize}
 Um den Umgang mit endlichen Automaten zu üben, betrachten wir die Arbeit von $A$ auf dem konkreten Eingabewort $w = 00101$. $A$ befindet sich zu Beginn in seinem Anfangszustand $q_0$. Nun beginnt er damit das Eingabewort von links nach recht zu lesen (Buchstabe um Buchstabe). Halten Sie sich im Folgenden \cref{fig:EA1} vor Augen.
 \begin{enumerate}
-	\item Der erste Buchstabe (der Buchstabe ganz links) des Eingabeworts ist $0$. Wir müssen nun schauen, wohin die gerichtete Kante, ausgehend vom aktuellen Zustand $q_0$, beim Lesen von $0$ führt. Wie wir sehen, führt uns die Kante, die mit einer $0$ markiert ist, zurück in den Zustand $q_0$. Wir bleiben also im Zustand $q_0$.
+	\item Der erste Buchstabe (der Buchstabe ganz links) des Eingabeworts ist $0$. Wir müssen schauen, wohin die gerichtete Kante, ausgehend vom aktuellen Zustand $q_0$, beim Lesen von $0$ führt. Wie wir sehen, führt uns die Kante, die mit einer $0$ markiert ist, zurück in den Zustand $q_0$. Wir bleiben also im Zustand $q_0$.
 	\item Danach liest $A$ nochmals den Buchstaben $0$. Genau wie im ersten Schritt, werden wir wieder der Kanten mit der $0$, die vom Zustand $q_0$ ausgeht, folgen. Damit befindet sich $A$ nach dem Lesen des Präfixes $\mathbf{00}$ von $w = \mathbf{00}101$ noch immer im Zustand $q_0$. Es bleibt noch das Suffix $101$ von $w$ zu lesen.
 	\item Nun liest $A$ das Symbol $1$ und wir müssen von unserem aktuellen Zustand $q_0$ aus, der mit $1$ markierten Kante folgen. Dadurch gelangt $A$ in den Zustand $q_1$.
 	\item $A$ liest im Zustand $q_1$ das Symbol $0$. Die mit $0$ markierte Kante, die von $q_1$ ausgeht, führt zurück nach $q_1$.
@@ -287,7 +287,7 @@ Mit endlichen Automaten verbindet man oft die schematische Darstellung in \cref{
 \end{figure}
 
 \subsection{Formale Definition}\label{subsec:formaleDefinitionEA}
-Nach den Betrachtungen in den Unterabschnitten \cref{subsec:graphenDarstellung} und \cref{subsec:Programmdarstellung} wollen wir nun eine formale Definition von endlichen Automaten angeben. Diese Definition wird uns sehr natürlich erscheinen.
+Nach den Betrachtungen in \cref{subsec:graphenDarstellung} und \cref{subsec:Programmdarstellung} wollen wir eine formale Definition von endlichen Automaten angeben. Diese Definition wird uns sehr natürlich erscheinen.
 \begin{mydefinition}[endlicher Automat]\label{mydefinition:endlicherAutomat}
 Ein (deterministischer) \textit{\textbf{endlicher Automat}} $M$ ist ein $5$-Tupel $M = (Q,\Sigma, \delta, q_0, F)$, wobei die einzelnen Komponenten des $5$-Tupels wie folgt zu verstehen sind:
 \begin{renum}
@@ -340,9 +340,9 @@ $C$ ist \textbf{die Berechnung von $M$ auf einem Eingabewort $x\in\Sigma^*$}, fa
 \end{itemize}
 An dieser Stelle möchten wir betonen, dass ein endlicher Automat $M$ auf einem Wort $x\in\Sigma^*$ offensichtlich genau eine Berechnung hat.
 
-Wir möchten nun eine sehr interessante und wichtige Sprache definieren.
+Wir möchten eine sehr interessante und wichtige Sprache definieren.
 \begin{mydefinition}[akzeptiere Sprache eines endlichen Automaten]\label{mydefinition:akzeptiereSpracheEA}
-Die \textbf{von $M$ akzeptierte Sprache $L(M)$} ist definiert als
+Sei $M$ ein endlicher Automat. Die \textbf{von $M$ akzeptierte Sprache $L(M)$} ist definiert als
 \begin{equation*}
 	\begin{split}
 		L(M) =\{ w\in\Sigma^* \; ; \; & \text{die Berechnung von $M$ auf $w$ endet in einer }  \\
@@ -355,7 +355,7 @@ Die \textbf{von $M$ akzeptierte Sprache $L(M)$} ist definiert als
 $\mathcal{L}_{EA} = \setcm{L(M)}{\text{$M$ ist ein endlicher Automat}}$ ist die Klasse der Sprachen, welche von endlichen Automaten akzeptiert werden. $\mathcal{L}_{EA}$ wird als die \textbf{Klasse der regulären Sprachen} bezeichnet. Jede Sprache $L$ aus $\mathcal{L}_{EA}$ wird \textbf{regulär} (\textbf{reguläre Sprache}) genannt.
 \end{mydefinition}
 
-Betrachten wir nochmals den endlichen Automaten in \cref{fig:EA2}. Diesen Automaten wollen wir nun \textbf{formal} beschreiben. Dazu genügt es, die $5$ Komponenten des $5$-Tupels $(Q,\Sigma, \delta, q_0, F)$ gemäss \cref{mydefinition:endlicherAutomat}, anzugeben. Der zur Graphendarstellung in \cref{fig:EA2} äquivalente endliche Automat  ist $M = (Q,\Sigma, \delta, q_0, F)$, wobei:
+Betrachten wir nochmals den endlichen Automaten in \cref{fig:EA2}. Diesen Automaten wollen wir \textbf{formal} beschreiben. Dazu genügt es, die $5$ Komponenten des $5$-Tupels $(Q,\Sigma, \delta, q_0, F)$ gemäss \cref{mydefinition:endlicherAutomat}, anzugeben. Der zur Graphendarstellung in \cref{fig:EA2} äquivalente endliche Automat  ist $M = (Q,\Sigma, \delta, q_0, F)$, wobei:
 \begin{align*}
 	 & Q = \lrc{q,p,r}, \Sigma = \lrc{a,b,c}, q_0 = q, F = \lrc{q}\text{ und } \\
 	 & \delta(q,a) = p, \delta(q,b) = p, \delta(q,c) = r                       \\
@@ -454,7 +454,7 @@ Dies sehen wir ein, indem wir Punkt $(ii)$ der \cref{mydefinition:dach_operation
 	 & \deltah{r}{bcac} = \delta(\deltah{r}{bca},c) = \delta(\delta(\deltah{r}{bc},a),c) = \delta(\delta(\delta(\deltah{r}{bc},c),a),c) = \\
 	 & = \delta(\delta(\delta(\delta(\blue{\deltah{r}{\lambda}},b),c),a),c)
 \end{align*}
-Gemäss Punkt $(i)$ der \cref{mydefinition:dach_operation} ist $\blue{\deltah{r}{\lambda}} = r$  und somit verschwinden alle Dach-Operationen aus dem Ausdruck (wir haben den Basis-Fall der Rekusion erreicht). Die Übergangsfunktionen $\delta$ lassen sich nun schrittweise von innen nach aussen auflösen:
+Gemäss Punkt $(i)$ der \cref{mydefinition:dach_operation} ist $\blue{\deltah{r}{\lambda}} = r$  und somit verschwinden alle Dach-Operationen aus dem Ausdruck (wir haben den Basis-Fall der Rekusion erreicht). Die Übergangsfunktionen $\delta$ lassen sich schrittweise von innen nach aussen auflösen:
 \begin{align*}
 	 & \deltah{r}{bcac} = \delta(\deltah{r}{bca},c) = \delta(\delta(\deltah{r}{bc},a),c) = \delta(\delta(\delta(\deltah{r}{bc},c),a),c) = \\
 	 & = \delta(\delta(\delta(\delta(\deltah{r}{\lambda},b),c),a),c) = \quad\quad / \textcolor{Pink}{\to \deltah{r}{\lambda} = r}         \\
@@ -473,7 +473,7 @@ Um zu beweisen, dass eine gegebene Sprache $L$ regulär ist, genügt es also ein
 
 Nun stellt sich natürlich die Frage, ob jede Sprache regulär ist, oder existieren Sprachen, die nicht regulär sind? Wie könnte man beweisen, dass eine Sprache nicht regulär ist?
 
-Nur weil wir nicht in der Lage sind, einen endlichen Automaten, für eine Sprache zu finden, bedeutet dies nicht, dass die Sprache nicht regulär ist. Es könnte schliesslich sein, dass die Sprache zwar regulär ist, wir jedoch nicht die passende Idee für die Konstruktion eines entsprechenden endlichen Automaten gefunden haben. Unsere Unzulänglichkeit einen endlichen Automaten konstruieren zu können, ist kein Beweis dafür, dass die Sprache nicht regulär ist. Um korrekt zu beweisen, dass eine Sprache nicht regulär ist, müssen wir begründen, warum es keinen endlichen Automaten für diese Sprache geben kann.
+Nur weil wir nicht in der Lage sind, einen endlichen Automaten, für eine Sprache zu finden, bedeutet dies nicht, dass die Sprache nicht regulär ist. Es könnte natürlich sein, dass die Sprache zwar regulär ist, wir jedoch nicht die passende Idee für die Konstruktion eines entsprechenden endlichen Automaten gefunden haben. Unsere Unzulänglichkeit einen endlichen Automaten konstruieren zu können, ist kein Beweis dafür, dass die Sprache nicht regulär ist. Um korrekt zu beweisen, dass eine Sprache nicht regulär ist, müssen wir begründen, warum es keinen endlichen Automaten für diese Sprache geben kann.
 
 Im Unterschied zu konstruktiven Beweisen, bei denen man die Existenz
 eines Objekts mit gewissen Eigenschaften direkt durch eine Konstruktion eines solchen
@@ -508,7 +508,7 @@ Diese wichtige Eigenschaft wollen wir in einem Satz formulieren und formal bewei
 	\begin{align*}
 		xz \in L(A) \Longleftrightarrow yz \in L(A)
 	\end{align*}
-	\textcolor{Gray}{Entweder liegen beide Wörter $xz$ und $yz$ in der von $A$ akzeptierten Sprache $L(M)$, oder keines der beiden Wörter liegt in $L(A)$. Es kann nicht sein, dass eines der Beiden Wörter in der Sprache liegt und das andere nicht.}
+	\textcolor{Gray}{Entweder liegen beide Wörter $xz$ und $yz$ in der von $A$ akzeptierten Sprache $L(M)$, oder keines der beiden Wörter liegt in $L(A)$. Es kann nicht sein, dass eines der beiden Wörter in der Sprache liegt und das andere nicht.}
 
 	\begin{myproof}
 		Aus der Existenz der zwei Berechnungen
@@ -531,7 +531,7 @@ Diese wichtige Eigenschaft wollen wir in einem Satz formulieren und formal bewei
 	\end{myproof}
 \end{mytheorem}
 
-Wir werden nun zeigen, wie \cref{mytheorem:pfad_invarianz} benutze werden kann um, indirekt (durch Widerspruch) zu beweisen, dass eine Sprache nicht regulär ist. Dieses indirekte Vorgehen wollen wir auch hier anwenden. Betrachten wir die Sprache
+Wir zeigen jetzt, wie \cref{mytheorem:pfad_invarianz} benutze werden kann um, indirekt (durch Widerspruch) zu beweisen, dass eine Sprache nicht regulär ist. Dieses indirekte Vorgehen wollen wir auch hier anwenden. Betrachten wir die Sprache
 \begin{align*}
 	L_{count} := \setcm{w\in \lrc{0,1}^*}{w = 0^n 1^n\text{ für ein } n\in\mathbb{N}}.
 \end{align*}
@@ -556,8 +556,6 @@ Die Sprache $L_{count}$ ist nicht regulär $\lr{L_{count}\notin \mathcal{L}_{EA}
 	\end{align*}
 	Doch dies ist ein Widerspruch, denn für die Wahl $z := 1^j$ liegt das Wort $0^jz = 0^j1^j$ in der Sprache $L_{count}$ ($0^j1^j$ hat gleich viele Nullen und Einsen), doch das Wort $0^iz = 0^i1^j$ liegt nicht in $L_{count}$, da $i<j$ gilt und $0^i1^j$ somit mehr Einsen als Nullen enthält. Da wir einen Widerspruch erhalten haben, muss unsere Annahme, $L_{count}$ sei regulär verworfen werden und wir haben $L_{count}\notin \mathcal{L}_{EA}$ bewiesen.
 \end{myproof}
-
-
 
 \begin{myexercise}\label{myexercise:0405}
 	Beweisen Sie mithilfe des \cref{mytheorem:pfad_invarianz}, dass die Sprache
@@ -590,6 +588,16 @@ Die Sprache $L_{count}$ ist nicht regulär $\lr{L_{count}\notin \mathcal{L}_{EA}
 	\end{align}
 	regulär ist.
 \end{myexercise}
+
+\begin{mychallenge}\label{mychallenge:teilbardurch11}
+    Entwerfen Sie einen endlichen Automaten für die Sprache
+    \begin{align*}
+        L := \setcm{\text{Dec}(n)}{n\in\N, n>0 \text{ und } n \text{ ist durch 11 teilbar}}.
+    \end{align*}
+Dabei steht $\text{Dec}(n)$ für die Dezimaldarstellung von $n$ ohne führende Nullen.
+
+Tipp: Eine ganze Zahl $x$ mit Dezimaldarstellung $\text{Dec}(x) = x_1x_2\ldots x_m$ ist genau dann durch 11 teilbar, wenn die alternierende Quersumme $x_1-x_2+x_3-x_4+x_5-\ldots\pm x_m$ dieser Zahl durch 11 teilbar ist. Beispiel: Die Zahl $4752$ ist durch 11 teilbar, da ihre alternierende Quersumme $4 - 7 + 5 - 2 = 0$ durch 11 teilbar ist.
+\end{mychallenge}
 
 
 \clearpage
@@ -647,7 +655,6 @@ Die Sprache $L_{count}$ ist nicht regulär $\lr{L_{count}\notin \mathcal{L}_{EA}
 	\end{align*}
 \end{myanswer}
 
-
 \begin{myanswer}[myexercise:0402]
 	Intuitiv gesprochen, ist $M_{ab}$ die Menge aller Wörter aus $\lrc{a,b,c}^*$ welche zwar auf $b$ enden, aber nicht auf $bb$. Wir erhalten $M_{ab}$ durch das Abziehen der Menge $L_{abb}$ von der Menge aller Wörter $M_{axb}$, die mit $a$ beginnen und auf $b$ enden:
 	\begin{align*}
@@ -680,4 +687,3 @@ if input = a goto 2, if input = b goto 2, if input = c goto 2;
 		 & \delta(p_3,a) = p_1, \delta(p_3,b) = p_2
 	\end{align*}
 \end{myanswer}
-

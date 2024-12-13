@@ -20,7 +20,6 @@
 {}% <Theorem head spec (can be left empty, meaning ‘normal’)〉
 
 \theoremstyle{mytheoremstyle}
-
 \iftoggle{book}{%
 	\iftoggle{german}{%
 		\newtheorem{myexample}{Beispiel}[chapter]
@@ -98,33 +97,7 @@
 	attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
 	#1}
 
-% mybox
-\newenvironment{mybox}
-{%
-	\begin{tcolorboxTemplate}[
-			colback=Khaki!10, % Background color
-			coltitle=white,
-			colframe=Khaki!50!black,
-			colbacktitle=Khaki!50!black,
-			title=\faExclamationTriangle{} Box]
-		}%%
-		{%
-	\end{tcolorboxTemplate}
-}%
 
-% mycaution
-\newenvironment{mycaution}
-{%
-	\begin{tcolorboxTemplate}[
-			colback=Red!10, % Background color
-			coltitle=white,
-			colframe=Red!50!black,
-			colbacktitle=Red!50!black,
-			title=\faExclamationTriangle{} Achtung]
-		}%%
-		{%
-	\end{tcolorboxTemplate}
-}%
 
 % counter shared between 'myexercise', 'mychallenge' and 'mysubmission'
 \iftoggle{book} {%
@@ -231,6 +204,93 @@
 	\end{Answer}
 }%
 
+% names for clever references
+\nottoggle{beamer}{%
+	\iftoggle{german}{%
+		\crefname{ExerciseCounter}{Aufgabe}{Aufgaben}
+		\Crefname{ExerciseCounter}{Aufgabe}{Aufgaben}
+		\crefname{SubmissionCounter}{Abgabe}{Abgaben}
+		\Crefname{SubmissionCounter}{Abgabe}{Abgaben}
+		\crefname{ChallengeCounter}{Challenge}{Challenges}
+		\Crefname{ChallengeCounter}{Challenge}{Challenges}
+		\crefname{myexample}{Beispiel}{Beispiele}
+		\crefname{myremark}{Bemerkung}{Bemerkungen}
+		\crefname{mydefinition}{Definition}{Definitionen}
+		\crefname{myaxiom}{Axiom}{Axiome}
+		\crefname{mytheorem}{Theorem}{Theoreme}
+		\crefname{myproof}{Beweis}{Beweise}
+		\crefname{mysummary}{Zusammenfassung}{Zusammenfassungen}
+		\crefname{myprocedure}{Vorgehen}{Vorgehen}
+		\crefname{section}{Abschnitt}{Abschnitte}
+		\Crefname{section}{Abschnitt}{Abschnitte}
+		\crefname{subsection}{Unterabschnitt}{Unterabschnitte}
+		\Crefname{subsection}{Unterabschnitt}{Unterabschnitte}
+	} {%
+		\crefname{ExerciseCounter}{exercise}{exercise}
+		\Crefname{ExerciseCounter}{Exercise}{Exercises}
+		\crefname{SubmissionCounter}{submission}{submissions}
+		\Crefname{SubmissionCounter}{submission}{Submissions}
+		\crefname{ChallengeCounter}{challenge}{challenges}
+		\Crefname{ChallengeCounter}{Challenge}{Challenges}
+		\crefname{myexample}{example}{examples}
+		\crefname{myremark}{remark}{remarks}
+		\crefname{mydefinition}{definition}{definitions}
+		\crefname{myaxiom}{axiom}{axioms}
+		\crefname{mytheorem}{theorem}{theorems}
+		\crefname{myproof}{proof}{proofs}
+		\crefname{mysummary}{summary}{summaries}
+		\crefname{myprocedure}{procedure}{procedures}
+		\crefname{section}{section}{sections}
+		\Crefname{section}{Section}{Sections}
+		\crefname{subsection}{subsection}{subsections}
+		\Crefname{subsection}{Subsection}{Subsections}
+	}%
+}{}
+
+% to clean up later:
+% mybox
+\newenvironment{mybox}
+{%
+	\begin{tcolorboxTemplate}[
+			colback=Khaki!10, % Background color
+			coltitle=white,
+			colframe=Khaki!50!black,
+			colbacktitle=Khaki!50!black,
+			title=\faExclamationTriangle{} Box]
+		}%%
+		{%
+	\end{tcolorboxTemplate}
+}%
+
+% mycaution
+\newenvironment{mycaution}
+{%
+	\begin{tcolorboxTemplate}[
+			colback=Red!10, % Background color
+			coltitle=white,
+			colframe=Red!50!black,
+			colbacktitle=Red!50!black,
+			title=\faExclamationTriangle{} Achtung]
+		}%%
+		{%
+	\end{tcolorboxTemplate}
+}%
+
+\newtcolorbox{notizTemplate}[1][]{
+	enhanced jigsaw,
+	lines before break=9,
+	breakable,
+	parbox=false,
+	attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+	title=\emoji{pen} Notizen,
+	colback=white,
+	colframe=ForestGreen,
+	colbacktitle=ForestGreen,
+	#1}
+
+\newcommand{\notiz}[1]{\begin{notizTemplate}[height=#1cm]
+	\end{notizTemplate}}
+
 \newtcolorbox{myExBox}[1][]{
 	enhanced jigsaw,
 	breakable,
@@ -252,54 +312,3 @@
 	colframe=\teacherColor,
 	colbacktitle=\teacherColor,
 	#1}
-
-% names for clever references
-\nottoggle{beamer}{%
-	\iftoggle{german}{%
-		\crefname{ExerciseCounter}{Aufgabe}{Aufgaben}
-		\Crefname{ExerciseCounter}{Aufgabe}{Aufgaben}
-		\crefname{SubmissionCounter}{Abgabe}{Abgaben}
-		\Crefname{SubmissionCounter}{Abgabe}{Abgaben}
-		\crefname{ChallengeCounter}{Challenge}{Challenges}
-		\Crefname{ChallengeCounter}{Challenge}{Challenges}
-		\crefname{myexample}{Beispiel}{Beispiele}
-		\crefname{myremark}{Bemerkung}{Bemerkungen}
-		\crefname{mydefinition}{Definition}{Definitionen}
-		\crefname{myaxiom}{Axiom}{Axiome}
-		\crefname{mytheorem}{Theorem}{Theoreme}
-		\crefname{myproof}{Beweis}{Beweise}
-		\crefname{mysummary}{Zusammenfassung}{Zusammenfassungen}
-		\crefname{myprocedure}{Vorgehen}{Vorgehen}
-	} {%
-		\crefname{ExerciseCounter}{exercise}{exercise}
-		\Crefname{ExerciseCounter}{Exercise}{Exercises}
-		\crefname{SubmissionCounter}{submission}{submissions}
-		\Crefname{SubmissionCounter}{submission}{Submissions}
-		\crefname{ChallengeCounter}{challenge}{challenges}
-		\Crefname{ChallengeCounter}{Challenge}{Challenges}
-		\crefname{myexample}{example}{examples}
-		\crefname{myremark}{remark}{remarks}
-		\crefname{mydefinition}{definition}{definitions}
-		\crefname{myaxiom}{axiom}{axioms}
-		\crefname{mytheorem}{theorem}{theorems}
-		\crefname{myproof}{proof}{proofs}
-		\crefname{mysummary}{summary}{summaries}
-		\crefname{myprocedure}{procedure}{procedures}
-	}%
-}{}
-
-
-\newtcolorbox{notizTemplate}[1][]{
-	enhanced jigsaw,
-	lines before break=9,
-	breakable,
-	parbox=false,
-	attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
-	title=\emoji{pen} Notizen,
-	colback=white,
-	colframe=ForestGreen,
-	colbacktitle=ForestGreen,
-	#1}
-
-\newcommand{\notiz}[1]{\begin{notizTemplate}[height=#1cm]
-	\end{notizTemplate}}
