@@ -358,9 +358,9 @@ $\mathcal{L}_{EA} = \setcm{L(M)}{\text{$M$ ist ein endlicher Automat}}$ ist die 
 Betrachten wir nochmals den endlichen Automaten in \cref{fig:EA2}. Diesen Automaten wollen wir \textbf{formal} beschreiben. Dazu genügt es, die $5$ Komponenten des $5$-Tupels $(Q,\Sigma, \delta, q_0, F)$ gemäss \cref{mydefinition:endlicherAutomat}, anzugeben. Der zur Graphendarstellung in \cref{fig:EA2} äquivalente endliche Automat  ist $M = (Q,\Sigma, \delta, q_0, F)$, wobei:
 \begin{align*}
 	 & Q = \lrc{q,p,r}, \Sigma = \lrc{a,b,c}, q_0 = q, F = \lrc{q}\text{ und } \\
-	 & \delta(q,a) = p, \delta(q,b) = p, \delta(q,c) = r                       \\
-	 & \delta(p,a) = p, \delta(p,b) = p, \delta(p,c) = p                       \\
-	 & \delta(r,a) = p, \delta(r,b) = q, \delta(r,c) = p
+	 & \delta(q,a) = p, \quad \delta(q,b) = p, \quad \delta(q,c) = r                       \\
+	 & \delta(p,a) = p, \quad \delta(p,b) = p, \quad \delta(p,c) = p                       \\
+	 & \delta(r,a) = p, \quad \delta(r,b) = q, \quad \delta(r,c) = p
 \end{align*}
 Man beachte, dass sich die Übergangsfunktion $\delta$ vollständig definieren lässt, indem man den Wert der Funktion für alle möglichen Argumente angibt.
 
@@ -433,9 +433,9 @@ Wir führen hier nochmals den endlichen Automaten aus \cref{fig:EA2} auf:
 Wie wir bereits festgestellt haben, ist der zu dieser Graphendarstellung äquivalente endliche Automat $A = (Q,\Sigma, \delta, q_0, F)$, mit:
 \begin{align*}
 	 & Q = \lrc{q,p,r}, \Sigma = \lrc{a,b,c}, q_0 = q, F = \lrc{q}\text{ und } \\
-	 & \delta(q,a) = p, \delta(q,b) = p, \delta(q,c) = r                       \\
-	 & \delta(p,a) = p, \delta(p,b) = p, \delta(p,c) = p                       \\
-	 & \delta(r,a) = p, \delta(r,b) = q, \delta(r,c) = p
+	 & \delta(q,a) = p, \quad \delta(q,b) = p, \quad \delta(q,c) = r \\
+	 & \delta(p,a) = p, \quad \delta(p,b) = p, \quad \delta(p,c) = p \\
+	 & \delta(r,a) = p, \quad \delta(r,b) = q, \quad \delta(r,c) = p
 \end{align*}
 Für diesen endlichen Automaten gilt zum Beispiel die Aussage
 \begin{align*}
@@ -491,7 +491,7 @@ Beweise der Nichtexistenz gehören zu den schwierigsten Aufgaben der Informatik 
 Da endliche Automaten sehr stark eingeschränkte Programme sind (siehe \cref{subsec:Programmdarstellung}), ist der Beweis der Nichtexistenz eines endlichen Automaten für eine gegebene Sprache eine relativ einfache Aufgabe. Wir nutzen diese Tatsache, um eine einfache
 Einführung in die Methodik der Erstellung von Beweisen der Nichtexistenz zu geben.
 
-Das charakteristische Merkmal endlicher Automaten ist, dass sie zu jeder Zeit nur abgespeichert haben, in welchem Zustand sie sich aktuell befinden und welches Eingabesymbol sie als nächstes lesen werden. Ansonsten verfügen sie über keinen Speicher. Dies bedeutet insbesondere, dass ein endlicher Automat nicht abgespeichert hat (sich nicht erinnern kann), auf welchem Wege er in seinen aktuellen Zustand gelangt ist. Betrachten wir nochmal den endlichen Automaten in \cref{fig:hat}. Die zwei verschiedenen Wörter $x:= cbcbcba$ und $y := b$ führen beide in den Zustand $p$. In Zukunft wird $A$ nicht mehr zwischen $x$ und $y$ unterscheiden können. Auf welchem Wege der endliche Automat in einen Zustand gekommen ist, spielt also keine Rolle. Der endliche Automat hat kein \enquote{Gedächtnis}. Wenn $A$ also nach dem Lesen zweier Wörter $x$ und $y$ jeweils in demselben Zustand $q_0$ endet (also $\deltah{q_0}{x} = \deltah{q_0}{y}$), dann gilt für alle Wörter $z\in\Sigma^*$ (alle zukünftigen Eingaben), dass
+Das charakteristische Merkmal endlicher Automaten ist, dass sie zu jeder Zeit nur abgespeichert haben, in welchem Zustand sie sich aktuell befinden und welches Eingabesymbol sie als Nächstes lesen werden. Ansonsten verfügen sie über keinen Speicher. Dies bedeutet insbesondere, dass ein endlicher Automat nicht abgespeichert hat (sich nicht erinnern kann), auf welchem Wege er in seinen aktuellen Zustand gelangt ist. Betrachten wir nochmal den endlichen Automaten in \cref{fig:hat}. Die zwei verschiedenen Wörter $x:= cbcbcba$ und $y := b$ führen beide in den Zustand $p$. In Zukunft wird $A$ nicht mehr zwischen $x$ und $y$ unterscheiden können. Auf welchem Wege der endliche Automat in einen Zustand gekommen ist, spielt also keine Rolle. Der endliche Automat hat kein \enquote{Gedächtnis}. Wenn $A$ also nach dem Lesen zweier Wörter $x$ und $y$ jeweils in demselben Zustand $q_0$ endet (also $\deltah{q_0}{x} = \deltah{q_0}{y}$), dann gilt für alle Wörter $z\in\Sigma^*$ (alle zukünftigen Eingaben), dass
 \begin{align*}
 	\deltah{q_0}{xz} = \deltah{q_0}{yz}.
 \end{align*}
@@ -537,16 +537,17 @@ Wir zeigen jetzt, wie \cref{mytheorem:pfad_invarianz} benutzt werden kann um, in
 \end{align*}
 Die Sprache $L$ ist die Menge aller binären Wörter, welche gleich viele Nullen und Einsen enthalten und in denen alle Nullen vor dem ersten Auftreten einer Eins stehen. Das kürzeste Wort in $L_{count}$ ist das leere Wort $\lambda$. Die weiteren Wörter in $L_{count}$ sind $01, 0011, 000111, 00001111, \ldots $ (aufsteigende Längen). Wir werden beweisen, dass $L_{count}$ keine reguläre Sprache ist, also $L_{count}\notin \mathcal{L}_{EA}$ gilt. Intuitiv scheint es so, dass jeder endliche Automat, welcher $L_{count}$ akzeptieren würde, die Anzahl der Nullen abspeichern müsste, um diese Anzahl später mit der Anzahl Einsen abgleichen zu können. Ein endlicher Automat hat jedoch keinen Speicher, um die Anzahl der Nullen speicher zu können. Wir werden formal beweisen, dass diese Intuition genau richtig ist.
 
-\underline{Behauptung:}
-
+\begin{mytheorem}\label{mytheorem:Lcount}
 Die Sprache $L_{count}$ ist nicht regulär $\lr{L_{count}\notin \mathcal{L}_{EA}}$.
+\end{mytheorem}
+
 
 \begin{myproof}
 	Wir beweisen die Behauptung durch Widerspruch. Wir nehmen also an, $L_{count}$ sei regulär. Dann existiert ein endlicher Automat $A = \lr{Q,\lrc{0,1}, \delta, q_0, F}$ mit $L(A) = L_{count}$. Die Anzahl der Zustände $Q$ von $A$ ist $\abs{Q}$. Wir betrachten die $\abs{Q}+1$ Wörter (ein Wort mehr als $A$ Zustände hat):
 	\begin{align}\label{eq:list}
 		0^1, 0^2, 0^3, \ldots , 0^{\abs{Q}}, 0^{\abs{Q}+1}.
 	\end{align}
-	Da in der Auflistung \cref{eq:list} mehr Wörter stehen, als $A$ Zustände hat, müssen sich in der Liste mindesten zwei unterschiedliche Wörter finden lassen, welche den Automaten in denselben Zustand führen. Damit existieren also zwei Zahlen $i,j\in\lrc{1,2,\ldots ,\abs{Q}, \abs{Q}+1}$ mit $i<j$, sodass
+    Da in der Auflistung \ref{eq:list} mehr Wörter stehen, als $A$ Zustände hat, müssen sich in der Liste (gemäss des Taubenschlagprinzips\footnote{\url{https://de.wikipedia.org/wiki/Schubfachprinzip}}) mindesten zwei unterschiedliche Wörter finden lassen, welche den Automaten in denselben Zustand führen. Damit existieren also zwei Zahlen $i,j\in\lrc{1,2,\ldots ,\abs{Q}, \abs{Q}+1}$ mit $i<j$, sodass
 	\begin{align*}
 		\deltah{q_0}{0^i} = \deltah{q_0}{0^j}.
 	\end{align*}
@@ -554,7 +555,7 @@ Die Sprache $L_{count}$ ist nicht regulär $\lr{L_{count}\notin \mathcal{L}_{EA}
 	\begin{align*}
 		0^iz\in L_{count} \Longleftrightarrow 0^jz\in L_{count}.
 	\end{align*}
-	Doch dies ist ein Widerspruch, denn für die Wahl $z := 1^j$ liegt das Wort $0^jz = 0^j1^j$ in der Sprache $L_{count}$ ($0^j1^j$ hat gleich viele Nullen und Einsen), doch das Wort $0^iz = 0^i1^j$ liegt nicht in $L_{count}$, da $i<j$ gilt und $0^i1^j$ somit mehr Einsen als Nullen enthält. Da wir einen Widerspruch erhalten haben, muss unsere Annahme, $L_{count}$ sei regulär verworfen werden und wir haben $L_{count}\notin \mathcal{L}_{EA}$ bewiesen.
+	Doch dies ist ein Widerspruch, denn für die Wahl $z := 1^j$ liegt das Wort $0^jz = 0^j1^j$ in der Sprache $L_{count}$ ($0^j1^j$ hat gleich viele Nullen wie Einsen), doch das Wort $0^iz = 0^i1^j$ liegt nicht in $L_{count}$, da $i<j$ gilt und $0^i1^j$ somit mehr Einsen als Nullen enthält. Da wir einen Widerspruch erhalten haben, muss unsere Annahme, $L_{count}$ sei regulär verworfen werden und wir haben $L_{count}\notin \mathcal{L}_{EA}$ bewiesen.
 \end{myproof}
 
 \begin{myexercise}\label{myexercise:0405}
@@ -598,7 +599,6 @@ Dabei steht $\text{Dec}(n)$ für die Dezimaldarstellung von $n$ ohne führende N
 
 Tipp: Eine ganze Zahl $x$ mit Dezimaldarstellung $\text{Dec}(x) = x_1x_2\ldots x_m$ ist genau dann durch 11 teilbar, wenn die alternierende Quersumme $+x_1-x_2+x_3-x_4+x_5-\ldots\pm x_m$ dieser Zahl durch 11 teilbar ist. Beispiel: Die Zahl $4752$ ist durch 11 teilbar, da ihre alternierende Quersumme $+ 4 - 7 + 5 - 2 = 0$ durch 11 teilbar ist.
 \end{mychallenge}
-
 
 \clearpage
 \section{Lösungen der Aufgaben}
@@ -656,7 +656,7 @@ Tipp: Eine ganze Zahl $x$ mit Dezimaldarstellung $\text{Dec}(x) = x_1x_2\ldots x
 \end{myanswer}
 
 \begin{myanswer}[myexercise:0402]
-	Intuitiv gesprochen, ist $M_{ab}$ die Menge aller Wörter aus $\lrc{a,b,c}^*$ welche zwar auf $b$ enden, aber nicht auf $bb$. Wir erhalten $M_{ab}$ durch das Abziehen der Menge $L_{abb}$ von der Menge aller Wörter $M_{axb}$, die mit $a$ beginnen und auf $b$ enden:
+	Intuitiv gesprochen, ist $M_{ab}$ die Menge aller Wörter aus $\lrc{a,b,c}^*$ welche zwar auf $b$ enden, aber nicht auf $bb$. Wir erhalten $M_{ab}$ durch das (mengentheoretische) Subtrahieren der Menge $L_{abb}$ von der Menge aller Wörter $M_{axb}$, die mit $a$ beginnen und auf $b$ enden:
 	\begin{align*}
 		 & M_{axb} := \setcm{w\in\lrc{a,b,c}^*}{w = axb,\text{ für ein } x\in\lrc{a,b,c}^*} \\
 		 & M_{ab} = M_{axb} \setminus L_{abb}
@@ -671,9 +671,9 @@ Tipp: Eine ganze Zahl $x$ mit Dezimaldarstellung $\text{Dec}(x) = x_1x_2\ldots x
 
 \begin{myanswer}[myexercise:0403]
 	\begin{lstlisting}[language=C++, firstnumber=0]
-if input = a goto 2, if input = b goto 2, if input = c goto 1;
-if input = a goto 2, if input = b goto 0, if input = c goto 2;
-if input = a goto 2, if input = b goto 2, if input = c goto 2;
+        if input = a goto 2, if input = b goto 2, if input = c goto 1;
+        if input = a goto 2, if input = b goto 0, if input = c goto 2;
+        if input = a goto 2, if input = b goto 2, if input = c goto 2;
 \end{lstlisting}
 \end{myanswer}
 
@@ -681,9 +681,101 @@ if input = a goto 2, if input = b goto 2, if input = c goto 2;
 	Der zur Graphendarstellung in \cref{fig:L2} äquivalente endliche Automat  ist $M = (Q,\Sigma, \delta, q_0, F)$, wobei:
 	\begin{align*}
 		 & Q = \lrc{p_0, p_1, p_2, p_3}, \Sigma = \lrc{a,b}, q_0 = p_0, F = \lrc{p_0, p_3}\text{ und } \\
-		 & \delta(p_0,a) = p_2, \delta(p_0,b) = p_1                                                    \\
-		 & \delta(p_1,a) = p_3, \delta(p_1,b) = p_0                                                    \\
-		 & \delta(p_2,a) = p_0, \delta(p_2,b) = p_3                                                    \\
-		 & \delta(p_3,a) = p_1, \delta(p_3,b) = p_2
+		 & \delta(p_0,a) = p_2, \quad\delta(p_0,b) = p_1                                                    \\
+		 & \delta(p_1,a) = p_3, \quad\delta(p_1,b) = p_0                                                    \\
+		 & \delta(p_2,a) = p_0, \quad\delta(p_2,b) = p_3                                                    \\
+		 & \delta(p_3,a) = p_1, \quad\delta(p_3,b) = p_2
 	\end{align*}
+\end{myanswer}
+
+
+\begin{myanswer}[myexercise:0405]
+    Wir beweisen die Behauptung durch Widerspruch. Wir nehmen also an, $L = \setcm{a^nb^mc^n}{n,m\in\N}$ sei regulär. Dann existiert ein endlicher Automat $A = \lr{Q,\lrc{a, b, c}, \delta, q_0, F}$ mit $L(A) = L$. Die Anzahl der Zustände $Q$ von $A$ ist $\abs{Q}$. Wir betrachten die $\abs{Q}+1$ Wörter (ein Wort mehr als $A$ Zustände hat):
+	\begin{align}\label{eq:list1}
+		a^1, a^2, a^3, \ldots , a^{\abs{Q}}, a^{\abs{Q}+1}.
+	\end{align}
+	Da in der Auflistung \ref{eq:list1} mehr Wörter stehen, als $A$ Zustände hat, müssen sich in der Liste (gemäss des Taubenschlagprinzips) mindesten zwei unterschiedliche Wörter finden lassen, welche den Automaten in denselben Zustand führen. Damit existieren also zwei Zahlen $i,j\in\lrc{1,2,\ldots ,\abs{Q}, \abs{Q}+1}$ mit $i<j$, sodass
+	\begin{align*}
+		\deltah{q_0}{a^i} = \deltah{q_0}{a^j}.
+	\end{align*}
+	Gemäss \cref{mytheorem:pfad_invarianz} muss für jedes Wort $z\in\lrc{a, b, c}^*$ gelten, dass
+	\begin{align*}
+		a^iz\in L \Longleftrightarrow a^jz\in L.
+	\end{align*}
+	Doch dies ist ein Widerspruch, denn für die Wahl $z := c^j$ liegt das Wort $a^jz = a^jc^j$ in der Sprache $L$ ($a^jc^j$ hat gleich viele $a$'s wie $c$'s), doch das Wort $a^iz = a^ic^j$ liegt nicht in $L$, da $i<j$ gilt und $a^ic^j$ somit mehr $c$'s als $a$'s enthält. Da wir einen Widerspruch erhalten haben, muss unsere Annahme, $L$ sei regulär verworfen werden und wir haben $L\notin \mathcal{L}_{EA}$ bewiesen.
+\end{myanswer}
+
+\begin{myanswer}[myexercise:0406]
+    Wir beweisen die Behauptung durch Widerspruch. Wir nehmen also an, 
+    \[L = \setcm{a^n b^m c^h}{n,m,h\in\mathbb{N} \text{ und } m > n + 2h}\]
+    sei regulär. Dann existiert ein endlicher Automat $A = \lr{Q,\lrc{a, b, c}, \delta, q_0, F}$ mit $L(A) = L$. Die Anzahl der Zustände $Q$ von $A$ ist $\abs{Q}$. Wir betrachten die $\abs{Q}+1$ Wörter (ein Wort mehr als $A$ Zustände hat):
+	\begin{align}\label{eq:list2}
+		a^1, a^2, a^3, \ldots , a^{\abs{Q}}, a^{\abs{Q}+1}.
+	\end{align}
+	Da in der Auflistung \ref{eq:list2} mehr Wörter stehen, als $A$ Zustände hat, müssen sich in der Liste (gemäss des Taubenschlagprinzips) mindesten zwei unterschiedliche Wörter finden lassen, welche den Automaten in denselben Zustand führen. Damit existieren also zwei Zahlen $i,j\in\lrc{1,2,\ldots ,\abs{Q}, \abs{Q}+1}$ mit $i<j$, sodass
+	\begin{align*}
+		\deltah{q_0}{a^i} = \deltah{q_0}{a^j}.
+	\end{align*}
+	Gemäss \cref{mytheorem:pfad_invarianz} muss für jedes Wort $z\in\lrc{a, b, c}^*$ gelten, dass
+	\begin{align*}
+		a^iz\in L \Longleftrightarrow a^jz\in L.
+	\end{align*}
+	Doch dies ist ein Widerspruch, denn für die Wahl $z := b^j$ liegt das Wort $a^iz = a^ib^j$ in der Sprache $L$ ($j>i$), doch das Wort $a^jz = a^jb^j$ liegt nicht in $L$. Da wir einen Widerspruch erhalten haben, muss unsere Annahme, $L$ sei regulär verworfen werden und wir haben $L\notin \mathcal{L}_{EA}$ bewiesen.
+\end{myanswer}
+
+\begin{myanswer}[myexercise:0407]
+    Wir beweisen die Behauptung durch Widerspruch. Wir nehmen also an, $L = \setcm{w\#w}{w\in\lrc{a,b}^*}$ sei regulär. Dann existiert ein endlicher Automat $A = \lr{Q,\lrc{a, b, \#}, \delta, q_0, F}$ mit $L(A) = L$. Die Anzahl der Zustände $Q$ von $A$ ist $\abs{Q}$. Wir betrachten die $\abs{Q}+1$ Wörter (ein Wort mehr als $A$ Zustände hat):
+	\begin{align}\label{eq:list3}
+		a^1, a^2, a^3, \ldots , a^{\abs{Q}}, a^{\abs{Q}+1}.
+	\end{align}
+	Da in der Auflistung \ref{eq:list3} mehr Wörter stehen, als $A$ Zustände hat, müssen sich in der Liste (gemäss des Taubenschlagprinzips) mindesten zwei unterschiedliche Wörter finden lassen, welche den Automaten in denselben Zustand führen. Damit existieren also zwei Zahlen $i,j\in\lrc{1,2,\ldots ,\abs{Q}, \abs{Q}+1}$ mit $i<j$, sodass
+	\begin{align*}
+		\deltah{q_0}{a^i} = \deltah{q_0}{a^j}.
+	\end{align*}
+	Gemäss \cref{mytheorem:pfad_invarianz} muss für jedes Wort $z\in\lrc{a, b, \#}^*$ gelten, dass
+	\begin{align*}
+		a^iz\in L \Longleftrightarrow a^jz\in L.
+	\end{align*}
+	Doch dies ist ein Widerspruch, denn für die Wahl $z := \#a^i$ liegt das Wort $a^iz = a^i\#a^i$ in der Sprache $L$ ($j>i$), doch das Wort $a^jz = a^j\#a^i$ liegt nicht in $L$. Da wir einen Widerspruch erhalten haben, muss unsere Annahme, $L$ sei regulär verworfen werden und wir haben $L\notin \mathcal{L}_{EA}$ bewiesen.
+\end{myanswer}
+
+\begin{myanswer}[myexercise:0408]
+Wir zeigen, dass die gegebene Sprache regulär ist, indem wir einen endlichen Automaten für diese Sprache angeben. Der endliche Automat ist gegeben durch:
+ 	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+				semithick]
+			\tikzstyle{every state}=[fill=blue!10,draw=black,text=black]
+
+			\node[initial,state, accepting] (A) {$q_0$};
+			\node[state, accepting] (B) [right of=A] {$q_1$};
+			\node[state] (C) [right of=B] {$q_2$};
+			\path (A) edge [loop above] node {$0$} (A)
+			(A) edge node {$1$} (B)
+
+			(B) edge [loop above] node {$1$} (B)
+			(B) edge node {$0$} (C)
+
+			(C) edge [loop above] node {$0, 1$} (C);
+		\end{tikzpicture}
+		\caption{Endlicher Automat für die Sprache $L := \setcm{0^i1^j}{i,j\in\N}$.}
+	\end{figure}
+\end{myanswer}
+
+\begin{myanswer}[mychallenge:teilbardurch11]
+Wir geben einen endlichen Automaten $M = (Q, \Sigma, \delta, q0, F)$ mit $L(M) = L$ an.
+\begin{itemize}
+    \item $Q = \lr{q_0', q_t, q_0, q_1, \ldots, q_{10}, p_0, p_1, \ldots, p_{10}}$ (dies sind 24 Zustände)
+    \item $\Sigma = \Sigma_{10} = \lrc{0, 1, \ldots, 9}$
+    \item Der Anfangszustand $q0$ ist gegeben durch $q_0'$.
+    \item $F = \lrc{q_0, p_0}$
+    \item Die Übergangsfunktion $\delta$ ist vollständig beschrieben durch:
+        \begin{align*}
+            \delta(q_0', 0) &= q_t, \\
+            \delta(q_t, j) &= q_t, \quad j\in\lrc{0, 1, \ldots, 9}, \\
+            \delta(q_0', j) &= q_j, \quad j\in\lrc{1, 2, \ldots, 9}, \\
+            \delta(q_i, j) &= p_{(i-j)\text{ mod } 11},\quad i,j\in\lrc{0, 1, \ldots, 9}, \\
+            \delta(p_i, j) &= q_{(i+j)\text{ mod } 11},\quad i,j\in\lrc{0, 1, \ldots, 9}.
+        \end{align*}
+\end{itemize}
 \end{myanswer}
