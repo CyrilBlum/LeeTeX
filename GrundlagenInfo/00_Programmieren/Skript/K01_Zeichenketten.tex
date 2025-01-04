@@ -1,3 +1,5 @@
+\chapter{Python-Übungen zu Kryptologie}\label{ch:Kryptologie}
+
 \section{Verschlüsselung von Texten in Python}
 Während des Zweiten Weltkriegs arbeitet der brillante Mathematiker Alan Turing in Bletchley Park und war mit der entscheidenden Aufgabe betraut, den Enigma-Code zu knacken, den die Deutschen zur Verschlüsselung ihrer Nachrichten verwendeten. Um diesen komplexen Code zu entschlüsseln, musste Turing sein tiefes Verständnis von Sprache und Mustern nutzen. Folgen Sie in Turings Fussstapfen und entziffern Sie die Geheimnachrichten!
 
@@ -76,16 +78,48 @@ s2 = s1.replace("a", "e") # "hello"
 \caption{Übersicht von Zeichenketten-Befehlen}
 \label{tab:string-op}
 \end{table}
+\begin{myexercise}
+Schreiben Sie ein Programm, um jeden Buchstaben ``e / E'' des folgenden Texts durch den Buchstaben durch ``a / A'' zu ersetzen:
+
+\begin{lstlisting}
+my_text = "Eines Tages entschied der Elefant, einen edlen Teppich zu weben."
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{lstlisting}
+my_text = "Eines Tages entschied der Elefant, einen edlen Teppich zu weben."
+my_text = my_text.replace("e", "a")
+my_text = my_text.replace("E", "A")
+print(my_text)
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+Schreiben Sie ein Programm, um zu zählen, wie häufig der Buchstabe ``e / E'' im gesamten folgenden Text vorkommt:
+
+\begin{lstlisting}
+my_text = "Eines Tages entschied der Elefant, einen edlen Teppich zu weben."
+\end{lstlisting}
+\begin{myanswer}
+\begin{lstlisting}
+my_text = "Eines Tages entschied der Elefant, einen edlen Teppich zu weben."
+n_e = my_text.count("e")
+n_e += my_text.count("E")
+print(n_e) # 15
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
 
 
 \begin{mychallenge}
-	Was könnte der Nutzen davon sein, dass es zwei Möglichkeiten gibt und nicht nur eine, Zeichenketten zu schreiben (\lstinline|'...'| oder \lstinline|"..."|)?
-	\begin{myanswer}
-		Eine Möglichkeit, die uns durch die unterschiedlichen Schreibweisen geboten wird, ist, Anführungszeichen auszugeben. Beispielsweise könnten Sie so einen Text, der Anführungszeichen beinhaltet, auf der Konsole drucken:
-		\begin{lstlisting}
+Was könnte der Nutzen davon sein, dass es zwei Möglichkeiten gibt und nicht nur eine, Zeichenketten zu schreiben (\lstinline|'...'| oder \lstinline|"..."|)?
+\begin{myanswer}
+Eine Möglichkeit, die uns durch die unterschiedlichen Schreibweisen geboten wird, ist, Anführungszeichen auszugeben. Beispielsweise könnten Sie so einen Text, der Anführungszeichen beinhaltet, auf der Konsole drucken:
+\begin{lstlisting}
 print('Meine Freunde nennen mich "Mr. X"')
 \end{lstlisting}
-	\end{myanswer}
+\end{myanswer}
 \end{mychallenge}
 
 Mit der \textbf{Länge} von Zeichenketten ist die Anzahl der Zeichen zwischen den Anführungszeichen gemeint: Die Zeichenkette \lstinline|"Hello World"| hat beispielsweise eine Länge von 11 Zeichen. Die Länge einer Zeichenkette kann mit dem Ausdruck \lstinline|len(Klartext)| bestimmt werden.
@@ -102,12 +136,21 @@ print(len(n)) # 16
 Die Lösung für \cref{ex:zweiertausch} könnte in Python wie folgt implementiert werden:
 \lstinputlisting{GrundlagenInfo/03_Kryptologie/Python package/encryption/zweiertausch.py}
 
- \begin{mychallenge}
+ \begin{myexercise}
  Schreiben Sie eine Python-Funktion \lstinline|def dreiertausch(klartext)|, welche den \enquote{Dreiertausch} aus der Einführungsaufgabe 2 implementiert.
  \begin{myanswer}
 \lstinputlisting{GrundlagenInfo/03_Kryptologie/Python package/encryption/dreiertausch.py}
  \end{myanswer}
- \end{mychallenge}
+ \end{myexercise}
+ 
+  \begin{mychallenge}
+  Schreiben Sie eine Python-Funktion \lstinline|def umkehren(klartext)|, welche alle Zeichen eines Klartexts in umgekehrter Reihenfolge ausgibt.
+  \begin{myanswer}
+  ...
+% \lstinputlisting{GrundlagenInfo/03_Kryptologie/Python package/encryption/dreiertausch.py}
+  \end{myanswer}
+  \end{mychallenge}
+  
  \newpage
  
  \subsection{Trennen und Verbinden von Code-Blöcken}
@@ -145,12 +188,21 @@ n = int(s) # 10
  \label{tab:string-sep-merge}
  \end{table}
  \begin{mysubmission}
-Der Schlüssel für einen Geheimtext ist in Blöcken organisiert: \lstinline|2_10_38|. Trennen Sie diese Blöcke in eine Liste und addieren Sie sie zusammen.
+Der Schlüssel für einen Geheimtext ist in Blöcken organisiert:
+
+\begin{lstlisting}
+geheime_zahl_als_text = "2_10_38"
+\end{lstlisting}
+
+Trennen Sie die Blöcke von \lstinline|geheime_zahl_als_text| in eine Liste auf und addieren Sie die Zahlen der Liste zusammen.
+
+Als Resultat sollten Sie die Zahl 50 erhalten.
 \begin{myanswer}
 \begin{lstlisting}
-txt = "2_10_38"
+geheime_zahl_als_text = "2_10_38"
+meine_liste = geheime_zahl_als_text.split("_")
 summe = 0
-for i in txt.split("_"):
+for i in meine_liste:
     summe += int(i)
     
 print(summe)
