@@ -189,6 +189,7 @@
  Die ersten drei Lektionenen (Ganz-Klassenlektion und Programmier-Lektion) machen den Einstieg in die Welt der Verschlüsselung. Dabei werden zuerst das Thema ``Verschlüsselung'' / Geheimschrift im Allgemeinen und danach die antiken Geheimschriften Skytale und Caesar vorgestellt.
  
  
+ 
  \tcbsubtitle{Operationalisierte Lernziele}
  \begin{todolist}
      \item Die SuS können Beispiele aus ihrem eigenen Alltag nennen, wo Verschlüsselung relevant ist.
@@ -887,49 +888,66 @@ Geheimtext: WKSBXGLQ
 \end{myexample}
 
  
-\section{RSA - Rivest-Shamir-Adleman-Verfahren}
+\section{Asymmetrische Kryptosysteme}
 
-Das RSA-Verfahren ist ein asymmetrisches Kryptosystem, das sowohl für die Verschlüsselung als auch für digitale Signaturen verwendet werden kann. Es basiert auf der Schwierigkeit, große Zahlen in ihre Primfaktoren zu zerlegen. Im Folgenden werden die Grundlagen des Verfahrens und ein einfaches Beispiel vorgestellt.
+% TODO insert section explaining motivation for asymmetric crypto systems
 
-\subsection{Grundprinzip}
+\subsection{\acrshort{RSA}-Verfahren}
 
-Das RSA-Verfahren besteht aus drei Schritten:
+Das \acrfull{RSA}-Verfahren ist ein asymmetrisches Kryptosystem, das sowohl für die Verschlüsselung als auch für digitale Signaturen verwendet werden kann. Es basiert auf der Schwierigkeit, große Zahlen in ihre Primfaktoren zu zerlegen. Im Folgenden werden die Grundlagen des Verfahrens und ein einfaches Beispiel vorgestellt.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/rsa.jpg}
+\caption{Ron Rivest, Adi Shamir und Leonard Adleman, die Erfinder des \gls{RSA}-Verfahrens}
+\label{fig:rsa}
+\end{figure}
+
+
+Das \gls{RSA}-Verfahren besteht aus drei Schritten:
 \begin{enumerate}
     \item \textbf{Schlüsselerzeugung:}
     \begin{itemize}
         \item Wähle zwei große Primzahlen \( p \) und \( q \).
         \item Berechne \( n = p \cdot q \) (den Modulus).
-        \item Berechne die Eulersche Funktion \( \phi(n) = (p-1)(q-1) \).
-        \item Wähle eine Zahl \( e \), die teilerfremd zu \( \phi(n) \) ist (öffentliches Exponent).
-        \item Berechne \( d \), sodass \( e \cdot d \equiv 1 \mod \phi(n) \) (privater Schlüssel).
+        \item Berechne die Eulersche Funktion \( \varphi(n) = (p-1)(q-1) \).
+        \item Wähle eine Zahl \( e \) (öffentlicher Exponent), die teilerfremd zu \( \varphi(n) \) und kleiner als $\varphi(n)$ ist.
+        \item Berechne \( d \), so dass \( e \cdot d \equiv 1 (\mod \varphi(n)) \) (privater Schlüssel). Dies bedeutet, dass, wenn man $d$ mit $e$ multipliziert und das Resultat Modulo 40 rechnet, man die Zahl 1 erhält.
     \end{itemize}
     \item \textbf{Verschlüsselung:}
     \begin{itemize}
-        \item Der Absender verschlüsselt eine Nachricht \( m \) (als Zahl \( m < n \)) mit dem öffentlichen Schlüssel \( (e, n) \):
+        \item Der Absender verschlüsselt eine \textbf{Klartext-Nachricht} \( \mathbf{m} \) (als Zahl \( m < n \)) mit dem öffentlichen Schlüssel \( (e, n) \):
         \[
-        c \equiv m^e \mod n
+        c \equiv \mathbf{m}^e \mod n
         \]
         \item Das Ergebnis \( c \) ist der Geheimtext.
     \end{itemize}
     \item \textbf{Entschlüsselung:}
     \begin{itemize}
-        \item Der Empfänger entschlüsselt \( c \) mit seinem privaten Schlüssel \( d \):
+        \item Der Empfänger entschlüsselt die \textbf{verschlüsselte Nachricht} \( \mathbf{c} \) mit seinem privaten Schlüssel \( d \):
         \[
-        m \equiv c^d \mod n
+        \mathbf{m} \equiv c^d \mod n
         \]
-        \item Das Ergebnis \( m \) ist die ursprüngliche Nachricht.
+        \item Das Ergebnis \( \mathbf{m} \) ist die ursprüngliche Nachricht.
     \end{itemize}
 \end{enumerate}
 
 \begin{myexample}
-Um RSA besser zu verstehen, rechnen wir ein einfaches Beispiel mit kleinen Zahlen durch:
+Um \gls{RSA} besser zu verstehen, rechnen wir ein einfaches Beispiel mit kleinen Zahlen durch:
 \begin{enumerate}
-    \item Wähle \( p = 5 \) und \( q = 11 \). Dann ist:
-    \[
-    n = p \cdot q = 5 \cdot 11 = 55 \quad \text{und} \quad \phi(n) = (p-1)(q-1) = 4 \cdot 10 = 40.
-    \]
+    \item Wähle \( p = 5 \) und \( q = 11 \). Daraus folgt:
+    \begin{align*}
+    n &= p \cdot q\\
+      &= 5 \cdot 11 \\
+      &= 55
+    \end{align*}
+    \begin{align*}
+	\varphi(n) &= (p-1)(q-1)\\
+	        &= 4 \cdot 10\\
+	        &= 40
+    \end{align*}
     \item Wähle \( e = 3 \), da \( \operatorname{ggT}(3, 40) = 1 \).
-    \item Berechne \( d \) als multiplikatives Inverses von \( e \mod \phi(n) \):
+    \item Berechne \( d \) als multiplikatives Inverses von \( e \mod \varphi(n) \):
     \[
     d \cdot 3 \equiv 1 \mod 40 \quad \Rightarrow \quad d = 27.
     \]
@@ -937,41 +955,40 @@ Um RSA besser zu verstehen, rechnen wir ein einfaches Beispiel mit kleinen Zahle
 \end{enumerate}
 
 \textbf{Verschlüsselung:} Die Nachricht sei \( m = 12 \). Berechne:
-\[
-c \equiv m^e \mod n = 12^3 \mod 55 = 1728 \mod 55 = 23.
-\]
-Der Geheimtext ist \( c = 23 \).
+\begin{align*}
+c &\equiv m^e \mod n \\
+&= 12^3 \mod 55 \\
+&= 1728 \mod 55 \\
+&= 23.
+\end{align*}
+
+
+Der Geheimtext ist also \( c = 23 \).
 
 \textbf{Entschlüsselung:} Berechne:
-\[
-m \equiv c^d \mod n = 23^{27} \mod 55.
-\]
-Da \( 23^{27} \mod 55 \) aufwendig von Hand ist, können wir den modularen Exponentiationstrick verwenden. Schrittweise:
-\[
-23^2 \mod 55 = 529 \mod 55 = 34, \quad 23^4 \mod 55 = 34^2 \mod 55 = 16, \quad \dots
-\]
-Am Ende ergibt sich \( m = 12 \), also die ursprüngliche Nachricht.
+\begin{align*}
+m &\equiv c^d \mod n \\
+&= 23^{27} \mod 55
+\end{align*}
+
+Daraus ergibt sich \( m = 12 \), also die ursprüngliche Nachricht.
 \end{myexample}
 
 
-
-\subsection{Übung}
-
 \begin{myexercise}
-Alice und Bob möchten RSA verwenden. Alice wählt \( p = 7 \) und \( q = 13 \).
+Alice und Bob möchten \gls{RSA} verwenden. Alice wählt \( p = 7 \) und \( q = 13 \).
 \begin{enumerate}
-    \item Berechne \( n \) und \( \phi(n) \).
-    \item Wähle \( e = 5 \). Finde \( d \), sodass \( e \cdot d \equiv 1 \mod \phi(n) \).
-    \item Verschlüssle die Nachricht \( m = 9 \) mit dem öffentlichen Schlüssel \( (e, n) \).
-    \item Entschlüssele die Nachricht \( c \) mit dem privaten Schlüssel \( (d, n) \).
+    \item Berechnen Sie \( n \) und \( \varphi(n) \).
+    \item Wählen Sie \( e = 5 \). Finden Sie \( d \), sodass \( e \cdot d \equiv 1 (\mod \varphi(n)) \).
+    \item Verschlüsseln Sie die Nachricht \( m = 9 \) mit dem öffentlichen Schlüssel \( (e, n) \).
+    \item Entschlüsseln Sie die Nachricht \( c \) mit dem privaten Schlüssel \( (d, n) \).
 \end{enumerate}
-\end{myexercise}
-
 \begin{myanswer}
 \begin{enumerate}
-    \item \( n = p \cdot q = 7 \cdot 13 = 91 \), \( \phi(n) = (p-1)(q-1) = 6 \cdot 12 = 72 \).
-    \item Finde \( d \), sodass \( 5 \cdot d \equiv 1 \mod 72 \). Das ergibt \( d = 29 \).
+    \item \( n = p \cdot q = 7 \cdot 13 = 91 \), \( \varphi(n) = (p-1)(q-1) = 6 \cdot 12 = 72 \).
+    \item Finde \( d \), sodass \( 5 \cdot d \equiv 1 (\mod 72) \). Das ergibt \( d = 29 \).
     \item Verschlüsselung: \( c \equiv 9^5 \mod 91 = 59049 \mod 91 = 9 \).
     \item Entschlüsselung: \( m \equiv 9^{29} \mod 91 \). Nach modularer Exponentiation ergibt sich \( m = 9 \).
 \end{enumerate}
 \end{myanswer}
+\end{myexercise}
