@@ -175,14 +175,8 @@
 % \end{myanswer}
 %
 %
-%
-%
-%
-%
-%
-%
-%
- \section{Einführung}
+
+ \section{Einführung}\label{sec:intro}
 \iftoggle{teacherToggle}{
  \begin{myExBox}[title=Thema \thedlcounter: Einführung]
  \tcbsubtitle{Thema}
@@ -273,7 +267,33 @@ In der Informatik spricht man hier davon, dass Alice aus ihrem ``Klartext'', als
      \label{fig:schema_geheimtext}
  \end{figure}
  
- Im Folgenden setzen wir uns zuerst mit einigen grundlegenden Verschlüsselungs-Methoden auseinander, um zu verstehen, was ein sicheres Kryptosystem auszeichnet. Ganz allgemein sollte ein Kryptosystem durch Dritte schwer zu knacken sein. Folgende sicherheits-bezogenen Anforderungen können zusätzlich an ein Kryptosystem gestellt werden:
+ Im Folgenden setzen wir uns zuerst mit einigen grundlegenden Verschlüsselungs-Methoden auseinander, um zu verstehen, was ein sicheres Kryptosystem auszeichnet. Der niederländische Kryptologe und Linguist Auguste Kerckhoffs stellte im Jahr 1883 sechs Grundsätze für sichere Verschlüsselungsverfahren auf:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/kerckhoffs}
+\caption{Auguste Kerckhoffs (1835-1903)}
+\label{fig:kerckhoffs}
+\end{figure}
+
+ \begin{enumerate}
+\item Das System muss \textbf{unentzifferbar} sein.
+\item Das System darf \textbf{keiner Geheimhaltung} bedürfemn.
+\item Das System muss \textbf{leicht übermittelbar} sein und man muss sich die \textbf{Schlüssel ohne schriftliche Aufzeichnung merken} können.
+\item Das System sollte \textbf{mit telegraphischer Kommunikation kompatibel} sein.
+\item Das System muss \textbf{transportabel} sein und die Bedienung darf nicht mehr als eine Person erfordern.
+\item Das System muss \textbf{einfach anwendbar} sein.
+ \end{enumerate}
+ 
+ Ein System, das diese Anforderungen erfüllt, gab es damals nicht. Von Besonderer Wichtigkeit war seine Forderung nach Öffentlichkeit des Kryptosystems:
+
+\begin{quote}
+``Il faut qu’il n’exige pas le secret, et qu’il puisse sans inconvénient tomber entre les mains de l’ennemi.'' -- Auguste Kerckhoffs, \textit{La cryptographie militaire} (1883)
+\end{quote}
+
+Demgegenüber steht die Auffassung, dass Kryptosysteme geheimgehalten werden sollten (\textit{Security through Obscurity}), eine Haltung, die häufiger von militärischen Institutionen sowie kommerziellen Anbietern von Verschlüsselungsmethoden verfechtet wird.
+ 
+Folgende Sicherheits-bezogenen Anforderungen können zusätzlich an moderne Kryptosysteme gestellt werden:
  \begin{enumerate}
      \item \textbf{Vertraulichkeit}: Es soll sichergestellt sein, dass wirklich nur diejenige Person eine Nachricht lesen kann, für die diese bestimmt ist.
      \item \textbf{Integrität}: Der Empfänger soll feststellen können, ob die Nachricht nach ihrer Erzeugung verändert wurde (wir wollen ja die originale Nachricht!).
@@ -284,7 +304,9 @@ In der Informatik spricht man hier davon, dass Alice aus ihrem ``Klartext'', als
  \section{Symmetrische Kryptosysteme}
  
  
- \subsection{``Intuitive'' Ansätze zur Verschlüsselung}
+ \subsection{Verschlüsselung per Transposition}
+ In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die Buchstaben des Klartexts im Geheimtext erhalten, ändern aber die Reihenfolge. 
+ 
  \begin{myexercise}\label{ex:zweiertausch}
 Entziffern Sie den folgenden Geheimtext durch ausprobieren:
      \begin{center}
@@ -306,16 +328,112 @@ Entziffern Sie den folgenden Geheimtext durch ausprobieren:
           \end{enumerate}
           \normalsize
       \end{center}
-      Der Geheimtext entsteht durch Austauschen der Positionen der Buchstaben.
+      Der Geheimtext entsteht durch Austauschen der Positionen der Buchstaben, wie gezeigt in \cref{fig:transposition-cipher}.
       \begin{figure}[H]
           \centering
           \begin{subfigure}[b]{0.45\textwidth}
-            \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/krypto_swap_2.png}\caption{\enquote{Zweiertausch}}
+            \begin{tikzpicture}
+                          % Parameters
+                          \def\boxwidth{1} % Width of each box
+                          \def\numboxes{6} % Total number of boxes
+                          \pgfmathtruncatemacro{\lastindex}{\numboxes-2} % Compute the last valid index for swapping
+                          \pgfmathtruncatemacro{\lastindexLet}{\numboxes-1} % Compute the last valid index for swapping
+                          
+                      
+                          % Draw the rectangle (sequence of letters)
+                          \draw[thick] (0, 0) rectangle (\numboxes*\boxwidth, 1);
+                          \foreach \i in {1,...,\numboxes} {
+                              \draw[thick] (\i*\boxwidth, 0) -- (\i*\boxwidth, 1);
+                          }
+                      
+                          % Add ellipses on both sides
+                          \node at (-0.5, 0.5) {\dots};
+                          \node at (\numboxes*\boxwidth+0.5, 0.5) {\dots};
+                      
+                          % Add arrows for swapping
+                          \foreach \i in {0,2,...,\lastindex} {
+                              \pgfmathsetmacro{\xstart}{\i*\boxwidth + 0.5*\boxwidth}
+                              \pgfmathsetmacro{\xend}{\xstart + \boxwidth}
+                              \draw[thick, cyan, <->] (\xstart, -0.2) -- (\xstart, -0.6) -- (\xend, -0.6) -- (\xend, -0.2);
+                          }
+                      
+                          % Add letters above the boxes
+                          \foreach \i in {0,...,\lastindexLet} {
+                              \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                              \pgfmathtruncatemacro{\letter}{65+\i} % ASCII value of A is 65
+                              \node at (\xpos, 1.2) {\char\letter};
+                          }
+                      
+                          % Add swapped letters below the boxes
+                          \foreach \i in {0,...,\lastindexLet} {
+                              \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                              \ifodd\i
+                      	        \pgfmathtruncatemacro{\swapletter}{65+\i-1} % ASCII value of A is 65
+                              \else
+                                  \pgfmathtruncatemacro{\swapletter}{65+\i+1} % ASCII value of A is 65
+                              \fi
+                              \node at (\xpos, -1) {\char\swapletter};
+                          }
+                      \end{tikzpicture}
+                      \caption{\enquote{Zweiertausch}}
           \end{subfigure}
           \hfill
           \begin{subfigure}[b]{0.45\textwidth}
-            \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/krypto_swap_3.png}\caption{\enquote{Dreiertausch}}
+            \begin{tikzpicture}
+                % Parameters
+                \def\boxwidth{1} % Width of each box
+                \def\numboxes{6} % Total number of boxes
+                \pgfmathtruncatemacro{\lastindex}{\numboxes-3} % Compute the last valid index for swapping
+                \pgfmathtruncatemacro{\lastindexLet}{\numboxes-1} % Compute the last valid index for swapping
+                
+            
+                % Draw the rectangle (sequence of letters)
+                \draw[thick] (0, 0) rectangle (\numboxes*\boxwidth, 1);
+                \foreach \i in {1,...,\numboxes} {
+                    \draw[thick] (\i*\boxwidth, 0) -- (\i*\boxwidth, 1);
+                }
+            
+                % Add ellipses on both sides
+                \node at (-0.5, 0.5) {\dots};
+                \node at (\numboxes*\boxwidth+0.5, 0.5) {\dots};
+            
+                % Add arrows for swapping
+                \foreach \i in {0,3,...,\lastindex} {
+                    \pgfmathsetmacro{\xstart}{\i*\boxwidth + 0.5*\boxwidth}
+                    \pgfmathsetmacro{\xend}{\xstart + \boxwidth*2}
+                    \draw[thick, cyan, <->] (\xstart, -0.2) -- (\xstart, -0.6) -- (\xend, -0.6) -- (\xend, -0.2);
+                }
+            
+                % Add letters above the boxes
+                \foreach \i in {0,...,\lastindexLet} {
+                    \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                    \pgfmathtruncatemacro{\letter}{65+\i} % ASCII value of A is 65
+                    \node at (\xpos, 1.2) {\char\letter};
+                }
+            
+                % Add swapped letters below the boxes
+                \foreach \i in {0,3,...,\lastindex} {
+            	    \pgfmathtruncatemacro{\swapletter}{65+\i+2} % ASCII value of A is 65
+            	    \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                    \node at (\xpos, -1) {\char\swapletter};
+                }
+                
+                \foreach \i in {2,5,...,\numboxes} {
+            	    \pgfmathtruncatemacro{\swapletter}{65+\i-2} % ASCII value of A is 65
+            	    \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                    \node at (\xpos, -1) {\char\swapletter};
+                }
+                
+                \foreach \i in {1,4,...,\lastindexLet} {
+            	    \pgfmathtruncatemacro{\swapletter}{65+\i} % ASCII value of A is 65
+            	    \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                    \node at (\xpos, -1) {\char\swapletter};
+                }
+            \end{tikzpicture}
+            \caption{\enquote{``Dreiertausch''}}
           \end{subfigure}
+			\caption{\enquote{Dreiertausch}}
+			\label{fig:transposition-cipher}
       \end{figure}
  \end{myanswer}
  \end{myexercise}
@@ -333,8 +451,8 @@ Praktisch umgesetzt werden kann dieser Algorithmus mit einem Stab und einem Band
  
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/skytale}
-\caption{Praktische Umsetzung der Skytale-Verschlüsselung mit einem Stab und einem Band}
+\includegraphics[width=0.5\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/SkytaleWiki}
+\caption{Praktische Umsetzung der Skytale-Verschlüsselung mit einem Stab und einem Band \href{https://commons.wikimedia.org/wiki/File:Skytale.png}{Quelle}}
 \label{fig:skytale-band}
 \end{figure}
 
@@ -872,18 +990,16 @@ Kopieren Sie den folgenden Geheimtext und versuchen Sie, ihn mit dem \href{https
  \end{itemize}
  \end{mychallenge}
  
-\subsection{One-Time Pad}
-Die One-Time-Pad-Verschlüsselungsmethode (OTP, deutsch ``Einmalschlüssel-Verfahren'') funktioniert im Prinzip identisch wie die Vigenère-Methode, mit folgenden drei Unterschieden:
+\subsection{\acrlong{OTP}}
+Die One-Time-Pad-Verschlüsselungsmethode (\gls{OTP}, deutsch ``Einmalschlüssel-Verfahren'') funktioniert im Prinzip identisch wie die Vigenère-Methode, mit folgenden drei Unterschieden:
 \begin{enumerate}
 \item Der Schlüssel besteht auf einer \textit{zufälligen} Folge von Buchstaben
 \item Der Schlüssel ist \textit{genau gleich lang} wie der Klartext/Geheimtext
 \item Der Schlüssel wird nur für genau eine Botschaft verwendet
 \end{enumerate}
 
-Diese Methode gilt als sicher, da die gruppenweise Häufigkeitsanalyse nicht funktioniert. Allerdings ist sie ebenfalls mit höheren Kosten verbunden, da für jede Nachricht ein ebensolanger Schlüssel mitgeschickt werden muss.
-
 \begin{myexample}
-Folgendes Beispiel verwendet einen One-Time-Pad-Schlüssel:
+Folgendes Beispiel verwendet einen \gls{OTP}-Schlüssel:
 
 \begin{verbatim}
   Klartext: OERLIKON
@@ -892,14 +1008,58 @@ Geheimtext: WKSBXGLQ
 \end{verbatim}
 \end{myexample}
 
+Essentiell handelt es sich beim \gls{OTP} um dasselbe Verschlüsselungsverfahren wie bei Vigenère, wobei der Schlüssel gleich lang wie die zu verschlüsselnde Nachricht sein muss. Diese Methode gilt als sicher, da die gruppenweise Häufigkeitsanalyse (z.B. mit der Friedmann'schen Charakteristik) nicht funktioniert. Allerdings ist die \gls{OTP}-Methode aufgrund der längeren Schlüssellänge mit höheren Übertragungskosten verbunden. Zudem darf jeder Schlüssel zur Sicherheit nur einmal verwendet werden, was für regelmässige Datenaustausch-Anwendungen wie E-Mail, Online-Banking etc. unpraktisch ist. 
+
+Ein Hauptproblem aller symmetrischen Verschlüsselungsverfahren besteht jedoch darin, dass der Schlüssel erst einmal über einen \textit{sicheren} Kanal ausgetauscht werden muss. Vor dem Internet erfolgte dies durch einen Postboten, heute ist dies allerdings nicht mehr praktikabel.
+
  
 \section{Asymmetrische Kryptosysteme}
 
-% TODO insert section explaining motivation for asymmetric crypto systems
+In den bisher angeschauten Verschlüsslungsverfahren haben wir festgestellt, dass derselbe Schlüssel zur Ver- und Entschlüsselung verwendet wird. Daher spricht man bei diesen Verfahren von \textit{symmetrischen} Verschlüsselungsmethoden. Zudem haben wir gesehen, dass diese entweder unsicher (Caesar, Vigenère) sind, wenn der Schlüssel einfach geknackt werden kann, oder un-praktikabel (\gls{OTP}), wenn der Schlüssel zuerst übertragen werden muss. Diffie \& Hellman kamen daher 1975 auf die Idee, \textit{asymmetrische} Verschlüsselungsverfahren zu erschaffen, welche nach einem anderen Prinzip funktionieren. Im Gegensatz zu symmetrischen Verfahren kann man bei asymmetrischen Verfahren \textit{nicht} von der verschlüsselten Nachricht auf den Schlüssel schliessen kann, da unterschiedliche Schlüssel zum Ver- und Entschlüsseln verwendet werden. 
+
+Die Grundidee hinter asymmetrischen Verschlüsselungsmethoden ist folgende:
+
+Alice (\emoji{woman-technologist}) und Bob (\emoji{man-technologist}) möchten auf verschlüsselte Weise Nachrichten austauschen, die den Anforderungen an sichere Kryptosysteme genügen (s. \cref{sec:intro}). Bei der asymmetrischen Verschlüsselung generieren sowohl Alice wie Bob jeweils ein Schlüsselpaar, einen sogenannten \textbf{öffentlichen Schlüssel} (\emoji{key}), der von allen Personen gesehen und verwendet werden kann, sowie einen \textbf{privaten Schlüssel} (\emoji{lock}), der nur im Besitz von Alice bzw. Bob ist. Wenn Alice eine Nachricht an Bob senden will, verwendet sie Bobs \textit{öffentlichen} Schlüssel, um die Nachricht zu verschlüsseln. Die Nachricht kann jedoch mit dem öffentlichen Schlüssel nicht entschlüsselt werden, es handelt sich hier sozusagen um eine ``Einweg''-Funktion. Stattdessen muss Bob seinen \textit{privaten} Schlüssel zur Entschlüsselung verwenden, also den Schlüssel, auf den \textit{nur} Bob Zugriff hat (s. \cref{fig:public-key-encryption}). Dies funktioniert in den meisten Fällen auch in die andere Richtung: eine Nachricht, die mit Bobs privatem Schlüssel verschlüsselt worden ist, kann nur mit Bobs öffentlichem Schlüssel entschlüsselt werden. Die Schlüssel sind mathematisch so konstruiert, dass es beinahe unmöglich ist, vom öffentlichen Schlüssel auf den privaten Schlüssel zu schliessen. 
+
+
+Durch den Aufbau asymmetrischer Verschlüsselungsverfahren entfällt die Problematik der Übermittlung des Schlüssels: jede Person generiert ihr eigenes Schlüsselpaar und stellt einen öffentlichen Schlüssel zur Verfügung. Ein Nachteil hierbei ist, dass die Verschlüsselung häufig mathematisch und bezüglich Rechenleistung anspruchsvoller ist, was insbesondere problematisch sein kann bei längeren Nachrichten oder wenn die Antwortzeit minimal sein soll.
+
+\begin{figure}[H]
+\centering	
+\begin{tikzpicture}[node distance = 1cm and 2cm, data/.style={rectangle, rounded corners, text width=3cm, minimum width=3cm, minimum height=1cm, text centered, draw=ForestGreen, fill=ForestGreen!30},
+startstop/.style={rectangle, rounded corners, minimum height=1cm, minimum width=3cm, text width=2.5cm, text centered, draw=RoyalBlue, fill=RoyalBlue!30}]
+
+\footnotesize
+% Nodes
+\node (plaintext) [data] {\emoji{woman-technologist} Alice};
+\node (ciphertext) [data, right=of plaintext] {Verschlüsselter\\Text};
+\node (publickey) [startstop, above=of ciphertext] {\emoji{key} Öffentlicher Schlüssel\\von Bob};
+
+\node (decryptedtext) [data, below=of ciphertext] {Verschlüsselter\\Text};
+\node (privatekey) [startstop, below=of decryptedtext] {\emoji{lock} Privater Schlüssel\\ von Bob};
+\node (bob) [data, left=of decryptedtext] {\emoji{man-technologist} Bob};
+
+
+% Arrows
+\draw [->] (plaintext) -- (ciphertext);
+\draw [->] (ciphertext) -- (decryptedtext);
+\draw [->] (publickey) -- (ciphertext);
+\draw [->] (privatekey) -- (decryptedtext);
+\draw [->] (decryptedtext) -- (bob);
+
+\node at ($(plaintext.east)!0.5!(ciphertext.west)$) [above] {Klartext};
+\node at ($(publickey.south)!0.5!(ciphertext.north)$) [left] {Verschlüsselung};
+\node at ($(ciphertext.south)!0.5!(decryptedtext.north)$) [left] {Übertragung};
+\node at ($(privatekey.north)!0.5!(decryptedtext.south)$) [left] {Entschlüsselung};
+\node at ($(decryptedtext.west)!0.5!(bob.east)$) [above] {Klartext};
+\end{tikzpicture}
+\caption{Prinzip der Public-Key-Verschlüsselung}
+\label{fig:public-key-encryption}
+\end{figure}
 
 \subsection{\acrshort{RSA}-Verfahren}
 
-Das \acrfull{RSA}-Verfahren ist ein asymmetrisches Kryptosystem, das sowohl für die Verschlüsselung als auch für digitale Signaturen verwendet werden kann. Es basiert auf der Schwierigkeit, große Zahlen in ihre Primfaktoren zu zerlegen. Im Folgenden werden die Grundlagen des Verfahrens und ein einfaches Beispiel vorgestellt.
+Das \acrfull{RSA}-Verfahren ist ein asymmetrisches Kryptosystem, das sowohl für die Verschlüsselung als auch für digitale Signaturen verwendet werden kann. Es basiert auf der Schwierigkeit, grosse Zahlen in ihre Primfaktoren zu zerlegen. Im Folgenden werden die Grundlagen des Verfahrens und ein einfaches Beispiel vorgestellt.
 
 \begin{figure}[H]
 \centering
@@ -909,29 +1069,30 @@ Das \acrfull{RSA}-Verfahren ist ein asymmetrisches Kryptosystem, das sowohl für
 \end{figure}
 
 
-Das \gls{RSA}-Verfahren besteht aus drei Schritten:
+Das \gls{RSA}-Verfahren besteht aus folgenden Schritten:
 \begin{enumerate}
     \item \textbf{Schlüsselerzeugung:}
     \begin{itemize}
-        \item Wähle zwei große Primzahlen \( p \) und \( q \).
-        \item Berechne \( n = p \cdot q \) (den Modulus).
-        \item Berechne die Eulersche Funktion \( \varphi(n) = (p-1)(q-1) \).
-        \item Wähle eine Zahl \( e \) (öffentlicher Exponent), die teilerfremd zu \( \varphi(n) \) und kleiner als $\varphi(n)$ ist.
-        \item Berechne \( d \), so dass \( e \cdot d \equiv 1 (\mod \varphi(n)) \) (privater Schlüssel). Dies bedeutet, dass, wenn man $d$ mit $e$ multipliziert und das Resultat Modulo 40 rechnet, man die Zahl 1 erhält.
+        \item Wählen Sie zwei (möglichst grosse) Primzahlen \( p \) und \( q \).
+        \item Berechnen Sie das \gls{RSA}-Modul \( n = p \cdot q \).
+        \item Berechnen Sie die Eulersche Funktion \( \varphi(n) = (p-1)(q-1) \).
+        \item Wählen Sie den \textit{Verschlüsslungsexponenten} \( e \), so dass dieser teilerfremd zu \( \varphi(n) \) und kleiner als $\varphi(n)$ ist. Dies bedeutet, dass der \gls{GGT} von $e$ und $\varphi(n)$ 1 ist ($\operatorname{ggT}(e, \varphi(n)) = 1$).
+        \item Berechnen Sie den \textit{Entschlüsslungexponenten} \( d \), so dass \( (e \cdot d) \mod \varphi(n) = 1  \) (privater Schlüssel). Dies bedeutet, dass, wenn man $d$ mit $e$ multipliziert und dieses Produkt Modulo $\varphi(n)$ rechnet, man die Zahl 1 erhält.
+        \item Die Zahlen $p$, $q$ und $\varphi(n)$ werden nun nicht mehr benötigt und können gelöscht werden.
     \end{itemize}
     \item \textbf{Verschlüsselung:}
     \begin{itemize}
-        \item Der Absender verschlüsselt eine \textbf{Klartext-Nachricht} \( \mathbf{m} \) (als Zahl \( m < n \)) mit dem öffentlichen Schlüssel \( (e, n) \):
+        \item Der Absender verschlüsselt eine \textbf{Klartext-Nachricht} \( \mathbf{m} \) (als Zahl) mit dem \textbf{öffentlichen Schlüssel} \( \mathbf{(e, n)} \):
         \[
-        c \equiv \mathbf{m}^e \mod n
+        c = \mathbf{m}^e \mod n
         \]
         \item Das Ergebnis \( c \) ist der Geheimtext.
     \end{itemize}
     \item \textbf{Entschlüsselung:}
     \begin{itemize}
-        \item Der Empfänger entschlüsselt die \textbf{verschlüsselte Nachricht} \( \mathbf{c} \) mit seinem privaten Schlüssel \( d \):
+        \item Der Empfänger entschlüsselt die \textbf{verschlüsselte Nachricht} \( \mathbf{c} \) mit dem \textbf{privaten Schlüssel} \( \mathbf{(d, n)} \):
         \[
-        \mathbf{m} \equiv c^d \mod n
+        \mathbf{m} = c^d \mod n
         \]
         \item Das Ergebnis \( \mathbf{m} \) ist die ursprüngliche Nachricht.
     \end{itemize}
@@ -940,60 +1101,74 @@ Das \gls{RSA}-Verfahren besteht aus drei Schritten:
 \begin{myexample}
 Um \gls{RSA} besser zu verstehen, rechnen wir ein einfaches Beispiel mit kleinen Zahlen durch:
 \begin{enumerate}
-    \item Wähle \( p = 5 \) und \( q = 11 \). Daraus folgt:
+    \item Wir wählen zwei (für diese Übung kleine) Primzahlen aus, \( p = 3 \) und \( q = 11 \). Daraus folgt:
     \begin{align*}
     n &= p \cdot q\\
-      &= 5 \cdot 11 \\
-      &= 55
+      &= 3 \cdot 11 \\
+      &= 33
     \end{align*}
     \begin{align*}
 	\varphi(n) &= (p-1)(q-1)\\
-	        &= 4 \cdot 10\\
-	        &= 40
+	        &= 2 \cdot 10\\
+	        &= 20
     \end{align*}
-    \item Wähle \( e = 3 \), da \( \operatorname{ggT}(3, 40) = 1 \).
-    \item Berechne \( d \) als multiplikatives Inverses von \( e \mod \varphi(n) \):
+    \item Wir wählen \( e = 3 \), da \( \operatorname{ggT}(3, 20) = 1 \).
+    \item Wir berechnen \( d \), so dass \( (e \cdot d) \mod \varphi(n) = 1  \) ergibt:
     \[
-    d \cdot 3 \equiv 1 \mod 40 \quad \Rightarrow \quad d = 27.
+    (d \cdot 3) \mod 20 = 1  \quad \rightarrow \quad d = 7.
     \]
-    \item Der öffentliche Schlüssel ist \( (e, n) = (3, 55) \), der private Schlüssel \( (d, n) = (27, 55) \).
+    \item Der öffentliche Schlüssel ist \( (e, n) = (3, 33) \), der private Schlüssel \( (d, n) = (7, 33) \).
 \end{enumerate}
 
-\textbf{Verschlüsselung:} Die Nachricht sei \( m = 12 \). Berechne:
+\textbf{Verschlüsselung:} Die Nachricht sei das Wort ``Code'', welches wir darstellen durch die Position der Buchstaben im Alphabet \( m = 3, 15, 4, 5 \). Berechne für jeden Buchstaben (hier nur für ``C'', also 3, gezeigt):
 \begin{align*}
-c &\equiv m^e \mod n \\
-&= 12^3 \mod 55 \\
-&= 1728 \mod 55 \\
-&= 23.
+c &= m^e \mod n \\
+&= 3^3 \mod 33 \\
+&= 27 \mod 33 \\
+&= 27.
 \end{align*}
 
 
-Der Geheimtext ist also \( c = 23 \).
+Der erste Buchstabe des Geheimtext wird also verschlüsselt als \( c = 27\).
 
-\textbf{Entschlüsselung:} Berechne:
+\textbf{Entschlüsselung:}
 \begin{align*}
-m &\equiv c^d \mod n \\
-&= 23^{27} \mod 55
+m &= c^d \mod n \\
+&= 27^{7} \mod 33\\
+&= 3
 \end{align*}
 
-Daraus ergibt sich \( m = 12 \), also die ursprüngliche Nachricht.
+Daraus ergibt sich \( m = 3 \), also die ursprüngliche Nachricht.
 \end{myexample}
 
 
 \begin{myexercise}
-Alice und Bob möchten \gls{RSA} verwenden. Alice wählt \( p = 7 \) und \( q = 13 \).
+Alice möchte eine Nachricht an Bob mit \gls{RSA} verschlüsseln. Bob wählt die Hilfs-Primzahlen \( p = 5 \) und \( q = 7 \). Generieren Sie den öffentlichen Schlüssel ($e, n$) und den privaten Schlüssel ($d, n$) von Bob, indem Sie folgende Schritte ausführen:
 \begin{enumerate}
     \item Berechnen Sie \( n \) und \( \varphi(n) \).
-    \item Wählen Sie \( e = 5 \). Finden Sie \( d \), sodass \( e \cdot d \equiv 1 (\mod \varphi(n)) \).
-    \item Verschlüsseln Sie die Nachricht \( m = 9 \) mit dem öffentlichen Schlüssel \( (e, n) \).
-    \item Entschlüsseln Sie die Nachricht \( c \) mit dem privaten Schlüssel \( (d, n) \).
+    \item Sie wählen $e$ und $d$ aus.
 \end{enumerate}
+
+Verschlüsseln Sie nun die Nachricht \( m = 9 \) mit dem öffentlichen Schlüssel \( (e, n) \).
+
+Entschlüsseln Sie danach die verschlüsselte Nachricht \( c \) wieder mit dem privaten Schlüssel \( (d, n) \).
 \begin{myanswer}
 \begin{enumerate}
-    \item \( n = p \cdot q = 7 \cdot 13 = 91 \), \( \varphi(n) = (p-1)(q-1) = 6 \cdot 12 = 72 \).
-    \item Finde \( d \), sodass \( 5 \cdot d \equiv 1 (\mod 72) \). Das ergibt \( d = 29 \).
-    \item Verschlüsselung: \( c \equiv 9^5 \mod 91 = 59049 \mod 91 = 9 \).
-    \item Entschlüsselung: \( m \equiv 9^{29} \mod 91 \). Nach modularer Exponentiation ergibt sich \( m = 9 \).
+    \item \( n = p \cdot q = 5 \cdot 7 = 35 \), \( \varphi(n) = (p-1)(q-1) = 4 \cdot 6 = 24 \).
+    \item Für $e$ können wir beispielsweise 5 wählen, da 5 teilerfremd mit 25 ist.
+    \item \( (5 \cdot d) \mod 24 = 1\). Dies finden wir beispielsweise mit \( d = 29 \).
+    \item Verschlüsselung:
+    \begin{align*}
+    c &= 9^3 \mod 10\\
+    &= 729 \mod 10 \\
+    &= 9 
+    \end{align*}.
+    \item Entschlüsselung: 
+    \begin{align*}
+        c &= 9^{7} \mod 10\\
+        &= 4782969 \mod 10\\
+        &= 9 
+        \end{align*}
 \end{enumerate}
 \end{myanswer}
 \end{myexercise}
