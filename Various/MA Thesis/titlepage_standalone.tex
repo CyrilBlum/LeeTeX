@@ -2,6 +2,9 @@
 
 %% packages (with CTAN first sentence description)
 
+% Simply changing \parskip and \parindent leaves a layout that is untidy; this package (though it is no substitute for a properly-designed class) helps alleviate this untidiness.
+\usepackage{parskip}
+
 % Emoji support in (Lua)LaTeX
 \usepackage{emoji}
 
@@ -20,109 +23,29 @@
 % defines \foreach
 \usepackage{pgffor}
 
-\pgfset{foreach/parallel foreach/.style args={#1in#2via#3}{evaluate=#3 as #1 using {{#2}[#3-1]}}}
-
 % This package provides an environment for coloured and framed text boxes with a heading line.
 \usepackage[most]{tcolorbox}
 \tcbuselibrary{breakable}
 
-% The varwidth environment is superficially similar to minipage, but the specified width is just a maximum value — the box may get a narrower “natural” width.
+% The varwidth environment is superficially similar to minipage, but the specified width is just a inauximum value — the box may get a narrower “natural” width.
 \usepackage{varwidth}
 
 % The package offers access to the large number of web-related icons provided by the included font.
 \usepackage{fontawesome5}
 
-%% special tikz libraries (not all might be required)
-\usetikzlibrary{
-  3d,
-  arrows,
-  arrows.spaced,
-  arrows.meta,
-  bending,
-  babel,
-  calc,
-  fit,
-  hobby,
-  patterns,
-  patterns.meta,
-  plotmarks,
-  shapes.geometric,
-  shapes.misc,
-  shapes.symbols,
-  shapes.arrows,
-  shapes.callouts,
-  shapes.multipart,
-  shapes.gates.logic.US,
-  shapes.gates.logic.IEC,
-  circuits.logic.US,
-  circuits.logic.IEC,
-  circuits.logic.CDH,
-  circuits.ee.IEC,
-  datavisualization,
-  datavisualization.polar,
-  datavisualization.formats.functions,
-  er,
-  automata,
-  backgrounds,
-  chains,
-  topaths,
-  trees,
-  petri,
-  mindmap,
-  matrix,
-  calendar,
-  folding,
-  fadings,
-  shadings,
-  spy,
-  through,
-  turtle,
-  positioning,
-  scopes,
-  decorations.fractals,
-  decorations.shapes,
-  decorations.text,
-  decorations.pathmorphing,
-  decorations.pathreplacing,
-  decorations.footprints,
-  decorations.markings,
-  shadows,
-  lindenmayersystems,
-  intersections,
-  fixedpointarithmetic,
-  fpu,
-  svg.path,
-  external,
-  graphs,
-  graphs.standard,
-  quotes,
-  math,
-  angles,
-  views,
-  animations,
-  rdf,
-  perspective,
-  tikzmark,
-  optics,
-  overlay-beamer-styles
-}
+%% special tikz libraries
+\usetikzlibrary{backgrounds, views}
 
 %% commends from "main" preamble file
-
 \newtoggle{includelogo} \settoggle{includelogo}{true}
-\newcommand{\thelogo}{../Logos/LeeLogo}
-\newcommand{\logosize}{.5\textwidth}
-\newcommand{\theplace}{Winterthur}
-\newcommand{\thesubject}{Informatik}
-\newcommand{\mainauthor}{Cyril Wendl}
-\newcommand{\mainauthormail}{cyril.wendl@edu.zh.ch}
-\newcommand{\thetopic}{MA Guidelines}
-\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
 
 %% commands to generate the title page and the spiral background
 
+% macro to be able to loop multiple arrays in parallel
+\pgfset{foreach/parallel foreach/.style args={#1in#2via#3}{evaluate=#3 as #1 using {{#2}[#3-1]}}}
+
 % spiral background
-\newcommand{\makeSpiral}{
+\newcommand{\makeSpiral}[3]{
 	\begin{center}
 
 		\begin{tikzpicture}[remember picture,overlay]
@@ -130,9 +53,11 @@
 			% Define the desired (x, y) coordinate	          
 			% Create a scope for the centered image
 			% Insert your external image
-			\iftoggle{includelogo}{
-				\node[draw=white!10,fill=white!20, opacity=0.3,yshift=-1.5cm] at (0,5) {\centering\includegraphics[width=\logosize]{\thelogo}};
-			}{}
+			
+\ifblank{#2}{}{
+% if #2 not blank
+\node[draw=white!10,fill=white!20, opacity=0.3,yshift=-1.5cm] at (0,5) {\centering\includegraphics[width=#3]{#2}};
+}
 			\begin{scope}[on background layer]
 				\begin{scope}
 					% Initialize a scaling factor for the emojis
@@ -145,7 +70,7 @@
 
 					\foreach \x [count=\c,
 						parallel foreach=\nSpiral in \arrayA via \c,
-						parallel foreach=\theemoji in \arrayB via \c]
+						parallel foreach=\theemoji in #1 via \c]
 					in \arrayA
 					{
 						% calculate the starting angle for each spiral
@@ -169,54 +94,46 @@
 }
 
 % macro for creating a title page
-\newcommand{\maketitlepage}[2]{
+\newcommand{\maketitlepage}[9]{
 	% arg1: title
 	% arg2: subtitle
 	\begin{titlepage}
 		\vspace*{0.25\textheight}
 		\begin{center}
-
-			% logo
-			%	      \begin{figure}[H]
-			%	        \centering
-			%	        \includegraphics[height=.15\textwidth]{LeeLogo}
-			%	      \end{figure}
-			\thesubject\\
+			#7\\
 			% title
 			\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
-			%			\HRule \\[0.5cm]
 			\begin{tcolorbox}[enhanced,colframe=RoyalBlue!80,colback=RoyalBlue!20, hbox,lifted shadow={1mm}{-2mm}{3mm}{0.1mm}%
 						{Black!50!white}]
 				\begin{varwidth}{\textwidth}
 					\begin{center}
-						\ifblank{#2}{
-							% if no subtitle is given (#2 blank)
-							{\huge \textbf{#1}}\\[0.3cm]
-							\makeSpiral
-							{\large \textbf{Skript}}\\[0.2cm]
-						}{
-							% if #2 not blank
-							{\huge \textbf{#1}}\\[0.5cm]
-							\makeSpiral
+						{\huge \textbf{#1}}\makeSpiral{#3}{#8}{#9}
+						\ifblank{#2}{}{
+							% if #2 (a subtitle) is given, add it
 							{\large \textbf{#2}}\\[0.2cm]
 						}
 					\end{center}
 				\end{varwidth}
 			\end{tcolorbox}
-
-
-			%			\HRule \\[0.5cm]
-			\href{mailto:\mainauthormail}{\color{black}{\mainauthor}}\\[0.5cm]
-			{\large \textcopyleft{} \theplace, \today}
-
-			%      \tikz[remember picture,overlay] \node[opacity=0.3,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{LeeLogo}};
-
+			\href{mailto:#5}{\color{black}{#4}}\\[0.5cm]
+			{\large #6}
 		\end{center}
 	\end{titlepage}
 }
 
 \begin{document}
 
-\maketitlepage{\thetopic}{}
+\newcommand{\thelogo}{LeeLogo}
+\newcommand{\logosize}{.5\textwidth}
+\newcommand{\theplace}{Winterthur}
+\newcommand{\thesubject}{Informatik}
+\newcommand{\mainauthor}{Cyril Wendl}
+\newcommand{\mainauthormail}{cyril.wendl@edu.zh.ch}
+\newcommand{\thetopic}{Title of Document}
+\newcommand{\thesubtitle}{Subtitle}
+\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+
+% generate the title page
+\maketitlepage{\thetopic}{\thesubtitle}{\arrayB}{\mainauthor}{\mainauthormail}{{\textcopyleft{} \theplace, \today}}{\thesubject}{\thelogo}{\logosize}
 
 \end{document}
