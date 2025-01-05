@@ -1,0 +1,222 @@
+\documentclass[a4paper,11pt,svgnames,oneside]{book}
+
+%% packages (with CTAN first sentence description)
+
+% Emoji support in (Lua)LaTeX
+\usepackage{emoji}
+
+% Extensive support for hypertext in LaTeX
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks,
+	linkcolor={red!40!black},
+	urlcolor={blue!90!black},
+	citecolor=,
+}
+
+% Create PostScript and PDF graphics in TeX
+\usepackage{tikz}
+
+% defines \foreach
+\usepackage{pgffor}
+
+\pgfset{foreach/parallel foreach/.style args={#1in#2via#3}{evaluate=#3 as #1 using {{#2}[#3-1]}}}
+
+% This package provides an environment for coloured and framed text boxes with a heading line.
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{breakable}
+
+% The varwidth environment is superficially similar to minipage, but the specified width is just a maximum value — the box may get a narrower “natural” width.
+\usepackage{varwidth}
+
+% The package offers access to the large number of web-related icons provided by the included font.
+\usepackage{fontawesome5}
+
+%% special tikz libraries (not all might be required)
+\usetikzlibrary{
+  3d,
+  arrows,
+  arrows.spaced,
+  arrows.meta,
+  bending,
+  babel,
+  calc,
+  fit,
+  hobby,
+  patterns,
+  patterns.meta,
+  plotmarks,
+  shapes.geometric,
+  shapes.misc,
+  shapes.symbols,
+  shapes.arrows,
+  shapes.callouts,
+  shapes.multipart,
+  shapes.gates.logic.US,
+  shapes.gates.logic.IEC,
+  circuits.logic.US,
+  circuits.logic.IEC,
+  circuits.logic.CDH,
+  circuits.ee.IEC,
+  datavisualization,
+  datavisualization.polar,
+  datavisualization.formats.functions,
+  er,
+  automata,
+  backgrounds,
+  chains,
+  topaths,
+  trees,
+  petri,
+  mindmap,
+  matrix,
+  calendar,
+  folding,
+  fadings,
+  shadings,
+  spy,
+  through,
+  turtle,
+  positioning,
+  scopes,
+  decorations.fractals,
+  decorations.shapes,
+  decorations.text,
+  decorations.pathmorphing,
+  decorations.pathreplacing,
+  decorations.footprints,
+  decorations.markings,
+  shadows,
+  lindenmayersystems,
+  intersections,
+  fixedpointarithmetic,
+  fpu,
+  svg.path,
+  external,
+  graphs,
+  graphs.standard,
+  quotes,
+  math,
+  angles,
+  views,
+  animations,
+  rdf,
+  perspective,
+  tikzmark,
+  optics,
+  overlay-beamer-styles
+}
+
+%% commends from "main" preamble file
+
+\newtoggle{includelogo} \settoggle{includelogo}{true}
+\newcommand{\thelogo}{../Logos/LeeLogo}
+\newcommand{\logosize}{.5\textwidth}
+\newcommand{\theplace}{Winterthur}
+\newcommand{\thesubject}{Informatik}
+\newcommand{\mainauthor}{Cyril Wendl}
+\newcommand{\mainauthormail}{cyril.wendl@edu.zh.ch}
+\newcommand{\thetopic}{MA Guidelines}
+\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+
+%% commands to generate the title page and the spiral background
+
+% spiral background
+\newcommand{\makeSpiral}{
+	\begin{center}
+
+		\begin{tikzpicture}[remember picture,overlay]
+			% logo
+			% Define the desired (x, y) coordinate	          
+			% Create a scope for the centered image
+			% Insert your external image
+			\iftoggle{includelogo}{
+				\node[draw=white!10,fill=white!20, opacity=0.3,yshift=-1.5cm] at (0,5) {\centering\includegraphics[width=\logosize]{\thelogo}};
+			}{}
+			\begin{scope}[on background layer]
+				\begin{scope}
+					% Initialize a scaling factor for the emojis
+					\newcommand{\scaleFactor}{4}
+					\newcommand{\spacing}{0.3} % smaller number = emojis closer together
+					\newcommand{\numberEmojis}{70}
+					\newcommand{\rotateAngle}{10}
+					\newcommand{\numberSpirals}{7}
+					\def\arrayA{1,2,3,4,5,6,7}
+
+					\foreach \x [count=\c,
+						parallel foreach=\nSpiral in \arrayA via \c,
+						parallel foreach=\theemoji in \arrayB via \c]
+					in \arrayA
+					{
+						% calculate the starting angle for each spiral
+						\pgfmathsetmacro{\startAngle}{\nSpiral/\numberSpirals*360}
+						\foreach \i in {0,1,...,\numberEmojis} { % Increase the number for a larger spiral
+								% Calculate the angle, radius, and scale for each emoji
+								\pgfmathsetmacro{\angle}{\startAngle + \i * \rotateAngle}
+								\pgfmathsetmacro{\radius}{\spacing * \i}
+								\pgfmathsetmacro{\scale}{\scaleFactor * (\i/\numberEmojis)} % Adjust the divisor for size variation
+								\pgfmathsetmacro{\emojiopacity}{\i /  \numberEmojis} % Adjust the divisor for size variation
+								% Increase spacing gradually
+								\pgfmathsetmacro{\spacing}{\spacing + \i/\numberEmojis} % Adjust the divisor for spacing variation
+								% Select the emoji to be placed in the spiral
+								\node[scale=\scale,opacity=\emojiopacity] at (\angle:\radius) {\emoji{\theemoji}};
+							}
+					}
+				\end{scope}
+			\end{scope}
+		\end{tikzpicture}
+	\end{center}
+}
+
+% macro for creating a title page
+\newcommand{\maketitlepage}[2]{
+	% arg1: title
+	% arg2: subtitle
+	\begin{titlepage}
+		\vspace*{0.25\textheight}
+		\begin{center}
+
+			% logo
+			%	      \begin{figure}[H]
+			%	        \centering
+			%	        \includegraphics[height=.15\textwidth]{LeeLogo}
+			%	      \end{figure}
+			\thesubject\\
+			% title
+			\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+			%			\HRule \\[0.5cm]
+			\begin{tcolorbox}[enhanced,colframe=RoyalBlue!80,colback=RoyalBlue!20, hbox,lifted shadow={1mm}{-2mm}{3mm}{0.1mm}%
+						{Black!50!white}]
+				\begin{varwidth}{\textwidth}
+					\begin{center}
+						\ifblank{#2}{
+							% if no subtitle is given (#2 blank)
+							{\huge \textbf{#1}}\\[0.3cm]
+							\makeSpiral
+							{\large \textbf{Skript}}\\[0.2cm]
+						}{
+							% if #2 not blank
+							{\huge \textbf{#1}}\\[0.5cm]
+							\makeSpiral
+							{\large \textbf{#2}}\\[0.2cm]
+						}
+					\end{center}
+				\end{varwidth}
+			\end{tcolorbox}
+
+
+			%			\HRule \\[0.5cm]
+			\href{mailto:\mainauthormail}{\color{black}{\mainauthor}}\\[0.5cm]
+			{\large \textcopyleft{} \theplace, \today}
+
+			%      \tikz[remember picture,overlay] \node[opacity=0.3,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{LeeLogo}};
+
+		\end{center}
+	\end{titlepage}
+}
+
+\begin{document}
+
+\maketitlepage{\thetopic}{}
+
+\end{document}
