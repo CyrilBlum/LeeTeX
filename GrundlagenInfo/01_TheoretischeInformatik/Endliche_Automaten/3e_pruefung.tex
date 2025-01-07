@@ -1,0 +1,264 @@
+\newtoggle{withbonus} \toggletrue{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Grundlagenfach Informatik}
+% name of the class
+\newcommand{\myclass}{Klasse 3e}
+% set date
+\newcommand{\mydate}{08. Januar 2025}
+
+\title{\textbf{Aus Daten lernen, endliche Automaten}}
+\author{Thomas Graf\\
+	\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $45$ Minuten
+				      %\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item Erlaubte Hilfsmittel:
+				      \begin{itemize}
+					      \item Schreibzeug
+					      \item Taschenrechner
+				      \end{itemize}
+			\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note:
+	\vspace{10mm}
+
+	\rule{8mm}{1.2pt}
+\end{center}
+%\thispagestyle{empty}
+\clearpage
+
+\begin{questions}
+
+	\section*{\textcolor{Green}{Theoretische Informatik}}
+	\question{\textbf{Endlichen Automaten zeichnen 1}}
+
+	Gegeben ist die Sprache
+	\begin{align*}
+		L_1 := \setcm{0x11y}{x,y\in\lrc{0,1}^*}.
+	\end{align*}
+	\begin{parts}
+		\part[1] Nennen Sie ein kürzestes Wort in $L_1$.
+		\begin{solution}
+			Das Wort $011$ ist \textbf{das} (eindeutige) kürzeste Wort in $L_1$.
+		\end{solution}
+		\vspace{5cm}
+		\begin{solution}
+			\begin{figure}[H]
+				\centering
+				\begin{tikzpicture}[->,>=stealth',shorten >=1pt,node distance=3.2cm,semithick]
+					\tikzstyle{every state}=[fill=green!10,draw=black,text=black,minimum size=1.4cm]
+
+					\node[initial,state] (q0) {$q_{0}$};
+					\node[state] (q1) [above of=q0] {$q_{1}$};
+					\node[state] (q2) [right of=q0] {$q_{2}$};
+					\node[state] (q3) [right of=q2] {$q_{3}$};
+					\node[state,accepting] (q4) [right of=q3] {$q_{4}$};
+
+					\path (q0) edge [left] node {$1$} (q1)
+					(q0) edge [below] node {$0$} (q2)
+
+					(q1) edge [loop above] node {$0,1$} (q1)
+
+					(q2) edge [below] node {$1$} (q3)
+					(q2) edge [loop above] node {$0$} (q2)
+
+					(q3) edge [above, bend right] node {$0$} (q2)
+					(q3) edge [below] node {$1$} (q4)
+
+					(q4) edge [loop above] node {$0,1$} (q4);
+				\end{tikzpicture}
+				\caption{Endlicher Automat (in Diagrammform) für die Sprache $L_1$}
+				\label{fig:L1}
+			\end{figure}
+		\end{solution}
+		\part[2] Entwerfen Sie einen endlichen Automaten (in Diagrammform), welcher $L_1$ akzeptiert.
+	\end{parts}
+	\droptotalpoints
+
+	\clearpage \question{\textbf{Endlichen Automaten zeichnen 2}}
+
+	Gegeben ist die Sprache \begin{align*} L_2 := \setcm{x1y}{x,y\in\lrc{0,1}^*, \abs{y} = 1}.
+	\end{align*}
+	\begin{parts}
+		\part[1] Nennen Sie ein kürzestes Wort in $L_2$.
+		\begin{solution}
+			Die beiden Wörter $10$ und $11$ sind die beiden kürzesten Wörter in $L_2$.
+		\end{solution}
+		\vspace{5cm}
+		\part[3] Entwerfen Sie einen endlichen Automaten (in Diagrammform), welcher $L_2$ akzeptiert.
+		\begin{solution}
+			\begin{figure}[H]
+				\centering
+				\begin{tikzpicture}[->,>=stealth',shorten >=1pt,node distance=5.2cm,semithick]
+					\tikzstyle{every state}=[fill=green!10,draw=black,text=black,minimum size=1.4cm]
+
+					\node[initial,state] (q0) {$q_{0}$};
+					\node[state] (q1) [right of=q0] {$q_{1}$};
+					\node[state,accepting] (q2) [right of=q1] {$q_{2}$};
+					\node[state,accepting] (q3) [below right of=q1] {$q_{3}$};
+
+					\path (q0) edge [loop below] node {$0$} (q0)
+					(q0) edge [above] node {$1$} (q1)
+
+					(q1) edge [below, bend right] node {$0$} (q2)
+					(q1) edge [below] node {$1$} (q3)
+
+					(q2) edge [above, bend right] node {$0$} (q0)
+					(q2) edge [above] node {$1$} (q1)
+
+					(q3) edge [right] node {$0$} (q2)
+					(q3) edge [loop below] node {$1$} (q3);
+				\end{tikzpicture}
+				\caption{Endlicher Automat (in Diagrammform) für die Sprache $L_2$}
+				\label{fig:L2}
+			\end{figure}
+		\end{solution}
+	\end{parts}
+	\droptotalpoints
+	\clearpage
+
+	\question[2]{\textbf{Anzahl der Elemente in einer Sprache bestimmen}}
+
+	Es sei $\Sigma = \lrc{a, b, c}$ ein Alphabet. Bestimmen Sie die Anzahl der verschiedenen Wörter über $\Sigma$, welche das Teilwort $a$ enthalten.
+	\begin{solution}
+		Insgesamt gibt es genau $\abs{\Sigma}^n = 3^n$ Wörter über $\Sigma$. Davon enthalten genau $2^n$ Wörter nicht $a$ als Teilwort. Die gesuchte Anzahl ist somit $3^n - 2^n$.
+	\end{solution}
+	\droptotalpoints
+	\clearpage
+
+
+	\question{\textbf{\red{Nicht reguläre} Sprache}}
+
+	Für ein Wort $a := a_1a_2\ldots a_n$ bezeichnet $a^R := a_na_{n-1}\ldots a_1$ die Umkehrung (\textbf{R}eversal) von
+	$a$. Zum Beispiel ist die Umkehrung $w^R$ des binären Worts $w := 11101$ gegeben durch $w^R = 10111$.
+
+	Gegeben sei nun die Sprache
+	\begin{align*}
+		L_3 := \setcm{wabw^R}{w\in\lrc{a,b}^*}.
+	\end{align*}
+	\begin{parts}
+		\part[1] Nenne genau drei verschiedene Wörter, die in $L_3$ liegen.
+		\begin{solution}
+			\begin{align*}
+				aaabaa, baabab, ab
+			\end{align*}
+		\end{solution}
+		\vspace{3cm}
+		\part[3] Zeige, dass $L_3$ \red{nicht regulär} ist.
+		\begin{solution}
+			Angenommen, $L_3$ sei regulär. Dann existiert ein endlicher Automat
+			\begin{align*}
+				A = (Q, {a,b}, \delta, q_0, F)
+			\end{align*}
+			und $A$ akzeptiert $L_3$. Sei jetzt $m := \abs{Q}$, also die Anzahl der verschiedenen Zustände des endlichen Automaten
+			$A$. Wir betrachten die $m+1$ verschiedenen Wörter
+			\begin{align*}
+				a^1ab, a^2ab, \ldots, a^{m+1}ab.
+			\end{align*}
+			Dies sind mehr Worte (genau ein Wort mehr), als $A$ Zustände hat. Nach dem Schubfachprinzip (pigeonhole principle) existieren
+			$i,j\in\lrc{1,2,\ldots,m+1}$ mit $i<j$, sodass
+			\begin{align*}
+				\hat{\delta}\lr{q_0,a^i} = \hat{\delta}\lr{q_0,a^j}.
+			\end{align*}
+			Nach der im Unterricht bewiesenen Aussage gilt
+			\begin{align*}
+				a^iz\in L_3 \iff a^jz\in L_3
+			\end{align*}
+			für alle $z\in\lrc{a,b}^*$. Doch dies gilt nicht, da zum Beispiel für die Wahl $z:=aba^i$
+			\begin{align*}
+				a^iz = a^iaba^i\in L_3 \quad\text{aber}\quad a^jz = a^jaba^i\notin L_3
+			\end{align*}
+			gilt, da $a^i$ zwar die Umkehrung von $a^i$ ist aber nicht von $a^j$. Damit war unsere ursprüngliche Annahme falsch und es existiert kein
+			endlicher Automat für die Sprache $L_3$.
+		\end{solution}
+	\end{parts}
+	\droptotalpoints
+
+	\clearpage
+	\section*{\textcolor{Green}{Beschreibende Statistik}}
+	\question
+	\begin{parts}
+		\part[1] Nennen Sie ein Beispiel zweier Merkmale aus dem Alltag, die stark positiv korreliert sind.
+		\begin{solution}
+			Im Unterricht haben wir das Beispiel der starken positiven Korrelation zwischen Körpermasse und Körpergrösse gesehen.
+		\end{solution}
+		\vspace{4cm}
+		\part[1] Nennen Sie ein Beispiel zweier Merkmale aus dem Alltag, die stark negativ korreliert sind.
+		\vspace{4cm}
+		\begin{solution}
+			Zum Beispiel sind Aussentemperatur und Heizkosten stark negativ korreliert.
+		\end{solution}
+		\part[1] Erläutern Sie den Satz
+		\begin{center}
+			\textit{Korrelation impliziert nicht Kausalität.}
+		\end{center}
+		mithilfe eines konkreten Beispiels aus dem Alltag.
+		\begin{solution}
+			\url{https://www.tylervigen.com/spurious-correlations}
+		\end{solution}
+
+		\droptotalpoints
+	\end{parts}
+
+	\clearpage
+	\question{\textbf{Korrelationskoeffizient bestimmen}}
+
+	Aus der Physik wissen wir, dass die Ausprägungen zweier diskrete Merkmale $x$ und $y$ (die wir exakt messen können) zueinander proportional sind mit Proportionalitätskonstante $\gamma > 0$, also $y=\gamma x$. Sei $n\in\N, n>2$. Wir haben einen Datensatz von $n$ Messpaaren
+	\begin{align*}
+		(x_1,y_1),(x_2,y_2),...,(x_n,y_n)
+	\end{align*}
+	von Ausprägungen der proportionalen Merkmale $x$ und $y$ gegeben. Es gilt also $y_i = \gamma x_i$ für alle $i\in\lrc{1,2,...,n}$.
+	\begin{parts}
+		\part[1] Beweisen Sie die Gleichheit
+		\begin{align*}
+			\Bar{y} = \gamma\Bar{x}.
+		\end{align*}
+		\vspace{4cm}
+
+		\begin{solution}
+			Wir berechnen
+			\begin{align*}
+				\Bar{y} = \frac{1}{n}\sum_{i=1}^n y_i = \frac{1}{n}\sum_{i=1}^n \gamma x_i = \gamma\lr{\frac{1}{n}\sum_{i=1}^n x_i} = \gamma\Bar{x}
+			\end{align*}
+		\end{solution}
+
+		\part[2] Der Korrelationskoeffizient $r$ sei für den gegebenen Datensatz definiert. Bestimmen Sie $r$. Erläutern Sie Ihre Überlegungen.
+		\begin{solution}
+			Da die Messwerte $x_i$ und $y_i$ proportional zueinander sind mit positiver Proportionalitätskonstante $\gamma>0$, können wir annehmen, dass die beiden Merkmale perfekt positiv korreliert sind mit Korrelationskoeffizient $r = 1$. In der Tat weisen wir diese Vermutung mit der folgenden Berechnung nach. Wir berechnen $r$ für den gegebenen Datensatz. Dabei müssen wir nichts weiter tun, als die gegebenen Grössen in die Definition von $r$ einzusetzen und zu vereinfachen:
+			\begin{align*}
+				r := & \frac{\displaystyle\sum_{i=1}^n(x_i-\Bar{x})(y_i-\Bar{y})}{\sqrt{\displaystyle\sum_{i=1}^n(x_i-\Bar{x})^2}\cdot\sqrt{\displaystyle\sum_{i=1}^n(y_i-\Bar{y})^2}} =                           \\
+				     & \frac{\displaystyle\sum_{i=1}^n(x_i-\Bar{x})(\gamma x_i-\gamma\Bar{x})}{\sqrt{\displaystyle\sum_{i=1}^n(x_i-\Bar{x})^2}\cdot\sqrt{\displaystyle\sum_{i=1}^n(\gamma x_i-\gamma\Bar{x})^2}} = \\
+				     & \frac{\displaystyle\sum_{i=1}^n(x_i-\Bar{x})(\gamma(x_i-\Bar{x}))}{\sqrt{\displaystyle\sum_{i=1}^n(x_i-\Bar{x})^2}\cdot\sqrt{\displaystyle\sum_{i=1}^n(\gamma(x_i-\Bar{x}))^2}} =           \\
+				     & \frac{\gamma\displaystyle\sum_{i=1}^n(x_i-\Bar{x})^2}{\gamma\displaystyle\sum_{i=1}^n(x_i-\Bar{x})^2} = 1.
+			\end{align*}
+		\end{solution}
+		\droptotalpoints
+
+	\end{parts}
+
+\end{questions}
+\clearpage
+(leere Seite für Notizen)
