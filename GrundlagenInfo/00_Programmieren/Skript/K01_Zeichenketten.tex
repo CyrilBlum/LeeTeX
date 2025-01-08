@@ -1,7 +1,7 @@
 \chapter{Python-Übungen zu Kryptologie}\label{ch:Kryptologie}
 
 \section{Verschlüsselung von Texten in Python}
-Während des Zweiten Weltkriegs arbeitet der brillante Mathematiker Alan Turing in Bletchley Park und war mit der entscheidenden Aufgabe betraut, den Enigma-Code zu knacken, den die Deutschen zur Verschlüsselung ihrer Nachrichten verwendeten. Um diesen komplexen Code zu entschlüsseln, musste Turing sein tiefes Verständnis von Sprache und Mustern nutzen. Folgen Sie in Turings Fussstapfen und entziffern Sie die Geheimnachrichten!
+Während des Zweiten Weltkriegs arbeitete der brillante Mathematiker Alan Turing in Bletchley Park im Vereinten Königreich und war mit der entscheidenden Aufgabe betraut, den Enigma-Code zu knacken, den die Deutschen zur Verschlüsselung ihrer Nachrichten verwendeten. Um diesen komplexen Code zu entschlüsseln, musste Turing sein tiefes Verständnis von Sprache und Mustern nutzen. In diesem Kapitel folgen wir in Turings Fussstapfen und entziffern einige Geheimnachrichten!
 
 \begin{figure}[H]
 \centering
@@ -13,7 +13,7 @@ Während des Zweiten Weltkriegs arbeitet der brillante Mathematiker Alan Turing 
 Im Nachfolgenden schauen wir uns einige Python-Befehle an, die dazu dienen, mit Zeichenketten (= engl. \textit{strings}) zu arbeiten. Dies werden wir insbesondere benötigen, um eigene Python-Programme zu schreiben, mit denen wir Texte verschlüsseln und entschlüsseln können. Genauer gesagt bezeichnen wir Texte in Python als Zeichenketten. Zeichenketten werden in Python innerhalb von einfachen oder doppelten Anführungszeichen geschrieben, also entweder \lstinline|'...'| oder \lstinline|"..."|. Innerhalb der Anführungszeichen können beliebige Zeichen stehen, beispielsweise Buchstaben, Leerzeichen, Spezialzeichen oder Zahlen.
 
 
-\cref{tab:string-op} enthält eine übersicht Auflistung der nützlichen Befehle, die Sie in diesem Kapitel verwenden werden.
+\cref{tab:string-op} und \cref{tab:tab:string-sep-merge} enthalten eine Übersicht einiger nützlicher Befehle, die Sie in diesem Kapitel verwenden werden.
 
 \begin{table}[H]
  \centering
@@ -279,7 +279,7 @@ Beispiel: Falls der Text \texttt{HALLO} eingegeben wird und die Verschiebung 2, 
 \begin{lstlisting}
 def verschluessle(klartext, schluessel):
     for buchstabe in klartext:
-        print(ord(buchstabe + schluessel))
+        print(ord(buchstabe) + schluessel)
 
 verschluessle("HALLO", 2)
 \end{lstlisting}
@@ -388,11 +388,11 @@ print(res)
 Eine Nachricht wurde abgefangen: \lstinline|msg = "AZDIYDHRZNOZI"|.
 
 \begin{itemize}
-\item Die Nachricht wurde mit der Caesar-Chiffre verschlüsselt. Finden Sie  zunächst einmal den häufigsten Buchstaben in der verschlüsselten Nachricht. \textbf{Tipp}: ``A'' und ``Z'' haben die Positionen 65 und 90 im Unicode.
+\item Die Nachricht wurde mit der Caesar-Chiffre verschlüsselt. Finden Sie  zunächst einmal den häufigsten Buchstaben in der verschlüsselten Nachricht. \textbf{Tipp}: ``A'' und ``Z'' haben die Positionen 65 und 90 im Unicode. Um in einer Schleife alle Zahlen von \texttt{x} by \texttt{y} durchzugehen, können Sie Folgendes schreiben: \lstinline|for num in range(x, y+1):|.
 
-\item Bestimmen Sie den verwendeten Schlüssel, indem Sie die Funktion \lstinline|ord| zweimal verwenden.
+\item Bestimmen Sie den verwendeten Schlüssel, indem Sie die Funktion \lstinline|ord()| zweimal verwenden.
 
-\item Ermittlen Sie den Klartext mithilfe Ihres Programms aus \cref{ex:oneline-ascii-shift-char-safety-final}. \textbf{Tipp}: Das häufigste Zeichen in einem deutschen Text ist in der Regel ``E''.
+\item Ermitteln Sie den Klartext mithilfe Ihres Programms aus \cref{ex:oneline-ascii-shift-char-safety-final}. \textbf{Tipp}: Das häufigste Zeichen in einem deutschen Text ist in der Regel ``E''.
 
 \item Ersetzen Sie im Klartext das Wort ``WESTEN'' durch ``OSTEN''.
 
@@ -400,11 +400,11 @@ Eine Nachricht wurde abgefangen: \lstinline|msg = "AZDIYDHRZNOZI"|.
 \begin{myanswer}
 \begin{lstlisting}
 txt = "AZDIYDHRZNOZI"
-for b in list(set(txt)):
-    print(b, txt.count(b))
+for num in range(65,91):
+    print(chr(num), txt.count(chr(num)))
     
 x = caesar_ent(txt, ord("Z")-ord("E"))
-print(x.replace("WESTEN","OSTEN"))
+res = x.replace("WESTEN","OSTEN")
 \end{lstlisting}
 \end{myanswer}
 \end{myexercise}
