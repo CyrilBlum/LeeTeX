@@ -8,10 +8,11 @@ plt.style.use('ggplot')
 def caesar_main():
     # kurzer Text (Skript Aufgabe)
     text_kurz = "SIEHABENESGESCHAFFTDIESENTEXTZUKNACKEN"
-    text_kurz_c = caesar(text_kurz, 2)
+    text_kurz_c = caesar(text_kurz, 4)
+    print(text_kurz_c)
     fig, ax = show_letter_freq(text_kurz_c)
-    #plt.show()
-    # plt.savefig("../../Figures/caesar-freq-exercise.pdf", format="pdf", bbox_inches="tight")
+#    plt.show()
+    plt.savefig("../../Figures/caesar-freq-exercise.pdf", format="pdf", bbox_inches="tight")
 
 def vigenere_main():
     # langer Text, mit Caesar und Vigenère
@@ -78,4 +79,4 @@ def monoalphabetic_main():
     print(ciphertext_new)
     print(shifts)
 
-vigenere_main()
+caesar_main()
