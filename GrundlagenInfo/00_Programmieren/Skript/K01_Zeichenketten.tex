@@ -1,5 +1,139 @@
 \chapter{Python-Übungen zu Kryptologie}\label{ch:Kryptologie}
 
+\subsection{Allgemeine Zeichenketten-Aufgaben}
+Zeichenketten können verkettet, also aneinandergehängt werden mit dem Befehl \lstinline|"Text1" + "Text2" + "Text3"| usw. Falls Sie eine Zeichenkette mehrfach drucken wollen, können Sie diesen mit einer Zahl multiplizieren, die dann die Anzahl Wiederholungen der Zeichenkette bestimmt. So ist der Ausdruck \lstinline|"a" * 3| beispielsweise gleichbedeutend mit einer Zeichenkette \lstinline|"aaa"|.
+
+\begin{myexercise}\label{ex:pfeil}
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	\begin{lstlisting}
+    print(" " * 3 + "X" * 1)
+    print(" " * 2 + "X" * 3)
+    print(" " * 1 + "X" * 5)
+    print(" " * 0 + "X" * 7)
+    print(" " * 3 + "X" * 1)
+    print(" " * 3 + "X" * 1)
+  \end{lstlisting}
+\end{myexercise}
+
+
+\begin{myexercise}
+	Erstellen Sie nun ein Programm, das ein Herz zeichnet, ähnlich zu \cref{ex:pfeil}, also lediglich mit Zeichenketten-Ausdrücken und dem Befehl \lstinline|print()|.
+	\begin{myanswer}
+		\begin{lstlisting}
+print(" " * 2 + "X" * 1 + " "*4+"X" * 1 + " "*1)
+print(" " * 1 + "X" * 8 + " "*1)
+print(" " * 2 + "X" * 6 + " "*1)
+print(" " * 3 + "X" * 4 + " "*2)
+print(" " * 4 + "X" * 2 + " "*2)
+\end{lstlisting}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{ex:name}
+	Schreiben Sie ein Programm, das Sie nach Ihrem Namen fragt. Danach soll Sie das Programm neun Mal begrüssen, indem es auf 3 Zeilen je dreimal den Text ``\texttt{Hallo [Ihr Name]}'' druckt.
+	\begin{myanswer}
+		\begin{lstlisting}
+	name = input("Wie heissen Sie?")
+	
+	repeat 3:
+	    print(("Hallo " + name + " ")*3)
+  \end{lstlisting}
+	\end{myanswer}
+\end{myexercise}
+
+Im Nachfolgenden schauen wir uns einige Übungen an, mit denen wir die einzelnen Zeichen aus Zeichenketten herauslesen können.
+
+\begin{myexercise}
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	\begin{lstlisting}
+    text = "EASY"
+    for buchstabe in text:
+      print(buchstabe)
+  \end{lstlisting}
+	\begin{myanswer}
+		\begin{lstlisting}
+      E
+      A
+      S
+      Y
+    \end{lstlisting}
+		\pythoninline{for x in mystring} ist eine Schleife über die Zeichenkette \pythoninline{mystring}. Dabei nimmt \pythoninline{x} nacheinander jeden Buchstaben in dieser Zeichenkette genau einmal an.
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{myexercise:index}
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	\begin{lstlisting}
+    Klartext = "Schweiz"
+    print(Klartext[0])
+    print(Klartext[1])
+    print(Klartext[2])
+    print(Klartext[3])
+    print(Klartext[4])
+    print(Klartext[5])
+    print(Klartext[6])
+  \end{lstlisting}
+	\begin{myanswer}
+		\begin{lstlisting}
+      S
+      c
+      h
+      w
+      e
+      i
+      z
+    \end{lstlisting}
+		\pythoninline{mystring[0]} ist der erste Buchstabe der Zeichenkette \pythoninline{mystring}, \pythoninline{mystring[1]} der zweite und so weiter.
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	\begin{lstlisting}
+    Klartext = "Schweiz"
+    for i in range(len(Klartext)):
+      print(Klartext[i])
+  \end{lstlisting}
+	\begin{myanswer}
+		Dieses Programm ist äquivalent zum Programm in \cref{myexercise:index}.
+		Hier wird allerdings eine \pythoninline{for}-Schleife über die Länge des Texts verwendet.
+	\end{myanswer}
+\end{myexercise}
+
+Der Befehl \lstinline|for i in range(len(Klartext))| erstellt eine Variable \lstinline|i| innerhalb der \lstinline|for|-Schleife, welche jedes Zeichen von 0 bis zur Länge von \lstinline|Klartext| minus 1 geht. Weshalb minus 1? Das erste Zeichen von \lstinline|Klartext| wird in Python mit \lstinline|Klartext[0]| ausgelesen, das letzte mit \lstinline|Klartext[len(Klartext)-1]|, da wir bei 0 zu zählen beginnen und nicht bei 1. Mit dem Ausdruck \lstinline|Klartext[i]| wird also das \lstinline|i|-te Zeichen der Zeichenkette \lstinline|Klartext| ausgelesen, wobei \lstinline|i| von 0 bis zu (Länge des Klartexts minus 1) geht.
+
+Der Befehl \lstinline|for i in range(len(Klartext))| kann auch geschrieben werden also Befehl \lstinline|for i in range(0, len(Klartext), 1)|, wobei dies meint:
+\begin{itemize}
+	\item \lstinline|i| beginnt bei 0
+	\item \lstinline|i| geht bis zu \lstinline|len(Klartext)-1|
+	\item \lstinline|i| vergrössert sich in 1er-Schritten
+\end{itemize}
+Dieser Befehl könnte auch verwendet werden, um bei einer beliebigen Zahl zu starten (nicht notwendigerweise 0), und um \lstinline|i| in Schritten grösser als 1 zu vergrössern. Die allgemeine Syntax des Befehls lässt sich also wie folgt zusammenfassen: \lstinline|for i in range(start, ende, schrittgroesse)|.
+
+\begin{mychallenge}
+	Eine Person verrät uns lediglich die Vorwahl ihrer $10$-stelligen Mobiltelefonnummer. Zudem verrät Sie Ihnen auch, dass ihre Telefonnummer gerade ist (also auf 2, 4, 6, 8 oder 0 endet).
+	Damit gibt es nur noch $5$ Millionen Kombinationen, die es (im schlimmsten Fall) auszuprobieren gilt.
+	Schreiben Sie ein Python-Programm, welches die $2000$ kleinsten, geraden Nummern auflistet.
+	Die erste Nummer sollte $0790000000$ sein, die letzte $0790001999$.
+	Das Programm soll die Nummern als Zeichenkette (eine Nummer pro Zeile) ausgeben.
+
+	Tipps:
+	\begin{itemize}
+		\item Mit \pythoninline{str(num)}
+		      wird aus der Zahl \pythoninline{num} eine Zeichenkette.
+		      Beispielsweise gibt uns \pythoninline{str(15)}
+		      die Zeichenkette \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"15"!.
+		\item Erinnern Sie sich, was die Operation \pythoninline{+} in dem Ausdruck \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"In" + "form" + "atik"! macht?
+	\end{itemize}
+	\begin{myanswer}
+		\begin{lstlisting}
+      for num in range(790000000, 790002000,2):
+        print("0" + str(num)) # füge die Zeichenkette "0" vorne an
+    \end{lstlisting}
+	\end{myanswer}
+\end{mychallenge}
+
+
 \section{Verschlüsselung von Texten in Python}
 Während des Zweiten Weltkriegs arbeitete der brillante Mathematiker Alan Turing in Bletchley Park im Vereinten Königreich und war mit der entscheidenden Aufgabe betraut, den Enigma-Code zu knacken, den die Deutschen zur Verschlüsselung ihrer Nachrichten verwendeten. Um diesen komplexen Code zu entschlüsseln, musste Turing sein tiefes Verständnis von Sprache und Mustern nutzen. In diesem Kapitel folgen wir in Turings Fussstapfen und entziffern einige Geheimnachrichten!
 
@@ -13,7 +147,7 @@ Während des Zweiten Weltkriegs arbeitete der brillante Mathematiker Alan Turing
 Im Nachfolgenden schauen wir uns einige Python-Befehle an, die dazu dienen, mit Zeichenketten (= engl. \textit{strings}) zu arbeiten. Dies werden wir insbesondere benötigen, um eigene Python-Programme zu schreiben, mit denen wir Texte verschlüsseln und entschlüsseln können. Genauer gesagt bezeichnen wir Texte in Python als Zeichenketten. Zeichenketten werden in Python innerhalb von einfachen oder doppelten Anführungszeichen geschrieben, also entweder \lstinline|'...'| oder \lstinline|"..."|. Innerhalb der Anführungszeichen können beliebige Zeichen stehen, beispielsweise Buchstaben, Leerzeichen, Spezialzeichen oder Zahlen.
 
 
-\cref{tab:string-op} und \cref{tab:tab:string-sep-merge} enthalten eine Übersicht einiger nützlicher Befehle, die Sie in diesem Kapitel verwenden werden.
+\cref{tab:string-op} und \cref{tab:string-sep-merge} enthalten eine Übersicht einiger nützlicher Befehle, die Sie in diesem Kapitel verwenden werden.
 
 \begin{table}[H]
  \centering
@@ -101,6 +235,7 @@ Schreiben Sie ein Programm, um zu zählen, wie häufig der Buchstabe ``e / E'' i
 \begin{lstlisting}
 my_text = "Eines Tages entschied der Elefant, einen edlen Teppich zu weben."
 \end{lstlisting}
+
 \begin{myanswer}
 \begin{lstlisting}
 my_text = "Eines Tages entschied der Elefant, einen edlen Teppich zu weben."
@@ -426,135 +561,3 @@ Berechnen Sie mithilfe folgenden Python-Programms die Friedman'sche Charakterist
 \end{myexercise}
 
 
-\newpage\subsection{Weitere Zeichenketten-Aufgaben}
-Zeichenketten können verkettet, also aneinandergehängt werden mit dem Befehl \lstinline|"Text1" + "Text2" + "Text3"| usw. Falls Sie eine Zeichenkette mehrfach drucken wollen, können Sie diesen mit einer Zahl multiplizieren, die dann die Anzahl Wiederholungen der Zeichenkette bestimmt. So ist der Ausdruck \lstinline|"a" * 3| beispielsweise gleichbedeutend mit einer Zeichenkette \lstinline|"aaa"|.
-
-\begin{myexercise}\label{ex:pfeil}
-	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
-	\begin{lstlisting}
-    print(" " * 3 + "X" * 1)
-    print(" " * 2 + "X" * 3)
-    print(" " * 1 + "X" * 5)
-    print(" " * 0 + "X" * 7)
-    print(" " * 3 + "X" * 1)
-    print(" " * 3 + "X" * 1)
-  \end{lstlisting}
-\end{myexercise}
-
-
-\begin{myexercise}
-	Erstellen Sie nun ein Programm, das ein Herz zeichnet, ähnlich zu \cref{ex:pfeil}, also lediglich mit Zeichenketten-Ausdrücken und dem Befehl \lstinline|print()|.
-	\begin{myanswer}
-		\begin{lstlisting}
-print(" " * 2 + "X" * 1 + " "*4+"X" * 1 + " "*1)
-print(" " * 1 + "X" * 8 + " "*1)
-print(" " * 2 + "X" * 6 + " "*1)
-print(" " * 3 + "X" * 4 + " "*2)
-print(" " * 4 + "X" * 2 + " "*2)
-\end{lstlisting}
-	\end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}\label{ex:name}
-	Schreiben Sie ein Programm, das Sie nach Ihrem Namen fragt. Danach soll Sie das Programm neun Mal begrüssen, indem es auf 3 Zeilen je dreimal den Text ``\texttt{Hallo [Ihr Name]}'' druckt.
-	\begin{myanswer}
-		\begin{lstlisting}
-	name = input("Wie heissen Sie?")
-	
-	repeat 3:
-	    print(("Hallo " + name + " ")*3)
-  \end{lstlisting}
-	\end{myanswer}
-\end{myexercise}
-
-Im Nachfolgenden schauen wir uns einige Übungen an, mit denen wir die einzelnen Zeichen aus Zeichenketten herauslesen können.
-
-\begin{myexercise}
-	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
-	\begin{lstlisting}
-    text = "EASY"
-    for buchstabe in text:
-      print(buchstabe)
-  \end{lstlisting}
-	\begin{myanswer}
-		\begin{lstlisting}
-      E
-      A
-      S
-      Y
-    \end{lstlisting}
-		\pythoninline{for x in mystring} ist eine Schleife über die Zeichenkette \pythoninline{mystring}. Dabei nimmt \pythoninline{x} nacheinander jeden Buchstaben in dieser Zeichenkette genau einmal an.
-	\end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}\label{myexercise:index}
-	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
-	\begin{lstlisting}
-    Klartext = "Schweiz"
-    print(Klartext[0])
-    print(Klartext[1])
-    print(Klartext[2])
-    print(Klartext[3])
-    print(Klartext[4])
-    print(Klartext[5])
-    print(Klartext[6])
-  \end{lstlisting}
-	\begin{myanswer}
-		\begin{lstlisting}
-      S
-      c
-      h
-      w
-      e
-      i
-      z
-    \end{lstlisting}
-		\pythoninline{mystring[0]} ist der erste Buchstabe der Zeichenkette \pythoninline{mystring}, \pythoninline{mystring[1]} der zweite und so weiter.
-	\end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}
-	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
-	\begin{lstlisting}
-    Klartext = "Schweiz"
-    for i in range(len(Klartext)):
-      print(Klartext[i])
-  \end{lstlisting}
-	\begin{myanswer}
-		Dieses Programm ist äquivalent zum Programm in \cref{myexercise:index}.
-		Hier wird allerdings eine \pythoninline{for}-Schleife über die Länge des Texts verwendet.
-	\end{myanswer}
-\end{myexercise}
-
-Der Befehl \lstinline|for i in range(len(Klartext))| erstellt eine Variable \lstinline|i| innerhalb der \lstinline|for|-Schleife, welche jedes Zeichen von 0 bis zur Länge von \lstinline|Klartext| minus 1 geht. Weshalb minus 1? Das erste Zeichen von \lstinline|Klartext| wird in Python mit \lstinline|Klartext[0]| ausgelesen, das letzte mit \lstinline|Klartext[len(Klartext)-1]|, da wir bei 0 zu zählen beginnen und nicht bei 1. Mit dem Ausdruck \lstinline|Klartext[i]| wird also das \lstinline|i|-te Zeichen der Zeichenkette \lstinline|Klartext| ausgelesen, wobei \lstinline|i| von 0 bis zu (Länge des Klartexts minus 1) geht.
-
-Der Befehl \lstinline|for i in range(len(Klartext))| kann auch geschrieben werden also Befehl \lstinline|for i in range(0, len(Klartext), 1)|, wobei dies meint:
-\begin{itemize}
-	\item \lstinline|i| beginnt bei 0
-	\item \lstinline|i| geht bis zu \lstinline|len(Klartext)-1|
-	\item \lstinline|i| vergrössert sich in 1er-Schritten
-\end{itemize}
-Dieser Befehl könnte auch verwendet werden, um bei einer beliebigen Zahl zu starten (nicht notwendigerweise 0), und um \lstinline|i| in Schritten grösser als 1 zu vergrössern. Die allgemeine Syntax des Befehls lässt sich also wie folgt zusammenfassen: \lstinline|for i in range(start, ende, schrittgroesse)|.
-
-\begin{mychallenge}
-	Eine Person verrät uns lediglich die Vorwahl ihrer $10$-stelligen Mobiltelefonnummer. Zudem verrät Sie Ihnen auch, dass ihre Telefonnummer gerade ist (also auf 2, 4, 6, 8 oder 0 endet).
-	Damit gibt es nur noch $5$ Millionen Kombinationen, die es (im schlimmsten Fall) auszuprobieren gilt.
-	Schreiben Sie ein Python-Programm, welches die $2000$ kleinsten, geraden Nummern auflistet.
-	Die erste Nummer sollte $0790000000$ sein, die letzte $0790001999$.
-	Das Programm soll die Nummern als Zeichenkette (eine Nummer pro Zeile) ausgeben.
-
-	Tipps:
-	\begin{itemize}
-		\item Mit \pythoninline{str(num)}
-		      wird aus der Zahl \pythoninline{num} eine Zeichenkette.
-		      Beispielsweise gibt uns \pythoninline{str(15)}
-		      die Zeichenkette \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"15"!.
-		\item Erinnern Sie sich, was die Operation \pythoninline{+} in dem Ausdruck \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"In" + "form" + "atik"! macht?
-	\end{itemize}
-	\begin{myanswer}
-		\begin{lstlisting}
-      for num in range(790000000, 790002000,2):
-        print("0" + str(num)) # füge die Zeichenkette "0" vorne an
-    \end{lstlisting}
-	\end{myanswer}
-\end{mychallenge}
