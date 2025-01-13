@@ -15,6 +15,15 @@ def caesar_main():
     plt.savefig("../../Figures/caesar-freq-exercise.pdf",
                 format="pdf", bbox_inches="tight")
 
+    text_lang = open("Texts/Kafka.txt").readlines()[0]
+    text_lang = preprocess_text(text_lang)
+    text_lang_c = caesar(text_lang, 2)
+    fig, ax = show_letter_freq(text_lang_c)
+    # plt.show()
+    plt.savefig("../../Figures/caesar-freq.pdf",
+                format="pdf", bbox_inches="tight")
+
+
 
 def vigenere_main():
     # langer Text, mit Caesar und Vigenère
@@ -24,14 +33,7 @@ def vigenere_main():
     print("V", text_kurz_v)
 
     text_lang = open("Texts/Kafka.txt").readlines()[0]
-    text_lang = preprocess_text(text_lang)
-    text_lang_c = caesar(text_lang, 2)
-    fig, ax = show_letter_freq(text_lang_c)
-    # plt.show()
-    plt.savefig("../../Figures/caesar-freq.pdf",
-                format="pdf", bbox_inches="tight")
-
-    text_lang_v = vigenere(text_lang, "KSLEE")
+    text_lang_v = vigenere(text_lang, "ICH")
     print("LANGER TEXT", text_lang_v[:400])
     fig, ax = show_letter_freq(text_lang_v)
     # plt.show()
@@ -49,12 +51,10 @@ def vigenere_main():
     print(vigenere("MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIPCQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB", "ICH", False))
 
 # generate friedman figures
-
-
 def friedman_main(savefig=True):
     text_lang = open("Texts/Werther.txt").readlines()[0]
     text_lang = preprocess_text(text_lang)
-    key = "BRAVO"
+    key = "ICH"
     text = vigenere(text_lang, key)
 
     print(text)
@@ -101,5 +101,5 @@ def monoalphabetic_main():
     print(shifts)
 
 
-vigenere_main()
+friedman_main()
 

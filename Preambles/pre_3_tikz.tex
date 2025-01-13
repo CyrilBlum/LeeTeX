@@ -111,11 +111,11 @@ fill=green!30
     \draw (origin) circle (\ri);
     \draw (origin) circle (\ri+\dri);
     \foreach \letter [count=\ind from 0,evaluate=\ind as \ang using 90-\ind*360/26] in {A,B,...,Z}{%
-        \node[rotate={\ang-90}] at ($(origin)+(\ang:{\r+\dr/2})$) {\letter};
+        \node[rotate={\ang-90}] at ($(origin)+(\ang:{\r+\dr/2})$) {\textcolor{RoyalBlue}{\letter}};
         \draw({\ang+0.5*360/26}:\r)--({\ang+0.5*360/26}:\r+\dr);
       }
     \foreach \letter [count=\ind from 0,evaluate=\ind as \ang using 90-\ind*360/26-\rotate*360/26] in {A,B,...,Z}{%
-        \node[rotate={\ang-90}] at ($(origin)+(\ang:{\ri+\dri/2})$) {\letter};
+        \node[rotate={\ang-90}] at ($(origin)+(\ang:{\ri+\dri/2})$) {\textcolor{ForestGreen}{\letter}};
         \draw({\ang+0.5*360/26}:\ri)--({\ang+0.5*360/26}:\ri+\dri);
       }
     \draw[-latex] (90:\ri-0.3) arc (90:{90-\rotate*360/26}:\ri-0.3)node[pos=0.5,anchor=90-\rotate*180/26]{$\rotate$};
@@ -196,6 +196,8 @@ fill=green!30
 \newcommand{\multiKey}[1]{
 \resizebox{\textwidth}{!}{
 \begin{tikzpicture}[node distance=0.5cm and 0.5cm]
+	\node(topL) at (-1,1.5) {};
+	\node(bottomL) at (-1,0) {};
     % Erste Reihe (oberes Alphabet) automatisch generiert
     \foreach \i [count=\j from 1] in {A,...,Z} {
         \node (top\j) at (\j, 1.5) {\i};
@@ -208,8 +210,14 @@ fill=green!30
 
     % Verbindungen
     \foreach \i in {1,...,26} {
-        \draw[-] (top\i) -- (bottom\i);
+        \draw[<->] (top\i) -- (bottom\i);
     }
+    
+    % Zweiter Pfeil von bottomL nach topL, um 0.1cm nach rechts verschoben
+    \draw[->,red,ultra thick] ($(bottomL.north)+(.5cm,0)$) -- node[right]{\emoji{key}}($(topL.south)+(.5cm,0)$);
+    
+    \draw[->,red,ultra thick] (topL) -- node[left]{\emoji{lock}} (bottomL);
+
 \end{tikzpicture}
 }
 }
