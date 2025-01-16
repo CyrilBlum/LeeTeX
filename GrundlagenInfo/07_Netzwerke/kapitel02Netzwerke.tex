@@ -3,111 +3,108 @@
 \section{Netzwerke und das Internet}
 Bevor wir uns mit dem Internet als spezielles Netzwerk befassen, wollen wir allgemein nochmals auf Netzwerke eingehen. Im Alltag treffen Sie Netzwerke an unterschiedlichsten Orten an, zum Beispiel:
 \begin{itemize}
-\item Transport-Netzwerke: Die Post, DHL, Planzer, etc.
-\item Soziale Netzwerke: TikTok, Youtube, Instagram, etc.
-\item Mobilitäts-Netzwerke: Das Strassennetz, SBB, Flixbus, etc.
-\item Shopping-Netzwerke: Aliexpress, Uber, etc.
-\item Computer-Netzwerke: \textbf{Das Internet}, Firmen-Netzwerke etc.
+	\item Transport-Netzwerke: Die Post, DHL, Planzer, etc.
+	\item Soziale Netzwerke: TikTok, Youtube, Instagram, etc.
+	\item Mobilitäts-Netzwerke: Das Strassennetz, SBB, Flixbus, etc.
+	\item Shopping-Netzwerke: Aliexpress, Uber, etc.
+	\item Computer-Netzwerke: \textbf{Das Internet}, Firmen-Netzwerke etc.
 \end{itemize}
 
-All diese Netzwerke können als Graphen visualisiert und veranschaulicht werden. Gemeinsam ist allen Netzwerken, dass die einzelnen Knoten, dass sie ihren ``Wert'', d.h. ihren Nutzen, erst durch die Verbindung mit anderen Kanten haben. Anders gesagt, mit den Worten des ``Erfinders des Internets'', Tim Berners-Lee:
+All diese Netzwerke können als Graphen visualisiert und veranschaulicht werden. Gemeinsam ist allen Netzwerken, dass die einzelnen Knoten ihren \enquote{Wert} (ihren Nutzen) erst durch die Verbindung mit anderen Kanten erhalten. Anders gesagt, mit den Worten des \enquote{Erfinders des Internets}, Tim Berners-Lee:
 
 \begin{quotation}
-The web is more a social creation than a technical one.
+	The web is more a social creation than a technical one.
 \end{quotation}
 
-Häufig werden die Begriffe ``Internet'' und ``Computer-Netze'', bzw. ``Rechner-Netze'' austauschbar verwendet. Dabei ist es jedoch wichtig zu verstehen, dass dies zwei unterschiedliche Konzepte sind: währenddem mit dem ``Internet'' ein höchst komplexes, den gesamten Globus umspannendes Netzwerk von Computern gemeint ist, können lediglich zwei miteinander verbundene Computer bereits ein Rechnernetz bilden. Das Internet wird häufig auch als ``Netz von (Rechner-)Netzen'' bezeichnet. Es ist daher wichtig, dass wir uns zuerst mit einfacheren Rechnernetzen befassen, da diese die Grundbausteine für das Internet bilden.
+Häufig werden die Begriffe ``Internet'' und ``Computer-Netze'', bzw. ``Rechner-Netze'' austauschbar verwendet. Dabei ist es jedoch wichtig zu verstehen, dass dies zwei unterschiedliche Konzepte sind: während dem mit dem \textit{Internet} ein höchst komplexes, den gesamten Globus umspannendes Netzwerk von Computern gemeint ist, können lediglich zwei miteinander verbundene Computer bereits ein Rechnernetz bilden. Das Internet wird häufig auch als \textit{Netz von (Rechner-)Netzen} bezeichnet. Es ist daher wichtig, dass wir uns zuerst mit einfacheren Rechnernetzen befassen, da diese die Grundbausteine für das Internet bilden.
 
 \subsection{Topologie}
-Beim Erstellen eines Netzwerks stellt sich als erstes die Frage, welche Computer man mit welchen anderen Computern verbinden soll. Die Strukture der Verbindungen in einem Netzwerk kann als umformuliert werden als Graphen-Aufgabe, bei der es zu bestimmen gibt, welche Knoten eines Graphen miteinander über eine Kanten verbunden werden. Die verschiedenen möglichen Strukturen eines Netzwerks werden auch als \textbf{Topologie} bezeichnet. Einige Beispiel-Topologien sind in \cref{fig:topologie} gezeigt.
+Beim Erstellen eines Netzwerks stellt sich als Erstes die Frage, welche Computer man mit welchen anderen Computern verbinden soll. Die Struktur der Verbindungen in einem Netzwerk kann also umformuliert werden als Graphen-Problem, bei dem es zu bestimmen gibt, welche Knoten eines Graphen miteinander über eine Kante verbunden werden. Die verschiedenen möglichen Strukturen eines Netzwerks werden auch als \textbf{Topologie} bezeichnet. Einige Beispiel-Topologien sind in \cref{fig:topologie} gezeigt.
 \begin{figure}[H]
-\centering
-\centering
-% Bus Topology
-\begin{subfigure}[b]{0.25\textwidth}
-  \centering
-  \begin{tikzpicture}
-    \draw[ForestGreen, thick] (0,0) -- (2,0); % Bus
-    \foreach \x in {0.3, 0.9, 1.5} {
-      \filldraw[ForestGreen] (\x, 0) circle (2mm);
-    }
-  \end{tikzpicture}
-  \caption{Bus}
-\end{subfigure}%
-% Ring Topology
-\begin{subfigure}[b]{0.25\textwidth}
-  \centering
-  \begin{tikzpicture}
-    \draw[ForestGreen, thick] (0:1cm) \foreach \x in {60,120,...,360} {
-          -- (\x:1cm)
-    } -- cycle; % Completes the circle
-    \foreach \x in {0,60,...,300} {
-      \filldraw[ForestGreen] (\x:1cm) circle (2mm);
-    }
-  \end{tikzpicture}
-  \caption{Ring}
-\end{subfigure}
-% Stern
-\begin{subfigure}[b]{0.25\textwidth}
-  \centering
-  \begin{tikzpicture}
-    \node[fill=ForestGreen, circle, minimum size=5mm] at (0,0) (center) {};
-    \foreach \x in {0,45,...,315} {
-      \node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\x) {};
-      \draw[ForestGreen] (center) -- (node\x);
-    }
-  \end{tikzpicture}
-  \caption{Stern}
-\end{subfigure}%
-% Mesh Topology
-\begin{subfigure}[b]{0.25\textwidth}
-  \centering
-\begin{tikzpicture}
-  % Define nodes
-  \foreach \x [count=\i] in {18,90,...,306} {
-    \node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\i) {};
-  }
-  
-  % Connect nodes
-  \foreach \x in {1,2,3,4,5}{
-    \foreach \y in {\x,...,5}{
-      \ifnum\x=\y\relax % Skip self-connection
-      \else
-        \draw[ForestGreen, thick] (node\x) -- (node\y);
-      \fi
-      }}
-  
-\end{tikzpicture}
-  \caption{Vollvermascht}
-\end{subfigure}
-\begin{subfigure}{.25\textwidth}
-\centering
-\begin{tikzpicture}[
-    sibling distance=5mm, % Adjust spacing between siblings
-    level distance=8mm, % Adjust spacing between parent and child nodes
-    every node/.style={fill=ForestGreen, circle, thick, minimum size=2mm},
-    edge from parent/.style={ForestGreen, thick, draw}
-]
-% Define the tree
-\node {} % Root node
-  child {node {}
-    child {node {}}
-    child {node {}}
-  }
-  child {node {}
-    child {node {}}
-    child {node {}}
-  }
-  child {node {}
-    child {node {}}
-    child {node {}}
-  };
+	\centering
+	% Bus Topology
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\draw[ForestGreen, thick] (0,0) -- (2,0); % Bus
+			\foreach \x in {0.3, 0.9, 1.5} {
+					\filldraw[ForestGreen] (\x, 0) circle (2mm);
+				}
+		\end{tikzpicture}
+		\caption{Bus}
+	\end{subfigure}%
+	% Ring Topology
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\draw[ForestGreen, thick] (0:1cm) \foreach \x in {60,120,...,360} {
+					-- (\x:1cm)
+				} -- cycle; % Completes the circle
+			\foreach \x in {0,60,...,300} {
+					\filldraw[ForestGreen] (\x:1cm) circle (2mm);
+				}
+		\end{tikzpicture}
+		\caption{Ring}
+	\end{subfigure}
+	% Stern
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\node[fill=ForestGreen, circle, minimum size=5mm] at (0,0) (center) {};
+			\foreach \x in {0,45,...,315} {
+					\node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\x) {};
+					\draw[ForestGreen] (center) -- (node\x);
+				}
+		\end{tikzpicture}
+		\caption{Stern}
+	\end{subfigure}%
+	% Mesh Topology
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\begin{tikzpicture}
+			% Define nodes
+			\foreach \x [count=\i from 1] in {18,90,162,234,306} {
+					\node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\i) {};
+				}
 
-\end{tikzpicture}
-\caption{Baum}
-\end{subfigure}
-\caption{Beispiele von Netzwerk-Topologien}
-\label{fig:topologie}
+			% Connect nodes (to border points)
+			\foreach \x in {1,2,3,4,5} {
+					\foreach \y in {\x,...,5} {
+							\draw[ForestGreen, thick] (node\x) -- (node\y);
+						}
+				}
+
+		\end{tikzpicture}
+		\caption{Vollvermascht}
+	\end{subfigure}
+	\begin{subfigure}{.25\textwidth}
+		\centering
+		\begin{tikzpicture}[
+				sibling distance=5mm, % Adjust spacing between siblings
+				level distance=8mm, % Adjust spacing between parent and child nodes
+				every node/.style={fill=ForestGreen, circle, thick, minimum size=2mm},
+				edge from parent/.style={ForestGreen, thick, draw}
+			]
+			% Define the tree
+			\node {} % Root node
+			child {node {}
+					child {node {}}
+					child {node {}}
+				}
+			child {node {}
+					child {node {}}
+					child {node {}}
+				}
+			child {node {}
+					child {node {}}
+					child {node {}}
+				};
+
+		\end{tikzpicture}
+		\caption{Baum}
+	\end{subfigure}
+	\caption{Beispiele von Netzwerk-Topologien}
+	\label{fig:topologie}
 \end{figure}
 
 Da Computer in Realität häufig nur über eine einzige Netzwerkkarte verfügen, können sie auch nur mit einem weiteren Computer verbunden werden. In einem lokalen Netzwerk trifft man daher häufig die Form einer Stern-Topologie an, bei der alle Computer mit einer zentralen \textbf{Switch} verbunden werden, also einem Gerät, welches mehrere Rechner an einem zentralen Punkt miteinander verbindet.
@@ -115,74 +112,74 @@ Da Computer in Realität häufig nur über eine einzige Netzwerkkarte verfügen,
 \newpage
 \section{Internet-Schichten}
 \subsection{Schichtenmodell: Analogie}
-Wie in vielen anderen Bereichen des alltäglichen Lebens verläuft auch die Kommunikation über das Internet aus unterschiedlichen Teil-Aufgaben, die sich in sogenannte ``Schichten'' aufteilen lassen. Als Analogie zum Schichtenmodell sei folgende Situation gegeben, in der die Chefs zwei unterschiedlicher Firmen miteinander kommunizieren wollen (s. Abb. \cref{fig:schichtenmodell_analogie}):
+Die Kommunikation über das Internet verläuft in unterschiedlichen Teilschritten. Man spricht von dem \textit{Schichtenmodell}. Als Analogie zum Schichtenmodell sei folgende Situation gegeben, in der die Chefs zweier unterschiedlicher Firmen miteinander kommunizieren wollen (siehe \cref{fig:schichtenmodell_analogie}):
 \begin{enumerate}
-\item Chef 1 (\faFemale, in Europa) möchte mit Chef 2 (\faMale, in Asien) sprechen.
-\item Dazu übermittelt Chef 1 dem Sekretariat Ihre Nachricht an Chef 2. Das Sekretariat schreibt die Nachricht nieder und übermittelt der lokalen Post den Brief an Chef 2.
-\item Die lokale Post kümmert sich nun um den Transport zur asiatischen Post, wo der Brief an das Sekretariat von Firma 2 übergeben und schlussendlich an Chef 2 gelangt.
+	\item Chef 1 (\faFemale, in Europa) möchte mit Chef 2 (\faMale, in Asien) sprechen.
+	\item Dazu übermittelt Chef 1 dem Sekretariat Ihre Nachricht an Chef 2. Das Sekretariat schreibt die Nachricht nieder und übermittelt der lokalen Post den Brief an Chef 2.
+	\item Die lokale Post kümmert sich nun um den Transport zur asiatischen Post, wo der Brief an das Sekretariat von Firma 2 übergeben und schlussendlich an Chef 2 gelangt.
 \end{enumerate}
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[
-    auto,
-    block/.style={
-    minimum width=3cm,
-    node distance=1.5cm,
-        rectangle, 
-        fill=RoyalBlue!50, 
-        align=center, 
-        rounded corners
-    }
-]
+	\centering
+	\begin{tikzpicture}[
+			auto,
+			block/.style={
+					minimum width=3cm,
+					node distance=1.5cm,
+					rectangle,
+					fill=RoyalBlue!50,
+					align=center,
+					rounded corners
+				}
+		]
 
 
-% Define the nodes with FontAwesome icons
-\node[block] (chefs) {\faFemale\ Chef};
-\node[block, below=of chefs] (secretariat) {\faPhone\ Sekretariat};
-\node[block, below=of secretariat] (postman) {\faMale\ Post};
+		% Define the nodes with FontAwesome icons
+		\node[block] (chefs) {\faFemale\ Chef};
+		\node[block, below=of chefs] (secretariat) {\faPhone\ Sekretariat};
+		\node[block, below=of secretariat] (postman) {\faMale\ Post};
 
 
-% Define the nodes with FontAwesome icons
+		% Define the nodes with FontAwesome icons
 
-\node[block, right=of postman] (postman2) {\faMale\ Post};
-\node[block, above=of postman2] (secretariat2) {\faPhone\ Sekretariat};
-\node[block, above=of secretariat2] (chefs2) {\faMale\ Chef};
+		\node[block, right=of postman] (postman2) {\faMale\ Post};
+		\node[block, above=of postman2] (secretariat2) {\faPhone\ Sekretariat};
+		\node[block, above=of secretariat2] (chefs2) {\faMale\ Chef};
 
 
-% Draw the dashed arrows
-\draw[<->, dashed, RoyalBlue!50, thick] (chefs) -- (chefs2);
-\draw[<->, dashed, RoyalBlue!50, thick] (secretariat) -- (secretariat2);
-\draw[<->, dashed, RoyalBlue!50, thick] (postman) -- (postman2);
+		% Draw the dashed arrows
+		\draw[<->, dashed, RoyalBlue!50, thick] (chefs) -- (chefs2);
+		\draw[<->, dashed, RoyalBlue!50, thick] (secretariat) -- (secretariat2);
+		\draw[<->, dashed, RoyalBlue!50, thick] (postman) -- (postman2);
 
-\draw[->, line width=1mm,ForestGreen!50] (chefs) -- node[left]{\faComments} (secretariat) ;
-\draw[->, line width=1mm,ForestGreen!50] (secretariat) -- node[left]{\faEnvelope} (postman) ;
-\draw[->, line width=1mm,ForestGreen!50, bend right] (postman.south) to node[midway,below]{\faBicycle\ \faMotorcycle\ \faCar\ \faShip\ \faPlane} (postman2.south) ;
-\draw[->, line width=1mm,ForestGreen!50] (postman2) -- node[right]{\faEnvelope} (secretariat2) ;
-\draw[->, line width=1mm,ForestGreen!50] (secretariat2) -- node[right]{\faComments} (chefs2) ;
+		\draw[->, line width=1mm,ForestGreen!50] (chefs) -- node[left]{\faComments} (secretariat) ;
+		\draw[->, line width=1mm,ForestGreen!50] (secretariat) -- node[left]{\faEnvelope} (postman) ;
+		\draw[->, line width=1mm,ForestGreen!50, bend right] (postman.south) to node[midway,below]{\faBicycle\ \faMotorcycle\ \faCar\ \faShip\ \faPlane} (postman2.south) ;
+		\draw[->, line width=1mm,ForestGreen!50] (postman2) -- node[right]{\faEnvelope} (secretariat2) ;
+		\draw[->, line width=1mm,ForestGreen!50] (secretariat2) -- node[right]{\faComments} (chefs2) ;
 
-% fit rectangles around regions
-\node[fit=(chefs) (postman), inner sep=8pt, red, dotted, draw, line width=1pt,rounded corners](region1) {};
-\node[fit=(chefs2) (postman2), inner sep=8pt, red, dotted, draw, line width=1pt,rounded corners](region2) {};
-% annotate both rectangles
-\node[above=5pt of region1.north, anchor=center, align=center]{\textcolor{red}{Firma 1, Europa}};
-\node[above=5pt of region2.north, anchor=center, align=center]{\textcolor{red}{Firma 2, Asien}};
+		% fit rectangles around regions
+		\node[fit=(chefs) (postman), inner sep=8pt, red, dotted, draw, line width=1pt,rounded corners](region1) {};
+		\node[fit=(chefs2) (postman2), inner sep=8pt, red, dotted, draw, line width=1pt,rounded corners](region2) {};
+		% annotate both rectangles
+		\node[above=5pt of region1.north, anchor=center, align=center]{\textcolor{red}{Firma 1, Europa}};
+		\node[above=5pt of region2.north, anchor=center, align=center]{\textcolor{red}{Firma 2, Asien}};
 
-\end{tikzpicture}
-\label{fig:schichtenmodell_analogie}
-\caption{Analogie zum Schichtenmodell: Kommunikation in zwei grossen Firmen}
+	\end{tikzpicture}
+	\label{fig:schichtenmodell_analogie}
+	\caption{Analogie zum Schichtenmodell: Kommunikation zwischen zwei grossen Firmen}
 \end{figure}
 
 Dieser Kommunikationsablauf kann in Schichten mit jeweiligen dazugehörigen Prozessen aufgeteilt werden:
 \begin{enumerate}
-\item \textbf{Schicht ``Chefs''}: damit die beiden Chefs mit einander sinnvolle Gespräche führen können, verfügen Sie über gemeinsame Standards (Sprache, Wissen etc.) sowie Protokolle (standardisierte Abläufe der Begrüssung etc.).
-\item \textbf{Schicht ``Sekretariat''}: Damit die Sekretariate miteinander kommunizieren können, benötigen auch sie standardisierte Abläufe oder Protokolle, etwa, wie man einen Brief korrekt verfässt, datiert und addressiert.
-\item \textbf{Schicht ``Post''}: Die Post verfügt ebenfalls über standardisierte Protokolle (wie werden Briefe und Pakete von A nach B transportiert? Mit welchen Transportmitteln, über welche Routen?)
+	\item \textbf{Schicht ``Chefs''}: damit die beiden Chefs mit einander sinnvolle Gespräche führen können, verfügen Sie über gemeinsame Standards (Sprache, Wissen etc.) sowie Protokolle (standardisierte Abläufe der Begrüssung etc.).
+	\item \textbf{Schicht ``Sekretariat''}: Damit die Sekretariate miteinander kommunizieren können, benötigen auch sie standardisierte Abläufe oder Protokolle, etwa, wie man einen Brief korrekt verfässt, datiert und addressiert.
+	\item \textbf{Schicht ``Post''}: Die Post verfügt ebenfalls über standardisierte Protokolle (wie werden Briefe und Pakete von A nach B transportiert? Mit welchen Transportmitteln, über welche Routen?)
 \end{enumerate}
 Die Vorteile des Schichtenmodells scheinen offensichtlich:
 \begin{itemize}
-\item \textbf{Unabhängigkeit der Schichten}: Falls die Post das Transportmittel ändert, müssen die Sekretariate die Briefe nicht neu verfassen.
-\item \textbf{Modularität und Spezialisierung}: Statt das jemand alles tun muss (Chef 1 reist nach Asien zu Chef 2), kann der Prozess für die jeweiligten Beteiligten schnell und effizient abgewickelt werden.
+	\item \textbf{Unabhängigkeit der Schichten}: Falls die Post das Transportmittel ändert, müssen die Sekretariate die Briefe nicht neu verfassen.
+	\item \textbf{Modularität und Spezialisierung}: Statt das jemand alles tun muss (Chef 1 reist nach Asien zu Chef 2), kann der Prozess für die jeweiligten Beteiligten schnell und effizient abgewickelt werden.
 \end{itemize}
 
 \subsection{TCP-IP- und OSI-Schichtenmodell}
@@ -191,160 +188,160 @@ Im Zusammenhang mit dem Internet werden häufig zwei Schichtenmodelle gegenüber
 
 
 \begin{table}[H]
-\centering
+	\centering
 
-\begin{tabular}{c|m{2.6cm}||m{2cm}||m{4.6cm}|m{2.5cm}|m{2cm}}
-\textbf{\#} & \textbf{Schicht (OSI)}& \textbf{Schicht \newline (TCP / IP)} & \textbf{Aufgabe}                                                                                & \textbf{Informations-\newline form} & \textbf{Gerät / \newline Protokoll}               \\ \midrule\midrule
-\rowcolor{yellow!10}7                    & Anwendung \newline \textit{Application}              && Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                            & Nachricht                               & \textbf{HTTP(S)}, FTP, SMTP...                                        \\
-\rowcolor{yellow!20}6                    & Darstellung \newline \textit{Presentation}   &Anwendung\newline\textit{Application}& Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                               & JPEG, MPEG, GIF, \textbf{HTML}...                            \\ 
-\rowcolor{yellow!30}5                    & Sitzung \newline \textit{Session} && Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.   & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ... \\ 
-\rowcolor{orange!20}4                    & Transport\newline \textit{Transport} &Transport\newline\textit{Transport}& Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                  & Segment                                 & Firewall, \textbf{TCP}, UDP, Ports... \\ 
-\rowcolor{RoyalBlue!20}3                    & Vermittlung \newline \textit{Network} &Internet\newline\textit{Internet}& Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet. & Paket                                   & Router, \textbf{IPv4}, IPv6                                     \\ 
-\rowcolor{Gray!15}2                    & Sicherung \newline \textit{Data Link}             &\multirow{2}{*}{\shortstack{Netzzugriff\\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}...                            \\
-\rowcolor{Gray!25}1 & Bitübertragung \newline \textit{Physical}              && Herstellung physischer Verbindungen zwischen Geräten.                                                     & Bits                                    & Hub, Repeater, Modem, Kabel... \\
-\end{tabular}
-\label{table:osi-layers}
-\caption{Internet-Schichten-Modelle \acrfull{OSI} und \acrfull{TCP}-\acrfull{IP} sowie deren wichtigste Aufgaben, Informationsformen, Geräte und Protokolle}
+	\begin{tabular}{c|m{2.6cm}||m{2cm}||m{4.6cm}|m{2.5cm}|m{2cm}}
+		\textbf{\#}              & \textbf{Schicht (OSI)}                     & \textbf{Schicht \newline (TCP / IP)}    & \textbf{Aufgabe}                                                                                                & \textbf{Informations-\newline form}       & \textbf{Gerät / \newline Protokoll}   \\ \midrule\midrule
+		\rowcolor{yellow!10}7    & Anwendung \newline \textit{Application}    &                                         & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                                 & Nachricht                                 & \textbf{HTTP(S)}, FTP, SMTP...        \\
+		\rowcolor{yellow!20}6    & Darstellung \newline \textit{Presentation} & Anwendung\newline\textit{Application}   & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                                 & JPEG, MPEG, GIF, \textbf{HTML}...     \\
+		\rowcolor{yellow!30}5    & Sitzung \newline \textit{Session}          &                                         & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.         & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ...           \\
+		\rowcolor{orange!20}4    & Transport\newline \textit{Transport}       & Transport\newline\textit{Transport}     & Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                    & Segment                                   & Firewall, \textbf{TCP}, UDP, Ports... \\
+		\rowcolor{RoyalBlue!20}3 & Vermittlung \newline \textit{Network}      & Internet\newline\textit{Internet}       & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet.       & Paket                                     & Router, \textbf{IPv4}, IPv6           \\
+		\rowcolor{Gray!15}2      & Sicherung \newline \textit{Data Link}      & \multirow{2}{*}{\shortstack{Netzzugriff                                                                                                                                                                                                       \\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}...                            \\
+		\rowcolor{Gray!25}1      & Bitübertragung \newline \textit{Physical}  &                                         & Herstellung physischer Verbindungen zwischen Geräten.                                                           & Bits                                      & Hub, Repeater, Modem, Kabel...        \\
+	\end{tabular}
+	\label{table:osi-layers}
+	\caption{Internet-Schichten-Modelle \acrfull{OSI} und \acrfull{TCP}-\acrfull{IP} sowie deren wichtigste Aufgaben, Informationsformen, Geräte und Protokolle}
 \end{table}
 
-Im Folgenden gehen verwenden wir hauptsächlich das etwas vereinfachte \acrfull{TCP}-\acrfull{IP}-Modelle und gehen kurz auf jede Schicht ein. 
+Im Folgenden gehen verwenden wir hauptsächlich das etwas vereinfachte \acrfull{TCP}-\acrfull{IP}-Modelle und gehen kurz auf jede Schicht ein.
 
 
 
 \begin{myexercise}
-Um sich auf die Vertiefung in die jeweiligen Schichten und Protokolle einzustimmen, schauen Sie sich folgendes Video an:
+	Um sich auf die Vertiefung in die jeweiligen Schichten und Protokolle einzustimmen, schauen Sie sich folgendes Video an:
 
-\begin{figure}[H]
-\href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Youtube-Video (13')}
-\end{figure}
+	\begin{figure}[H]
+		\href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Youtube-Video (13')}
+	\end{figure}
 
-Notieren Sie sich dabei Ihre Antworten auf folgende Fragen:
-\begin{itemize}
-\item Welche \textbf{Schichten}, \textbf{Geräte} und \textbf{Protokolle} werden genannt?
-\begin{itemize}
-\item Namen (Abkürzung und ganz)
-\item Wofür sind sie zuständig?
-\item Welche Protokolle gehören zu welchen Schichten?
-\item Welche Geräte gehören zu welchen Protokollen / Schichten?
-\end{itemize}
-\item Notieren Sie Ihre \textbf{Fragen}: Welche Begriffe verstehen Sie (noch) nicht?
-\end{itemize}
+	Notieren Sie sich dabei Ihre Antworten auf folgende Fragen:
+	\begin{itemize}
+		\item Welche \textbf{Schichten}, \textbf{Geräte} und \textbf{Protokolle} werden genannt?
+		      \begin{itemize}
+			      \item Namen (Abkürzung und ganz)
+			      \item Wofür sind sie zuständig?
+			      \item Welche Protokolle gehören zu welchen Schichten?
+			      \item Welche Geräte gehören zu welchen Protokollen / Schichten?
+		      \end{itemize}
+		\item Notieren Sie Ihre \textbf{Fragen}: Welche Begriffe verstehen Sie (noch) nicht?
+	\end{itemize}
 
 \end{myexercise}
 
 \begin{myexercise}
-Tauschen Sie sich nun in 3er- bis 4er-Gruppen aus und tragen Sie ihre Notizen zusammen. Beantworten Sie danach folgende Fragen:
-\begin{itemize}
-\item Was ist eine URL?
-\item Was macht ``Mr. IP''?
-\item Was macht der Router?
-\item Was macht die Firewall?
-\item Was macht der Proxy Server? 
-\item Was macht der ``Ping of Death''? \faSkull
-\end{itemize}
+	Tauschen Sie sich nun in 3er- bis 4er-Gruppen aus und tragen Sie ihre Notizen zusammen. Beantworten Sie danach folgende Fragen:
+	\begin{itemize}
+		\item Was ist eine URL?
+		\item Was macht ``Mr. IP''?
+		\item Was macht der Router?
+		\item Was macht die Firewall?
+		\item Was macht der Proxy Server?
+		\item Was macht der ``Ping of Death''? \faSkull
+	\end{itemize}
 \end{myexercise}
 
 \subsection{Anwendungsschicht}
 
 Bevor wir uns näher mit den Dimensionen der Anwendungsschicht sowie der darunterliegenden Schichten befassen, sollten wir zuerst einige häufig auftauchende Begriffe klären, von denen im Kontext von Rechner-Netzen häufig die Rede ist. Je nach Rolle der Computer in einem Rechner-Netz ist häufig von \textbf{Client}, \textbf{Server} oder \textbf{Host} die Rede:
 \begin{itemize}
-\item Der \textbf{Client} $\mathcal{C}$ (von en. \textit{client} = ``Kunde'') bezeichnet den Computer $\mathcal{C}$, der etwas von einem anderen Computer $\mathcal{S}$ will. Genauer gesagt handelt es sich nicht um den Computer selber, sondern um ein Programm auf einem Computer $\mathcal{C}$, das etwas anfordert von einem anderen Programm, das auf einem anderen Computer $\mathcal{S}$ läuft. Zur Vereinfachung sprechen wir jedoch häufig einfach von einem Computer $\mathcal{C}$ und einem Computer $\mathcal{S}$.
-\item Der \textbf{Server} $\mathcal{S}$ (von en. \textit{to serve} = ``dienen'') bezeichnet  den Computer $\mathcal{S}$ (genauer gesagt das Computer-Programm $\mathcal{S}$), das dem Computer $\mathcal{C}$ gibt, was er will. Der Server kann Verbindungsanfragen von anderen Computern akzeptieren oder ablehnen.
-\item Bei einem \textbf{Host} (von englisch \textit{host} = ``Wirt'' / ``Gastgeber'') ist im allgemeinen ein Computer in einem Netzwerk gemeint, der je nach Situation die Rolle des Servers oder Clients einnehmen kann. Der Name eines Computers in einem Netzwerk wird häufig als \textbf{Host Name} bezeichnet.
+	\item Der \textbf{Client} $\mathcal{C}$ (von en. \textit{client} = ``Kunde'') bezeichnet den Computer $\mathcal{C}$, der etwas von einem anderen Computer $\mathcal{S}$ will. Genauer gesagt handelt es sich nicht um den Computer selber, sondern um ein Programm auf einem Computer $\mathcal{C}$, das etwas anfordert von einem anderen Programm, das auf einem anderen Computer $\mathcal{S}$ läuft. Zur Vereinfachung sprechen wir jedoch häufig einfach von einem Computer $\mathcal{C}$ und einem Computer $\mathcal{S}$.
+	\item Der \textbf{Server} $\mathcal{S}$ (von en. \textit{to serve} = ``dienen'') bezeichnet  den Computer $\mathcal{S}$ (genauer gesagt das Computer-Programm $\mathcal{S}$), das dem Computer $\mathcal{C}$ gibt, was er will. Der Server kann Verbindungsanfragen von anderen Computern akzeptieren oder ablehnen.
+	\item Bei einem \textbf{Host} (von englisch \textit{host} = ``Wirt'' / ``Gastgeber'') ist im allgemeinen ein Computer in einem Netzwerk gemeint, der je nach Situation die Rolle des Servers oder Clients einnehmen kann. Der Name eines Computers in einem Netzwerk wird häufig als \textbf{Host Name} bezeichnet.
 \end{itemize}
 
 \subsection{Transportschicht}
-In der Transportschicht geht es, wie es der Name bereits sagt, darum, wie Daten von einem Host zum nächsten transportiert werden. 
+In der Transportschicht geht es, wie es der Name bereits sagt, darum, wie Daten von einem Host zum nächsten transportiert werden.
 
-Die Daten, die zwischen zwei Computern übertragen werden, werden häufig auch als \textbf{Nutzdaten} oder \textit{payload} bezeichnet. Zu diesen Nutzdaten, die zwischen zwei Computern hin- und hergesandt werden sollen, kommen nun noch verschiedene weitere Daten dazu, so genannte \textbf{Metadaten}. Metadaten sind dazu zuständig, wichtige Informationen zu den Ursprungsdaten hinzuzufügen, in diesem Falle Daten, um den Transport der Daten zu ermöglichen. Diese Metadaten werden vom Übertragungs-Steuerungs-Protocoll (\gls{TCP}) zur Verfügung gestellt und genutzt, in einem so genannten \textit{Header} (s. \cref{fig:tcp-header}). 
+Die Daten, die zwischen zwei Computern übertragen werden, werden häufig auch als \textbf{Nutzdaten} oder \textit{payload} bezeichnet. Zu diesen Nutzdaten, die zwischen zwei Computern hin- und hergesandt werden sollen, kommen nun noch verschiedene weitere Daten dazu, so genannte \textbf{Metadaten}. Metadaten sind dazu zuständig, wichtige Informationen zu den Ursprungsdaten hinzuzufügen, in diesem Falle Daten, um den Transport der Daten zu ermöglichen. Diese Metadaten werden vom Übertragungs-Steuerungs-Protocoll (\gls{TCP}) zur Verfügung gestellt und genutzt, in einem so genannten \textit{Header} (s. \cref{fig:tcp-header}).
 
 \begin{figure}[H]
-\centering
-\begin{tabular}{>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}}
+	\centering
+	\begin{tabular}{>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}}
 
-\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{TCP Header}} \\ \midrule\midrule
-Source Port & Destination Port \\ \midrule
-\multicolumn{2}{c}{Sequence \# (SEQ)} \\ \midrule
-\multicolumn{2}{c}{Acknoledgement \# (ACK)} \\ \midrule
-\multicolumn{2}{c}{Weitere TCP-Header-Felder} \\ \midrule
-\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{Nutzdaten}} \\ \midrule\midrule
-\multicolumn{2}{c}{Anwendungsdaten} \\
-\end{tabular}
-\caption{\gls{TCP}-Header (vereinfachte Darstellung)}
-\label{fig:tcp-header}
+		\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{TCP Header}} \\ \midrule\midrule
+		Source Port & Destination Port                              \\ \midrule
+		\multicolumn{2}{c}{Sequence \# (SEQ)}                       \\ \midrule
+		\multicolumn{2}{c}{Acknoledgement \# (ACK)}                 \\ \midrule
+		\multicolumn{2}{c}{Weitere TCP-Header-Felder}               \\ \midrule
+		\rowcolor{orange!20}\multicolumn{2}{c}{\textbf{Nutzdaten}}  \\ \midrule\midrule
+		\multicolumn{2}{c}{Anwendungsdaten}                         \\
+	\end{tabular}
+	\caption{\gls{TCP}-Header (vereinfachte Darstellung)}
+	\label{fig:tcp-header}
 \end{figure}
 
 
 Einige der wichtigsten Metadaten sind:
 
 \begin{itemize}
-\item \textbf{Der Port} (von engl. \textit{port} = Hafen): Dies ist eine Zahl, mit der der Computer weiss, welche Anwendung (z.B. Mail, Browser, Gaming-Programm etc.) Daten verschickt. Ein Computer kann, wie Sie vermutlich wissen, gleichzeitig über mehrere Programme Daten von anderen Computern empfangen und an sie schicken: sie können beispielsweise gleichzeitig eine Nachricht über WhatsApp schicken und ein Video schauen. Damit der Computer weiss, welche Anwendung die Daten verschickt, verseht er die Daten typischerweise mit einem Port. Obschon Ports für jedes Programm frei gewählt werden können, werden für bekannte Protokolle typischerweise Standard-Portnummern verwendet (s. \cref{tab:tcp_ports}).
-\begin{table}[H]
-    \centering
-    \begin{tabular}{ccc}
-    \toprule
-    \textbf{Portnummer} & \textbf{Anwendung} & \textbf{Verwendung} \\
-    \midrule
-    20 & \acrfull{FTP} & Dateitransfer \\
-    21 & \acrfull{FTP} & Befehlssteuerung \\
-    22 & \acrfull{SSH} & Sichere Shell-Zugriffe \\
-    23 & Telnet & Unverschlüsselte Fernsteuerung \\
-    25 & \acrfull{SMTP} & E-Mail-Versand \\
-    53 & \acrfull{DNS} & Namensauflösung \\
-    80 & \acrfull{HTTP} & Webseiten-Abruf \\
-    110 & \acrfull{POP3} & E-Mail-Abholung \\
-    143 & \acrfull{IMAP} & E-Mail-Management \\
-    443 & \acrfull{HTTPS} & Verschlüsselter Webseiten-Abruf \\
-    993 & \acrfull{IMAP} & E-Mail-Management über \acrshort{SSL} \\
-    995 & \acrfull{POP3} & E-Mail-Abholung über \acrshort{SSL} \\
-    \bottomrule
-    \end{tabular}
-    \caption{Gängige \gls{TCP}-Ports, Anwendungen und deren Verwendung}
-    \label{tab:tcp_ports}
-\end{table}
-Sowohl der \textit{Client} wie auch der \textit{Server} versehen die Daten mit jeweils einer Zahl, die für den Ursprungs-Port (\textit{Source Port}), respektive den Ziel-Port (\textit{Destination Port}) stehen.
-\item \textbf{Ziffern} für die \textit{Sequence} (Sequenz) und \textit{Acknowledgement} (Anerkennung) von Paketen, die die richtige Reihenfolge der gesendeten und erhaltenen Daten gerantieren.
-\item Weitere Daten, die für den Transport notwendig sind.
+	\item \textbf{Der Port} (von engl. \textit{port} = Hafen): Dies ist eine Zahl, mit der der Computer weiss, welche Anwendung (z.B. Mail, Browser, Gaming-Programm etc.) Daten verschickt. Ein Computer kann, wie Sie vermutlich wissen, gleichzeitig über mehrere Programme Daten von anderen Computern empfangen und an sie schicken: sie können beispielsweise gleichzeitig eine Nachricht über WhatsApp schicken und ein Video schauen. Damit der Computer weiss, welche Anwendung die Daten verschickt, verseht er die Daten typischerweise mit einem Port. Obschon Ports für jedes Programm frei gewählt werden können, werden für bekannte Protokolle typischerweise Standard-Portnummern verwendet (s. \cref{tab:tcp_ports}).
+	      \begin{table}[H]
+		      \centering
+		      \begin{tabular}{ccc}
+			      \toprule
+			      \textbf{Portnummer} & \textbf{Anwendung} & \textbf{Verwendung}                   \\
+			      \midrule
+			      20                  & \acrfull{FTP}      & Dateitransfer                         \\
+			      21                  & \acrfull{FTP}      & Befehlssteuerung                      \\
+			      22                  & \acrfull{SSH}      & Sichere Shell-Zugriffe                \\
+			      23                  & Telnet             & Unverschlüsselte Fernsteuerung        \\
+			      25                  & \acrfull{SMTP}     & E-Mail-Versand                        \\
+			      53                  & \acrfull{DNS}      & Namensauflösung                       \\
+			      80                  & \acrfull{HTTP}     & Webseiten-Abruf                       \\
+			      110                 & \acrfull{POP3}     & E-Mail-Abholung                       \\
+			      143                 & \acrfull{IMAP}     & E-Mail-Management                     \\
+			      443                 & \acrfull{HTTPS}    & Verschlüsselter Webseiten-Abruf       \\
+			      993                 & \acrfull{IMAP}     & E-Mail-Management über \acrshort{SSL} \\
+			      995                 & \acrfull{POP3}     & E-Mail-Abholung über \acrshort{SSL}   \\
+			      \bottomrule
+		      \end{tabular}
+		      \caption{Gängige \gls{TCP}-Ports, Anwendungen und deren Verwendung}
+		      \label{tab:tcp_ports}
+	      \end{table}
+	      Sowohl der \textit{Client} wie auch der \textit{Server} versehen die Daten mit jeweils einer Zahl, die für den Ursprungs-Port (\textit{Source Port}), respektive den Ziel-Port (\textit{Destination Port}) stehen.
+	\item \textbf{Ziffern} für die \textit{Sequence} (Sequenz) und \textit{Acknowledgement} (Anerkennung) von Paketen, die die richtige Reihenfolge der gesendeten und erhaltenen Daten gerantieren.
+	\item Weitere Daten, die für den Transport notwendig sind.
 \end{itemize}
 
 \begin{mychallenge}
-Lösen Sie die Socket- und Port-Aufgaben auf folgendem Link: \url{https://www.inf-schule.de/rechnernetze/anwendung/socketprogrammierung/Anfragen_an_einen_Server_Stellen}.
+	Lösen Sie die Socket- und Port-Aufgaben auf folgendem Link: \url{https://www.inf-schule.de/rechnernetze/anwendung/socketprogrammierung/Anfragen_an_einen_Server_Stellen}.
 \end{mychallenge}
 
 Zusätzlich zur Steuerung der Datenübertragung können \gls{TCP}-Metadaten genutzt werden, um die erste Verbindung zwischen zwei Computern herzustellen. Dies erfolgt typischerweise über das 3-Wege-Handschlag-Protokoll (s. \cref{fig:threewayHandshake}).
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth, node distance=4cm and 8cm]
-    % Draw the entities
-    \tikzset{c/.append style={fill=RoyalBlue!30,rounded corners, align=center, text width=5cm}}
-    \tikzset{person/.append style={text width=2.2cm,fill=ForestGreen!30,rounded corners,align=center}}
-    \node[person](Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
-    \node[person, right=of Bob] (Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=4cm and 8cm]
+		% Draw the entities
+		\tikzset{c/.append style={fill=RoyalBlue!30,rounded corners, align=center, text width=5cm}}
+		\tikzset{person/.append style={text width=2.2cm,fill=ForestGreen!30,rounded corners,align=center}}
+		\node[person](Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
+		\node[person, right=of Bob] (Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
 
-    
-    
 
-    % Draw the arrows and labels
-    \draw[->, thick, red, dashed] (Bob.south) -- node[c] { Ich möchte mit dir sprechen, Alice, auf Port 21. Bist du offen?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Alice.south);
-    \draw[->, thick, red, dashed] ([yshift=-3cm]Alice.south) -- node[c] { Ok, lass uns reden Bob! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Bob.south);
-    \draw[->, thick, red, dashed] ([yshift=-6cm]Bob.south) -- node[c] { Ok, danke Alice.\\ACK=1, SEQ\#11} ([yshift=-9cm]Alice.south);
 
-\node[below of=Bob, yshift=-7cm] (BobZeit) {Zeit};
-\node[below of=Alice, yshift=-7cm] (AliceZeit) {Zeit};
 
-    % Time line
-    \draw[->, thick] (Bob.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
-    \draw[->, thick] (Alice.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
-\end{tikzpicture}
-\caption{Drei-Wege-Handschlag im \gls{TCP}-Protokoll}
-\label{fig:threewayHandshake}
+		% Draw the arrows and labels
+		\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Ich möchte mit dir sprechen, Alice, auf Port 21. Bist du offen?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Alice.south);
+		\draw[->, thick, red, dashed] ([yshift=-3cm]Alice.south) -- node[c] { Ok, lass uns reden Bob! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Bob.south);
+		\draw[->, thick, red, dashed] ([yshift=-6cm]Bob.south) -- node[c] { Ok, danke Alice.\\ACK=1, SEQ\#11} ([yshift=-9cm]Alice.south);
+
+		\node[below of=Bob, yshift=-7cm] (BobZeit) {Zeit};
+		\node[below of=Alice, yshift=-7cm] (AliceZeit) {Zeit};
+
+		% Time line
+		\draw[->, thick] (Bob.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
+		\draw[->, thick] (Alice.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+	\end{tikzpicture}
+	\caption{Drei-Wege-Handschlag im \gls{TCP}-Protokoll}
+	\label{fig:threewayHandshake}
 \end{figure}
 Folgende Schritte des Drei-Wege-Handschlags werden in \cref{fig:threewayHandshake} illustriert:
 \begin{enumerate}
-\item Computer A (\textit{client}, \texttt{10.0.0.2}) erstellt eine Verbindungsanfrage zum Computer B (\textit{server}, \texttt{10.0.0.3}), mittels einem Paket, das nur das \texttt{SYN}-Flaggen gesetzt hat.
-\item Der Server antwortet sowohl mit einem gesetzten \texttt{SYN} und einem \texttt{ACK}-Flaggen
-\item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen\\
+	\item Computer A (\textit{client}, \texttt{10.0.0.2}) erstellt eine Verbindungsanfrage zum Computer B (\textit{server}, \texttt{10.0.0.3}), mittels einem Paket, das nur das \texttt{SYN}-Flaggen gesetzt hat.
+	\item Der Server antwortet sowohl mit einem gesetzten \texttt{SYN} und einem \texttt{ACK}-Flaggen
+	\item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen\\
 \end{enumerate}
 Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen können miteinander kommunizieren.
 
@@ -355,31 +352,31 @@ Die Übertragungssicherungsschicht befasst sich mit der stabilen Übertragung vo
 
 Eine \acrfull{IP}-Adresse ist eine Netzwerk-Adresse eines Computers. Somit ist sie in gewisser Weise der Wohnadresse einer Person ähnlich. Häufig werden IP-Adressen noch im \textbf{IPv4}-Format angegeben: Dieses besteht aus 4 bytes, also 4 Zahlen von 0 bis 255. Die IPv4-Adresse Wird meist dezimal angegeben (beispielsweise \texttt{192.168.0.1}).
 \begin{mysubmission}
-Finden Sie Ihre eigene IPv4-Adresse heraus. Tipps:
-\begin{itemize}
-\item MacOS, Terminal (via Spotlight-Suche): \\
-\commandbox|ipconfig getifaddr en0|
-\item Windows, Programm ``cmd'': \\
-\commandbox|ipconfig|
-\end{itemize}
+	Finden Sie Ihre eigene IPv4-Adresse heraus. Tipps:
+	\begin{itemize}
+		\item MacOS, Terminal (via Spotlight-Suche): \\
+		      \commandbox|ipconfig getifaddr en0|
+		\item Windows, Programm ``cmd'': \\
+		      \commandbox|ipconfig|
+	\end{itemize}
 \end{mysubmission}
 \begin{myexercise}\label{ex:ipv4}
-Wie viele IPv4-Adressen gibt es?
-\begin{myanswer}
-\begin{itemize}
-\item $4\cdot 1 \text{ byte} = 4\cdot 8 \text{ bits} = 32 \text{ bits}$
-\item $2^{32} \approx 4 \text{ Milliarden Adressen}$
-\item $\rightarrow \text{zu wenig!}$
-\end{itemize}
-\end{myanswer}
+	Wie viele IPv4-Adressen gibt es?
+	\begin{myanswer}
+		\begin{itemize}
+			\item $4\cdot 1 \text{ byte} = 4\cdot 8 \text{ bits} = 32 \text{ bits}$
+			\item $2^{32} \approx 4 \text{ Milliarden Adressen}$
+			\item $\rightarrow \text{zu wenig!}$
+		\end{itemize}
+	\end{myanswer}
 \end{myexercise}
 Wie wir in \cref{ex:ipv4} gesehen haben, gibt es zu wenige Adressen bei IPv4. Daher wird IPv4 graduell durch einen neuen Standard abgelöst, \textbf{IPv6}, in welchem jede Adresse über 128 Bits verfügt, womit fast unendlich viele Geräte addressiert werden können.
 
 \begin{myexercise}
-Wie viele Adressen gibt es bei IPv6?
-\begin{myanswer}
-\[2^{128} \approx 3.4\cdot 10^{38}\]
-\end{myanswer}
+	Wie viele Adressen gibt es bei IPv6?
+	\begin{myanswer}
+		\[2^{128} \approx 3.4\cdot 10^{38}\]
+	\end{myanswer}
 \end{myexercise}
 
 
@@ -387,32 +384,32 @@ Wie viele Adressen gibt es bei IPv6?
 Mit dem Befehl ``\texttt{ping}'' kann überprüft werden, ob ein Rechner im Netzwerk erreichbar ist. Dabei wird eine minimale, inhaltslose Nachricht an einen anderen Rechner (=IP-Adresse) geschickt. Das Ziel ist es, zu überprüfen, ob eine gewisse IP-Adresse im Netzwerk existiert. Der Befehl ``\textit{ping}'' ist vergleichbar mit einem Ping-Pong-Spiel: Der Absender-Rechner, der eine ``ping''-Nachricht schickt, erhält vom Ziel-Rechner, sofern dieser erreicht wird, viermal eine ``pong''-Nachricht zurückgeschickt. Der \texttt{ping}-Befehl kann im Terminal (MacOS, UNIX-Systeme), bzw cmd (Windows) wie folgt ausgeführt werden: \commandbox|ping [ip address]|, also z.B. \commandbox|ping 159.233.1.22|.
 
 \begin{mycaution}
-Eine Spezial-Variante des \texttt{ping}-Befehls ist der sogenannte \textcolor{red}{\faSkull{} Ping of Death}, bei dem ein bösartiger Computer ein zu grosses Datenpaket an einen anderen Computer schickte, das beim Zusammensetzen zum Zusammensturz des Zielrechners führte. Dies ist seit Ende der 90er-Jahre auf den meisten Computern nicht mehr möglich: Die Sicherheitslücke wurde behoben, indem beispielsweise die Paketgrösse vor dem Zusammensetzen überprüft wurde.
+	Eine Spezial-Variante des \texttt{ping}-Befehls ist der sogenannte \textcolor{red}{\faSkull{} Ping of Death}, bei dem ein bösartiger Computer ein zu grosses Datenpaket an einen anderen Computer schickte, das beim Zusammensetzen zum Zusammensturz des Zielrechners führte. Dies ist seit Ende der 90er-Jahre auf den meisten Computern nicht mehr möglich: Die Sicherheitslücke wurde behoben, indem beispielsweise die Paketgrösse vor dem Zusammensetzen überprüft wurde.
 \end{mycaution}
 
 \begin{myexercise}
-Installieren Sie das Programm Filius, welches wir zur Modellierung von Netzwerken verwenden werden. Die Anleitung dazu finden Sie in \cref{subsec:filius-installation}.
+	Installieren Sie das Programm Filius, welches wir zur Modellierung von Netzwerken verwenden werden. Die Anleitung dazu finden Sie in \cref{subsec:filius-installation}.
 \end{myexercise}
 
 \begin{mysubmission}
-Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.1 - 2.3 im Filius-Workshop: \href{https://informatik.mygymer.ch/base/?book=network}{Link} (Credits: Gymnasium Kirchenfeld)
+	Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.1 - 2.3 im Filius-Workshop: \href{https://informatik.mygymer.ch/base/?book=network}{Link} (Credits: Gymnasium Kirchenfeld)
 
-$\rightarrow$ \textbf{Abgabe \texttt{.fls}-Dateien auf Moodle!}
-\begin{mycaution}
-Je nach Gerät ist die linke Seitenleiste nicht sichtbar und Sie können Aufgabe 2.2 daher nicht sehen. Klicken Sie auf ``Themenübersicht'' $\rightarrow$  ``IN GYM2'' $\rightarrow$ ``Netzwerke'' um die linke Seitenleiste korrekt zu sehen.
-\end{mycaution}
+	$\rightarrow$ \textbf{Abgabe \texttt{.fls}-Dateien auf Moodle!}
+	\begin{mycaution}
+		Je nach Gerät ist die linke Seitenleiste nicht sichtbar und Sie können Aufgabe 2.2 daher nicht sehen. Klicken Sie auf ``Themenübersicht'' $\rightarrow$  ``IN GYM2'' $\rightarrow$ ``Netzwerke'' um die linke Seitenleiste korrekt zu sehen.
+	\end{mycaution}
 \end{mysubmission}
 
 \begin{mychallenge}
-Lösen Sie Aufgaben 1-6 unter \href{https://inf-schule.de/rechnernetze/filius/vernetzungrechner/erkundung_zweirechner}{diesem Link} (Kapitel ``Vernetzung von Rechnern'').
+	Lösen Sie Aufgaben 1-6 unter \href{https://inf-schule.de/rechnernetze/filius/vernetzungrechner/erkundung_zweirechner}{diesem Link} (Kapitel ``Vernetzung von Rechnern'').
 \end{mychallenge}
 
 
 \subsubsection{Netzmasken \& Subnetze}
 \textbf{Subnetzwerke} verbinden --- wie es der Name sagt--- mehrere Hosts zu einem (Sub-)Netzwerk. Dabei gehören mehrere Geräte zum gleichen Subnetz, falls Sie:
 \begin{itemize}
-\item Physisch miteinander verbunden sind (WLAN, Kabel, etc.)
-\item Die gleiche Subnetzmaske teilen (später mehr dazu)
+	\item Physisch miteinander verbunden sind (WLAN, Kabel, etc.)
+	\item Die gleiche Subnetzmaske teilen (später mehr dazu)
 \end{itemize}
 
 Eine (Sub-)Netzmaske hat fast dasselbe Format wie eine IP-Adresse und fasst mehrere IPs zu einer Gruppe, d.h. einem Subnetz zusammen. Die Subnetzmaske gibt an, wie viele Stellen einer IP-Adresse innerhalb eines Subnetzes gleich sein müssen. Sie besteht immer aus zwei IP-Adressen, wobei die erste IP-Adresse einer gültigen Adresse innerhalb des Subnetzes entspricht, und die zweite IP-Adresse vorgibt, wie stark eine weitere IP-Adresse von der ersten IP-Adresse abweichen dürfte, damit sie immer noch zum selben Netz gehört.
@@ -420,111 +417,111 @@ Eine (Sub-)Netzmaske hat fast dasselbe Format wie eine IP-Adresse und fasst mehr
 \begin{myexample}
 Gegeben sei folgende Subnetzmaske:
 \begin{table}[H]
-\centering
-\begin{tabular}{r|l|l}
-& Dezimal & Binär\\\midrule\midrule
-\acrshort{IP}-Adresse von Computer 1 & \texttt{159.233.1.22} & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00010110}\\\midrule
-\acrshort{IP}-Adresse von Computer 2 & \texttt{159.233.1.1} & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00000001}\\\midrule
-Subnetzmaske & \texttt{255.255.255.0} & \texttt{\textcolor{ForestGreen}{11111111.11111111.11111111}.00000000}
-\end{tabular}
-\caption{Beispiel einer Subnetzmaske mit zwei IP-Adressen}
-\label{table:ex-subnet}
+	\centering
+	\begin{tabular}{r|l|l}
+		                                     & Dezimal                & Binär                                                                 \\\midrule\midrule
+		\acrshort{IP}-Adresse von Computer 1 & \texttt{159.233.1.22}  & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00010110} \\\midrule
+		\acrshort{IP}-Adresse von Computer 2 & \texttt{159.233.1.1}   & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00000001} \\\midrule
+		Subnetzmaske                         & \texttt{255.255.255.0} & \texttt{\textcolor{ForestGreen}{11111111.11111111.11111111}.00000000}
+	\end{tabular}
+	\caption{Beispiel einer Subnetzmaske mit zwei IP-Adressen}
+	\label{table:ex-subnet}
 \end{table}
 Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben Netzwerk gehören, muss überprüft werden, ob die binäre IP-Adresse an all denjenigen Stellen gleich ist, wo die Subnetzmaske = ``1'' ist (also an allen grün markierten Stellen in Tabelle \cref{table:ex-subnet}). In diesem Beispiel bedeutet dies, dass alle \gls{IP}-Adressen, welche mit \texttt{159.233.1.[...]} beginnen zum selben Netzwerk dazugehören.
 \end{myexample}
 
 
 \begin{myexercise}
-\begin{table}[H]
-\centering
-\begin{tabular}{l|l|l|m{2cm}}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{l|l|l|m{2cm}}
 
-\textbf{Eigene \gls{IP}} & \textbf{Netzmaske} & \textbf{Ziel-\gls{IP}} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+			\textbf{Eigene \gls{IP}} & \textbf{Netzmaske} & \textbf{Ziel-\gls{IP}} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
 
-213.45.19.89 & 255.255.255.0 & 213.45.17.89 & \fldT \\\midrule
+			213.45.19.89             & 255.255.255.0      & 213.45.17.89           & \fldT                               \\\midrule
 
-213.45.19.89 & 255.255.0.0 & 213.45.17.89 & \fldT \\\midrule
+			213.45.19.89             & 255.255.0.0        & 213.45.17.89           & \fldT                               \\\midrule
 
-88.100.11.17 & 255.255.255.0 & 88.100.11.254 & \fldT \\\midrule
+			88.100.11.17             & 255.255.255.0      & 88.100.11.254          & \fldT                               \\\midrule
 
-88.100.11.17 & 0.0.0.0 & 213.45.19.89 & \fldT \\\midrule
+			88.100.11.17             & 0.0.0.0            & 213.45.19.89           & \fldT                               \\\midrule
 
-10.0.0.0 & 255.255.255.252 & 10.0.0.1 &\fldT \\\midrule
-1.2.3.0 & 255.255.255.252 & 1.2.3.5 & \fldT
-\end{tabular}
-\end{table}
-\begin{itemize}
-\item $\rightarrow$ \gls{IP}s dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen. 
-\item Umrechner dezimal $\rightarrow$ binär: \url{https://oinf.ch/interactive/ips-und-netzmaske/}
-\end{itemize}
-\begin{myanswer}
+			10.0.0.0                 & 255.255.255.252    & 10.0.0.1               & \fldT                               \\\midrule
+			1.2.3.0                  & 255.255.255.252    & 1.2.3.5                & \fldT
+		\end{tabular}
+	\end{table}
+	\begin{itemize}
+		\item $\rightarrow$ \gls{IP}s dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen.
+		\item Umrechner dezimal $\rightarrow$ binär: \url{https://oinf.ch/interactive/ips-und-netzmaske/}
+	\end{itemize}
+	\begin{myanswer}
 
-\begin{table}[H]
-\centering
-\begin{tabular}{l|l|l|p{2cm}}
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{l|l|l|p{2cm}}
 
-\textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+				\textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP}                 & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
 
-213.45.19.89 & 255.255.255.0 & 213.45.\textcolor{red}{17}.89 & Nein \\\midrule
+				213.45.19.89       & 255.255.255.0      & 213.45.\textcolor{red}{17}.89    & Nein                                \\\midrule
 
-213.45.19.89 & 255.255.0.0 & \textcolor{green}{213.45}.17.89 &  Ja \\\midrule
+				213.45.19.89       & 255.255.0.0        & \textcolor{green}{213.45}.17.89  & Ja                                  \\\midrule
 
-88.100.11.17 & 255.255.255.0 & \textcolor{green}{88.100}.11.254 & Ja \\\midrule
+				88.100.11.17       & 255.255.255.0      & \textcolor{green}{88.100}.11.254 & Ja                                  \\\midrule
 
-88.100.11.17 & 0.0.0.0 & 213.45.19.89 &  Ja (alles \faCheck)\\\midrule
+				88.100.11.17       & 0.0.0.0            & 213.45.19.89                     & Ja (alles \faCheck)                 \\\midrule
 
-10.0.0.0 & 255.255.255.252 & 10.0.0.1 & Ja ($252_{10}=11111100_{2}$) \\\midrule
-1.2.3.0 & 255.255.255.252 & 1.2.3.5 & Nein ($252_{10}=11111100_{2}$)
-\end{tabular}
-\end{table}
-\end{myanswer}
+				10.0.0.0           & 255.255.255.252    & 10.0.0.1                         & Ja ($252_{10}=11111100_{2}$)        \\\midrule
+				1.2.3.0            & 255.255.255.252    & 1.2.3.5                          & Nein ($252_{10}=11111100_{2}$)
+			\end{tabular}
+		\end{table}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Typischerweise beginnen alle IP-Adressen, die auf das lokale Netzwerk (=das Netzwerk, in dem sich der eigene Computer befindet) mit \texttt{192.168.xxx.xxx}. Die Subnetzmaske lautet also \texttt{255.255.0.0}. Wie viele Hosts haben in so einem Netzwerk Platz? Schreiben Sie die Subnetzmaske binär auf und rechnen Sie aus, wie viele unterschiedliche Geräte sich in diesem lokalen Netzwerk befinden können.
-\begin{myanswer}
-Zwei Bytes (die zwei letzten Byte-Gruppen) der Subnetzmaske sind reserviert für unterschiedliche Kombinationen von \gls{IP}-Adressen. Es können sich daher bis zu $2^{16}$ = 65'536 Hosts in einem solchen lokalen Netzwerk befinden.
-\end{myanswer}
+	Typischerweise beginnen alle IP-Adressen, die auf das lokale Netzwerk (=das Netzwerk, in dem sich der eigene Computer befindet) mit \texttt{192.168.xxx.xxx}. Die Subnetzmaske lautet also \texttt{255.255.0.0}. Wie viele Hosts haben in so einem Netzwerk Platz? Schreiben Sie die Subnetzmaske binär auf und rechnen Sie aus, wie viele unterschiedliche Geräte sich in diesem lokalen Netzwerk befinden können.
+	\begin{myanswer}
+		Zwei Bytes (die zwei letzten Byte-Gruppen) der Subnetzmaske sind reserviert für unterschiedliche Kombinationen von \gls{IP}-Adressen. Es können sich daher bis zu $2^{16}$ = 65'536 Hosts in einem solchen lokalen Netzwerk befinden.
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Sechs Subnetze sind gegeben durch je eine Netzmaske und eine IP eines sich darin befindenden Rechners. Entscheiden Sie für jede links aufgeführte IP, zu welchen Subnetzen der entsprechende Rechner gehört.\vspace{-.2cm}
+	Sechs Subnetze sind gegeben durch je eine Netzmaske und eine IP eines sich darin befindenden Rechners. Entscheiden Sie für jede links aufgeführte IP, zu welchen Subnetzen der entsprechende Rechner gehört.\vspace{-.2cm}
 
-\begin{table}[H]
-\centering
-\begin{tabular}{m{1.5cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}}
-\textbf{Netzmaske Subnetz} & \multicolumn{2}{c|}{255.255.255.0} & \multicolumn{2}{c|}{255.255.0.0} & \multicolumn{2}{c}{255.255.255.240} \\ 
-\midrule
-IP & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\ 
-\midrule\midrule
-3.3.3.4  & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT \\\midrule
-4.4.4.3  & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT  \\\midrule
-3.4.5.99 & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT  \\\midrule
-3.3.4.4  & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT   \\\midrule
-3.4.7.7  & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT   \\\midrule
-3.3.3.17 & \fldT & \fldT & \fldT & \fldT & \fldT & \fldT  \\
-\end{tabular}
-\end{table}
-\begin{center}
-\vspace{-.5cm}Überprüfen: \url{https://oinf.ch/interactive/ips-und-netzmaske/}\vspace{-.2cm}
-\end{center}
-\begin{myanswer}
-\begin{table}[H]
-\centering
-\begin{tabular}{m{1.5cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.7cm}}
-\textbf{Netzmaske Subnetz} & \multicolumn{2}{c|}{255.255.255.0} & \multicolumn{2}{c|}{255.255.0.0} & \multicolumn{2}{c}{255.255.255.240} \\ 
-\midrule
-IP & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\ 
-\midrule\midrule
-3.3.3.4  & Nein & Ja & Nein & Ja & Nein & Ja \\\midrule
-4.4.4.3  & Nein & Nein & Nein & Nein & Nein & Nein \\\midrule
-3.4.5.99 & Ja & Nein & Ja & Nein & Nein & Nein \\\midrule
-3.3.4.4  & Nein & Nein & Nein & Ja & Nein & Nein \\\midrule
-3.4.7.7  & Nein & Ja & Ja & Nein & Nein & Nein \\\midrule
-3.3.3.17 & Nein & Ja & Nein & Ja & Nein & Nein \\
-\end{tabular}
-\end{table}
-\end{myanswer}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{m{1.5cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}}
+			\textbf{Netzmaske Subnetz} & \multicolumn{2}{c|}{255.255.255.0} & \multicolumn{2}{c|}{255.255.0.0} & \multicolumn{2}{c}{255.255.255.240}                               \\
+			\midrule
+			IP                         & 3.4.5.6                            & 3.3.3.3                          & 3.4.5.6                             & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\
+			\midrule\midrule
+			3.3.3.4                    & \fldT                              & \fldT                            & \fldT                               & \fldT   & \fldT   & \fldT   \\\midrule
+			4.4.4.3                    & \fldT                              & \fldT                            & \fldT                               & \fldT   & \fldT   & \fldT   \\\midrule
+			3.4.5.99                   & \fldT                              & \fldT                            & \fldT                               & \fldT   & \fldT   & \fldT   \\\midrule
+			3.3.4.4                    & \fldT                              & \fldT                            & \fldT                               & \fldT   & \fldT   & \fldT   \\\midrule
+			3.4.7.7                    & \fldT                              & \fldT                            & \fldT                               & \fldT   & \fldT   & \fldT   \\\midrule
+			3.3.3.17                   & \fldT                              & \fldT                            & \fldT                               & \fldT   & \fldT   & \fldT   \\
+		\end{tabular}
+	\end{table}
+	\begin{center}
+		\vspace{-.5cm}Überprüfen: \url{https://oinf.ch/interactive/ips-und-netzmaske/}\vspace{-.2cm}
+	\end{center}
+	\begin{myanswer}
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{m{1.5cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.7cm}}
+				\textbf{Netzmaske Subnetz} & \multicolumn{2}{c|}{255.255.255.0} & \multicolumn{2}{c|}{255.255.0.0} & \multicolumn{2}{c}{255.255.255.240}                               \\
+				\midrule
+				IP                         & 3.4.5.6                            & 3.3.3.3                          & 3.4.5.6                             & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\
+				\midrule\midrule
+				3.3.3.4                    & Nein                               & Ja                               & Nein                                & Ja      & Nein    & Ja      \\\midrule
+				4.4.4.3                    & Nein                               & Nein                             & Nein                                & Nein    & Nein    & Nein    \\\midrule
+				3.4.5.99                   & Ja                                 & Nein                             & Ja                                  & Nein    & Nein    & Nein    \\\midrule
+				3.3.4.4                    & Nein                               & Nein                             & Nein                                & Ja      & Nein    & Nein    \\\midrule
+				3.4.7.7                    & Nein                               & Ja                               & Ja                                  & Nein    & Nein    & Nein    \\\midrule
+				3.3.3.17                   & Nein                               & Ja                               & Nein                                & Ja      & Nein    & Nein    \\
+			\end{tabular}
+		\end{table}
+	\end{myanswer}
 \end{myexercise}
 
 \subsubsection{Router \& Gateways}
@@ -534,37 +531,37 @@ Bis anhin haben wir gesehen, wie wir einzelne Rechner mittels einer IP adressier
 Ähbnliche einer Haustür verbindet ein Router ein Subnetz (=Haus) mit der Aussenwelt, er befindet sich also an der Grenze zwischen zwei oder mehreren Subnetzen. Über die Routing-Tabelle kann ein Router entscheiden, auf welchen Weg ein Datenpaket an die Aussenwelt verschickt werden kann. Eine typische Routing-Tabelle enthält folgende Informationen:
 
 \begin{itemize}
-\item \textbf{Ziel-\gls{IP} und Netzmaske}: Diese beiden Spalten definieren, welche Subnetze dem Router bekannt sind (sowohl eigenes Subnetz wie andere Subnetze).
-\item \textbf{Gateway} = Tor, Einfahrt: Der nächstgelegene Zielort, an den ein Paket geschickt werden muss, um eine gewisse Ziel-\gls{IP} zu erreichen. Das Gateway kann als eine Art ``Tor zur Aussenwelt'' angeschaut werden und ist häufig die \gls{IP}-Adresse des Routers der Ziel-\gls{IP}.
-\item \textbf{Interface} = Schnittstelle: Die physikalische Schnittstelle am Router (z.B. Ethernet-Stecker), über die eine Ziel-Adresse (Gateway) erreichbar ist. 
+	\item \textbf{Ziel-\gls{IP} und Netzmaske}: Diese beiden Spalten definieren, welche Subnetze dem Router bekannt sind (sowohl eigenes Subnetz wie andere Subnetze).
+	\item \textbf{Gateway} = Tor, Einfahrt: Der nächstgelegene Zielort, an den ein Paket geschickt werden muss, um eine gewisse Ziel-\gls{IP} zu erreichen. Das Gateway kann als eine Art ``Tor zur Aussenwelt'' angeschaut werden und ist häufig die \gls{IP}-Adresse des Routers der Ziel-\gls{IP}.
+	\item \textbf{Interface} = Schnittstelle: Die physikalische Schnittstelle am Router (z.B. Ethernet-Stecker), über die eine Ziel-Adresse (Gateway) erreichbar ist.
 \end{itemize}
 
 Ein Beispiel einer Routing-Tabelle ist in \cref{table:routing} abgebildet.
 
 \begin{table}[H]
-\centering
-\begin{tabular}{ l | l || l | l}
-\textbf{Ziel-IP} & \textbf{Netzmaske} & \textbf{Gateway} & \textbf{Interface} \\
-\midrule\midrule
-0.0.0.0 & 0.0.0.0 & 192.168.1.1 & eth0 \\
-192.168.1.0 & 255.255.255.0 & 0.0.0.0 & eth0 \\
-192.168.2.0 & 255.255.255.0 & 0.0.0.0 & eth1 \\
-10.0.0.0 & 255.0.0.0 & 192.168.1.2 & eth0 \\
-172.16.0.0 & 255.240.0.0 & 192.168.2.2 & eth1 \\
-127.0.0.0 & 255.0.0.0 & 0.0.0.0 & lo \\
-\end{tabular}
-\caption{Beispiel einer Routing-Tabelle}
-\label{table:routing}
+	\centering
+	\begin{tabular}{ l | l || l | l}
+		\textbf{Ziel-IP} & \textbf{Netzmaske} & \textbf{Gateway} & \textbf{Interface} \\
+		\midrule\midrule
+		0.0.0.0          & 0.0.0.0            & 192.168.1.1      & eth0               \\
+		192.168.1.0      & 255.255.255.0      & 0.0.0.0          & eth0               \\
+		192.168.2.0      & 255.255.255.0      & 0.0.0.0          & eth1               \\
+		10.0.0.0         & 255.0.0.0          & 192.168.1.2      & eth0               \\
+		172.16.0.0       & 255.240.0.0        & 192.168.2.2      & eth1               \\
+		127.0.0.0        & 255.0.0.0          & 0.0.0.0          & lo                 \\
+	\end{tabular}
+	\caption{Beispiel einer Routing-Tabelle}
+	\label{table:routing}
 \end{table}
 
 
 
 \begin{myexercise}
-Lesen Sie mehr über die Aufgaben und Funktionsweise von Routern und Gateways, indem Sie \href{https://inf-schule.de/rechnernetze/filius/vernetzungrechnernetze/konzept_router}{diese Webseite} genau durchlesen.
+	Lesen Sie mehr über die Aufgaben und Funktionsweise von Routern und Gateways, indem Sie \href{https://inf-schule.de/rechnernetze/filius/vernetzungrechnernetze/konzept_router}{diese Webseite} genau durchlesen.
 \end{myexercise}
 
 \begin{mysubmission}
-Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.4 - 2.6 im Filius-Workshop: \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösung zu 2.6 als \texttt{.fls}-Datei auf Moodle hoch.
+	Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.4 - 2.6 im Filius-Workshop: \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösung zu 2.6 als \texttt{.fls}-Datei auf Moodle hoch.
 \end{mysubmission}
 
 
@@ -573,188 +570,188 @@ Eine Ihnen bekannte Situation findet sich vor, wenn ein Client $\mathcal{C}$ ein
 
 
 \begin{enumerate}
-\item Als erstes rufen Sie Ihren \textbf{Browser} (von en. \textit{to browse} = ``stöbern'') auf, dies können beispielsweise sein: 
-\begin{enumerate*}
-\item \faChrome{} Chrome
-\item \faFirefox{} Firefox
-\item \faSafari{} Safari
-\item \faEdge{} Edge
-\item  etc.
-\end{enumerate*}
-Dabei handelt es sich um Programme, die eine Datei (meist \texttt{.html}) aus dem Internet anfordern und diese nach dem Empfang darstellen können.  Die angeforderten Dateien enthalten dabei Informationen zu Inhalten, Struktur, Darstellung und Interaktivität einer Webseite. Das Senden / Empfangen von Webseite-Dateien selber übernimmt das Betriebssystem (z.B. Windows, MacOS), nachdem es durch den Browser dazu aufgefordert wurde.
-\item Sobald Sie Ihren Browser aufgerufen haben, geben Sie eine Web-Adresse ein. Eine solche Web-Adresse wird im Allgemeinen \gls{URL} genannt und besteht aus folgenden Komponenten:
-\[
-\underbrace{\text{http://}}_{\text{Protokoll}}
-\underbrace{\text{www.}}_{\text{Server}}
-\underbrace{\text{beispiel.}}_{\text{Domain}}
-\underbrace{\text{ch}}_{\text{\acrshort{TLD}\tikzmark{tld}}}
-\underbrace{\text{/dokumente/}}_{\text{Ordner}}
-\underbrace{\text{reglemente.html}}_{\text{Dateiname}}
-\]
+	\item Als erstes rufen Sie Ihren \textbf{Browser} (von en. \textit{to browse} = ``stöbern'') auf, dies können beispielsweise sein:
+	      \begin{enumerate*}
+		      \item \faChrome{} Chrome
+		      \item \faFirefox{} Firefox
+		      \item \faSafari{} Safari
+		      \item \faEdge{} Edge
+		      \item  etc.
+	      \end{enumerate*}
+	      Dabei handelt es sich um Programme, die eine Datei (meist \texttt{.html}) aus dem Internet anfordern und diese nach dem Empfang darstellen können.  Die angeforderten Dateien enthalten dabei Informationen zu Inhalten, Struktur, Darstellung und Interaktivität einer Webseite. Das Senden / Empfangen von Webseite-Dateien selber übernimmt das Betriebssystem (z.B. Windows, MacOS), nachdem es durch den Browser dazu aufgefordert wurde.
+	\item Sobald Sie Ihren Browser aufgerufen haben, geben Sie eine Web-Adresse ein. Eine solche Web-Adresse wird im Allgemeinen \gls{URL} genannt und besteht aus folgenden Komponenten:
+	      \[
+		      \underbrace{\text{http://}}_{\text{Protokoll}}
+		      \underbrace{\text{www.}}_{\text{Server}}
+		      \underbrace{\text{beispiel.}}_{\text{Domain}}
+		      \underbrace{\text{ch}}_{\text{\acrshort{TLD}\tikzmark{tld}}}
+		      \underbrace{\text{/dokumente/}}_{\text{Ordner}}
+		      \underbrace{\text{reglemente.html}}_{\text{Dateiname}}
+	      \]
 
-\begin{itemize}
-\item Der erste Teil (in diesem Fall \texttt{http://}) bestimmt das Protokoll, mit welchem die Datei vom Server angefordert wird.
-\item Der zweite Teil (\texttt{www.beispiel.ch}) bezeichnet dabei den \textit{Server} $\mathcal{S}$, von dem wir die Datei anfordern. Dieser Name entspricht in der Regel einer einfachen \gls{IP}-Adresse, wie beispielsweise \texttt{192.168.10.2}. Die Endung (\texttt{.ch}) steht für eine sogenannte \gls{TLD}, in diesem Fall wird durch ``\texttt{.ch}'' eine Schweizer Webseite bezeichnet.
-\item Alles nach der \gls{TLD} ist ein gewöhnlicher Ordnerpfad auf dem Computer, der schlussendlich zur Datei ``\texttt{reglemente.html}'' führt, die den Inhalt der Webseite enthält
-\end{itemize}
+	      \begin{itemize}
+		      \item Der erste Teil (in diesem Fall \texttt{http://}) bestimmt das Protokoll, mit welchem die Datei vom Server angefordert wird.
+		      \item Der zweite Teil (\texttt{www.beispiel.ch}) bezeichnet dabei den \textit{Server} $\mathcal{S}$, von dem wir die Datei anfordern. Dieser Name entspricht in der Regel einer einfachen \gls{IP}-Adresse, wie beispielsweise \texttt{192.168.10.2}. Die Endung (\texttt{.ch}) steht für eine sogenannte \gls{TLD}, in diesem Fall wird durch ``\texttt{.ch}'' eine Schweizer Webseite bezeichnet.
+		      \item Alles nach der \gls{TLD} ist ein gewöhnlicher Ordnerpfad auf dem Computer, der schlussendlich zur Datei ``\texttt{reglemente.html}'' führt, die den Inhalt der Webseite enthält
+	      \end{itemize}
 \end{enumerate}
 
 Der schematische Ablauf eines Webseiten-Abrufs mit dem HTTP-Protokoll ist in \cref{fig:http-request-simple} abgebildet.
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[
-    font=\sffamily,
-    every node/.style={align=center},
-    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 6.5cm},
-    process/.style={-Stealth, thick, draw},
-	arrowtext/.style={text width=5.5cm, align=center, text=black, font=\footnotesize}
-]
+	\centering
+	\begin{tikzpicture}[
+			font=\sffamily,
+			every node/.style={align=center},
+			entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 6.5cm},
+			process/.style={-Stealth, thick, draw},
+			arrowtext/.style={text width=5.5cm, align=center, text=black, font=\footnotesize}
+		]
 
-% nodes for client
-\node[entity] (clientStart) {Eingabe der \acrshort{URL} am Bildschirm};
-\node[entity, below=of clientStart] (clientEnd) {Sammelt Daten, setzt Website zusammen (Darstellung)};
-% Draw a 2D rectangle around the users
-\node[fit=(clientStart) (clientEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Client\\ \faLaptop};
+		% nodes for client
+		\node[entity] (clientStart) {Eingabe der \acrshort{URL} am Bildschirm};
+		\node[entity, below=of clientStart] (clientEnd) {Sammelt Daten, setzt Website zusammen (Darstellung)};
+		% Draw a 2D rectangle around the users
+		\node[fit=(clientStart) (clientEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Client\\ \faLaptop};
 
-% nodes for server
-\node[entity, right=of clientStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
-\node[entity, right=of clientEnd] (serverEnd) {Sendet den Status der Suche und die Dateien der Webseite};
-% Draw a 2D rectangle around the users
-\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
+		% nodes for server
+		\node[entity, right=of clientStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
+		\node[entity, right=of clientEnd] (serverEnd) {Sendet den Status der Suche und die Dateien der Webseite};
+		% Draw a 2D rectangle around the users
+		\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
 
-% Connections
-\draw[process, Crimson] (clientStart.east) -- node[arrowtext, above] {\texttt{http://192.168.10.2/index.html}\\(HTTP-Anfrage \texttt{GET /index.html})} (serverStart.west);
-\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {HTTP-Antwort \\(Statuscode + Daten)} (clientEnd.east);
-\end{tikzpicture}
-\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
-\label{fig:http-request-simple}
+		% Connections
+		\draw[process, Crimson] (clientStart.east) -- node[arrowtext, above] {\texttt{http://192.168.10.2/index.html}\\(HTTP-Anfrage \texttt{GET /index.html})} (serverStart.west);
+		\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {HTTP-Antwort \\(Statuscode + Daten)} (clientEnd.east);
+	\end{tikzpicture}
+	\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
+	\label{fig:http-request-simple}
 \end{figure}
 
 Wir können den Ablauf einer Abfrage etwas detaillierter aufzeigen, indem wir eine weitere Stufe für den End-Benutzer des Clients einfügen. Hierdurch wird ersichtlich, dass der Browser sich um die Kommunikation mit dem Server kümmert, indem er das \gls{HTTP}-Protokoll verwendet, um Datei-Anfragen  an den Server zu schicken und um diese zu erhalten (s. \cref{fig:http-request}).
 
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[
-    font=\sffamily,
-    every node/.style={align=center},
-    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 3.5cm},
-    process/.style={-Stealth, thick, draw},
-   arrowtext/.style={text width=2.5cm, align=center, text=black, font=\footnotesize}
-]
+	\centering
+	\begin{tikzpicture}[
+			font=\sffamily,
+			every node/.style={align=center},
+			entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 3.5cm},
+			process/.style={-Stealth, thick, draw},
+			arrowtext/.style={text width=2.5cm, align=center, text=black, font=\footnotesize}
+		]
 
-% Nodes for user
-\node[entity] (userStart) {Eingabe der \acrshort{URL} am Bildschirm};
-\node[entity, below=of userStart] (userEnd) {Webseite am Bildschirm};
-% Draw a 2D rectangle around the users
-\node[fit=(userStart) (userEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](user) {User \\ \faUser};
+		% Nodes for user
+		\node[entity] (userStart) {Eingabe der \acrshort{URL} am Bildschirm};
+		\node[entity, below=of userStart] (userEnd) {Webseite am Bildschirm};
+		% Draw a 2D rectangle around the users
+		\node[fit=(userStart) (userEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](user) {User \\ \faUser};
 
-% nodes for 
-\node[entity, right=of userStart] (browserStart) {Übersetzt die URL in einen HTTP-Request};
-\node[entity, right=of userEnd] (browserEnd) {Sammelt Daten, setzt Website zusammen (Darstellung)};
-% Draw a 2D rectangle around the users
-\node[fit=(browserStart) (browserEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Browser\\ \faLaptop};
+		% nodes for 
+		\node[entity, right=of userStart] (browserStart) {Übersetzt die URL in einen HTTP-Request};
+		\node[entity, right=of userEnd] (browserEnd) {Sammelt Daten, setzt Website zusammen (Darstellung)};
+		% Draw a 2D rectangle around the users
+		\node[fit=(browserStart) (browserEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Browser\\ \faLaptop};
 
-% nodes for server
-\node[entity, right=of browserStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
-\node[entity, right=of browserEnd] (serverEnd) {Sendet den Status der Suche und die Datein der Webseite};
-% Draw a 2D rectangle around the users
-\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
+		% nodes for server
+		\node[entity, right=of browserStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
+		\node[entity, right=of browserEnd] (serverEnd) {Sendet den Status der Suche und die Datein der Webseite};
+		% Draw a 2D rectangle around the users
+		\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
 
-% Connections
-\draw[process, Crimson] (userStart.east) -- node[arrowtext, above] {1. URL \\ \texttt{http://\\192.168.10.2/\\index.html}} (browserStart.west);
-\draw[process, Crimson] (browserStart.east) -- node[arrowtext, above] {2. HTTP-Anfrage \\ \texttt{GET /index.html}} (serverStart.west);
-\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {3. HTTP-Antwort \\ Statuscode + Daten} (browserEnd.east);
-\draw[process, ForestGreen] (browserEnd.west) -- node[arrowtext, below] {4. Webpage \\ Darstellung der Webseite \texttt{index.html}} (userEnd.east);
+		% Connections
+		\draw[process, Crimson] (userStart.east) -- node[arrowtext, above] {1. URL \\ \texttt{http://\\192.168.10.2/\\index.html}} (browserStart.west);
+		\draw[process, Crimson] (browserStart.east) -- node[arrowtext, above] {2. HTTP-Anfrage \\ \texttt{GET /index.html}} (serverStart.west);
+		\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {3. HTTP-Antwort \\ Statuscode + Daten} (browserEnd.east);
+		\draw[process, ForestGreen] (browserEnd.west) -- node[arrowtext, below] {4. Webpage \\ Darstellung der Webseite \texttt{index.html}} (userEnd.east);
 
-\end{tikzpicture}
-\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
-\label{fig:http-request}
+	\end{tikzpicture}
+	\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
+	\label{fig:http-request}
 \end{figure}
 
 Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige weitere Schritte erfolgen. Wie werden beispielsweise die Daten vom Server zum Client transportiert? Dafür müssen wir uns näher mit der Transportschicht auseinandersetzen.
 
 \begin{mysubmission}[Das Internet]
-Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.7-2.9 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
+	Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.7-2.9 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
 \end{mysubmission}
 
 \begin{mychallenge}
-Richten Sie sich Ihren eigenen Email-Server ein, indem Sie folgende Aufgaben ausführen: \href{https://inf-schule.de/rechnernetze/filius/internet/exkurs_email}{Link}.
+	Richten Sie sich Ihren eigenen Email-Server ein, indem Sie folgende Aufgaben ausführen: \href{https://inf-schule.de/rechnernetze/filius/internet/exkurs_email}{Link}.
 \end{mychallenge}
 
 \subsubsection{DNS}
-Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer Webseiten, aus der Angabe eines Servers und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (s. \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Ein Beispiel einer solchen Tabelle ist in \cref{tab:dnsEntries} gezeigt. 
+Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer Webseiten, aus der Angabe eines Servers und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (s. \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Ein Beispiel einer solchen Tabelle ist in \cref{tab:dnsEntries} gezeigt.
 
 \begin{table}[H]
-\centering
-\begin{tabular}{c|c}
-\textbf{Domain Name} & \textbf{IP-Addresse} \\
-\midrule\midrule
-\texttt{beispiel.ch} & 192.168.0.11 \\
-\midrule
-\texttt{schule.ch} & 192.168.0.12 \\
-\midrule
-\texttt{test.org} & 192.168.0.13 \\
-\midrule
-\texttt{insta.com} & 192.168.0.14 \\
-\midrule
-\texttt{...} & ... \\
-\end{tabular}
-\caption{Beispiel einer \gls{DNS}-Tabelle}
-\label{tab:dnsEntries}
+	\centering
+	\begin{tabular}{c|c}
+		\textbf{Domain Name} & \textbf{IP-Addresse} \\
+		\midrule\midrule
+		\texttt{beispiel.ch} & 192.168.0.11         \\
+		\midrule
+		\texttt{schule.ch}   & 192.168.0.12         \\
+		\midrule
+		\texttt{test.org}    & 192.168.0.13         \\
+		\midrule
+		\texttt{insta.com}   & 192.168.0.14         \\
+		\midrule
+		\texttt{...}         & ...                  \\
+	\end{tabular}
+	\caption{Beispiel einer \gls{DNS}-Tabelle}
+	\label{tab:dnsEntries}
 \end{table}
 
-Wenn eine Adresse wie \texttt{insta.org} im Browser eingetippt und angefordert wird, schickt der Client eine Anfrage an einen nahegelegenen \gls{DNS}-Server, der die IP-Adresse retourniert (ähnlich einem Telefonbuch). Ein \gls{DNS} ist also ein Server, welcher den Clients eines Netzwerks eine Tabelle von Servern und damit verbundenen Namen zur Verfügung stellt. Eine solche \gls{DNS}-Abfrage ist illustriert in \cref{fig:dns}. 
+Wenn eine Adresse wie \texttt{insta.org} im Browser eingetippt und angefordert wird, schickt der Client eine Anfrage an einen nahegelegenen \gls{DNS}-Server, der die IP-Adresse retourniert (ähnlich einem Telefonbuch). Ein \gls{DNS} ist also ein Server, welcher den Clients eines Netzwerks eine Tabelle von Servern und damit verbundenen Namen zur Verfügung stellt. Eine solche \gls{DNS}-Abfrage ist illustriert in \cref{fig:dns}.
 
 \begin{figure}[H]
-\begin{tikzpicture}[
-	base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.3cm, align=center,inner sep=8pt},
-    server/.style={base, fill=RoyalBlue},
-    client/.style={base, fill=ForestGreen},
-    arrow/.style={-Stealth, thick, rounded corners,text width=4cm,align=center}
-]
+	\begin{tikzpicture}[
+			base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.3cm, align=center,inner sep=8pt},
+			server/.style={base, fill=RoyalBlue},
+			client/.style={base, fill=ForestGreen},
+			arrow/.style={-Stealth, thick, rounded corners,text width=4cm,align=center}
+		]
 
-% Nodes
-\node[client] (client) {Client\\\texttt{192.168.0.10}};
-\node[server, right=4.2cm of client] (dns) {DNS-Server\\\texttt{192.168.2.1}};
-\node[server, right=4.2cm of dns] (web) {Webserver\\\texttt{192.168.0.11}};
-\node[text width=3cm, right=0cm of dns] (dnsTable) {\tiny \begin{tabular}{p{1.1cm}|p{1.2cm}}
-\textbf{Domain\newline Name} & \textbf{IP-\newline Addresse} \\
-\midrule\midrule
-\texttt{beispiel.ch} & 192.168.0.11 \\
-\midrule
-\texttt{schule.ch} & 192.168.0.12 \\
-\midrule
-\texttt{test.org} & 192.168.0.13 \\
-\midrule
-\texttt{insta.com} & 192.168.0.14 \\
-\midrule
-\texttt{...} & ... \\
-\end{tabular}};
+		% Nodes
+		\node[client] (client) {Client\\\texttt{192.168.0.10}};
+		\node[server, right=4.2cm of client] (dns) {DNS-Server\\\texttt{192.168.2.1}};
+		\node[server, right=4.2cm of dns] (web) {Webserver\\\texttt{192.168.0.11}};
+		\node[text width=3cm, right=0cm of dns] (dnsTable) {\tiny \begin{tabular}{p{1.1cm}|p{1.2cm}}
+				\textbf{Domain\newline Name} & \textbf{IP-\newline Addresse} \\
+				\midrule\midrule
+				\texttt{beispiel.ch}         & 192.168.0.11                  \\
+				\midrule
+				\texttt{schule.ch}           & 192.168.0.12                  \\
+				\midrule
+				\texttt{test.org}            & 192.168.0.13                  \\
+				\midrule
+				\texttt{insta.com}           & 192.168.0.14                  \\
+				\midrule
+				\texttt{...}                 & ...                           \\
+			\end{tabular}};
 
-% draw box around DNS node and DNS table
-\node[fit=(dns) (dnsTable), inner sep=4pt, RoyalBlue, dotted, draw, line width=1pt,rounded corners](dnsArea) {};
+		% draw box around DNS node and DNS table
+		\node[fit=(dns) (dnsTable), inner sep=4pt, RoyalBlue, dotted, draw, line width=1pt,rounded corners](dnsArea) {};
 
-% Arrows
-\draw[arrow] ($(client.east)+(0,0.15)$) -- ($(dns.west)+(0,0.15)$) node[midway, above] {\textbf{1.} \gls{DNS}-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''};
-\draw[arrow] ($(dns.west)-(0,0.15)$) -- ($(client.east)-(0,0.15)$) node[midway, below] {\textbf{2.} \gls{DNS}-Antwort\\\footnotesize``\texttt{192.168.0.11}''};
-\draw[arrow] (client) -- ++(0,2cm) -- node[above] {\textbf{3.} \gls{HTTP}-Anfrage\\\footnotesize (Webseite wird angefragt)} ++($(web)$) -- (web);
-\draw[arrow] (web) -- ++(0,-2cm) -- node[below,midway] {\textbf{4.} \gls{HTTP}-Antwort\\\footnotesize (Webseite wird geliefert)} ++($(client)-(web)$) -- (client);
+		% Arrows
+		\draw[arrow] ($(client.east)+(0,0.15)$) -- ($(dns.west)+(0,0.15)$) node[midway, above] {\textbf{1.} \gls{DNS}-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''};
+		\draw[arrow] ($(dns.west)-(0,0.15)$) -- ($(client.east)-(0,0.15)$) node[midway, below] {\textbf{2.} \gls{DNS}-Antwort\\\footnotesize``\texttt{192.168.0.11}''};
+		\draw[arrow] (client) -- ++(0,2cm) -- node[above] {\textbf{3.} \gls{HTTP}-Anfrage\\\footnotesize (Webseite wird angefragt)} ++($(web)$) -- (web);
+		\draw[arrow] (web) -- ++(0,-2cm) -- node[below,midway] {\textbf{4.} \gls{HTTP}-Antwort\\\footnotesize (Webseite wird geliefert)} ++($(client)-(web)$) -- (client);
 
-\end{tikzpicture}
-\centering
-\caption{Schematischer Ablauf einer DNS-Anfrage}
-\label{fig:dns}
+	\end{tikzpicture}
+	\centering
+	\caption{Schematischer Ablauf einer DNS-Anfrage}
+	\label{fig:dns}
 \end{figure}
 
 Der Prozess der Beantwortung einer Frage nach der IP-Adresse einer Web-Adresse ist in Schritten 1 und 2 in \cref{fig:dns} gezeigt. Die Übersetzung eines Domain-Namens in eine \gls{IP}-Adresse wird auch als \textbf{Namensauflösung} bezeichnet.
 
 \begin{myexercise}
-Weshalb kann der Client \texttt{192.168.0.10} bei \cref{fig:dns} nicht auf die Webseite \texttt{ksimlee.ch} zugreifen?
-\begin{myanswer}
-Die Webseite \texttt{ksimlee.ch} ist nicht in der Tabelle des \gls{DNS}-Servers \texttt{192.168.2.1} abgespeichert, daher kann sie der Client auch nicht finden.
-\end{myanswer}
+	Weshalb kann der Client \texttt{192.168.0.10} bei \cref{fig:dns} nicht auf die Webseite \texttt{ksimlee.ch} zugreifen?
+	\begin{myanswer}
+		Die Webseite \texttt{ksimlee.ch} ist nicht in der Tabelle des \gls{DNS}-Servers \texttt{192.168.2.1} abgespeichert, daher kann sie der Client auch nicht finden.
+	\end{myanswer}
 \end{myexercise}
 
 
@@ -763,14 +760,14 @@ Mit dem Terminal-Befehl \texttt{host [ipadress]} kann nachgeschaut werden, welch
 
 
 \begin{myexercise}
-Verwenden Sie die Befehle \texttt{host} oder \texttt{nslookup}, um herauszufinden, welche \gls{IP}-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese \gls{IP} im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
-\begin{myanswer}
-Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
-\end{myanswer}
+	Verwenden Sie die Befehle \texttt{host} oder \texttt{nslookup}, um herauszufinden, welche \gls{IP}-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese \gls{IP} im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
+	\begin{myanswer}
+		Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
+	\end{myanswer}
 \end{myexercise}
 
 \begin{mysubmission}[DNS-Server]
-Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.10-2.12 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
+	Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.10-2.12 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
 \end{mysubmission}
 
 \subsection{Vermittlungsschicht}
@@ -782,21 +779,21 @@ Damit eine \gls{IP}-Adresse in eine \gls{MAC}-Adresse umgewandelt werden kann, w
 
 Ein Beispiel, wie das \gls{ARP}-Protokoll funktioniert, könnte wie folgt aussehen:
 \begin{itemize}
-\item Computer \commandbox|192.168.0.33| will Nachricht senden an \commandbox|192.168.0.34| im selben Subnetz (\commandBluebox|255.255.255.0|)
-\item \commandbox|192.168.0.33| sendet daher eine Nachricht an alle Computer in \commandbox|192.168.0.x|: ``Wer hat die IP \commandbox|192.168.0.34|''?
-\item Computer \commandbox|192.168.0.34| antwortet: ``Ich! Meine MAC ist \commandbox|60:4E:46:F5:08:09|.''
-\item Nun kann der Computer seine Nachricht direkt an den nächsten Empfänger (\textit{gateway}) übergeben.
+	\item Computer \commandbox|192.168.0.33| will Nachricht senden an \commandbox|192.168.0.34| im selben Subnetz (\commandBluebox|255.255.255.0|)
+	\item \commandbox|192.168.0.33| sendet daher eine Nachricht an alle Computer in \commandbox|192.168.0.x|: ``Wer hat die IP \commandbox|192.168.0.34|''?
+	\item Computer \commandbox|192.168.0.34| antwortet: ``Ich! Meine MAC ist \commandbox|60:4E:46:F5:08:09|.''
+	\item Nun kann der Computer seine Nachricht direkt an den nächsten Empfänger (\textit{gateway}) übergeben.
 \end{itemize}
 
 \begin{myexercise}[Weitere Filius-Aufgaben (Troubleshooting)]
-Lösen Sie die Troubleshooting-Aufgaben 2.13 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}.
+	Lösen Sie die Troubleshooting-Aufgaben 2.13 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}.
 \end{myexercise}
 
 \begin{mychallenge}
-\begin{itemize}
-\item Lesen Sie zur Vertiefung des Schichtenmodells folgende Webseite (ohne Übungen): \href{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}{Link}
-\item Beantworten Sie danach die Zuordnungs-Fragen $\rightarrow$ \textbf{Abgabe Moodle}
-\end{itemize}
+	\begin{itemize}
+		\item Lesen Sie zur Vertiefung des Schichtenmodells folgende Webseite (ohne Übungen): \href{https://oinf.ch/kurs/vernetzung-und-systeme/kommunikation-in-netzwerken/}{Link}
+		\item Beantworten Sie danach die Zuordnungs-Fragen $\rightarrow$ \textbf{Abgabe Moodle}
+	\end{itemize}
 \end{mychallenge}
 
 \newpage
@@ -811,23 +808,23 @@ Laden Sie folgende Datei herunter und installieren Sie das Programm:  \href{http
 
 Falls Sie dazu aufgefordert werden, klicken Sie immer auf ``erlauben'', bzw. ``weiter''. Nachdem Sie das Programm installiert haben, können Sie folgende Schritte ausführen:
 \begin{enumerate}
-\item Das heruntergeladene Installationsprogramm (mit der Dateiendung \texttt{.exe}) löschen 
-\item Auf der Tastatur tippen: \faWindows+\texttt{Filius} 
-\item Filius öffnen
+	\item Das heruntergeladene Installationsprogramm (mit der Dateiendung \texttt{.exe}) löschen
+	\item Auf der Tastatur tippen: \faWindows+\texttt{Filius}
+	\item Filius öffnen
 \end{enumerate}
 \subsubsection{MacOS}
 \begin{mycaution}
-Falls Probleme beim Ausführen der unten stehenden Schritte auftreten, schauen Sie sich die genauen Anleitungen mit Screenshots auf dieser Webseite an: \url{https://oinf.ch/wp-content/uploads/Anleitung_Filius_Mac-OS.pdf}. Sie können natürlich auch mich um Hilfe fragen \emoji{winking-face}.
+	Falls Probleme beim Ausführen der unten stehenden Schritte auftreten, schauen Sie sich die genauen Anleitungen mit Screenshots auf dieser Webseite an: \url{https://oinf.ch/wp-content/uploads/Anleitung_Filius_Mac-OS.pdf}. Sie können natürlich auch mich um Hilfe fragen \emoji{winking-face}.
 \end{mycaution}
 \paragraph*{Installation Java SDK (Voraussetzung für Filius)}
 Damit Filius ausgeführt werden kann, muss zuerst Java SDK in der neusten Version installiert werden.
 \begin{enumerate}
-\item Laden Sie Java als DMG-Installer unter folgendem Link herunter: \url{https://www.oracle.com/java/technologies/downloads/} 
-\begin{itemize}
-\item Überprüfen Sie, ob Sie über einen Mac mit Apple- oder Intel-Chip verfügen, indem Sie ganz oben links auf Ihrem Bildschirm auf das \faApple{}-Zeichen $\rightarrow$ ``Über diesen Mac'' klicken und die Beschreibung Ihres Chips (erste Zeile) lesen.
-\item Falls Sie einen neueren Mac mit Apple-Silicon-Chip (z.B. M1, M2, M3...) haben (Modelle nach 2022 gekauft), laden Sie die ``ARM''-Version herunter (als \texttt{.dmg}-Datei)
-\item Falls Sie einen Mac mit Intel-Chip haben, laden Sie die ``x64''-Version herunter
-\end{itemize}
+	\item Laden Sie Java als DMG-Installer unter folgendem Link herunter: \url{https://www.oracle.com/java/technologies/downloads/}
+	      \begin{itemize}
+		      \item Überprüfen Sie, ob Sie über einen Mac mit Apple- oder Intel-Chip verfügen, indem Sie ganz oben links auf Ihrem Bildschirm auf das \faApple{}-Zeichen $\rightarrow$ ``Über diesen Mac'' klicken und die Beschreibung Ihres Chips (erste Zeile) lesen.
+		      \item Falls Sie einen neueren Mac mit Apple-Silicon-Chip (z.B. M1, M2, M3...) haben (Modelle nach 2022 gekauft), laden Sie die ``ARM''-Version herunter (als \texttt{.dmg}-Datei)
+		      \item Falls Sie einen Mac mit Intel-Chip haben, laden Sie die ``x64''-Version herunter
+	      \end{itemize}
 \end{enumerate}
 
 Installieren Sie Java SDK, indem Sie auf die heruntergeladene Datei klicken.
@@ -835,9 +832,9 @@ Installieren Sie Java SDK, indem Sie auf die heruntergeladene Datei klicken.
 \paragraph*{Installation Filius}
 
 \begin{itemize}
-\item Laden Sie Filius in der neusten Version \textbf{als \texttt{.zip}-Datei} von folgendem Link herunter: \url{https://www.lernsoftware-filius.de/Herunterladen}. 
-\item Verschieben (ziehen) Sie den Ordner in Ihren Anwendungs-Ordner.
-\item Öffnen Sie den Ordner und starten Sie die Datei \texttt{filius.jar}, indem Sie rechts darauf klicken (\keys{\Alt} + Klick) und ``Öffnen'' wählen. Dies müssen Sie nur beim ersten Mal machen, danach können Sie ``normal'' auf das Programm klicken (ohne \keys{\Alt}), um es zu öffnen.
+	\item Laden Sie Filius in der neusten Version \textbf{als \texttt{.zip}-Datei} von folgendem Link herunter: \url{https://www.lernsoftware-filius.de/Herunterladen}.
+	\item Verschieben (ziehen) Sie den Ordner in Ihren Anwendungs-Ordner.
+	\item Öffnen Sie den Ordner und starten Sie die Datei \texttt{filius.jar}, indem Sie rechts darauf klicken (\keys{\Alt} + Klick) und ``Öffnen'' wählen. Dies müssen Sie nur beim ersten Mal machen, danach können Sie ``normal'' auf das Programm klicken (ohne \keys{\Alt}), um es zu öffnen.
 \end{itemize}
 
 
