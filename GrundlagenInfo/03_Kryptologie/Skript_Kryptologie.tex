@@ -271,7 +271,7 @@ In der Informatik spricht man hier davon, dass Alice aus ihrem ``Klartext'', als
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.4\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/kerckhoffs}
+\includegraphics[width=0.3\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/kerckhoffs}
 \caption{Auguste Kerckhoffs (1835-1903)}
 \label{fig:kerckhoffs}
 \end{figure}
@@ -535,6 +535,7 @@ lässt sich nun einfach ablesen.
   \end{mychallenge}
  
  \subsection{Caesar}
+ \label{subsec:caesar}
  Eines der bekanntesten Verschlüsselungssysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dieses Verschlüsselungssystem besteht essentiell aus einer Verschiebung aller Buchstaben um eine vordefinierte Anzahl Positionen im Alphabet. Der \tib{Schlüssel} bezeichnet dabei die Anzahl Positionen, um die jeder Buchstabe verschoben wird. Ausgedrückt wird der Schlüssel auch als Buchstabe, der dem Buchstaben A entsprechen würde.
  
  \begin{myexample}
@@ -690,7 +691,78 @@ Um zu verschlüsseln, liest man die Caesar-Scheibe von innen (Klartext) nach aus
 Ja, dies tritt bei Schlüsseln 0 (A, keine Verschlüsselung) und 13 (N, die Hälfte des Alphabets) auf.
 \end{myanswer}
 \end{mychallenge}
- 
+
+\subsection{Monoalphabetische Substitution}
+
+Eine Weiterentwicklung der Caesar-Veschlüsselung besteht darin, nicht jeden Buchstaben im Klartext um dieselbe Anzahl Positionen zu verschieben, sondern für jeden Klartext-Buchstaben $B_K$ einen Geheimtext-Buchstaben $B_G$ zu definieren, durch den der Buchstabe ersetzt wird (s. \cref{fig:monoalph-subst}).
+
+\begin{figure}[H]
+\centering
+\multiKey{Z,E,A,B,C,D,Y,X,W,H,I,V,U,T,G,F,J,K,R,Q,L,M,S,N,P,O}
+\caption{Monoalphabetische Substitution}
+\label{fig:monoalph-subst}
+\end{figure}
+
+Diese Verschlüsselungsmethode kann nicht geknackt werden, indem alle Buchstaben um gleich viele Positionen verschoben werden. Man kann also nicht lediglich alle 25 möglichen Verschiebungen ausprobieren.
+
+Obschon es nun eine Vielzahl möglicher Schlüssel gibt, kann diese Verschlüsselungsmethode ebenfalls sehr einfach geknackt werden per Häufigkeitsanalyse, die wir bereits in \cref{subsec:caesar} gesehen und in \cref{ex:caesar} mittels \cref{tab:alle-haeufigkeiten} durchgeführt haben.
+
+\begin{myexample}
+Folgender Geheimtext wurde abgefangen:
+
+\texttt{MUMMUXJUQYMHQOUSUTUQNGWTJQVHUMXQUXQJSUVYPPUM}
+
+Wir wissen, dass er per monoalphabetische Verschlüsselung erstellt wurde, wie beispielsweise in \cref{fig:monoalph-subst}, kennen jedoch den Schlüssel nicht. Wir verwenden \cref{tab:alle-haeufigkeiten}, um den Schlüssel zu erraten und den Text zu entschlüsseln. Dabei gehen wir wie folgt vor:
+
+\begin{itemize}
+\item Wir beginnen damit, die häufigsten Buchstaben zu zählen: U kommt 10-mal vor, M kommt 6-mal vor, Q kommt 6-mal vor. Aufgrund von \cref{tab:alle-haeufigkeiten} versuchen wir, folgendes einzusetzen: \texttt{U=E, M=N, Q=I}. Wir erhalten folgenden Teil-Klartext:
+\begin{verbatim}
+GEHEIMTEXT: MUMMUXJUQYMHQOUSUTUQNGWTJQVHUMXQUXQJSUVYPPUM
+KLARTEXT:   NENNE--EI-N-I-E-E-EI-----I--EN-IE-I--E----EN
+    \end{verbatim}
+\item Nun könnten wir weiterfahren, indem wir die häufigsten Trigramme anschauen. Dabei suchen wir im bisherigen Klartext nach Klartext-Teilen, wo wir Trigramme einsetzen könnten. Laut \cref{tab:trigramme-haeufigkeit} ist ein häufiges Trigramm in deutschen Texten \texttt{``DIE''}. Dieses probieren wir einzusetzen (D=X):
+
+\begin{verbatim}
+GEHEIMTEXT: MUMMUXJUQYMHQOUSUTUQNGWTJQVHUMXQUXQJSUVYPPUM
+KLARTEXT:   NENNED-EI-N-I-E-E-EI-----I--ENDIEDI--E----EN
+    \end{verbatim}
+    \item Der Klartext nimmt langsam Form an und wir können nun damit beginnen, verbleibende Worte zu erraten. Könnte es sich beim ersten Wort um das Wort ``\texttt{DREI}'' handeln? Wir setzen ein:
+\begin{verbatim}
+GEHEIMTEXT: MUMMUXJUQYMHQOUSUTUQNGWTJQVHUMXQUXQJSUVYPPUM
+KLARTEXT:   NENNEDREI-N-I-E-E-EI----RI--ENDIEDIR-E----EN
+    \end{verbatim}
+    \item Sobald einzelne Wörter erkannt werden, können wir sie mit Trennlinien voneinander abgrenzen:
+\begin{verbatim}
+GEHEIMTEXT: MUMMU|XJUQ|YMHQOUSUTUQNGWTJQVHUM|XQU|XQJ|SUVYPPUM
+KLARTEXT:   NENNE|DREI|-N-I-E-E-EI----RI--EN|DIE|DIR|-E----EN
+\end{verbatim}
+\item Wir fahren durch Ausprobieren und Erraten weiter, bis das Lösungswort gefunden ist:
+\begin{verbatim}
+GEHEIMTEXT: MUMMU|XJUQ|YMHQOU|SUTUQNGWTJQVHUM|XQU|XQJ|SUVYPPUM
+KLARTEXT:   NENNE|DREI|ANTIKE|GEHEIMSCHRIFTEN|DIE|DIR|GEFALLEN
+\end{verbatim}
+\end{itemize}
+Je länger ein Text ist, desto zuverlässiger funktioniert das Erraten der Buchstaben per Häufigkeitsanalyse.
+\end{myexample}
+
+\begin{myexercise}
+Entschlüsseln Sie den Text ``\texttt{ECRRCKZVRAZCRZK}'' mit dem Schlüssel aus \cref{fig:monoalph-subst}.
+\begin{myanswer}
+BESSERALSCAESAR
+\end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}
+Lösen Sie eine Knobelaufgabe aus dem Kapitel ``\href{https://cryptbreaker.marcwidmer.xyz/problems/substitution}{Substitution}''.
+\end{mychallenge}
+
+
+\begin{mychallenge}
+Wie viele Verschlüsselungs-Möglichkeiten gibt es in der Verschlüsselungsmethode aus \cref{fig:monoalph-subst}?
+\begin{myanswer}
+Für jeden Buchstaben gibt es 26 mögliche Verschiebungen (keine Verschiebung ist auch eine Möglichkeit), also gibt es insgesamt $26^{26}$ mögliche Verschiebungen.
+\end{myanswer}
+\end{mychallenge}
  
  \subsection{Vigenère}
  \iftoggle{teacherToggle}{
@@ -718,7 +790,7 @@ Ja, dies tritt bei Schlüsseln 0 (A, keine Verschlüsselung) und 13 (N, die Häl
   \end{myExBox}
  \newpage\stepcounter{dlcounter}
   }{}
- Wie wir in \cref{ex:caesar} gesehen haben, ist es extrem einfach, Text, die mit Caesar verschlüsselt worden sind, anzugreifen, entweder mittels Buchstabenhäufigkeitsanalyse oder indem man einfach alle 25 möglichen Verschiebungen ausprobiert.
+ Wie wir in \cref{ex:caesar} gesehen haben, ist es extrem einfach, Text, die mit Caesar verschlüsselt worden sind, anzugreifen, entweder mittels Buchstabenhäufigkeitsanalyse oder indem man einfach alle 25 möglichen Verschiebungen ausprobiert. Auch weitere monoalphabetische Substitutions-Verfahren wie \cref{fig:monoalph-subst} können durch etwas Knobeln relativ einfach geknackt werden.
  
  Vigenère hatte eine andere Idee: Statt den ganzen Text mit einem einzigen Schlüssel zu verschlüsseln, verwendete er ein Wort, mit welchem er den Text ``zyklisch'', also gruppenweise verschlüsselte.
  
@@ -737,6 +809,13 @@ Wenn der Schlüssel beispielsweise ``KEY'' war, wurden die Buchstaben folgenderm
 Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 \end{verbatim}
 \end{figure}
+
+Im Vergleich dazu wird bei Caesar jeder Buchstabe durch \textit{denselben} Schlüssel verschlüsselt, beispielsweise:
+\begin{verbatim}
+  Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
+ Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
+Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+\end{verbatim}
 \end{myexample}
 
 Wie Sie wissen, ist der Buchstabe ``E'' der häufigste Buchstabe in deutschen Texten. Diese Eigenschaft haben wir uns in \cref{ex:caesar} zunutze gemacht, um den Text zu knacken. Da bei Vigenère jedoch der Buchstaben nun nicht mehr immer mit demselben Schlüssel verschlüsselt ist, sondern je nach Position mit dem Schlüssel ``K'', ``E'', oder ``Y'', wird der Buchstabe ``E'' im Geheimtext nun breiter auf andere Buchstaben verteilt (s. \cref{fig:ex-vigenere-e}). Anders gesagt, ein Buchstabe im Geheimtext repräsentiert nun nicht mehr immer den gleichen Buchstaben im Klartext, sondern kann einen von drei Buchstaben repräsentieren.
@@ -783,11 +862,14 @@ Wie Sie wissen, ist der Buchstabe ``E'' der häufigste Buchstabe in deutschen Te
     \node[align=center] at (4, -2.5) {Kryptotext};
 \end{tikzpicture}
 \end{subfigure}
-\caption{Verschlüsselungs-Möglichkeiten mit Vigenère, mit dem Schlüssel ``KEY'' \cref{ex:vigenere}}
+\caption{Verschlüsselungs-Möglichkeiten mit Vigenère, mit dem Schlüssel ``KEY'' aus \cref{ex:vigenere}}
 \label{fig:ex-vigenere-e}
 \end{figure}
 
-Aus der breiteren Verteilung der Klartext-Buchstaben ergibt sich nun eine homogenere Verteilung der Buchstaben im Geheimtext. \cref{fig:langer-text-vig-caesar} zeigt die Buchstabenhäufigkeit im Geheimtext für einen langen Text, welcher einmal mit Caesar und einmal mit Vigenère verschlüsselt wurde.
+Diese Verschlüsslungsmethode galt während mehreren Jahrehunderten als sicher und war der Gold-Standard in vielen militärischen Verschlüsslungs-Anwendungen. Um einen Text zu verschlüsseln, wurde jeder Buchstabe im Klartext einzeln verschlüsselt, und je nach Schlüssel (z.B. ``K'', ``E'' oder ``Y'' in \cref{ex:vigenere}) wurde der entsprechende Buchstabe des Geheimtexts aus einer Tabelle herausgelesen (s. \cref{tab:vigenere})
+
+
+\cref{fig:langer-text-vig-caesar} zeigt die Buchstabenhäufigkeit im Geheimtext für einen langen Text, welcher einmal mit Caesar und einmal mit Vigenère verschlüsselt wurde.
 
 \begin{figure}[H]
 \centering
@@ -806,8 +888,9 @@ Aus der breiteren Verteilung der Klartext-Buchstaben ergibt sich nun eine homoge
 \label{fig:langer-text-vig-caesar}
 \end{figure}
 
+\cref{fig:langer-text-vig-caesar} zeigt, dass Vigenère zu einer insgesamt homogeneren Verteilung aller Buchstaben im Geheimtext führt. Dies kommt daher, dass bei Vigenère jeder Klartext-Buchstaben auf \textit{mehrere} Geheimtext-Buchstaben verteilt wird, währenddem bei Caesar jeder Klartext-Buchstaben durch genau \textit{einen} Buchstaben im Geheimtext kodiert wird.. 
 
-Diese Verschlüsslungsmethode galt während mehreren Jahrehunderten als sicher und war der Gold-Standard in vielen militärischen Verschlüsslungs-Anwendungen. Um einen Text zu verschlüsseln, wurde jeder Buchstabe im Klartext einzeln verschlüsselt, und je nach Schlüssel (z.B. ``K'', ``E'' oder ``Y'' in \cref{ex:vigenere}) wurde der entsprechende Buchstabe des Geheimtexts aus einer Tabelle herausgelesen (s. \cref{tab:vigenere})
+
 
 
  
@@ -837,9 +920,9 @@ Diese Verschlüsslungsmethode galt während mehreren Jahrehunderten als sicher u
  
  
  \begin{myexercise}
-Entschlüsseln Sie folgenden Text von Hand, wenn Sie wissen, dass er mit dem Schlüssel ``ABC'' und mit der Methode von Vigenère verschlüsselt worden ist:
+Entschlüsseln Sie folgenden Text von Hand, wenn Sie wissen, dass er mit dem Schlüssel ``TOP'' und mit der Methode von Vigenère verschlüsselt worden ist:
 
-\texttt{BSCVPIUUIENCCIV}
+\texttt{UFPOCVNHVXAPVVI}
 \begin{myanswer}
 \texttt{BRAVOGUTGEMACHT}
 \end{myanswer}
@@ -852,12 +935,10 @@ Wenn die Schlüssellänge eines mit Vigenère verschlüsselten Texts bekannt ist
 \begin{myexample}
 Angenommen, wir wüssten, dass folgender Text mit einem Schlüssel verschlüsselt worden ist, der drei Zeichen lang ist:
 
-\texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
-		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 
-		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+\texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MKUMYBVFLZDHZGOMKAMTRMKAPCAUGPVGNIPGMULMNLMKUOGUWOTMPNTGPKJKMPZCGZAGUNTBMJSQPNAOVZILVFPMKJPOPBIHVBLUJLZBLVILVKLAULQEOJKUINSMKUCPKNTLCGTQEOUGPVGZTGIMPZQPKQGZMTNMILVFKQGMCGYAQSKJLAGLTGUOGZKJHNHLVKZBYPMFPMOLQPLQEOJKUAQNTWLKMSQEOUGPVDLAVLZUVOCUHKULGTOGMCGOTGCWPYCJPOGTLCZMKUDGYAWUSGULCZAOLQPLSWUAVKITBVVLZNLQFLBKJPMVMPUBGQMVGBPPKJAHGPKJUMPUQEOBGPVGUAVYQEOCPKJKUVKLMKUOTVMUZMTLZOHTGYOGDMULVCSAKULKLAGUIWNMPITKJSGUEGUVFHANPMDL}}
 		
 		
-Den Schlüssel selber kennen wir nicht, wir wissen jedoch, dass jeder der grün markierten Buchstaben beispielsweise mit demselben Buchstaben verschlüsselt worden ist. Wir können also für jede der Gruppen (grün, blau, rot) die Häufigkeit der Buchstaben anschauen (s. \cref{fig:vig-subgroup})
+Den Schlüssel selber kennen wir nicht, wir wissen jedoch, dass jeder der grün markierten Buchstaben beispielsweise mit demselben Buchstaben verschlüsselt worden ist. Wir können also für jede der Gruppen (grün, blau, rot) die Häufigkeit der Buchstaben betrachten (s. \cref{fig:vig-subgroup}).
 
 \begin{figure}[H]
 \centering
@@ -872,17 +953,17 @@ Den Schlüssel selber kennen wir nicht, wir wissen jedoch, dass jeder der grün 
 \label{fig:vig-subgroup}
 \end{figure}
 
-Dabei erkennen wir, dass der häufigste Buchstaben pro Gruppe: \textcolor{ForestGreen}{M}, \textcolor{RoyalBlue}{G}, bzw. \textcolor{Crimson}{L} ist. Wir haben es also mit folgenden Verschiebungen zu tun:
+Dabei erkennen wir, dass die häufigsten Buchstaben pro Gruppe \textcolor{ForestGreen}{M}, \textcolor{RoyalBlue}{G}, bzw. \textcolor{Crimson}{L} sind. Wir haben es also mit folgenden Verschiebungen zu tun:
 \begin{figure}[H]
 	\centering
-	\resizebox{.55\textwidth}{!}{\caesar[8] \caesar[2] \caesar[7]}
+	\resizebox{.65\textwidth}{!}{\caesar[8] \caesar[2] \caesar[7]}
 \end{figure}
-Der Schlüssel muss demnach ``ICH'' sein und wir können den Text entschlüsseln.
+Der Schlüssel muss demnach ``ICH'' sein und wir können den Text somit entschlüsseln.
 \end{myexample}
 
  \begin{myexercise}
 
-Versuchen Sie, den obigen Text mit dem \href{https://cryptbreaker.marcwidmer.xyz}{Analysetool} zu entziffern mit dem Schlüssel ``ICH''. Verwenden Sie dazu das Entschlüsslungswerkzeug Vigenère. 
+Versuchen Sie, den obigen Text mit dem Schlüssel ``ICH'' zu entschlüsseln, in dem Sie das \href{https://cryptbreaker.marcwidmer.xyz/solve}{Analysetool} verwenden.
 
 \begin{myanswer}
 \texttt{ESSCHEINTOHNEFRAGEDASSSIEPERFEKTVERSTANDENHABENWIEMANVIGENEREENTSCHLUESS}
@@ -893,26 +974,14 @@ Versuchen Sie, den obigen Text mit dem \href{https://cryptbreaker.marcwidmer.xyz
  
   \begin{myexercise}
  
- Kopieren Sie den folgenden Geheimtext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz}{Analysetool} zu entziffern, wenn Sie wissen, dass die Schlüssellänge drei ist. Schauen Sie sich die Buchstabenhäufigkeiten für jede der 3 Gruppen an, indem Sie unter ``Analysewerkzeug'' die Häufigkeitsanalyse auswählen und \textit{stride} (Schrittgrösse) 3. Unterhalb der Grafiken kann man zwischen jeder der drei Gruppen hin- und herwechseln.
+ Kopieren Sie den folgenden Geheimtext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz/solve}{Analysetool} zu entziffern, wenn Sie wissen, dass die Schlüssellänge drei ist. Schauen Sie sich die Buchstabenhäufigkeiten für jede der 3 Gruppen an, indem Sie unter ``Analysewerkzeug'' die Häufigkeitsanalyse auswählen und \textit{stride} (Schrittgrösse) 3. Unterhalb der Grafiken kann man zwischen jeder der drei Gruppen hin- und herwechseln.
  
-\texttt{WORBHHHLUQOWWLDSYSQOWOUKSUDSNEGAAZAEBKISMRILHGPCVLIBZTRLMHYUSIEBILWJKULZS}
-
-\texttt{PGHCEFZUQOIQOWCOLSBCVKISZMOSFSZTNBHOSTSUFILHZPCVTEWUHSYZBVCVQEBLMKHHBNEBL}
-
-\texttt{IUAIVYDFHEBNTSBCVGUBBNUBTGVMCLGHPHFDAZAEBDISPHFHUGKUBZTIUDBLBSSUATIQOSHLI}
-
-\texttt{UAMSPNPBS}
+\texttt{\colorstring[black]{WORBHHHLUQOWWLDSYSQOWOUKSUDSNEGAAZAEBKISMRILHGPCVLIBZTRLMHYUSIEBILWJKULZSPGHCEFZUQOIQOWCOLSBCVKISZMOSFSZTNBHOSTSUFILHZPCVTEWUHSYZBVCVQEBLMKHHBNEBLIUAIVYDFHEBNTSBCVGUBBNUBTGVMCLGHPHFDAZAEBDISPHFHUGKUBZTIUDBLBSSUATIQOSHLIUAMSPNPBS}}
  
  \begin{myanswer}
 Mit dem Schlüssel ``\texttt{OHA}'' kommen wir auf folgende Lösung:
 
-\texttt{IHRNAHTEUCHWIEDERSCHWANKENDEGESTALTENDIEFRUEHSICHEINSTDEMTRUEBENBLICKG}
-
-\texttt{EZEIGTVERSUCHICHWOHLEUCHDIESMALFESTZUHALTENFUEHLICHMEINHERZNOCHJENEMWAH}
-
-\texttt{NGENEIGTIHRDRAENGTEUCHZUNUNGUTSOMOEGTIHRWALTENWIEIHRAUSDUNSTUNDNEBELUMM}
-
-\texttt{ICHSTEIGTMEINBUS}
+\texttt{\colorstring[black]{IHRNAHTEUCHWIEDERSCHWANKENDEGESTALTENDIEFRUEHSICHEINSTDEMTRUEBENBLICKGEZEIGTVERSUCHICHWOHLEUCHDIESMALFESTZUHALTENFUEHLICHMEINHERZNOCHJENEMWAHNGENEIGTIHRDRAENGTEUCHZUNUNGUTSOMOEGTIHRWALTENWIEIHRAUSDUNSTUNDNEBELUMMICHSTEIGTMEINBUS}}
  \end{myanswer}
   \end{myexercise}
 
@@ -930,7 +999,16 @@ Die Friedmann'sche Charakteristik berechnet, wie ungleich alle Buchstaben in ein
  &=\sum_{\Delta\in \text{Alphabet}}\Big(h_\Delta(T)-\frac{1}{26}\Big)^2
 \end{align}
 
-Eine stark ungleiche Verteilung von Buchstaben in einem Text $T$ führt also zu einer hohen Friedman'schen Charakteristik $FC(T)$, währenddem gleichmässig verteiltere Buchstaben im Text $T$ zu einer tieferen $FC(T)$ führen.
+Eine stark ungleiche Verteilung von Buchstaben in einem Text $T$ führt also zu einer hohen Friedman'schen Charakteristik $FC(T)$, währenddem gleichmässig verteiltere Buchstaben im Text $T$ zu einer tieferen $FC(T)$ führen. Deutschsprachige (Klar-)Texte haben durchschnittlich etwa einen Wert von 3.8\% (0.038) (s. \cref{fig:vig-subgroup-1-avg}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.8\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-1-avg}
+\caption{Buchstabenhäufigkeit in einem mit Caesar verschlüsselten Text, im Vergleich zur Gleichverteilung von Buchstaben}
+\label{fig:vig-subgroup-1-avg}
+\end{figure}
+
+Je grösser die blauen Pfeile in \cref{fig:vig-subgroup-1-avg}, desto höher die Friedmann'sche Charakteristik.
 
 Wir können nun folgenden \textit{Brute-Force}-Ansatz verwenden, um die Schlüssellänge mit der Friedman'schen Charakteristik zu bestimmen:
 
@@ -960,47 +1038,73 @@ Das Resultat der Schlüsselsuche ist gezeigt in \cref{fig:fc}.
 \label{fig:fc}
 \end{figure}
 
-Aus \cref{fig:fc} lässt sich ablesen, dass die Schlüssellänge vermutlich 4 sein muss, da bei jedem Vielfachen der Schlüssellänge 4 die durchschnittliche Friedman'sche Charakteristik höher ist als für die restlichen Schlüssellängen. Ab nun lässt sich gleich vorgehen wie in \cref{subsubsec:vigHack} beschrieben, um den Text zu entschlüsseln.
+Aus \cref{fig:fc} lässt sich ablesen, dass die Schlüssellänge vermutlich 3 sein muss, da bei jedem Vielfachen der Schlüssellänge 3 die durchschnittliche Friedman'sche Charakteristik höher ist als für die restlichen Schlüssellängen. Ab nun lässt sich gleich vorgehen wie in \cref{subsubsec:vigHack} beschrieben, um den Text zu entschlüsseln.
+
+\begin{myexercise}
+Berechnen Sie die Friedmann'sche Charakteristik für folgende beide Texte von Hand:
+
+\texttt{\colorstring[black]{PAPPERLAPAPP}}
+
+\texttt{\colorstring[black]{BACKSTEIN}}
+
+\begin{myanswer}
+Die Friedmann'sche Charakteristik beträgt 29.5\% und 7.3\%, respektive. Wie sie sehen, ist die Friedmannsch'e Charakteristik höher für Texte, bei denen jeder Buchstabe relativ häufiger vorkommt.
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+Berechnen Sie die Friedmann'sche Charakteristik für folgenden Geheimtext:
+
+\texttt{\colorstring[black]{WORBHHHLUQOWWLDSYSQOWOUKSUDSNEGAAZAEBKISMRILHGPCVLIBZTRLMHYUSIEBILWJKULZSPGHCEFZUQOIQOWCOLSBCVKISZMOSFSZTNBHOSTSUFILHZPCVTEWUHSYZBVCVQEBLMKHHBNEBLIUAIVYDFHEBNTSBCVGUBBNUBTGVMCLGHPHFDAZAEBDISPHFHUGKUBZTIUDBLBSSUATIQOSHLIUAMSPNPBS}}
+
+Verwenden Sie dazu das Python-Skript auf Moodle, mit der Funktion \lstinline|def calculate_fc(text)|. Was entnehmen Sie der ihrer Antwort? Wurde der Text mit Caesar oder mit Vigenère verschlüsselt?
+
+\begin{myanswer}
+Der tiefe Wert von 1.4\% deutet darauf hin, dass der Text vermutlich mit Vigenère verschlüsselt wurde.
+\end{myanswer}
+\end{myexercise}
 
 \begin{myexercise}
 Für welchen Buchstabenverteilung sollte die Friedman'sche Charakteristik höher sein: \cref{fig:langer-text-vig-caesar}, (a) oder (b)?
 \begin{myanswer}
-$FC(T)$ sollte für \cref{fig:langer-text-vig-caesar} (a) höher sein, da die Verteilung ungleicher ist.
+$FC(T)$ sollte für \cref{fig:langer-text-vig-caesar} (a) höher sein, da die durchschnittliche relative Häufigkeit der Buchstaben im Geheimtext ungleicher ist.
 \end{myanswer}
 \end{myexercise}
 
 
  \begin{myexercise}
 
-Kopieren Sie den folgenden Geheimtext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz}{Analysetool} zu entziffern:
+Kopieren Sie den folgenden Geheimtext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz}{Analysetool} zu entziffern, indem Sie zuerst das Tool ``Frequency'' und danach das Tool ``Friedman'' verwenden. Wie lautet der Schlüssel?
 
-\verb|TWXERNEFWWDWUSWOXVZIBDPYQNWELELWYHIXFZLROVLWWOJPXAKKMSICWDKIDSYLEOLEIAEJOIIB|
+\texttt{\colorstring[black]{FZNZKVEDZFCRRZVFZTZFLVIOVBKMZWOVGVBAVSZSMVEDBHVNJANVNBZFZCCRFESPSTJEITSLECZJEGNAPIGZBEZEDQIDIOUBEZZAIVRUSOXEIWFJSZWDYBDBBCLZWOLNYTSVUZAJTHHSJEENZFSEIGJEDDSTVRBSHVNYRJVFPSSJOGQIVSZSMVNBSTTHVTGVNDGUNIZRJVMZWOVIXVCZNNCHCUZQLCIXVNVIIPFJTZFTFGVBAZNYSNXEAIFYLZJPERPVJXEHRBJEDBWVRNIOBEIRBJSHSJEEFIOJTYOSLNOSSCEDRFKIXVLFEIBUVJZHAKNDQIKZZWDYNZBOZCCHFZNZBTKRDQILNYPJENDSFZNBFPVSNSSVRHOMVRBSXVSZBBCSDBEZENSORUBSOSLDQLVNRSOEDVGMZEWSURLPANZCCRBDPAHVEDYWFYOCSTFNISBEDZFPSEMTMREXVFUEMIOUUMQIURDBHCIXVFEFDBTKEMBJJMZWOVSROMUENFVYTPBEEUMSJEZZZOVSOFBYLZBTZCCWOUANWOEEMSIVIGWHKUHGUVHGSOZCCRBENDAIFHZBHIANSBDFVZMVNYSOSAXVFCIZUFLNYBBVHZFBEDZFFIDZHBLSZBEDAIBJXFVZUZGZUSRENQIVNHWSDEMYXLEMRJXWZFEVNRSOEIXVERSRWNDEGBEVRFZFZNZBXVLONXZSXVFEHVZNVNYWFLNUOFYLDUFEUISSXRPSOULDQIVNBSTKAGHFEDZFXLEMADYEIRFIMPSDBCCSOEAZVFIAIAFZNZAIVRUSOWUZVMVUIRGLECZFUIZUFXEIKBITYSTRLGABVCCHJXEIRFIUIGORCCGFZNZACZLYSTTHPTERSRSIVNYSTRLGWFSEIRFEDZFVESDBFNIBSSNOIBFJCCKFSEIRUIAZUULNYSSYAZZUDEDBGIEPBENEIBTUAIBVDMZWOVAPUFEDVSNDEMHVEDYWFNEGHVDMDQIYEMIOUDZFIZMHSMXAINJEMZWOVRNSFCEMIIEWDSEZEBSTKAGHFZNZFHVLDSCKEIRBENNSIEEDQIDIXVPWTPBEUEIYFRCCYPVNIHFJTYIERSRWFUEMOVJDMIFTKZBLFEIBUVSORVUEHDBGIZFFUANSJEHVIDYEIKBJSJJPCLNCXRRHWOUIMZFSTYOTJENKVVRYSEVRNDJVGZZEVIISSJEZZFNIZRFZNZGFVLZWTKDZFTGIZUFCDZGVEEIRMZCCSOXOOHFJMZWOWRZIOUAWSSZCCUFYEYOSLEWSSQUBFVEDZWDYEMZJVGZIOKEMRFIGZKBCTYSSYEMFMZCCYFZTYWFJEMSSJCCSJEUIUFEEDBFNUIRFIBVFFYEDHFIKZWUYAOAFZNZUBEZZGFVLZSJEGZBPDMZBHCEDQIUEIGVVSNSOWRPSICIIUTDOMUFEDDSJTHHWUXAINFDHZFAVNBSOZENGFZCCPJEAGZFZNPBEWRZIFDIXVNVIISTCEWSOJIIRJVSZFHVGZBEUIZTVVRNCMTHZGFVLZBHVSXVBWFZBJJTRWFUIZAFZNZWDYBDBTFGGIFTKGWDYMZWOSENHFISJU}}
 
-\verb|WTRICEZVKOFDZIBZLJXOLOMIUGPGLSFOIVPJLYKBMMEGRKPMROJKMQWWCZIBETIXOJTRHSWTLQTW|
-
-\verb|OIRDSRKIQWYEGRLFLVPJFILNSDJVEWSWXEWNOFBSNLXOCLQHWDQEVFTGLDVLWAKJYSGRFTIQKDDK|
-
-\verb|ICUSILOFVAEBLPXIXGNLISFHIMVUSIRCSSZSXKPMROEVSTPCTWWOFLYWNAPEPDWQVEEVTIMRERIK|
-
-\verb|OFFIFOJHSLXLPYRNVTIMRFXMXOAYIVKFTLVQSYDYXYPASOZYPMMZPRROMRMIBVPFIYTLGLDWEIHK|
-
-\verb|FYEFOJRPISUSDISLTKF|
+\begin{myanswer}
+Der Schlüssel lautet ``\texttt{BRAVO}''.
+\end{myanswer}
  \end{myexercise}
 
 
- \begin{mychallenge}
- Teil 1: Verschlüsselung
- \begin{itemize}
- 	\item Erstellen Sie einen Text in deutscher Sprache mit mindestens 1000 Zeichen, beispielsweise mittels folgender Webseite: \url{https://www.blindtextgenerator.de/}
- 	\item Wählen Sie ein \textit{geheimes} Schlüsselwort (3-7 Zeichen) und verschlüsseln Sie Ihren Text mit Vigenère (s. Moodle, Python-Datei 1).
- \end{itemize}
- Teil 2: Entschlüsselung
- \begin{itemize}
- 	\item Zuerst wird die Schlüssellänge per Friedmann-Test bestimmt  (s. Moodle, Python-Datei 2). 
- 	\item Danach wird innerhalb jeder Gruppe der häufigste Buchstabe gesucht. Dieser entspricht mit hoher Wahrscheinlichkeit dem Buchstaben ``E'', somit haben wir die Verschiebung für diese Wort-Gruppe gefunden und damit auch das Schlüsselwort  (s. Moodle, Python-Datei 3).
- 	\item Der Text kann nun wieder mit dem Vigenère-Programm entschlüsselt werden  (s. Python-Datei 1). 
- \end{itemize}
- \end{mychallenge}
+\begin{mychallenge}[Ver- und Entschlüsslung mit Python (zu zweit)]
+Laden Sie zuerst die Vigenère-Python-Dateien von Moodle herunter. Erstellen Sie danach einen Text in deutscher Sprache mit mindestens 1000 Zeichen, beispielsweise mittels folgender Webseite: \url{https://www.blindtextgenerator.de/}. Diesen werden Sie nun mit Python verschlüsseln.
+
+Teil 1: Verschlüsselung
+\begin{itemize}
+	\item Verschlüsseln Sie Ihren Text, indem Sie die Funktion \lstinline|def vigenere(text, key, encrypt=True)| verwenden.
+	\item Senden Sie Ihren verschlüsselten Text an Ihre(n) Partner(in), nicht aber den Schlüssel.
+\end{itemize}
+Teil 2: Entschlüsselung
+\begin{itemize}
+	\item Sie erhalten die Geheimnachricht und müssen nun zuerst den Schlüssel herausfinden. Bestimmen Sie diese mithilfe der Friedmann'schen Charakteristik, indem Sie die Funktion \lstinline|def get_friedman_vals(text, maxkeylen)| verwenden.
+	\item Nachdem Sie die Schlüssellänge bestimmt haben, finden Sie innerhalb jeder Gruppe dem häufigsten Buchstaben. Dies können Sie mit der Funktion \lstinline|def show_letter_freq(text)| einfach umsetzen. Somit sollten Sie das Schlüsselwort herausfinden können.
+	\item Entschlüsseln Sie nun den Geheimtext, indem Sie die Funktion \lstinline|def vigenere(text, key, encrypt=False)| verwenden.
+\end{itemize}
+
+\end{mychallenge}
+
+\begin{mychallenge}
+Lösen Sie drei ``beliebige Probleme'' auf der \href{https://cryptbreaker.marcwidmer.xyz}{Analyse-Webseite}.
+\end{mychallenge}
+
  
 \subsection{\acrlong{OTP}}
 Die One-Time-Pad-Verschlüsselungsmethode (\gls{OTP}, deutsch ``Einmalschlüssel-Verfahren'') funktioniert im Prinzip identisch wie die Vigenère-Methode, mit folgenden drei Unterschieden:

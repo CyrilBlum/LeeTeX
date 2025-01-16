@@ -80,7 +80,8 @@ def display_vigenere_all(vige_dec, vige_enc, vige_key, n_chars=10, with_delim=Fa
     for name, value in zip(["Klartext", "Schlüssel", "Geheimtext"], [p_vige_dec, p_vige_key, p_vige_enc]):
         print(f'{name:>10}: {value}...')
 
-def show_letter_freq(text):
+def show_letter_freq(text, show_diff_to_avg=False):
+    # @argument show_diff_to_avg: also show difference to expected average of 1/26
     fig, ax = plt.subplots()
     
     # Initialize the dictionary for all letters from A to Z with a count of 0
@@ -92,6 +93,31 @@ def show_letter_freq(text):
     freq_perc = np.array(freq_perc)[np.argsort([i[0] for i in freq_perc])]
 
     ax.bar(freq_perc[:,0], freq_perc[:,1].astype(float)*100, width=.5, color='g')
+    if show_diff_to_avg:
+        # Expected average frequency (1/26)
+        avg_freq = 1 / 26 * 100  # in percentage
+        
+        # Plot horizontal line at average frequency
+        ax.axhline(y=avg_freq, color='r', linestyle='--', label=f'1/26 (≈ {avg_freq:.2f}%)')
+        
+        # Add double arrows for the difference
+        for i, freq in enumerate(freq_perc[:,1].astype(float) * 100):
+            letter = freq_perc[i, 0]
+            diff = freq - avg_freq
+            # Position the arrow slightly above the bar
+            y_pos = max(freq, avg_freq) + 0.5
+            # Draw double arrow
+            ax.annotate(
+                '', 
+                xy=(letter, freq), 
+                xytext=(letter, avg_freq), 
+                arrowprops=dict(arrowstyle='<->', color='blue', lw=1.2)
+            )
+            # Annotate difference value
+            ax.text(letter, y_pos, f'{diff:+.1f}%', ha='center', va='bottom', fontsize=8, color='blue',rotation=90)
+        
+        ax.legend() 
+
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
     return fig, ax
 

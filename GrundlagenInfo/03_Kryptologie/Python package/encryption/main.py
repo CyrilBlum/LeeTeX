@@ -1,7 +1,6 @@
 from vigenere import *
 from caesar import *
 from friedmann import *
-from friedmann_aux import *
 from monoalphabetic import *
 plt.style.use('ggplot')
 
@@ -16,14 +15,6 @@ def caesar_main():
     plt.savefig("../../Figures/caesar-freq-exercise.pdf",
                 format="pdf", bbox_inches="tight")
 
-
-def vigenere_main():
-    # langer Text, mit Caesar und Vigenère
-    # langer Text einlesen aus .txt-Datei
-    text_kurz = "BRAVOGUTGEMACHT"
-    text_kurz_v = vigenere(text_kurz, "ABC")
-    print("V", text_kurz_v)
-
     text_lang = open("Texts/Kafka.txt").readlines()[0]
     text_lang = preprocess_text(text_lang)
     text_lang_c = caesar(text_lang, 2)
@@ -32,7 +23,17 @@ def vigenere_main():
     plt.savefig("../../Figures/caesar-freq.pdf",
                 format="pdf", bbox_inches="tight")
 
-    text_lang_v = vigenere(text_lang, "KSLEE")
+
+
+def vigenere_main():
+    # langer Text, mit Caesar und Vigenère
+    # langer Text einlesen aus .txt-Datei
+    text_kurz = "SIEVERSTEHENOTP"
+    text_kurz_v = vigenere(text_kurz, "SIEHABENESGESCH")
+    print("V", text_kurz_v)
+
+    text_lang = open("Texts/Kafka.txt").readlines()[0]
+    text_lang_v = vigenere(text_lang, "ICH")
     print("LANGER TEXT", text_lang_v[:400])
     fig, ax = show_letter_freq(text_lang_v)
     # plt.show()
@@ -50,33 +51,44 @@ def vigenere_main():
     print(vigenere("MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIPCQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB", "ICH", False))
 
 # generate friedman figures
-
-
-def friedman_main():
-    text = "MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB"
+def friedman_main(savefig=True):
+    text_lang = open("Texts/Werther.txt").readlines()[0]
+    text_lang = preprocess_text(text_lang)
     key = "ICH"
-    text = preprocess_text(text)
+    text = vigenere(text_lang, key)
+
+    print(text)
 
     # plot letter frequencies for each subgroup (can only be done correctly if true keylength is known)
     keylength = len(key)
     for i in range(keylength):
         text_slice = text[i::keylength]
         # plot letter frequences
-        fig, ax = show_letter_freq(text_slice)
-        plt.savefig("../../Figures/vigenere-"+str(i+1) +
-                    ".pdf", format="pdf", bbox_inches="tight")
-        plt.close()
+        if i==0:
+            fig, ax = show_letter_freq(text_slice, show_diff_to_avg=True)
+            if savefig:
+                plt.savefig("../../Figures/vigenere-"+str(i+1) +
+                        "-avg.pdf", format="pdf", bbox_inches="tight")
+                plt.close()
+            else:
+                plt.show()
+        
+        fig, ax = show_letter_freq(text_slice, show_diff_to_avg=False)
 
-    text_lang = open("Texts/Werther.txt").readlines()[0]
-    text_lang = preprocess_text(text_lang)
-    key = "YEAH"
-    text = vigenere(text_lang, key)
+        if savefig:
+            plt.savefig("../../Figures/vigenere-"+str(i+1) +
+                    ".pdf", format="pdf", bbox_inches="tight")
+            plt.close()
+        else:
+            plt.show()
 
     fc = get_friedman_vals(text, 15)
     fig, ax = draw_friedmann(15, fc)
-    # plt.show()
-    plt.savefig("../../Figures/friedman.pdf",
-                format="pdf", bbox_inches="tight")
+    if savefig:
+        plt.savefig("../../Figures/friedman.pdf",
+                    format="pdf", bbox_inches="tight")
+    else:
+        plt.show()
 
 
 def monoalphabetic_main():
@@ -89,4 +101,5 @@ def monoalphabetic_main():
     print(shifts)
 
 
-caesar_main()
+friedman_main()
+

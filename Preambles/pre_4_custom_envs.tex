@@ -115,13 +115,24 @@
 }
 
 % myexercise
+\iftoggle{german}{%
+	\def\theexercisename{Aufgabe}
+	\def\thesubmissionname{Aufgabe (Abgabe)}
+	\def\thechallengename{Aufgabe (Challenge)}
+	\def\theanswername{Lösungsvorschlag zu}
+} {%
+	\def\theexercisename{Exercise}
+	\def\thesubmissionname{Exercise (Submission)}
+	\def\thechallengename{Exercise (Challenge)}
+	\def\theanswername{Example solution to}
+}
 \newaliascnt{ExerciseCounter}{SharedCounter}
 \aliascntresetthe{ExerciseCounter}
 \newenvironment{myexercise}[1][]
 {%
 	\refstepcounter{ExerciseCounter}
 	\begin{tcolorboxTemplate}[
-			title=\faEdit{} Aufgabe~\theSharedCounter~#1,
+			title=\faEdit{} \theexercisename~\theSharedCounter~#1,
 			colback=RoyalBlue!10,
 			colframe=RoyalBlue,
 			colbacktitle=RoyalBlue]
@@ -137,7 +148,7 @@
 {%
 	\refstepcounter{SubmissionCounter}
 	\begin{tcolorboxTemplate}[
-			title=\faArrowUp{} Aufgabe (Abgabe)~\theSharedCounter~#1,
+			title=\faArrowUp{} \thesubmissionname~\theSharedCounter~#1,
 			colback=Purple!10,
 			colframe=Purple,
 			colbacktitle=Purple]
@@ -153,7 +164,7 @@
 {%
 	\refstepcounter{ChallengeCounter}
 	\begin{tcolorboxTemplate}[
-			title=\faTrophy{} Aufgabe (Challenge)~\theSharedCounter~#1,
+			title=\faTrophy{} \thechallengename~\theSharedCounter~#1,
 			colback=Gold!10,
 			colframe=Gold!50!black,
 			colbacktitle=Gold!50!black]
@@ -165,7 +176,6 @@
 % myanswer
 \begin{@empty}
 \end{@empty}
-
 \newcounter{DummyCounter}
 \newcommand{\myanswerlabel}{-}
 \newenvironment{myanswer}[1][]
@@ -173,14 +183,14 @@
 \refstepcounter{DummyCounter}
 
 \ifblank{#1} {%
-	\renewcommand{\myanswerlabel}{Aufgabe~\theSharedCounter}
+	\renewcommand{\myanswerlabel}{\theexercisename~\theSharedCounter}
 	\renewcommand{\AnswerHeader}{}
 	\newcommand{\myanswercapsule}{tcolorboxTemplate}
 } {%
 	\renewcommand{\myanswerlabel}{\cref{#1}}
 	\renewcommand{\AnswerHeader}{
 		\begin{center}
-			\textcolor{ForestGreen}{Lösungsvorschlag zu}~\myanswerlabel
+			\textcolor{ForestGreen}{\theanswername}~\myanswerlabel
 		\end{center}
 	}
 	\newcommand{\myanswercapsule}{@empty}
@@ -194,7 +204,7 @@
 		colframe=ForestGreen,
 		colbacktitle=ForestGreen,
 		opacityback=1,
-		title=\faCheck{}~Lösungsvorschlag zu~\myanswerlabel]
+		title=\faCheck{}~\theanswername~\myanswerlabel]
 } {
 	\begin{\myanswercapsule}
 		}%

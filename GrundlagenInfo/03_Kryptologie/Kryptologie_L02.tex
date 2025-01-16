@@ -1,10 +1,12 @@
+
+
 \begin{frame}[label=title]
     \centering
     \begin{figure}[H]
-        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{Logos/LeeLogo}
     \end{figure}
     Informatik: Data Science und Sicherheit\\
-    \textbf{Lektion 5} \emoji{chart-increasing}: \textbf{Kryptoanalyse}
+    \emoji{chart-increasing}: \textbf{Kryptoanalyse}
 \end{frame}
 
 
@@ -29,11 +31,10 @@
 \begin{frame}[label=repetition2]{Wiederholung letztes Mal}
 	\begin{figure}[H]
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=.35\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/skytale.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=.35\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/SkytaleWiki}}
 		\raisebox{-0.5\height}{$\rightarrow$ Tabellengrössen ausprobieren}
 		\raisebox{-0.5\height}{\resizebox{.35\linewidth}{!}{\caesar[6]}}
 		\raisebox{-0.5\height}{$\rightarrow$ 26 Verschiebungen ausprobieren}
-		\includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/multikey.png}
 	\end{figure}
 
 \end{frame}
@@ -76,7 +77,7 @@ Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 \begin{frame}[fragile]{Häufigkeitsverteilung}
 		\begin{figure}[H]
 			\centering
-			\includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/multikey.png}
+			\multiKey{Z,E,A,B,C,D,Y,X,W,H,I,V,U,T,G,F,J,K,R,Q,L,M,S,N,P,O}
 			$\rightarrow$ \textbf{Wie knacken wir so etwas?}
 		\end{figure}
 \end{frame}
@@ -166,22 +167,26 @@ NENNE|DREI|ANTIKE|GEHEIMSCHRIFTEN|DIE|DIR|GEFALLEN
     \only<6>{\verbSix}
 \end{frame}
 
+\begin{frame}[label=auftrag]{Auftrag}
+Skript
+\begin{itemize}
+   \item \aufgabebox{1.9}
+   \item \challengebox{1.10, 1.11}
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Mono- und Polyalphabetische Kryptosysteme}
 	\begin{itemize}[<+->]
-		\item \textbf{Monoalphabetisch}: Jeder Buchstabe wird immer durch denselben Buchstaben erstetzt, unabhängig von seiner Position im Klartext
-		\begin{figure}[H]
-			\includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/multikey.png}
-		\end{figure}
-		Nachteil: Einfache Entschlüsselung durch Häufigkeitsanalyse
+		\item \textbf{Monoalphabetisch}: Jeder Buchstabe wird immer durch denselben Buchstaben erstetzt, unabhängig von seiner Position im Klartext. \textbf{Nachteil}: Einfache Entschlüsselung durch Häufigkeitsanalyse
 		\item \textbf{Polyalphabetisch}: Jeder Buchstabe kann durch unterschiedliche Buchstaben ersetzt werden
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Kerkhoffs'sches Prinzip der Sicherheit}
-	\begin{center}
-		``Ein Kryptosystem ist \textbf{sicher}, wenn das Kryptosystem [= der Algorithmus] öffentlich bekannt ist und es trotzdem ohne die Kenntnis des verwendeten Schlüssels nicht möglich ist, aus einem Geheimtext den ursprünglichen Klartext abzuleiten.''
-	\end{center}    
-\end{frame}
+%\begin{frame}{Kerkhoffs'sches Prinzip der Sicherheit}
+%	\begin{center}
+%		``Ein Kryptosystem ist \textbf{sicher}, wenn das Kryptosystem [= der Algorithmus] öffentlich bekannt ist und es trotzdem ohne die Kenntnis des verwendeten Schlüssels nicht möglich ist, aus einem Geheimtext den ursprünglichen Klartext abzuleiten.''
+%	\end{center}    
+%\end{frame}
 
 \begin{frame}[label=vigenere, fragile]{Vigenère \emoji{fleur-de-lis}}
 \defverbatim{\verbOne}{
@@ -271,90 +276,90 @@ Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 \end{frame}
 
 
-\begin{frame}[fragile]{VIGENERE in Python}
-\begin{lstlisting}[language=Python,basicstyle=\ttfamily\tiny]
-def caesar_buchstabe(buchstabe, verschiebung):
-    return chr((ord(buchstabe) - ord("A") + verschiebung) % 26 + ord("A"))
-
-
-def caesar(text, verschiebung):
-    text_verschoben = ""
-
-    for buchstabe in text:
-        text_verschoben += caesar_buchstabe(buchstabe, verschiebung)
-
-    return text_verschoben
-
-def vigenere(text, schluessel, richtung="verschluesslung"):
-    text_verschoben = ""
-    k = 0
-    for buchstabe in text:
-        k %= len(schluessel)
-        if richtung == "verschluesslung":
-            text_verschoben += caesar_buchstabe(
-                buchstabe, ord(schluessel[k]) - ord("A")
-            )
-        else:
-            text_verschoben += caesar_buchstabe(
-                buchstabe, -(ord(schluessel[k]) - ord("A"))
-            )
-        k += 1
-
-    return text_verschoben
-\end{lstlisting}
-\end{frame}
-
-
-\begin{frame}[label=kasiski]{Angriff auf Vigenère: Unbekannte Schlüssellänge}{\textbf{Kasiski-Test}}
-\emoji{key} Schlüssellänge unbekannt!\\[1cm]
-\texttt{DER KLAR\textbf{TEXT} WERDE GEHEIM\textbf{TEXT}\\
-PLU TOPL\textbf{UTOP} LUTOP LUTOPL\textbf{UTOP}\\
-SPL DZPC\textbf{NXLI} HYKRT RYASXX\textbf{NXLI}}\\[1cm]
-
-\begin{itemize}
-    \item ``\texttt{NXLI}'' kommt zweimal im Geheimtext vor
-    \item Distanz zwischen \texttt{NXLI} = Vielfaches der Schlüssellänge
-\end{itemize}
-\end{frame}
-\begin{frame}[label=kasiski2]{Angriff auf Vigenère: \textbf{Kasiski-Test}}
-\only<1>{
-Angenommen, wir haben folgenden Text, verschlüsselt mit dem Wort ``BALMER'':
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski1.png}
-\end{figure}
-}
-\only<2>{
-Wir suchen nun zuerst im Geheimtext nach Trigrammen, die mehrmals vorkommen:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski2.png}
-\end{figure}
-}
-\only<3>{
-Wir notieren die Anfangs-Positionen der Trigramme:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski3.png}
-\end{figure}
-}
-\only<4->{
-Wir notieren die Anfangs-Positionen der Trigramme:
-\begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski4.png}
-\end{figure}
-}
-\only<5->{
-Nun können wir die Abstände zwischen den mehrfach vorkommenden Trigrammen berechnen:
-\begin{align*}
-62 - 14 = 48 = 2^4\cdot 3\\
-62 - 32 = 30 = 2 \cdot 3 \cdot 5\\
-32 - 14 = 18 = 2 \cdot 3^2
-\end{align*}
-GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
-}
-\end{frame}
+%\begin{frame}[fragile]{VIGENERE in Python}
+%\begin{lstlisting}[language=Python,basicstyle=\ttfamily\tiny]
+%def caesar_buchstabe(buchstabe, verschiebung):
+%    return chr((ord(buchstabe) - ord("A") + verschiebung) % 26 + ord("A"))
+%
+%
+%def caesar(text, verschiebung):
+%    text_verschoben = ""
+%
+%    for buchstabe in text:
+%        text_verschoben += caesar_buchstabe(buchstabe, verschiebung)
+%
+%    return text_verschoben
+%
+%def vigenere(text, schluessel, richtung="verschluesslung"):
+%    text_verschoben = ""
+%    k = 0
+%    for buchstabe in text:
+%        k %= len(schluessel)
+%        if richtung == "verschluesslung":
+%            text_verschoben += caesar_buchstabe(
+%                buchstabe, ord(schluessel[k]) - ord("A")
+%            )
+%        else:
+%            text_verschoben += caesar_buchstabe(
+%                buchstabe, -(ord(schluessel[k]) - ord("A"))
+%            )
+%        k += 1
+%
+%    return text_verschoben
+%\end{lstlisting}
+%\end{frame}
+%
+%
+%\begin{frame}[label=kasiski]{Angriff auf Vigenère: Unbekannte Schlüssellänge}{\textbf{Kasiski-Test}}
+%\emoji{key} Schlüssellänge unbekannt!\\[1cm]
+%\texttt{DER KLAR\textbf{TEXT} WERDE GEHEIM\textbf{TEXT}\\
+%PLU TOPL\textbf{UTOP} LUTOP LUTOPL\textbf{UTOP}\\
+%SPL DZPC\textbf{NXLI} HYKRT RYASXX\textbf{NXLI}}\\[1cm]
+%
+%\begin{itemize}
+%    \item ``\texttt{NXLI}'' kommt zweimal im Geheimtext vor
+%    \item Distanz zwischen \texttt{NXLI} = Vielfaches der Schlüssellänge
+%\end{itemize}
+%\end{frame}
+%\begin{frame}[label=kasiski2]{Angriff auf Vigenère: \textbf{Kasiski-Test}}
+%\only<1>{
+%Angenommen, wir haben folgenden Text, verschlüsselt mit dem Wort ``BALMER'':
+%\begin{figure}[H]
+%        \centering
+%        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski1.png}
+%\end{figure}
+%}
+%\only<2>{
+%Wir suchen nun zuerst im Geheimtext nach Trigrammen, die mehrmals vorkommen:
+%\begin{figure}[H]
+%        \centering
+%        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski2.png}
+%\end{figure}
+%}
+%\only<3>{
+%Wir notieren die Anfangs-Positionen der Trigramme:
+%\begin{figure}[H]
+%        \centering
+%        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski3.png}
+%\end{figure}
+%}
+%\only<4->{
+%Wir notieren die Anfangs-Positionen der Trigramme:
+%\begin{figure}[H]
+%        \centering
+%        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski4.png}
+%\end{figure}
+%}
+%\only<5->{
+%Nun können wir die Abstände zwischen den mehrfach vorkommenden Trigrammen berechnen:
+%\begin{align*}
+%62 - 14 = 48 = 2^4\cdot 3\\
+%62 - 32 = 30 = 2 \cdot 3 \cdot 5\\
+%32 - 14 = 18 = 2 \cdot 3^2
+%\end{align*}
+%GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
+%}
+%\end{frame}
 
 \begin{frame}[label=keyFixed]{Angriff auf Vigenère: Bekannte Schlüssellänge}
 	\textbf{Beispiel}: Geheimtext mit Schlüssellänge 3
@@ -378,6 +383,14 @@ GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
 	        \raisebox{-0.5\height}{$\rightarrow$}
 	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-klartext.png}}
 	\end{figure}}
+\end{frame}
+
+\begin{frame}[label=auftrag]{Auftrag}
+	\begin{itemize}
+		\item \aufgabebox{1.12}
+		\item \aufgabebox{1.13}
+		\item \aufgabebox{1.14}
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
@@ -466,33 +479,10 @@ Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\righ
 
 \begin{frame}[label=auftrag]{Auftrag}
 	\begin{itemize}
-		\item Kopieren Sie den Geheimtext (Vigenère) von Moodle und versuchen Sie, ihn mit dem Analysetool zu entziffern
-		\item \emoji{trophy} Challenge: Versuchen Sie, die Challenge-Aufgabe auf Moodle zu lösen
+		\item \aufgabebox{1.15}
+		\item \aufgabebox{1.16}
+		\item \aufgabebox{1.17}
+		\item \aufgabebox{1.18}
+		\item \challengebox{1.19,1.20}
 	\end{itemize}
-\end{frame}
-
-\begin{frame}[label=auftrag]{\emoji{trophy} Challenge-Auftrag}
-	\small
-Teil 1: Verschlüsselung
-\begin{itemize}
-	\item Erstellen Sie einen Text in deutscher Sprache mit mindestens 1000 Zeichen, beispielsweise mittels folgender Webseite: \url{https://www.blindtextgenerator.de/}
-	\item Wählen Sie ein \textit{geheimes} Schlüsselwort (3-7 Zeichen) und verschlüsseln Sie Ihren Text mit Vigenère (s. Moodle, Python-Datei 1).
-\end{itemize}
-Teil 2: Entschlüsselung
-\begin{itemize}
-	\item Zuerst wird die Schlüssellänge per Friedmann-Test bestimmt  (s. Moodle, Python-Datei 2). 
-	\item Danach wird innerhalb jeder Gruppe der häufigste Buchstabe gesucht. Dieser entspricht mit hoher Wahrscheinlichkeit dem Buchstaben ``E'', somit haben wir die Verschiebung für diese Wort-Gruppe gefunden und damit auch das Schlüsselwort  (s. Moodle, Python-Datei 3).
-	\item Der Text kann nun wieder mit dem Vigenère-Programm entschlüsselt werden  (s. Python-Datei 1). 
-\end{itemize}
-\normalsize
-\end{frame}
-
-\begin{frame}[label=auftrag]{Auftrag}
-\begin{itemize}
-   \item Aufgabe 2.27 (Häufigkeitsanalyse)
-   \item Aufgabe 2.28 (Monoalphabetische Verschlüsselung)
-   \item Aufgabe 2.35 (Vigenère)
-   \item Aufgabe 2.40 (Kasiski-Test)
-   \item Aufgabe 2.42 (Friedmann'sche Charakteristik)
-\end{itemize}
 \end{frame}
