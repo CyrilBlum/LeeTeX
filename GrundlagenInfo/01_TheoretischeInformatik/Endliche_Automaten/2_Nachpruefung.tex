@@ -1,0 +1,149 @@
+\newtoggle{withbonus} \togglefalse{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Grundlagenfach Informatik}
+% name of the class
+\newcommand{\myclass}{2. Klassen}
+% set date
+\newcommand{\mydate}{17. Januar 2025}
+
+\title{\textbf{Nachprüfung: Theoretische Informatik}}
+\author{Thomas Graf\\
+	\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $45$ Minuten
+				      %\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item Erlaubte Hilfsmittel:
+				      \begin{itemize}
+					      \item Schreibzeug
+				      \end{itemize}
+			\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note:
+	\vspace{10mm}
+
+	\rule{8mm}{1.2pt}
+\end{center}
+%\thispagestyle{empty}
+\clearpage
+
+\begin{questions}
+	\section*{\textcolor{Green}{Theoretische Informatik}}
+	\question
+	\begin{parts}
+		\part[1] Geben Sie zwei Sprachen $L_1$ und $L_2$ an, sodass $\abs{L_1\cdot L_2} < \abs{L_1}\cdot\abs{L_2}$.
+		\vspace{3cm}
+		\part[1] Bestimmen Sie die Zahl $\abs{L}$ für
+		\begin{align*}
+			L := \setcm{w\in\lrc{0, 1}^*}{w = 1x00y, \quad\abs{w} = 6, \quad x,y\in\lrc{0, 1}^*, \quad\abs{y} = 1}.
+		\end{align*}
+	\end{parts}
+	\droptotalpoints
+	\vspace{4cm}
+
+	\question Es seien $V := \lrc{a,b,c,d}$ und $E := \lrc{\lrc{a,b},\lrc{a,c},\lrc{b,c},\lrc{c,d},\lrc{d,a}}$ und $G := (V,E)$.
+	\begin{parts}
+		\part[1] Stellen Sie den Graphen $G$ schematisch dar.
+		\vspace{4cm}
+		\part[1] Wie viele Einträge, welche verschieden von $0$ sind, enthält die dem Graphen $G$ zugehörige Adjazenzmatrix?
+	\end{parts}
+	\droptotalpoints
+
+	\clearpage
+	\question[2] Es sei $n$ eine gerade natürliche Zahl und $w$ sei ein Wort der Länge $n$, welches aus lauter verschiedenen Buchstaben besteht (keine zwei Buchstaben in $w$ sind gleich). Wie viele verschiedene Teilwörter mit Längen $>n/2$ besitzt $w$?
+
+	\droptotalpoints
+
+	\clearpage
+	\question Wir beziehen uns in dieser Frage auf den endlichen Automaten $A$ gemäss \cref{fig:L1}.
+
+	\begin{parts}
+		\part[1] Nennen Sie ein kürzestes Wort, welches von dem endlichen Automaten $A$ akzeptiert wird.
+		\vspace{3cm}
+		\part[1] Geben Sie die formale Darstellung $A = (Q,\Sigma, \delta, q_0, F)$ des endlichen Automaten $A$ an.
+	\end{parts}
+	\droptotalpoints
+	\vspace{7cm}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[->,>=stealth',shorten >=1pt,node distance=3.2cm,semithick]
+			\tikzstyle{every state}=[fill=green!10,draw=black,text=black,minimum size=1.4cm]
+
+			\node[initial,state] (q0) {$q_{0}$};
+			\node[state] (q1) [above of=q0] {$q_{1}$};
+			\node[state] (q2) [right of=q0] {$q_{2}$};
+			\node[state] (q3) [right of=q2] {$q_{3}$};
+			\node[state,accepting] (q4) [right of=q3] {$q_{4}$};
+
+			\path (q0) edge [left] node {$1$} (q1)
+			(q0) edge [below] node {$0$} (q2)
+
+			(q1) edge [loop above] node {$0,1$} (q1)
+
+			(q2) edge [below] node {$1$} (q3)
+			(q2) edge [loop above] node {$0$} (q2)
+
+			(q3) edge [above, bend right] node {$0$} (q2)
+			(q3) edge [below] node {$1$} (q4)
+
+			(q4) edge [loop above] node {$0,1$} (q4);
+		\end{tikzpicture}
+		\caption{Endlicher Automat $A$}
+		\label{fig:L1}
+	\end{figure}
+
+	\clearpage
+	\question
+	Gegeben ist die Sprache $L:=\lrc{x0010y}{x,y\in\lrc{0,1^*}}$.
+	\begin{parts}
+		\part[1] Geben Sie ein kürzestes Wort in der Sprache $L$ an.
+		\vspace{3cm}
+		\part[2] Entwerfen Sie einen endlichen Automaten für die Sprache $L$ (in Diagrammform).
+	\end{parts}
+	\droptotalpoints
+
+	\clearpage
+	\question
+	Für ein Wort $a := a_1a_2\ldots a_n$ bezeichnet $a^R := a_na_{n-1}\ldots a_1$ die Umkehrung (\textbf{R}eversal) von
+	$a$. Zum Beispiel ist die Umkehrung $w^R$ des binären Worts $w := 11101$ gegeben durch $w^R = 10111$.
+
+	Gegeben sei nun die Sprache
+	\begin{align*}
+		L_3 := \setcm{wabw^R}{w\in\lrc{a,b}^*}.
+	\end{align*}
+	\begin{parts}
+		\part[1] Nenne genau drei verschiedene Wörter, die in $L_3$ liegen.
+		\vspace{3cm}
+		\part[2] Zeige, dass $L_3$ \red{nicht regulär} ist.
+	\end{parts}
+	\droptotalpoints
+
+\end{questions}
+
+
+\clearpage
+(leere Seite für Notizen)
+\clearpage
+(leere Seite für Notizen)
