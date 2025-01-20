@@ -1,4 +1,50 @@
-
+\newcommand{\vigenereFig}{
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.35\textwidth}
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tikzpicture}
+	    % Klartext und Kryptotext Labels
+	    \node at (0, 0) {\textbf{E}};
+	    \node at (4, 1.5) {\textbf{O}};
+	    \node at (4, 0) {\textbf{I}};
+	    \node at (4, -1.5) {\textbf{C}};
+	
+	    % Verbindungspfeile mit Schlüsseln
+	    \draw[->, thick] (0.3, 0) -- (3.7, 1.5) node[midway, above] {\textbf{K}};
+	    \draw[->, thick] (0.3, 0) -- (3.7, 0) node[midway, above] {\textbf{E}};
+	    \draw[->, thick] (0.3, 0) -- (3.7, -1.5) node[midway, above] {\textbf{Y}};
+	
+	    % Labels Klartext und Kryptotext
+	    \node[align=center] at (0, -2) {Klartext};
+	    \node[align=center] at (4, -2) {Kryptotext};
+	\end{tikzpicture}}
+	\end{subfigure}
+	\begin{subfigure}{.35\textwidth}
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tikzpicture}
+	    % Klartext letters
+	    \node at (0, 1.5) {\textbf{E}};
+	    \node at (0, 0) {\textbf{K}};
+	    \node at (0, -1.5) {\textbf{Q}};
+	    
+	    % Kryptotext letter
+	    \node at (4, 0) {\textbf{O}};
+	    
+	    % Verbindungspfeile mit Schlüsseln
+	    \draw[->, thick] (0.3, 1.5) -- (3.7, 0) node[midway, above] {\textbf{K}};
+	    \draw[->, thick] (0.3, 0) -- (3.7, 0) node[midway, above] {\textbf{E}};
+	    \draw[->, thick] (0.3, -1.5) -- (3.7, 0) node[midway, above] {\textbf{Y}};
+	    
+	    % Labels Klartext und Kryptotext
+	    \node[align=center] at (0, -2.5) {Klartext};
+	    \node[align=center] at (4, -2.5) {Kryptotext};
+	\end{tikzpicture}}
+	\end{subfigure}
+	\end{figure}
+	}
 
 \begin{frame}[label=title]
     \centering
@@ -94,21 +140,8 @@ Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 	\end{multicols}
     \begin{figure}[H]
     	\centering
-    	\includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-klartext.png}
+    	\includegraphics[width=.7\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec0}
     \end{figure}
-\end{frame}
-
-\begin{frame}[fragile]{Häufigkeitsanalyse}
-    $h_\square (T)$ im deutschen Alphabet:
-	\begin{figure}[H]
-	        \centering
-	        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-klartext.png}
-	\end{figure}
-	$h_\square (T)$ in einem monoalphabetisch verschlüsselten Text:
-	\begin{figure}[H]
-	        \centering
-	        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-geheimtext.png}
-	\end{figure}
 \end{frame}
 
 
@@ -217,10 +250,7 @@ Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 	    \item nicht \textbf{monoalphabetisch} sondern \textbf{polyalphabetisch}
 	    \item Galt über 300 Jahre lang als sicher!
 	\end{itemize}
-	\begin{figure}[H]
-	      \centering
-	      \includegraphics[width=.6\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere2.png}
-	\end{figure}
+	\vigenereFig
 	}
 \end{frame}
 
@@ -250,10 +280,7 @@ Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 
 
 \begin{frame}[label=vigenere2]{Vigenère \emoji{fleur-de-lis}}
-\begin{figure}[H]
-	        \centering
-	        \includegraphics[width=.6\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere2.png}
-	\end{figure}
+	\vigenereFig
 	\begin{align*}
 	    h_{Geheimtext}(O) &= \frac{h_{Klartext}(E)+h_{Klartext}(K)+h_{Klartext}(Q)}{3} \\
 	    &= \frac{17.7\%+1.4\%+0.01\%}{3}=6.4\%
@@ -276,90 +303,6 @@ Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 \end{frame}
 
 
-%\begin{frame}[fragile]{VIGENERE in Python}
-%\begin{lstlisting}[language=Python,basicstyle=\ttfamily\tiny]
-%def caesar_buchstabe(buchstabe, verschiebung):
-%    return chr((ord(buchstabe) - ord("A") + verschiebung) % 26 + ord("A"))
-%
-%
-%def caesar(text, verschiebung):
-%    text_verschoben = ""
-%
-%    for buchstabe in text:
-%        text_verschoben += caesar_buchstabe(buchstabe, verschiebung)
-%
-%    return text_verschoben
-%
-%def vigenere(text, schluessel, richtung="verschluesslung"):
-%    text_verschoben = ""
-%    k = 0
-%    for buchstabe in text:
-%        k %= len(schluessel)
-%        if richtung == "verschluesslung":
-%            text_verschoben += caesar_buchstabe(
-%                buchstabe, ord(schluessel[k]) - ord("A")
-%            )
-%        else:
-%            text_verschoben += caesar_buchstabe(
-%                buchstabe, -(ord(schluessel[k]) - ord("A"))
-%            )
-%        k += 1
-%
-%    return text_verschoben
-%\end{lstlisting}
-%\end{frame}
-%
-%
-%\begin{frame}[label=kasiski]{Angriff auf Vigenère: Unbekannte Schlüssellänge}{\textbf{Kasiski-Test}}
-%\emoji{key} Schlüssellänge unbekannt!\\[1cm]
-%\texttt{DER KLAR\textbf{TEXT} WERDE GEHEIM\textbf{TEXT}\\
-%PLU TOPL\textbf{UTOP} LUTOP LUTOPL\textbf{UTOP}\\
-%SPL DZPC\textbf{NXLI} HYKRT RYASXX\textbf{NXLI}}\\[1cm]
-%
-%\begin{itemize}
-%    \item ``\texttt{NXLI}'' kommt zweimal im Geheimtext vor
-%    \item Distanz zwischen \texttt{NXLI} = Vielfaches der Schlüssellänge
-%\end{itemize}
-%\end{frame}
-%\begin{frame}[label=kasiski2]{Angriff auf Vigenère: \textbf{Kasiski-Test}}
-%\only<1>{
-%Angenommen, wir haben folgenden Text, verschlüsselt mit dem Wort ``BALMER'':
-%\begin{figure}[H]
-%        \centering
-%        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski1.png}
-%\end{figure}
-%}
-%\only<2>{
-%Wir suchen nun zuerst im Geheimtext nach Trigrammen, die mehrmals vorkommen:
-%\begin{figure}[H]
-%        \centering
-%        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski2.png}
-%\end{figure}
-%}
-%\only<3>{
-%Wir notieren die Anfangs-Positionen der Trigramme:
-%\begin{figure}[H]
-%        \centering
-%        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski3.png}
-%\end{figure}
-%}
-%\only<4->{
-%Wir notieren die Anfangs-Positionen der Trigramme:
-%\begin{figure}[H]
-%        \centering
-%        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski4.png}
-%\end{figure}
-%}
-%\only<5->{
-%Nun können wir die Abstände zwischen den mehrfach vorkommenden Trigrammen berechnen:
-%\begin{align*}
-%62 - 14 = 48 = 2^4\cdot 3\\
-%62 - 32 = 30 = 2 \cdot 3 \cdot 5\\
-%32 - 14 = 18 = 2 \cdot 3^2
-%\end{align*}
-%GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
-%}
-%\end{frame}
 
 \begin{frame}[label=keyFixed]{Angriff auf Vigenère: Bekannte Schlüssellänge}
 	\textbf{Beispiel}: Geheimtext mit Schlüssellänge 3
@@ -400,8 +343,7 @@ Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\righ
 	\item<1> Die Häufigkeit der Buchstaben in einem Vigenère-Geheimtext ist wegen der \textit{polyalphabetischen} Verschlüsselung relativ \textit{gleichmässig}...
 		\begin{figure}[H]
 				\centering
-				\raisebox{-0.5\height}{\includegraphics[width=.85\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec_alletters}}
-				\raisebox{-0.5\height}{\includegraphics[width=.6\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere2.png}}
+				\raisebox{-0.5\height}{\includegraphics[width=.75\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/letterfreq_end_dec_alletters}}
 			\end{figure}}
 			\only<2->{
 	\item<2-> ...ausser wir schauen die Buchstaben eben in \colorstring[ForestGreen,RoyalBlue,Crimson]{Gruppen} an!
@@ -418,10 +360,9 @@ Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\righ
 \end{frame}
 
 \begin{frame}[fragile,label=friedmann]{Friedmann'sche Charakteristik}
-	Durchschnittliche Abweichung vom Mittelwert:
 	\begin{figure}[H]
 	        \centering
-	        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann2.png}
+	        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-len3-group1-avg}
 	\end{figure}
 	\only<2>{
 	\begin{align*}
@@ -458,7 +399,7 @@ Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\righ
 \only<10>{	
 		\begin{figure}[H]
 			\centering
-			\includegraphics[width=.65\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann-ex3}
+			\includegraphics[width=.65\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedman}
 		\end{figure}
 	$\rightarrow$ Zeigt, wie ungleich die Buchstaben verteilt sind, wenn wir sie in 1, 2, 3, 4, ... Gruppen aufteilen.\\
 	$\rightarrow$ Hier sehen wir visuell, dass die Wortlänge 3 sein muss.}
@@ -485,4 +426,94 @@ Wie kann man die Schlüssellänge herausfinden, falls diese unbekannt ist?$\righ
 		\item \aufgabebox{1.18}
 		\item \challengebox{1.19,1.20}
 	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Appendix}
+Anhang
+\end{frame}
+
+
+\begin{frame}[fragile]{Vigenère in Python}
+\begin{lstlisting}[language=Python,basicstyle=\ttfamily\tiny]
+def caesar_buchstabe(buchstabe, verschiebung):
+    return chr((ord(buchstabe) - ord("A") + verschiebung) % 26 + ord("A"))
+
+
+def caesar(text, verschiebung):
+    text_verschoben = ""
+
+    for buchstabe in text:
+        text_verschoben += caesar_buchstabe(buchstabe, verschiebung)
+
+    return text_verschoben
+
+def vigenere(text, schluessel, richtung="verschluesslung"):
+    text_verschoben = ""
+    k = 0
+    for buchstabe in text:
+        k %= len(schluessel)
+        if richtung == "verschluesslung":
+            text_verschoben += caesar_buchstabe(
+                buchstabe, ord(schluessel[k]) - ord("A")
+            )
+        else:
+            text_verschoben += caesar_buchstabe(
+                buchstabe, -(ord(schluessel[k]) - ord("A"))
+            )
+        k += 1
+
+    return text_verschoben
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[label=kasiski]{Angriff auf Vigenère: Unbekannte Schlüssellänge}{\textbf{Kasiski-Test}}
+\emoji{key} Schlüssellänge unbekannt!\\[1cm]
+\texttt{DER KLAR\textbf{TEXT} WERDE GEHEIM\textbf{TEXT}\\
+PLU TOPL\textbf{UTOP} LUTOP LUTOPL\textbf{UTOP}\\
+SPL DZPC\textbf{NXLI} HYKRT RYASXX\textbf{NXLI}}\\[1cm]
+
+\begin{itemize}
+    \item ``\texttt{NXLI}'' kommt zweimal im Geheimtext vor
+    \item Distanz zwischen \texttt{NXLI} = Vielfaches der Schlüssellänge
+\end{itemize}
+\end{frame}
+\begin{frame}[label=kasiski2]{Angriff auf Vigenère: \textbf{Kasiski-Test}}
+\only<1>{
+Angenommen, wir haben folgenden Text, verschlüsselt mit dem Wort ``BALMER'':
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski1.png}
+\end{figure}
+}
+\only<2>{
+Wir suchen nun zuerst im Geheimtext nach Trigrammen, die mehrmals vorkommen:
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski2.png}
+\end{figure}
+}
+\only<3>{
+Wir notieren die Anfangs-Positionen der Trigramme:
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski3.png}
+\end{figure}
+}
+\only<4->{
+Wir notieren die Anfangs-Positionen der Trigramme:
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/Kasiski4.png}
+\end{figure}
+}
+\only<5->{
+Nun können wir die Abstände zwischen den mehrfach vorkommenden Trigrammen berechnen:
+\begin{align*}
+62 - 14 = 48 = 2^4\cdot 3\\
+62 - 32 = 30 = 2 \cdot 3 \cdot 5\\
+32 - 14 = 18 = 2 \cdot 3^2
+\end{align*}
+GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
+}
 \end{frame}

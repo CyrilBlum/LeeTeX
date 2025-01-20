@@ -111,7 +111,7 @@ def show_letter_freq(text, show_diff_to_avg=False):
                 '', 
                 xy=(letter, freq), 
                 xytext=(letter, avg_freq), 
-                arrowprops=dict(arrowstyle='<->', color='blue', lw=1.2)
+                arrowprops=dict(arrowstyle='-', color='blue', lw=1.2)
             )
             # Annotate difference value
             ax.text(letter, y_pos, f'{diff:+.1f}%', ha='center', va='bottom', fontsize=8, color='blue',rotation=90)

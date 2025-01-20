@@ -1,9 +1,8 @@
 from vigenere import *
 from caesar import *
-from friedmann import *
+from friedman import *
 from monoalphabetic import *
 plt.style.use('ggplot')
-
 
 def caesar_main():
     # kurzer Text (Skript Aufgabe)
@@ -61,32 +60,38 @@ def friedman_main(savefig=True):
 
     # plot letter frequencies for each subgroup (can only be done correctly if true keylength is known)
     keylength = len(key)
-    for i in range(keylength):
-        text_slice = text[i::keylength]
-        # plot letter frequences
-        if i==0:
-            fig, ax = show_letter_freq(text_slice, show_diff_to_avg=True)
+    max_keylength = keylength+2
+    for keylen_test in range(max_keylength+1):
+        for i in range(keylen_test):
+            text_slice = text[i::keylen_test]
+            # calculate friedman'sche Charakteristik
+            fc = calculate_fc(text_slice)
+            print("Keylength: %2d, Group: %2d, FC_T:%.2f%%" % (keylen_test, i, fc*100))
+
+            # plot letter frequences
+            if i==0 and keylen_test==keylength:
+                fig, ax = show_letter_freq(text_slice, show_diff_to_avg=True)
+                ax.set_aspect(.5)
+                if savefig:
+                    plt.savefig("../../Figures/vigenere-"+"len"+str(keylen_test)+"-group"+str(i+1) +
+                            "-avg.pdf", format="pdf", bbox_inches="tight")
+                    plt.close()
+                else:
+                    plt.show()
+                
+            fig, ax = show_letter_freq(text_slice, show_diff_to_avg=False)
+            ax.set_title(f"$FC_T: {fc:.2%}%$%")
             if savefig:
-                plt.savefig("../../Figures/vigenere-"+str(i+1) +
-                        "-avg.pdf", format="pdf", bbox_inches="tight")
+                plt.savefig("../../Figures/vigenere-"+"len"+str(keylen_test)+"-group"+str(i+1)+".pdf", format="pdf", bbox_inches="tight")
                 plt.close()
             else:
                 plt.show()
-        
-        fig, ax = show_letter_freq(text_slice, show_diff_to_avg=False)
-
-        if savefig:
-            plt.savefig("../../Figures/vigenere-"+str(i+1) +
-                    ".pdf", format="pdf", bbox_inches="tight")
-            plt.close()
-        else:
-            plt.show()
 
     fc = get_friedman_vals(text, 15)
-    fig, ax = draw_friedmann(15, fc)
+    fig, ax = draw_friedman(15, fc)
     if savefig:
-        plt.savefig("../../Figures/friedman.pdf",
-                    format="pdf", bbox_inches="tight")
+        plt.savefig("../../Figures/friedman.pdf", format="pdf", bbox_inches="tight")
+        plt.close()
     else:
         plt.show()
 

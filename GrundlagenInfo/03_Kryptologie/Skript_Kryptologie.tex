@@ -775,7 +775,7 @@ Für jeden Buchstaben gibt es 26 mögliche Verschiebungen (keine Verschiebung is
   \begin{todolist}
       \item Die SuS können mit einen beliebigen monoalphabetischen Text ausreichender Länge mittels Häufigkeitsanalyse knacken.
       \item Die SuS können einen Text mit Vigenère ver- und entschlüsseln.
-      \item Die SuS können die Friedmann'sche Charakteristik anwenden, um die Schlüssellänge eines mit Vigenère verschlüsselten Geheimtexts zu bestimmen
+      \item Die SuS können die Friedman'sche Charakteristik anwenden, um die Schlüssellänge eines mit Vigenère verschlüsselten Geheimtexts zu bestimmen
       \item Die SuS können einen Vigenère-Geheimtext, dessen Schlüssellänge bekannt ist, mittels Häufigkeitsanalyse entschlüsseln.
       \item Die SuS können einen Text mittels OTP verschlüsseln und wissen, weshalb diese Verschlüsselungsmethode als sicher gilt.
   \end{todolist}
@@ -945,7 +945,7 @@ Den Schlüssel selber kennen wir nicht, wir wissen jedoch, dass jeder der grün 
 \foreach \x in {1,...,3}{
 \begin{subfigure}{.3\linewidth}
 \centering
-\includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-\x}
+\includegraphics[width=\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-len3-group\x}
 \caption{Untergruppe \x}
 \end{subfigure}
 }
@@ -986,13 +986,13 @@ Mit dem Schlüssel ``\texttt{OHA}'' kommen wir auf folgende Lösung:
   \end{myexercise}
 
 
-\subsubsection{Bestimmung der Schlüssellänge: Friedmann'sche Charakteristik}
+\subsubsection{Bestimmung der Schlüssellänge: Friedman'sche Charakteristik}
 
-Wie Sie gesehen haben, kann man Vigenère \textit{gruppenweise} mit denselben Methoden knacken, die wir benutzt haben, um Caesar zu knacken. Falls die Schlüssellänge unbekannt ist, kann die Friedmann'sche Charakteristik verwendet werden, um diese zu erraten.
+Wie Sie gesehen haben, kann man Vigenère \textit{gruppenweise} mit denselben Methoden knacken, die wir benutzt haben, um Caesar zu knacken. Falls die Schlüssellänge unbekannt ist, kann die Friedman'sche Charakteristik verwendet werden, um diese zu erraten.
 
-Die Friedmann'sche Charakteristik macht sich zunutze, dass Buchstaben im Klartext ungleich verteilt sind. Falls jeder Buchstabe gleich häufig vorkommen würde, wäre die erwartete Häufigkeit jedes Buchstabens genau 1/26. Die effektive Häufigkeit eines Buchstaben hängt jedoch vom Buchstaben ab, wie wir in \cref{tab:alle-haeufigkeiten} gesehen haben. Die Häufigkeit des Buchstabens ``E'' in deutschen Texten ist beispielsweise ca. 17.4\%. Die Häufigkeit eines Buchstabens $\square$ in einem Text $T$ nennen wir $h_\square(T)$. 
+Die Friedman'sche Charakteristik macht sich zunutze, dass Buchstaben im Klartext ungleich verteilt sind. Falls jeder Buchstabe gleich häufig vorkommen würde, wäre die erwartete Häufigkeit jedes Buchstabens genau 1/26. Die effektive Häufigkeit eines Buchstaben hängt jedoch vom Buchstaben ab, wie wir in \cref{tab:alle-haeufigkeiten} gesehen haben. Die Häufigkeit des Buchstabens ``E'' in deutschen Texten ist beispielsweise ca. 17.4\%. Die Häufigkeit eines Buchstabens $\square$ in einem Text $T$ nennen wir $h_\square(T)$. 
 
-Die Friedmann'sche Charakteristik berechnet, wie ungleich alle Buchstaben in einem Text verteilt sind, indem sie die Abweichung jedes Buchstabens von 1/26 berechnet und quadriert, um negative Werte zu vermeiden. Diese Abweichungen werden danach alle aufsummiert (s. \cref{eq:fc}).
+Die Friedman'sche Charakteristik berechnet, wie ungleich alle Buchstaben in einem Text verteilt sind, indem sie die Abweichung jedes Buchstabens von 1/26 berechnet und quadriert, um negative Werte zu vermeiden. Diese Abweichungen werden danach alle aufsummiert (s. \cref{eq:fc}).
 
 \begin{align}\label{eq:fc}
  FC(T)&=\Big(h_A(T)-\frac{1}{26}\Big)^2+\Big(h_B(T)-\frac{1}{26}\Big)^2+\ldots+\Big(h_Z(T)-\frac{1}{26}\Big)^2\\
@@ -1003,33 +1003,64 @@ Eine stark ungleiche Verteilung von Buchstaben in einem Text $T$ führt also zu 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=.8\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-1-avg}
+\includegraphics[width=.8\linewidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-len3-group1-avg}
 \caption{Buchstabenhäufigkeit in einem mit Caesar verschlüsselten Text, im Vergleich zur Gleichverteilung von Buchstaben}
 \label{fig:vig-subgroup-1-avg}
 \end{figure}
 
-Je grösser die blauen Pfeile in \cref{fig:vig-subgroup-1-avg}, desto höher die Friedmann'sche Charakteristik.
+Je grösser die blauen Pfeile in \cref{fig:vig-subgroup-1-avg}, desto höher die Friedman'sche Charakteristik.
 
 Wir können nun folgenden \textit{Brute-Force}-Ansatz verwenden, um die Schlüssellänge mit der Friedman'schen Charakteristik zu bestimmen:
 
 \begin{itemize}
-  \item Alle möglichen Schlüsselwortlängen von 1 bis $n$ ausprobieren
-  \item Buchstaben jeweils in Gruppen unterteilen
+  \item Alle möglichen Schlüsselwortlängen von 1 bis zu einer beliebig gewählten Zahl $n$ ausprobieren, wobei $n$ praktisch nie über 10 gewählt wird.
+  \item Buchstaben jeweils in Gruppen unterteilen:
   \begin{itemize}
-   		\item 2 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
+   		\item \textbf{2 Gruppen}: \texttt{\colorstring[ForestGreen,RoyalBlue]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
    						MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ 
-   						PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
-   		\item 3 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
+   						PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}                     
+\begin{figure}[H]
+\centering
+\foreach \i/\groupColor in {1/ForestGreen,2/RoyalBlue} {
+\begin{subfigure}{.24\textwidth}
+\centering
+\includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-len2-group\i}
+\caption{\textcolor{\groupColor}{Gruppe \i}}
+\end{subfigure}}
+\caption{Buchstaben-Häufigkeiten und $FC_T$ für Schlüsssellänge=2}
+\end{figure}
+
+   		\item \textbf{3 Gruppen}: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MUZ KJL QPA WJU MHY IIL LCZ AUP MRL ZHL SVC 
    		MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ
    		PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
-   		\item 4 Gruppen: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson,LightSlateBlue]{MUZ KJL QPA WJU MHY IILLCZ AUP MRL ZHL SVC MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
-   		\item etc.
+ 		\begin{figure}[H]
+ 		\centering
+ 		\foreach \i/\groupColor in {1/ForestGreen,2/RoyalBlue,3/Crimson} {
+ 		\begin{subfigure}{.24\textwidth}
+ 		\centering
+ 		\includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-len3-group\i}
+ 		\caption{\textcolor{\groupColor}{Gruppe \i}}
+ 		\end{subfigure}}
+ 		\caption{Buchstaben-Häufigkeiten und $FC_T$ für Schlüsssellänge=3}
+ 		\end{figure}
+   		\item \textbf{4 Gruppen}: \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson,LightSlateBlue]{MUZ KJL QPA WJU MHY IILLCZ AUP MRL ZHL SVC MTZ BCU LGU PCI MPD QGT IPC QIL VGY MGU BUJ PNB MUZ MNA PGY HNP KJL OTH BWS IVP WPK IHB}}
+		\begin{figure}[H]
+		\centering
+		\foreach \i/\groupColor in {1/ForestGreen,2/RoyalBlue,3/Crimson,4/LightSlateBlue} {
+		\begin{subfigure}{.24\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/vigenere-len4-group\i}
+		\caption{\textcolor{\groupColor}{Gruppe \i}}
+		\end{subfigure}}
+ 		\caption{Buchstaben-Häufigkeiten und $FC_T$ für Schlüsssellänge=4}
+ 		\end{figure}
+   		\item etc, bis zu Schlüssellänge = n
 	   	\end{itemize}
   \item Für jede der Schlüssellängen: Durchschnittliche $FC(T)$ für alle Gruppen berechnen.
   \item Wenn die richtige Schlüssellänge (oder ein Vielfaches davon) gewählt wurde, sollte $FC(T)$ höher sein.
 \end{itemize}
 
-Das Resultat der Schlüsselsuche ist gezeigt in \cref{fig:fc}.
+Die durschschnittliche Friedman'sche Charakteristik für jede der getesteten Schlüssellängen ist gezeigt in \cref{fig:fc}.
 
 \begin{figure}[H]
 \centering
@@ -1041,19 +1072,19 @@ Das Resultat der Schlüsselsuche ist gezeigt in \cref{fig:fc}.
 Aus \cref{fig:fc} lässt sich ablesen, dass die Schlüssellänge vermutlich 3 sein muss, da bei jedem Vielfachen der Schlüssellänge 3 die durchschnittliche Friedman'sche Charakteristik höher ist als für die restlichen Schlüssellängen. Ab nun lässt sich gleich vorgehen wie in \cref{subsubsec:vigHack} beschrieben, um den Text zu entschlüsseln.
 
 \begin{myexercise}
-Berechnen Sie die Friedmann'sche Charakteristik für folgende beide Texte von Hand:
+Berechnen Sie die Friedman'sche Charakteristik für folgende beide Texte von Hand:
 
 \texttt{\colorstring[black]{PAPPERLAPAPP}}
 
 \texttt{\colorstring[black]{BACKSTEIN}}
 
 \begin{myanswer}
-Die Friedmann'sche Charakteristik beträgt 29.5\% und 7.3\%, respektive. Wie sie sehen, ist die Friedmannsch'e Charakteristik höher für Texte, bei denen jeder Buchstabe relativ häufiger vorkommt.
+Die Friedman'sche Charakteristik beträgt 29.5\% und 7.3\%, respektive. Wie sie sehen, ist die Friedmansch'e Charakteristik höher für Texte, bei denen jeder Buchstabe relativ häufiger vorkommt.
 \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Berechnen Sie die Friedmann'sche Charakteristik für folgenden Geheimtext:
+Berechnen Sie die Friedman'sche Charakteristik für folgenden Geheimtext:
 
 \texttt{\colorstring[black]{WORBHHHLUQOWWLDSYSQOWOUKSUDSNEGAAZAEBKISMRILHGPCVLIBZTRLMHYUSIEBILWJKULZSPGHCEFZUQOIQOWCOLSBCVKISZMOSFSZTNBHOSTSUFILHZPCVTEWUHSYZBVCVQEBLMKHHBNEBLIUAIVYDFHEBNTSBCVGUBBNUBTGVMCLGHPHFDAZAEBDISPHFHUGKUBZTIUDBLBSSUATIQOSHLIUAMSPNPBS}}
 
@@ -1094,7 +1125,7 @@ Teil 1: Verschlüsselung
 \end{itemize}
 Teil 2: Entschlüsselung
 \begin{itemize}
-	\item Sie erhalten die Geheimnachricht und müssen nun zuerst den Schlüssel herausfinden. Bestimmen Sie diese mithilfe der Friedmann'schen Charakteristik, indem Sie die Funktion \lstinline|def get_friedman_vals(text, maxkeylen)| verwenden.
+	\item Sie erhalten die Geheimnachricht und müssen nun zuerst den Schlüssel herausfinden. Bestimmen Sie diese mithilfe der Friedman'schen Charakteristik, indem Sie die Funktion \lstinline|def get_friedman_vals(text, maxkeylen)| verwenden.
 	\item Nachdem Sie die Schlüssellänge bestimmt haben, finden Sie innerhalb jeder Gruppe dem häufigsten Buchstaben. Dies können Sie mit der Funktion \lstinline|def show_letter_freq(text)| einfach umsetzen. Somit sollten Sie das Schlüsselwort herausfinden können.
 	\item Entschlüsseln Sie nun den Geheimtext, indem Sie die Funktion \lstinline|def vigenere(text, key, encrypt=False)| verwenden.
 \end{itemize}
@@ -1124,7 +1155,7 @@ Geheimtext: WKSBXGLQ
 \end{verbatim}
 \end{myexample}
 
-Essentiell handelt es sich beim \gls{OTP} um dasselbe Verschlüsselungsverfahren wie bei Vigenère, wobei der Schlüssel gleich lang wie die zu verschlüsselnde Nachricht sein muss. Diese Methode gilt als sicher, da die gruppenweise Häufigkeitsanalyse (z.B. mit der Friedmann'schen Charakteristik) nicht funktioniert. Allerdings ist die \gls{OTP}-Methode aufgrund der längeren Schlüssellänge mit höheren Übertragungskosten verbunden. Zudem darf jeder Schlüssel zur Sicherheit nur einmal verwendet werden, was für regelmässige Datenaustausch-Anwendungen wie E-Mail, Online-Banking etc. unpraktisch ist. 
+Essentiell handelt es sich beim \gls{OTP} um dasselbe Verschlüsselungsverfahren wie bei Vigenère, wobei der Schlüssel gleich lang wie die zu verschlüsselnde Nachricht sein muss. Diese Methode gilt als sicher, da die gruppenweise Häufigkeitsanalyse (z.B. mit der Friedman'schen Charakteristik) nicht funktioniert. Allerdings ist die \gls{OTP}-Methode aufgrund der längeren Schlüssellänge mit höheren Übertragungskosten verbunden. Zudem darf jeder Schlüssel zur Sicherheit nur einmal verwendet werden, was für regelmässige Datenaustausch-Anwendungen wie E-Mail, Online-Banking etc. unpraktisch ist. 
 
 Ein Hauptproblem aller symmetrischen Verschlüsselungsverfahren besteht jedoch darin, dass der Schlüssel erst einmal über einen \textit{sicheren} Kanal ausgetauscht werden muss. Vor dem Internet erfolgte dies durch einen Postboten, heute ist dies allerdings nicht mehr praktikabel.
 
