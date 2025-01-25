@@ -521,13 +521,67 @@ print(res)
 
 \subsection{Vigenère}
 
-\begin{myexercise}
+\begin{myexercise}\label{ex:vig}
 Entwickeln Sie eine Funktion \lstinline|def vigenere(text, key)|, das über die zwei Parameter \lstinline|text| und \lstinline|key| einen Klartext sowie einen Schlüssel entgegennimmt. Das Programm soll den Klartext mit der Vigenère-Chiffre und mit dem Schlüssel verschlüsseln.
+\begin{myanswer}
+\begin{lstlisting}
+def vigenere(text, key, encrypt=True):
+    text_encrypted = []
+    for i in range(len(text)):
+        if text[i] != " ":
+            k = key[i % len(key)]
+            shift = ord(k)-65
+            if encrypt:
+                new_letter = chr(((shift+ord(text[i])-65) % 26)+65)
+            else:
+                new_letter = chr(((ord(text[i])-65-shift) % 26)+65)
+            text_encrypted.append(new_letter)
+        else:
+            text_encrypted.append(" ")
+
+    text_encrypted = "".join(text_encrypted)
+    return text_encrypted
+    
+print(vigenere("TESTTEXT", "KEY", encrypt=True))
+\end{lstlisting}
+\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Entwickeln Sie eine Funktion \lstinline|def vigenere(text, key)|, das über die zwei Parameter \lstinline|text| und \lstinline|key| einen Geheimtext sowie einen Schlüssel entgegennimmt. Das Programm soll den Geheimtext mit der Vigenère-Chiffre und mit dem Schlüssel entschlüsseln.
+Entwickeln Sie eine Funktion \lstinline|def vigenere_ent(text, key)|, das über die zwei Parameter \lstinline|text| und \lstinline|key| einen Geheimtext sowie einen Schlüssel entgegennimmt. Das Programm soll den Geheimtext mit der Vigenère-Chiffre und mit dem Schlüssel entschlüsseln.
+
+\begin{myanswer}
+Gleicher Code wie in \cref{ex:vig}, aber mit Parameter \lstinline|encrypt=False| beim Aufruf
+\end{myanswer}
 \end{myexercise}
+
+\begin{mychallenge}
+Sie wollen all ihre Passwörter auf einer lokalen Textdatei abspeichern. Dies ist jedoch nicht sicher, denn falls jemand ihren Computer knackt, kann die Person alle Passwörter einsehen. Sie kommen auf folgende Idee: Statt die Passwörter aufzuschreiben, speichern Sie eine mit Vigenère verschlüsselte Variante davon. So müssen Sie sich lediglich den Vigenère-Schlüssel im Kopf merken, nicht aber ihre Passwörter. Verwenden Sie Ihr Programm aus \cref{ex:vig}, um ein Programm zu schreiben, das sie zuerst mit \lstinline|input| nach einem Schlüssel und einem verschlüsselten Passwort fragt. Das Programm gibt Ihnen danach ihr Passwort im Klartext zurück.
+\begin{myanswer}
+\begin{lstlisting}
+def vigenere(encrypt=False):
+    text = input("Wie lautet das verschlüsselte Passwort?")
+    key = input("Wie lautet der Schlüssel?")
+    text_encrypted = []
+    for i in range(len(text)):
+        if text[i] != " ":
+            k = key[i % len(key)]
+            shift = ord(k)-65
+            if encrypt:
+                new_letter = chr(((shift+ord(text[i])-65) % 26)+65)
+            else:
+                new_letter = chr(((ord(text[i])-65-shift) % 26)+65)
+            text_encrypted.append(new_letter)
+        else:
+            text_encrypted.append(" ")
+
+    text_encrypted = "".join(text_encrypted)
+    return text_encrypted
+    
+print(vigenere(encrypt=False))
+\end{lstlisting}
+\end{myanswer}
+\end{mychallenge}
 
 \newpage\subsection{Häufigkeitsanalyse}
 \begin{myexercise}
@@ -540,7 +594,7 @@ Eine Nachricht wurde abgefangen: \lstinline|msg = "AZDIYDHRZNOZI"|.
 
 \item Ermitteln Sie den Klartext mithilfe Ihres Programms aus \cref{ex:oneline-ascii-shift-char-safety-final}. \textbf{Tipp}: Das häufigste Zeichen in einem deutschen Text ist in der Regel ``E''.
 
-\item Ersetzen Sie im Klartext das Wort ``WESTEN'' durch ``OSTEN''.
+\item Ersetzen Sie am Schluss im Klartext das Wort ``WESTEN'' durch ``OSTEN''.
 
 \end{itemize}
 \begin{myanswer}
