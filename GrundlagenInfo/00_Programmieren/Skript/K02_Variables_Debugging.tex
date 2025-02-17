@@ -1,0 +1,281 @@
+\chapter{Variablen, Datentypen \& Debugging}\label{ch:K01_variables}
+
+\section{Variablen}
+In Python können wir das Resultat einer Rechnung in einer sogenannten \textbf{Variable} speichern, indem wir das Gleichzeichen (=) verwenden.Das Gleichzeichen hat allerdings nicht dieselbe Bedeutung in der Mathematik! Vielmehr bedeutet das Gleichzeichen in Python: ``speichere das Resultat der rechten Seite in der Variable auf der linken Seite'':
+
+\begin{center}
+$ \tikzmarknode{b}{\text{\texttt{a}}} =\tikzmarknode{a}{\color{red}\underbrace{\color{black}\text{\texttt{10+3}}}}$
+    \tikz[remember picture, overlay]{\draw[-latex,red] ([yshift=0.1em]a.south) to[bend left] ([yshift=-0.3em]b.south);}
+\end{center}
+	
+Die Erklärung dieser Zeile ist: ``Wir werten den Ausdruck \lstinline|10+3| aus und erhalten die Zahl 13. Diesen Wert (\lstinline|13|) speichern wir nun in der Variable \lstinline|a|''.
+
+Wir können dies einfach überprüfen, indem wir den Wert von \lstinline|a| aufrufen: 
+
+\begin{lstlisting}
+a = 10 + 3
+print(a) # 13
+\end{lstlisting}
+
+Variablen sind kurz gesagt ein Wort, das einen veränderbaren (=variablen) Wert enthält. Der Variablenname darf dabei (fast) frei gewählt werden, sofern folgende Regeln eingehalten werden:
+
+\begin{enumerate}
+\item Er muss mit einem Buchstaben beginnen (nicht: \verb|1meinname, _abc|)
+\item Er darf kein von Python \href{https://www.programiz.com/python-programming/keyword-list}{reserviertes Wort} sein (\lstinline|def, if, repeat| etc.)
+\item Die Variablennamen müssen in einem Wort geschrieben werden. Falls ein Name aus zwei oder mehr Worten gewählt wird, sollte die Variable nicht durch ein \textit{Underscore} (\_) getrennt werden, sondern in sogenanntem \texttt{camelCase} geschrieben werden, also z.B. \lstinline|meinName| statt \lstinline|mein_name|.
+\item Es sollte ein \textbf{sinnvoller} und \textbf{sprechender} Name sein! Wenn Sie beispielsweise ihre Körperhöhe in einer Variable speichern, ist es sinnvoll, diese \lstinline|h| oder \lstinline|hoehe| zu nennen und nicht \lstinline|x|.
+\end{enumerate}
+
+\begin{myexercise}
+Berechnen Sie die folgenden Ausdrücke in Python und speichern Sie das Resultat jeweils in einer Variable:
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+Berechnung & Name der Variable \\\midrule\midrule
+$17 - 3 * 8$ & \texttt{res1} \\\midrule
+$(5-2) * 4 + 1$& \texttt{res2} \\\midrule
+$27 \% 6$& \texttt{res3} \\\midrule
+$27 \% (3+8)$& \texttt{res4}
+\end{tabular}
+\end{table}
+\end{myexercise}
+
+\begin{mysubmission}
+Führen Sie folgende Rechnung aus:
+\begin{enumerate}
+\item Multiplizieren Sie 20 mit 33 und speichern Sie das Resultat in einer Variable \lstinline|x|.
+\item Addieren Sie 50 und 133 und speichern Sie das Resultat in einer Variable \lstinline|y|.
+\item Geben Sie ihre beiden Zeilen Code auf Moodle ab. Moodle wird nun die Summe von \lstinline|x| und \lstinline|y| berechnen. Diese sollte 843 sein.
+\end{enumerate}
+\end{mysubmission}
+
+\begin{mycaution}
+In der Mathematik bedeutet das Gleichzeichen ``der rechte Teil der Gleichung ist gleich dem linken''. Dies ist in Python nicht so! Hier bedeutet das Gleichzeichen: ``werte den rechten Teil aus und \textbf{speichere} das Resultat im linken Teil''. Es gibt also \textit{keine} Speicherung von Werten in Python ohne Verwendung des Gleichzeichens.
+\end{mycaution}
+
+\section{Arbeiten mit Text}
+
+In Python kann man nicht nur Zahlen addieren, sondern auch mit Text arbeiten. Ein ``Text'' ist eine Abfolge mehrere Zeichen (Buchstaben oder Spezialzeichen). Aufgrund der Tatsache, dass Texte nicht nur Buchstaben sondern auch Spezialzeichen (\textbackslash, \$, \' etc.) enthalten können, spricht man aus technischer Sicht meist nicht von Texten, sondern von ``Zeichenketten''. Eine einfaches Beispiel für Texte haben wir bereits in \cref{myexample:prints} gesehen. Wir können Texte, ebenso wie Zahlen, in Variablen speichern.
+
+\begin{myexample}\label{ex:text-in-variables}
+Folgendes Beispiel speichert den Text \lstinline|"Hello, World!"| in der Variable \texttt{a}, der Wert der Variable wird danach auf der Konsole ausgegeben.
+
+\begin{lstlisting}
+a = "Hello, World!"
+print(a)  # druckt auf der Konsole den Text "Hello, World!"
+\end{lstlisting}
+\end{myexample}
+
+\section{Arbeiten mit Zeichenketten}
+Zeichenketten können verkettet, also aneinandergehängt werden mit dem Befehl \lstinline|"Text1" + "Text2" + "Text3"| usw. Falls Sie eine Zeichenkette mehrfach drucken wollen, können Sie diesen mit einer Zahl multiplizieren, die dann die Anzahl Wiederholungen der Zeichenkette bestimmt. So ist der Ausdruck \lstinline|"a" * 3| beispielsweise gleichbedeutend mit einer Zeichenkette \lstinline|"aaa"|.
+
+\begin{myexercise}\label{ex:pfeil}
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	\begin{lstlisting}
+    print(" " * 3 + "X" * 1)
+    print(" " * 2 + "X" * 3)
+    print(" " * 1 + "X" * 5)
+    print(" " * 0 + "X" * 7)
+    print(" " * 3 + "X" * 1)
+    print(" " * 3 + "X" * 1)
+  \end{lstlisting}
+\end{myexercise}
+
+
+\begin{myexercise}
+	Erstellen Sie nun ein Programm, das ein Herz zeichnet, ähnlich zu \cref{ex:pfeil}, also lediglich mit Zeichenketten-Ausdrücken und dem Befehl \lstinline|print()|.
+	\begin{myanswer}
+		\begin{lstlisting}
+print(" " * 2 + "X" * 1 + " "*4+"X" * 1 + " "*1)
+print(" " * 1 + "X" * 8 + " "*1)
+print(" " * 2 + "X" * 6 + " "*1)
+print(" " * 3 + "X" * 4 + " "*2)
+print(" " * 4 + "X" * 2 + " "*2)
+\end{lstlisting}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{ex:name}
+	Schreiben Sie ein Programm, das Sie nach Ihrem Namen fragt. Danach soll Sie das Programm neun Mal begrüssen, indem es auf 3 Zeilen je dreimal den Text ``\texttt{Hallo [Ihr Name]}'' druckt.
+	\begin{myanswer}
+		\begin{lstlisting}
+	name = input("Wie heissen Sie?")
+	
+	repeat 3:
+	    print(("Hallo " + name + " ")*3)
+  \end{lstlisting}
+	\end{myanswer}
+\end{myexercise}
+
+Im Nachfolgenden schauen wir uns einige Übungen an, mit denen wir die einzelnen Zeichen aus Zeichenketten herauslesen können.
+
+\begin{myexercise}
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	\begin{lstlisting}
+    text = "EASY"
+    for buchstabe in text:
+      print(buchstabe)
+  \end{lstlisting}
+	\begin{myanswer}
+		\begin{lstlisting}
+      E
+      A
+      S
+      Y
+    \end{lstlisting}
+		\pythoninline{for x in mystring} ist eine Schleife über die Zeichenkette \pythoninline{mystring}. Dabei nimmt \pythoninline{x} nacheinander jeden Buchstaben in dieser Zeichenkette genau einmal an.
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{myexercise:index}
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	\begin{lstlisting}
+    Klartext = "Schweiz"
+    print(Klartext[0])
+    print(Klartext[1])
+    print(Klartext[2])
+    print(Klartext[3])
+    print(Klartext[4])
+    print(Klartext[5])
+    print(Klartext[6])
+  \end{lstlisting}
+	\begin{myanswer}
+		\begin{lstlisting}
+      S
+      c
+      h
+      w
+      e
+      i
+      z
+    \end{lstlisting}
+		\pythoninline{mystring[0]} ist der erste Buchstabe der Zeichenkette \pythoninline{mystring}, \pythoninline{mystring[1]} der zweite und so weiter.
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	\begin{lstlisting}
+    Klartext = "Schweiz"
+    for i in range(len(Klartext)):
+      print(Klartext[i])
+  \end{lstlisting}
+	\begin{myanswer}
+		Dieses Programm ist äquivalent zum Programm in \cref{myexercise:index}.
+		Hier wird allerdings eine \pythoninline{for}-Schleife über die Länge des Texts verwendet.
+	\end{myanswer}
+\end{myexercise}
+
+Der Befehl \lstinline|for i in range(len(Klartext))| erstellt eine Variable \lstinline|i| innerhalb der \lstinline|for|-Schleife, welche jedes Zeichen von 0 bis zur Länge von \lstinline|Klartext| minus 1 geht. Weshalb minus 1? Das erste Zeichen von \lstinline|Klartext| wird in Python mit \lstinline|Klartext[0]| ausgelesen, das letzte mit \lstinline|Klartext[len(Klartext)-1]|, da wir bei 0 zu zählen beginnen und nicht bei 1. Mit dem Ausdruck \lstinline|Klartext[i]| wird also das \lstinline|i|-te Zeichen der Zeichenkette \lstinline|Klartext| ausgelesen, wobei \lstinline|i| von 0 bis zu (Länge des Klartexts minus 1) geht.
+
+Der Befehl \lstinline|for i in range(len(Klartext))| kann auch geschrieben werden also Befehl \lstinline|for i in range(0, len(Klartext), 1)|, wobei dies meint:
+\begin{itemize}
+	\item \lstinline|i| beginnt bei 0
+	\item \lstinline|i| geht bis zu \lstinline|len(Klartext)-1|
+	\item \lstinline|i| vergrössert sich in 1er-Schritten
+\end{itemize}
+Dieser Befehl könnte auch verwendet werden, um bei einer beliebigen Zahl zu starten (nicht notwendigerweise 0), und um \lstinline|i| in Schritten grösser als 1 zu vergrössern. Die allgemeine Syntax des Befehls lässt sich also wie folgt zusammenfassen: \lstinline|for i in range(start, ende, schrittgroesse)|.
+
+\begin{mychallenge}
+	Eine Person verrät uns lediglich die Vorwahl ihrer $10$-stelligen Mobiltelefonnummer. Zudem verrät Sie Ihnen auch, dass ihre Telefonnummer gerade ist (also auf 2, 4, 6, 8 oder 0 endet).
+	Damit gibt es nur noch $5$ Millionen Kombinationen, die es (im schlimmsten Fall) auszuprobieren gilt.
+	Schreiben Sie ein Python-Programm, welches die $2000$ kleinsten, geraden Nummern auflistet.
+	Die erste Nummer sollte $0790000000$ sein, die letzte $0790001999$.
+	Das Programm soll die Nummern als Zeichenkette (eine Nummer pro Zeile) ausgeben.
+
+	Tipps:
+	\begin{itemize}
+		\item Mit \pythoninline{str(num)}
+		      wird aus der Zahl \pythoninline{num} eine Zeichenkette.
+		      Beispielsweise gibt uns \pythoninline{str(15)}
+		      die Zeichenkette \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"15"!.
+		\item Erinnern Sie sich, was die Operation \pythoninline{+} in dem Ausdruck \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"In" + "form" + "atik"! macht?
+	\end{itemize}
+	\begin{myanswer}
+		\begin{lstlisting}
+      for num in range(790000000, 790002000,2):
+        print("0" + str(num)) # füge die Zeichenkette "0" vorne an
+    \end{lstlisting}
+	\end{myanswer}
+\end{mychallenge}
+
+\section{Debugging}
+
+Häufig kommt es beim Schreiben von Code zu ``unerklärlichen'' Fehlern: Der Code macht nicht, was man will, stürzt ab oder liefert nicht das gewünschte Resultat. Wir sprechen dabei von \textit{bugs} (englisches Wort für ``Käfer''), womit allgemein ``Fehler'' / unerwünschtes Verhalten oder unerwünschte Resultate gemeint sind. Daher ist es wichtig, zu lernen, wie man einem Problem auf die Schliche kommt. Darum handelt es sich beim sogenannten ``\textit{debugging}'' um das Beheben unterschiedlicher Fehlerarten, welche in den folgenden Abschnitten kurz erklärt werden. 
+
+\subsection{Syntaxfehler}
+Syntax-Fehler (engl. \textit{syntax error}) sind in Programmiersprache vergleichbar mit Rechtschreibfehlern in Aufsätzen: Es handelt sich um Schreibweisen, die nicht erlaubt sind. Beispielsweise würde folgender Code eine Fehlermeldunge geben:
+
+\begin{lstlisting}
+print "Hello World" # Fehler!
+\end{lstlisting}
+
+
+Der Fehler tritt aufgrund der Tatsache auf, dass nach dem Befehl \lstinline|print| Klammern stehen müssen. Der korrekte Code würde wie folgt geschrieben:
+
+\begin{lstlisting}
+print("Hello World") # Fehler!
+\end{lstlisting}
+
+Syntax-Fehler, also Fehler in der grammatikalischen Struktur einer Programmiersprache, führen dazu, dass der Code nicht richtig ausgeführt werden kann.
+
+Weitere, ähnliche Fehler können etwa auftreten, weil die Klammern nicht geschlossen wurden oder weil die Anführungszeichen bei Texten vergessen wurden:
+
+\begin{lstlisting}
+print("Hello World" # Fehler (Klammer nicht geschlossen)!
+print(Hello World) # Fehler (keine Anführungszeichen)!
+\end{lstlisting}
+
+\subsection{Laufzeitfehler}
+Laufzeitfehler (en. \textit{runtime error}) werden erst bei der Ausführung des Programms erkannt. Dabei stimmt die grammatikalische Struktur (Syntax) des Codes zwar, der Code ergibt aber keinen Sinn: Beispielsweise wird wird versucht, auf Variablen zuzugreifen, welche es gar nicht gibt. Fehler können beispielsweise aufgrund von Gross- und Kleinschreibung auftreten:
+
+\begin{lstlisting}
+X = 10 + 5
+print(x) # Fehler: kleines "x" gibt es nicht!
+\end{lstlisting}
+
+Ein weiterer Laufzeit könnte wie folgt aussehen
+
+\begin{lstlisting}
+print(Hello, World)
+\end{lstlisting}
+
+In diesem Fall wollte der Autor des Codes den Text \lstinline|"Hello, World"| auf die Konsole drucken, hat jedoch die Anführungszeichen vergessen. Dies führt dazu, dass der Code die Variablen \texttt{Hello} und \texttt{World} drucken will, die es jedoch nicht gibt.
+
+\begin{myexercise}
+Führen Sie alle obigen Beispiele in VSCodium aus und beobachten Sie die Fehlermeldungen. Verstehen Sie, was mit den Fehlermeldungen gemeint ist?
+\end{myexercise}
+
+\subsection{Typen}
+Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text.
+
+\begin{lstlisting}
+x = 2 + 3 # x ist eine Variable vom Typ "Zahl"
+y = "Hallo Welt!" # y ist eine Variable vom Typ "Text"
+\end{lstlisting}
+
+Variablen vom Typ Text werden einfach daran erkannt, dass der Wert der Variable (also der Text) in Anführungszeichen steht.
+
+\subsection{Semantische Fehler}
+
+Semantische Fehler sind Logik-Fehler, also Fehler aufgrund der Tatsache, dass die Programmiererin Denkfehler beim Schreiben gemacht hat. In diesem Fall gibt der Code zwar keine Fehlermeldung aus, die Ausgabe des Codes entspricht jedoch nicht dem erwarteten Resultat. Beispielsweise könnte folgender Code zu einem ``unerwarteten'' Resultat führen:
+
+\begin{lstlisting}
+mittelwert = 3 + 13/2
+print(mittelwert) # 9.5
+\end{lstlisting}
+Das Resultat sollte 8 sein, denn der Mittelwert von 3 und 13 ist 8 (=16 / 2). Der Fehler hat damit zu tun, dass der Programmierer vergessen hat, Klammern zu setzen. Korrekt wäre folgendes Beispiel:
+
+\begin{lstlisting}
+mittelwert = (3 + 13)/2
+print(mittelwert) # 9.5
+\end{lstlisting}
+
+\subsection{Debugging-Strategien}
+Einige Strategien, um fehlerhaften Code zu beheben, sind:
+\begin{enumerate}
+\item Lesen Sie Fehlermeldungen aufmerksam und versuchen sie zu verstehen, woher diese stammen könnten. Auch die Zeilenangaben sind dabei sehr hilfreich.
+\item Brechen Sie ihren Code in einzelne Teile auf. Geben Sie Zwischenresultate auf der Konsole aus, indem Sie \lstinline|print|-Befehle verwenden -- dies kostet Sie nichts.
+\item Rechnen Sie einige Beispiele von Hand aus, sofern der Code etwas Komplexeres berechnet.
+\item Testen Sie Ihren Code mit (extremen oder besonderen) Testfällen, also anderen Werten für Ihre Variablen.
+\end{enumerate}
