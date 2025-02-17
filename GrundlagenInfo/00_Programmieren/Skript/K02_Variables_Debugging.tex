@@ -27,12 +27,17 @@ Variablen sind kurz gesagt ein Wort, das einen veränderbaren (=variablen) Wert 
 \end{enumerate}
 
 \begin{myexercise}
-Berechnen Sie die folgenden Ausdrücke in Python:
-\begin{enumerate}
-\item $17 - 3 * 8 + 10$
-\item $(5-2) * 4 + 1$
-\item 27 \% 6
-\end{enumerate}
+Berechnen Sie die folgenden Ausdrücke in Python und speichern Sie das Resultat jeweils in einer Variable:
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+Berechnung & Name der Variable \\\midrule\midrule
+$17 - 3 * 8$ & \texttt{res1} \\\midrule
+$(5-2) * 4 + 1$& \texttt{res2} \\\midrule
+$27 \% 6$& \texttt{res3} \\\midrule
+$27 \% (3+8)$& \texttt{res4}
+\end{tabular}
+\end{table}
 \end{myexercise}
 
 \begin{mysubmission}
@@ -53,6 +58,8 @@ In der Mathematik bedeutet das Gleichzeichen ``der rechte Teil der Gleichung ist
 In Python kann man nicht nur Zahlen addieren, sondern auch mit Text arbeiten. Ein ``Text'' ist eine Abfolge mehrere Zeichen (Buchstaben oder Spezialzeichen). Aufgrund der Tatsache, dass Texte nicht nur Buchstaben sondern auch Spezialzeichen (\textbackslash, \$, \' etc.) enthalten können, spricht man aus technischer Sicht meist nicht von Texten, sondern von ``Zeichenketten''. Eine einfaches Beispiel für Texte haben wir bereits in \cref{myexample:prints} gesehen. Wir können Texte, ebenso wie Zahlen, in Variablen speichern.
 
 \begin{myexample}\label{ex:text-in-variables}
+Folgendes Beispiel speichert den Text \lstinline|"Hello, World!"| in der Variable \texttt{a}, der Wert der Variable wird danach auf der Konsole ausgegeben.
+
 \begin{lstlisting}
 a = "Hello, World!"
 print(a)  # druckt auf der Konsole den Text "Hello, World!"
@@ -194,4 +201,81 @@ Dieser Befehl könnte auch verwendet werden, um bei einer beliebigen Zahl zu sta
 
 \section{Debugging}
 
-Häufig kommt es beim Schreiben von Code zu ``unerklärlichen'' Fehlern: Der Code macht nicht, was man will, stürzt ab oder liefert nicht das gewünschte Resultat. Wir sprechen dabei von \textit{bugs} (englisches Wort für ``Käfer''), womit allgemein ``Fehler'' / unerwünschtes Verhalten oder unerwünschte Resultate gemeint sind. Daher ist es wichtig, zu lernen, wie man einem Problem auf die Schliche kommt. Darum handelt es sich beim sogenannten ``\textit{debugging}'', also dem Beheben solcher Fehler.
+Häufig kommt es beim Schreiben von Code zu ``unerklärlichen'' Fehlern: Der Code macht nicht, was man will, stürzt ab oder liefert nicht das gewünschte Resultat. Wir sprechen dabei von \textit{bugs} (englisches Wort für ``Käfer''), womit allgemein ``Fehler'' / unerwünschtes Verhalten oder unerwünschte Resultate gemeint sind. Daher ist es wichtig, zu lernen, wie man einem Problem auf die Schliche kommt. Darum handelt es sich beim sogenannten ``\textit{debugging}'' um das Beheben unterschiedlicher Fehlerarten, welche in den folgenden Abschnitten kurz erklärt werden. 
+
+\subsection{Syntaxfehler}
+Syntax-Fehler (engl. \textit{syntax error}) sind in Programmiersprache vergleichbar mit Rechtschreibfehlern in Aufsätzen: Es handelt sich um Schreibweisen, die nicht erlaubt sind. Beispielsweise würde folgender Code eine Fehlermeldunge geben:
+
+\begin{lstlisting}
+print "Hello World" # Fehler!
+\end{lstlisting}
+
+
+Der Fehler tritt aufgrund der Tatsache auf, dass nach dem Befehl \lstinline|print| Klammern stehen müssen. Der korrekte Code würde wie folgt geschrieben:
+
+\begin{lstlisting}
+print("Hello World") # Fehler!
+\end{lstlisting}
+
+Syntax-Fehler, also Fehler in der grammatikalischen Struktur einer Programmiersprache, führen dazu, dass der Code nicht richtig ausgeführt werden kann.
+
+Weitere, ähnliche Fehler können etwa auftreten, weil die Klammern nicht geschlossen wurden oder weil die Anführungszeichen bei Texten vergessen wurden:
+
+\begin{lstlisting}
+print("Hello World" # Fehler (Klammer nicht geschlossen)!
+print(Hello World) # Fehler (keine Anführungszeichen)!
+\end{lstlisting}
+
+\subsection{Laufzeitfehler}
+Laufzeitfehler (en. \textit{runtime error}) werden erst bei der Ausführung des Programms erkannt. Dabei stimmt die grammatikalische Struktur (Syntax) des Codes zwar, der Code ergibt aber keinen Sinn: Beispielsweise wird wird versucht, auf Variablen zuzugreifen, welche es gar nicht gibt. Fehler können beispielsweise aufgrund von Gross- und Kleinschreibung auftreten:
+
+\begin{lstlisting}
+X = 10 + 5
+print(x) # Fehler: kleines "x" gibt es nicht!
+\end{lstlisting}
+
+Ein weiterer Laufzeit könnte wie folgt aussehen
+
+\begin{lstlisting}
+print(Hello, World)
+\end{lstlisting}
+
+In diesem Fall wollte der Autor des Codes den Text \lstinline|"Hello, World"| auf die Konsole drucken, hat jedoch die Anführungszeichen vergessen. Dies führt dazu, dass der Code die Variablen \texttt{Hello} und \texttt{World} drucken will, die es jedoch nicht gibt.
+
+\begin{myexercise}
+Führen Sie alle obigen Beispiele in VSCodium aus und beobachten Sie die Fehlermeldungen. Verstehen Sie, was mit den Fehlermeldungen gemeint ist?
+\end{myexercise}
+
+\subsection{Typen}
+Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text.
+
+\begin{lstlisting}
+x = 2 + 3 # x ist eine Variable vom Typ "Zahl"
+y = "Hallo Welt!" # y ist eine Variable vom Typ "Text"
+\end{lstlisting}
+
+Variablen vom Typ Text werden einfach daran erkannt, dass der Wert der Variable (also der Text) in Anführungszeichen steht.
+
+\subsection{Semantische Fehler}
+
+Semantische Fehler sind Logik-Fehler, also Fehler aufgrund der Tatsache, dass die Programmiererin Denkfehler beim Schreiben gemacht hat. In diesem Fall gibt der Code zwar keine Fehlermeldung aus, die Ausgabe des Codes entspricht jedoch nicht dem erwarteten Resultat. Beispielsweise könnte folgender Code zu einem ``unerwarteten'' Resultat führen:
+
+\begin{lstlisting}
+mittelwert = 3 + 13/2
+print(mittelwert) # 9.5
+\end{lstlisting}
+Das Resultat sollte 8 sein, denn der Mittelwert von 3 und 13 ist 8 (=16 / 2). Der Fehler hat damit zu tun, dass der Programmierer vergessen hat, Klammern zu setzen. Korrekt wäre folgendes Beispiel:
+
+\begin{lstlisting}
+mittelwert = (3 + 13)/2
+print(mittelwert) # 9.5
+\end{lstlisting}
+
+\subsection{Debugging-Strategien}
+Einige Strategien, um fehlerhaften Code zu beheben, sind:
+\begin{enumerate}
+\item Lesen Sie Fehlermeldungen aufmerksam und versuchen sie zu verstehen, woher diese stammen könnten. Auch die Zeilenangaben sind dabei sehr hilfreich.
+\item Brechen Sie ihren Code in einzelne Teile auf. Geben Sie Zwischenresultate auf der Konsole aus, indem Sie \lstinline|print|-Befehle verwenden -- dies kostet Sie nichts.
+\item Rechnen Sie einige Beispiele von Hand aus, sofern der Code etwas Komplexeres berechnet.
+\item Testen Sie Ihren Code mit (extremen oder besonderen) Testfällen, also anderen Werten für Ihre Variablen.
+\end{enumerate}
