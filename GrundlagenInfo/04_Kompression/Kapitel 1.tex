@@ -122,7 +122,7 @@ Was könnte folgende Sequenz bedeuten?
 WENN \emoji{blush} HINTER \emoji{blush} $\triangle$, $\triangle$ EINIGE \emoji{blush} ANDEREN \emoji{blush} NACH.
 \end{center}
 \begin{myanswer}
-Mehrere Bedeutungen sind möglich, zum Beispiel:
+Viele Bedeutungen sind möglich, zum Beispiel:
 \begin{center}
 WENN GRIECHEN HINTER GRIECHEN RENNEN, RENNEN EINIGE GRIECHEN ANDEREN GRIECHEN NACH.
 \end{center}
@@ -153,17 +153,78 @@ Da wir hier nur vier Buchstaben (A, B, C und D) haben, reichen 2 Bits für die K
 
 \end{itemize}
 
-Beide Codierungen sind \textbf{präfixfrei}: Kein Codewort ist Anfangsstück (Präfix) eines anderen Codeworts. Allerdings verwenden wir für die ``effiziente'' Kodierung weniger Speicherplatz.
+Die ``effiziente'' Kodierung verwendet in diesem Fall 20\% weniger Speicherplatz als die ``naive'' Kodierung.
 
-\begin{myexercise}
-Berechnen Sie, wie viele Bits Speicherplatz die effiziente und die naive Kodierung benötigen, für den oben gezeigten Text.
-\begin{myanswer}
+Beide Codierungen sind \textbf{präfixfrei}: Kein Codewort ist Anfangsstück (Präfix) eines anderen Codeworts. Dies ist notwendig, damit es keine Verwechslungsgefahr beim Interpretieren des Codes gibt.
+
+ \begin{myexercise}
+Wir haben einen Text mit 100 Buchstaben und den Buchstaben A,B,C,D, sowie E. Im Text kommt A 55-mal, D und E jeweils 20-mal, B 3-mal und C 2-mal vor. Wählen Sie eine präfixfreie Kodierung der 5 Buchstaben des Alphabets, sodass die resultierende binäre Darstellung des Textes so kurz wie möglich wird. 
 \begin{enumerate}
-\item ``Naive'' Kodierung:...
-\item ``Effiziente'' Kodierung:...
+\item Visualisieren Sie den Prozess bei der Wahl der Kodierungen der einzelnen Buchstaben mit einem Baumdiagramm. 
+\item  Wie lange ist die binäre Darstellung des Texts mit Ihrer Kodierung?
 \end{enumerate}
+\begin{myanswer}
+Eine mögliche Lösung:
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+	[-,>=stealth',
+	level distance=18mm,
+	level 1/.style={sibling distance=60mm},
+	level 2/.style={sibling distance=30mm},
+	level 3/.style={sibling distance=15mm},
+	level 4/.style={sibling distance=8mm},
+	leaf/.style={circle, draw},
+	label/.style={red},
+	edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+	
+	
+	\usetikzlibrary{shapes}
+	\tikzstyle{n} = [text width=1cm,align=center]
+	\tikzstyle{r} = [text=red]
+	
+	\node[n]{\textcolor{RoyalBlue}{A,B,C,D,E}\\ 100\%}[edge from parent]
+	child {node[n] {\textcolor{RoyalBlue}{A}\\ 55\%\\\textcolor{red}{0}}
+		edge from parent node[left,r]{0};
+	}
+	child {node[n]{\textcolor{RoyalBlue}{B,C,D,E}\\ 45\%}
+		child {node[n] {\textcolor{RoyalBlue}{D}\\ 20\%\\\textcolor{red}{10}}
+			edge from parent[] node[left,r]{0};
+		}
+		child {node[n] {\textcolor{RoyalBlue}{B,C,E}\\ 25\%}
+			child {node[n] {\textcolor{RoyalBlue}{E}\\20\%\\\textcolor{red}{110}}
+				edge from parent[] node[left,r]{0};
+			}
+			child {node[n] {\textcolor{RoyalBlue}{B,C}\\ 5\%}
+				child {node[n] {\textcolor{RoyalBlue}{B}\\3\%\\\textcolor{red}{1110}}
+					edge from parent[] node[left,r]{0};
+				}
+				child {node[n] {\textcolor{RoyalBlue}{C}\\ 2\%\\\textcolor{red}{1111}}
+					edge from parent[] node[r,right]{1};
+				}
+				edge from parent[] node[r,right]{1};
+			}
+			edge from parent[] node[r,right]{1};
+		}
+		edge from parent node[r,right]{1};
+	};
+\end{tikzpicture}
+\end{figure}
+Die Länge des gesamten Texts berechnet sich aus der Summe der Häufigkeiten der Buchstaben mal deren Kodierungslänge:
+\begin{table}[H]
+\centering
+\begin{tabular}{c||c|c}
+Buchstabe & Kodierung & Länge der Kodierung \\\midrule\midrule
+A & 0 & 1 \\\midrule
+B & 1110 & 4 \\\midrule
+C & 1111 & 4 \\\midrule
+D & 10 & 2 \\\midrule
+E & 110 & 3
+\end{tabular}
+\end{table}
+\[52\times1+20\times2+20\times3+5\times4 = 172\]
 \end{myanswer}
-\end{myexercise}
+ \end{myexercise}
 
 \begin{table}[H]
 	\centering
@@ -391,12 +452,26 @@ Berechnen Sie, wie viele Bits Speicherplatz die effiziente und die naive Kodieru
 \end{figure}
 
 \begin{myexercise}
+Nutzen Sie die Strategie der maximalen Balance, um die präfixfreien Kodierungen für Texte
+mit folgenden Buchstabenhäufigkeiten zu entwerfen.
+\begin{enumerate}
+\item A - 57\%, B - 23\%, C - 12\%, D - 8\%
+\item A - 25\%, B - 20 \%, D - 14 \%, E - 11 \%, F - 10 \%, G - 10 \%, H - 5\%, I - 5\%
+\item A - 33 \%, B - 30 \%, C - 17 \%, D - 14 \%, E - 6\%
+\end{enumerate}
+\end{myexercise}
+
+\begin{mychallenge}
+Schlagen Sie eine Häufigkeitsverteilung für Buchstaben so vor, dass die Strategie der maximalen Balance eindeutig ein Baumdiagramm bestimmt, in dem ein 10-mal häufigerer Buchstabe eine längere Kodierung hat als ein 10-mal seltener vorkommender Buchstabe.
+\end{mychallenge}
+
+\begin{myexercise}
 \textbf{Problem}: Was passiert bei folgender Verteilung?
 		\begin{table}[H]
 			\centering
 			\begin{tabular}{c|c|c|c|c|c|c}
 				\textbf{Buchstabe} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D}& \textbf{E}& \textbf{F} \\\midrule\midrule
-				Relative Häufigkeit &.55\% & 1\% & 25\% & 8\%& 9\%& 8\%
+				Relative Häufigkeit & 55\% & 1\% & 25\% & 8\%& 9\%& 8\%
 			\end{tabular}
 	\end{table}
 
@@ -695,6 +770,22 @@ Als Fazit kann folgendes festgehalten werden:
 	\item Strategie der \textbf{Maximale Balance}: \textit{top-down}-Ansatz (von Wurzel zu Blättern), kann zu suboptimalen Kodierungen führen
 	\item \textbf{Huffman-Kodierung}: \textit{bottom-up}-Ansatz (von Blättern zur Wurzel), garantiert bestmögliche Kodierungslänge für alle Buchstaben
 \end{itemize}
+
+\begin{myexercise}
+Verwenden Sie den Algorithmus von Huffman, um präfixfreie Kodierungen für die folgenden Häufigkeitsverteilungen von Buchstaben zu konstruieren.
+\begin{itemize}
+\item A - 25\%, B - 25 \%, C - 13 \%, D - 12\%, E - 6\%, F - 7\%, G - 6\%, H - 6\%
+\item A - 15\%, B - 15 \%, C - 15 \%, D - 15 \%, E - 15 \%, F - 15 \%, G - 10 \%
+\item A - 45\%, B - 15 \%, C - 7\%, D - 7\%, E - 6 \%, F - 10\%, G - 10\%
+\item A - 33\%, B - 18 \%, C - 18 \%, D - 17\%, E - 4 \% , F - 4 \% , G - 3 \%, H - 3 \%
+\end{itemize}
+Vergleichen Sie in der Klasse die entstandenen präfixfreien Kodierungen. Die Lösungen
+zur jeweiligen Häufigkeitsverteilung dürfen sich unterscheiden. Wo liegen die Unterschiede
+und was haben die unterschiedlichen Lösungen immer gemeinsam?
+
+Bei welchen der vier Häufigkeitsverteilungen der Buchstaben werden Sie mit der Strategie
+der maximalen Balance gleich gute präfixfreie Kodierungen der Buchstaben erhalten wie mit der  Huffman-Strategie und bei welchen nicht?
+\end{myexercise}
 
 \begin{myexercise}
 Komprimieren Sie das Wort ``Allemal'' mit der Huffman-Kodierung.
