@@ -1,4 +1,4 @@
-﻿import numpy as np
+import numpy as np
 import string
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
@@ -6,24 +6,8 @@ from collections import Counter
 import re
 
 
-def preprocess_text(text):
-    # Capitalize the entire text
-    text = text.upper()
-    
-    # Replace capitalized umlauts with the corresponding letter combinations
-    replacements = {
-        'Ä': 'AE',
-        'Ö': 'OE',
-        'Ü': 'UE',
-    }
-    
-    for original, replacement in replacements.items():
-        text = text.replace(original, replacement)
 
-    # Remove all characters other than A-Z
-    text = re.sub(r'[^A-Z]', '', text)
-    
-    return text
+
 
 def vigenere(text, key, encrypt=True):
     text = preprocess_text(text)

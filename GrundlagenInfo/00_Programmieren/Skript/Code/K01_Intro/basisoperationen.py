@@ -13,7 +13,7 @@ print(5 + 7 * 3)  # äquivalent zu 5 + (7 * 3) = 26
 8 * 5  # 40
 # (übliche) Division
 10 / 4  # 2.5
-# ganzzahlige Division (zwei forward-slahes)
+# ganzzahlige Division (zwei forward-slashes)
 10 // 4  # 2
 # Potenz
 2**4  # 16
