@@ -1,6 +1,90 @@
 \chapter{Variablen, Datentypen \& Debugging}\label{ch:K01_variables}
 
-\subsection{Rest: Modulo}
+\section{Variablen}
+In Python können wir das Resultat einer Rechnung in einer sogenannten \textbf{Variable} speichern, indem wir das Gleichzeichen (=) verwenden.Das Gleichzeichen hat allerdings nicht dieselbe Bedeutung in der Mathematik! Vielmehr bedeutet das Gleichzeichen in Python: ``speichere das Resultat der rechten Seite in der Variable auf der linken Seite'':
+
+\begin{center}
+$ \tikzmarknode{b}{\text{\texttt{a}}} =\tikzmarknode{a}{\color{red}\underbrace{\color{black}\text{\texttt{10+3}}}}$
+    \tikz[remember picture, overlay]{\draw[-latex,red] ([yshift=0.1em]a.south) to[bend left] ([yshift=-0.3em]b.south);}
+\end{center}
+	
+Die Erklärung dieser Zeile ist: ``Wir werten den Ausdruck \lstinline|10+3| aus und erhalten die Zahl 13. Diesen Wert (\lstinline|13|) speichern wir nun in der Variable \lstinline|a|''.
+
+Wir können dies einfach überprüfen, indem wir den Wert von \lstinline|a| aufrufen: 
+
+\begin{lstlisting}
+a = 10 + 3
+print(a) # 13
+\end{lstlisting}
+
+Variablen sind kurz gesagt ein Wort, das einen veränderbaren (=variablen) Wert enthält. Der Variablenname darf dabei (fast) frei gewählt werden, sofern folgende Regeln eingehalten werden:
+
+\begin{enumerate}
+\item Er muss mit einem Buchstaben beginnen (nicht: \verb|1meinname, _abc|)
+\item Er darf kein von Python \href{https://www.programiz.com/python-programming/keyword-list}{reserviertes Wort} sein (\lstinline|def, if, repeat| etc.)
+\item Die Variablennamen müssen in einem Wort geschrieben werden. Falls ein Name aus zwei oder mehr Worten gewählt wird, sollte die Variable nicht durch ein \textit{Underscore} (\_) getrennt werden, sondern in sogenanntem \texttt{camelCase} geschrieben werden, also z.B. \lstinline|meinName| statt \lstinline|mein_name|.
+\item Es sollte ein \textbf{sinnvoller} und \textbf{sprechender} Name sein! Wenn Sie beispielsweise ihre Körperhöhe in einer Variable speichern, ist es sinnvoll, diese \lstinline|h| oder \lstinline|hoehe| zu nennen und nicht \lstinline|x|.
+\end{enumerate}
+
+\begin{myattention}
+In der Mathematik bedeutet das Gleichzeichen ``der rechte Teil der Gleichung ist gleich dem linken''. Dies ist in Python nicht so! Hier bedeutet das Gleichzeichen: ``werte den rechten Teil aus und \textbf{speichere} das Resultat im linken Teil''. Es gibt also \textit{keine} Speicherung von Werten in Python ohne Verwendung des Gleichzeichens.
+\end{myattention}
+
+
+\begin{myexercise}
+Berechnen Sie die folgenden Ausdrücke in Python und speichern Sie das Resultat jeweils in einer Variable:
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+Berechnung & Name der Variable \\\midrule\midrule
+$17 - 3 * 8$ & \texttt{res1} \\\midrule
+$(5-2) * 4 + 1$& \texttt{res2} \\\midrule
+$27^6$& \texttt{res3} \\\midrule
+$27^{(3+8)}$& \texttt{res4}
+\end{tabular}
+\end{table}
+\end{myexercise}
+
+\begin{mysubmission}
+Führen Sie folgende Rechnung aus:
+\begin{enumerate}
+\item Multiplizieren Sie 20 mit 33 und speichern Sie das Resultat in einer Variable \lstinline|x|.
+\item Addieren Sie 50 und 133 und speichern Sie das Resultat in einer Variable \lstinline|y|.
+\item Geben Sie ihre beiden Zeilen Code auf Moodle ab. Moodle wird nun die Summe von \lstinline|x| und \lstinline|y| berechnen. Diese sollte 843 sein.
+\end{enumerate}
+\end{mysubmission}
+
+\begin{myexercise}\label{ex:austausch}
+Sie wollen zwei Variablen Austauschen und kommen auf folgende Idee:
+\begin{lstlisting}
+x = 5 
+y = 11
+# nun wollen wir die Werte austauschen, so dass y den Wert 5 und x den Wert 11 hat!
+x = y
+y = x
+\end{lstlisting}
+Führen Sie das Programm aus und geben Sie die Werte von x und y auf der Konsole aus. Funktioniert das Programm wie erwartet? Weshalb (nicht)?
+\begin{myanswer}
+x und y haben nun beide den Wert 11. Auf Zeile 4 wird der \textit{Wert} von y in x gespeichert. Ab diesem Moment haben sowohl die Variablen x wie y denselben Wert 11.
+\end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}
+Wie könnte der Code aus \cref{ex:austausch} angepasst werden, so dass er funktioniert?
+\begin{myanswer}
+Mit einer Hilfsvariable:
+\begin{lstlisting}
+x = 5 
+y = 11
+# nun wollen wir die Werte austauschen, so dass y den Wert 5 und x den Wert 11 hat!
+a1 = x # Hilfsvariable, um vorigen Wert von x zu speichern
+x = y
+y = a1
+\end{lstlisting}
+\end{myanswer}
+\end{mychallenge}
+
+\section{Rest: Modulo}
 Ein spezieller Ausdruck wird verwendet, um den Rest einer ganzzahligen Division zu berechnen. Was eine ``ganzzahlige Division'' bedeutet, soll anhand des folgenden Beispiels dargestellt werden:
 
 \begin{itemize}
@@ -12,7 +96,16 @@ Ein spezieller Ausdruck wird verwendet, um den Rest einer ganzzahligen Division 
 Diese Operation kann beispielsweise verwendet werden, um zu bestimmen, ob eine Zahl durch eine andere dividierbar ist, also ob eine Zahl ein Teiler ist.
 
 \begin{myexample}
-Beispiele für Modulo-Berechnungen in Python:
+Beispiele für Ganzzahl-Division in Python:
+\begin{lstlisting}
+20 // 3 # 6
+8 // 4  # 2
+9 // 5  # 1
+\end{lstlisting}
+\end{myexample}
+
+\begin{myexample}
+Beispiele für Modulo-Berechnungen (Rest der Ganzzahldivision) in Python:
 \begin{lstlisting}
 20 % 3 # 2
 8 % 4  # 0
@@ -52,58 +145,44 @@ Füllen Sie die zweite Spalte von Hand aus, berechnen Sie danach die Resultate i
 \end{myanswer}
 \end{myexercise}
 
-\section{Variablen}
-In Python können wir das Resultat einer Rechnung in einer sogenannten \textbf{Variable} speichern, indem wir das Gleichzeichen (=) verwenden.Das Gleichzeichen hat allerdings nicht dieselbe Bedeutung in der Mathematik! Vielmehr bedeutet das Gleichzeichen in Python: ``speichere das Resultat der rechten Seite in der Variable auf der linken Seite'':
-
-\begin{center}
-$ \tikzmarknode{b}{\text{\texttt{a}}} =\tikzmarknode{a}{\color{red}\underbrace{\color{black}\text{\texttt{10+3}}}}$
-    \tikz[remember picture, overlay]{\draw[-latex,red] ([yshift=0.1em]a.south) to[bend left] ([yshift=-0.3em]b.south);}
-\end{center}
-	
-Die Erklärung dieser Zeile ist: ``Wir werten den Ausdruck \lstinline|10+3| aus und erhalten die Zahl 13. Diesen Wert (\lstinline|13|) speichern wir nun in der Variable \lstinline|a|''.
-
-Wir können dies einfach überprüfen, indem wir den Wert von \lstinline|a| aufrufen: 
-
-\begin{lstlisting}
-a = 10 + 3
-print(a) # 13
-\end{lstlisting}
-
-Variablen sind kurz gesagt ein Wort, das einen veränderbaren (=variablen) Wert enthält. Der Variablenname darf dabei (fast) frei gewählt werden, sofern folgende Regeln eingehalten werden:
-
-\begin{enumerate}
-\item Er muss mit einem Buchstaben beginnen (nicht: \verb|1meinname, _abc|)
-\item Er darf kein von Python \href{https://www.programiz.com/python-programming/keyword-list}{reserviertes Wort} sein (\lstinline|def, if, repeat| etc.)
-\item Die Variablennamen müssen in einem Wort geschrieben werden. Falls ein Name aus zwei oder mehr Worten gewählt wird, sollte die Variable nicht durch ein \textit{Underscore} (\_) getrennt werden, sondern in sogenanntem \texttt{camelCase} geschrieben werden, also z.B. \lstinline|meinName| statt \lstinline|mein_name|.
-\item Es sollte ein \textbf{sinnvoller} und \textbf{sprechender} Name sein! Wenn Sie beispielsweise ihre Körperhöhe in einer Variable speichern, ist es sinnvoll, diese \lstinline|h| oder \lstinline|hoehe| zu nennen und nicht \lstinline|x|.
-\end{enumerate}
-
 \begin{myexercise}
-Berechnen Sie die folgenden Ausdrücke in Python und speichern Sie das Resultat jeweils in einer Variable:
-\begin{table}[H]
-\centering
-\begin{tabular}{c|c}
-Berechnung & Name der Variable \\\midrule\midrule
-$17 - 3 * 8$ & \texttt{res1} \\\midrule
-$(5-2) * 4 + 1$& \texttt{res2} \\\midrule
-$27 \% 6$& \texttt{res3} \\\midrule
-$27 \% (3+8)$& \texttt{res4}
-\end{tabular}
-\end{table}
+Berechnen Sie, wie viele Pizzastücke übrig bleiben, wenn \texttt{p} Personen an ein Fest kommen und eine Pizza mit \texttt{s} Stücken bestellt wird und jede Person genau gleich viele Stücke erhalten soll, indem Sie den Modulo-Operator verwenden.
+\begin{myanswer}
+\begin{lstlisting}
+p = 4 # Beispielwert, Anzahl Personen
+s = 33 # Beispielwert
+uebrige_stuecke = s % p # übriggebliebene Pizza-Stücke
+\end{lstlisting}
+\end{myanswer}
 \end{myexercise}
 
-\begin{mysubmission}
-Führen Sie folgende Rechnung aus:
-\begin{enumerate}
-\item Multiplizieren Sie 20 mit 33 und speichern Sie das Resultat in einer Variable \lstinline|x|.
-\item Addieren Sie 50 und 133 und speichern Sie das Resultat in einer Variable \lstinline|y|.
-\item Geben Sie ihre beiden Zeilen Code auf Moodle ab. Moodle wird nun die Summe von \lstinline|x| und \lstinline|y| berechnen. Diese sollte 843 sein.
-\end{enumerate}
-\end{mysubmission}
 
-\begin{mycaution}
-In der Mathematik bedeutet das Gleichzeichen ``der rechte Teil der Gleichung ist gleich dem linken''. Dies ist in Python nicht so! Hier bedeutet das Gleichzeichen: ``werte den rechten Teil aus und \textbf{speichere} das Resultat im linken Teil''. Es gibt also \textit{keine} Speicherung von Werten in Python ohne Verwendung des Gleichzeichens.
-\end{mycaution}
+\begin{myexercise}
+Wie könnte berechnet werden, ob eine Zahl \texttt{z} gerade ist?
+\begin{myanswer}
+Wenn die Zahl \texttt{z} modulo 2 als Resultat 0 ergibt, ist die Zahl \texttt{z} gerade.
+\end{myanswer}
+\end{myexercise}
+
+\section{Werte von Variablen verändern}
+Was ist der Unterschied zwischen den folgenden Zeilen:
+    \begin{itemize}
+        \item \pythoninline{seite + 5}
+        \item \pythoninline{seite += 5}
+    \end{itemize}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|p{6cm}}
+        Befehl & Beschreibung \\\midrule
+         \pythoninline{x+=y}&Erhöht den Wert von \pythoninline{x} um \pythoninline{y}  \\\hline
+         \pythoninline{x-=y}&Verringert den Wert von \pythoninline{x} um \pythoninline{y} \\\hline
+         \pythoninline{x*=y}&Multipliziert den Wert von \pythoninline{x} mit \pythoninline{y} (und speichert das Resultat in x)\\\hline
+         \pythoninline{x/=y} & Dividiert den Wert von \pythoninline{x} durch \pythoninline{y} (und speichert das Resultat in x)
+    \end{tabular}
+\end{table}
+
 
 \section{Arbeiten mit Text}
 
@@ -251,6 +330,46 @@ Dieser Befehl könnte auch verwendet werden, um bei einer beliebigen Zahl zu sta
 	\end{myanswer}
 \end{mychallenge}
 
+\section{Daten-Typen}
+
+Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text.
+
+\begin{lstlisting}
+x = 2 + 3 # x ist eine Variable vom Typ "Zahl"
+y = "Hallo Welt!" # y ist eine Variable vom Typ "Text"
+\end{lstlisting}
+
+Variablen vom Typ Text werden einfach daran erkannt, dass der Wert der Variable (also der Text) in Anführungszeichen steht. Bei Zahlen gilt es zu unterscheiden zwischen Ganzzahlen (en. \textit{integer}) und Kommazahlen (en. \textit{float}), s. \cref{tab:datatypes}.
+
+\begin{table}[H]
+	\footnotesize
+	\centering
+	\begin{tabular}{l|p{2cm}|p{2cm}}
+		\textbf{Beispiel}                                        & \textbf{Datentyp (englisch, Abk.)} & \textbf{Datentyp (Deutsch)} \\\midrule\midrule
+		\lstinline|"Hallo Welt", "abc", "42"| & string (str)                       & Zeichenkette                \\\midrule
+		\lstinline|15, 45, -5, 0|             & integer (int)                      & Ganzzahl                    \\\midrule
+		\lstinline|12.23, -5.33, 23.0|        & float (float)                      & Kommazahl
+	\end{tabular}
+	\caption{Auswahl elementarer Datentypen in Python und Beispiele}
+	\label{tab:datatypes}
+\end{table}
+
+\begin{myexercise}
+Mit welchen Datentypen würden Sie folgende Informationen über Sie in Python speichern?
+\begin{itemize}
+	\item Name
+	\item Alter in Jahren
+	\item Grösse in Metern
+\end{itemize}
+\begin{myanswer}
+\begin{itemize}
+	\item Name: \textit{string}
+	\item Alter in Jahren: \textit{integer}
+	\item Grösse in Metern: \textit{float}
+\end{itemize}
+\end{myanswer}
+\end{myexercise}
+
 \section{Debugging}
 
 Häufig kommt es beim Schreiben von Code zu ``unerklärlichen'' Fehlern: Der Code macht nicht, was man will, stürzt ab oder liefert nicht das gewünschte Resultat. Wir sprechen dabei von \textit{bugs} (englisches Wort für ``Käfer''), womit allgemein ``Fehler'' / unerwünschtes Verhalten oder unerwünschte Resultate gemeint sind. Daher ist es wichtig, zu lernen, wie man einem Problem auf die Schliche kommt. Darum handelt es sich beim sogenannten ``\textit{debugging}'' um das Beheben unterschiedlicher Fehlerarten, welche in den folgenden Abschnitten kurz erklärt werden. 
@@ -298,18 +417,10 @@ In diesem Fall wollte der Autor des Codes den Text \lstinline|"Hello, World"| au
 Führen Sie alle obigen Beispiele in VSCodium aus und beobachten Sie die Fehlermeldungen. Verstehen Sie, was mit den Fehlermeldungen gemeint ist?
 \end{myexercise}
 
-\subsection{Typen}
-Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text.
 
-\begin{lstlisting}
-x = 2 + 3 # x ist eine Variable vom Typ "Zahl"
-y = "Hallo Welt!" # y ist eine Variable vom Typ "Text"
-\end{lstlisting}
-
-Variablen vom Typ Text werden einfach daran erkannt, dass der Wert der Variable (also der Text) in Anführungszeichen steht.
 
 \subsection{Semantische Fehler}
-
+\label{subsec:semantische-fehler}
 Semantische Fehler sind Logik-Fehler, also Fehler aufgrund der Tatsache, dass die Programmiererin Denkfehler beim Schreiben gemacht hat. In diesem Fall gibt der Code zwar keine Fehlermeldung aus, die Ausgabe des Codes entspricht jedoch nicht dem erwarteten Resultat. Beispielsweise könnte folgender Code zu einem ``unerwarteten'' Resultat führen:
 
 \begin{lstlisting}
@@ -331,3 +442,10 @@ Einige Strategien, um fehlerhaften Code zu beheben, sind:
 \item Rechnen Sie einige Beispiele von Hand aus, sofern der Code etwas Komplexeres berechnet.
 \item Testen Sie Ihren Code mit (extremen oder besonderen) Testfällen, also anderen Werten für Ihre Variablen.
 \end{enumerate}
+
+\begin{myexercise}
+Um welche Art von Fehler handelt es sich im Code aus \cref{ex:austausch}?
+\begin{myanswer}
+Semantischer Fehler
+\end{myanswer}
+\end{myexercise}

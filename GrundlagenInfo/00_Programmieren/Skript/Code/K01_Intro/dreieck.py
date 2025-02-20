@@ -11,5 +11,5 @@ t.left(120)
 t.forward(100)
 t.left(120)
 
-# Turtle Zeichnung stehen lassen
+# Turtle-Zeichnung stehen lassen
 t.done()

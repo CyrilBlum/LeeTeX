@@ -50,5 +50,5 @@ t.right(145)
 # Turtle verstecken (damit sie nicht das Haus verdeckt)
 t.hideturtle()
 
-# Turtle Zeichnung stehen lassen
+# Turtle-Zeichnung stehen lassen
 t.done()

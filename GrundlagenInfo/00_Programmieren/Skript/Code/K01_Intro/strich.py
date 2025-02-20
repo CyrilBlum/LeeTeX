@@ -6,5 +6,5 @@ t.speed(1)
 # gerade Linie / Strich zeichnen
 t.forward(140)
 
-# Turtle Zeichnung stehen lassen
+# Turtle-Zeichnung stehen lassen
 t.done()

@@ -129,7 +129,8 @@ fill=green!30
 % arg4: annotation text
 % arg5: curly brace aspect ratio (0.5 for "normal" braces)
 % arg6: rotation (empty for right, "mirror" for left)
-\newcommand*{\drawBrace}[6]{%
+% arg7: text shift (default 5em)
+\newcommand*{\drawBrace}[7]{%
 	
 	% fit rectangle
     \node[fill=none, draw=none, fit={(#2) (#3)}, inner sep=0pt] (rectg) {};%
@@ -152,12 +153,17 @@ fill=green!30
     \coordinate (#2#3-coord-arrow) at ($(#2#3-coord-comment-y)+(#1,0)+(\adjarrow,0)$);
     
     % add text (if provided)
-    \ifblank{#4}{}{        
+    \ifblank{#4}{}{      
         % comment
+        \ifblank{#7}{
         \node[right=5em of #2#3-coord-comment-y](#2#3-comment) {#4};
+        }{
+        \node[right=#7 of #2#3-coord-comment-y](#2#3-comment) {#4};
+        }
+        
         
         % arrow pointing from comment to brace
-        \draw[->, style={thick, >=stealth, red!70}] (#2#3-comment.west) to (#2#3-coord-arrow);
+        \draw[->, style={thick, >=stealth, red!50}] (#2#3-comment.west) to (#2#3-coord-arrow);
     }  
    	
 }%

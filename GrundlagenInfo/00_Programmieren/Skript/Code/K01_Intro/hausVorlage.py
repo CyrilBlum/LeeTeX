@@ -18,5 +18,5 @@ t.pencolor("red") # setzte die Stiftfarbe auf rot
 # Turtle verstecken (damit sie nicht das Haus verdeckt)
 t.hideturtle()
 
-# Turtle Zeichnung stehen lassen
+# Turtle-Zeichnung stehen lassen
 t.done()

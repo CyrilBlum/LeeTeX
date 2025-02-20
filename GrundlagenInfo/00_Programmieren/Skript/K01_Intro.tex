@@ -38,7 +38,21 @@ Dieses Beispiel zeigt die Funktionsweise von Zeilenkommentaren und Blockkommenta
 \end{myexample}
 
 \subsection{Einfache Arithmetik}
-In Python lassen sich einfache Rechenoperationen ähnlich wie bei einem Taschenrechner angeben. Dabei hält sich auch Python an die üblichen Konventionen wie \enquote{Punkt vor Strich}.
+In Python lassen sich einfache Rechenoperationen ähnlich wie bei einem Taschenrechner angeben. Dabei hält sich auch Python an die üblichen Konventionen wie \enquote{Punkt vor Strich}. Symbole für die arithmetische Operationen sind in \cref{tab:arithm-op} zusammengefasst.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+\textbf{Mathematische Operation} & \textbf{In Python} \\\midrule\midrule
+Addition & \lstinline|+| \\\midrule
+Subtraktion & \lstinline|-| \\\midrule
+Multiplikation & \lstinline|*| \\\midrule
+Division & \lstinline|/| \\\midrule
+Potenzieren & \lstinline|**|
+\end{tabular}
+\caption{Arithmetische Operationen in Python}
+\label{tab:arithm-op}
+\end{table}
 \begin{myexample}\label{myexample:basisoperationen}
 Wir haben einige typische Rechenoperationen für Sie aufgeführt:
 \lstinputlisting[language=Python,caption=\texttt{basisoperationen.py},label=listing:basisoperationen]{GrundlagenInfo/00_Programmieren/Skript/Code/K01_Intro/basisoperationen.py}
@@ -116,11 +130,29 @@ Stellen Sie sich vor, Sie müssten eine Treppe mit $10000$ Stufen zeichnen \emoj
 Die Treppe aus \cref{myexample:Treppe} lässt sich mit einer sogenannten \pythoninline{for}-Schleife ganz einfach wie in \cref{listing:treppe} realisieren.
 \lstinputlisting[language=Python,caption=\texttt{treppe.py},label=listing:treppe]{GrundlagenInfo/00_Programmieren/Skript/Code/K01_Intro/treppe.py}
 
-Dabei wird
+Dabei wird folgender Ausdruck:
 \begin{center}
 	\pythoninline{for _ in range(15):}
 \end{center}
-der \textit{Schleifenkopf}\index{Schleife!Kopf einer} der Schleife genannt. Die vier Zeilen (6 -- 9) werden \textit{Schleifenkörper}\index{Schleife!Körper einer} der Schleife genannt. Der Schleifenkörper ist (in Python) daran erkennbar, dass er (relativ zu dem Schleifenkopf) nach rechts eingerückt (Englisch: \textit{indented}) ist. Diese Einrückung erreichen wir in VSCodium durch das einfache Drücken der Tabulator-Taste (\keys{\tab}). Wir können Code auch wieder um einen Tab nach links rücken, indem wir den entsprechenden Code zuerst selektieren (einfärben) und danach die Shift-Taste sowie die Tabulator-Taste gleichzeitig drücken (\keys{\shift + \tab}). In anderen Programmen als VSCodium kann es sein, dass die Tastaturkombination dafür eine andere ist.
+der \textit{Schleifenkopf}\index{Schleife!Kopf einer} der Schleife genannt. Die vier Zeilen (6 -- 9) werden \textit{Schleifenkörper}\index{Schleife!Körper einer} der Schleife genannt, wie im unten stehenden Code zu sehen ist.
+
+
+\begin{lstlisting}[escapechar=!]
+for _ in range(15):!\tikzmark{code2}\tikzmark{repeatStart}!              !\tikzmark{comment2}!
+    t.fd(15)!\tikzmark{bodyStart}!                               
+    t.lt(90)
+    t.fd(25)
+    t.rt(90)!\tikzmark{bodyEnd}!       !\tikzmark{repeatEnd}!
+\end{lstlisting}
+\begin{tikzpicture}[overlay, remember picture,
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+    \drawArrow{code2}{comment2}{\footnotesize Schleifenkopf}{red!50!white};
+    \drawBrace{1em}{repeatStart}{repeatEnd}{\footnotesize Schleife}{.45}{}{};
+	\drawBrace{0em}{bodyStart}{bodyEnd}{\footnotesize\textit{Körper} der Schleife}{.8}{}{8.5em};
+\end{tikzpicture}
+
+
+Der Schleifenkörper ist (in Python) daran erkennbar, dass er (relativ zu dem Schleifenkopf) nach rechts eingerückt (Englisch: \textit{indented}) ist. Diese Einrückung erreichen wir in VSCodium durch das einfache Drücken der Tabulator-Taste (\keys{\tab}). Wir können Code auch wieder um einen Tab nach links rücken, indem wir den entsprechenden Code zuerst selektieren (einfärben) und danach die Shift-Taste sowie die Tabulator-Taste gleichzeitig drücken (\keys{\shift + \tab}). In anderen Programmen als VSCodium kann es sein, dass die Tastaturkombination dafür eine andere ist.
 
 % \cite{Landau}
 
@@ -142,6 +174,28 @@ der \textit{Schleifenkopf}\index{Schleife!Kopf einer} der Schleife genannt. Die 
 	\end{itemize}
 \end{myexercise}
 
+\begin{mychallenge}
+Zeichnen Sie eine Blume, wie unten gezeigt.
+\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.2\pagewidth]{GrundlagenInfo/00_Programmieren/Figures/viereck_blume}
+	\end{figure}
+	\begin{myanswer}
+	\lstinputlisting[language=Python,caption=\texttt{blume.py},label=listing:blume]{GrundlagenInfo/00_Programmieren/Skript/Code/K01_Intro/blume.py}
+	\end{myanswer}
+\end{mychallenge}
+
+\begin{mychallenge}
+\begin{enumerate}
+\item \emoji{switzerland} Zeichnen Sie ein Schweizer Kreuz (\textbf{Tipp}: zuerst ohne Farben, danach farbig).
+\item Zeichnen Sie die Flagge vom Kanton Zürich (quadratisch). \includegraphics[width=0.1\linewidth]{GrundlagenInfo/00_Programmieren/Figures/Flag_of_Canton_of_Zürich}\definecolor{zhblue}{RGB}{0,112,180} 
+ \textcolor{zhblue}{(Farbe ``Züri-Blau'': 0, 112, 180)}
+\item Sie ein horizontal dreigeteiltes Flaggen (wie etwa das von Frankreich \emoji{flag-france} oder Italien \emoji{flag-italy}).
+\item \textbf{Challenge}: Dasselbe wie Aufgabe 3, aber die Breite der Farben soll zufällig sein (bei jeder Ausführung anders).
+\item \textbf{Challenge}: Dasselbe wie Aufgabe 3, aber die Breite der Farben sowie die Farben sollen zufällig sein (bei jeder Ausführung anders).
+\end{enumerate}
+\end{mychallenge}
+
 \clearpage
 \section{Lösungen der Aufgaben}
 
@@ -156,6 +210,8 @@ der \textit{Schleifenkopf}\index{Schleife!Kopf einer} der Schleife genannt. Die 
 \begin{myanswer}[myexercise:approximationKreis]
 	\lstinputlisting[language=Python,caption=\texttt{regelmaessigePolygone.py},label=listing:regelmaessigePolygone]{GrundlagenInfo/00_Programmieren/Skript/Code/K01_Intro/regelmaessigePolygone.py}
 \end{myanswer}
+
+
 
 
 \clearpage
