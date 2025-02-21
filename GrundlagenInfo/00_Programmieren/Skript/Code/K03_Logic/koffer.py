@@ -11,7 +11,4 @@ def koffer(gewicht):
     else:
         print("Das eingegebene Gewicht ist nicht zulässig!")
 
-koffer(20)
-koffer(26)
-koffer(-3)
-koffer("HAHA")
+koffer(12)
