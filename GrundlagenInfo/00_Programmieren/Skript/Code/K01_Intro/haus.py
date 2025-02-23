@@ -6,17 +6,17 @@ t.speed(1)
 
 # Mauern
 t.fd(100)
-t.lt (90)
+t.lt(90)
 t.fd(100)
-t.lt (90)
+t.lt(90)
 t.fd(100)
-t.lt (90)
+t.lt(90)
 t.fd(100)
-t.lt (180)
+t.lt(180)
 t.fd(100)
 
 # Dach (rechtwinkliges Dreieck)
-t.pencolor("red") # setze die Stiftfarbe auf rot
+t.pencolor("red")  # setze die Stiftfarbe auf rot
 t.rt(45)
 t.fd(100 / math.sqrt(2))
 t.rt(90)
