@@ -1,13 +1,29 @@
-\thispagestyle{empty}
 \newgeometry{margin=1cm}
+\pagestyle{empty}
 \footnotesize
 
-\begin{landscape}
-\begin{center}
-\section*{Cheatsheet}
-\end{center}
-\begin{multicols*}{4}
+\lstset{style=sql, basicstyle=\ttfamily\footnotesize}
 
+\begin{landscape}
+\footnotesize
+\begin{multicols*}{4}
+\section*{Cheatsheet}
+Folgendes Cheatsheet ist basiert auf der Datenbank der Social-Media-Plattform \href{https://wi-wissen.github.io/instahub-doc-de/}{InstaHub}. In den ersten Befehlen wird insbesondere die Tabelle \texttt{users} verwendet. Die Tabelle enthält unter anderem folgende Informationen:
+\begin{table}[H]
+\centering\resizebox{\columnwidth}{!}{
+\begin{tabular}{p{.2cm}|l|p{1.1cm}|l|l|l}
+\textbf{id} & \textbf{username}    & \textbf{name}             & \textbf{birthday}   & \textbf{city}      & \textbf{centimeters} \\\midrule\midrule
+1  & niclas258   & Niclas Schweizer &  2001-01-31 & Wremen    & 182         \\\midrule
+2  & rafael54    & Rafael Probst    &  2004-08-06 & Leipzig   & 187         \\\midrule
+3  & luis52      & Luis Krüger      &  2004-12-15 & Lautertal & 173         \\\midrule
+$\cdots$ &$\cdots$ &$\cdots$ &$\cdots$ &$\cdots$ &$\cdots$  \\
+\end{tabular}
+}
+\end{table}
+
+Daneben enthält die Tabelle noch viele weitere Kolonnen mit Informationen zum Land, Geschlecht usw.
+
+%\subsection*{Tabellen abfragen}
 \begin{tcolorboxTemplate}[title=Kolonnen auswählen: \texorpdfstring{\lstinline|SELECT|}{SELECT},colbacktitle=white, coltitle=black]
 Auswahl aller Kolonnen der Tabelle \texttt{users}:
 \begin{lstlisting}
@@ -30,41 +46,6 @@ FROM users
 \end{lstlisting}
 \end{tcolorboxTemplate}
 
-\begin{tcolorboxTemplate}[title=Zeilen auswählen: \texorpdfstring{\lstinline|WHERE|}{WHERE},colbacktitle=white, coltitle=black]
-Mit dem Befehl \lstinline|WHERE| können die Resultate einer Abfrage nach eigenen Kriterien gefiltert werden:
-\begin{lstlisting}
-SELECT name, city, gender
-FROM users
-WHERE gender="male"
-\end{lstlisting}
-
-\begin{table}[H]
-\footnotesize
-  \centering
-  \begin{tabular}{c}
-    \textbf{Operatoren} \\\midrule
-    \texttt{=}                                    \\
-    \texttt{<>}                                   \\
-    \texttt{<}                                    \\
-    \texttt{<=}                                   \\
-    \texttt{>}                                    \\
-    \texttt{>=}                                   \\
-    \lstinline|BETWEEN x AND y|        \\
-    \lstinline|IN (wert1, wert2, ...)| \\
-    \lstinline|IS NULL|                \\
-  \end{tabular}
-\end{table}
-\end{tcolorboxTemplate}
-
-\begin{tcolorboxTemplate}[title=Ungefähre Treffer: \texorpdfstring{\lstinline|LIKE|}{LIKE},colbacktitle=white, coltitle=black]
-Mit folgendem Befehl erhalten wir alle Städte, die mit ``Be...'' beginnen:
-\begin{lstlisting}
-SELECT DISTINCT city 
-FROM users 
-WHERE city LIKE "Be%"
-\end{lstlisting}
-\end{tcolorboxTemplate}
-
 \begin{tcolorboxTemplate}[title=Sortieren: \texorpdfstring{\lstinline|ORDER BY|}{ORDER BY},colbacktitle=white, coltitle=black]
 Mit folgendem Befehl erhalten wir alle Städte alphabetisch sortiert:
 \begin{lstlisting}
@@ -78,40 +59,58 @@ ORDER BY city DESC
 \end{itemize}
 \end{tcolorboxTemplate}
 
-\begin{tcolorboxTemplate}[title=Aggregatsfunktionen,colbacktitle=white, coltitle=black]
-\lstinline|COUNT, MAX, MIN, SUM, AVG, LENGTH|
-\end{tcolorboxTemplate}
-
-\begin{tcolorboxTemplate}[title=Gruppieren: \texorpdfstring{\lstinline|GROUP BY|}{GROUP BY},colbacktitle=white, coltitle=black]
-Anzahl Mitglieder pro Stadt:
-\begin{lstlisting}
-SELECT city, COUNT(*) AS "Mitglieder pro Stadt" 
-FROM users 
-GROUP BY city
-\end{lstlisting}
-\end{tcolorboxTemplate}
-
-\begin{tcolorboxTemplate}[title=Filtern nach Gruppieren: \texorpdfstring{\lstinline|HAVING|}{HAVING},colbacktitle=white, coltitle=black]
-Durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt berechnen, danach mit \lstinline|HAVING| Restultate beschränken auf Städte, in denen die Menschen durchschnittlich zwischen 150 und 155 gross sind.
-\begin{lstlisting}
-SELECT city, AVG(centimeters) AS "Durchschnittliche Körpergrösse"
-FROM users
-GROUP BY city
-HAVING `Durchschnittliche Körpergrösse` BETWEEN 150 AND 155
-\end{lstlisting}
-\end{tcolorboxTemplate}
-
 \begin{tcolorboxTemplate}[title=Erste / Letzte Zeilen: \texorpdfstring{\lstinline|LIMIT|}{LIMIT},colbacktitle=white, coltitle=black]
-Drei Städte mit den meisten Mitgliedern:
+Mit dem Befehl \lstinline|LIMIT| können eine Tabelle auf die ersten \textit{n} Zeilen beschränkt werden. Z.B. können die drei ersten Städte im Alphabet wie folgt abgefragt werden:
 \begin{lstlisting}
-SELECT city, COUNT(*) AS "Anzahl Mitglieder"
+SELECT city
 FROM users
-GROUP BY city
-ORDER BY `Anzahl Mitglieder` DESC
+ORDER BY city ASC
 LIMIT 3
 \end{lstlisting}
 \end{tcolorboxTemplate}
 
+%\subsection*{Filtern}
+\begin{tcolorboxTemplate}[title=Zeilen Filtern: \texorpdfstring{\lstinline|WHERE|}{WHERE},colbacktitle=white, coltitle=black]
+Mit dem Befehl \lstinline|WHERE| können die Resultate einer Abfrage nach eigenen Kriterien gefiltert werden:
+\begin{lstlisting}
+SELECT name, city, gender
+FROM users
+WHERE gender="male"
+\end{lstlisting}
+
+\begin{table}[H]
+  \centering
+  \centering\resizebox{\columnwidth}{!}{
+  \begin{tabular}{c|l}
+    \textbf{Operatoren} & \textbf{Bedeutung} \\\midrule
+    \texttt{=}                                    & gleich ($=$)                                \\
+    \texttt{<>}                                   & ungleich ($\neq$)                           \\
+    \texttt{<}                                    & kleiner als ($<$)                           \\
+    \texttt{<=}                                   & kleiner oder gleich ($\leq$)                \\
+    \texttt{>}                                    & grösser als ($>$)                           \\
+    \texttt{>=}                                   & grösser oder gleich ($\geq$)                \\
+    \lstinline|BETWEEN x AND y|        & ein Wert zwischen \texttt{x} und \texttt{y} \\
+    \lstinline|IN (wert1, wert2, ...)| & einer von mehreren Werten         \\
+    \lstinline|IS NULL|                & Wert existiert nicht                        \\
+  \end{tabular}}
+\end{table}
+Users aus Leipzig, Berlin oder Hamburg:
+\begin{lstlisting}
+SELECT name, city
+FROM users 
+WHERE city IN ("Leipzig", "Berlin", "Hamburg")
+\end{lstlisting}
+\end{tcolorboxTemplate}
+
+\begin{tcolorboxTemplate}[title=Ungefähre Treffer: \texorpdfstring{\lstinline|LIKE|}{LIKE},colbacktitle=white, coltitle=black]
+Mit folgendem Befehl erhalten wir alle Städte, die mit ``Be...'' beginnen:
+\begin{lstlisting}
+SELECT DISTINCT city 
+FROM users 
+WHERE city LIKE "Be%"
+\end{lstlisting}
+Das Prozentzeichen (\%) ist ein sogenannter \textit{Platzhalter} und steht für \enquote{irgendetwas kommt hier (oder nicht)}. In diesem Beispiel bedeutet das, dass 0, 1, oder mehr Zeichen auf das \enquote{Be...} folgen können.
+\end{tcolorboxTemplate}
 \begin{tcolorboxTemplate}[title=Verzweigungen: \texorpdfstring{\lstinline|CASE WHEN|}{CASE WHEN},colbacktitle=white, coltitle=black]
 Für alle Männer berechnen, ob sie grösser, kleiner oder gleich dem Durchschnitt sind:
 
@@ -126,33 +125,60 @@ FROM users
 WHERE gender="male"
 \end{lstlisting}
 \end{tcolorboxTemplate}
+%\subsection*{Aggregieren (Zusammenfassen)}
+\begin{tcolorboxTemplate}[title=Aggregatsfunktionen,colbacktitle=white, coltitle=black]
+Mit Aggregatsfunktionen können Daten hinsichtlich bestimmten Aspekten zusammengefasst werden, beispielsweise um zu zählen, wie viele Zeilen in einer Tabelle vorhanden sind (\lstinline|COUNT|), das Maximum / Minimum zu berechnen (\lstinline|MAX| / \lstinline|MIN|), um die Summe oder den Mittelwert einer Kolonne zu berechnen (\lstinline|SUM| / \lstinline|AVG|) oder um die Länge eines Texts zu berechnen (\lstinline|TEXT|).
 
-\begin{tcolorboxTemplate}[title=Mehrere Tabellen verbinden: \texorpdfstring{\lstinline|JOIN|}{JOIN},colbacktitle=white, coltitle=black]
-Falls Primär- und Sekundärschlüssel in beiden Tabellen gleich heissen:
+Z.B. berechnet folgender Ausdruck die Anzahl Users in Leipzig:
 \begin{lstlisting}
-SELECT kolonne1, kolonne2, ...
-FROM tabelle1 JOIN tabelle2 USING (Kolonne_ID)
-\end{lstlisting}
-
-Ansonsten:
-\begin{lstlisting}
-SELECT kolonne1, kolonne2, ...
-FROM tabelle1 JOIN tabelle2 
-ON tabelle1.kolonne_id1 = tabelle2.kolonne_id2
+SELECT city, COUNT(*)
+FROM users 
+WHERE city = "Leipzig"
 \end{lstlisting}
 \end{tcolorboxTemplate}
 
-\begin{tcolorboxTemplate}[title=Tabellen erstellen: \texorpdfstring{\lstinline|CREATE table|}{CREATE table},colbacktitle=white, coltitle=black]
+\begin{tcolorboxTemplate}[title=Gruppieren: \texorpdfstring{\lstinline|GROUP BY|}{GROUP BY},colbacktitle=white, coltitle=black]
+Alle Aggregatsfunktionen können auch pro Gruppe verwendet werden, z.B. um die Anzahl Mitglieder in jeder Stadt zu berechnen:
 \begin{lstlisting}
-CREATE TABLE tabellenname(
-  kolonne1 eigenschaften1,
-  kolonne2 eigenschaften2,
-  ...
+SELECT city, COUNT(*)
+FROM users 
+GROUP BY city
+\end{lstlisting}
+\end{tcolorboxTemplate}
+
+\begin{tcolorboxTemplate}[title=Filtern nach Gruppieren: \texorpdfstring{\lstinline|HAVING|}{HAVING},colbacktitle=white, coltitle=black]
+Mit \lstinline|HAVING| können Resultate \textit{nach} dem Gruppieren gefiltert werden. \lstinline|WHERE| filtert \textit{vor} dem Gruppieren und steht demnach immer vor einem \lstinline|GROUP BY|.
+
+Durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt berechnen, danach auf Städte beschränken, in denen die Menschen durchschnittlich zwischen 150 und 155 gross sind:
+\begin{lstlisting}
+SELECT city, AVG(centimeters) AS "Körpergrösse"
+FROM users
+GROUP BY city
+HAVING `Körpergrösse` BETWEEN 150 AND 155
+\end{lstlisting}
+\end{tcolorboxTemplate}
+
+%\subsection*{Tabellen erstellen \& verändern}
+\begin{tcolorboxTemplate}[title=Tabellen erstellen: \texorpdfstring{\lstinline|CREATE table|}{CREATE table},colbacktitle=white, coltitle=black]
+Eine Tabelle \texttt{meinetabelle} kann wie folgt erstellt werden:
+\begin{lstlisting}
+CREATE TABLE meinetabelle(
+  name_kolonne1 kolonnentyp1,
+  name_kolonne2 kolonnentyp2,
+  ... ---etc.
 )
 \end{lstlisting}
+Gängige Tabellen-Typen sind:
+\begin{enumerate}
+\item \lstinline|INT|: Ganzzahl
+\item \lstinline|REAL|: Kommazahl
+\item \lstinline|DATE|: Integer
+\item \lstinline|TEXT|: Text
+\end{enumerate}
 \end{tcolorboxTemplate}
 
 \begin{tcolorboxTemplate}[title=Tabellen ändern: \texorpdfstring{\lstinline|ALTER table|}{ALTER table},colbacktitle=white, coltitle=black]
+Mit dem Befehl \lstinline|ALTER table| können Tabellen verändert werden, beispielsweise um eine Kolonne hinzuzufügen oder umzubenennen.
 \begin{lstlisting}
 ALTER TABLE tabellenname
 ADD neue_kolonne eigenschaften
@@ -168,30 +194,78 @@ RENAME COLUMN alter_name TO neuer_name;
 \begin{lstlisting}
 DROP TABLE tabellenname
 \end{lstlisting}
-
 \end{tcolorboxTemplate}
 
 \begin{tcolorboxTemplate}[title=Daten einfügen: \texorpdfstring{\lstinline|INSERT|}{INSERT},colbacktitle=white, coltitle=black]
+Daten können mit dem Befehl \lstinline|INSERT| in eine Tabelle eingefügt werden. Beispielsweise können mit folgender Befehlsstruktur drei neue Zeilen eingefügt werden:
 \begin{lstlisting}
-INSERT INTO tabelle_name (kolonne1, kolonne2, ...)
-VALUES (wert1, wert2, ...)
+INSERT INTO tabelle_name 
+	(kolonne1, kolonne2, ...)
+VALUES 
+	(wert1, wert2, ...),
+	(wert1, wert2, ...),
+	(wert1, wert2, ...)
 \end{lstlisting}
+Zuerst werden also die Kolonnen angegeben, für welche Werte eingefügt werden, danach die Werte für jede neue Zeile. Werte in nicht angegebenen Kolonnen bleiben leer.
 \end{tcolorboxTemplate}
 
 \begin{tcolorboxTemplate}[title=Daten verändern: \texorpdfstring{\lstinline|UPDATE|}{UPDATE},colbacktitle=white, coltitle=black]
+Existierende Daten können wie folgt geändert werden:
 \begin{lstlisting}
 UPDATE tabelle_name
 SET kolonne1 = wert1, ...
 WHERE bedingung(en)
 \end{lstlisting}
+
+Beispielsweise können mit folgendem Befehl alle Users, die zur Stadt Berlin gehören, der Stadt Bern zugeordnet werden:
+
+\begin{lstlisting}
+UPDATE users
+SET city="Bern"
+WHERE city="Berlin"
+\end{lstlisting}
 \end{tcolorboxTemplate}
 
 \begin{tcolorboxTemplate}[title=Einträge löschen: \texorpdfstring{\lstinline|DELETE FROM|}{DELETE FROM},colbacktitle=white, coltitle=black]
+Einzelne Einträge (Zeilen) können mit einer \lstinline|WHERE|-Bedingung und dem Befehl \lstinline|DELETE FROM| gelöscht werden:
 \begin{lstlisting}
 DELETE FROM users
 WHERE username="guenther37"
 \end{lstlisting}
 \end{tcolorboxTemplate}
 
+%\subsection*{Tabellenverbindungen}
+\begin{tcolorboxTemplate}[title=Mehrere Tabellen verbinden: \texorpdfstring{\lstinline|JOIN|}{JOIN},colbacktitle=white, coltitle=black]
+Mehrere Tabellen können mit folgendem Befehl zu einer Tabelle verbunden werden:
+
+\begin{lstlisting}
+SELECT kolonne1, kolonne2, ...
+FROM tabelle1 JOIN tabelle2 
+ON tabelle1.kolonne_id1 = tabelle2.kolonne_id2
+\end{lstlisting}
+
+Falls Primär- und Sekundärschlüssel in beiden Tabellen gleich heissen, kann man \lstinline|USING| verwenden:
+\begin{lstlisting}
+SELECT kolonne1, kolonne2, ...
+FROM tabelle1 JOIN tabelle2 USING (Kolonne_ID)
+\end{lstlisting}
+\end{tcolorboxTemplate}
+
+\begin{tcolorboxTemplate}[title=Verschachtelte Abfragen,colbacktitle=white, coltitle=black]
+Verschachtelte \acrshort{SQL}-Abfragen können wie folgt geschrieben werden:
+\begin{lstlisting}
+SELECT kol1 
+FROM tabelle1
+WHERE kolonnenname = ...
+    (SELECT kol2 FROM tabelle2 WHERE ...);
+\end{lstlisting}
+\end{tcolorboxTemplate}
+
+\begin{tcolorboxTemplate}[title=Weitere Befehle,colbacktitle=white, coltitle=black]
+Weitere \acrshort{SQL}-Befehle und Erklärungen finden Sie unter \href{https://www.w3schools.com/sql/default.asp}{w3schools.com}.
+\end{tcolorboxTemplate}
+
 \end{multicols*}
+
 \end{landscape}
+

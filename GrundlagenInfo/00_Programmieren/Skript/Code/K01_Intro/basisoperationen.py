@@ -11,17 +11,16 @@ print(5 + 7 * 3)  # äquivalent zu 5 + (7 * 3) = 26
 10 - 24  # -14
 # Produkt
 8 * 5  # 40
-# (übliche) Division
+# Division
 10 / 4  # 2.5
-# ganzzahlige Division (zwei forward-slashes)
-10 // 4  # 2
+
 # Potenz
 2**4  # 16
 
 """
 die Quadratwurzel (English: square root, kurz: sqrt)
-ist nicht direkt Teil von Python, sondern muss durch eine Import
-hinzugefügt werden
+ist nicht direkt Teil von Python, sondern muss durch 
+Importieren der library math hinzugefügt werden.
 """
 import math
 
