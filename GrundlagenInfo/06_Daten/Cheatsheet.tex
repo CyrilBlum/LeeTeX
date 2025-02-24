@@ -91,7 +91,7 @@ WHERE gender="male"
     \texttt{>=}                                   & grösser oder gleich ($\geq$)                \\
     \lstinline|BETWEEN x AND y|        & ein Wert zwischen \texttt{x} und \texttt{y} \\
     \lstinline|IN (wert1, wert2, ...)| & einer von mehreren Werten         \\
-    \lstinline|IS NULL|                & Wert existiert nicht                        \\
+    \lstinline|IS NULL|                & Wert ist leer                        \\
   \end{tabular}}
 \end{table}
 Users aus Leipzig, Berlin oder Hamburg:
@@ -111,23 +111,23 @@ WHERE city LIKE "Be%"
 \end{lstlisting}
 Das Prozentzeichen (\%) ist ein sogenannter \textit{Platzhalter} und steht für \enquote{irgendetwas kommt hier (oder nicht)}. In diesem Beispiel bedeutet das, dass 0, 1, oder mehr Zeichen auf das \enquote{Be...} folgen können.
 \end{tcolorboxTemplate}
-\begin{tcolorboxTemplate}[title=Verzweigungen: \texorpdfstring{\lstinline|CASE WHEN|}{CASE WHEN},colbacktitle=white, coltitle=black]
-Für alle Männer berechnen, ob sie grösser, kleiner oder gleich dem Durchschnitt sind:
-
-\begin{lstlisting}
-SELECT name, centimeters,
-CASE 
-	WHEN centimeters > 179 THEN 'Gross'
-    WHEN centimeters < 179 THEN 'Klein'
-    ELSE 'Genau im Durchschnitt'
-END AS Durchschnittlich
-FROM users
-WHERE gender="male"
-\end{lstlisting}
-\end{tcolorboxTemplate}
+%\begin{tcolorboxTemplate}[title=Verzweigungen: \texorpdfstring{\lstinline|CASE WHEN|}{CASE WHEN},colbacktitle=white, coltitle=black]
+%Für alle Männer berechnen, ob sie grösser, kleiner oder gleich dem Durchschnitt sind:
+%
+%\begin{lstlisting}
+%SELECT name, centimeters,
+%CASE 
+%	WHEN centimeters > 179 THEN 'Gross'
+%    WHEN centimeters < 179 THEN 'Klein'
+%    ELSE 'Genau im Durchschnitt'
+%END AS Durchschnittlich
+%FROM users
+%WHERE gender="male"
+%\end{lstlisting}
+%\end{tcolorboxTemplate}
 %\subsection*{Aggregieren (Zusammenfassen)}
 \begin{tcolorboxTemplate}[title=Aggregatsfunktionen,colbacktitle=white, coltitle=black]
-Mit Aggregatsfunktionen können Daten hinsichtlich bestimmten Aspekten zusammengefasst werden, beispielsweise um zu zählen, wie viele Zeilen in einer Tabelle vorhanden sind (\lstinline|COUNT|), das Maximum / Minimum zu berechnen (\lstinline|MAX| / \lstinline|MIN|), um die Summe oder den Mittelwert einer Kolonne zu berechnen (\lstinline|SUM| / \lstinline|AVG|) oder um die Länge eines Texts zu berechnen (\lstinline|TEXT|).
+Mit Aggregatsfunktionen können Daten hinsichtlich bestimmten Aspekten zusammengefasst werden, beispielsweise um zu zählen, wie viele Zeilen in einer Tabelle vorhanden sind (\lstinline|COUNT|), das Maximum / Minimum zu berechnen (\lstinline|MAX| / \lstinline|MIN|), um die Summe oder den Mittelwert einer Kolonne zu berechnen (\lstinline|SUM| / \lstinline|AVG|) oder um die Länge eines Texts zu berechnen (\lstinline|LENGTH|).
 
 Z.B. berechnet folgender Ausdruck die Anzahl Users in Leipzig:
 \begin{lstlisting}
@@ -159,6 +159,7 @@ HAVING `Körpergrösse` BETWEEN 150 AND 155
 \end{tcolorboxTemplate}
 
 %\subsection*{Tabellen erstellen \& verändern}
+\clearpage
 \begin{tcolorboxTemplate}[title=Tabellen erstellen: \texorpdfstring{\lstinline|CREATE table|}{CREATE table},colbacktitle=white, coltitle=black]
 Eine Tabelle \texttt{meinetabelle} kann wie folgt erstellt werden:
 \begin{lstlisting}
@@ -167,25 +168,31 @@ CREATE TABLE meinetabelle(
   name_kolonne2 kolonnentyp2,
   ... ---etc.
 )
+
 \end{lstlisting}
-Gängige Tabellen-Typen sind:
-\begin{enumerate}
-\item \lstinline|INT|: Ganzzahl
-\item \lstinline|REAL|: Kommazahl
-\item \lstinline|DATE|: Integer
-\item \lstinline|TEXT|: Text
-\end{enumerate}
+Gängige Kolonnen-Typen sind:
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{tabular}{l|p{.62\linewidth}}
+\lstinline|INTEGER|&Ganzzahl\newline Z.B. 35\\\midrule
+\lstinline|REAL| & Kommazahl\newline Z.B. 3.341\\\midrule
+\lstinline|DATE|&Datum\newline Format: \lstinline|"YYYY-MM-DD"|\\\midrule
+\lstinline|BOOLEAN|& Wahrheitswert\newline Wahr (1) oder Falsch (0)\\\midrule
+\lstinline|VARCHAR(n)|&Text \newline\texttt{n} = maximale Länge\\
+\end{tabular}
+\end{table}
 \end{tcolorboxTemplate}
 
-\begin{tcolorboxTemplate}[title=Tabellen ändern: \texorpdfstring{\lstinline|ALTER table|}{ALTER table},colbacktitle=white, coltitle=black]
-Mit dem Befehl \lstinline|ALTER table| können Tabellen verändert werden, beispielsweise um eine Kolonne hinzuzufügen oder umzubenennen.
+\begin{tcolorboxTemplate}[title=Tabellen ändern: \texorpdfstring{\lstinline|ALTER tabellenname|}{ALTER tabellenname},colbacktitle=white, coltitle=black]
+Mit dem Befehl \lstinline|ALTER tabellenname| können Tabellen verändert werden, beispielsweise um eine Kolonne hinzuzufügen oder umzubenennen.
 \begin{lstlisting}
 ALTER TABLE tabellenname
 ADD neue_kolonne eigenschaften
 \end{lstlisting}
 \begin{lstlisting}
 ALTER TABLE tabellenname
-RENAME COLUMN alter_name TO neuer_name;
+RENAME COLUMN name_vorher TO name_neu;
 \end{lstlisting}
 
 \end{tcolorboxTemplate}
@@ -199,7 +206,7 @@ DROP TABLE tabellenname
 \begin{tcolorboxTemplate}[title=Daten einfügen: \texorpdfstring{\lstinline|INSERT|}{INSERT},colbacktitle=white, coltitle=black]
 Daten können mit dem Befehl \lstinline|INSERT| in eine Tabelle eingefügt werden. Beispielsweise können mit folgender Befehlsstruktur drei neue Zeilen eingefügt werden:
 \begin{lstlisting}
-INSERT INTO tabelle_name 
+INSERT INTO tabellenname 
 	(kolonne1, kolonne2, ...)
 VALUES 
 	(wert1, wert2, ...),
