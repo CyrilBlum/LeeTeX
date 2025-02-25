@@ -788,7 +788,64 @@ der maximalen Balance gleich gute präfixfreie Kodierungen der Buchstaben erhalt
 \end{myexercise}
 
 \begin{myexercise}
-Komprimieren Sie das Wort ``Allemal'' mit der Huffman-Kodierung.
+Komprimieren Sie das Wort ``\texttt{ALLEMAL}'' mit der Huffman-Kodierung.
+\begin{myanswer}
+Wir beginnen damit, die Wortlänge zu zählen und die relativen Buchstabenhäufigkeiten zu bestimmen:
+\begin{itemize}
+\item Wortlänge: 7
+\item Buchstaben-Häufigkeiten: \texttt{A} - 2/7, \texttt{L} - 3/7, \texttt{E} - 1/7, \texttt{M} - 1/7
+\end{itemize}
+Nun können wir den Baum erstellen. Das Endergebnis könnte wie folgt aussehen:
+
+%          aeml
+%   aem         l
+%a	    em
+%     e    m
+
+	\begin{tikzpicture}[-,>=stealth',
+			level distance=15mm,
+			level 1/.style={sibling distance=30mm},
+			level 2/.style={sibling distance=15mm},
+			level 3/.style={sibling distance=15mm},
+			level 4/.style={sibling distance=15mm},
+			level 5/.style={sibling distance=15mm},
+			leaf/.style={circle, draw},
+			edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+			
+			\usetikzlibrary{shapes}
+			\tikzstyle{n} = [text width=1cm,align=center]
+			\tikzstyle{r} = [text=red]
+			
+			\node(febd)[n]{\textcolor{RoyalBlue}{A,L,E,M}\\ 7/7}
+				child{node(ef)[n]{\textcolor{RoyalBlue}{A,E,M}\\ 4/7}
+					child {node(f)[n] {\textcolor{RoyalBlue}{A}\\ 2/7}
+						edge from parent node[r,left]{0} ;
+					}
+					child {node[n]{\textcolor{RoyalBlue}{E,M}\\ 2/7}
+						child {node(f)[n] {\textcolor{RoyalBlue}{E}\\ 1/7}
+							edge from parent node[r,left]{0} ;
+						}
+						child {node[n]{\textcolor{RoyalBlue}{M}\\ 1/7}
+							edge from parent node[r,right]{1};
+						}
+						edge from parent node[r,right]{1};
+					}
+					edge from parent node[r,left]{0};
+				}
+				child{node(bd)[n]{\textcolor{RoyalBlue}{L}\\ 3/7}
+					edge from parent node[r,right]{1};
+				};
+		\end{tikzpicture}
+		
+		Daraus ergibt sich folgende Kodierung für den Text \texttt{ALLEMAL}:
+		\begin{itemize}
+		\item \texttt{A: 00}
+		\item \texttt{L: 1}
+		\item \texttt{E: 010}
+		\item \texttt{M: 011}
+		\end{itemize}
+		Der gesamte Text würde also wie folgt kodiert: \texttt{0011010011001} (13 Zeichen).
+\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
