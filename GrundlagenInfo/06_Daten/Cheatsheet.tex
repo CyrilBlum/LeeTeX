@@ -1,13 +1,28 @@
-\newgeometry{margin=1cm}
+\newgeometry{margin=.7cm}
 \pagestyle{empty}
+\raggedcolumns
 \footnotesize
+\newcommand{\cheatSheetColor}{RoyalBlue}
+\newtcolorbox{cheatSheetBox}[1][]{
+	enhanced jigsaw,
+%	breakable,
+	colback=\cheatSheetColor!10,
+	colframe=\cheatSheetColor,
+	colbacktitle=\cheatSheetColor!30,
+	fonttitle=\bfseries,
+	parbox=false,
+	attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+	coltitle=black,
+	#1}
 
 \lstset{style=sql, basicstyle=\ttfamily\footnotesize}
 
 \begin{landscape}
 \footnotesize
 \begin{multicols*}{4}
+\textcolor{\cheatSheetColor}{\begin{center}
 \section*{Cheatsheet}
+\end{center}\hrule}
 Folgendes Cheatsheet ist basiert auf der Datenbank der Social-Media-Plattform \href{https://wi-wissen.github.io/instahub-doc-de/}{InstaHub}. In den ersten Befehlen wird insbesondere die Tabelle \texttt{users} verwendet. Die Tabelle enthält unter anderem folgende Informationen:
 \begin{table}[H]
 \centering\resizebox{\columnwidth}{!}{
@@ -24,8 +39,8 @@ $\cdots$ &$\cdots$ &$\cdots$ &$\cdots$ &$\cdots$ &$\cdots$  \\
 Daneben enthält die Tabelle noch viele weitere Kolonnen mit Informationen zum Land, Geschlecht usw.
 
 %\subsection*{Tabellen abfragen}
-\begin{tcolorboxTemplate}[title=Kolonnen auswählen: \texorpdfstring{\lstinline|SELECT|}{SELECT},colbacktitle=white, coltitle=black]
-Auswahl aller Kolonnen der Tabelle \texttt{users}:
+\begin{cheatSheetBox}[title=Kolonnen auswählen: \texorpdfstring{\lstinline|SELECT|}{SELECT}]
+Auswahl aller Kolonnen der Tabelle:
 \begin{lstlisting}
 SELECT *
 FROM users
@@ -36,17 +51,17 @@ Auswahl der Kolonnen \texttt{city} und \texttt{gender} der Tabelle \texttt{users
 SELECT city, gender
 FROM users
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Dublikate entfernen: \texorpdfstring{\lstinline|SELECT DISTINCT|}{SELECT DISTINCT},colbacktitle=white, coltitle=black]
-Mit dem Befehl \lstinline|SELECT DISTINCT| werden Duplikate aus den Resultaten gelöscht.
+\begin{cheatSheetBox}[title=Duplikate löschen: \texorpdfstring{\lstinline|DISTINCT|}{DISTINCT}]
+Mit dem Zusatz \lstinline|DISTINCT| werden Duplikate aus den Resultaten gelöscht.
 \begin{lstlisting}
 SELECT DISTINCT gender
 FROM users
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Sortieren: \texorpdfstring{\lstinline|ORDER BY|}{ORDER BY},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Sortieren: \texorpdfstring{\lstinline|ORDER BY|}{ORDER BY}]
 Mit folgendem Befehl erhalten wir alle Städte alphabetisch sortiert:
 \begin{lstlisting}
 SELECT DISTINCT city 
@@ -57,9 +72,9 @@ ORDER BY city DESC
 \item \lstinline|DESC| = absteigend (\textit{descending})
 \item \lstinline|ASC| = aufsteigend (\textit{ascending})
 \end{itemize}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Erste / Letzte Zeilen: \texorpdfstring{\lstinline|LIMIT|}{LIMIT},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Erste / Letzte Zeilen: \texorpdfstring{\lstinline|LIMIT|}{LIMIT}]
 Mit dem Befehl \lstinline|LIMIT| können eine Tabelle auf die ersten \textit{n} Zeilen beschränkt werden. Z.B. können die drei ersten Städte im Alphabet wie folgt abgefragt werden:
 \begin{lstlisting}
 SELECT city
@@ -67,10 +82,10 @@ FROM users
 ORDER BY city ASC
 LIMIT 3
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
 %\subsection*{Filtern}
-\begin{tcolorboxTemplate}[title=Zeilen Filtern: \texorpdfstring{\lstinline|WHERE|}{WHERE},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Zeilen Filtern: \texorpdfstring{\lstinline|WHERE|}{WHERE}]
 Mit dem Befehl \lstinline|WHERE| können die Resultate einer Abfrage nach eigenen Kriterien gefiltert werden:
 \begin{lstlisting}
 SELECT name, city, gender
@@ -91,18 +106,23 @@ WHERE gender="male"
     \texttt{>=}                                   & grösser oder gleich ($\geq$)                \\
     \lstinline|BETWEEN x AND y|        & ein Wert zwischen \texttt{x} und \texttt{y} \\
     \lstinline|IN (wert1, wert2, ...)| & einer von mehreren Werten         \\
-    \lstinline|IS NULL|                & Wert ist leer                        \\
+    \lstinline|IS NULL|                & Wert ist leer
   \end{tabular}}
 \end{table}
-Users aus Leipzig, Berlin oder Hamburg:
+\end{cheatSheetBox}
+\begin{cheatSheetBox}[title=Filter kombinieren: \texorpdfstring{\lstinline|AND|, \lstinline|OR|}{AND, OR}]
+Mehrere Filter können mit \lstinline|AND| (\enquote{und} $\rightarrow$ beides muss wahr sein) oder \lstinline|OR| (\enquote{oder} $\rightarrow$ eine der beiden Bedingungen muss wahr sein) verbunden werden.
+
+Users aus Leipzig, Berlin oder Hamburg, welche grösser als 170 sind:
 \begin{lstlisting}
 SELECT name, city
 FROM users 
-WHERE city IN ("Leipzig", "Berlin", "Hamburg")
+WHERE city IN ("Leipzig","Berlin","Hamburg")
+ AND centimeters > 170
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Ungefähre Treffer: \texorpdfstring{\lstinline|LIKE|}{LIKE},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Ungefähre Treffer: \texorpdfstring{\lstinline|LIKE|}{LIKE}]
 Mit folgendem Befehl erhalten wir alle Städte, die mit ``Be...'' beginnen:
 \begin{lstlisting}
 SELECT DISTINCT city 
@@ -110,8 +130,8 @@ FROM users
 WHERE city LIKE "Be%"
 \end{lstlisting}
 Das Prozentzeichen (\%) ist ein sogenannter \textit{Platzhalter} und steht für \enquote{irgendetwas kommt hier (oder nicht)}. In diesem Beispiel bedeutet das, dass 0, 1, oder mehr Zeichen auf das \enquote{Be...} folgen können.
-\end{tcolorboxTemplate}
-%\begin{tcolorboxTemplate}[title=Verzweigungen: \texorpdfstring{\lstinline|CASE WHEN|}{CASE WHEN},colbacktitle=white, coltitle=black]
+\end{cheatSheetBox}
+%\begin{cheatSheetBox}[title=Verzweigungen: \texorpdfstring{\lstinline|CASE WHEN|}{CASE WHEN}]
 %Für alle Männer berechnen, ob sie grösser, kleiner oder gleich dem Durchschnitt sind:
 %
 %\begin{lstlisting}
@@ -124,43 +144,42 @@ Das Prozentzeichen (\%) ist ein sogenannter \textit{Platzhalter} und steht für 
 %FROM users
 %WHERE gender="male"
 %\end{lstlisting}
-%\end{tcolorboxTemplate}
+%\end{cheatSheetBox}
 %\subsection*{Aggregieren (Zusammenfassen)}
-\begin{tcolorboxTemplate}[title=Aggregatsfunktionen,colbacktitle=white, coltitle=black]
-Mit Aggregatsfunktionen können Daten hinsichtlich bestimmten Aspekten zusammengefasst werden, beispielsweise um zu zählen, wie viele Zeilen in einer Tabelle vorhanden sind (\lstinline|COUNT|), das Maximum / Minimum zu berechnen (\lstinline|MAX| / \lstinline|MIN|), um die Summe oder den Mittelwert einer Kolonne zu berechnen (\lstinline|SUM| / \lstinline|AVG|) oder um die Länge eines Texts zu berechnen (\lstinline|LENGTH|).
-
-Z.B. berechnet folgender Ausdruck die Anzahl Users in Leipzig:
+\begin{cheatSheetBox}[title=Aggregatsfunktionen]
+Mit Aggregatsfunktionen können Daten zusammengefasst werden, beispielsweise um zu zählen, wie viele Zeilen in einer Tabelle sind (\lstinline|COUNT|), das Maximum / Minimum zu berechnen (\lstinline|MAX| / \lstinline|MIN|), um die Summe oder den Mittelwert einer Kolonne zu berechnen (\lstinline|SUM| / \lstinline|AVG|) oder um die Länge eines Texts zu berechnen (\lstinline|LENGTH|). Z.B. berechnet folgender Ausdruck die Anzahl Users in Leipzig:
 \begin{lstlisting}
 SELECT city, COUNT(*)
 FROM users 
 WHERE city = "Leipzig"
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Gruppieren: \texorpdfstring{\lstinline|GROUP BY|}{GROUP BY},colbacktitle=white, coltitle=black]
-Alle Aggregatsfunktionen können auch pro Gruppe verwendet werden, z.B. um die Anzahl Mitglieder in jeder Stadt zu berechnen:
+\begin{cheatSheetBox}[title=Gruppieren: \texorpdfstring{\lstinline|GROUP BY|}{GROUP BY}]
+Aggregatsfunktionen können auch pro Gruppe verwendet werden, z.B. um die Anzahl Mitglieder in jeder Stadt zu berechnen:
 \begin{lstlisting}
 SELECT city, COUNT(*)
-FROM users 
+FROM users
 GROUP BY city
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Filtern nach Gruppieren: \texorpdfstring{\lstinline|HAVING|}{HAVING},colbacktitle=white, coltitle=black]
-Mit \lstinline|HAVING| können Resultate \textit{nach} dem Gruppieren gefiltert werden. \lstinline|WHERE| filtert \textit{vor} dem Gruppieren und steht demnach immer vor einem \lstinline|GROUP BY|.
+\begin{cheatSheetBox}[title=Filtern \textit{nach} Gruppieren: \texorpdfstring{\lstinline|HAVING|}{HAVING}]
+Mit \lstinline|HAVING| können Resultate \textit{nach dem} Gruppieren gefiltert werden. \lstinline|WHERE| filtert \textit{vor} dem Gruppieren und steht demnach immer vor einem \lstinline|GROUP BY|.
 
-Durchschnittliche Körpergrösse aller Mitglieder in jeder Stadt berechnen, danach auf Städte beschränken, in denen die Menschen durchschnittlich zwischen 150 und 155 gross sind:
+Durchschnittliche Körpergrösse aller männlichen Mitglieder in jeder Stadt berechnen, danach auf Städte beschränken, in denen die Menschen durchschnittlich zwischen 150 und 155 gross sind:
 \begin{lstlisting}
 SELECT city, AVG(centimeters) AS "Körpergrösse"
 FROM users
+WHERE gender = "male"
 GROUP BY city
 HAVING `Körpergrösse` BETWEEN 150 AND 155
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
 %\subsection*{Tabellen erstellen \& verändern}
 \clearpage
-\begin{tcolorboxTemplate}[title=Tabellen erstellen: \texorpdfstring{\lstinline|CREATE table|}{CREATE table},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Tabellen erstellen: \texorpdfstring{\lstinline|CREATE TABLE|}{CREATE TABLE}]
 Eine Tabelle \texttt{meinetabelle} kann wie folgt erstellt werden:
 \begin{lstlisting}
 CREATE TABLE meinetabelle(
@@ -182,9 +201,9 @@ Gängige Kolonnen-Typen sind:
 \lstinline|VARCHAR(n)|&Text \newline\texttt{n} = maximale Länge\\
 \end{tabular}
 \end{table}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Tabellen ändern: \texorpdfstring{\lstinline|ALTER tabellenname|}{ALTER tabellenname},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Tabellen ändern: \texorpdfstring{\lstinline|ALTER|}{ALTER}]
 Mit dem Befehl \lstinline|ALTER tabellenname| können Tabellen verändert werden, beispielsweise um eine Kolonne hinzuzufügen oder umzubenennen.
 \begin{lstlisting}
 ALTER TABLE tabellenname
@@ -195,16 +214,16 @@ ALTER TABLE tabellenname
 RENAME COLUMN name_vorher TO name_neu;
 \end{lstlisting}
 
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Tabellen löschen: \texorpdfstring{\lstinline|DROP table|}{DROP table},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Tabellen löschen: \texorpdfstring{\lstinline|DROP TABLE|}{DROP TABLE}]
 \begin{lstlisting}
 DROP TABLE tabellenname
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Daten einfügen: \texorpdfstring{\lstinline|INSERT|}{INSERT},colbacktitle=white, coltitle=black]
-Daten können mit dem Befehl \lstinline|INSERT| in eine Tabelle eingefügt werden. Beispielsweise können mit folgender Befehlsstruktur drei neue Zeilen eingefügt werden:
+\begin{cheatSheetBox}[title=Daten einfügen: \texorpdfstring{\lstinline|INSERT INTO|}{INSERT INTO}]
+Neue Einträge (Zeilen) können mit dem Befehl \lstinline|INSERT INTO| in eine Tabelle eingefügt werden. Beispielsweise können mit folgender Befehlsstruktur drei neue Zeilen eingefügt werden:
 \begin{lstlisting}
 INSERT INTO tabellenname 
 	(kolonne1, kolonne2, ...)
@@ -214,9 +233,9 @@ VALUES
 	(wert1, wert2, ...)
 \end{lstlisting}
 Zuerst werden also die Kolonnen angegeben, für welche Werte eingefügt werden, danach die Werte für jede neue Zeile. Werte in nicht angegebenen Kolonnen bleiben leer.
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Daten verändern: \texorpdfstring{\lstinline|UPDATE|}{UPDATE},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Daten verändern: \texorpdfstring{\lstinline|UPDATE|}{UPDATE}]
 Existierende Daten können wie folgt geändert werden:
 \begin{lstlisting}
 UPDATE tabelle_name
@@ -231,18 +250,18 @@ UPDATE users
 SET city="Bern"
 WHERE city="Berlin"
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Einträge löschen: \texorpdfstring{\lstinline|DELETE FROM|}{DELETE FROM},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Einträge löschen: \texorpdfstring{\lstinline|DELETE FROM|}{DELETE FROM}]
 Einzelne Einträge (Zeilen) können mit einer \lstinline|WHERE|-Bedingung und dem Befehl \lstinline|DELETE FROM| gelöscht werden:
 \begin{lstlisting}
 DELETE FROM users
 WHERE username="guenther37"
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
 %\subsection*{Tabellenverbindungen}
-\begin{tcolorboxTemplate}[title=Mehrere Tabellen verbinden: \texorpdfstring{\lstinline|JOIN|}{JOIN},colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Mehrere Tabellen verbinden: \texorpdfstring{\lstinline|JOIN|}{JOIN}]
 Mehrere Tabellen können mit folgendem Befehl zu einer Tabelle verbunden werden:
 
 \begin{lstlisting}
@@ -256,9 +275,9 @@ Falls Primär- und Sekundärschlüssel in beiden Tabellen gleich heissen, kann m
 SELECT kolonne1, kolonne2, ...
 FROM tabelle1 JOIN tabelle2 USING (Kolonne_ID)
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Verschachtelte Abfragen,colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Verschachtelte Abfragen]
 Verschachtelte \acrshort{SQL}-Abfragen können wie folgt geschrieben werden:
 \begin{lstlisting}
 SELECT kol1 
@@ -266,12 +285,13 @@ FROM tabelle1
 WHERE kolonnenname = ...
     (SELECT kol2 FROM tabelle2 WHERE ...);
 \end{lstlisting}
-\end{tcolorboxTemplate}
+\end{cheatSheetBox}
 
-\begin{tcolorboxTemplate}[title=Weitere Befehle,colbacktitle=white, coltitle=black]
+\begin{cheatSheetBox}[title=Weitere Befehle \& Feedback]
 Weitere \acrshort{SQL}-Befehle und Erklärungen finden Sie unter \href{https://www.w3schools.com/sql/default.asp}{w3schools.com}.
-\end{tcolorboxTemplate}
 
+Verbesserungsvorschläge können gerne an \href{mailto:cyril.wendl@edu.zh.ch}{Cyril Wendl} geschickt werden.
+\end{cheatSheetBox}
 \end{multicols*}
 
 \end{landscape}
