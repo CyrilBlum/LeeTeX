@@ -797,40 +797,43 @@ Wir beginnen damit, die Wortlänge zu zählen und die relativen Buchstabenhäufi
 \end{itemize}
 Nun können wir den Baum erstellen. Das Endergebnis könnte wie folgt aussehen:
 
+	\begin{figure}[H]
+	\centering
 	\begin{tikzpicture}[-,>=stealth',
-			level distance=15mm,
-			level 1/.style={sibling distance=30mm},
-			level 2/.style={sibling distance=15mm},
-			level 3/.style={sibling distance=15mm},
-			level 4/.style={sibling distance=15mm},
-			level 5/.style={sibling distance=15mm},
-			leaf/.style={circle, draw},
-			edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
-			
-			\usetikzlibrary{shapes}
-			\tikzstyle{n} = [text width=1cm,align=center]
-			\tikzstyle{r} = [text=red]
-			
-			\node(febd)[n]{\textcolor{RoyalBlue}{A,L,E,M}\\ 7/7}
-				child{node(ef)[n]{\textcolor{RoyalBlue}{A,E,M}\\ 4/7}
-					child {node(f)[n] {\textcolor{RoyalBlue}{A}\\ 2/7}
-						edge from parent node[r,left]{0} ;
-					}
-					child {node[n]{\textcolor{RoyalBlue}{E,M}\\ 2/7}
-						child {node(f)[n] {\textcolor{RoyalBlue}{E}\\ 1/7}
+				level distance=15mm,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=15mm},
+				level 3/.style={sibling distance=15mm},
+				level 4/.style={sibling distance=15mm},
+				level 5/.style={sibling distance=15mm},
+				leaf/.style={circle, draw},
+				edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode)}] 
+				
+				\usetikzlibrary{shapes}
+				\tikzstyle{n} = [text width=1cm,align=center]
+				\tikzstyle{r} = [text=red]
+				
+				\node(febd)[n]{\textcolor{RoyalBlue}{A,L,E,M}\\ 7/7}
+					child{node(ef)[n]{\textcolor{RoyalBlue}{A,E,M}\\ 4/7}
+						child {node(f)[n] {\textcolor{RoyalBlue}{A}\\ 2/7}
 							edge from parent node[r,left]{0} ;
 						}
-						child {node[n]{\textcolor{RoyalBlue}{M}\\ 1/7}
+						child {node[n]{\textcolor{RoyalBlue}{E,M}\\ 2/7}
+							child {node(f)[n] {\textcolor{RoyalBlue}{E}\\ 1/7}
+								edge from parent node[r,left]{0} ;
+							}
+							child {node[n]{\textcolor{RoyalBlue}{M}\\ 1/7}
+								edge from parent node[r,right]{1};
+							}
 							edge from parent node[r,right]{1};
 						}
-						edge from parent node[r,right]{1};
+						edge from parent node[r,left]{0};
 					}
-					edge from parent node[r,left]{0};
-				}
-				child{node(bd)[n]{\textcolor{RoyalBlue}{L}\\ 3/7}
-					edge from parent node[r,right]{1};
-				};
-		\end{tikzpicture}
+					child{node(bd)[n]{\textcolor{RoyalBlue}{L}\\ 3/7}
+						edge from parent node[r,right]{1};
+					};
+			\end{tikzpicture}
+	\end{figure}
 		
 		Daraus ergibt sich folgende Kodierung für den Text \texttt{ALLEMAL}:
 		\begin{itemize}
