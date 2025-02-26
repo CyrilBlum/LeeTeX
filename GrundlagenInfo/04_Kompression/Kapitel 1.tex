@@ -797,11 +797,6 @@ Wir beginnen damit, die Wortlänge zu zählen und die relativen Buchstabenhäufi
 \end{itemize}
 Nun können wir den Baum erstellen. Das Endergebnis könnte wie folgt aussehen:
 
-%          aeml
-%   aem         l
-%a	    em
-%     e    m
-
 	\begin{tikzpicture}[-,>=stealth',
 			level distance=15mm,
 			level 1/.style={sibling distance=30mm},
@@ -851,3 +846,117 @@ Nun können wir den Baum erstellen. Das Endergebnis könnte wie folgt aussehen:
 \begin{myexercise}
 	Klicken Sie auf \href{https://cmps-people.ok.ubc.ca/ylucet/DS/Huffman.html}{diesen Link}, um Huffman-Bäume Schritt-für-Schritt zu visualisieren
 \end{myexercise}
+
+\section{Arithmetische Kompression}
+Die Huffman-Kodierung führt zu einer optimalen Kompression einzelner Zeichen in vielen Fällen -- insbesondere, wenn die Buchstabenhäufigkeiten bei 1/2, 1/4, 1/8 etc. liegen. Wenn jedoch eine Häufigkeit z.B. bei 30\% liegt, sind 2 Bits (optimal für 25\%) verschwenderisch!
+Jorma Rissanen hat daher eine Methode entwickelt, um ganze Texte anstatt einzelne Buchstaben zu kodieren. Die Grundidee dahinter ist folgende: Jedem Text wird eine Zahl zwischen 0 und 1 zugeordnet. Je länger der Text, desto mehr Nachkommastellen besitzt er. Dies führt unter gewissen Umständen zu kürzeren Texten als bei Huffman.
+
+\begin{myexample}
+Angenommen, wir haben einen längeren Text, der nur aus den vier Buchstaben \texttt{A, B, C} und \texttt{D} besteht und folgende Buchstabenhäufigkeiten hat:
+\begin{table}[H]
+\centering
+\begin{tabular}{c||c|c|c|c}
+Buchstabe & A & B & C & D \\\midrule
+Häufigkeit & 50\% & 20\% & 20\% & 10\%
+\end{tabular}
+\end{table}
+
+In diesem Fall könnte das Wort \texttt{ADBA}, welches Teil des längeren Texts ist, mit einer Kommazahl kodiert werden, wie in \cref{fig:arithm-kod} gezeigt.
+
+Das Intervall [0, 1[ (von und mit 0 bis und ohne 1) wird in vier Gebiete unterteilt, deren Grösse der relativen Häufigkeit der Zeichen entspricht. Da wir das Wort \texttt{ADBA} kodieren wollen, unterteilen wir das Intervall in ein weiteres Teilintervall für Wörter der Länge 2, beginnend mit \texttt{A}. Hier verwenden wir wieder dieselben Buchstabenhäufigkeiten.
+
+\newcommand{\arithmeticTikz}[7]{
+% 1st argument: height
+% 2nd argument: increments
+% 3rd argument: xPosL
+% 4th argument: letters
+% 5th argument: position of shift letter
+% 6th argument: start of interval
+% 7th argument: end of interval
+	% Draw the initial line
+    \draw (0,#1) -- (10,#1);   
+	
+%	\pgfmathsetmacro{\endCoord}{#2[3]+#3[3]}
+	
+	% draw 
+    \foreach \i in {1,...,4}{
+	    \pgfmathsetmacro{\inc}{#2[\i-1]} % increment for current interval
+	    \pgfmathsetmacro{\xStart}{#3[\i-1]} % percentage at interval start
+	    \pgfmathsetmacro{\xEnd}{\xStart+\inc} % percentage at interval end
+	    \pgfmathsetmacro{\l}{#4[\i-1]} % label at middle of interval	    
+
+		% draw vertical marks on main initial line
+        \draw (\xStart*10,#1+0.2) to (\xStart*10,#1-0.2);
+        \draw (\xEnd*10,#1+0.2) to (\xEnd*10,#1-0.2);
+        
+        % annotate interval start & end
+        \node (\l-Perc) at (\xStart*10,#1-0.4) {\fpeval{round(((1-\xStart)*#6+#7*\xStart),4)}};
+        \node (\l-PercEnd) at (\xEnd*10,#1-0.4) {\fpeval{round(((1-\xEnd)*#6+#7*\xEnd),4)}};
+        % Increase y position for the next line 
+        
+        % draw brace and probabilities above line
+        \ifnum\i=#5
+        	\draw[decoration={brace,raise=5pt},decorate,red]
+            	    (\xStart*10,#1+.2) -- node[above=6pt,text width=2cm, align=center] {\textcolor{red}{\texttt{\l{}}\\ (\pgfmathparse{int(round(\inc*100))}\pgfmathresult \%)}} (\xEnd*10,#1+.2);
+        \else
+	        \draw[decoration={brace,raise=5pt},decorate]
+                    	    (\xStart*10,#1+.2) -- node[above=6pt,text width=2cm, align=center] {\texttt{\l{}}\\ (\pgfmathparse{int(round(\inc*100))}\pgfmathresult \%)} (\xEnd*10,#1+.2);
+        \fi
+    }
+}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\small\arithmeticTikz{4}{{0.5,0.2,0.2,0.1}}{{0,0.5,0.7,0.9}}{{"A","B","C","D"}}{1}{0}{1}
+\arithmeticTikz{1}{{0.5,0.2,0.2,0.1}}{{0.5,0.6,0.2,0.7}{0,0.5,0.7,0.9}}{{"AA","AB","AC","AD"}}{4}{0}{.5}
+\arithmeticTikz{-2}{{0.5,0.2,0.2,0.1}}{{0.5,0.6,0.2,0.7}{0,0.5,0.7,0.9}}{{"ADA","ADB","ADC","ADD"}}{2}{.45}{.5}
+\arithmeticTikz{-5}{{0.5,0.2,0.2,0.1}}{{0.5,0.6,0.2,0.7}{0,0.5,0.7,0.9}}{{"ADBA","ADBB","ADBC","ADBD"}}{1}{.475}{.485}
+
+% highlight transition area (L0 to L1)
+\draw[-, red, dashed](0*10,4)--(0*10,1);
+\draw[-, red, dashed](.5*10,4)--(1*10,1);
+
+% highlight transition area (L1 to L2)
+\draw[-, red, dashed](.9*10,1)--(0*10,-2);
+\draw[-, red, dashed](1*10,1)--(1*10,-2);
+
+% highlight transition area (L2 to L3)
+\draw[-, red, dashed](.9*10,1)--(0*10,-2);
+\draw[-, red, dashed](1*10,1)--(1*10,-2);
+
+% highlight transition area (L3 to L4)
+\draw[-, red, dashed](.5*10,-2)--(0*10,-5);
+\draw[-, red, dashed](.7*10,-2)--(1*10,-5);
+\end{tikzpicture}
+\caption{Arithmetische Kodierung des Worts \texttt{ADBA}}
+\label{fig:arithm-kod}
+\end{figure}
+Der Text \enquote{\texttt{ADBA}} wird also durch das Intervall $[0.475, 0.48[$ kodiert.
+\end{myexample}
+
+\begin{myexercise}
+Bestimmen Sie die arithmetische Kodierung der Wörter \texttt{BAD}, \texttt{BADAC} und \texttt{ACAB} basierend auf folgenden Häufigkeiten:
+\begin{table}[H]
+\centering
+\begin{tabular}{c||c|c|c|c}
+Buchstabe & A & B & C & D \\\midrule
+Häufigkeit & 50\% & 25\% & 12.5\% & 12.5\%
+\end{tabular}
+\end{table}
+\end{myexercise}
+
+\begin{myexercise}
+Dekomprimieren Sie die folgenden arithmetischen Kodierungen, wenn die Buchstabenhäufigkeitsverteilung wie folgt aussieht: A - 40 \%, B - 25 \%, C - 25 \%, D - 10 \%.
+\begin{itemize}
+\item $0.155$, Textlänge 4
+\item $[0.104, 0.144)$
+\item $[0.2, 0.21)$
+\item $0.2595$, Textlänge 5
+\end{itemize}
+\end{myexercise}
+
+\begin{mychallenge}
+Lösen Sie die Challenge-Aufgaben auf Moodle zur Kompression!
+\end{mychallenge}
+
+  
