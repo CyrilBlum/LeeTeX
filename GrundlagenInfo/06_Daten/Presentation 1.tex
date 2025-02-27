@@ -1,13 +1,112 @@
-\begin{frame}[label=title]
-  \centering
-  \begin{figure}[H]
-    \includegraphics[keepaspectratio, width=\logosize,height=\paperheight]{\thelogo}
-  \end{figure}
-  Informatik: Data Science und Sicherheit\\
-  \emoji{floppy-disk} \textbf{Daten und Tabellen}
+\lstset{style=sql, basicstyle=\ttfamily\scriptsize}
+
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
+}
+
+%------------------------------------------------------------
+%This block of code defines the information to appear in the
+%Title page
+\title[Datenbanken] {Datenbanken}
+
+\subtitle{\emoji{woman-technologist} Datenbanken und SQL}
+
+\author[Wendl, Cyril] % (optional)
+{Naoki Peter\inst{1} \and Cyril Wendl \inst{2}}
+
+\institute[KZN] % (optional)
+{
+  \inst{1}%
+  Fachschaft Informatik\\
+  Kantonsschule Zürich-Nord
+  \and
+  \inst{2}%
+  Fachschaft Informatik\\
+  Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=.8cm]{\thelogo}}
+
+\titlegraphic{\includegraphics[width=\textwidth]{"GrundlagenInfo/06_Daten/Figures/title-emojis"}}
+
+%The next statement creates the title page.
+\frame{\titlepage}
+
+%\begin{frame}[label=title]
+%  \centering
+%  \begin{figure}[H]
+%    \includegraphics[keepaspectratio, width=\logosize,height=\paperheight]{\thelogo}
+%  \end{figure}
+%  Informatik: Data Science und Sicherheit\\
+%   \textbf{Datenbanken und \gls{SQL}}
+%\end{frame}
+
+\begin{frame}{Vorstellung}
+\Wider{\begin{tikzpicture}[m/.style={draw, color=RoyalBlue, text=black, align=left, font=\tiny, fill=RoyalBlue!30, fill opacity=.3, rounded corners,text opacity=1}]
+    \node[anchor=south west,inner sep=0] at (0,0) {\includegraphics[width=\textwidth]{"Private/Presentation/ch"}};
+    \
+    % Burgdorf
+    \node[m](Burgdorf) at (5.3,4.5) {\faMapMarker{} Burgdorf};
+    
+    \only<2->{
+	    % Bern
+        \node[m](Bern) at (4.5,4.5) {\faMapMarker{} Bern\\\includegraphics[width=1cm]{"Private/Presentation/Logos/logo_gk"}};
+        \draw (Burgdorf.north) edge[->, bend right=90] (Bern.north);}
+    
+    \only<3->{
+	    % Fribourg
+        \node[m](Fribourg) at (3.6,3.5) {\faMapMarker{} Fribourg\\\includegraphics[width=.7cm]{"Private/Presentation/Logos/logo unifr"}};
+        \draw (Bern.south) edge[->, bend left=30] (Fribourg.east);
+    }
+    
+    \only<4->{
+    	% Lausanne
+        \node[m](Lausanne) at (2.2,3) {\faMapMarker{} Lausanne\\\includegraphics[width=.7cm]{"Private/Presentation/Logos/logo epfl"}};
+       	\draw (Fribourg.south) edge[->, bend left=30] (Lausanne.east);
+    }  
+    
+    \only<5->{
+        % Netherlands
+        \node[m](Wageningen) at (1.5,7.5) {\faMapMarker{} Wageningen\\\includegraphics[width=1.3cm]{"Private/Presentation/Logos/logo_wur"}};    
+        \draw[dashed] (Lausanne.north) edge[->, bend left=15] (Wageningen.south);
+        \draw[dashed] (Wageningen.south) edge[->, bend left=15] (Lausanne.north);
+    }
+
+	\only<6->{
+			 % Paris
+	        \node[m](Paris) at (0,6) {\faMapMarker{} Paris\\\includegraphics[width=.9cm]{"Private/Presentation/Logos/logo_cdi"}};
+	        \draw (Lausanne.west) edge[->, bend left=15] (Paris.south);
+    
+    }
+    
+	\only<7->{
+	% Zürich
+	        \node[m](Zurich) at (7.1,6.2) {\faMapMarker{} Zürich\\\includegraphics[width=.7cm]{"Private/Presentation/Logos/PartnerRe"}};
+	        \draw (Paris.east) edge[->, bend left=15] (Zurich.west);
+    
+    }
+    
+    \only<8->{
+   		% Winterthur
+     	\node[m](Winterthur) at (7.5,6.8) {\faMapMarker{} Winterthur\\\includegraphics[width=1.2cm]{"Private/Presentation/Logos/Logo Kantonsschule im Lee"}};
+	     \draw (Zurich.east) edge[->, bend right=30] (Winterthur.east);  
+    }
+    
+    
+\end{tikzpicture}}
 \end{frame}
 
-\lstset{style=sql, basicstyle=\ttfamily\scriptsize}
+\begin{frame}{Interessen}
+\begin{center}
+\href{https://wendl.ch}{wendl.ch}
+\end{center}
+\end{frame}
 
 \begin{frame}{Inhalte}
   \begin{itemize}
@@ -15,6 +114,20 @@
     \item Einführung in SQL
     \item Erstellung eigener Tabellen
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Lehrmittel: Cheat Sheet}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.8\textwidth]{GrundlagenInfo/06_Daten/Figures/Cheatsheet}
+	\end{figure}
+
+	\begin{itemize}[<+->]
+	\item Viel Eigenständigkeit erwartet
+	\item Automatische Lösungsvorschläge auf Moodle
+	\item Nächstes Mal: \textit{Murder Mystery}
+	\item Feedback ist willkommen!
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Lehrmittel: Skript}
@@ -28,68 +141,39 @@
 		\end{column}
 
 		\begin{column}{.6\linewidth}
-			Arten von Aufgaben im Skript
-			\begin{itemize}
-				\item \aufgabebox{1.1} $\rightarrow$ Prüfungsrelevant
-				\item \abgabebox{1.1} $\rightarrow$  Upload auf Moodle!
-				\item \challengebox{1.1}
-			\end{itemize}
+			Als Ergänzung und Vertiefung zum Cheatsheet, sowie Challenge-Aufgaben
 		\end{column}
 	\end{columns}
 	\vspace{.5cm}
 
 	\begin{itemize}
-		\item Lösungsvorschläge werden vor Prüfung bekanntgegeben
-		\item Viele Aufgaben können auf Moodle überprüft werden
+		\item Arbeit hauptsächlich mit Cheat-Sheets
 		\item Feedback ist willkommen!
 	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Was sind \textit{Daten}?}
-  \textbf{``Daten''} = Plural von \textit{Datum}
-  \begin{itemize}[<+->]
-    \item \textit{Datum} = Fakt(um) (von lateinisch \textit{datum} = gegeben, \textit{dare} = geben), also etwas \textbf{Gegebenes}\\
-          Beispiel:
-          \begin{itemize}
-            \item ``Mein Nachbar heisst Marco Odermatt.''
-            \item ``Aktuell findet an der KLW Unterricht statt.''
-            \item ``Das Billett von Zürich nach Winterthur kostet CHF 6.80.''
-            \item ``Das Logo der KLW besteht aus blauen und roten Farben.''
-            \item ...
-          \end{itemize}
-    \item In der \textbf{Informatik}: irgendetwas mit Nullen und Einsen\\
-          Beispiel:
-          \begin{itemize}
-            \item \ldots\verb|10100010101111011101001001|\ldots
-            \item \ldots\verb|11101110110000111011010111|\ldots
-            \item \ldots
-          \end{itemize}
-    \item Welche Codierung welchem \textit{Datum} entspricht, bestimmt der / die ProgrammiererIn
-  \end{itemize}
+    \begin{itemize}[<+->]
+      \item \textbf{``Daten''} = Plural von \textit{Datum}
+      \item \textit{Datum} = Fakt(um) (von lateinisch \textit{datum} = gegeben, \textit{dare} = geben), also etwas \textbf{Gegebenes}\\
+            Beispiel:
+            \begin{itemize}
+              \item ``Mein Nachbar heisst Marco Odermatt.''
+              \item ``Aktuell findet an der KLW Unterricht statt.''
+              \item ``Das Billett von Zürich nach Winterthur kostet CHF 6.80.''
+              \item ``Das Logo der KLW besteht aus blauen und roten Farben.''
+              \item ...
+            \end{itemize}
+      \item In der \textbf{Informatik}: irgendetwas mit Nullen und Einsen\\
+            Beispiel:
+            \begin{itemize}
+              \item \ldots\verb|10100010101111011101001001|\ldots
+              \item \ldots\verb|11101110110000111011010111|\ldots
+              \item \ldots
+            \end{itemize}
+      \item Welche Codierung welchem \textit{Datum} entspricht, bestimmt der / die ProgrammiererIn
+    \end{itemize}
 \end{frame}
-
-%\begin{frame}[fragile]{Was sind \textit{Daten}?}
-%  \textbf{Daten} sind...\\\hspace{0.2cm}
-%
-%  \verb|11101110110000111011010111...|\\\hspace{0.2cm}
-%
-%  ...oder...\\\hspace{0.2cm}
-%
-%
-%  \includegraphics[width=0.5cm]{GrundlagenInfo/06_Daten/Figures/icon_pdf} \texttt{Bericht.pdf}\\\hspace{0.2cm}
-%  %
-%  ...oder...\\\hspace{0.2cm}
-%
-%  \includegraphics[width=0.5cm]{GrundlagenInfo/06_Daten/Figures/icon_word} \texttt{Tagebuch.docx}\\\hspace{0.2cm}
-%
-%  ...oder...\\\hspace{0.2cm}
-%
-%  \includegraphics[width=0.5cm]{GrundlagenInfo/06_Daten/Figures/icon_ppt} \texttt{Präsentation Schule.ppt}\\\hspace{0.2cm}
-%
-%  ...oder...
-%
-%\end{frame}
-
 \begin{frame}[fragile]{Was sind \textit{Daten}?}
   \textbf{Daten} sind...\\\hspace{0.5cm}
 
@@ -142,10 +226,10 @@
 
 \end{frame}
 
-\begin{frame}{Soziale Netzwerke}
-  \centering
-  \url{https://youtu.be/_r97qdyQtIk?t=2m14s}
-\end{frame}
+%\begin{frame}{Soziale Netzwerke}
+%  \centering
+%  \url{https://youtu.be/_r97qdyQtIk?t=2m14s}
+%\end{frame}
 
 \begin{frame}{Entwicklung der globalen Datenmenge}
   \begin{figure}[H]
@@ -275,7 +359,7 @@
   \highlightTable{1}{1}{1}
 \end{frame}
 
-\begin{frame}[fragile]{SQL-Befehle}{\lstinline|SELECT [columns] FROM [tablename]|}
+\begin{frame}[fragile]{SQL-Befehle}{\lstinline|SELECT [spalten] FROM [tabellenname]|}
   \ciascheme{.7}
   \begin{lstlisting}
 SELECT *
@@ -306,7 +390,7 @@ FROM cia;
   \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{SQL-Befehle}{\lstinline|SELECT [columns] FROM [tablename]|}
+\begin{frame}[fragile]{SQL-Befehle}{\lstinline|SELECT [spalten] FROM [tabellenname]|}
   \ciascheme{.7}
   \begin{lstlisting}
 SELECT Name, Region
@@ -337,7 +421,7 @@ FROM cia;
   \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{SQL-Befehle}{\lstinline|SELECT [columns] FROM [tablename] WHERE [conditions]|}
+\begin{frame}[fragile]{SQL-Befehle}{\lstinline|SELECT [spalten] FROM [tabellenname] WHERE [conditions]|}
   \ciascheme{.7}
   \begin{lstlisting}
 SELECT Name, Region
@@ -477,8 +561,8 @@ SELECT Name, Einwohner
 FROM cia
 WHERE Name (*@\cfbox{red}{\textcolor{green!40!black}{IN}}@*) ("Deutschland","Frankreich","Polen")
 \end{lstlisting}
-  ... weitere SQL-Befehle in InstaHub-Tutorial
+  ... weitere SQL-Befehle in Cheat-Sheet und Skript
 \end{frame}
 \begin{frame}{Auftrag: Eigene Tabellen erstellen \& Abfragen schreiben}
-  \textbf{Aufgabe} und \textbf{Cheatsheet} auf Moodle
+  \textbf{Aufgaben} und \textbf{Cheatsheet} auf Moodle
 \end{frame}

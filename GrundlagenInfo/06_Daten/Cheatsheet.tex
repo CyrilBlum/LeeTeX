@@ -36,17 +36,17 @@ $\cdots$ &$\cdots$ &$\cdots$ &$\cdots$ &$\cdots$ &$\cdots$  \\
 }
 \end{table}
 
-Daneben enthält die Tabelle noch viele weitere Kolonnen mit Informationen zum Land, Geschlecht usw.
+Daneben enthält die Tabelle noch viele weitere Spalten mit Informationen zum Land, Geschlecht usw.
 
 %\subsection*{Tabellen abfragen}
-\begin{cheatSheetBox}[title=Kolonnen auswählen: \texorpdfstring{\lstinline|SELECT|}{SELECT}]
-Auswahl aller Kolonnen der Tabelle:
+\begin{cheatSheetBox}[title=Spalten auswählen: \texorpdfstring{\lstinline|SELECT|}{SELECT}]
+Auswahl aller Spalten der Tabelle:
 \begin{lstlisting}
 SELECT *
 FROM users
 \end{lstlisting}
 
-Auswahl der Kolonnen \texttt{city} und \texttt{gender} der Tabelle \texttt{users}:
+Auswahl der Spalten \texttt{city} und \texttt{gender} der Tabelle \texttt{users}:
 \begin{lstlisting}
 SELECT city, gender
 FROM users
@@ -62,11 +62,11 @@ FROM users
 \end{cheatSheetBox}
 
 \begin{cheatSheetBox}[title=Sortieren: \texorpdfstring{\lstinline|ORDER BY|}{ORDER BY}]
-Mit folgendem Befehl erhalten wir alle Städte alphabetisch sortiert:
+Mit dem Befehl \lstinline|ORDER BY| können Resultate sortiert werden, nach einer oder mehreren Spalten. Mit folgendem Befehl erhalten wir die Namen aller Users, sortiert nach Stadt und nach Region:
 \begin{lstlisting}
-SELECT DISTINCT city 
+SELECT name, city
 FROM users 
-ORDER BY city DESC
+ORDER BY city ASC, name ASC
 \end{lstlisting}
 \begin{itemize}
 \item \lstinline|DESC| = absteigend (\textit{descending})
@@ -147,7 +147,7 @@ Das Prozentzeichen (\%) ist ein sogenannter \textit{Platzhalter} und steht für 
 %\end{cheatSheetBox}
 %\subsection*{Aggregieren (Zusammenfassen)}
 \begin{cheatSheetBox}[title=Aggregatsfunktionen]
-Mit Aggregatsfunktionen können Daten zusammengefasst werden, beispielsweise um zu zählen, wie viele Zeilen in einer Tabelle sind (\lstinline|COUNT|), das Maximum / Minimum zu berechnen (\lstinline|MAX| / \lstinline|MIN|), um die Summe oder den Mittelwert einer Kolonne zu berechnen (\lstinline|SUM| / \lstinline|AVG|) oder um die Länge eines Texts zu berechnen (\lstinline|LENGTH|). Z.B. berechnet folgender Ausdruck die Anzahl Users in Leipzig:
+Mit Aggregatsfunktionen können Daten zusammengefasst werden, beispielsweise um zu zählen, wie viele Zeilen in einer Tabelle sind (\lstinline|COUNT|), das Maximum / Minimum zu berechnen (\lstinline|MAX| / \lstinline|MIN|), um die Summe oder den Mittelwert einer Spalte zu berechnen (\lstinline|SUM| / \lstinline|AVG|) oder um die Länge eines Texts zu berechnen (\lstinline|LENGTH|). Z.B. berechnet folgender Ausdruck die Anzahl Users in Leipzig:
 \begin{lstlisting}
 SELECT city, COUNT(*)
 FROM users 
@@ -156,7 +156,7 @@ WHERE city = "Leipzig"
 \end{cheatSheetBox}
 
 \begin{cheatSheetBox}[title=Rechnen und umbenennen: \texorpdfstring{\lstinline|AS|}{AS}]
-Mit Kolonnen sowie Aggregatsfunktionen kann man rechnen, beispielsweise um ein Resultat durch eine Million zu dividieren. Zudem können Spalten-Titel mit dem Befehl \lstinline|AS| umbenannt werden: 
+Mit Spalten sowie Aggregatsfunktionen kann man rechnen, beispielsweise um ein Resultat durch eine Million zu dividieren. Zudem können Spalten-Titel mit dem Befehl \lstinline|AS| umbenannt werden: 
 \begin{lstlisting}
 SELECT COUNT(*)/1e6 AS "Millionen Users"
 FROM users 
@@ -184,7 +184,7 @@ GROUP BY city
 HAVING `Körpergrösse` BETWEEN 150 AND 155
 \end{lstlisting}
 \end{cheatSheetBox}
-Texte werden immer innerhalb von Anführungszeichen (\lstinline|""|) geschrieben. Kolonnennamen, welche Spezialzeichen oder Abstände enthalten, werden innerhalb von \textit{backticks} (\lstinline|``|) geschrieben.
+Texte werden immer innerhalb von Anführungszeichen (\lstinline|""|) geschrieben. Spaltennamen, welche Spezialzeichen oder Abstände enthalten, werden innerhalb von \textit{backticks} (\lstinline|``|) geschrieben.
 
 %\subsection*{Tabellen erstellen \& verändern}
 \clearpage
@@ -192,13 +192,13 @@ Texte werden immer innerhalb von Anführungszeichen (\lstinline|""|) geschrieben
 Eine Tabelle \texttt{meinetabelle} kann wie folgt erstellt werden:
 \begin{lstlisting}
 CREATE TABLE meinetabelle(
-  name_kolonne1 kolonnentyp1,
-  name_kolonne2 kolonnentyp2,
+  name_spalte1 spaltentyp1,
+  name_spalte2 spaltentyp2,
   ... ---etc.
 )
 
 \end{lstlisting}
-Gängige Kolonnen-Typen sind:
+Gängige Spalten-Typen sind:
 \begin{table}[H]
 \footnotesize
 \centering
@@ -213,10 +213,10 @@ Gängige Kolonnen-Typen sind:
 \end{cheatSheetBox}
 
 \begin{cheatSheetBox}[title=Tabellen ändern: \texorpdfstring{\lstinline|ALTER|}{ALTER}]
-Mit dem Befehl \lstinline|ALTER tabellenname| können Tabellen verändert werden, beispielsweise um eine Kolonne hinzuzufügen oder umzubenennen.
+Mit dem Befehl \lstinline|ALTER tabellenname| können Tabellen verändert werden, beispielsweise um eine Spalte hinzuzufügen oder umzubenennen.
 \begin{lstlisting}
 ALTER TABLE tabellenname
-ADD neue_kolonne eigenschaften
+ADD neue_spalte eigenschaften
 \end{lstlisting}
 \begin{lstlisting}
 ALTER TABLE tabellenname
@@ -235,20 +235,20 @@ DROP TABLE tabellenname
 Neue Einträge (Zeilen) können mit dem Befehl \lstinline|INSERT INTO| in eine Tabelle eingefügt werden. Beispielsweise können mit folgender Befehlsstruktur drei neue Zeilen eingefügt werden:
 \begin{lstlisting}
 INSERT INTO tabellenname 
-	(kolonne1, kolonne2, ...)
+	(spalte1, spalte2, ...)
 VALUES 
 	(wert1, wert2, ...),
 	(wert1, wert2, ...),
 	(wert1, wert2, ...)
 \end{lstlisting}
-Zuerst werden also die Kolonnen angegeben, für welche Werte eingefügt werden, danach die Werte für jede neue Zeile. Werte in nicht angegebenen Kolonnen bleiben leer.
+Zuerst werden also die Spalten angegeben, für welche Werte eingefügt werden, danach die Werte für jede neue Zeile. Werte in nicht angegebenen Spalten bleiben leer.
 \end{cheatSheetBox}
 
 \begin{cheatSheetBox}[title=Daten verändern: \texorpdfstring{\lstinline|UPDATE|}{UPDATE}]
 Existierende Daten können wie folgt geändert werden:
 \begin{lstlisting}
 UPDATE tabelle_name
-SET kolonne1 = wert1, ...
+SET spalte1 = wert1, ...
 WHERE bedingung(en)
 \end{lstlisting}
 
@@ -274,25 +274,26 @@ WHERE username="guenther37"
 Mehrere Tabellen können mit folgendem Befehl zu einer Tabelle verbunden werden:
 
 \begin{lstlisting}
-SELECT kolonne1, kolonne2, ...
-FROM tabelle1 JOIN tabelle2 
-ON tabelle1.kolonne_id1 = tabelle2.kolonne_id2
+SELECT spalte1, spalte2, ...
+FROM tabelle1 
+JOIN tabelle2 
+ON tabelle1.spalte_id1 = tabelle2.spalte_id2
 \end{lstlisting}
 
 Falls Primär- und Sekundärschlüssel in beiden Tabellen gleich heissen, kann man \lstinline|USING| verwenden:
 \begin{lstlisting}
-SELECT kolonne1, kolonne2, ...
-FROM tabelle1 JOIN tabelle2 USING (Kolonne_ID)
+SELECT spalte1, spalte2, ...
+FROM tabelle1 JOIN tabelle2 USING (Spalte_ID)
 \end{lstlisting}
 \end{cheatSheetBox}
 
 \begin{cheatSheetBox}[title=Verschachtelte Abfragen]
 Verschachtelte \acrshort{SQL}-Abfragen können wie folgt geschrieben werden:
 \begin{lstlisting}
-SELECT kol1 
+SELECT spalte11 
 FROM tabelle1
-WHERE kolonnenname = ...
-    (SELECT kol2 FROM tabelle2 WHERE ...);
+WHERE spaltenname = ...
+    (SELECT spalte2 FROM tabelle2 WHERE ...);
 \end{lstlisting}
 \end{cheatSheetBox}
 
