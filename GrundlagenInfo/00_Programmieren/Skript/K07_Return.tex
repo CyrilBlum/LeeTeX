@@ -1,5 +1,158 @@
-\lstset{style=TigerJython,escapeinside={(*@}{@*)}}
-\fboxsep=.6pt
+\chapter{Funktionen}
+
+\section{Eigene Funktionen  definieren}
+
+In den vergangenen Lektionen haben Sie bereits viele Funktionen (=Befehle) verwendet, wie beispielsweise \lstinline|t.forward(100)| oder \lstinline|print()|. Im Allgemeinen erkenenn Sie Befehle daran, dass Sie ein mit einem \textbf{Wort} beginnen, wie beispielsweise \lstinline|t.forward| oder \lstinline|print|, auf welches Klammern sowie ein oder mehrere Werte folgen. Diese Werte werden \textbf{Parameter} genannt und dienen dazu, das Verhalten einer Funktion leicht abzuändern, so dass beispielsweise in der Funktion \lstinline|t.fd()| 50 oder 100 Pixel gezeichnet werden. Um unseren Code leserlicher und kürzer zu machen, können wir auch eigene Definitionen schreiben!
+
+\begin{myexample}
+Wir betrachten nochmals den Code aus \cref{myexample:blume}:
+
+\lstinputlisting[language=Python,caption=\texttt{blume.py},label=listing:blume]{GrundlagenInfo/00_Programmieren/Skript/Code/K01_Intro/blume.py}
+
+Wir könnten den Code leserlicher machen, indem wir einen Befehl für eine Quadrat und einen Befehl für das gesamte Muster erstellen:
+
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+def !\colorbox{HotPink}{viereck()}!: !\tikzmark{to2ex}!
+    repeat 4:
+        fd(100)
+        rt(360/4)
+
+def !\colorbox{CornflowerBlue}{viereck\_blume()}!:!\tikzmark{to1ex}! 
+    repeat 10:
+        !\colorbox{HotPink}{viereck()}! !\tikzmark{from2ex}!
+        rt(360/10)
+
+!\colorbox{CornflowerBlue}{viereck\_blume()}! !\tikzmark{from1ex}!
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\draw[red,-stealth] (from1ex.north) to[bend right] node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to1ex);
+\draw[red,-stealth] (from2ex.north) to[bend right]
+node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to2ex);
+\end{tikzpicture}
+
+Eine Funktion beginnt immer mit dem Wort \lstinline|def|, gefolgt von einem Namen sowie Klammern. Innerhalb des eingerückten Bereichs wird eine Aktivität beschrieben. Die Aktivität wird aber erst ausgeführt, sobald der Code aufgeruft wird!
+
+Im übertragenen Sinne kann man sich Definitionen vorstellen wie Kochrezepte, die eine Ablauf beschreiben. Die Funktion beschreibt dabei ein Programmablauf, also ein ``Rezept'', ausgeführt (``gekocht'') wird dieses jedoch erst, sobald das Programm abgerufen wird (auf Zeile 13 und 10 im obigen Beispiel).
+
+Das Schreiben von Definitionen hat mehrere Vorteile:
+\begin{itemize}
+\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|viereck()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|viereck_blume()|.
+\item Der Code wird \textbf{übersichtlicher}: jeder Teil-Aktivität ist eine Funktion!
+\item Falls das komplexere Programm nicht das gewünschte Resultat liefert, können wir es \textit{debuggen}, indem wir die einfacheren Funktionen zuerst aufrufen und sicherstellen, dass diese richtig funktionieren.
+\end{itemize}
+
+Dass der ursprüngliche Code nun übersichtlicher ist, wird in folgenden zwei Code-Varianten ersichtlich:
+
+\begin{center}
+\begin{minipage}{.4\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+for _ in range(4):    !\tikzmark{repOuterStart}!
+    for _ in range(9):!\tikzmark{repInnerStart}!
+        t.fd(4)
+        t.lt(10)      !\tikzmark{repInnerEnd}!
+    t.fd(100)         !\tikzmark{repOuterEnd}!
+\end{lstlisting}
+\end{minipage}\hfill\begin{minipage}{.4\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+!\tikzmark{repInnerStartTo}!def viertelkreis():
+    for _ in range(9):
+        t.fd(4)
+!\tikzmark{repInnerEndTo}!        t.lt(10)
+
+!\tikzmark{repOuterStartTo}!def abgerundetes_quadrat():
+    for _ in range(4):
+        viertelkreis()
+!\tikzmark{repOuterEndTo}!        t.fd(100)
+
+abgerundetes_quadrat()
+\end{lstlisting}
+\end{minipage}
+\end{center}
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+	\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
+		\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
+		% arrow pointing from one code to other
+		\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
+		\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
+			\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
+			% arrow pointing from one code to other
+			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
+\end{tikzpicture}
+
+Wichtig zu beachten für die Übersichtlichkeit des Codes sind folgende Aspekte:
+\begin{itemize}
+\item Innere Schleifen sollten wenn immer möglich vermieden und durch Definitionen ersetzt werden
+\item Definitions-Namen sollten möglichst selbsterklärend und ``sprechend'' sein, sie sollten also klar beschreiben, was die Aktivität tut! %TODO Beispiel
+\end{itemize}
+\end{myexample}
+
+\begin{myexercise}
+Packen Sie Ihre Lösung aus \cref{ex:myexercise:Haus} in eine Funktion mit dem Namen \lstinline|def haus():|. Testen Sie zunächst, ob die  Funktion wirklich das gewünschte Resultat liefert (ein Haus) indem Sie die Funktion aufrufen. Schreiben Sie dann eine zweite Funktion \lstinline|def haeuserreihe():|, welche eine Häuserreihe aus 5 Häusern zeichnet, indem \lstinline|haus()| fünfmal aufgerufen wird.
+
+
+\end{myexercise}
+
+
+% TODO weitere Übungen
+\section{Parameter}
+
+\begin{myexample}\label{example:params}
+Stellen Sie sich vor, sie wollen drei unterschiedlich grosse Quadrate zeichnen. Sie könnten folgendermassen vorgehen:
+
+\lstinputlisting[language=Python,caption=\texttt{noparams.py},label=listing:blume]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/squares_noparams.py}
+
+Das ging gerade noch! Was jedoch, wenn Sie 20 unterschiedlich grosse Quadrate zeichnen wollen? Brauchen Sie dann 20 Definitionen? Zum Glück nicht, da Sie hierfür Parameter verwenden können, wie in folgendem Beispiel gezeigt:
+
+\lstinputlisting[language=Python,caption=\texttt{params.py},label=listing:blume]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/squares_params.py}
+
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+def quadrat(!\colorbox{DeepPink}{la\tikzmark{arrowTo1}enge}!):
+	repeat 4:
+		t.fd(!\colorbox{DeepPink}{la\tikzmark{arrowTo2}enge}!) 
+		t.rt(90)
+
+quadrat(!\colorbox{DeepPink}{5\tikzmark{arrow1From}0}!)
+quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow2From}00}!)
+quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow3From}50}!)
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \draw[red,-stealth] (arrow1From.north) to[bend right] node[right, yshift=-.8cm, fill=RoyalBlue,text=white,rounded corners] {\emoji{handshake} Übergabe} (arrowTo1);
+    \draw[red,-stealth] (arrowTo1.south) to[bend right] (arrowTo2);
+    \draw[red,-stealth] (arrow2From.south) to[bend right] (arrowTo1);
+    \draw[red,-stealth] (arrow3From.south) to[bend right] (arrowTo1);
+\end{tikzpicture}
+\end{myexample}
+
+\subsection{Lebensdauer (\textit{scope}) einer Variable}
+
+Im Code aus \cref{example:params} wird bei \textit{jedem Aufruf} der Definition \lstinline|quadrat| eine neue Variable \texttt{laenge} erstellt, welche nur \textit{innerhalb} der Funktion existiert und welche jedes Mal einen anderen Wert hat. Den Wert erhält die Variable zum Zeitpunkt des \textit{Aufrufs} der Funktion, also auf den Zeilen 8, 9 und 10!
+
+Die Variable \texttt{laenge} existiert also nur innerhalb der Definition \lstinline|quadrat| Wenn wir nach Zeile 6 im Hauptprogramm (nicht eingerückt) den Befehl \texttt{print(laenge)} eingeben würden, würden wir eine Fehlermeldung erhalten, da es die Variable nicht mehr gibt. Parameter sind also immer \textbf{\textit{lokale} Variablen}, ebenso wie Variablen, welche wir innerhalb von Funktion erstellen. Diese Variablen \enquote{sterben} nach Ausführung der Definition, daher spricht man auch von der Lebensdauer einer Variable, bzw. von deren Reichweite (en. \textit{scope})
+
+Variablen, welche im Hauptprogramm (nicht eingerückt) erstellt werden, sind sogenannte \textbf{\textit{globale} Variablen}.
+
+\begin{myexercise}\label{ex:local-global}
+Beschreiben Sie, welche der Variablen im unten stehenden Code lokal oder global sind, und welche Variablen auch Parameter sind. Sie sollten insgesamt 5 Variablen finden!
+\lstinputlisting[language=Python,caption=\texttt{houses.py},label=listing:blume]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/houses.py}
+\end{myexercise}
+
+\begin{myexercise}
+Was könnte der Vorteil von \textit{lokalen Variablen} sein?
+\begin{myanswer}
+Falls Sie mehrere Funktionen schreiben, können Sie dieselben Variabelnamen und Parameter-Namen innerhalb der Funktionen verwenden, da diese nichts miteinander zu tun haben. Im Code aus \cref{ex:local-global} hätten wir auch in beiden Funktionen \texttt{laenge} schreiben können.
+\end{myanswer}
+\end{myexercise}
+
 
 \section{Befehle / Funktionen mit Parameter, mit \texorpdfstring{\lstinline|return|}{return}}
 \subsection{Einzelne Funktionen}
