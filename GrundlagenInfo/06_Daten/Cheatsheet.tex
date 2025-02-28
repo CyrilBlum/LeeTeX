@@ -75,11 +75,10 @@ ORDER BY city ASC, name ASC
 \end{cheatSheetBox}
 
 \begin{cheatSheetBox}[title=Erste / Letzte Zeilen: \texorpdfstring{\lstinline|LIMIT|}{LIMIT}]
-Mit dem Befehl \lstinline|LIMIT| können eine Tabelle auf die ersten \textit{n} Zeilen beschränkt werden. Z.B. können die drei ersten Städte im Alphabet wie folgt abgefragt werden:
+Mit dem Befehl \lstinline|LIMIT| können eine Tabelle auf die ersten \textit{n} Zeilen beschränkt werden. Z.B. können die Namen der ersten drei Personen der Tabelle \texttt{users} wie folgt abgefragt werden:
 \begin{lstlisting}
-SELECT city
+SELECT name
 FROM users
-ORDER BY city ASC
 LIMIT 3
 \end{lstlisting}
 \end{cheatSheetBox}
@@ -156,9 +155,9 @@ WHERE city = "Leipzig"
 \end{cheatSheetBox}
 
 \begin{cheatSheetBox}[title=Rechnen und umbenennen: \texorpdfstring{\lstinline|AS|}{AS}]
-Mit Spalten sowie Aggregatsfunktionen kann man rechnen, beispielsweise um ein Resultat durch eine Million zu dividieren. Zudem können Spalten-Titel mit dem Befehl \lstinline|AS| umbenannt werden: 
+Mit Spalten sowie Aggregatsfunktionen kann man rechnen, beispielsweise um ein Resultat durch eine Million zu dividieren. Zudem können Spalten-Titel mit dem Befehl \lstinline|AS| umbenannt werden:
 \begin{lstlisting}
-SELECT COUNT(*)/1e6 AS "Millionen Users"
+SELECT centimeters/100 AS "Grösse in Metern"
 FROM users 
 \end{lstlisting}
 \end{cheatSheetBox}
@@ -231,6 +230,22 @@ DROP TABLE tabellenname
 \end{lstlisting}
 \end{cheatSheetBox}
 
+\begin{cheatSheetBox}[title={Überprüfen, ob existiert: \texorpdfstring{\lstinline|IF EXISTS|}{IF EXISTS}}]
+Wenn man eine Tabelle erstellen will, welche es bereits gibt, kann eine Fehlermeldung erscheinen. Folgender Befehl wird nur ausgeführt, falls es noch keine Tabelle \texttt{testtabelle} gibt:
+\begin{lstlisting}
+CREATE TABLE IF EXISTS testtabelle(
+  name_spalte1 spaltentyp1,
+  name_spalte2 spaltentyp2,
+  ... ---etc.
+)
+
+\end{lstlisting}
+Ähnlich kann vor man den Befehl \lstinline|DROP TABLE| anpassen, so dass er nur ausgeführt wird, wenn es eine solche Tabelle wirklich gibt:
+\begin{lstlisting}
+DROP TABLE IF EXISTS testtabelle
+\end{lstlisting}
+\end{cheatSheetBox}
+
 \begin{cheatSheetBox}[title=Daten einfügen: \texorpdfstring{\lstinline|INSERT INTO|}{INSERT INTO}]
 Neue Einträge (Zeilen) können mit dem Befehl \lstinline|INSERT INTO| in eine Tabelle eingefügt werden. Beispielsweise können mit folgender Befehlsstruktur drei neue Zeilen eingefügt werden:
 \begin{lstlisting}
@@ -297,11 +312,29 @@ WHERE spaltenname = ...
 \end{lstlisting}
 \end{cheatSheetBox}
 
+\begin{cheatSheetBox}[title=Mehrere Ausdrücke verbinden]
+Mehrere SQL-Ausdrücke können mit Semikolon (\texttt{;}) verbunden werden:
+\begin{lstlisting}
+--- Tabelle erstellen, danach wieder löschen
+CREATE TABLE IF EXISTS testtabelle(
+  name_spalte1 spaltentyp1,
+  name_spalte2 spaltentyp2,
+  ... ---etc.
+);
+DROP TABLE IF EXISTS testtabelle
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Kommentare]
+Kommentare werden von SQL ignoriert und dienen der besseren Leserlichkeit des Codes. Kommentare werden durch drei Bindestriche gekennzeichnet (s. Box zu \enquote{Mehrere Ausdrücke verbinden})
+\end{cheatSheetBox}
+
 \begin{cheatSheetBox}[title=Weitere Befehle \& Feedback]
 Weitere \acrshort{SQL}-Befehle und Erklärungen finden Sie unter \href{https://www.w3schools.com/sql/default.asp}{w3schools.com}.
 
 Verbesserungsvorschläge können gerne an \href{mailto:cyril.wendl@edu.zh.ch}{Cyril Wendl} geschickt werden.
 \end{cheatSheetBox}
+
 \end{multicols*}
 
 \end{landscape}
