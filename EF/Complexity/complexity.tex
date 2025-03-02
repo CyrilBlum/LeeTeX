@@ -45,10 +45,73 @@
 
 \begin{frame}{Analyse von InsertionSort}
 	\begin{itemize}
-		\item Angenommen die $i$-te Zeile benötigt Zeit $c_i$ (dies ist eine Konstante).
-		\item Für $j = 1, 2, \ldots, n - 1$, seit $t_j$ die Anzahl der Ausführung der \pythoninline{while}-Bedingung.
-		\item Beachte, dass wenn eine \pythoninline{for}-Schleife oder \pythoninline{while}-Schleife ihre Arbeit aufgrund der nicht mehr zutreffenden Schleifen-Bedingung beendet, die Schleifen-Bedingung noch ein weiteres Mal ausgeführt wird  als der Schleifenkörper.
+		\item Wir bezeichnen mit der Konstanten $c_i$ die Zeit, welche zur einmaligen Ausführung der $i$-ten Zeile benötigt wird.
+		\item Für $j = 1, 2, \ldots, n - 1$, sei $t_j$ die Anzahl der Überprüfungen der \pythoninline{while}-Bedingung.
+		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab). Bei einer solchen Schleife über $n$ Wiederholungen, wird der Schleifenkörper genau $n$ mal ausgeführt. Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
+		\item Die Schleifen-Bedingung wird also genau $n+1$ überprüft.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile, t]{Analyse von InsertionSort}
+	\begin{lstlisting}[escapechar=!]
+	def InsertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
+        for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
+            key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
+            i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
+            while i >= 0 and A[i] > key: !\tikzmark{c5end}!       !\tikzmark{c5start}!
+                A[i + 1] =  A[i] !\tikzmark{c6end}!               !\tikzmark{c6start}!
+                i -= 1 !\tikzmark{c7end}!                         !\tikzmark{c7start}!
+            A[i + 1] = key !\tikzmark{c8end}!                     !\tikzmark{c8start}!
+        return A !\tikzmark{c9end}!                               !\tikzmark{c9start}!
+	\end{lstlisting}
+	\begin{tikzpicture}[overlay, remember picture,
+			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
+		\visible<2>{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!50!white};}
+		\visible<3>{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n$}{green!50!white};}
+		\visible<4>{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!50!white};}
+		\visible<5>{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!50!white};}
+		\visible<6>{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!50!white};}
+		\visible<7>{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!50!white};}
+		\visible<8>{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!50!white};}
+		\visible<9>{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!50!white};}
+		\visible<10>{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!50!white};}
+	\end{tikzpicture}
+	\begin{align*}
+		T(n) = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) + \\
+		+ c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}}
+	\end{align*}
+\end{frame}
+
+\begin{frame}[fragile]{Worst Case}
+	Im schlimmsten Fall (worst case) ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0...j-1]} verglichen werden, also mit $j+1$ vielen. Somit gilt also
+	\begin{align*}
+		t_j = j + 1, \quad i = 1, 2, \ldots, n-1.
+	\end{align*}
+\end{frame}
+
+\begin{frame}[fragile]{Worst Case}
+	Gauss Summenformel:
+	\begin{align*}
+		\sum_{j=1}^{n} j = \frac{n(n+1)}{2}
+	\end{align*}
+	Wir finden:
+	\begin{align*}
+		\textcolor{Magenta}{\sum_{j=1}^{n-1} (t_j - 1)} & = \sum_{j=1}^{n-1} (j) = \sum_{j=1}^{n} (j) - n = \frac{n(n+1)}{2} - n = \textcolor{Magenta}{\frac{n(n-1)}{2}} \\
+		\textcolor{RoyalBlue}{\sum_{j=1}^{n-1} t_j}     & = \sum_{j=1}^{n-1} (j+1)  =  \sum_{j=1}^{n-1} (j) + \sum_{j=1}^{n-1} 1 =                                       \\
+		                                                & = \frac{n(n-1)}{2} + (n-1) = \textcolor{RoyalBlue}{\frac{n(n+1)}{2} - 1}
+	\end{align*}
+\end{frame}
+
+\begin{frame}[fragile]
+	\begin{align*}
+		T(n) & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                             \\
+		     & + c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}} =                     \\
+		     & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                             \\
+		     & + c_5\lr{\textcolor{RoyalBlue}{\frac{n(n+1)}{2} - 1}} + c_6\lr{\textcolor{Magenta}{\frac{n(n-1)}{2}}} =                                   \\
+		     & = \underbrace{\lr{\frac{c_5}{2} + \frac{c_6}{2}}}_{a}n^2 + \underbrace{\lr{c_2 + c_3 + c_4 + \frac{c_5}{2} - \frac{c_6}{2} + c_8}}_{b}n + \\
+		     & + \underbrace{\lr{c_1 - c_3 - c_4 - c_5 - c_8 + c_9}}_{c} =                                                                               \\
+		     & = an^2 + bn + c
+	\end{align*}
 \end{frame}
 
 \begin{frame}{Landau-Symbole}
@@ -80,7 +143,7 @@
 			\item $25n^3 \in O\lr{n^4}$
 			\item $5n^3 \in O\lr{n^3}$
 			\item $2^n \in \Theta\lr{2^{n + a}}$ für jede positive Konstante $a\in\N$
-			\item $2^{bn}\in \Theta\lr{2^n}$ für jede positive Konstante $b\in\N$
+			\item $2^{bn} \in \Theta\lr{2^n}$ für jede positive Konstante $b\in\N$
 		\end{enumerate}
 	\end{myexercise}
 \end{frame}
@@ -99,19 +162,4 @@
 	\end{myexercise}
 \end{frame}
 
-\begin{frame}[fragile]{Programmieren: Erste \textbf{Schleifen}}
-	\begin{lstlisting}[escapechar=!]
-	for _ in range(15):!\tikzmark{code2}\tikzmark{repeatStart}!              !\tikzmark{comment2}!
-	    t.fd(15)!\tikzmark{bodyStart}!                               
-	    t.lt(90)
-	    t.fd(25)
-	    t.rt(90)!\tikzmark{bodyEnd}!       !\tikzmark{repeatEnd}!
-	\end{lstlisting}
-	\begin{tikzpicture}[overlay, remember picture,
-			every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-		\drawBrace{1em}{repeatStart}{repeatEnd}{\footnotesize Schleife}{.45}{}{};
-		\only<2->{\drawBrace{0em}{bodyStart}{bodyEnd}{\footnotesize\textit{Körper} der Schleife}{.8}{}{8.5em};}
-		\only<3->{\drawArrow{code2}{comment2}{\footnotesize Schleifenkopf}{red!50!white};}
-	\end{tikzpicture}
 
-\end{frame}

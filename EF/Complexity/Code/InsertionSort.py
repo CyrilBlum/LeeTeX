@@ -1,4 +1,4 @@
-def insertion_sort(A):
+def Insertion_sort(A):
     for j in range(1, len(A)):
         key = A[j]
         i = j - 1
