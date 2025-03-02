@@ -153,6 +153,21 @@ Falls Sie mehrere Funktionen schreiben, können Sie dieselben Variabelnamen und 
 \end{myanswer}
 \end{myexercise}
 
+\subsection{Mehrere Parameter}
+Man kann beliebig viele Parameter verwenden in Funktionen. Wichtig dabei ist, diese je durch ein Komma zu trennen.
+
+\begin{myexample}\label{ex:multiple-params}
+In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe eines Polygons übergeben werden.
+\lstinputlisting[language=Python,caption=\texttt{farb\_vieleck.py},label=listing:blume]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/farb_vieleck.py}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.2\linewidth]{GrundlagenInfo/00_Programmieren/Figures/mehrere-parameter}
+\end{figure}
+\end{myexample}
+
+\begin{myexercise}
+Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich auch noch die Stiftdicke verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie den Befehl \texttt{t.width(...)}.
+\end{myexercise} 
 
 \section{Befehle / Funktionen mit Parameter, mit \texorpdfstring{\lstinline|return|}{return}}
 \subsection{Einzelne Funktionen}
@@ -239,83 +254,8 @@ def square(n):
 \end{myanswer}
 \end{mysubmission}
 
-\begin{mysubmission}
-Geben seien zwei Zahlen \lstinline|x1| und \lstinline|x2|. Schreiben Sie eine Funktion def \lstinline|maxzahl(x1, x2)|, welche die grössere der beiden Zahlen mit \lstinline|return| zurück an das Hauptprogramm gibt. Wenn beide Zahlen gleich gross sind, soll \lstinline|x2| zurückgegeben werden.
 
-Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
-\begin{myanswer}
-\begin{lstlisting}
-def maxzahl(x1, x2):
-    if x1 > x2:
-        return x1
-    else: 
-        return x2
-\end{lstlisting}
-\end{myanswer}
-\end{mysubmission}
 
-\begin{mysubmission}
-Schreiben Sie eine Funktion, die überprüft, ob eine Liste von Zahlen sortiert ist oder nicht. Falls die Liste sortiert ist, soll die Definition den Wert \lstinline|True| zurückgeben, ansonsten den Wert \lstinline|False|.
-
-Tipps:
-\begin{enumerate}
-\item Gehen Sie jedes Element der Liste mit einer Schleife durch, und überprüfen Sie, dass das Element grösser oder gleich dem vorigen Element ist.
-\item \lstinline|return| bricht die Funktion ab und gibt einen Wert an das Hauptprogramm zurück. Sie können also, sobald eine Zahl in falscher Reihenfolge gefunden worden ist, direkt \lstinline|False| zurückgeben.
-\item Falls Sie nie ein falsches Element gefunden haben, geben Sie am Ende der Defintion \lstinline|True| zurück.
-\end{enumerate}
-\begin{myanswer}
-\begin{lstlisting}
-def ist_sortiert(liste):
-    i = 1
-    while i < len(liste):
-        if liste[i] < liste[i-1]:
-            return False
-        i += 1
-    return True
-\end{lstlisting}
-\end{myanswer}
-\end{mysubmission}
-
-\begin{myexercise}
-Eine Supermarkt-Kette bittet Sie, die Rabatte auf ausgewählte Produkte zu berechnen. Sie gibt Ihnen hierzu zwei Listen: die erste Liste enthaltet die Preise der Produkte \textit{ohne Rabatt} und die zweite Liste enthaltet die Rabatte in Prozent.
-
-\begin{lstlisting}
-# Preise in Franken
-liste_preise = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95] 
-# Rabatte in Prozent
-liste_rabatte = [30, 40, 30, 35, 20, 15, 35] 
-\end{lstlisting}
-
-Das Beispiel bedeutet, dass das erste Produkt nicht 39.95, sondern 30\% weniger als 39.95 kosten sollte, also 70\% von 39.95 = 27.965.
-
-Der rabattierte Preis eines einzelnen Produkts wird folgendermassen berechnet:
-\begin{lstlisting}
-preis_rabattiert = preis_normal * (1 - rabatt_in_prozent / 100)
-\end{lstlisting}
-Schreiben Sie eine Definition, die die rabattierten Preise für alle Produkte berechnet und als Liste zurückgibt. Sie müssen die Preise nicht runden. 
-
-\begin{myanswer}
-\begin{lstlisting}
-def berechne_rabatte(liste_preise, liste_rabatte):
-    liste_rabattiert = []
-    
-    i = 0
-    repeat len(liste_rabatte):
-        preis_rabattiert=liste_preise[i]*(1-liste_rabatte[i]/100)
-        liste_rabattiert.append(preis_rabattiert)
-        i += 1
-        
-    return liste_rabattiert
-
-# berechne Rabatte
-liste_preise = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95]
-liste_rabatte = [30, 40, 30, 35, 20, 15, 35]
-liste_rabattiert = berechne_rabatte(liste_preise, liste_rabatte)
-print(liste_rabattiert)
-\end{lstlisting}
-\end{myanswer}
- 
-\end{myexercise}
 \subsection{Mehrere Funktionen}
 Wozu kann ein \lstinline|return| eigentlich nützlich sein? Wenn Sie Code schreiben, wird dieser oftmals schnell komplizierter. Somit kann es hilfreich sein, die einzelnen Schritte in Unter-Programme aufzuteilen. Dies erleichtert zudem die \textbf{Modularisierung} und \textbf{Wiederverwendbarkeit} von Code: Beispielsweise könnte eine Funktion, die das Maximum einer Liste berechnet, an verschiedenen Orten in einem längeren Programm mehrmals zum Einsatz kommen
 
@@ -441,243 +381,7 @@ def vieleck_muster(umfang, ecken):
 \end{myexample}
 
 
-Folgendes Beispiel soll dieses Prinzip konkret veranschaulichen. Stellen Sie sich vor, Sie sind SportlerIn und möchten Ihren Kalorienbedarf berechnen, um sich für auf einen kommenden Wettkampf optimal zu ernähren. Eventuell möchten Sie auch noch etwas ab- oder zunehmen, da Ihre Sportart dies erfordert. Hierzu wollen zunächst Sie Ihren täglichen Kalorienbedarf berechnen. Ihr Kalorienbedarf berechnet sich wie folgt:
-\begin{enumerate}
-\item Ihr Grundumsatz (englisch \gls{BMR}), d.h., ihr Grundbedarf, falls Sie sich nicht bewegen.
-\item Ihr Leistungsumsatz, d.h., zusätzliche Energie, die Sie bei Aktivitäten wie Spazieren, Radfahren, Joggen usw. verbrennen.
-\end{enumerate}
 
-Beide Komponenten scheinen schwierig abzuschätzen, Sie möchten jedoch eine erste Einschätzung Ihrer \gls{BMR} haben, indem sie einige bekannte Formeln auf sich selber anwenden und diese vergleichen.
-
-\begin{mysubmission}\label{ex:bmr-simple}
-Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel berechnen und geben Sie das Resultat auf der Konsole aus.
-\begin{enumerate}
-\item Für Männer:
-\begin{align*}
-\text{BMR} = & 88.362 +\\ 
-& (13.397 \times \text{Gewicht in kg}) +\\ 
-& (4.799 \times \text{Körpergrösse in cm}) -\\
-& (5.677 \times \text{Alter in Jahren})
-\end{align*}
-\item Für Frauen:
-\begin{align*}
-\text{BMR} = & 447.593  +\\ 
-& (9.247 \times \text{Gewicht in kg}) +\\ 
-& (3.098 \times \text{Körpergrösse in cm}) -\\
-& (4.330 \times \text{Alter in Jahren})
-\end{align*}
-\end{enumerate}
-\begin{myanswer}
-\begin{lstlisting}
-def grundumsatz(gewicht, groesse, alter, geschlecht):
-    """
-    Berechnet den Grundumsatz (BMR) nach der Harris-Benedict-Formel.
-    
-    Parameter:
-    - gewicht: Gewicht in kg
-    - groesse: Körpergrösse in cm
-    - alter: Alter in Jahren
-    - geschlecht: 'mann' oder 'frau'
-    
-    Rückgabe:
-    - BMR: Grundumsatz in Kalorien
-    """
-    if geschlecht == 'mann':
-        bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
-    elif geschlecht == 'frau':
-        bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
-    
-    print("Der Grundumsatz beträgt:", round(bmr, 2), "Kalorien")
-
-# Beispiel:
-gewicht = 75  # kg
-groesse = 180  # cm
-alter = 30  # jahre
-geschlecht = 'mann'
-
-# berechne grundumsatz
-grundumsatz(gewicht, groesse, alter, geschlecht)
-\end{lstlisting}
-\end{myanswer}
-\end{mysubmission}
-
-Nun möchten wir zum Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zum Grundumsatz auch noch unsere Aktivitäten hinzufügen, allerdings können wir nun nicht mehr auf die Variable \texttt{bmr} zurückgreifen. Wie können wir das ändern? Indem wir sie an das Programm zurückgeben und speichern. Wichtige Änderungen gegebüber den Lösungs-Code aus \cref{ex:bmr-simple} sind in \colorbox{CornflowerBlue}{blau} umrandet.
-
-\begin{minipage}{\linewidth}
-\begin{lstlisting}
-def grundumsatz(gewicht, groesse, alter, geschlecht):
-    if geschlecht == 'mann':
-        bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
-    elif geschlecht == 'frau':
-        bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
-    
-     (*@\colorbox{CornflowerBlue}{return b\tikzmark{arrowFrom}mr}@*) # gib den bmr an das Programm zurück
-
-# Beispiel:
-gewicht = 75  # kg
-groesse = 180  # cm
-alter = 30  # jahre
-geschlecht = 'mann'
-
-# berechne grundumsatz(*@\colorbox{CornflowerBlue}{und speichere das Resultat in einer neuen Variable resultat}@*)
-(*@\colorbox{CornflowerBlue}{resu\tikzmark{arrowTo}ltat = }@*) grundumsatz(gewicht, groesse, alter, geschlecht)
-(*@\colorbox{CornflowerBlue}{print("Der Grundumsatz beträgt:", round(resultat, 2), "Kalorien")}@*)
-\end{lstlisting}
-\end{minipage}
-
-\begin{tikzpicture}[overlay,remember picture]
-   % Wert zurückgeben
-	\draw[red,-stealth] (arrowFrom.north) to[bend left] node[right, fill=RoyalBlue,text=white,rounded corners] {Wert Zurückgeben} (arrowTo);
-\end{tikzpicture}
-
-Nun haben wir eine erste Einschätzung des \gls{BMR}. Allerdings gibt es auch noch weitere Formeln, die wir gerne berechnen möchten, um einen Vergleich der verschiedenen Methoden zu erhalten.
-
-\begin{mysubmission}\label{ex:bmr}
-Schreiben Sie eine weitere Definitionen, um den \gls{BMR} anhand der Mifflin-St-Jeor-Gleichung und der Katch-McArdle-Formel zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
-\begin{enumerate}
-\item Mifflin-St-Jeor-Gleichung:
-\begin{enumerate}
-\item Männer: 
-\begin{align*}
-\text{BMR} &= 10 \times \text{Gewicht (kg)} \\
-&\quad + 6.25 \times \text{Größe (cm)} \\
-&\quad - 5 \times \text{Alter (Jahre)} \\
-&\quad + 5
-\end{align*}
-\item Frauen: 
-\begin{align*}
-\text{BMR} &= 10 \times \text{Gewicht (kg)} \\
-&\quad + 6.25 \times \text{Größe (cm)} \\
-&\quad - 5 \times \text{Alter (Jahre)} \\
-&\quad - 161
-\end{align*}
-\end{enumerate}
-\item Katch-McArdle-Formel:
-\begin{enumerate}
-\item Grundformel:
-\begin{align*}
-\text{BMR} &= 370 \\
-&\quad + (21.6 \times \text{FFM in kg})
-\end{align*}
-
-\item Fett-freie Masse (in kg): 
-\begin{align*}
-\text{FFM} &= \text{Körpergewicht (kg)} \\
-&\quad \times (1 - \text{Körperfettanteil})
-\end{align*}
-
-\end{enumerate}
-
-\end{enumerate}
-
-\begin{myanswer}
-\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/bmr.py}
-\end{myanswer}
-\end{mysubmission}
-
-Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundbedarfs. Zu diesem können wir nun auch noch die Leistungsenergie hinzufügen, um den gesamten Energiebedarf zu berechnen.
-
-\begin{mysubmission}\label{ex:leistungsumsatz}
-Berechnen Sie Ihre Leistungsenergie anhand der Tabelle \ref{tab:kcal}, indem Sie für zwei Listen erstellen: 
-\begin{enumerate}
-\item Eine Liste für die Zeit, während der Sie täglich einer Aktivität nachgehen
-\item Eine Liste mit dem Kalorienverbrauch pro Minute für jede dieser Aktivitäten
-\end{enumerate} 
-
-\begin{table}[H]
-\centering
-\begin{tabular}{c|*{10}{c}}
-\textbf{Gewicht (kg)} & 60 & 65 & 70 & 75 & 80 & 85 & 90 & 95 & 100 & 105 \\
-\midrule\midrule
-\textbf{Spazieren} & 4.5 & 5.1 & 5.4 & 5.7 & 6.0 & 6.4 & 6.7 & 7.3 & 8.0 & 9.0 \\
-\midrule
-\textbf{Schnelles Gehen} & 5.5 & 6.3 & 7.0 & 7.5 & 8.0 & 8.6 & 9.5 & 10.0 & 10.6 & 11.3 \\
-\midrule
-\textbf{Fahrradfahren} & 6.5 & 7.5 & 8.0 & 9.0 & 9.5 & 10.3 & 11.0 & 11.7 & 12.5 & 13.6 \\
-\midrule
-\textbf{Schwimmen} & 8.0 & 9.2 & 10.0 & 10.8 & 11.5 & 12.5 & 13.7 & 14.4 & 15.4 & 16.5 \\
-\midrule
-\textbf{Rudern} & 11.0 & 13.0 & 14.3 & 15.0 & 16.5 & 17.5 & 19.0 & 20.5 & 21.8 & 23.5 \\
-\midrule
-\textbf{Jogging} & 13.0 & 14.5 & 16.0 & 17.5 & 19.0 & 20.0 & 22.0 & 23.5 & 24.5 & 26.5 \\
-\midrule
-\textbf{Laufen} & 16.0 & 18.5 & 20.0 & 22.0 & 23.5 & 25.0 & 27.5 & 29.0 & 31.0 & 33.5 \\
-\midrule
-\textbf{Sprint} & 19.0 & 21.5 & 24.0 & 26.0 & 28.0 & 30.0 & 32.5 & 34.7 & 35.6 & 39.0 \\
-\end{tabular}
-\caption{Kalorienverbrauch für unterschiedliche Aktivitäten, pro Minute}
-\label{tab:kcal}
-\end{table}
-Wenn z.B. eine 80 kg schwere Person 1 Stunde lang rudert und 20 Minuten spaziert wären die Listen wie folgt:
-\begin{lstlisting}
-l_zeit = [60, 20] # Zeit in Minuten
-l_kcal = [16.5, 6] # Kalorien pro Aktivität
-\end{lstlisting}
-Schreiben Sie eine Python-Funktion \lstinline|berechne_leistungsumsatz|, um Ihren Leistungsumsatz zu berechnen. Das erwartete Resultat für das Beispiel hier wäre: \lstinline|1110| (= Summe von \lstinline|[990, 120]|). Das Resultat soll an das Hauptprogramm zurückgegeben und in einer Variable \texttt{kalorienverbrauch} gespeichert werden.
-\begin{myanswer}
-\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/leistungsumsatz.py}
-\end{myanswer}
-
-\end{mysubmission}
-
-\begin{mysubmission}
-Schreiben Sie nun eine weitere Funktion, die Ihren gesamten Energieumsatz berechnet, als Summe Ihres BMRs, den Sie in \cref{ex:bmr} berechnet haben (durchschnitt der drei Formeln) und Ihres Leistungsumsatzes, den Sie in \cref{ex:leistungsumsatz} berechnet haben. Die Funktion ist extrem kurz und umfässt nur eine Zeile.
-\begin{lstlisting}
-bmr = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
-l = berechne_leistungsumsatz(l_zeit, l_kcal)
-
-def berechne_total(bmr, l):
-    return bmr + l
-
-total = berechne_total(bmr, l)
-\end{lstlisting}
-\end{mysubmission}
-
-
-\begin{myexercise}
-Sie hatten zum Mittagessen ein Sandwich sowie einen Energy-Drink. Sie möchten gerne wissen, wie viele Kalorien das gesamte Mittagessen hatte, die Nährwerte sind jedoch nur pro 100 Gramm oder 100 Milliliter (wobei 100 Gramm = 100 Milliliter sind) angegeben. Berechnen Sie die Gesamt-Kalorien, indem Sie folgende zwei Listen erstellen:
-\begin{itemize}
-\item \lstinline|l_kcal|: Liste der Kalorien pro 100 Gramm (bzw. 100 Militer) für das Sandwich und den Energy-Drink.
-\item \lstinline|l_gram|: Liste der Mengen in Gramm, bzw. Mililiter für das Sandwich und den Energy Drink.
-\end{itemize}
-Die Nährwert-Informationen entnehmen Sie dem Bild \cref{fig:lunch-kcal}
-\begin{figure}[H]
-\centering
-\includegraphics[height=0.2\paperheight]{GrundlagenInfo/00_Programmieren/Figures/el-tony-mate-ginger.png}
-\includegraphics[height=0.2\paperheight]{GrundlagenInfo/00_Programmieren/Figures/el-tony-kcal}
-\includegraphics[height=0.2\paperheight]{GrundlagenInfo/00_Programmieren/Figures/sandwich}
-\includegraphics[height=0.2\paperheight]{GrundlagenInfo/00_Programmieren/Figures/sandwich-back}
-\caption{Mittagessen und dazugehörige Kalorien-Informationen}
-\label{fig:lunch-kcal}
-\end{figure}
-
-\begin{myanswer}
-\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/kcal_info.py}
-\end{myanswer}
-\end{myexercise}
-
-\begin{mycaution}
-Die Zahlen zu Energiebedarf und Kalorien, die Sie im Rahmen dieser Übungen berechnet haben, sollten Sie mit Vorsicht geniessen, aus folgenden Gründen:
-\begin{itemize}
-\item Ihr realer Energiebedarf kann signifikant von Ihrem berechneten Energiebedarf abweichen. Viele weitere Faktoren, die nicht in den Formeln enthalten sind, können diesen beeinflussen, beispielsweise Ihre Köpertemperatur, Ihre Fitness, Ihre Muskelmasse, sowie Ihre \gls{NEAT}, wobei Letzteres Energie bezeichnen, die Sie durch Bewegungen, die nicht Sport sind, verbrauchen (beispielsweise durch ``Zappeln'' aber auch kurze Spaziergänge und alltägliche Aktivitäten).
-\item Sie sollten sich bezüglich konsumierter Kalorien vor Augen halten, dass ``zu viele'' konsumierte Kalorien nicht automatisch mit einer Gewichtszunahme verbunden sind. In einem Kilo Körperfett stecken ca. 8000 Kilokalorien, wobei der Köper über verschiedene Mechanismen verfügt, um ein stabiles Körpergewicht zu halten, etwa die Erhöhung oder Senkung der Körpertemperatur im Falle eines kurzfristigen Kalorien-Überschusses, respektive -Defizits. Allerdings kann es interessant sein, zu wissen, dass einige, nicht sehr sättigende Lebensmittel besonders viele Kalorien enthalten –– wie beispielsweise hochverarbeitete Snacks oder Süssgetränke.
-\end{itemize}
-\end{mycaution}
-
-\begin{mychallenge}
-Schreiben Sie nun eine Definition, mit der Sie beliebig viele Nährwerte und Mengenangaben mittels Input eingeben. Die Definition soll folgendes machen:
-\begin{enumerate}
-\item Mittels \lstinline|input("...")| nach einer Kalorienangabe für ein Lebensmittel fragen (pro 100 Gramm).
-\item Mittels \lstinline|input("...")| nach der konsumierten Menge für dasselbe Lebensmittel fragen.
-\item Mittels \lstinline|input("...")| fragen, ob noch weitere Lebensmittel hinzukommen.
-\end{enumerate}
-
-Schritt 1-2 sollen so lange wiederholt werden, bis in Schritt 3  \lstinline|False| eingegeben wird.
-\begin{myanswer}
-\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/kcal_input.py}
-\end{myanswer}
-
-\end{mychallenge}
 
 \subsection{Weitere Übungen}
 
