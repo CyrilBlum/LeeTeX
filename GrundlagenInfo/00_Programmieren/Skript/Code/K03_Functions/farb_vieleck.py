@@ -9,3 +9,5 @@ def farb_vieleck(ecken, farbe):
 farb_vieleck(3,"red")
 farb_vieleck(6,"green")
 farb_vieleck(4,"blue")
+
+t.done()
