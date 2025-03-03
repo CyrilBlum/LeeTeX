@@ -1,3 +1,5 @@
+\lstset{style=Python,escapeinside={(*@}{@*)}}
+
 \begin{frame}{Komplexitätstheorie}
 	\begin{itemize}
 		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch
@@ -52,7 +54,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile, t]{Analyse von InsertionSort}
+\begin{frame}[fragile]{Analyse von InsertionSort}
 	\begin{lstlisting}[escapechar=!]
 	def InsertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
@@ -66,24 +68,59 @@
 	\end{lstlisting}
 	\begin{tikzpicture}[overlay, remember picture,
 			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
-		\visible<2>{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!50!white};}
-		\visible<3>{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n$}{green!50!white};}
-		\visible<4>{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!50!white};}
-		\visible<5>{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!50!white};}
-		\visible<6>{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!50!white};}
-		\visible<7>{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!50!white};}
-		\visible<8>{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!50!white};}
-		\visible<9>{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!50!white};}
-		\visible<10>{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!50!white};}
+		\only<2->{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!50!white};}
+		\only<3->{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n$}{green!50!white};}
+		\only<4->{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!50!white};}
+		\only<5->{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!50!white};}
+		\only<6->{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!50!white};}
+		\only<7->{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!50!white};}
+		\only<8->{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!50!white};}
+		\only<9->{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!50!white};}
+		\only<10->{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!50!white};}
 	\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile]{Analyse von InsertionSort}
+	\begin{lstlisting}[escapechar=!]
+	def InsertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
+        for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
+            key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
+            i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
+            while i >= 0 and A[i] > key: !\tikzmark{c5end}!       !\tikzmark{c5start}!
+                A[i + 1] =  A[i] !\tikzmark{c6end}!               !\tikzmark{c6start}!
+                i -= 1 !\tikzmark{c7end}!                         !\tikzmark{c7start}!
+            A[i + 1] = key !\tikzmark{c8end}!                     !\tikzmark{c8start}!
+        return A !\tikzmark{c9end}!                               !\tikzmark{c9start}!
+	\end{lstlisting}
+	\begin{tikzpicture}[overlay, remember picture,
+			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
+		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!50!white};}
+		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n$}{green!50!white};}
+		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!50!white};}
+		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!50!white};}
+		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!50!white};}
+		{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!50!white};}
+		{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!50!white};}
+		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!50!white};}
+		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!50!white};}
+	\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}{worst case}
+	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (achtung: wir meinen wirklich die minimale) Laufzeit welche unser InsertionSort Algorithmus benötigt, um jede (auch die schlimmste / schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
+
+	Für $T(n)$ gilt natürlich:
 	\begin{align*}
 		T(n) = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) + \\
 		+ c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}}
 	\end{align*}
+	Doch wie lauten die Terme $t_j$?
 \end{frame}
 
 \begin{frame}[fragile]{Worst Case}
-	Im schlimmsten Fall (worst case) ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0...j-1]} verglichen werden, also mit $j+1$ vielen. Somit gilt also
+	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0...j-1]} verglichen werden, also mit $j+1$ vielen. Somit gilt also
 	\begin{align*}
 		t_j = j + 1, \quad i = 1, 2, \ldots, n-1.
 	\end{align*}
@@ -104,12 +141,12 @@
 
 \begin{frame}[fragile]
 	\begin{align*}
-		T(n) & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                             \\
-		     & + c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}} =                     \\
-		     & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                             \\
-		     & + c_5\lr{\textcolor{RoyalBlue}{\frac{n(n+1)}{2} - 1}} + c_6\lr{\textcolor{Magenta}{\frac{n(n-1)}{2}}} =                                   \\
-		     & = \underbrace{\lr{\frac{c_5}{2} + \frac{c_6}{2}}}_{a}n^2 + \underbrace{\lr{c_2 + c_3 + c_4 + \frac{c_5}{2} - \frac{c_6}{2} + c_8}}_{b}n + \\
-		     & + \underbrace{\lr{c_1 - c_3 - c_4 - c_5 - c_8 + c_9}}_{c} =                                                                               \\
+		T(n) & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                                 \\
+		     & + c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}} =                         \\
+		     & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                                 \\
+		     & + c_5\lr{\textcolor{RoyalBlue}{\frac{n(n+1)}{2} - 1}} + c_6\lr{\textcolor{Magenta}{\frac{n(n-1)}{2}}} =                                       \\
+		     & = \underbrace{\lr{\frac{c_5}{2} + \frac{c_6}{2}}}_{=:a}n^2 + \underbrace{\lr{c_2 + c_3 + c_4 + \frac{c_5}{2} - \frac{c_6}{2} + c_8}}_{=:b}n + \\
+		     & + \underbrace{\lr{c_1 - c_3 - c_4 - c_5 - c_8 + c_9}}_{=:c} =                                                                                 \\
 		     & = an^2 + bn + c
 	\end{align*}
 \end{frame}
