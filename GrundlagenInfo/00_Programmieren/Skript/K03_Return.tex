@@ -52,11 +52,11 @@ Dass der ursprüngliche Code nun übersichtlicher ist, wird in folgenden zwei Co
 \begin{lstlisting}[escapechar=!]
 import turtle as t
 
-for _ in range(10):    !\tikzmark{repOuterStart}!
+for _ in range(10):   !\tikzmark{repOuterStart}!
     for _ in range(4):!\tikzmark{repInnerStart}!
         t.fd(100)
-        t.rt(360 / 4)      !\tikzmark{repInnerEnd}!
-    t.fd(360 / 10)         !\tikzmark{repOuterEnd}!
+        t.rt(360 / 4) !\tikzmark{repInnerEnd}!
+    t.fd(360 / 10)    !\tikzmark{repOuterEnd}!
     
 t.done()
 \end{lstlisting}
@@ -169,20 +169,20 @@ Packen Sie Ihre Lösung aus \cref{myexercise:Haus} in eine Funktion mit dem Name
 % TODO weitere Übungen
 \section{Parameter}
 
-\begin{myexample}\label{example:params}
 Stellen Sie sich vor, sie wollen drei unterschiedlich grosse Quadrate zeichnen. Sie könnten folgendermassen vorgehen:
 
 \lstinputlisting[language=Python,caption=\texttt{noparams.py},label=listing:blume]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/squares_noparams.py}
 
-Das ging gerade noch! Was jedoch, wenn Sie 20 unterschiedlich grosse Quadrate zeichnen wollen? Brauchen Sie dann 20 Definitionen? Zum Glück nicht, da Sie hierfür Parameter verwenden können, wie in folgendem Beispiel gezeigt:
+Das ging gerade noch! Was jedoch, wenn Sie 20 unterschiedlich grosse Quadrate zeichnen wollen? Brauchen Sie dann 20 Definitionen? Zum Glück nicht, wie Beispiel \cref{ex:params} gezeigt
 
-\lstinputlisting[language=Python,caption=\texttt{params.py},label=listing:blume]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/squares_params.py}
+\begin{myexample}\label{ex:params}
+Folgendes Beispiel verwendet einen \textit{Parameter} \texttt{laenge}, um die Länge des Quadrats jedes Mal anzupassen:
 
 \begin{lstlisting}[escapechar=!]
 import turtle as t
 
 def quadrat(!\colorbox{DeepPink}{la\tikzmark{arrowTo1}enge}!):
-	repeat 4:
+	for _ in range(4):
 		t.fd(!\colorbox{DeepPink}{la\tikzmark{arrowTo2}enge}!) 
 		t.rt(90)
 
@@ -202,16 +202,16 @@ quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow3From}50}!)
 Schreiben Sie folgende Funktionen und testen Sie diese, indem Sie sie auf Moodle hochladen:
 
 \begin{itemize}
-\item \lstinline|def summiere(x1, x2)|: Berechnet die Summe zweier Parameter \lstinline|x1| und \lstinline|x2| und gibt das Resultat auf der Konsole aus.
+\item \lstinline|def summiere(x1, x2)|: Berechnet die Summe zweier Parameter \lstinline|x1| und \lstinline|x2| und gibt das Resultat auf der Konsole aus (mit \lstinline|print|).
 \item \lstinline|def summe_quadrate(x1, x2)|: Berechnet die Summe von \texttt{x1}$^2$ + \texttt{x2}$^2$ und gibt das Resultat auf der Konsole aus.
-\item \lstinline|def pizzaparty(personen, stuecke)|: Berechnet die Anzahl Pizza-Stücke, die bei \texttt{personen} Personen übrigbleiben, aus \cref{ex:modulo-pizza} und gibt sie per \lstinline|print| aus.
+\item \lstinline|def pizzaparty(personen, stuecke)|: Berechnet die Anzahl Pizza-Stücke, die bei \texttt{personen} Personen übrigbleiben, aus \cref{ex:modulo-pizza} und gibt sie auf der Konsole aus.
 \end{itemize}
 % TODO implement on Moodle
 \end{myexercise}
 
 \subsection{Lebensdauer (\textit{scope}) einer Variable}
 
-Im Code aus \cref{example:params} wird bei \textit{jedem Aufruf} der Definition \lstinline|quadrat| eine neue Variable \texttt{laenge} erstellt, welche nur \textit{innerhalb} der Funktion existiert und welche jedes Mal einen anderen Wert hat. Den Wert erhält die Variable zum Zeitpunkt des \textit{Aufrufs} der Funktion, also auf den Zeilen 8, 9 und 10!
+Im Code aus \cref{ex:params} wird bei \textit{jedem Aufruf} der Definition \lstinline|quadrat| eine neue Variable \texttt{laenge} erstellt, welche nur \textit{innerhalb} der Funktion existiert und welche jedes Mal einen anderen Wert hat. Den Wert erhält die Variable zum Zeitpunkt des \textit{Aufrufs} der Funktion, also auf den Zeilen 8, 9 und 10!
 
 Die Variable \texttt{laenge} existiert also nur innerhalb der Definition \lstinline|quadrat| Wenn wir nach Zeile 6 im Hauptprogramm (nicht eingerückt) den Befehl \texttt{print(laenge)} eingeben würden, würden wir eine Fehlermeldung erhalten, da es die Variable nicht mehr gibt. Parameter sind also immer \textbf{\textit{lokale} Variablen}, ebenso wie Variablen, welche wir innerhalb von Funktion erstellen. Diese Variablen \enquote{sterben} nach Ausführung der Definition, daher spricht man auch von der Lebensdauer einer Variable, bzw. von deren Reichweite (en. \textit{scope})
 
@@ -255,7 +255,7 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
 Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich auch noch die Stiftdicke verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie den Befehl \texttt{t.width(...)}.
 \end{myexercise} 
 
-\section{Befehle / Funktionen mit Parameter, mit \texorpdfstring{\lstinline|return|}{return}}
+\section{Werte zurückgeben mit \texorpdfstring{\lstinline|return|}{return}}
 \subsection{Einzelne Funktionen}
 
 Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden: Sie beschreiben einen Ablauf, ohne jedoch diesen auszuführen. Damit der Ablauf ausgeführt wird, müssen Sie die Definition aufrufen. Dies kann nützlich sein, wenn sie eine Aufgabe mehrmals und in unterschiedlichen Varianten ausführen wollen, wie beispielsweise das Zeichnen einer Spirale. Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen, jedoch keine Werte an das Hauptprogramm zurückgeben konnten. In diesem Kapitel lernen wir, wie Funktionen wie ``Sous-Chefs'' in einer komplexen Küche Zutaten (Parameter) entgegennehmen und Resultate an andere ``Sous-Chefs''  (Definitionen) weitergeben können.
@@ -316,7 +316,7 @@ print(res)
 \end{minipage}
 \end{myexample}
 
-\begin{mysubmission}
+\begin{mysubmission}\label{ex:dreieck-return}
 Geben seien die Höhe \texttt{h} und die Grundseite \texttt{b} eines Dreiecks. Schreiben Sie eine Funktion \lstinline|def flaeche_dreieck(h, b)|, welche den Flächeninhalt dieses Dreiecks berechnet und mit \lstinline|return| zurückgibt.
 
 Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
@@ -328,7 +328,7 @@ def flaeche_dreieck(h, b):
 \end{myanswer}
 \end{mysubmission}
 
-\begin{mysubmission}
+\begin{mysubmission}\label{ex:quadrat-return}
 Geben sei eine ganze Zahl \texttt{n}. Schreiben Sie eine Funktion \lstinline|def square(n)|, welche das Quadrat von \lstinline|n| berechnet und mit \lstinline|return| zurückgibt.
 
 Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
@@ -340,10 +340,17 @@ def square(n):
 \end{myanswer}
 \end{mysubmission}
 
+\begin{myexercise}\label{ex:print-vs-return}
+In welchen Fällen ist es sinnvoller, einen Wert einfach per \lstinline|print| auf der Konsole auszugeben, und wann ist ein \lstinline|return|-Befehl sinnvoller? Ist das Zurückgeben des Werts in \cref{ex:quadrat-return} und \cref{ex:dreieck-return} sinnvoll, oder würde hier auch ein \lstinline|print| reichen?
+\begin{myanswer}
+\lstinline|return|-Ausdrücke ergeben vor allem dann sinn, wenn mit einem Wert, welcher in einer Funktion berechnet wurde, \textit{ausserhalb der Funktion weitergerechnet} werden soll. In allen anderen Fällen reicht ein \lstinline|print| meist aus. Auch bei \cref{ex:quadrat-return} und \cref{ex:dreieck-return} würde ein einfaches \lstinline|print| reichen.
+\end{myanswer}
+\end{myexercise}
+
 
 
 \subsection{Mehrere Funktionen}
-Wozu kann ein \lstinline|return| eigentlich nützlich sein? Wenn Sie Code schreiben, wird dieser oftmals schnell komplizierter. Somit kann es hilfreich sein, die einzelnen Schritte in Unter-Programme aufzuteilen. Dies erleichtert zudem die \textbf{Modularisierung} und \textbf{Wiederverwendbarkeit} von Code: Beispielsweise könnte eine Funktion, die das Maximum einer Liste berechnet, an verschiedenen Orten in einem längeren Programm mehrmals zum Einsatz kommen
+Wie Sie in \cref{ex:print-vs-return} gesehen haben, ist ein \lstinline|return| in vielen Fällen nicht notwendig, ein einfaches \lstinline|print| reicht in vielen Fällen aus. Wozu kann ein \lstinline|return| eigentlich nützlich sein? Wenn Sie Code schreiben, wird dieser oftmals schnell komplizierter. Somit kann es hilfreich sein, die einzelnen Schritte in Unter-Programme aufzuteilen. Dies erleichtert zudem die \textbf{Modularisierung} und \textbf{Wiederverwendbarkeit} von Code: Beispielsweise könnte eine Funktion, die das Maximum einer Liste berechnet, an verschiedenen Orten in einem längeren Programm mehrmals zum Einsatz kommen
 
 Zum Vergleich: stellen Sie sich vor, Sie arbeiten in einer edlen Michelin-Sterne-Küche an einem raffinierten Gericht, in das viele Arbeitsschritte involviert sind. Häufig müssen in solchen Restaurants bis zu 200 Schritte pro Gericht ausgeführt werden. Daher könnte es sinnvoll sein, einzelne Aufgaben, wie beispielsweise die Herstellung der Saucen, an Ihre Sous-Chefs zu delegieren, und eine Person zu bestimmen, die das ganze Gericht zusammenfügt. Häufig werden Funktionen genau mit solchen komplexen Aufgaben im Hinterkopf geschrieben. Diese Idee ist in \cref{fig:funktionen-mehrere} illustriert.
 
@@ -385,18 +392,18 @@ def berechne_rabatt(preis, rabatt_prozent):
     (*@\colorbox{CornflowerBlue}{return preis - \tikzmark{arrowFromEx11} rabatt}@*) # Gibt den Preis nach Abzug des Rabatts zurück
 
 
-def berechne_gesamtpreis(preis, rabatt_prozent, mehrwertsteuer_prozent):
+def berechne_gesamtpreis(preis, rabatt_prozent, mwst_prozent):
     (*@\colorbox{CornflowerBlue}{rabatt\tikzmark{arrowToEx11}preis}@*) = berechne_rabatt(preis, rabatt_prozent)
-    mwst = rabattpreis * (mehrwertsteuer_prozent / 100)
+    mwst = rabattpreis * (mwst_prozent / 100)
     return (*@\colorbox{CornflowerBlue}{rabattpre\tikzmark{arrowFromEx12}is + mwst}@*)  # Gibt den Gesamtpreis inklusive Mwst. zurück
 
 
 # Anwendung
 preis = 100  # Basispreis in CHF
 rabatt_prozent = 10  # Rabatt in %
-mehrwertsteuer_prozent = 7.7  # Mehrwertsteuer in %
+mwst_prozent = 7.7  # Mehrwertsteuer in %
 
-(*@\colorbox{CornflowerBlue}{endp\tikzmark{arrowToEx12}reis}@*) = berechne_gesamtpreis(preis, rabatt_prozent, mehrwertsteuer_prozent)
+(*@\colorbox{CornflowerBlue}{endp\tikzmark{arrowToEx12}reis}@*) = berechne_gesamtpreis(preis, rabatt_prozent, mwst_prozent)
 print("Der Endpreis nach Rabatt und Mehrwertsteuer ist:", endpreis)
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
@@ -408,8 +415,6 @@ print("Der Endpreis nach Rabatt und Mehrwertsteuer ist:", endpreis)
 \end{myexample}
 
 
-
-\begin{myexample}
 Mit folgendem Code können wir die Turtle eine Spirale aus mehreren Kreisen zeichnen lassen:\\
 \begin{minipage}{.65\textwidth}
 \begin{lstlisting}
@@ -439,16 +444,15 @@ vieleck_muster(500,35)
 \end{figure}
 \end{minipage}\\
 
+\begin{myexample}
 Leider ist unsere Turtle etwas müde und sollte nicht zu viel laufen. Daher möchten wir fortlaufend die Gesamtdistanz berechnen, um am Ende herauszufinden, ob unsere Turtle zu viel Strecke zurückgelegt hat. Dies können wir tun, indem wir die Funktion einen Wert zurückgeben lassen:
 \begin{lstlisting}
-from gturtle import *
-makeTurtle()
-hideTurtle()
+import turtle as t
 
 def vieleck(umfang, ecken):
-    repeat ecken:
-        fd(umfang/ecken)
-        rt(360/ecken)
+    for _ in range(ecken):
+        t.fd(umfang/ecken)
+        t.rt(360/ecken)
 
 def vieleck_muster(umfang, ecken):
 	(*@\colorbox{CornflowerBlue}{gesamtdistanz=0}@*)
@@ -456,7 +460,7 @@ def vieleck_muster(umfang, ecken):
         vieleck(umfang, ecken)
         (*@\colorbox{CornflowerBlue}{gesamtdistanz+=umfang}@*)
         umfang-=10
-        rt(10)
+        t.rt(10)
     (*@\colorbox{CornflowerBlue}{return gesamtdistanz}@*)
     
 (*@\colorbox{CornflowerBlue}{gesamtdistanz = }@*)vieleck_muster(500,35)

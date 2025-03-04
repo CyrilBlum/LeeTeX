@@ -1,9 +1,9 @@
 \chapter{Logische Ausdrücke}\label{ch:K03_logical}
 
-\section{Logische Ausdrücke mit \lstinline|if|, \lstinline|elif| und \lstinline|else|}
+\section{Logische Ausdrücke mit \texorpdfstring{\lstinline|if|}{if}, \texorpdfstring{\lstinline|elif|}{elif} und \texorpdfstring{\lstinline|else|}{else}}
 In vielen Fällen möchten wir Code nur Ausführen, \textit{falls} eine gewisse Bedingung wahr ist: beispielsweise möchte ein Arzt nur dann eine Warnung erhalten, wenn der Blutdruck eines Patienten zu hoch ist, oder ein selbstfahrendes Auto sollte nur dann piepsen, wenn der Fahrer nicht aufmerksam auf die Strasse schaut. Um solche \textit{konditionale} (bedingte) Logik zu programmieren, können wir die Begriffe \lstinline|if| (\enquote{falls}), \lstinline|elif| (\enquote{sonst falls}) und \lstinline|else| (\enquote{in allen anderen Fällen}) verwenden.
 
-\subsection{Logische Ausdrücke mit \lstinline|if|}
+\subsection{Logische Ausdrücke mit \texorpdfstring{\lstinline|if|}{if}}
 
 \begin{myexample}
 Folgendes Beispiel führt nur zu einem Output, falls eine Note gleich 100 eingegeben wird.
@@ -32,7 +32,7 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 \end{figure}
 Dabei bezeichnen rote Boxen eine Zeile Code, grüne Formen einen Test der schwarze Punkt das Programmende.
 \end{myexample}
-\subsection{Logische Ausdrücke mit \lstinline|if| und \lstinline|else|}
+\subsection{Logische Ausdrücke mit \texorpdfstring{\lstinline|if|}{if} und \texorpdfstring{\lstinline|else|}{else}}
 
 \begin{myexample}
 In folgendem Code wird mit dem \lstinline|else|-Ausdruck ein Fall definiert, welcher ausgeführt wird, sofern die \lstinline|if|-Kondition nicht zutrifft.
@@ -66,7 +66,7 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 \end{figure}
 \end{myexample}
 
-\subsection{Logische Ausdrücke mit \lstinline|if|, \lstinline|elif| und \lstinline|else|}
+\subsection{Logische Ausdrücke mit \texorpdfstring{\lstinline|if|}{if}, \texorpdfstring{\lstinline|elif|}{elif} und \texorpdfstring{\lstinline|else|}{else}}
 \begin{myexample}
 Folgender Code führt eine von drei Möglichkeiten aus:
 \begin{lstlisting}        
@@ -162,122 +162,18 @@ else:
 \end{lstlisting}
 \end{myexercise}
 
-\section{Fussgesteuerte Schleifen mit \lstinline|break|}
-Bisher haben wir eine Art von Schleife gesehen: \lstinline|for _ in range(...)|. Dabei gibt die Zahl innerhalb des Befehls \lstinline|range(...)| an, wie viele Mal der Schleifenkörper wiederholt wird. Manchmal wissen wir jedoch nicht im voraus, wie viele Male eine Schleife wiederholt werden soll, wir kennen jedoch eine Bedingung, bei der die Schleife abgebrochen werden soll. Dies könnte beispielsweise der Fall sein, wenn wir eine Spirale zeichnen wolle, die immer grösser wird, bis die Seitenlänge eine gewisse maximale Länge \lstinline|max_seite| erreicht hat.
-
-
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.2\linewidth]{GrundlagenInfo/00_Programmieren/Figures/spirale_while}
-\caption{Bild einer Spirale, deren grösste Seitenlänge \lstinline|max_seite| lang ist}
-\end{figure}
-
-Natürlich könnte man auch hier berechnen, wie viele Male die \lstinline|for|-Schleife ausgeführt werden muss. Die Formel, um dies zu berechnen, wäre:
-\[\floor{\frac{\text{\texttt{maxseite - seite}}}{\text{\texttt{add}}}} + 1\]
-
-Es geht allerdings auch einfacher, indem wir eine ``unendliche'' Schleife starten, die wir abbrechen, sobald eine gewisse Kondition wahr ist.
-
-
-\begin{lstlisting}[escapechar=!]
-import turtle as t
-
-# Tempo der Turtle festlegen
-t.speed(100)
-
-# gleichseitiges Dreieck zeichnen
-seite = 5
-max_seite = 50
-increment = 5
-while True:!\tikzmark{repeatFrom}!                            !\tikzmark{repeat}!
-    if seite > max_seite:
-        break!\tikzmark{breakFrom}!                       !\tikzmark{break}!
-    t.fd(seite)
-    t.rt(90)
-    seite += increment
-
-# Turtle-Zeichnung stehen lassen
-t.done()
-\end{lstlisting}
-
-%\lstinputlisting[language=Python,caption=\texttt{spirale.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Logic/spirale.py}
-
-\begin{tikzpicture}[overlay, remember picture,
-    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-    \drawArrow{repeatFrom}{repeat}{\footnotesize Unendliche Schleife}{DeepPink};
-    \drawArrow{breakFrom}{break}{\footnotesize Schleifenabbruch}{DeepPink};
-\end{tikzpicture}
-
-\section{Kopfgesteuerte Schleifen mit \lstinline|while|}
-
-\begin{minipage}{.45\textwidth}
-\begin{lstlisting}[escapechar=!]
-import turtle as t
-
-def spirale(seite, add, max_seite):
-    while True:               !\tikzmark{fromStart}!
-    	if seite > max_seite:
-    	    break             !\tikzmark{fromEnd}!
-        t.fd(seite)
-        t.rt(90)
-        seite+=add
-
-spirale(10, 10, 100)
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}{.45\textwidth}
-\begin{lstlisting}[escapechar=!]
-import turtle as t
-
-def spirale(seite, add, max_seite):
-    !\tikzmark{toStart}!!\tikzmark{toEnd}!while seite > max_seite:
-        t.fd(seite)
-        t.rt(90)
-        seite+=add
-        
-spirale(10, 10, 100)
-\end{lstlisting}
-\end{minipage}
-\begin{tikzpicture}[overlay, remember picture,
-    every edge/.append style = { ->, thick, >=stealth, red!70},
-    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-	
-	\drawBrace{0em}{fromStart}{fromEnd}{}{.5}{}{}
-	\drawBrace{-.5em}{toStart}{toEnd}{}{.5}{mirror}{}
-	% arrow pointing from one code to other
-	\draw[->, style={thick, >=stealth, red!70}] (fromStartfromEnd-coord-arrow) to (toStarttoEnd-coord-arrow);
-\end{tikzpicture}
-
-
-\begin{myattention}[Endlos-Schleifen]
-Beachten Sie folgende Punkte:
-\begin{itemize}
-\item Passen Sie auf, dass Sie keine unendlichen Schleifen produzieren! In diesem Fall kann das Programm, auf dem Python läuft, hängen bleiben. Vergessen Sie daher nie die Abbruchkondition klar zu formulieren!
-\item Ein \lstinline|while True:| (unendliche Schleife) ohne \lstinline|break| kann zum Absturz des Programms führen \emoji{face-with-spiral-eyes}
-\item Je nachdem kann das auch in einem \lstinline|while| mit einer Kondition passieren, sofern die Bedingung nach dem \lstinline|while| so geschrieben ist, dass sie immer wahr (\lstinline|True|) ist (s. \cref{subsec:semantische-fehler} zu semantischen Fehlern).
-\item \textbf{Speichern Sie regelmässig Ihre Aufgaben!}
-\item Falls das Programm VSCodium hängenbleibt: Beenden mit \keys{Ctrl+Alt+\backdel} (Windows), bzw. Activity Monitor unter MacOS
-\end{itemize}
-\end{myattention}
-
-\begin{myexercise}
-Schreiben Sie eine Funktion \lstinline|verdreifache_bis_ueber1Mio(zahl)|, welche eine Zahl \texttt{zahl} so lange immer wieder verdreifacht, bis \texttt{zahl} erstmals grösser als 1'000'000 ist. Dabei sollen alle Zwischenresultate in der Konsole ausgegeben werden. Am Schluss soll ausserdem die Anzahl Verdreifachungen ausgedruckt werden.
-\begin{myanswer}
-\lstinputlisting[language=Python,caption=\texttt{while\_verdreifache.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/while_verdreifache.py}
-\end{myanswer} 
-\end{myexercise}
-
 \section{Bool'sche Ausdrücke}
 \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele sind:
-\begin{itemize}
-    \item \lstinline|3 == 5 # False|
-    \item \lstinline|(9 + 3) < (2 * 8) # True|
-\end{itemize}
+\begin{lstlisting}
+3 == 5 # gibt den Wert False zurück
+(9 + 3) < (2 * 8) # gibt den Wert True zurück
+\end{lstlisting}
+
+Wie Sie in den obigen Beispielen sehen, wird von einem Wahrheitstest ein \textbf{Wert} zurückgegeben: entweder der Wert \lstinline|True| (Wahr) oder \lstinline|False| (Falsch).
 
 Mögliche boolsche Relationen sind in \cref{table:bool} abgebildet.
     \begin{table}[H]
         \centering
-        \footnotesize
         \begin{tabular}{c||c}
         \textbf{Python} & \textbf{Mathematische Bedeutung} \\\midrule 
              \lstinline|==| & gleich ($=$)\\
@@ -290,11 +186,13 @@ Mögliche boolsche Relationen sind in \cref{table:bool} abgebildet.
         \caption{Bool'sche Relationen und Schreibweise in Python}
         \label{table:bool}
     \end{table}
-Die typische Verwendungsart bool'scher Audrücke ist in folgendem Code abgebildet:
+Bool'sche Audrücke wie z.B. \lstinline|3 < 45| führen zu einem Bool'schen Wert, also einem Wahrheitswert, welcher entweder den Wert \lstinline|True| (wahr) oder \lstinline|False| (falsch) hat.
+ 
+Die typische Verwendungsart bool'scher Werte ist in folgendem Code abgebildet:
 \begin{lstlisting}
-if BOOLSCHER_AUSDRUCK:
+if BOOLSCHER_WERT:
     # dieser Code wir höchstens dann ausgeführt, wenn 
-    # BOOLSCHER_AUSDRUCK wahr ist (True)
+    # BOOLSCHER_WERT wahr ist (True)
 \end{lstlisting}
 
 \begin{myexercise}
@@ -319,8 +217,133 @@ def maxzahl(x1, x2):
 \begin{mychallenge}
 Lösen Sie die Aufgabe ``Dynamisches Schachbrett'' auf Moodle.
 \end{mychallenge}
+\section{Fussgesteuerte Schleifen mit \texorpdfstring{\lstinline|break|}{break}}
+
+Bisher haben wir eine Art von Schleife gesehen: \lstinline|for _ in range(...)|. Dabei gibt die Zahl innerhalb des Befehls \lstinline|range(...)| an, wie viele Mal der Schleifenkörper wiederholt wird. Manchmal wissen wir jedoch nicht im voraus, wie viele Male eine Schleife wiederholt werden soll, wir kennen jedoch eine Bedingung, bei der die Schleife abgebrochen werden soll. Dies könnte beispielsweise der Fall sein, wenn wir eine Spirale zeichnen wolle, die immer grösser wird, bis die Seitenlänge eine gewisse maximale Länge \lstinline|max_seite| erreicht hat.
 
 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.2\linewidth]{GrundlagenInfo/00_Programmieren/Figures/spirale_while}
+\caption{Bild einer Spirale, deren grösste Seitenlänge \lstinline|max_seite| lang ist}
+\end{figure}
+
+Natürlich könnte man auch hier berechnen, wie viele Male die \lstinline|for|-Schleife ausgeführt werden muss. Die Formel, um dies zu berechnen, wäre:
+\[\floor{\frac{\text{\texttt{maxseite - seite}}}{\text{\texttt{add}}}} + 1\]
+
+Es geht allerdings auch einfacher, indem wir eine ``unendliche'' Schleife starten, die wir abbrechen, sobald eine gewisse Kondition wahr ist.
+
+Grundsätzlich können wir auch direkt die Werte \lstinline|True| (Wahr) oder \lstinline|False| (Falsch) in Bool'schen Ausdrücken verwenden:
+
+\begin{myexample}
+Der \lstinline|print|-Befehl in folgendem Beispiel wird immer ausgeführt:
+\begin{lstlisting}
+if True:
+	print("Hello World")
+\end{lstlisting}
+\end{myexample}
+
+Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endlosschleife mit \lstinline|while True:| zu konstruieren.
+
+
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+# Tempo der Turtle festlegen
+t.speed(100)
+
+# gleichseitiges Dreieck zeichnen
+seite = 5
+max_seite = 50
+increment = 5
+while True:!\tikzmark{whileFrom}!                        !\tikzmark{while}!
+    if seite > max_seite:
+        break!\tikzmark{breakFrom}!                     !\tikzmark{break}!
+    t.fd(seite)
+    t.rt(90)
+    seite += increment
+
+# Turtle-Zeichnung stehen lassen
+t.done()
+\end{lstlisting}
+
+%\lstinputlisting[language=Python,caption=\texttt{spirale.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Logic/spirale.py}
+
+\begin{tikzpicture}[overlay, remember picture,
+    every node/.style={text=white,rounded corners}]
+    \drawArrow{whileFrom}{while}{\footnotesize Unendliche Schleife}{DeepPink};
+    \drawArrow{breakFrom}{break}{\footnotesize Schleifenabbruch}{DeepPink};
+\end{tikzpicture}
+
+\section{Kopfgesteuerte Schleifen mit \texorpdfstring{\lstinline|while|}{while}}
+
+\begin{myexample}
+Folgendes Beispiel zeigt, wie ein \lstinline|while| mit \lstinline|break| zu einem einfachen \lstinline|while| mit Ausführungs-Bedingung vereinfacht werden kann. Beide Codes machen dasselbe. Die Schleife wird solange ausgeführt, wie die Ausführungs-Bedingung wahr ist. Die Abbruchskondition wird vor jeder neuen Schleifenausführung überprüft und die Schleife wird nur dann ausgeführt, wenn die Ausführungs-Bedingung noch wahr ist. Beim linken Code verwenden wir nicht eine Ausführungs-Bedingung sondern eine Abbruch-Bedingung.
+
+\begin{center}
+\begin{minipage}{.48\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+def spirale(seite, add, max_seite):
+    while True:               !\tikzmark{fromStart}!
+    	if seite > max_seite:
+    	    break             !\tikzmark{fromEnd}!
+        t.fd(seite)
+        t.rt(90)
+        seite+=add
+
+spirale(10, 10, 100)
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}{.48\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+def spirale(seite, add, max_seite):
+    !\tikzmark{toStart}!!\tikzmark{toEnd}!while seite > max_seite:
+        t.fd(seite)
+        t.rt(90)
+        seite+=add
+        
+spirale(10, 10, 100)
+\end{lstlisting}
+\end{minipage}
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+	
+	\drawBrace{0em}{fromStart}{fromEnd}{}{.5}{}{}
+	\drawBrace{-.5em}{toStart}{toEnd}{}{.5}{mirror}{}
+	% arrow pointing from one code to other
+	\draw[->, style={thick, >=stealth, red!70}] (fromStartfromEnd-coord-arrow) to (toStarttoEnd-coord-arrow);
+\end{tikzpicture}
+\end{center}
+\end{myexample}
+
+
+\begin{myattention}[Endlos-Schleifen]
+Beachten Sie folgende Punkte:
+\begin{itemize}
+\item Passen Sie auf, dass Sie keine unendlichen Schleifen produzieren! In diesem Fall kann das Programm, auf dem Python läuft, hängen bleiben. Vergessen Sie daher nie die Abbruchkondition klar zu formulieren!
+\item Ein \lstinline|while True:| (unendliche Schleife) ohne \lstinline|break| kann zum Absturz des Programms führen \emoji{face-with-spiral-eyes}
+\item Je nachdem kann das auch in einem \lstinline|while| mit einer Kondition passieren, sofern die Bedingung nach dem \lstinline|while| so geschrieben ist, dass sie immer wahr (\lstinline|True|) ist (s. \cref{subsec:semantische-fehler} zu semantischen Fehlern).
+\item \textbf{Speichern Sie regelmässig Ihre Aufgaben!}
+\item Falls das Programm VSCodium hängenbleibt: Beenden mit \keys{Ctrl+Alt+\backdel} (Windows), bzw. Activity Monitor unter MacOS
+\end{itemize}
+\end{myattention}
+
+\begin{myexercise}
+Schreiben Sie eine Funktion \lstinline|verdreifache_bis_ueber1Mio(zahl)|, welche eine Zahl \texttt{zahl} so lange immer wieder verdreifacht, bis \texttt{zahl} erstmals grösser als 1'000'000 ist. Dabei sollen alle Zwischenresultate in der Konsole ausgegeben werden. Am Schluss soll ausserdem die Anzahl Verdreifachungen ausgedruckt werden.
+\begin{myanswer}
+\lstinputlisting[language=Python,caption=\texttt{while\_verdreifache.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/while_verdreifache.py}
+\end{myanswer} 
+\end{myexercise}
+
+
+
+\subsection{Anwendung}
 
 Folgendes Beispiel soll dieses Prinzip konkret veranschaulichen. Stellen Sie sich vor, Sie sind SportlerIn und möchten Ihren Kalorienbedarf berechnen, um sich für auf einen kommenden Wettkampf optimal zu ernähren. Eventuell möchten Sie auch noch etwas ab- oder zunehmen, da Ihre Sportart dies erfordert. Hierzu wollen zunächst Sie Ihren täglichen Kalorienbedarf berechnen. Ihr Kalorienbedarf berechnet sich wie folgt:
 \begin{enumerate}
