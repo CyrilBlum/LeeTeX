@@ -1,0 +1,119 @@
+\ExplSyntaxOn
+
+\int_new:N \l__binp_int
+\int_set:Nn \l__binp_int {4}
+\tl_new:N \l__bina_tl
+\tl_new:N \l__binb_tl
+\tl_new:N \l__binhw_tl
+\int_new:N \l__bina_int
+\int_new:N \l__binb_int
+\int_new:N \l__binc_int
+\int_new:N \l__bind_int
+\fp_new:N \l__bina_fp
+
+\DeclareDocumentCommand \BinaryPrecision {m}
+{
+  \int_set:Nn \l__binp_int {#1}
+}
+
+\cs_new_nopar:Npn \int_to_bin:Nn #1#2
+{
+  \tl_clear:N #1
+  \int_set:Nn \l__bina_int {#2}
+  \prg_replicate:nn {\l__binp_int}
+  {
+    \int_set:Nn \l__binb_int {\int_mod:nn {\l__bina_int} {2}}
+    \tl_put_left:Nx #1 {\int_use:N \l__binb_int}
+    \int_set:Nn \l__bina_int {\int_div_truncate:nn {\l__bina_int} {2}}
+  }
+}
+
+\cs_new_nopar:Npn \bin_hamming_weight:NN #1#2
+{
+  \tl_set_eq:NN \l__binhw_tl #2
+  \tl_replace_all:Nnn \l__binhw_tl {0} {}
+  \int_set:Nn #1 {\tl_count:N \l__binhw_tl}
+}
+
+\cs_new_nopar:Npn \bin_flip_one:NNn #1#2#3
+{
+  \tl_set_eq:NN #2#1
+  \prg_replicate:nn {#3 - 1}
+  {
+    \tl_replace_once:Nnn #2 {1} {a}
+  }
+  \tl_replace_once:Nnn #2 {1} {0}
+  \tl_replace_all:Nnn #2 {a} {1}
+}
+
+\DeclareDocumentCommand \HammingWeight {m m}
+{
+  \int_to_bin:Nn \l__binhw_tl {#2}
+  \bin_hamming_weight:NN #1 \l__binhw_tl
+}
+
+\DeclareDocumentCommand \HyperCube {m}
+{
+  \int_set:Nn \l__binp_int {#1}
+  \int_zero_new:c {l__hyper_0_int}
+  \int_set:cn {l__hyper_0_int} {-1}
+  \int_step_inline:nnnn {1} {1} {#1}
+  {
+    \int_zero_new:c {l__hyper_##1_int}
+    \int_set:cn  {l__hyper_##1_int} {\int_use:c {l__hyper_\int_eval:n {##1 - 1}_int} * (#1 - ##1 + 1) / ##1}
+  }
+  \fp_set:Nn \l__bina_fp {2^{#1}-1}
+  \int_set:Nn \l__binc_int {\fp_to_int:N \l__bina_fp}
+  \int_step_inline:nnnn {0} {1} {\l__binc_int}
+  {
+    \int_to_bin:Nn \l__bina_tl {##1}
+    \bin_hamming_weight:NN \l__binb_int \l__bina_tl
+    \node[every~ hypercube~ label/.try] (hg- \l__bina_tl) at (\int_use:c {l__hyper_\int_use:N \l__binb_int _int},\int_use:N \l__binb_int) {\texttt{\l__bina_tl}};
+    \int_incr:c {l__hyper_\int_use:N \l__binb_int _int}
+    \int_incr:c {l__hyper_\int_use:N \l__binb_int _int}
+  }
+  \int_step_inline:nnnn {0} {1} {\l__binc_int}
+  {
+    \int_to_bin:Nn \l__bina_tl {##1}
+    \bin_hamming_weight:NN \l__binb_int \l__bina_tl
+    \int_step_inline:nnnn {1} {1} {\l__binp_int}
+    {
+      \bin_flip_one:NNn \l__bina_tl \l__binb_tl {####1}
+      \draw[every~ hypercube~ edge/.try] (hg- \l__bina_tl) -- (hg- \l__binb_tl);
+    }
+  }
+}
+
+\ExplSyntaxOff
+
+% Macro to cross out a single node
+\newcommand{\CrossOutNode}[1]{%
+  \draw[red, thick] 
+    ($(#1) + (-0.3, 0.3)$) 
+    -- 
+    ($(#1) + (0.3, -0.3)$);
+  \draw[red, thick] 
+    ($(#1) + (-0.3, -0.3)$) 
+    -- 
+    ($(#1) + (0.3, 0.3)$);
+}
+
+% Macro to cross out a list of nodes
+\newcommand{\CrossOutNodes}[1]{%
+  \foreach \n in {#1} {%
+    \CrossOutNode{\n}%
+  }
+}
+% Macro to draw a circle around a single node
+\newcommand{\CircleNode}[2][RoyalBlue]{%
+  \draw[#1, thick] 
+    ($(#2)$) 
+    circle (0.5);
+}
+
+% Macro to circle a list of nodes
+\newcommand{\CircleNodes}[2][blue]{%
+  \foreach \n in {#2} {%
+    \CircleNode[#1]{\n}%
+  }
+}

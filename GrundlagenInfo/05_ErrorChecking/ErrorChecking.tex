@@ -1,7 +1,9 @@
+\input{GrundlagenInfo/05_ErrorChecking/Macros}
+
 \begin{frame}[label=title]
     \centering
     \begin{figure}[H]
-        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{\thelogo}
     \end{figure}
     Informatik: Data Science und Sicherheit\\
     \emoji{warning} \textbf{Error Checking}
@@ -11,40 +13,84 @@
 \centering
 \only<1>{
 \begin{figure}[H]
-\AffCartesJeu[Hauteur=1.3,StyleJeu=v3]{DK § Dos § 10T § RC § 8T}\\
+\AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{DK § Dos § 10T § Dos § 8T}\\
 \AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{Dos § AP § AT § VP § Dos}\\
-\AffCartesJeu[Hauteur=1.3,StyleJeu=v3]{VT § Dos § Dos § 3T § AC}\\
+\AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{VT § Dos § 5C § 3T § Dos}\\
 \AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{Dos § Dos § 5C § VP § Dos}\\
 \end{figure}
 
-$\rightarrow$ Jemand legt ein $n\cdot n$-Grid von Karten aus, einige Karten mit dem Kopf nach oben, andere nach unten
+$\rightarrow$ Jemand legt ein $n\cdot n$-Grid von Karten aus, einige Karten mit dem Kopf nach oben, andere nach unten (hier: $n=4$)
 }
-\only<2>{
+
+
+\only<2->{
 \begin{figure}[H]
-\AffCartesJeu[Hauteur=1.3,StyleJeu=v3]{AT § Dos § Dos § Dos § AT § Dos}\\
-\AffCartesJeu[Hauteur=1.3,StyleJeu=v3]{DK § Dos § 10T § Dos § 8T § RT}\\
+\AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{Dos § 8C § Dos § VP § 8P § 6C}\\
+\AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{DK § Dos § 10T § Dos § 8T § RT}\\
 \AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{Dos § AP § AT § VP § Dos § VC}\\
-\AffCartesJeu[Hauteur=1.3,StyleJeu=v3]{VT § Dos § Dos § 3T § AC § 7K}\\
+\only<2>{
+\AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{VT § Dos § 5C § 3T § Dos § 7K}\\}
+\only<3->{
+\AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{VT § Dos § Dos § 3T § Dos § 7K}\\}
 \AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{Dos § Dos § 5C § VP § Dos § Dos}\\
 \end{figure}
+}
+\only<2>{
 $\rightarrow$ Jemand legt nun noch eine weitere Zeile (oben) und eine weitere Spalte (rechts) dazu, ``um das Spiel schwieriger zu machen''
 }
-\only<3>{
-\begin{figure}[H]
-\AffCartesJeu[TikzAutonome,Hauteur=1.3,StyleJeu=v3]{AT § Dos § Dos § Dos § AT § Dos}\\
-\AffCartesJeu[TikzAutonome,Hauteur=1.3,StyleJeu=v3]{DK § Dos § 10T § Dos § 8T § RT}\\
-\AffCartesJeu[TikzAutonome,Hauteur=1.3,StyleJeu=v1]{Dos § AP § AT § VP § Dos § VC}\\
-\AffCartesJeu[TikzAutonome,Hauteur=1.3,StyleJeu=v3]{VT § Dos § Dos § 3T § Dos § 7K}\\
-\AffCartesJeu[TikzAutonome,Hauteur=1.3,StyleJeu=v1]{Dos § Dos § 5C § VP § Dos § Dos}\\
-%\draw [red,ultra thick,rounded corners]
-%  ($(cards.south west) !1/6*4! (cards.north west)$)
-%  rectangle 
-%  ($(cards.south east) !1/6*5! (cards.north east)$);
-\end{figure}
-$\rightarrow$ Eine Karte wurde umgedreht. Welche war es?
-}
+\only<3>{$\rightarrow$ Eine Karte wurde umgedreht. Welche war es?}
+\only<4>{Gerade Zahlen spalten- und zeilenweise summieren:
+\begin{itemize}
+\item Zeilen: \only<5->{4, 4, 4, \textbf{3}, 2 }
+\item Spalten: \only<5->{2, 2, \textbf{3}, 4, 2, 4}
+\end{itemize}}
+
 \end{frame}
 
-\begin{frame}[fragile]{...}
-...
+\begin{frame}[fragile]{Hypercubes}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\HyperCube{2}
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+\begin{frame}[fragile]{Hypercubes}
+\only<2-4>{1-Fehler-\textbf{Erkennend}}
+\only<5->{1-Fehler-\textbf{Korrigierend}}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\HyperCube{3}
+% Circle multiple nodes in green
+\only<2->{\CircleNodes{hg-011}}
+
+% Cross out multiple nodes
+\only<3->{\CrossOutNodes{hg-001,hg-010,hg-111}}
+\only<4>{\CircleNodes[green]{hg-101,hg-110,hg-000}}
+\only<4>{\CrossOutNodes{hg-100}}
+\only<5->{\CrossOutNodes{hg-101,hg-000,hg-110}}
+\only<5->{\CircleNodes{hg-100}}
+
+%\CircleNodes[RoyalBlue]{hg-011}
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+\begin{frame}[fragile]{Hypercubes}
+\only<2-3>{1-Fehler-\textbf{Erkennend}}
+\only<4->{1-Fehler-\textbf{Korrigierend}}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\HyperCube{4}
+\only<2->{\CircleNodes{hg-0000}}
+\only<3,5>{\CrossOutNodes{hg-1000,hg-0100,hg-0010,hg-0001}}
+\only<3>{\CircleNodes[green]{hg-0011,hg-0101,hg-0110,hg-1001,hg-1010,hg-1100,hg-1111}}
+\only<3>{\CrossOutNodes{hg-0111,hg-1011,hg-1101,hg-1110}}
+
+
+\only<5>{\CircleNodes[green]{hg-0111}}
+\only<5>{\CrossOutNodes{hg-0011,hg-0101,hg-0110,hg-1001,hg-1010,hg-1100,hg-1111,hg-1011,hg-1101,hg-1110}}
+\end{tikzpicture}
+\end{figure}
 \end{frame}
