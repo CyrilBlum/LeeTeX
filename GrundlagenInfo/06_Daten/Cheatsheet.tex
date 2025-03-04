@@ -89,7 +89,7 @@ Mit dem Befehl \lstinline|WHERE| können die Resultate einer Abfrage nach eigene
 \begin{lstlisting}
 SELECT name, city, gender
 FROM users
-WHERE gender="male"
+WHERE gender='male'
 \end{lstlisting}
 
 \begin{table}[H]
@@ -116,7 +116,7 @@ Users aus Leipzig, Berlin oder Hamburg, welche grösser als 170 sind:
 \begin{lstlisting}
 SELECT name, city
 FROM users 
-WHERE city IN ("Leipzig","Berlin","Hamburg")
+WHERE city IN ('Leipzig','Berlin','Hamburg')
  AND centimeters > 170
 \end{lstlisting}
 \end{cheatSheetBox}
@@ -126,7 +126,7 @@ Mit folgendem Befehl erhalten wir alle Städte, die mit ``Be...'' beginnen:
 \begin{lstlisting}
 SELECT DISTINCT city 
 FROM users 
-WHERE city LIKE "Be%"
+WHERE city LIKE 'Be%'
 \end{lstlisting}
 Das Prozentzeichen (\%) ist ein sogenannter \textit{Platzhalter} und steht für \enquote{irgendetwas kommt hier (oder nicht)}. In diesem Beispiel bedeutet das, dass 0, 1, oder mehr Zeichen auf das \enquote{Be...} folgen können.
 \end{cheatSheetBox}
@@ -141,7 +141,7 @@ Das Prozentzeichen (\%) ist ein sogenannter \textit{Platzhalter} und steht für 
 %    ELSE 'Genau im Durchschnitt'
 %END AS Durchschnittlich
 %FROM users
-%WHERE gender="male"
+%WHERE gender='male'
 %\end{lstlisting}
 %\end{cheatSheetBox}
 %\subsection*{Aggregieren (Zusammenfassen)}
@@ -150,14 +150,14 @@ Mit Aggregatsfunktionen können Daten zusammengefasst werden, beispielsweise um 
 \begin{lstlisting}
 SELECT city, COUNT(*)
 FROM users 
-WHERE city = "Leipzig"
+WHERE city = 'Leipzig'
 \end{lstlisting}
 \end{cheatSheetBox}
 
 \begin{cheatSheetBox}[title=Rechnen und umbenennen: \texorpdfstring{\lstinline|AS|}{AS}]
-Mit Spalten sowie Aggregatsfunktionen kann man rechnen, beispielsweise um ein Resultat durch eine Million zu dividieren. Zudem können Spalten-Titel mit dem Befehl \lstinline|AS| umbenannt werden:
+Mit Spalten sowie Aggregatsfunktionen kann man rechnen, beispielsweise um ein Resultat durch eine andere Zahl zu dividieren. Zudem können Spalten-Titel mit dem Befehl \lstinline|AS| umbenannt werden:
 \begin{lstlisting}
-SELECT centimeters/100 AS "Grösse in Metern"
+SELECT centimeters/100 AS 'Grösse in Metern'
 FROM users 
 \end{lstlisting}
 \end{cheatSheetBox}
@@ -165,7 +165,7 @@ FROM users
 \begin{cheatSheetBox}[title=Gruppieren: \texorpdfstring{\lstinline|GROUP BY|}{GROUP BY}]
 Aggregatsfunktionen können auch pro Gruppe verwendet werden, z.B. um die Anzahl Mitglieder in jeder Stadt zu berechnen:
 \begin{lstlisting}
-SELECT city, COUNT(*) AS "Users pro Stadt"
+SELECT city, COUNT(*) AS 'Users pro Stadt'
 FROM users
 GROUP BY city
 \end{lstlisting}
@@ -176,14 +176,14 @@ Mit \lstinline|HAVING| können Resultate \textit{nach dem} Gruppieren gefiltert 
 
 Durchschnittliche Körpergrösse aller männlichen Mitglieder in jeder Stadt berechnen, danach auf Städte beschränken, in denen die Menschen durchschnittlich zwischen 150 und 155 gross sind:
 \begin{lstlisting}
-SELECT city, AVG(centimeters) AS "Körpergrösse"
+SELECT city, AVG(centimeters) AS 'Körpergrösse'
 FROM users
-WHERE gender = "male"
+WHERE gender = 'male'
 GROUP BY city
 HAVING `Körpergrösse` BETWEEN 150 AND 155
 \end{lstlisting}
 \end{cheatSheetBox}
-Texte werden immer innerhalb von Anführungszeichen (\lstinline|""|) geschrieben. Spaltennamen, welche Spezialzeichen oder Abstände enthalten, werden innerhalb von \textit{backticks} (\lstinline|``|) geschrieben.
+Texte werden immer innerhalb von Anführungszeichen (\lstinline|''|) geschrieben. Spaltennamen, welche Spezialzeichen oder Abstände enthalten, werden innerhalb von \textit{backticks} (\lstinline|``|) geschrieben.
 
 %\subsection*{Tabellen erstellen \& verändern}
 \clearpage
@@ -204,7 +204,7 @@ Gängige Spalten-Typen sind:
 \begin{tabular}{l|p{.62\linewidth}}
 \lstinline|INTEGER|&Ganzzahl\newline Z.B. 35\\\midrule
 \lstinline|REAL| & Kommazahl\newline Z.B. 3.341\\\midrule
-\lstinline|DATE|&Datum\newline Format: \lstinline|"YYYY-MM-DD"|\\\midrule
+\lstinline|DATE|&Datum\newline Format: \lstinline|'YYYY-MM-DD'|\\\midrule
 \lstinline|BOOLEAN|& Wahrheitswert\newline Wahr (1) oder Falsch (0)\\\midrule
 \lstinline|VARCHAR(n)|&Text \newline\texttt{n} = maximale Länge\\
 \end{tabular}
@@ -271,8 +271,8 @@ Beispielsweise können mit folgendem Befehl alle Users, die zur Stadt Berlin geh
 
 \begin{lstlisting}
 UPDATE users
-SET city="Bern"
-WHERE city="Berlin"
+SET city='Bern'
+WHERE city='Berlin'
 \end{lstlisting}
 \end{cheatSheetBox}
 
@@ -280,7 +280,7 @@ WHERE city="Berlin"
 Einzelne Einträge (Zeilen) können mit einer \lstinline|WHERE|-Bedingung und dem Befehl \lstinline|DELETE FROM| gelöscht werden:
 \begin{lstlisting}
 DELETE FROM users
-WHERE username="guenther37"
+WHERE username='guenther37'
 \end{lstlisting}
 \end{cheatSheetBox}
 

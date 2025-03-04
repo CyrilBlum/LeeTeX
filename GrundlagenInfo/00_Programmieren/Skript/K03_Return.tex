@@ -25,6 +25,8 @@ def !\colorbox{CornflowerBlue}{viereck\_blume()}!:!\tikzmark{to1ex}!
         rt(360/10)
 
 !\colorbox{CornflowerBlue}{viereck\_blume()}! !\tikzmark{from1ex}!
+
+t.done()
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
 \draw[red,-stealth] (from1ex.north) to[bend right] node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to1ex);
@@ -45,6 +47,74 @@ Das Schreiben von Definitionen hat mehrere Vorteile:
 
 Dass der ursprüngliche Code nun übersichtlicher ist, wird in folgenden zwei Code-Varianten ersichtlich:
 
+\begin{center}
+\begin{minipage}{.4\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+for _ in range(10):    !\tikzmark{repOuterStart}!
+    for _ in range(4):!\tikzmark{repInnerStart}!
+        t.fd(100)
+        t.rt(360 / 4)      !\tikzmark{repInnerEnd}!
+    t.fd(360 / 10)         !\tikzmark{repOuterEnd}!
+    
+t.done()
+\end{lstlisting}
+\end{minipage}\hfill\begin{minipage}{.4\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+!\tikzmark{repInnerStartTo}!def viereck():
+    for _ in range(4):
+        t.fd(100)
+!\tikzmark{repInnerEndTo}!        t.rt(360 / 4)
+
+!\tikzmark{repOuterStartTo}!def viereck_blume():
+    for _ in range(10):
+        viereck()
+!\tikzmark{repOuterEndTo}!        t.rt(360/10)
+
+quadrat_blume()
+
+t.done()
+\end{lstlisting}
+\end{minipage}
+\end{center}
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+	\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
+		\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
+		% arrow pointing from one code to other
+		\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
+		\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
+			\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
+			% arrow pointing from one code to other
+			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
+\end{tikzpicture}
+
+Wichtig zu beachten für die Übersichtlichkeit des Codes sind folgende Aspekte:
+\begin{itemize}
+\item Innere Schleifen sollten wenn immer möglich vermieden und durch Definitionen ersetzt werden
+\item Definitions-Namen sollten möglichst selbsterklärend und ``sprechend'' sein, sie sollten also klar beschreiben, was die Aktivität tut! %TODO Beispiel
+\end{itemize}
+\end{myexample}
+
+\begin{myexercise}
+Führen Sie folgend Code zuerst aus und betrachten Sie das Resultat. Schreiben Sie Code um, indem Sie zwei Funktionen schreiben: \lstinline|viertelkreis()| und 
+\lstinline|abgerundetes_quadrat()|.
+
+\begin{lstlisting}
+import turtle as t
+
+for _ in range(4):
+    for _ in range(9):
+        t.fd(4)
+        t.lt(10)
+    t.fd(100)
+\end{lstlisting}
+
+\begin{myanswer}
 \begin{center}
 \begin{minipage}{.4\textwidth}
 \begin{lstlisting}[escapechar=!]
@@ -86,19 +156,14 @@ abgerundetes_quadrat()
 			% arrow pointing from one code to other
 			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
 \end{tikzpicture}
-
-Wichtig zu beachten für die Übersichtlichkeit des Codes sind folgende Aspekte:
-\begin{itemize}
-\item Innere Schleifen sollten wenn immer möglich vermieden und durch Definitionen ersetzt werden
-\item Definitions-Namen sollten möglichst selbsterklärend und ``sprechend'' sein, sie sollten also klar beschreiben, was die Aktivität tut! %TODO Beispiel
-\end{itemize}
-\end{myexample}
+\end{myanswer}
+\end{myexercise}
 
 \begin{myexercise}
-Packen Sie Ihre Lösung aus \cref{ex:myexercise:Haus} in eine Funktion mit dem Namen \lstinline|def haus():|. Testen Sie zunächst, ob die  Funktion wirklich das gewünschte Resultat liefert (ein Haus) indem Sie die Funktion aufrufen. Schreiben Sie dann eine zweite Funktion \lstinline|def haeuserreihe():|, welche eine Häuserreihe aus 5 Häusern zeichnet, indem \lstinline|haus()| fünfmal aufgerufen wird.
-
-
+Packen Sie Ihre Lösung aus \cref{myexercise:Haus} in eine Funktion mit dem Namen \lstinline|def haus()|. Testen Sie zunächst, ob die  Funktion wirklich das gewünschte Resultat liefert (ein einzelnes Haus) indem Sie die Funktion aufrufen. Schreiben Sie dann eine zweite Funktion \lstinline|def haeuserreihe():|, welche eine Häuserreihe aus 5 Häusern zeichnet, indem \lstinline|haus()| fünfmal aufgerufen wird.
 \end{myexercise}
+
+
 
 
 % TODO weitere Übungen
@@ -132,6 +197,15 @@ quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow3From}50}!)
     \draw[red,-stealth] (arrow3From.south) to[bend right] (arrowTo1);
 \end{tikzpicture}
 \end{myexample}
+
+\begin{myexercise}
+Schreiben Sie folgende Funktionen und testen Sie diese, indem Sie sie auf Moodle hochladen:
+
+\begin{itemize}
+\item \lstinline|def summiere(x1, x2)|: Berechnet die Summe zweier Parameter \lstinline|x1| und \lstinline|x2| und gibt das Resultat auf der Konsole aus.
+\item \lstinline|def summe_quadrate(x1, x2)|: Berechnet die Summe von \texttt{x1}$^2$ + \texttt{x2}$^2$ und gibt das Resultat auf der Konsole aus.
+\end{itemize}
+\end{myexercise}
 
 \subsection{Lebensdauer (\textit{scope}) einer Variable}
 
