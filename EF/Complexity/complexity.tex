@@ -1,7 +1,7 @@
 \lstset{style=Python,escapeinside={(*@}{@*)}}
 
 \begin{frame}{Komplexitätstheorie}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch
 				      lösbar}}, wenn ein Algorithmus zur Lösung dieses Problems existiert, und ein Problem ist
 		      \textbf{\textcolor{Red}{algorithmisch unlösbar}}, wenn kein Algorithmus für dieses Problem existiert.
@@ -11,8 +11,8 @@
 
 
 \begin{frame}{Komplexitätstheorie}
-	\begin{itemize}
-		\item Die Komplexitätstheorie strebt eine feiner Einteilung der algorithmisch lösbaren Probleme an.
+	\begin{itemize}[<+->]
+		\item Die Komplexitätstheorie strebt eine feinere Einteilung der algorithmisch lösbaren Probleme an.
 		\item In den sechziger Jahren stellte man fest, dass alleine
 		      die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine
 		      erfolgreiche rechnerunterstützte Lösung des Problems darstellt!
@@ -21,7 +21,7 @@
 \end{frame}
 
 \begin{frame}{Komplexitätstheorie}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Es stellte sich die Frag, ob dieser Misserfolg eine Folge
 		      unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu
 		      finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
@@ -41,22 +41,32 @@
 \end{frame}
 
 
-\begin{frame}{InsertionSort}
-	\lstinputlisting[language=Python,caption=\texttt{InsertionSort.py},label=listing:InsertionSort]{EF/Complexity/Code/InsertionSort.py}
+\begin{frame}
+	\begin{myexercise}[insertionSort]\label{myexercise:insertionSort}
+		myexercise
+	\end{myexercise}
 \end{frame}
 
-\begin{frame}{Analyse von InsertionSort}
-	\begin{itemize}
+\begin{frame}{insertionSort}
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{insertionSort.py},label=listing:insertionSort]{EF/Complexity/Code/insertionSort.py}
+	\end{myanswer}
+\end{frame}
+
+\begin{frame}{Analyse von insertionSort}
+	\begin{itemize}[<+->]
 		\item Wir bezeichnen mit der Konstanten $c_i$ die Zeit, welche zur einmaligen Ausführung der $i$-ten Zeile benötigt wird.
-		\item Für $j = 1, 2, \ldots, n - 1$, sei $t_j$ die Anzahl der Überprüfungen der \pythoninline{while}-Bedingung.
-		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab). Bei einer solchen Schleife über $n$ Wiederholungen, wird der Schleifenkörper genau $n$ mal ausgeführt. Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
+		\item Für $j = 1, 2, \ldots, n - 1$ sei $t_j$ die Anzahl der Überprüfungen der \pythoninline{while}-Bedingung.
+		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab).
+		      Bei einer solchen Schleife über $n$ Wiederholungen, wird der Schleifenkörper genau $n$ mal ausgeführt.
+		      Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
 		\item Die Schleifen-Bedingung wird also genau $n+1$ überprüft.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Analyse von InsertionSort}
+\begin{frame}[fragile]{Analyse von insertionSort}
 	\begin{lstlisting}[escapechar=!]
-	def InsertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
+	def insertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
             key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
             i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
@@ -81,9 +91,9 @@
 \end{frame}
 
 
-\begin{frame}[fragile]{Analyse von InsertionSort}
+\begin{frame}[fragile]{Analyse von insertionSort}
 	\begin{lstlisting}[escapechar=!]
-	def InsertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
+	def insertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
             key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
             i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
@@ -108,8 +118,16 @@
 
 \end{frame}
 
+
 \begin{frame}{worst case}
-	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (achtung: wir meinen wirklich die minimale) Laufzeit welche unser InsertionSort Algorithmus benötigt, um jede (auch die schlimmste / schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
+	\enquote{The worst-case running time of an algorithm gives us an upper bound on the
+		running time for any input. Knowing it provides a guarantee that the algorithm
+		will never take any longer. We need not make some educated guess about the
+		running time and hope that it never gets much worse.}\cite{IntroductionAlgo}
+\end{frame}
+
+\begin{frame}{worst case}
+	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (achtung: wir meinen wirklich die minimale) Laufzeit welche unser insertionSort Algorithmus benötigt, um jede (auch die schlimmste / schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
 
 	Für $T(n)$ gilt natürlich:
 	\begin{align*}
@@ -199,4 +217,6 @@
 	\end{myexercise}
 \end{frame}
 
-
+\begin{frame}{References}
+	\printbibliography[heading=none]
+\end{frame}
