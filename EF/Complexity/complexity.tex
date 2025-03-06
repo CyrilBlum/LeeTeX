@@ -41,11 +41,11 @@
 \end{frame}
 
 
-\begin{frame}[insertionSort implementieren]
+\begin{frame}{insertionSort implementieren}
 	\begin{myexercise}[insertionSort]\label{myexercise:insertionSort}
 		Implementiere den \texttt{insertionSort} Algorithmus.
 	\end{myexercise}
-\end{frame}
+	3\end{frame}
 
 \begin{frame}{insertionSort}
 	\begin{myanswer}
@@ -126,7 +126,7 @@
 \end{frame}
 
 \begin{frame}{worst case}
-	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (achtung: wir meinen wirklich die minimale) Laufzeit welche unser insertionSort Algorithmus benötigt, um jede (auch die schlimmste / schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
+	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (achtung: wir meinen wirklich die minimale) Laufzeit welche unser insertionSort Algorithmus benötigt, um jede (auch die schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
 
 	Für $T(n)$ gilt natürlich:
 	\begin{align*}
@@ -137,35 +137,52 @@
 \end{frame}
 
 \begin{frame}[fragile]{Worst Case}
-	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0...j-1]} verglichen werden, also mit $j+1$ vielen. Somit gilt also
+	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0...j-1]} verglichen werden, also mit $j$ vielen. Somit gilt also
 	\begin{align*}
-		t_j = j + 1, \quad i = 1, 2, \ldots, n-1.
+		t_j = j, \quad i = 1, 2, \ldots, n-1.
 	\end{align*}
 \end{frame}
 
 \begin{frame}[fragile]{Worst Case}
 	Gauss Summenformel:
 	\begin{align*}
-		\sum_{j=0}^{n} j = \frac{n(n+1)}{2} = \sum_{j=1}^{n} j = \frac{n(n+1)}{2}
-	\end{align*}
-	Wir finden:
-	\begin{align*}
-		\textcolor{Magenta}{\sum_{j=1}^{n-1} (t_j - 1)} & = \sum_{j=1}^{n-1} (j) = \sum_{j=1}^{n} (j) - n = \frac{n(n+1)}{2} - n = \textcolor{Magenta}{\frac{n(n-1)}{2}} \\
-		\textcolor{RoyalBlue}{\sum_{j=1}^{n-1} t_j}     & = \sum_{j=1}^{n-1} (j+1)  =  \sum_{j=1}^{n-1} (j) + \sum_{j=1}^{n-1} 1 =                                       \\
-		                                                & = \frac{n(n-1)}{2} + (n-1) = \textcolor{RoyalBlue}{\frac{n(n+1)}{2} - 1}
+		\sum_{j=0}^{n} j = \sum_{j=1}^{n} j = \frac{n(n+1)}{2}
 	\end{align*}
 \end{frame}
 
+\begin{frame}
+	Mithilfe der Summenformel finden wir:
+	\begin{align*}
+		\textcolor{RoyalBlue}{\sum_{j=1}^{n-1} t_j} & = \sum_{j=1}^{n-1} (j)  =                 \\
+		                                            & = \sum_{j=1}^{n} (j) - n =                \\
+		                                            & = \frac{n(n-1)}{2} - n =                  \\
+		                                            & = \textcolor{RoyalBlue}{\frac{n(n-1)}{2}}
+	\end{align*}
+\end{frame}
+
+\begin{frame}
+	und auch:
+	\begin{align*}
+		\textcolor{Magenta}{\sum_{j=1}^{n-1} (t_j - 1)} & = \sum_{j=1}^{n-1} (j - 1) =                    \\
+		                                                & = \sum_{j=1}^{n-1} (j) - \sum_{j=1}^{n-1} (1) = \\
+		                                                & = \sum_{j=1}^{n} (j) - n - (n-1) =              \\
+		                                                & = \frac{n(n+1)}{2} - n - (n-1) =                \\
+		                                                & = \textcolor{Magenta}{\frac{n^2 - 3n + 2}{2}}
+	\end{align*}
+\end{frame}
+
+
 \begin{frame}[fragile]
 	\begin{align*}
-		T(n) & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                                 \\
-		     & + c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}} =                         \\
-		     & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                                 \\
-		     & + c_5\lr{\textcolor{RoyalBlue}{\frac{n(n+1)}{2} - 1}} + c_6\lr{\textcolor{Magenta}{\frac{n(n-1)}{2}}} =                                       \\
-		     & = \underbrace{\lr{\frac{c_5}{2} + \frac{c_6}{2}}}_{=:a}n^2 + \underbrace{\lr{c_2 + c_3 + c_4 + \frac{c_5}{2} - \frac{c_6}{2} + c_8}}_{=:b}n + \\
-		     & + \underbrace{\lr{c_1 - c_3 - c_4 - c_5 - c_8 + c_9}}_{=:c} =                                                                                 \\
+		T(n) & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                                  \\
+		     & + c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}} =                          \\
+		     & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                                  \\
+		     & + c_5\lr{\textcolor{RoyalBlue}{\frac{n(n-1)}{2}}} + c_6\lr{\textcolor{Magenta}{\frac{n^2 - 3n + 2}{2}}} =                                      \\
+		     & = \underbrace{\lr{\frac{c_5}{2} + \frac{c_6}{2}}}_{=:a}n^2 + \underbrace{\lr{c_2 + c_3 + c_4 - \frac{c_5}{2} - \frac{3c_6}{2} + c_8}}_{=:b}n + \\
+		     & + \underbrace{\lr{c_1 - c_3 - c_4 + c_6 - c_8 + c_9}}_{=:c} =                                                                                  \\
 		     & = an^2 + bn + c
 	\end{align*}
+	mit $a\neq 0$
 \end{frame}
 
 \begin{frame}{bubbleSort}
@@ -215,7 +232,7 @@
 		             & + (\tilde{c}_5 + \tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8) \frac{n(n-1)}{2} =                 \\
 		             & = \tilde{a}n^2 + \tilde{b}n + \tilde{c},
 	\end{align*}
-	wobei $\tilde{a}, \tilde{b}, \tilde{c}$ Konstanten sind.
+	wobei $\tilde{a}, \tilde{b}, \tilde{c}$ Konstanten sind und $\tilde{a}\neq 0$
 \end{frame}
 
 \begin{frame}{asymptotische Betrachtung}
@@ -224,7 +241,7 @@
 		 & =\lim_{n\to\infty}\frac{\tilde{a}n^2 + \tilde{b}n + \tilde{c}}{an^2 + bn + c} = \\
 		 & =\frac{\tilde{a}}{a}
 	\end{align*}
-	Die Laufzeiten von \texttt{insertionSort} und \texttt{bubbleSort} unterscheiden sich also lediglich um einen Konstanten Faktor.
+	Die Laufzeiten von \texttt{insertionSort} und \texttt{bubbleSort} unterscheiden sich also lediglich um einen konstanten Faktor.
 \end{frame}
 
 
@@ -235,17 +252,17 @@
 	\small
 	\begin{tabular}{|c|c|c|}
 		\hline
-		\textbf{Notation} & \textbf{Definition}                                              & \textbf{Bedeutung}                       \\
+		\textbf{Notation} & \textbf{Definition}                                              & \textbf{Bedeutung}                                  \\
 		\hline
-		$f \in o(g)$      & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = 0$         & $f$ wächst langsamer als $g$             \\
+		$f \in o(g)$      & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = 0$         & $f$ wächst langsamer als $g$                        \\
 		\hline
-		$f \in O(g)$      & $\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$ & $f$ wächst höchstens so schnell wie $g$  \\
+		$f \in O(g)$      & $\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$ & $f$ wächst höchstens so schnell wie $g$             \\
 		\hline
-		$f \in \Omega(g)$ & $\liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} > 0$      & $f$ wächst mindestens so schnell wie $g$ \\
+		$f \in \Omega(g)$ & $\liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} > 0$      & \makecell{$f$ wächst mindestens so schnell wie $g$, \\$g\in O(f)$}                          \\
 		\hline
-		$f \in \Theta(g)$ & $f \in \Omega\cap\Theta$                                         & $f$ wächst gleich schnell wie $g$        \\
+		$f \in \Theta(g)$ & $f \in \Omega(g)\cap O(g)$                                       & \makecell{$f$ wächst gleich schnell wie $g$,        \\sowohl $f\in O(g)$ als auch $f\in\Omega(g)$} \\
 		\hline
-		$f \in \omega(g)$ & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = \infty$    & $f$ wächst schneller als $g$             \\
+		$f \in \omega(g)$ & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = \infty$    & \makecell{$f$ wächst schneller als $g$,             \\$g\in o(f)}$                                      \\
 		\hline
 	\end{tabular}
 \end{frame}
