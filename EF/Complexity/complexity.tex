@@ -1,7 +1,7 @@
 \lstset{style=Python,escapeinside={(*@}{@*)}}
 
 \begin{frame}{Komplexitätstheorie}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch
 				      lösbar}}, wenn ein Algorithmus zur Lösung dieses Problems existiert, und ein Problem ist
 		      \textbf{\textcolor{Red}{algorithmisch unlösbar}}, wenn kein Algorithmus für dieses Problem existiert.
@@ -11,8 +11,8 @@
 
 
 \begin{frame}{Komplexitätstheorie}
-	\begin{itemize}
-		\item Die Komplexitätstheorie strebt eine feiner Einteilung der algorithmisch lösbaren Probleme an.
+	\begin{itemize}[<+->]
+		\item Die Komplexitätstheorie strebt eine feinere Einteilung der algorithmisch lösbaren Probleme an.
 		\item In den sechziger Jahren stellte man fest, dass alleine
 		      die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine
 		      erfolgreiche rechnerunterstützte Lösung des Problems darstellt!
@@ -21,7 +21,7 @@
 \end{frame}
 
 \begin{frame}{Komplexitätstheorie}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Es stellte sich die Frag, ob dieser Misserfolg eine Folge
 		      unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu
 		      finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
@@ -41,22 +41,32 @@
 \end{frame}
 
 
-\begin{frame}{InsertionSort}
-	\lstinputlisting[language=Python,caption=\texttt{InsertionSort.py},label=listing:InsertionSort]{EF/Complexity/Code/InsertionSort.py}
+\begin{frame}[insertionSort implementieren]
+	\begin{myexercise}[insertionSort]\label{myexercise:insertionSort}
+		Implementiere den \texttt{insertionSort} Algorithmus.
+	\end{myexercise}
 \end{frame}
 
-\begin{frame}{Analyse von InsertionSort}
-	\begin{itemize}
+\begin{frame}{insertionSort}
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{insertionSort.py},label=listing:insertionSort]{EF/Complexity/Code/insertionSort.py}
+	\end{myanswer}
+\end{frame}
+
+\begin{frame}{Analyse von insertionSort (Problemgrösse $n$)}
+	\begin{itemize}[<+->]
 		\item Wir bezeichnen mit der Konstanten $c_i$ die Zeit, welche zur einmaligen Ausführung der $i$-ten Zeile benötigt wird.
-		\item Für $j = 1, 2, \ldots, n - 1$, sei $t_j$ die Anzahl der Überprüfungen der \pythoninline{while}-Bedingung.
-		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab). Bei einer solchen Schleife über $n$ Wiederholungen, wird der Schleifenkörper genau $n$ mal ausgeführt. Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
+		\item Für $j = 1, 2, \ldots, n - 1$ sei $t_j$ die Anzahl der Überprüfungen der \pythoninline{while}-Bedingung.
+		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab).
+		      Bei einer solchen Schleife über $n$ Wiederholungen, wird der Schleifenkörper genau $n$ mal ausgeführt.
+		      Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
 		\item Die Schleifen-Bedingung wird also genau $n+1$ überprüft.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Analyse von InsertionSort}
+\begin{frame}[fragile]{Analyse von insertionSort}
 	\begin{lstlisting}[escapechar=!]
-	def InsertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
+	def insertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
             key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
             i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
@@ -81,9 +91,9 @@
 \end{frame}
 
 
-\begin{frame}[fragile]{Analyse von InsertionSort}
+\begin{frame}[fragile]{Analyse von insertionSort}
 	\begin{lstlisting}[escapechar=!]
-	def InsertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
+	def insertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
             key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
             i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
@@ -105,11 +115,18 @@
 		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!50!white};}
 		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!50!white};}
 	\end{tikzpicture}
+\end{frame}
 
+
+\begin{frame}{worst case}
+	\enquote{The worst-case running time of an algorithm gives us an upper bound on the
+		running time for any input. Knowing it provides a guarantee that the algorithm
+		will never take any longer. We need not make some educated guess about the
+		running time and hope that it never gets much worse.}\cite{IntroductionAlgo}
 \end{frame}
 
 \begin{frame}{worst case}
-	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (achtung: wir meinen wirklich die minimale) Laufzeit welche unser InsertionSort Algorithmus benötigt, um jede (auch die schlimmste / schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
+	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (achtung: wir meinen wirklich die minimale) Laufzeit welche unser insertionSort Algorithmus benötigt, um jede (auch die schlimmste / schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
 
 	Für $T(n)$ gilt natürlich:
 	\begin{align*}
@@ -129,7 +146,7 @@
 \begin{frame}[fragile]{Worst Case}
 	Gauss Summenformel:
 	\begin{align*}
-		\sum_{j=1}^{n} j = \frac{n(n+1)}{2}
+		\sum_{j=0}^{n} j = \frac{n(n+1)}{2} = \sum_{j=1}^{n} j = \frac{n(n+1)}{2}
 	\end{align*}
 	Wir finden:
 	\begin{align*}
@@ -150,6 +167,66 @@
 		     & = an^2 + bn + c
 	\end{align*}
 \end{frame}
+
+\begin{frame}{bubbleSort}
+	\begin{myexercise}
+		Führen Sie eine Laufzeitanalyse (im worst case) von \texttt{bubbleSort} durch.
+		\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{bubbleSort.py},label=listing:bubbleSort]{EF/Complexity/Code/bubbleSort.py}
+	\end{myexercise}
+\end{frame}
+
+
+\begin{frame}[fragile]{Analyse von bubbleSort (worst case, Problemgrösse $n$)}
+	(etwas grober als bei \texttt{insertionSort})
+	\begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily]
+	def bubbleSort(A): !\tikzmark{c1end}!                                      !\tikzmark{c1start}!
+        length = len(A) !\tikzmark{c2end}!                                     !\tikzmark{c2start}!
+        for i in reversed(range(length)): !\tikzmark{c3end}!                   !\tikzmark{c3start}!
+            swapped = False !\tikzmark{c4end}!                                 !\tikzmark{c4start}!
+            for j in range(i): !\tikzmark{c5end}!                              !\tikzmark{c5start}!
+                if A[j] > A[j + 1]: !\tikzmark{c6end}!                         !\tikzmark{c6start}!
+                    swapped = True !\tikzmark{c7end}!                          !\tikzmark{c7start}!
+                    A[j], A[j + 1] = A[j + 1], A[j] !\tikzmark{c8end}!         !\tikzmark{c8start}!
+            if not swapped: !\tikzmark{c9end}!                                 !\tikzmark{c9start}!
+                break: !\tikzmark{c10end}!                                      !\tikzmark{c10start}!
+        return A !\tikzmark{c11end}!                                            !\tikzmark{c11start}!
+	\end{lstlisting}
+	\begin{tikzpicture}[overlay, remember picture,
+			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
+		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; \tilde{c}_1, \text{W:}\; 1$}{green!50!white};}
+		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; \tilde{c}_2, \text{W:}\; 1$}{green!50!white};}
+		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; \tilde{c}_3, \text{W:}\; n$}{green!50!white};}
+		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; \tilde{c}_4, \text{W:}\; n$}{green!50!white};}
+		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; \tilde{c}_5, \text{W:}\; i$}{green!50!white};}
+		{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; \tilde{c}_6, \text{W:}\; i$}{green!50!white};}
+		{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; \tilde{c}_7, \text{W:}\; i$}{green!50!white};}
+		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; \tilde{c}_8, \text{W:}\; i$}{green!50!white};}
+		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; \tilde{c}_9, \text{W:}\; n$}{green!50!white};}
+		{\drawArrow{c10end}{c10start}{\tiny $\text{K:}\; \tilde{c}_{10}, \text{W:}\; 0$}{green!50!white};}
+		{\drawArrow{c11end}{c11start}{\tiny $\text{K:}\; \tilde{c}_{11}, \text{W:}\; 1$}{green!50!white};}
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]
+	\begin{align*}
+		\tilde{T}(n) & = \tilde{c}_1 +  \tilde{c}_2 + \tilde{c}_{11} + (\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_9)n + \\
+		             & + (\tilde{c}_5 + \tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8) \sum_{i=0}^{n-1}i =                \\
+		             & = \tilde{c}_1 +  \tilde{c}_2 + \tilde{c}_{11} + (\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_9)n + \\
+		             & + (\tilde{c}_5 + \tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8) \frac{n(n-1)}{2} =                 \\
+		             & = \tilde{a}n^2 + \tilde{b}n + \tilde{c},
+	\end{align*}
+	wobei $\tilde{a}, \tilde{b}, \tilde{c}$ Konstanten sind.
+\end{frame}
+
+\begin{frame}{asymptotische Betrachtung}
+	\begin{align*}
+		 & \lim_{n\to\infty}\frac{\tilde{T}(n)}{T(n)}  =                                   \\
+		 & =\lim_{n\to\infty}\frac{\tilde{a}n^2 + \tilde{b}n + \tilde{c}}{an^2 + bn + c} = \\
+		 & =\frac{\tilde{a}}{a}
+	\end{align*}
+	Die Laufzeiten von \texttt{insertionSort} und \texttt{bubbleSort} unterscheiden sich also lediglich um einen Konstanten Faktor.
+\end{frame}
+
 
 \begin{frame}{Landau-Symbole}
 	Es seien $f$ und $g$ Folgen reeller Zahlen\footnote{Für unsere Zwecke reicht die Betrachtung von Folgen natürlicher Zahlen.}.\\
@@ -199,4 +276,21 @@
 	\end{myexercise}
 \end{frame}
 
+\begin{frame}{Algorithmus präsentieren}
+	\begin{enumerate}
+		\item Bildet 3er Gruppen.
+		\item Wählt einen Algorithmus aus (siehe Moodle oder auch einen eigenen).
+		\item Bereitet eine kurze Präsentation ($\approx$ 5 Minuten) für nächstes Mal vor.
+	\end{enumerate}
 
+	Inhalt der Präsentation:
+	\begin{itemize}
+		\item Was macht der Algorithmus?
+		\item Wie arbeitet der Algorithmus?
+		\item Diskussion der Laufzeit des Algorithmus
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+	\printbibliography[heading=none]
+\end{frame}
