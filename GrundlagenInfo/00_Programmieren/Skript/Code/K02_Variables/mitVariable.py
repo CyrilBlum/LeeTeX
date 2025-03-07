@@ -2,7 +2,7 @@ import turtle as t
 import math
 
 # Wir benutzen die Variable 'laenge', um der Länge einen Namen zu geben:
-laenge = 200
+laenge = 50
 
 for _ in range(4):
     t.forward(laenge)
@@ -14,6 +14,3 @@ t.forward(laenge * math.sqrt(2))
 
 t.hideturtle()
 t.done()
-
-laenge_quadrat = 300
-laenge1 = 10
