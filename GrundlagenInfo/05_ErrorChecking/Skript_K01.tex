@@ -8,19 +8,19 @@ Bei der Übertragung von Bits über das Internet können einzelne Bits spontan v
 
 \section{Prüfbits}
 
-Buchstaben können auf unterschiedliche Weise kodiert sein -- bei ASCII werden beispielsweise sechs bits pro Zeichen verwendet:
+Buchstaben können auf unterschiedliche Weise kodiert sein -- bei ASCII werden beispielsweise sechs Bits pro Zeichen verwendet:
 
 \begin{table}[H]
 \centering
 \begin{tabular}{c|c}
 Buchstabe & Kodierung \\\midrule\midrule
-A & 010000001 \\\midrule
-B & 010000010\\\midrule
-C & 010000011\\\midrule
+A & \texttt{010000001} \\\midrule
+B & \texttt{010000010}\\\midrule
+C & \texttt{010000011}\\\midrule
 $\cdots$ & $\cdots$
 \end{tabular}
 \end{table}
-Bei der Datenübertragung können aber einzelne Bits spontan von einem 1 zu einem 0 werden (oder umgekehrt). Was könnte getan werden, um dieser Gefahr vorzubeugen?
+Bei der Datenübertragung können aber einzelne Bits spontan von einem \texttt{1} zu einem \texttt{0} werden (oder umgekehrt). Was könnte getan werden, um dieser Gefahr vorzubeugen?
 
 Ein erster, einfacher Ansatz bestünde darin, jedem Code noch ein weiteres Bit anzuhängen, so dass die Summe der Bits immer gerade ist:
 
@@ -28,14 +28,14 @@ Ein erster, einfacher Ansatz bestünde darin, jedem Code noch ein weiteres Bit a
 \centering
 \begin{tabular}{c|c}
 Buchstabe & Kodierung \\\midrule\midrule
-A & 010000001\textbf{0} \\\midrule
-B & 010000010\textbf{0}\\\midrule
-C & 010000011\textbf{1}\\\midrule
+A & \texttt{010000001\underline{\textbf{0}}} \\\midrule
+B & \texttt{010000010\underline{\textbf{0}}}\\\midrule
+C & \texttt{010000011\underline{\textbf{1}}}\\\midrule
 $\cdots$ & $\cdots$
 \end{tabular}
 \end{table}
 
-Wenn sich \textit{ein} Bit nun spontan verändert, wird der Code als fehlerhaft erkannt, da die Summe der Bits, welche den Wert 1 haben, nicht mehr gerade ist. Ein Computer könnte nun also anfordern, dass der Code nochmals geschickt wird.
+Wenn sich \textit{ein} Bit nun spontan verändert, wird der Code als fehlerhaft erkannt, da die Summe der Bits, welche den Wert \texttt{1} haben, nicht mehr gerade ist. Ein Computer könnte nun also anfordern, dass der Code nochmals geschickt wird.
 
 Die Idee von Prüfziffern ist, dass jede Prüfziffer nach dem gleichen Prinzip berechnet ist. Stimmt bei einem erhaltenen Code die Formel mit der Prüfziffer nicht überein, wird der Code als fehlerhaft erkannt.
 \begin{myexercise}
@@ -58,7 +58,6 @@ Für die Zahl 4163: 4163\textbf{6}
 \end{myanswer}
 \end{myexercise}
 
-\subsection{EAN}
 Ein EAN bezeichnet einen sogenannten European Article Number. Alle Waren auf dem Markt haben einen solchen Code, welcher aus 13 Ziffern besteht. Häufig wird er in Form eines Strichcodes dargestellt, wobei zwei Striche eine Ziffer darstellen, sowie 2 mal 2 Striche, die den Rand angeben (s. \cref{fig:ean}).
 
 \begin{figure}[H]
@@ -122,7 +121,190 @@ ist ein Vielfaches von 11. Falls $x_{10} = 10$ ist das Prüfsymbol $X$.
 \end{enumerate}
 \end{myexercise}
 
-\section{Abstände}
+\section{Fehler erkennen und korrigieren}
+
+Sie kennen Fehlererkennung bereits aus Ihrem Alltag: So beispielsweise bei der Rechtschreibprüfung in Word, die Ihnen das korrekte Wort vorschlägt (s. \cref{fig:word})
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/Word}
+\caption{Rechtschreibprüfung im Programm Microsoft Word}
+\label{fig:word}
+\end{figure}
+
+\begin{myexample}\label{ex:word}
+Wie viele Tippfehler werden im Beispiel aus \cref{fig:word} in jedem Fall erkannt?
+
+Im gezeigten Beispiel wird ein Tippfehler noch erkannt. Es wird jedoch nicht jeder Tippfehler garantiert erkannt: So könnte beispielsweise ein Tippfehler vom ursprünglich gemeinten Wort \enquote{Fehler} hin zu \enquote{Zehler} nicht erkannt werden, da \enquote{Zehler} sowohl einen Buchstaben Abstand zum (korrekten, beabsichtigten) Wort \enquote{Fehler} wie auch zum (nicht beabsichtigten, aber korrekten) Wort \enquote{Zähler} hat. 
+\end{myexample}
+
+Was können wir aus \cref{ex:word} lernen? Damit ein Fehler automatisch korrigiert werden kann, muss der Unterschied zwischen dem vertippten Wort und allen anderen möglichen Wörtern grösser sein als der Abstand zum ursprünglichen Wort.
+
+Im Folgenden unterscheiden wir zwischen sogenannt \textbf{k-fehlererkennenden} und \textbf{k-fehlerkorrigierenden} Kodierungen. Eine Kodierung heisst \textbf{k-fehlererkennend}, wenn das Umflippen von 1, 2, $\cdots$ bis und mit \textbf{k} Bits in der Nachricht als Fehler erkannt wird. Falls bis zu \textbf{k} Fehler nicht nur erkannt sondern auch behoben werden können, spricht man von \textbf{k-fehlerkorrigierenden Kodierungen}.
+
+\begin{myexample}\label{ex:code-kerk}
+\cref{tab:codes} zeigt, wie eine Nachricht so kodiert werden kann, dass Fehler erkannt werden:
+\begin{itemize}
+\item In Kodierung 1 handelt es sich schlicht und einfach um die ursprüngliche Nachricht.
+\item In Kodierung 2 wird die ursprüngliche Nachricht verdreifacht.
+\item In Kodierung 3 wird die ursprüngliche Nachricht verdoppelt, dazu kommt ein \textbf{Paritätsbit} (\underline{unterstrichen}) am Ende der Nachricht.
+\end{itemize}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+        & \textbf{Kodierung$_1$} & \textbf{Kodierung$_2$} & \textbf{Kodierung$_3$} \\
+        \midrule\midrule
+        \textbf{Weiss} & 00 & 00\textcolor{orange}{0000} & 00\textcolor{orange}{00\underline{0}} \\
+        \midrule
+        \textbf{Gelb} & 01 & 01\textcolor{orange}{0101} & 01\textcolor{orange}{01\underline{1}} \\
+		\midrule
+        \textbf{Blau} & 10 & 10\textcolor{orange}{1010} & 10\textcolor{orange}{10\underline{1}} \\
+        \midrule
+        \textbf{Schwarz} & 11 & 11\textcolor{orange}{1111} & 11\textcolor{orange}{11\underline{0}} \\
+    \end{tabular}
+    \caption{Kodierungstabelle}
+    \label{tab:codes}
+\end{table}
+
+Wie viele Fehler werden durch die unterschiedlichen Kodierungen bestimmt erkannt?
+\begin{itemize}
+\item In der ursprünglichen Kodierungen können Fehler nicht erkannt werden. Wird beispielsweise Weiss (\texttt{00}) fälschlicherweise als \texttt{01} versandt, geht der Empfänger davon aus, dass Gelb gesandt wurde und erkennt keine Fehler.
+\item In der zweiten Kodierung werden zwei Fehler erkannt, da es zwei \enquote{Mutationen} benötigt, um zu einem anderen Code zu werden.
+\item Bei der dritten Kodierung verhält es sich ebenso wie bei der zweiten.
+\end{itemize}
+Kodierung$_2$ und Kodierung$_3$ sind also betreffend Fehlererkennung gleich gut, allerdings ist Kodierung$_3$ kürzer und daher zu bevorzugen.
+\end{myexample}
+
+Um zu bestimmen, wie viele Fehler eine bestimmte Kodierung erkennen kann, müssen wir uns die Abstände zwischen allen möglichen Kode-Wörtern anschauen.
+
+\begin{myexample}\label{ex:abstand}
+Angenommen, wir hätten drei Code-Wörter, ANNA, ENZO und HANS, dann könnten die Abstände zwischen allen Code-Wörtern wie folgt bestimmt werden:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c@{\hspace{1.5cm}}c@{\hspace{1.5cm}}c}
+    \begin{tabular}{c}
+        A N N A \\
+        \underline{E N Z O} \\
+        x o x x \\
+        \textcolor{orange}{Abstand 3}
+    \end{tabular}
+    &
+    \begin{tabular}{c}
+        A N N A \\
+        \underline{H A N S} \\
+        x x o x \\
+        \textcolor{orange}{Abstand 3}
+    \end{tabular}
+    &
+    \begin{tabular}{c}
+        E N Z O \\
+        \underline{H A N S} \\
+        x x x x \\
+        \textcolor{orange}{Abstand 4}
+    \end{tabular}
+\end{tabular}
+\caption{Abstände zwischen den Codewörtern ANNA, ENZO und HANS}
+\label{tab:hans}
+\end{table}
+
+Die \enquote{x} bezeichnen Stellen, an denen sich die Buchstaben unterscheiden und die \enquote{o} Stellen, an denen die Buchstaben gleich sind. Der Abstand zwischen einem Wort-Paar ergibt sich aus der Summe der \enquote{x}.
+
+Der minimale Abstand in diesem Beispiel ist 3, daher könnten in dieser Kodierung bis zu 2 Fehler, bzw. \enquote{Mutationen} erkannt werden. ANNA $\rightarrow$ \textcolor{red}{A}N\textcolor{red}{Z}A würde als Fehler erkannt, ANNA $\rightarrow$ \textcolor{red}{E}N\textcolor{red}{ZO} jedoch nicht, da ENZO ein korrektes Kode-Wort ist.
+\end{myexample}
+
+Binär funktioniert die Abstandsbestimmung genau gleich wie in \cref{ex:abstand}.
+
+\begin{myexample}\label{ex:bin}
+Basierend auf Kodierung$_2$ aus \cref{tab:codes} könnten die Abstände zwischen allen Code-Wörtern wie folgt bestimmt werden:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c@{\hspace{1.5cm}}c@{\hspace{1.5cm}}c}
+    \begin{tabular}{c}
+        0 0 0 0 0 0 \\
+        \underline{0 1 0 1 0 1} \\
+        o x o x o x \\
+        \textcolor{orange}{Abstand 3}
+    \end{tabular}
+    &
+    \begin{tabular}{c}
+        0 0 0 0 0 0 \\
+        \underline{1 0 1 0 1 0} \\
+        x o x o x o \\
+        \textcolor{orange}{Abstand 3}
+    \end{tabular}
+    &
+    \begin{tabular}{c}
+        0 0 0 0 0 0 \\
+        \underline{1 1 1 1 1 1} \\
+        x x x x x x \\
+        \textcolor{orange}{Abstand 6}
+    \end{tabular}\\
+        \begin{tabular}{c}
+            0 1 0 1 0 1 \\
+            \underline{1 0 1 0 1 0} \\
+            x x x x x x \\
+            \textcolor{orange}{Abstand 6}
+        \end{tabular}
+        &
+        \begin{tabular}{c}
+            0 1 0 1 0 1 \\
+            \underline{1 1 1 1 1 1} \\
+            x o x o x o \\
+            \textcolor{orange}{Abstand 3}
+        \end{tabular}
+        &\\
+        \begin{tabular}{c}
+                    1 0 1 0 1 0 \\
+                    \underline{1 1 1 1 1 1} \\
+                    o x o x o x \\
+                    \textcolor{orange}{Abstand 3}
+                \end{tabular}
+                &
+                &\\
+\end{tabular}
+\caption{Abstände zwischen allen Codewörtern der Kodierung$_2$ aus \cref{tab:codes}}
+\label{tab:abst-codes}
+\end{table}
+
+Damit können auch in diesem Beispiel bis zu 2 Fehler erkannt werden.
+\end{myexample}
+
+\begin{myexercise}
+Xavier schlägt vor, die Code-Wörter für die Farben aus \cref{ex:code-kerk} anders zu konstruieren. Man soll zu den Darstellungen (zwei Bits, z.B. 11) der Farben das Prüfbit anhängen (z.B. 11\underline{0}), sodass die Anzahl der Einsen gerade wird. Danach sollte man diese drei Bits in zwei Kopien (z.B. 11\underline{0}11\underline{0} für \enquote{Schwarz}) zu einem Code-Wort machen. Konstruieren Sie alle Code-Wörter der Kodierung und bestimmen Sie, wie viele Fehler man damit erkennen kann.
+\end{myexercise}
+
+\begin{myexercise}
+Bestimmen Sie, wie viele Fehler jede der folgenden Kodierungen erkennen kann. Bestimmen sie dazu als erstes den Mindest-Abstand innerhalb jeder Kodierung:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c|c}
+        & \textbf{4-Kopien} & \textbf{Xavier} & \textbf{1-Parity} & \textbf{0-Parity} \\
+        \midrule\midrule
+        \textbf{Weiss} & 00000000 & 000000 & 000 & 001 \\
+        \midrule
+        \textbf{Gelb} & 01010101 & 011011 & 011 & 010 \\
+        \midrule
+        \textbf{Blau} & 10101010 & 101101 & 101 & 100 \\
+        \midrule
+        \textbf{Schwarz} & 11111111 & 110110 & 110 & 111 \\
+    \end{tabular}
+    \caption{Kodierungstabelle}
+    \label{tab:kodierung}
+\end{table}
+
+\end{myexercise}
+
+\begin{mychallenge}
+Finden Sie eine binäre Kodierung mit 3 Code-Wörtern der Länge 5 und Abstand 3.
+\end{mychallenge}
+
+\begin{mychallenge}
+Gibt es eine binäre Kodierung mit 3 Code-Wörtern der Länge 5 und Abstand 3, die die Code-Wörter 00000 und 11111 beinhaltet?
+\end{mychallenge}
+
+
 
 \section{Selbstkorrigierende Codes}
 
@@ -142,11 +324,6 @@ ist ein Vielfaches von 11. Falls $x_{10} = 10$ ist das Prüfsymbol $X$.
 \caption{3D-Hyperwürfel}
 \end{figure}
 
-
-
-
-%\only<2-3>{1-Fehler-\textbf{Erkennend}}
-%\only<4->{1-Fehler-\textbf{Korrigierend}}
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
@@ -155,23 +332,21 @@ ist ein Vielfaches von 11. Falls $x_{10} = 10$ ist das Prüfsymbol $X$.
 \caption{4D-Hyperwürfel}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+\HyperCube{5}
+\end{tikzpicture}}
+\caption{5D-Hyperwürfel}
+\end{figure}
+
 \begin{myexercise}
 Zeichnen Sie alle 1-Fehler-erkennenden Kodierungen im unten stehenden Hyperwürfel ein, ausgehend vom Code \texttt{011}.
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
 \HyperCube{3}
-% Circle multiple nodes in green
-%\only<2->{\CircleNodes{hg-011}}
-
-% Cross out multiple nodes
-%\only<3->{\CrossOutNodes{hg-001,hg-010,hg-111}}
-%\only<4>{\CircleNodes[green]{hg-101,hg-110,hg-000}}
-%\only<4>{\CrossOutNodes{hg-100}}
-%\only<5->{\CrossOutNodes{hg-101,hg-000,hg-110}}
-%\only<5->{\CircleNodes{hg-100}}
-
-%\CircleNodes[RoyalBlue]{hg-011}
 \end{tikzpicture}
 \caption{3D-Hyperwürfel}
 \end{figure}
