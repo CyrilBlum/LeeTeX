@@ -728,9 +728,175 @@ Gerade Zahlen spalten- und zeilenweise summieren:
 \item Spalten: 2, 2, \textbf{3}, 4, 2, 4
 \end{itemize}
 
+\section{Der XOR-Operator}
+
+Der \textbf{XOR-Operator} (exklusives Oder, $\oplus$) ist eine logische Verknüpfung, die zwei Eingangsbits vergleicht. Das Ergebnis ist genau dann 1, wenn die beiden Eingangsbits unterschiedlich sind. Die Wahrheitstabelle für XOR sieht wie folgt aus:
+
+\[
+\begin{array}{cc|c}
+A & B & A \oplus B \\
+\midrule
+0 & 0 & 0 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+\end{array}
+\]
+
+\subsection{Eigenschaften von XOR}
+Der XOR-Operator hat einige wichtige Eigenschaften:
+
+\begin{itemize}
+    \item \textbf{Selbstinverse}: \( A \oplus A = 0 \) (ein Bit mit sich selbst XOR-verknüpft ergibt immer 0).
+    \item \textbf{Identität}: \( A \oplus 0 = A \) (ein Bit XOR mit 0 bleibt unverändert).
+    \item \textbf{Kommutativität}: \( A \oplus B = B \oplus A \).
+    \item \textbf{Assoziativität}: \( A \oplus (B \oplus C) = (A \oplus B) \oplus C \).
+\end{itemize}
+
+
+
+\subsection{XOR in der RAID-Paritätsberechnung}
+In RAID 5 wird XOR genutzt, um das Paritätsbit zu berechnen. Gegeben seien drei Datenblöcke:
+
+\[
+D_1 = 1011_2, \quad D_2 = 1100_2, \quad D_3 = 0110_2
+\]
+
+Die Parität \( P \) wird durch XOR-Verknüpfung berechnet:
+
+\[
+P = D_1 \oplus D_2 \oplus D_3
+\]
+
+Rechnen wir schrittweise:
+
+\[
+D_1 \oplus D_2 = 1011_2 \oplus 1100_2 = 0111_2
+\]
+
+\[
+P = 0111_2 \oplus 0110_2 = 0001_2
+\]
+
+Das Paritätsbit wird zusammen mit den Daten gespeichert. Fällt eine Festplatte aus, kann der fehlende Wert durch Umstellen der XOR-Operation wiederhergestellt werden.
+
+\subsection{Anwendungsbereiche von XOR}
+Der XOR-Operator wird in vielen Bereichen der Informatik verwendet, unter anderem:
+
+\begin{itemize}
+    \item \textbf{Fehlererkennung und -korrektur} (z. B. RAID, Hamming-Code).
+    \item \textbf{Kryptographie} (z. B. One-Time Pad, Verschlüsselungsalgorithmen).
+    \item \textbf{Bitmanipulation} in Algorithmen und Datenstrukturen.
+\end{itemize}
+
+\begin{myexercise}
+Gegeben sind die folgenden binären Zahlen:
+
+\[
+A = 1101_2, \quad B = 1010_2
+\]
+
+Berechnen Sie \( A \oplus B \).
+
+\begin{myanswer}
+Die Berechnung des XOR-Operators erfolgt bitweise:
+
+\[
+A \oplus B = 1101_2 \oplus 1010_2
+\]
+
+Wir berechnen XOR für jedes Bitpaar:
+
+\[
+\begin{array}{c|c|c}
+A & B & A \oplus B \\\midrule\midrule
+1 & 1 & 0 \\
+1 & 0 & 1 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+\end{array}
+\]
+
+Das ergibt:
+
+\[
+A \oplus B = 0111_2
+\]
+
+\textbf{Erklärung}:  
+Der XOR-Operator liefert 1, wenn die Eingangsbits unterschiedlich sind, und 0, wenn sie gleich sind. Da \( A \) und \( B \) an den Positionen 2, 3 und 4 unterschiedlich sind, stehen dort Einsen im Ergebnis.
+
+\end{myanswer}
+\end{myexercise}
+
+
+\begin{myexercise}
+Gegeben sind vier binäre Zahlen:
+
+\[
+A = 1011_2, \quad B = 1100_2, \quad C = 0110_2, \quad D = 1001_2
+\]
+
+Berechnen Sie \( A \oplus B \oplus C \oplus D \).
+
+\begin{myanswer}
+Die XOR-Berechnung erfolgt schrittweise:
+
+\[
+A \oplus B = 1011_2 \oplus 1100_2
+\]
+
+Bitweise Berechnung:
+
+\[
+\begin{array}{c|c|c}
+A & B & A \oplus B \\\midrule\midrule
+1 & 1 & 0 \\
+0 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 0 & 1 \\
+\end{array}
+\]
+
+Das ergibt:
+
+\[
+A \oplus B = 0111_2
+\]
+
+Nun XOR mit \( C \):
+
+\[
+0111_2 \oplus 0110_2
+\]
+
+\[
+0111_2 \oplus 0110_2 = 0001_2 \\
+\]
+
+Nun XOR mit \( D \):
+
+\[
+0001_2 \oplus 1001_2
+\]
+
+\[
+0001_2 \oplus  1001_2 = 1000_2 \\
+\]
+
+Das Endergebnis lautet:
+
+\[
+A \oplus B \oplus C \oplus D = 1000_2
+\]
+
+\end{myanswer}
+\end{myexercise}
+
+
 \section{RAID}
 
-\gls{RAID} ist eine spannende Technologie, um die Funktionsweise von Paritätsbits in der Praxis zu Illustrieren. \gls{RAID} ist ein Standard zur Organisation mehrerer Festplatten zu einem sogenannten logischen Laufwerk. Dabei werden meherere physische Festplatten zu einer ``virtuellen'' Festplatte zusammengefasst. Ziel ist es, die Datensicherheit, die Ausfallsicherheit und/oder die Lese- und Schreib-Leistung zu verbessern. RAID wird häufig in Servern und Speichersystemen eingesetzt, um Redundanz zu gewährleisten oder die Geschwindigkeit von Speicherzugriffen zu erhöhen. I
+\gls{RAID} ist eine spannende Technologie, um die Funktionsweise von Paritätsbits in der Praxis zu Illustrieren. \gls{RAID} ist ein Standard zur Organisation mehrerer Festplatten zu einem sogenannten logischen Laufwerk. Dabei werden meherere physische Festplatten zu einer ``virtuellen'' Festplatte zusammengefasst. Ziel ist es, die Datensicherheit, die Ausfallsicherheit und/oder die Lese- und Schreib-Leistung zu verbessern. RAID wird häufig in Servern und Speichersystemen eingesetzt, um Redundanz zu gewährleisten oder die Geschwindigkeit von Speicherzugriffen zu erhöhen.
 
 Im Kontext der fehlerkorrigierenden und fehlererkennenden Kodierung spielt RAID eine wichtige Rolle. Während RAID 0 sich auf Performance ohne Redundanz konzentriert, nutzen andere RAID-Level, insbesondere RAID 5 und RAID 6, Paritätsdaten zur Fehlerkorrektur. Im folgenden schauen wir uns nur diejenigen RAID-Typen an, welche heute am weitesten verbreitet sind.
 
