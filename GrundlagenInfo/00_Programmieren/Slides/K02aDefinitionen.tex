@@ -1,92 +1,89 @@
+\lstset{style=Python,basicstyle=\ttfamily\footnotesize}
+
 \begin{frame}
     \centering
     \begin{figure}[H]
-        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{\thelogo}
     \end{figure}
     Informatik: Programmieren\\
-    \emoji{cook} Kapitel 02 (Teil 1): \textbf{Neue Befehle definieren}
+    \emoji{cook} Kapitel 04: \textbf{Neue Funktionen definieren}
 \end{frame}
 
 % command to make sure colorboxes don't create whitespace between code lines
 \fboxsep=.6pt
 
-\begin{frame}{Wiederholung letztes Mal}
-\begin{displayquote}
-``The truth is you don’t really understand something until you’ve taught it to a computer, until you’ve been able to program it.'' --- Donald Knuth, PhD
-\end{displayquote}
-\end{frame}
 
 \begin{frame}[fragile]{Wiederholung letztes Mal}
-\begin{lstlisting}[style=TigerJython,escapechar=!]
-from gturtle import *
-makeTurtle()!\tikzmark{code}!                                 !\tikzmark{comment}!
+\begin{lstlisting}[escapechar=!]
+import turtle as t
 
-repeat 6:     !\tikzmark{repeatStart}!
-    fd(100)!\tikzmark{code2}!  !\tikzmark{bodyStart}!                                !\tikzmark{comment2}!
-    rt(360/6)!\tikzmark{code3}! !\tikzmark{bodyEnd}!                               !\tikzmark{comment3}!
+for _ in range(6):     !\tikzmark{repeatStart}!
+    t.fd(100)!\tikzmark{code2}!  !\tikzmark{bodyStart}!                                !\tikzmark{comment2}!
+    t.rt(360/6)!\tikzmark{code3}! !\tikzmark{bodyEnd}!                               !\tikzmark{comment3}!
 \end{lstlisting}
 \only<1-4>{
 \begin{itemize}
-\item Wie nennt man Zeile 2, Zeile 5 oder Zeile 6? % Antwort: Befehl
-\item Wie nennt man Zeilen 4-6? % Antwort: Schleife
-\item Wie nennt man Zeilen 5-6? % Antwort: Körper der Schleife
+\item Wie nennt man die Ausdrücke auf den Zeilen 4 und 5? % Antwort: Befehl
+\item Wie nennt man Zeilen 3 bis 5? % Antwort: Schleife
+\item Wie nennt man Zeilen 4-5? % Antwort: Körper der Schleife
 \end{itemize}
 }
 \begin{tikzpicture}[overlay, remember picture,
     every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
 \only<2->{
-    \drawArrow{code}{comment}{\footnotesize\emoji{cook} Befehl}{RoyalBlue!50!white};
     \drawArrow{code2}{comment2}{\footnotesize\emoji{cook} Befehl}{RoyalBlue!50!white};
     \drawArrow{code3}{comment3}{\footnotesize\emoji{cook} Befehl}{RoyalBlue!50!white};}
-    \only<3->{\drawBrace{1em}{repeatStart}{bodyEnd}{\footnotesize Schleife}{.3}{};}
-    \only<4->{\drawBrace{.0em}{bodyStart}{bodyEnd}{\textit{\footnotesize Körper} der Schleife}{.7}{};}
+    \only<3->{\drawBrace{1em}{repeatStart}{bodyEnd}{\footnotesize Schleife}{.3}{}{};}
+    \only<4->{\drawBrace{.0em}{bodyStart}{bodyEnd}{\textit{\footnotesize Körper} der Schleife}{.7}{}{};}
 \end{tikzpicture}
 \only<5->{\begin{itemize}
-\item Mit \textbf{Befehlen} können wir den Computer eine abstrakte Tätigkeit ausführen lassen
-\item \textbf{Parameter} dienen dazu, die Befehle \textit{parametrisieren} (Analogie: Kochrezept für 2 oder 4 Personen)
+\item Mit \textbf{Funktionen} können wir den Computer eine abstrakte Tätigkeit ausführen lassen
+\item \textbf{Parameter} dienen dazu, die Funktionen \textit{parametrisieren} (Analogie: Kochrezept für 2 oder 4 Personen)
 \item \textbf{Schleifen} erlauben es, repetitive Tätigkeiten kompakt zu beschreiben
 \item Unterschiedliche \textbf{Datentypen} für unterschiedliche Zwecke
 \end{itemize}}
 \end{frame}
 
-\begin{frame}[fragile]{Neue Befehle definieren}
-\begin{lstlisting}[style=TigerJython,escapechar=!]
-from gturtle import *
-makeTurtle() # Befehl
+\begin{frame}[fragile]{Neue Funktion definieren}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
 
 # zeichne ein Quadrat
-repeat 4:             !\tikzmark{befehlStart}!
-    fd(100)  # Befehl  
-    rt(90)   # Befehl !\tikzmark{befehlEnde}!
+for _ in range(4):      !\tikzmark{befehlStart}!
+    t.fd(100)  # Funktion  
+    t.rt(90)   # Funktion !\tikzmark{befehlEnde}!
+    
+t.done()
 \end{lstlisting}
 \begin{tikzpicture}[overlay, remember picture,
     every edge/.append style = { ->, thick, >=stealth, red!70},
     every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-    \only<2->{\drawBrace{0em}{befehlStart}{befehlEnde}{Neuer Befehl?}{.5}{};}
+    \only<2->{\drawBrace{0em}{befehlStart}{befehlEnde}{Neuer Befehl?}{.5}{}{};}
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile]{Neue Befehle definieren}
-\begin{lstlisting}[style=TigerJython,escapechar=!]
-from gturtle import *
-makeTurtle()
+\begin{frame}[fragile]{Neue Funktionen definieren}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
 
-def quadrat(): !\tikzmark{to}!   !\tikzmark{befehlStart}!
-    repeat 4:
-        fd(100)
-        rt(90)   !\tikzmark{befehlEnde}!
+def quadrat(): !\tikzmark{to}!        !\tikzmark{befehlStart}!
+    for _ in range(4):
+        t.fd(100)
+        t.rt(90)       !\tikzmark{befehlEnde}!
 
 quadrat() !\tikzmark{from1}!
-rt(45)
+t.rt(45)
 quadrat() !\tikzmark{from2}!
+
+t.done()
 \end{lstlisting}
 \begin{tikzpicture}[overlay, remember picture,
     every edge/.append style = { ->, thick, >=stealth, red!70},
     every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-	\drawBrace{0em}{befehlStart}{befehlEnde}{Befehl wird definiert \emoji{page-facing-up}}{.5}{};
+	\drawBrace{0em}{befehlStart}{befehlEnde}{Befehl wird definiert \emoji{page-facing-up}}{.5}{}{};
 \end{tikzpicture}
 \begin{itemize}
-\item Definition = \lstinline[style=TigerJython]|def| = Funktion
+\item Definition = \lstinline|def| = Funktion
 \item Ähnlich einem Kochrezept \emoji{page-facing-up}
 \begin{itemize}
 \item Beschreibung der auzuführenden Schritte
@@ -100,23 +97,73 @@ quadrat() !\tikzmark{from2}!
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Neue Befehle definieren}
+\begin{frame}[fragile]{Viereck-Blume}
+\begin{center}
+\begin{minipage}{.4\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+for _ in range(10):   !\tikzmark{repOuterStart}!
+    for _ in range(4):!\tikzmark{repInnerStart}!
+        t.fd(100)
+        t.rt(360 / 4) !\tikzmark{repInnerEnd}!
+    t.fd(360 / 10)    !\tikzmark{repOuterEnd}!
+    
+t.done()
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{GrundlagenInfo/00_Programmieren/Figures/viereck_blume}
+\end{figure}
+\end{minipage}\hfill\begin{minipage}{.4\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
+
+!\tikzmark{repInnerStartTo}!def viereck():
+    for _ in range(4):
+        t.fd(100)
+!\tikzmark{repInnerEndTo}!        t.rt(360 / 4)
+
+!\tikzmark{repOuterStartTo}!def viereck_blume():
+    for _ in range(10):
+        viereck()
+!\tikzmark{repOuterEndTo}!        t.rt(360/10)
+
+quadrat_blume()
+
+t.done()
+\end{lstlisting}
+\end{minipage}
+\end{center}
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+	\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
+		\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
+		% arrow pointing from one code to other
+		\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
+		\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
+			\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
+			% arrow pointing from one code to other
+			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{Neue Funktionen definieren}
 \begin{columns}
-\begin{column}{.4\textwidth}
-\begin{lstlisting}[style=TigerJython,escapechar=!]
-from gturtle import *
-makeTurtle()
-hideTurtle()
+\begin{column}{.48\textwidth}
+\begin{lstlisting}[escapechar=!]
+import turtle as t
 
 def !\only<1-2>{viereck()}\only<3->{\colorbox{CarnationPink}{viereck()}}!: !\tikzmark{to2ex}!
-    repeat 4:
-        fd(100)
-        rt(360/4)
+    for _ in range(4):
+        t.fd(100)
+        t.rt(360/4)
 
 def !\only<1>{viereck\_blume()}\only<2->{\colorbox{CornflowerBlue}{viereck\_blume()}}!:!\tikzmark{to1ex}! 
-    repeat 10:
+    for _ in range(10):
         !\only<1-2>{viereck()}\only<3->{\colorbox{CarnationPink}{viereck()}}! !\tikzmark{from2ex}!
-        rt(360/10)
+        t.rt(360/10)
 
 !\only<1>{viereck\_blume()}\only<2->{\colorbox{CornflowerBlue}{viereck\_blume()}}! !\tikzmark{from1ex}!
 \end{lstlisting}
@@ -138,19 +185,19 @@ def !\only<1>{viereck\_blume()}\only<2->{\colorbox{CornflowerBlue}{viereck\_blum
 \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Definitionen \& Schleifen}
+\begin{frame}[fragile]{Funktionen \& Schleifen}
 \begin{columns}
 \begin{column}[t]{.5\textwidth}
-\begin{lstlisting}[style=TigerJython,escapechar=!,basicstyle=\ttfamily\footnotesize]
-from gturtle import *
-makeTurtle()
-hideTurtle()
+\begin{lstlisting}[escapechar=!,basicstyle=\ttfamily\footnotesize]
+import turtle as t
 
-repeat 4:        !\tikzmark{repOuterStart}!
-    repeat 9:    !\tikzmark{repInnerStart}!
-        forward(4)
-        left(10) !\tikzmark{repInnerEnd}!
-    forward(100) !\tikzmark{repOuterEnd}!
+for _ in range(4):      !\tikzmark{repOuterStart}!
+    for _ in range(9):  !\tikzmark{repInnerStart}!
+        t.fd(4)
+        t.lt(10)        !\tikzmark{repInnerEnd}!
+    t.fd(100)           !\tikzmark{repOuterEnd}!
+    
+t.done()
 \end{lstlisting}
 \begin{center}
 \includegraphics[width=0.3\linewidth]{GrundlagenInfo/00_Programmieren/Figures/round-circle}
@@ -159,28 +206,28 @@ repeat 4:        !\tikzmark{repOuterStart}!
 \footnotesize
 \textbf{Übersichtlichkeit}
 \begin{itemize}
-\item Innere Schleifen $\rightarrow$ Definitionen
+\item Innere Schleifen $\rightarrow$ Funktionen
 \item Sprechende Definitions-Namen
 \end{itemize}
 }
 \end{column}
 \begin{column}[t]{.5\textwidth}
-\begin{lstlisting}[style=TigerJython,escapechar=!,basicstyle=\ttfamily\footnotesize]
-from gturtle import *
-makeTurtle()
-hideTurtle()
+\begin{lstlisting}[escapechar=!,basicstyle=\ttfamily\footnotesize]
+import turtle as t
 
 !\tikzmark{repInnerStartTo}!def viertelkreis():
-    repeat 9:
-        forward(4)
-!\tikzmark{repInnerEndTo}!        left(10)
+    for _ in range(9):
+        t.fd(4)
+!\tikzmark{repInnerEndTo}!        t.lt(10)
 
 !\tikzmark{repOuterStartTo}!def abgerundetes_quadrat():
-    repeat 4:
+	for _ in range(4):
         viertelkreis()
-!\tikzmark{repOuterEndTo}!        forward(100)
+!\tikzmark{repOuterEndTo}!        t.fd(100)
 
 abgerundetes_quadrat()
+
+t.done()
 \end{lstlisting}
 \end{column}
 \end{columns}
@@ -203,23 +250,19 @@ abgerundetes_quadrat()
 \end{frame}
 
 \begin{frame}[fragile]{Zusammenfassung}
-Nutzen von \textbf{Definitionen}
+Nutzen von \textbf{Funktionen}
 \begin{itemize}[<+->]
 \item Problem in \textbf{Teilprobleme} gliedern
 \item \textbf{Übersichtlichkeit} erhöhen
 \item \textbf{Sinnstiftender} Name für jede Definition!
-\item Im ``Hauptprogramm'' Befehle zusammensetzen
+\item Im ``Hauptprogramm'' Funktionen zusammensetzen
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Auftrag}
+\begin{frame}[fragile]{Auftrag: Skript, Kapitel 4}
 \begin{itemize}
-\item \aufgabebox{Aufgaben 2.1 - 2.10}
-\item \abgabebox{Abgabe auf Moodle: 2.7}
-\item \abgabebox{Abgabe auf Moodle: 2.10}
+\item Skript immer zuerst durchlesen
+\item Übungen in VSCodium lösen
 \end{itemize}
-\begin{mycaution}
-Das Kapitel ``Befehle langfristig speichern'' (S. 27) funktioniert nur mit lokaler Installation!
-\end{mycaution}
 \end{frame}
 
