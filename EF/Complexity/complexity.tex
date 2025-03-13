@@ -45,7 +45,7 @@
 	\begin{myexercise}[\texttt{insertionSort}]\label{myexercise:insertionSort}
 		Implementiere den \texttt{insertionSort} Algorithmus.
 	\end{myexercise}
-	3\end{frame}
+\end{frame}
 
 \begin{frame}{\texttt{insertionSort}}
 	\begin{myanswer}
@@ -237,11 +237,22 @@
 
 \begin{frame}{asymptotische Betrachtung}
 	\begin{align*}
-		 & \lim_{n\to\infty}\frac{\tilde{T}(n)}{T(n)}  =                                   \\
-		 & =\lim_{n\to\infty}\frac{\tilde{a}n^2 + \tilde{b}n + \tilde{c}}{an^2 + bn + c} = \\
-		 & =\frac{\tilde{a}}{a}
+		 & \lim_{n\to\infty}\frac{\tilde{T}(n)}{T(n)} = \lim_{n\to\infty}\frac{\tilde{a}n^2 + \tilde{b}n + \tilde{c}}{an^2 + bn + c} =\frac{\tilde{a}}{a}
+	\end{align*}
+	\begin{align*}
+		 & \lim_{n\to\infty}\frac{T(n)}{\tilde{T}(n)} = \lim_{n\to\infty}\frac{an^2 + bn + c}{\tilde{a}n^2 + \tilde{b}n + \tilde{c}} =\frac{a}{\tilde{a}}
 	\end{align*}
 	Die Laufzeiten von \texttt{insertionSort} und \texttt{bubbleSort} unterscheiden sich also lediglich um einen konstanten Faktor.
+\end{frame}
+
+\begin{frame}{asymptotische Betrachtung}
+	Die asymptotische Betrachtung zeigt auf, dass sich die Laufzeiten von sowohl \texttt{insertionSort} als auch \texttt{bubbleSort} von einer beliebigen Polynomfunktion vom Grad 2 lediglich um eine (multiplikative) Konstante unterscheiden. Dies gilt also insbesondere für die quadratische Funktion $n\mapsto n^2$.
+\end{frame}
+
+\begin{frame}{asymptotische Betrachtung}
+	Intuitiv gesprochen, möchten wir sagen, dass in einer asymptotischen Betrachtung, die exakten Wert der Konstanten $a, b, c$ mit $a\neq 0$ in einem Ausdruck $T(n) = an^2 + bn + c$ \enquote{nicht wirklich wichtig sind}. Diese Aussage basiert auf der Beobachtung, dass sich alle Terme dieser Form (asymptotisch) lediglich um eine multiplikative Konstante unterscheiden.
+
+	Diese intuitive Betrachtung hat man in der Informatik und Mathematik formalisiert. Dies führt uns zu den sogenannten \textit{Landau-Symbolen}.
 \end{frame}
 
 \begin{frame}{Landau-Symbole}
@@ -259,15 +270,26 @@
 		\hline
 		$f \in \Omega(g)$ & $\liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} > 0$      & \makecell{$f$ wächst mindestens so schnell wie $g$, \\$g\in O(f)$}                          \\
 		\hline
-		$f \in \Theta(g)$ & $f \in \Omega(g)\cap O(g)$                                       & \makecell{$f$ wächst gleich schnell wie $g$,        \\sowohl $f\in O(g)$ als auch $f\in\Omega(g)$} \\
+		$f \in \Theta(g)$ & \makecell{$f \in O(g)\cap \Omega(g)$,                                                                                  \\ $0 < \liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} \leq$ \\ $\leq\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$} & \makecell{$f$ wächst gleich schnell wie $g$,        \\sowohl $f\in O(g)$ als auch $f\in\Omega(g)$} \\
 		\hline
 		$f \in \omega(g)$ & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = \infty$    & \makecell{$f$ wächst schneller als $g$,             \\$g\in o(f)}$                                      \\
 		\hline
 	\end{tabular}
+	(Wir werden meist nur $\lim$ anstelle von $\limsup$ oder $\liminf$ betrachten müssen.)
 \end{frame}
 
 \begin{frame}
 	\begin{myexercise}\label{myexercise:complexity00}
+		Entscheide, ob die folgenden Aussagen zutreffen:
+		\begin{enumerate}
+			\item Es sei $T(n)$ die worst case Laufzeit von \texttt{insertionSort}. Zeige, dass $T\in\Theta(n^2)$.
+			\item Es seien $a, b$ zwei positive reelle Zahlen und $a\neq 1$ und $b\neq 1$. Zeige, dass $\log_a\in\Theta\lr{\log_b}$.
+		\end{enumerate}
+	\end{myexercise}
+\end{frame}
+
+\begin{frame}
+	\begin{myexercise}\label{myexercise:complexity01}
 		Entscheide, ob die folgenden Aussagen zutreffen:
 		\begin{enumerate}
 			\item $25n^3 \in O\lr{n^4}$
@@ -279,7 +301,7 @@
 \end{frame}
 
 \begin{frame}
-	\begin{myexercise}\label{myexercise:complexity01}
+	\begin{myexercise}\label{myexercise:complexity02}
 		Entscheide, ob die folgenden Aussagen zutreffen:
 		\begin{enumerate}
 			\item $\ln(n) \in \Theta\lr{\log_2(n)}$
