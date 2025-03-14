@@ -12,7 +12,7 @@
 	breaklines=true,
 	captionpos=b,
 	keepspaces=true,
-	numbers=left,
+	numbers=none,
 	numbersep=5pt,
 	showspaces=false,
 	showstringspaces=false,
@@ -25,18 +25,6 @@
 } %
 % set to 'BaselineStyle'
 \lstset{style=BaselineStyle}
-
-% TigerJython syntax
-\lstdefinestyle{TigerJython}
-{ %
-	language=Python,
-	morekeywords={repeat,sqrt},
-	backgroundcolor=\color{Pink!15},
-	frame=none,
-	framexleftmargin=0em,
-	xleftmargin=0em,
-	belowskip=0pt
-} %
 
 % our Python style
 \lstdefinestyle{Python}
@@ -69,7 +57,7 @@
 %% specific settings for different document classes %%
 \iftoggle{exam}{
 	%% EXAM ENVIRONMENT %%
-	\iftoggle{german}{
+	\iftoggle{german}{%
 		\pointpoints{Punkt}{Punkte}
 		\bonuspointpoints{Bonuspunkt}{Bonuspunkte}
 		\renewcommand{\solutiontitle}{\noindent\textbf{Lösungsvorschlag:}\enspace}
@@ -126,7 +114,11 @@
 	% slightly changing section marking in header
 	\renewcommand{\sectionmark}[1]{\markright{\textnormal{\thesection}\ \textnormal{#1}}{}}
 	% making header of toc non italics (\upshape) and not all capitals
-	\addto\captionsgerman{\renewcommand{\contentsname}{\upshape{I\MakeLowercase{nhaltsverzeichnis}}}}
+	\iftoggle{german}{%
+		\addto\captionsgerman{\renewcommand{\contentsname}{\upshape{I\MakeLowercase{nhaltsverzeichnis}}}}
+	}{%
+		\addto\captionsgerman{\renewcommand{\contentsname}{\upshape{T\MakeLowercase{able of contents}}}}
+	}%
 }{}
 
 % BEAMER %
