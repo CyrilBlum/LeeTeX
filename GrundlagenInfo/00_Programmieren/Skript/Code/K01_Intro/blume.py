@@ -1,9 +1,5 @@
 import turtle as t
 
-# t.hideturtle()
-t.shape(name="turtle")
-# t.speed(10)
-
 for _ in range(10):
     # zeichne ein Viereck
     for _ in range(4):
