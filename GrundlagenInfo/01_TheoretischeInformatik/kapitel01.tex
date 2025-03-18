@@ -359,10 +359,10 @@ Die kleinen Ziffern in der Rechnung oben stellen den Übertrag\index{Übertrag} 
 Ein Beispiel sei unten angegeben:
 \[
 	\begin{array}{ccccccc}
-		  & 1               & 0               & 1              & 0               & 1              & 1_2              \\
-		+ & \underset{1}{1} & \underset{1}{1} & \underset{}{1} & \underset{1}{0} & \underset{}{1} & \underset{}{0_2} \\
+		  & 1               & 0               & 1               & 0               & 1               & 1_2              \\
+		+ & \underset{1}{1} & \underset{1}{1} & \underset{0}{1} & \underset{1}{0} & \underset{0}{1} & \underset{}{0_2} \\
 		\hline
-		1 & 1               & 0               & 0              & 1               & 0              & 1_2              \\\hline\hline
+		1 & 1               & 0               & 0               & 1               & 0               & 1_2              \\\hline\hline
 	\end{array}
 \]
 
@@ -374,20 +374,44 @@ Ein Beispiel sei unten angegeben:
 \end{myexercise}
 
 \begin{myexercise}
-	Welches ist die grösste binäre Zahl, die man mit 4 Bits darstellen kann (in Dezimalschreibweise)?
+	Welches ist die grösste 4-stellige Binärzahl (in Dezimalschreibweise)?
 	\begin{myanswer}
 		\begin{align*}
-			1111_2 = 15_{10}
+			1111_2 = 2^4 + 2^3 + 2^2 + 2^1 = 8 + 4 + 2 + 1 = 15_{10}
 		\end{align*}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{mychallenge}
+	Es sei $n>0$ eine natürliche Zahl. Es sei $z$ die grösste $n$-stellige Binärzahl? Finden Sie eine möglichst einfache Darstellung von $z$.
+	\begin{myanswer}
+		Die grösste $n$-stellige Binärzahl $z$ ist gegeben durch
+		\begin{align*}
+			z := \underbrace{1\ldots 11_2}_{n-\text{Stellen}} = 1\codt 2^0 + 1\cdot 2^1 + 1\cdot 2^2 + \ldots + 1\cdot 2^{n-1}.
+		\end{align*}
+		Die Umrechnung in Basis 10 ist aufwendig, da wir die Summe $2^0 + 2^1 + 2^2 + \ldots + 2^{n-1}$ berechnen müssten. Lassen Sie uns die Zahl $z+\textcolor{Red}{1}$ bestimmen:
+		\[
+			\begin{array}{ccccccc}
+				  & 1               & 1               & \ldots & 1               & 1               & 1_2                               \\
+				+ & \underset{1}{0} & \underset{1}{0} & \ldots & \underset{1}{0} & \underset{1}{0} & \underset{}{\textcolor{Red}{1}_2} \\
+				\hline
+				1 & 0               & 0               & \ldots & 0               & 0               & 0_2                               \\\hline\hline
+			\end{array}
+		\]
+		Wir haben die kleinste $n+1$-stellige Binärzahl erhalten. Wir sehen nun, dass $z+1$ geben ist durch
+		\begin{align*}
+			z+1 = 0\cdot 2^0 + 0\cdot 2^1 + \ldots + 0\cdot 2^{n-1} + 1\cdot 2^n = 2^n.
+		\end{align*}
+		Es fallen also alle Summanden bis auf den Term $ 1\cdot 2^n$ weg. Da $z$ genau $1$ kleiner ist als $z+1$, finden wir $z = 2^n - 1$.
+	\end{myanswer}
+\end{mychallenge}
+
+\begin{myexercise}
 	Rechnen Sie folgende beiden Zahlen im Binärsystem zusammen: $11110001_2$, $00001111_2$.
 	\begin{myanswer}
 		Die mathematisch richtige Antwort wäre eigentlich $100000000_2$. Falls wir die Rechnung jedoch in einer 8-Bit-Umgebung ausführen (wie es die ersten Computer waren), könnte das Resultat auch 0 sein, da die Zahl zu lang würde (Überlauf, en. \textit{overflow}).
 	\end{myanswer}
-\end{mychallenge}
+\end{myexercise}
 
 \begin{mychallenge}\label{challenge:online}
 	\begin{itemize}
