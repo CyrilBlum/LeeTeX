@@ -203,11 +203,17 @@ Beispiele für Modulo-Berechnungen (Rest der ganzzahligen Division) in Python:
 
 
 \section{Werte von Variablen verändern}
-Was ist der Unterschied zwischen den folgenden Zeilen:
-\begin{itemize}
-	\item \pythoninline{seite + 5}
-	\item \pythoninline{seite += 5}
-\end{itemize}
+Betrachten Sie das folgende Programm:
+\begin{lstlisting}
+    a = 10
+    print(10) # a hat den Wert 10
+    a + 5 # berechnet die Summe 10 + 5
+    print(a) # a hat immernoch den Wert 10
+
+    a += 7 # erhöhe den Wert von a um 7
+    print(a) # hat nun den Wert 17
+\end{lstlisting}
+Es existiert also ein fundamentaler Unterschied zwischen den beiden Ausdrücken \pythoninline{x + 5} und \pythoninline{x += 5}.
 
 \begin{table}[H]
 	\centering
@@ -218,7 +224,7 @@ Was ist der Unterschied zwischen den folgenden Zeilen:
 		\pythoninline{x *= y}  & multipliziert den Wert von \pythoninline{x} mit \pythoninline{y} (und speichert das Resultat in \pythoninline{x})          \\\hline
 		\pythoninline{x /= y}  & dividiert den Wert von \pythoninline{x} durch \pythoninline{y} (und speichert das Resultat in \pythoninline{x})            \\\hline
 		\pythoninline{x //= y} & dividiert ganzzahlig den Wert von \pythoninline{x} durch \pythoninline{y} (und speichert das Resultat in \pythoninline{x}) \\\hline
-		\pythoninline{x \%= y} & berechnet die Zahl \pythoninline{x \% y} und speichert diese Zahl in \pythoninline{x}
+		\pythoninline{x \%= y} & berechnet die Zahl \pythoninline{x \% y} (und speichert diese Zahl in \pythoninline{x})
 	\end{tabular}
 \end{table}
 
@@ -244,7 +250,7 @@ Was ist der Unterschied zwischen den folgenden Zeilen:
 
 \section{Arbeiten mit Text}
 
-In Python kann man nicht nur Zahlen addieren, sondern auch mit Text arbeiten. Ein \enquote{Text} ist eine Abfolge mehrere Zeichen (Buchstaben oder Spezialzeichen). Aufgrund der Tatsache, dass Texte nicht nur Buchstaben, sondern auch Spezialzeichen (\texttt{\textbackslash}, \texttt{\$}, \verb|'|, etc.) enthalten können, spricht man aus technischer Sicht meist nicht von Texten, sondern von \enquote{Zeichenketten}. Ein einfaches Beispiel für Texte haben wir bereits in \cref{myexample:prints} gesehen. Wir können Texte, ebenso wie Zahlen, in Variablen speichern.
+In Python kann man nicht nur Zahlen addieren, sondern auch mit Text arbeiten. In der Informatik verstehen wir unter einem \textit{Text} jede endliche Folge von Symbolen der Tastatur. Eine solche Folge von Symbolen bezeichnet man auch als \textit{Zeichenkette}\index{Zeichenkette} (Englisch: \textit{string}\index{string!Zeichenkette}). Ein einfaches Beispiel einer Zeichenkette haben wir bereits in \cref{myexample:prints} gesehen. Wir können Strings, ebenso wie Zahlen, in Variablen speichern.
 
 \begin{myexample}\label{ex:text-in-variables}
 Folgendes Beispiel speichert den Text \lstinline|"Hello, World!"| in der Variable \texttt{a}, der Wert der Variable wird danach auf der Konsole ausgegeben.
@@ -255,10 +261,23 @@ print(a)  # druckt auf der Konsole den Text "Hello, World!"
 \end{lstlisting}
 \end{myexample}
 
-Zeichenketten können verkettet, also aneinandergehängt werden mit dem Befehl \lstinline|"Text1" + "Text2" + "Text3"| usw. Falls Sie eine Zeichenkette mehrfach drucken wollen, können Sie diesen mit einer Zahl multiplizieren, die dann die Anzahl Wiederholungen der Zeichenkette bestimmt. So ist der Ausdruck \lstinline|"a" * 3| beispielsweise gleichbedeutend mit einer Zeichenkette \lstinline|"aaa"|.
+\subsection{Verkettung und Vervielfachung von Strings}
+Zeichenketten können verkettet, also aneinandergehängt werden:
+\begin{lstlisting}
+    wort = "Kan" + "tons" + "schule"
+    print(wort) # Kantonsschule
+\end{lstlisting}
+Die \enquote{Addition} von Strings wird \textit{Konkatenation}\index{Konkatenation} (Englisch: \textit{concatenation}) genannt.
+
+Strings können mithilfe des \pythoninline{*}-Operators vervielfacht werden:
+\begin{lstlisting}
+    wort = "abc"
+    print(4 * abc) # abcabcabcabc
+\end{lstlisting}
+Falls Sie also Wiederholungen einer Zeichenkette wünschen, können Sie diese mit einer ganzen Zahl multiplizieren. Diese Zahl bestimmt die Anzahl der Wiederholungen der Zeichenkette. So entspricht der Ausdruck \lstinline|"a" * 3| beispielsweise dem String \lstinline|"aaa"|.
 
 \begin{myexercise}\label{ex:pfeil}
-	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut.
+	Führen Sie das nachfolgende Programm aus und erklären Sie, was das Programm tut:
 	\begin{lstlisting}
     print(" " * 3 + "X" * 1)
     print(" " * 2 + "X" * 3)
@@ -269,7 +288,6 @@ Zeichenketten können verkettet, also aneinandergehängt werden mit dem Befehl \
   \end{lstlisting}
 \end{myexercise}
 
-
 \begin{mysubmission}\label{ex:herz}
 	Erstellen Sie nun ein Programm, das ein Herz zeichnet, ähnlich zu \cref{ex:pfeil}, also lediglich mit Zeichenketten-Ausdrücken und dem Befehl \lstinline|print()|.
 	\begin{myanswer}
@@ -278,6 +296,8 @@ Zeichenketten können verkettet, also aneinandergehängt werden mit dem Befehl \
 \end{mysubmission}
 
 
+\subsection{Textinput}
+Mithilfe der \pythoninline{input}-Funktion kann der User während der Programmausführung zu einer Eingabe aufgefordert werden.
 \begin{myexample}\label{ex:input}
 Mit der Funktion \lstinline|input("Hilfstext...")| können wir eine Variable \textit{während} der Programmausführung erstellen:
 
@@ -307,7 +327,6 @@ print(name)
 
 
 \section{Daten-Typen}
-
 Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text.
 
 \begin{lstlisting}
