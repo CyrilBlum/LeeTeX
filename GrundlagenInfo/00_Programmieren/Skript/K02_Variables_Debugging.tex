@@ -206,14 +206,14 @@ Beispiele für Modulo-Berechnungen (Rest der ganzzahligen Division) in Python:
 Betrachten Sie das folgende Programm:
 \begin{lstlisting}
     a = 10
-    print(10) # a hat den Wert 10
+    print(a) # a hat den Wert 10
     a + 5 # berechnet die Summe 10 + 5
     print(a) # a hat immernoch den Wert 10
 
     a += 7 # erhöhe den Wert von a um 7
     print(a) # hat nun den Wert 17
 \end{lstlisting}
-Es existiert also ein fundamentaler Unterschied zwischen den beiden Ausdrücken \pythoninline{x + 5} und \pythoninline{x += 5}.
+Es existiert also ein fundamentaler Unterschied zwischen den beiden Ausdrücken \pythoninline{x + 5} (Berechnung eines Wertes \textit{ohne} Speichern) und \pythoninline{x += 5} (Berechnung eines Wertes \textit{mit} Speichern).
 
 \begin{table}[H]
 	\centering
@@ -241,7 +241,9 @@ Es existiert also ein fundamentaler Unterschied zwischen den beiden Ausdrücken 
 \end{myexercise}
 
 \begin{mysubmission}
-	Geben Sie die Kubikzahlen von $1, 2, 3, \ldots, 10$ aus, also $1, 8, 27, \ldots, 1000$, indem Sie eine Variable \texttt{x} verwenden, die am Anfang den Wert 1 hat und bei jeder Schleife um 1 vergrössert wird.
+	Geben Sie die Kubikzahlen von $1, 2, 3, \ldots, 10$ aus. Die Kubikzahl einer Zahl \texttt{x} ist gleich der Zahl hoch 3, also $\text{\texttt{x}}^3$. Die Kubikzahl von 1 ist demanch $1^3 = 1$ , die Kubikzahl von 2 ist $2^3 = 8$, etc. 
+	
+	Geben Sie also die Zahlen $1 \;(=1^3), 8 \;(=2^3), 27 \;(=3^3), \ldots, 1000 \;(=10^3)$ aus, indem Sie eine Variable \texttt{x} verwenden, die am Anfang den Wert 1 hat und bei jeder Schleife um 1 vergrössert wird.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{zahlen\_kubik.py},label=listing:kubik]{GrundlagenInfo/00_Programmieren/Skript/Code/K02_Variables/zahlen_kubik.py}
 	\end{myanswer}
@@ -295,6 +297,13 @@ Falls Sie also Wiederholungen einer Zeichenkette wünschen, können Sie diese mi
 	\end{myanswer}
 \end{mysubmission}
 
+\begin{mychallenge}
+Schreiben Sie nun einen Code, der die Form einer Banane auf der Konsole ausgibt, indem Sie die Zeichenketten-Ausdrücke \lstinline|*| und \lstinline|+| verwenden.
+\begin{myanswer}
+	\lstinputlisting[language=Python,caption=\texttt{banana.py},label=listing:herz,numbers=none]{GrundlagenInfo/00_Programmieren/Skript/Code/K02_Variables/banana.py}
+\end{myanswer}
+\end{mychallenge}
+
 
 \subsection{Textinput}
 Mithilfe der \pythoninline{input}-Funktion kann der User während der Programmausführung zu einer Eingabe aufgefordert werden.
@@ -305,12 +314,18 @@ Mit der Funktion \lstinline|input("Hilfstext...")| können wir eine Variable \te
 """ 
 Folgender Befehl druckt den Hilfstext 
 'Was ist ihr Name?' auf der Konsole. 
+
 Die Antwort kann auf der Konsole eingetippt 
-werden und wird danach in der Variable name gespeichert.
+werden und wird danach in der Variable name gespeichert. 
+
+Mit der letzten Zeile wird der eingegeben Name 
+danach 5-mal gedruckt.
 """
 name = input("Was ist ihr Name?") 
-print(name)
+print(name * 5)
 \end{lstlisting}
+
+Führen Sie diesen Code in VSCodium aus und beobachten Sie das Resultat.
 \end{myexample}
 
 \begin{mysubmission}\label{ex:name}
@@ -349,7 +364,14 @@ Variablen vom Typ Text werden einfach daran erkannt, dass der Wert der Variable 
 	\label{tab:datatypes}
 \end{table}
 
-Wenn wir eine Zahl in einem \lstinline|print| gemeinsam mit einem Text drucken wollen, müssen wir die Zahl in eine Zeichenkette umwandeln. Dazu verwenden wir \lstinline|str()|. Beispielsweise gibt uns \lstinline|str(15)| die Zeichenkette \lstinline|"15"|.
+
+Dies kann zum Beispiel in folgender Situation nützlich sein: Das Plus-Zeichen kann für zwei unterschiedliche Dinge verwendet werden:
+\begin{enumerate}
+\item Zahlen addieren: \lstinline|print(2+3) # gibt 5 aus|
+\item Texte verketten: \lstinline|print("Hallo" + " " + "Welt") # gibt "Hallo Welt" aus|
+\end{enumerate}
+Wichtig dabei ist, dass auf beiden Seiten des +-Zeichens Werte desselben Datentyps sind, da Python ansonsten nicht weiss, ob es addieren oder verketten soll. Daher ist es in gewissen Fällen nötig, eine Zahl in einen Text umzuwandeln, beispielsweise dann, wenn eine Zahl und ein Text im gleichen Print ausgegeben werden sollen. Hierzu verwenden wir den Befehl \lstinline|str()|. Beispielsweise gibt uns \lstinline|str(15)| die Zeichenkette \lstinline|"15"|.
+
 
 \begin{myexample} Führen Sie folgenden Code in VSCodium aus:
 
@@ -380,7 +402,7 @@ print(str(n) + " mal " + str(m) + " gibt " + str(prod))
 
 \end{mysubmission}
 
-\begin{myexercise}\label{ex:sToY}
+\begin{mychallenge}\label{ex:sToY}
 	Schreiben Sie ein Programm, welches 123456789 Sekunden in Jahre (à 365 Tage), Tage, Stunden, Minuten und Sekunden umrechnet.
 	Das Programm soll den folgenden Text ausgeben, wobei alle Zahlen (ausser 123456789) im Programm berechnet werden:
 
@@ -388,7 +410,7 @@ print(str(n) + " mal " + str(m) + " gibt " + str(prod))
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{s\_to\_y.py},label=listing:sToY]{GrundlagenInfo/00_Programmieren/Skript/Code/K02_Variables/s_to_y.py}
 	\end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
 \begin{myexercise}\label{ex:datatypes}
 	Mit welchen Datentypen würden Sie folgende Informationen über Sie in Python speichern?
