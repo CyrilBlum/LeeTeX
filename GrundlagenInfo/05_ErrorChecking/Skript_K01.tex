@@ -528,10 +528,6 @@ Bisher haben wir gelernt, Kodierungen für gewissen Nachrichten zu finden, so da
 
 Falls wir einen Mindestabstand von 3 haben, können wir einen Fehler sogar \textit{korrigieren}: Bei einer einzigen Änderung eines Bits wäre das resultierende Codewort dann immer noch näher an am ursprünglichen Codewort als an allen anderen Codewörtern.
 
-\begin{myexample}
-Wenn wir die Kodierung von Xavier aus \cref{ex:fehler-kodierungen}
-\end{myexample}
-
 \begin{myexercise}\label{ex:fehlerkorrektur}
 Finden Sie für die drei Nachrichten Rot, Blau und Grün eine Kodierung aus Bitfolgen der Länge 5, die 1-fehlerkorrigierend ist. 
 
@@ -639,7 +635,7 @@ Um die Anzahl möglicher 1-fehlerkorrigierender Codewörter für eine gewisse Co
 \end{enumerate}
 Soll der Code nur 1-fehlererkennend und nicht 1-fehlerkorrigierend sein, reicht es aus, in Schritt 2 alle Codewörter mit Abstand 1 zu streichen.
 
-Dieses Vorgehen funktioniert auch für andere Code-Längen, beispielsweise 2 (\cref{fig:2d}), 3 2 (\cref{fig:3d}) oder 2 (\cref{fig:5d}).
+Dieses Vorgehen funktioniert auch für andere Code-Längen, beispielsweise 2 (\cref{fig:2d}), 3 (\cref{fig:3d}) oder 5 (\cref{fig:5d}).
 \end{mydefinition}
 
 \begin{figure}[H]
@@ -676,6 +672,7 @@ Dieses Vorgehen funktioniert auch für andere Code-Längen, beispielsweise 2 (\c
 \HyperCube{5}
 \end{tikzpicture}}
 \caption{5D-Hyperwürfel}
+\label{fig:5d}
 \end{figure}
 
 \begin{myexercise}
@@ -829,7 +826,9 @@ Es gibt 2 Codewörter (unterschiedliche Lösungen möglich):
 
 Bisher haben primär eine Art kennengelernt, wie Fehler automatisch behoben werden können. Allerdings haben wir uns bisher in allen Beispielen auf sehr wenige gültige Codewörter beschränkt. Stellen Sie sich nur schon vor, Sie möchten alle Zeichen des Alphabets schicken. Die Suche nach geeigneten Codewörtern würde schnell sehr lang und unübersichtlich, der entsprechende Hyperwürfel könnte wohl kaum auf einem A4-Blatt dargestellt werden. Daher schauen wir uns in diesem Kapitel einen anderen Ansatz an, welcher für beliebig lange Codes funktioniert. Dazu schauen wir uns zuerst einen Zaubertrick an.
 
-Als erstes legt ein Zauberer ein $n\cdot n$-Feld von Spiel-Karten auf dem Tisch aus, einige Karten zeigen dabei mit dem Kopf nach oben, andere mit dem Kopf nach unten (s. \cref{fig:zauberer-1}).
+Dazu braucht es zwei Zauberer. Der erste Zauberer verlässt zu beginn des Spiels den Raum.
+
+Der zweite Zauberer bittet eine beliebige Person, ein $n\cdot m$-Feld von Spiel-Karten auf dem Tisch auszulegen, so dass einige Karten mit dem Kopf nach oben zeigen und andere mit dem Kopf nach unten (s. \cref{fig:zauberer-1}).
 
 \begin{figure}[H]
 \centering
@@ -837,12 +836,12 @@ Als erstes legt ein Zauberer ein $n\cdot n$-Feld von Spiel-Karten auf dem Tisch 
 \AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{Dos § AP § AT § VP}\\
 \AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{VT § Dos § 5C § 3T}\\
 \AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{Dos § Dos § 5C § VP}\\
-\caption{Erster Schritt: Auslegen der Karten durch den Zauberer ($n=4$)}
+\caption{Erster Schritt: Auslegen der Karten durch den Zauberer ($n=m=4$)}
 \label{fig:zauberer-1}
 \end{figure}
 
 
-Eine im Voraus informierte Hilfs-Person legt nun noch eine weitere Zeile (oben) und eine weitere Spalte (rechts) dazu. Der Zauberer kann das Hinzurufen einer weiteren Person beispielsweise damit begründen, dass dies ``das Spiel noch etwas schwieriger machen soll'' (s. \cref{fig:zauberer-2}).
+Der zweite Zauberer (der immer noch im Raum ist) legt nun noch eine weitere Zeile (oben) und eine weitere Spalte (rechts) dazu. Der Zauberer kann das Hinzufügen der neuen Zeilen und Spalten beispielsweise damit begründen, dass dies ``das Spiel noch etwas schwieriger machen soll'' (s. \cref{fig:zauberer-2}).
 
 \begin{figure}[H]
 \centering
@@ -855,7 +854,7 @@ Eine im Voraus informierte Hilfs-Person legt nun noch eine weitere Zeile (oben) 
 \label{fig:zauberer-2}
 \end{figure}
 
-Anschliessend verlässt der Zauberer den Raum. Eine zuschauende Person darf nun genau eine Karte umdrehen (s. \cref{fig:zauberer-3}). 
+Eine zuschauende Person darf nun genau eine Karte umdrehen (s. \cref{fig:zauberer-3}).
 \begin{figure}[H]
 \centering
 \AffCartesJeu[Hauteur=1.3,StyleJeu=v1]{Dos § 8C § Dos § VP § Dos}\\
@@ -866,18 +865,19 @@ Anschliessend verlässt der Zauberer den Raum. Eine zuschauende Person darf nun 
 \caption{Dritter Schritt: Karten, nachdem eine Karte durch jemanden umgedreht wurde}
 \label{fig:zauberer-3}
 \end{figure}
+Der erste Zauberer, welcher bisher während dem ganzen Spiel ausserhalb des Raums war, betritt nun wieder den Raum und errät, welche Karte umgedreht wurde.
 
 \begin{mychallenge}
 Können Sie erraten, welche Karte in \cref{fig:zauberer-3} umgedreht wurde, ohne die vorherigen Bilder anzuschauen?
 \end{mychallenge}
 
-Der Zauberer betritt nun wieder den Raum. Um zu erraten, welche Karten umgedreht wurden, zählt der Zauberer nun, wie viele Karte mit dem Kopf nach oben in jeder Zeile und Spalte liegen.
+Um zu erraten, welche Karte umgedreht wurden, zählt der Zauberer nun, wie viele Karten mit dem Kopf nach oben in jeder Zeile und Spalte liegen.
 \begin{itemize}
 \item Zeilen: 2, 2, 4, \textbf{3}, 2
 \item Spalten: 2, 2, \textbf{3}, 4, 2
 \end{itemize}
 
-Die umgedrehte Karte muss sich also genau auf der vierten Zeile und in der dritten Spalte befinden! 
+Die umgedrehte Karte muss sich also genau auf der vierten Zeile und in der dritten Spalte befinden, da nur dort eine ungerade Anzahl Karten mit dem Kopf nach oben ist! 
 
 \textbf{Erklärung}: Die helfende Person hat in Schritt 3 die Karten nicht ganz \enquote{zufällig} hinzugefügt, sondern sie so arrangiert, dass die Summe der Karten mit dem Kopf nach oben in jeder Zeile und in jeder Spalte gerade war.
 
@@ -910,11 +910,11 @@ Nun fügen wir der Tabelle die \underline{Kontrollbits} oben und rechts hinzu:
 \end{tabular}
 \caption{Ursprüngliche Nachricht + \underline{Kontrollbits}}
 \label{tab:ex-zauberer-parity}
-Um das neue Codewort  mit Korrektur zu bilden, wird wie folgt vorgegangen: Fügen Sie dem ursprünglichen Code-Wort zuerst die erste Zeile, und danach die letzte Spalte (ohne erstes Bit) an.
 \end{table}
 
 Die Kontrollbits sind so gewählt, dass jede Spalte und jede Zeile eine gerade Anzahl Einsen enthält. Wenn nun ein Bit geflippt wird, gibt es genau eine Spalte und eine Zeile, in welcher die Anzahl Einsen \textit{nicht} gerade ist, somit können wir den Ort des abgefälschten Bits lokalisieren und den Fehler automatisch beheben.
 
+Um das neue Codewort (mit \underline{Kontrollbits}) zu bilden, wird wie folgt vorgegangen: Fügen Sie dem ursprünglichen Code-Wort zuerst die erste Zeile, und danach die letzte Spalte \textit{ohne erstes Bit} an.
 
 \end{mydefinition}
 
@@ -951,7 +951,34 @@ Man verwendet für die Nachrichten $a_1a_2a_3a_4a_5a_6$, der Länge 6 eine $2 \t
 \item \texttt{1 1 1 0 1 0 \underline{1 1 1 1 0 1}}
 \item \texttt{1 1 1 0 1 0 \underline{1 1 1 1 1 0}}
 \end{enumerate}
-
+\begin{myanswer}
+Das rot eingefärbte Bit wurde beschädigt:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c!{\color{red}\vrule width 2pt}c!{\color{red}\vrule width 2pt}c!{\color{red}\vrule width 2pt}c}
+    \begin{tabular}{c|c|c||c}
+            \underline{1} & \underline{1} & \underline{0} &  \underline{0} \\ \midrule\midrule
+            0 & 1 & \textcolor{red}{0} & \underline{0} \\ \midrule
+            1 & 0 & 1 & \underline{0} \\
+        \end{tabular}&
+        \begin{tabular}{c|c|c||c}
+            \underline{1} & \underline{1} & \underline{0} &  \textcolor{red}{\underline{1}} \\ \midrule\midrule
+            0 & 1 & 1 & \underline{0} \\ \midrule
+            1 & 0 & 1 & \underline{0} \\
+        \end{tabular}&
+            \begin{tabular}{c|c|c||c}
+                \underline{1} & \underline{1} & \underline{1} &  \underline{1} \\ \midrule\midrule
+                1 & \textcolor{red}{1} & 1 & \underline{0} \\ \midrule
+                0 & 1 & 0 & \underline{1} \\
+            \end{tabular}&
+            \begin{tabular}{c|c|c||c}
+                \underline{1} & \underline{1} & \underline{1} & \underline{1} \\ \midrule\midrule
+                1 & 1 & 1 & \underline{1} \\ \midrule
+                0 & \textcolor{red}{1} & 0 & \underline{0} \\
+            \end{tabular}
+    \end{tabular}
+\end{table}
+\end{myanswer}
 \end{myexercise}
 
 \section{Der XOR-Operator}
@@ -1259,7 +1286,7 @@ Bei RAID-6 werden sogar zwei Paritätsbits verwendet, womit diese Konfiguration 
 RAID 6 verwendet zwei Paritätswerte: eine XOR-basierte Parität ($P$) wie in RAID 5 und eine zweite Parität $Q$, die durch eine Galois-Feld-Multiplikation berechnet wird. Für Beispiele einer Berechnung des zweiten Paritätsbits sei auf die Webseite von \href{https://blogs.oracle.com/solaris/post/understanding-raid-6-with-junior-high-math}{Oracle} hingewiesen.
 
 \begin{myexercise}
-Marina gründet eine IT-Firma und kauft sich 8 Festplatten für die Speicherung seiner Daten. Da er viele Daten hat, möchte er möglichst viel nutzbaren Speicherplatz haben, gleichzeitig möchte er gegen den Ausfall von \textit{einer} Festplatte geschützt sein. Welche RAID-Konfiguration empfehlen Sie Marcel?
+Marina gründet eine IT-Firma und kauft sich 8 Festplatten für die Speicherung ihrer Daten. Da sie viele Daten hat, möchte sie möglichst viel nutzbaren Speicherplatz haben, gleichzeitig möchte sie gegen den Ausfall von \textit{einer} Festplatte geschützt sein. Welche RAID-Konfiguration empfehlen Sie Marcel?
 \begin{myanswer}
 \begin{itemize}
     \item \textbf{Empfohlen: RAID 5} – Maximiert Speicherplatz, schützt vor \textbf{1 Plattenausfall}.
