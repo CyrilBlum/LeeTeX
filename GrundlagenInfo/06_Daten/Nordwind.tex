@@ -1,0 +1,156 @@
+\section{Die Nordwind-Datenbank}
+
+\subsection{Kurz-Beschreibung}
+
+Die Nordwind-Datenbank wird als Beispiel-Datenbank zu Microsoft Access mitgeliefert. An diesem Beispiel kann man erkennen, wie das Rechnungswesen einer Firma mit Hilfe einer Datenbank durchgeführt werden kann.
+
+Folgendes wird durch die Tabellen der Nordwind-Datenbank abgebildet:
+\begin{itemize}
+\item Lieferanten liefern Artikel, die bestimmten Kategorien zugeordnet sind;
+\item Kunden bestellen gewisse Artikel;
+\item Die Bestellungen werden vom Personal der Firma bearbeitet;
+\item Die Auslieferung einer Bestellung erfolgt über eine Versandfirma.
+\end{itemize}
+
+
+Die Beziehungen zwischen den Tabellen lassen sich kurz wie folgt charakterisieren:
+
+\begin{itemize}
+\item Eine Firma kann mehrere Artikel liefern, ein Artikel kommt aber von genau einer Firma
+\item Eine Kategorie umfasst mehrere Artikel, jeder Artikel gehört genau einer Kategorie an
+\item Ein Artikel kann in mehreren Bestellungen vorkommen und zu einer Bestellung gehören ein oder mehrere Artikel
+\item Ein Kunde kann mehrere Bestellungen aufgeben, aber eine Bestellung gehört zu genau einem Kunden
+\item Ein Personalmitarbeiter bearbeitet mehrere Bestellungen, aber eine Bestellung wird immer von genau einem Mitarbeiter bearbeitet
+\item Eine Versandfirma liefert mehrere Bestellungen aus, aber eine Bestellung wird immer von einer Versandfirma ausgeliefert
+\end{itemize}
+
+\subsection{Tabellen}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|p{12cm}}
+\textbf{Tabelle} & \textbf{Spalten} \\\midrule\midrule
+Lieferant&	\emoji{key} LieferantenNr, Firma, Kontaktperson, Position, Straße, Ort, Region, PLZ, Land, Telefon, Telefax, Homepage\\\midrule
+Kunde &	\emoji{key} KundenCode, Firma, Kontaktperson, Position, Straße, Ort, Region, PLZ, Land, Telefon, Telefax\\\midrule
+Versandfirma &	\emoji{key} FirmenNr, Firma, Telefon\\\midrule
+Personal &	\emoji{key} PersonalNr, Nachname, Vorname, Position, Anrede, Geburtsdatum, Einstellung, Straße, Ort, Region, PLZ, Land, TelefonPrivat, DurchwahlBüro, Bemerkungen, Vorgesetzter\\\midrule
+Kategorie 	&\emoji{key} KategorieNr, Kategoriename, Beschreibung\\\midrule
+Artikel 	&\emoji{key} ArtikelNr, Artikelname, LieferantenNr \emoji{up-right-arrow}, KategorieNr \emoji{up-right-arrow}, Liefereinheit, Einzelpreis, Lagerbestand, BestellteEinheiten, Mindestbestand, Auslaufartikel\\\midrule
+Bestellung 	& \emoji{key} BestellNr, KundenCode \emoji{up-right-arrow}, PersonalNr \emoji{up-right-arrow}, Bestelldatum, Lieferdatum, Versanddatum, FirmenNr \emoji{up-right-arrow}, Frachtkosten, Empfänger, Straße, Ort, Region, PLZ Bestimmungsland\\\midrule
+Bestelldetails &	BestellNr \emoji{up-right-arrow}, ArtikelNr \emoji{up-right-arrow}, Einzelpreis, Anzahl, Rabatt
+\end{tabular}
+\end{table}
+
+% Stil für alle Tabellen
+\newtcolorbox{dbtable}[1]{colback=blue!5!white,colframe=blue!75!black,fonttitle=\bfseries,title=#1, width=5cm}
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+    % Tabelle: Lieferant
+    \node[right] (Lieferant) {
+        \begin{dbtable}{Lieferant}
+            LieferantenNr \emoji{key}\\
+            Firma\\
+            Kontaktperson\\
+            Position\\
+            Straße\\
+            Ort\\
+            Land\\
+        \end{dbtable}
+    };
+
+    % Tabelle: Kategorie
+    \node[right=3cm of Lieferant] (Kategorie) {
+        \begin{dbtable}{Kategorie}
+            KategorieNr \emoji{key}\\
+            Kategoriename\\
+            Beschreibung\\
+        \end{dbtable}
+    };
+
+    % Tabelle: Artikel
+    \node[below=1.5cm of Lieferant] (Artikel) {
+        \begin{dbtable}{Artikel}
+            ArtikelNr \emoji{key}\\
+            Artikelname\\
+            LieferantenNr \emoji{up-right-arrow}\\
+            KategorieNr \emoji{up-right-arrow}\\
+            Liefereinheit\\
+            Einzelpreis\\
+        \end{dbtable}
+    };
+
+    % Tabelle: Kunde
+    \node[right=3cm of Artikel] (Kunde) {
+        \begin{dbtable}{Kunde}
+            KundenCode \emoji{key}\\
+            Firma\\
+            Kontaktperson\\
+            Position\\
+            Straße\\
+            Ort\\
+            Land\\
+        \end{dbtable}
+    };
+
+    % Tabelle: Bestellung
+    \node[below=1.5cm of Artikel] (Bestellung) {
+        \begin{dbtable}{Bestellung}
+            BestellNr \emoji{key}\\
+            KundenCode \emoji{up-right-arrow}\\
+            PersonalNr \emoji{up-right-arrow}\\
+            Bestelldatum\\
+            Lieferdatum\\
+            Versanddatum\\
+            FirmenNr \emoji{up-right-arrow}\\
+        \end{dbtable}
+    };
+
+    % Tabelle: Bestelldetails
+    \node[right=3cm of Bestellung] (Bestelldetails) {
+        \begin{dbtable}{Bestelldetails}
+            BestellNr \emoji{up-right-arrow}\\
+            ArtikelNr \emoji{up-right-arrow}\\
+            Einzelpreis\\
+            Anzahl\\
+            Rabatt\\
+        \end{dbtable}
+    };
+
+    % Tabelle: Personal
+    \node[below=1.5cm of Bestellung] (Personal) {
+        \begin{dbtable}{Personal}
+            PersonalNr \emoji{key}\\
+            Nachname\\
+            Vorname\\
+            Position\\
+            Geburtsdatum\\
+            Einstellung\\
+            Straße\\
+            Ort\\
+            Land\\
+        \end{dbtable}
+    };
+
+    % Tabelle: Versandfirma
+    \node[right=3cm of Personal] (Versandfirma) {
+        \begin{dbtable}{Versandfirma}
+            FirmenNr \emoji{key}\\
+            Firma\\
+            Telefon\\
+        \end{dbtable}
+    };
+
+    % Beziehungen
+    \draw[->] (Artikel) -- (Lieferant);
+    \draw[->] (Artikel) -- (Kategorie);
+    \draw[->] (Bestellung) -- (Kunde);
+    \draw[->] (Bestellung) -- (Personal);
+    \draw[->] (Bestellung) -- (Versandfirma);
+    \draw[->] (Bestelldetails) -- (Bestellung);
+    \draw[->] (Bestelldetails) -- (Artikel);
+
+\end{tikzpicture}
+\end{figure}

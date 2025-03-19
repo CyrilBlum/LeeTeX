@@ -10,14 +10,34 @@
 
 \lstset{style=sql, basicstyle=\ttfamily\scriptsize}
 
-\begin{frame}[label=title]
-  \centering
-  \begin{figure}[H]
-    \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{\thelogo}
-  \end{figure}
-  Informatik: Data Science und Sicherheit\\
-  \emoji{floppy-disk} \textbf{\gls{SQL}: mehrere Tabellen}
-\end{frame}
+\lstset{style=sql, basicstyle=\ttfamily\scriptsize}
+
+\title[Datenbanken] {Datenbanken}
+
+\subtitle{\emoji{floppy-disk} \textbf{\gls{SQL}: mehrere Tabellen}}
+
+\author[Wendl, Cyril] % (optional)
+{Naoki Peter\inst{1} \and Cyril Wendl \inst{2}}
+
+\institute[KZN] % (optional)
+{
+  \inst{1}%
+  Fachschaft Informatik\\
+  Kantonsschule Zürich-Nord
+  \and
+  \inst{2}%
+  Fachschaft Informatik\\
+  Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=.8cm]{\thelogo}}
+
+\titlegraphic{\includegraphics[width=\textwidth]{"GrundlagenInfo/06_Daten/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
 
 \begin{frame}[fragile]{Weshalb braucht es mehrere Tabellen?}{Analogie: Wörterbuch}
 Angenommen, Sie lesen einen Text in deutscher Sprache. Wäre es praktisch, wenn jedes Wort in einer Klammer erklärt wäre?\\[.5cm]
@@ -74,7 +94,7 @@ Wäre es praktisch, wenn Sie bei Ihrer Tiktok-Freundesliste immer auch gleich al
 \begin{column}{.5\textwidth}
 \begin{table}[H]
 \begin{tabular}{l|l|a}
-\emoji{key} \underline{mID} & Name   & \tikzmarknode{fkey}{\underline{aID} \faKey} \\\midrule
+\emoji{key} \underline{mID} & Name   & \tikzmarknode{fkey}{\underline{aID} \emoji{up-right-arrow}} \\\midrule
 1  & Müller  & \tikzmarknode{31o}{31}  \\
 2  & Schmidt & \tikzmarknode{32o1}{32}  \\
 3  & Kaufmann  & \tikzmarknode{32o2}{32}\\
@@ -110,7 +130,7 @@ Wäre es praktisch, wenn Sie bei Ihrer Tiktok-Freundesliste immer auch gleich al
 
 \begin{center}
 \only<1>{
-\textbf{Frage}: Was könnte ein Fremdschlüssel \faKey{} sein? \\
+\textbf{Frage}: Was könnte ein Fremdschlüssel \emoji{up-right-arrow} sein? \\
 
 Weshalb könnten Fremdschlüssel benötigt werden?
 }
@@ -133,7 +153,7 @@ Weshalb könnten Fremdschlüssel benötigt werden?
 		\begin{column}{.35\textwidth}
 			\begin{table}[H]
 				\begin{tabular}{l|l|a}
-					\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
+					\emoji{key} \underline{mID} & Name   & \underline{aID} \emoji{up-right-arrow} \\\midrule
 					1  & Müller  & 31  \\
 					2  & Schmidt & 32  \\
 					3  & Kaufmann  & 32\\
@@ -168,11 +188,39 @@ Weshalb könnten Fremdschlüssel benötigt werden?
 			\end{table}
 		\end{column}
 	\end{columns}
-	
 \end{frame}
 
-\begin{frame}{Auftrag: Moodle}
+\begin{frame}[fragile]{Verteilte Tabellen}
 
+
+\begin{table}[H]
+\centering
+\tiny
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|p{7cm}}
+\textbf{Tabelle} & \textbf{Spalten} \\\midrule\midrule
+Lieferant&	\emoji{key} LieferantenNr, Firma, Kontaktperson, Position, Straße, Ort, Region, PLZ, Land, Telefon, Telefax, Homepage\\\midrule
+Kunde &	\emoji{key} KundenCode, Firma, Kontaktperson, Position, Straße, Ort, Region, PLZ, Land, Telefon, Telefax\\\midrule
+Versandfirma &	\emoji{key} FirmenNr, Firma, Telefon\\\midrule
+Personal &	\emoji{key} PersonalNr, Nachname, Vorname, Position, Anrede, Geburtsdatum, Einstellung, Straße, Ort, Region, PLZ, Land, TelefonPrivat, DurchwahlBüro, Bemerkungen, Vorgesetzter\\\midrule
+Kategorie 	&\emoji{key} KategorieNr, Kategoriename, Beschreibung\\\midrule
+Artikel 	&\emoji{key} ArtikelNr, Artikelname, LieferantenNr \emoji{up-right-arrow}, KategorieNr \emoji{up-right-arrow}, Liefereinheit, Einzelpreis, Lagerbestand, BestellteEinheiten, Mindestbestand, Auslaufartikel\\\midrule
+Bestellung 	& \emoji{key} BestellNr, KundenCode \emoji{up-right-arrow}, PersonalNr \emoji{up-right-arrow}, Bestelldatum, Lieferdatum, Versanddatum, FirmenNr \emoji{up-right-arrow}, Frachtkosten, Empfänger, Straße, Ort, Region, PLZ Bestimmungsland\\\midrule
+Bestelldetails &	BestellNr \emoji{up-right-arrow}, ArtikelNr \emoji{up-right-arrow}, Einzelpreis, Anzahl, Rabatt
+\end{tabular}}
+\end{table}
+\vspace{-.3cm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\linewidth]{GrundlagenInfo/06_Daten/Figures/Migros}
+\includegraphics[width=0.22\linewidth]{GrundlagenInfo/06_Daten/Figures/Coop}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{Auftrag: Moodle}
+Verbinden von Tabellen aus der Nordwind-Datenbank
 \end{frame}
 
 \begin{frame}{Appendix}
@@ -478,7 +526,7 @@ Weshalb könnten Fremdschlüssel benötigt werden?
 %\begin{column}{.35\textwidth}
 %\begin{table}[H]
 %\begin{tabular}{l|l|a}
-%\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
+%\emoji{key} \underline{mID} & Name   & \underline{aID} \emoji{up-right-arrow} \\\midrule
 %1  & Müller  & 31  \\
 %2  & Schmidt & 32  \\
 %3  & Kaufmann  & 32\\
@@ -533,7 +581,7 @@ Weshalb könnten Fremdschlüssel benötigt werden?
 %\begin{column}{.35\textwidth}
 %\begin{table}[H]
 %\begin{tabular}{l|l|a}
-%\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
+%\emoji{key} \underline{mID} & Name   & \underline{aID} \emoji{up-right-arrow} \\\midrule
 %1  & Müller  & 31  \\
 %2  & Schmidt & 32  \\
 %3  & Kaufmann  & 32\\
@@ -587,7 +635,7 @@ Weshalb könnten Fremdschlüssel benötigt werden?
 %\begin{column}{.35\textwidth}
 %\begin{table}[H]
 %\begin{tabular}{l|l|a}
-%\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
+%\emoji{key} \underline{mID} & Name   & \underline{aID} \emoji{up-right-arrow} \\\midrule
 %1  & Müller  & 31  \\
 %2  & Schmidt & 32  \\
 %3  & Kaufmann  & 32\\
@@ -636,7 +684,7 @@ Weshalb könnten Fremdschlüssel benötigt werden?
 %\begin{column}{.35\textwidth}
 %\begin{table}[H]
 %\begin{tabular}{l|l|a}
-%\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
+%\emoji{key} \underline{mID} & Name   & \underline{aID} \emoji{up-right-arrow} \\\midrule
 %1  & Müller  & 31  \\
 %2  & Schmidt & 32  \\
 %3  & Kaufmann  & 32\\
@@ -690,7 +738,7 @@ Weshalb könnten Fremdschlüssel benötigt werden?
 %\begin{column}{.35\textwidth}
 %\begin{table}[H]
 %\begin{tabular}{l|l|a}
-%\emoji{key} \underline{mID} & Name   & \underline{aID} \faKey{} \\\midrule
+%\emoji{key} \underline{mID} & Name   & \underline{aID} \emoji{up-right-arrow} \\\midrule
 %1  & Müller  & 31  \\
 %2  & Schmidt & 32  \\
 %3  & Kaufmann  & 32\\
