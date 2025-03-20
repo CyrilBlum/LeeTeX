@@ -12,47 +12,47 @@ Wir betrachten nochmals den Code aus \cref{myexercise:Blume}:
 Wir könnten den Code leserlicher machen, indem wir einen Befehl für eine Quadrat und einen Befehl für das gesamte Muster erstellen:
 
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[escapechar=!, numbers=left]
+	\begin{lstlisting}[escapechar=!, numbers=left]
 import turtle as t
 
 def !\colorbox{HotPink}{viereck()}!: !\tikzmark{to2ex}!
-    repeat 4:
-        fd(100)
-        rt(360/4)
+    for _ in range(4):
+        t.fd(100)
+        t.rt(360/4)
 
 def !\colorbox{CornflowerBlue}{viereck\_blume()}!:!\tikzmark{to1ex}! 
-    repeat 10:
+    for _ in range(10):
         !\colorbox{HotPink}{viereck()}! !\tikzmark{from2ex}!
-        rt(360/10)
+        t.rt(360/10)
 
 !\colorbox{CornflowerBlue}{viereck\_blume()}! !\tikzmark{from1ex}!
 
 t.done()
 \end{lstlisting}
-\begin{tikzpicture}[overlay,remember picture]
-\draw[red,-stealth] (from1ex.north) to[bend right] node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to1ex);
-\draw[red,-stealth] (from2ex.north) to[bend right]
-node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to2ex);
-\end{tikzpicture}
+	\begin{tikzpicture}[overlay,remember picture]
+		\draw[red,-stealth] (from1ex.north) to[bend right] node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to1ex);
+		\draw[red,-stealth] (from2ex.north) to[bend right]
+		node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to2ex);
+	\end{tikzpicture}
 
 \end{minipage}
 
 Eine Funktion beginnt immer mit dem Wort \lstinline|def|, gefolgt von einem Namen sowie Klammern. Innerhalb des eingerückten Bereichs wird eine Aktivität beschrieben. Die Aktivität wird aber erst ausgeführt, sobald der Code aufgerufen wird!
 
-Im übertragenen Sinne kann man sich Definitionen vorstellen wie Kochrezepte, die eine Ablauf beschreiben. Die Funktion beschreibt dabei ein Programmablauf, also ein ``Rezept'', ausgeführt (``gekocht'') wird dieses jedoch erst, sobald das Programm abgerufen wird (auf Zeile 13 und 10 im obigen Beispiel).
+Im übertragenen Sinne kann man sich Definitionen vorstellen wie Kochrezepte, die eine Ablauf beschreiben. Die Funktion beschreibt dabei ein Programmablauf, also ein \enquote{Rezept}, ausgeführt (\enquote{gekocht}) wird dieses jedoch erst, sobald das Programm abgerufen wird (auf Zeile 13 und 10 im obigen Beispiel).
 
 Das Schreiben von Definitionen hat mehrere Vorteile:
 \begin{itemize}
-\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|viereck()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|viereck_blume()|.
-\item Der Code wird \textbf{übersichtlicher}: jede Teil-Aktivität ist eine Funktion
-\item Falls das komplexere Programm nicht das gewünschte Resultat liefert, können wir es \textit{debuggen}, indem wir die einfacheren Funktionen zuerst aufrufen und sicherstellen, dass diese richtig funktionieren.
+	\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|viereck()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|viereck_blume()|.
+	\item Der Code wird \textbf{übersichtlicher}: jede Teil-Aktivität ist eine Funktion
+	\item Falls das komplexere Programm nicht das gewünschte Resultat liefert, können wir es \textit{debuggen}, indem wir die einfacheren Funktionen zuerst aufrufen und sicherstellen, dass diese richtig funktionieren.
 \end{itemize}
 
 Dass der ursprüngliche Code nun übersichtlicher ist, wird in folgenden zwei Code-Varianten ersichtlich:
 
 \begin{center}
-\begin{minipage}{.4\textwidth}
-\begin{lstlisting}[escapechar=!]
+	\begin{minipage}{.4\textwidth}
+		\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 for _ in range(10):   !\tikzmark{repOuterStart}!
@@ -63,8 +63,8 @@ for _ in range(10):   !\tikzmark{repOuterStart}!
     
 t.done()
 \end{lstlisting}
-\end{minipage}\hfill\begin{minipage}{.4\textwidth}
-\begin{lstlisting}[escapechar=!]
+	\end{minipage}\hfill\begin{minipage}{.4\textwidth}
+		\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 !\tikzmark{repInnerStartTo}!def viereck():
@@ -81,33 +81,33 @@ quadrat_blume()
 
 t.done()
 \end{lstlisting}
-\end{minipage}
+	\end{minipage}
 \end{center}
 \begin{tikzpicture}[overlay, remember picture,
-    every edge/.append style = { ->, thick, >=stealth, red!70},
-    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+		every edge/.append style = { ->, thick, >=stealth, red!70},
+		every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
 	\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
-		\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
-		% arrow pointing from one code to other
-		\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
-		\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
-			\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
-			% arrow pointing from one code to other
-			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
+	\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
+	% arrow pointing from one code to other
+	\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
+	\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
+	\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
+	% arrow pointing from one code to other
+	\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
 \end{tikzpicture}
 
 Wichtig zu beachten für die Übersichtlichkeit des Codes sind folgende Aspekte:
 \begin{itemize}
-\item Innere Schleifen sollten wenn immer möglich vermieden und durch Definitionen ersetzt werden
-\item Definitions-Namen sollten möglichst selbsterklärend und ``sprechend'' sein, sie sollten also klar beschreiben, was die Aktivität tut! %TODO Beispiel
+	\item Innere Schleifen sollten wenn immer möglich vermieden und durch Definitionen ersetzt werden
+	\item Definitions-Namen sollten möglichst selbsterklärend und ``sprechend'' sein, sie sollten also klar beschreiben, was die Aktivität tut! %TODO Beispiel
 \end{itemize}
 \end{myexample}
 
 \begin{myexercise}
-Führen Sie den folgenden Code zuerst aus und betrachten Sie das Resultat. Schreiben Sie den Code um, indem Sie zwei Funktionen schreiben: \lstinline|viertelkreis()| und 
-\lstinline|abgerundetes_quadrat()|.
+	Führen Sie den folgenden Code zuerst aus und betrachten Sie das Resultat. Schreiben Sie den Code um, indem Sie zwei Funktionen schreiben: \lstinline|viertelkreis()| und
+	\lstinline|abgerundetes_quadrat()|.
 
-\begin{lstlisting}
+	\begin{lstlisting}
 import turtle as t
 
 for _ in range(4):
@@ -117,10 +117,10 @@ for _ in range(4):
     t.fd(100)
 \end{lstlisting}
 
-\begin{myanswer}
-\begin{center}
-\begin{minipage}{.4\textwidth}
-\begin{lstlisting}[escapechar=!]
+	\begin{myanswer}
+		\begin{center}
+			\begin{minipage}{.4\textwidth}
+				\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 for _ in range(4):    !\tikzmark{repOuterStart}!
@@ -129,8 +129,8 @@ for _ in range(4):    !\tikzmark{repOuterStart}!
         t.lt(10)      !\tikzmark{repInnerEnd}!
     t.fd(100)         !\tikzmark{repOuterEnd}!
 \end{lstlisting}
-\end{minipage}\hfill\begin{minipage}{.4\textwidth}
-\begin{lstlisting}[escapechar=!]
+			\end{minipage}\hfill\begin{minipage}{.4\textwidth}
+				\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 !\tikzmark{repInnerStartTo}!def viertelkreis():
@@ -145,31 +145,31 @@ import turtle as t
 
 abgerundetes_quadrat()
 \end{lstlisting}
-\end{minipage}
-\end{center}
-\begin{tikzpicture}[overlay, remember picture,
-    every edge/.append style = { ->, thick, >=stealth, red!70},
-    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-	\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
-		\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
-		% arrow pointing from one code to other
-		\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
-		\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
+			\end{minipage}
+		\end{center}
+		\begin{tikzpicture}[overlay, remember picture,
+				every edge/.append style = { ->, thick, >=stealth, red!70},
+				every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+			\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
+			\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
+			% arrow pointing from one code to other
+			\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
+			\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
 			\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
 			% arrow pointing from one code to other
 			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
-\end{tikzpicture}
-\end{myanswer}
+		\end{tikzpicture}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Packen Sie Ihre Lösung aus \cref{myexercise:Haus} in eine Funktion mit dem Namen \lstinline|def haus()|. Testen Sie zunächst, ob die  Funktion wirklich das gewünschte Resultat liefert (ein einzelnes Haus) indem Sie die Funktion aufrufen. Schreiben Sie dann eine zweite Funktion \lstinline|def haeuserreihe():|, welche eine Häuserreihe aus 5 Häusern zeichnet, indem \lstinline|haus()| fünfmal aufgerufen wird.
+	Packen Sie Ihre Lösung aus \cref{myexercise:Haus} in eine Funktion mit dem Namen \lstinline|def haus()|. Testen Sie zunächst, ob die  Funktion wirklich das gewünschte Resultat liefert (ein einzelnes Haus) indem Sie die Funktion aufrufen. Schreiben Sie dann eine zweite Funktion \lstinline|def haeuserreihe():|, welche eine Häuserreihe aus 5 Häusern zeichnet, indem \lstinline|haus()| fünfmal aufgerufen wird.
 
-Ihr Code sollte folgendes Bild ausgeben:
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.3\linewidth]{GrundlagenInfo/00_Programmieren/Skript/Figures/haeuserreihe}
-\end{figure}
+	Ihr Code sollte folgendes Bild ausgeben:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.3\linewidth]{GrundlagenInfo/00_Programmieren/Skript/Figures/haeuserreihe}
+	\end{figure}
 
 \end{myexercise}
 
@@ -199,22 +199,22 @@ quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow2From}00}!)
 quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow3From}50}!)
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
-    \draw[red,-stealth] (arrow1From.north) to[bend right] node[right, yshift=-.8cm, fill=RoyalBlue,text=white,rounded corners] {\emoji{handshake} Übergabe} (arrowTo1);
-    \draw[red,-stealth] (arrowTo1.south) to[bend right] (arrowTo2);
-    \draw[red,-stealth] (arrow2From.south) to[bend right] (arrowTo1);
-    \draw[red,-stealth] (arrow3From.south) to[bend right] (arrowTo1);
+	\draw[red,-stealth] (arrow1From.north) to[bend right] node[right, yshift=-.8cm, fill=RoyalBlue,text=white,rounded corners] {\emoji{handshake} Übergabe} (arrowTo1);
+	\draw[red,-stealth] (arrowTo1.south) to[bend right] (arrowTo2);
+	\draw[red,-stealth] (arrow2From.south) to[bend right] (arrowTo1);
+	\draw[red,-stealth] (arrow3From.south) to[bend right] (arrowTo1);
 \end{tikzpicture}
 \end{myexample}
 
 \begin{myexercise}
-Schreiben Sie folgende Funktionen in VSCodium:
+	Schreiben Sie folgende Funktionen in VSCodium:
 
-\begin{itemize}
-\item \lstinline|def summiere(x1, x2)|: Berechnet die Summe zweier Parameter \lstinline|x1| und \lstinline|x2| und gibt das Resultat auf der Konsole aus (mit \lstinline|print|).
-\item \lstinline|def summe_quadrate(x1, x2)|: Berechnet die Summe von \texttt{x1}$^2$ + \texttt{x2}$^2$ und gibt das Resultat auf der Konsole aus.
-\item \lstinline|def pizzaparty(personen, stuecke)|: Berechnet die Anzahl Pizza-Stücke, die bei \texttt{personen} Personen übrigbleiben, aus \cref{ex:modulo-pizza} und gibt sie auf der Konsole aus.
-\end{itemize}
-% TODO implement on Moodle
+	\begin{itemize}
+		\item \lstinline|def summiere(x1, x2)|: Berechnet die Summe zweier Parameter \lstinline|x1| und \lstinline|x2| und gibt das Resultat auf der Konsole aus (mit \lstinline|print|).
+		\item \lstinline|def summe_quadrate(x1, x2)|: Berechnet die Summe von \texttt{x1}$^2$ + \texttt{x2}$^2$ und gibt das Resultat auf der Konsole aus.
+		\item \lstinline|def pizzaparty(personen, stuecke)|: Berechnet die Anzahl Pizza-Stücke, die bei \texttt{personen} Personen übrigbleiben, aus \cref{ex:modulo-pizza} und gibt sie auf der Konsole aus.
+	\end{itemize}
+	% TODO implement on Moodle
 \end{myexercise}
 
 \subsection{Lebensdauer (\textit{scope}) einer Variable}
@@ -226,25 +226,25 @@ Die Variable \texttt{laenge} existiert also nur innerhalb der Definition \lstinl
 Variablen, welche im Hauptprogramm (nicht eingerückt) erstellt werden, sind sogenannte \textbf{\textit{globale} Variablen}.
 
 \begin{myexercise}\label{ex:local-global}
-Beschreiben Sie, welche der Variablen im unten stehenden Code lokal oder global sind, und welche Variablen auch Parameter sind. Sie sollten insgesamt 5 Variablen finden!
-\lstinputlisting[language=Python,caption=\texttt{houses.py},label=listing:houses]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/houses.py}
+	Beschreiben Sie, welche der Variablen im unten stehenden Code lokal oder global sind, und welche Variablen auch Parameter sind. Sie sollten insgesamt 5 Variablen finden!
+	\lstinputlisting[language=Python,caption=\texttt{houses.py},label=listing:houses]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/houses.py}
 
-\begin{myanswer}
-\begin{enumerate}
-\item \lstinline|laenge|: lokale Variable, Parameter der Funktion \lstinline|haus()|
-\item \lstinline|anzahl_mauern|: lokale Variable
-\item \lstinline|laenge_pro_haus|: lokale Variable, Parameter der Funktion \lstinline|haeuserreihe()|
-\item \lstinline|anzahl_haeuser|: lokale Variable
-\item \lstinline|seitenlaenge|: globale Variable
-\end{enumerate}
-\end{myanswer}
+	\begin{myanswer}
+		\begin{enumerate}
+			\item \lstinline|laenge|: lokale Variable, Parameter der Funktion \lstinline|haus()|
+			\item \lstinline|anzahl_mauern|: lokale Variable
+			\item \lstinline|laenge_pro_haus|: lokale Variable, Parameter der Funktion \lstinline|haeuserreihe()|
+			\item \lstinline|anzahl_haeuser|: lokale Variable
+			\item \lstinline|seitenlaenge|: globale Variable
+		\end{enumerate}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Was könnte der Vorteil von \textit{lokalen Variablen} sein?
-\begin{myanswer}
-Falls Sie mehrere Funktionen schreiben, können Sie dieselben Variabelnamen und Parameter-Namen innerhalb der Funktionen verwenden, da diese nichts miteinander zu tun haben. Im Code aus \cref{ex:local-global} hätten wir auch in beiden Funktionen \texttt{laenge} schreiben können.
-\end{myanswer}
+	Was könnte der Vorteil von \textit{lokalen Variablen} sein?
+	\begin{myanswer}
+		Falls Sie mehrere Funktionen schreiben, können Sie dieselben Variabelnamen und Parameter-Namen innerhalb der Funktionen verwenden, da diese nichts miteinander zu tun haben. Im Code aus \cref{ex:local-global} hätten wir auch in beiden Funktionen \texttt{laenge} schreiben können.
+	\end{myanswer}
 \end{myexercise}
 
 \subsection{Mehrere Parameter}
@@ -254,14 +254,14 @@ Man kann beliebig viele Parameter verwenden in Funktionen. Wichtig dabei ist, di
 In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe eines Vielecks übergeben werden.
 \lstinputlisting[language=Python,caption=\texttt{farb\_vieleck.py},label=listing:farbvieleck]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/farb_vieleck.py}
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.2\linewidth]{GrundlagenInfo/00_Programmieren/Figures/mehrere-parameter}
+	\centering
+	\includegraphics[width=0.2\linewidth]{GrundlagenInfo/00_Programmieren/Figures/mehrere-parameter}
 \end{figure}
 \end{myexample}
 
 \begin{myexercise}
-Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich auch noch die Stiftdicke verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie den Befehl \texttt{t.width(...)}.
-\end{myexercise} 
+	Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich auch noch die Stiftdicke verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie den Befehl \texttt{t.width(...)}.
+\end{myexercise}
 
 \section{Werte zurückgeben mit \texorpdfstring{\lstinline|return|}{return}}
 \subsection{Einzelne Funktionen}
@@ -286,26 +286,26 @@ Die Konsole gibt folgende Meldung aus: \texttt{[Zeile: 5] NameError: name 'summe
 Eine Funktion kann man sich vorstellen wie ein Kochrezept, das einige Zutaten entgegennimmt und ein Resultat (Gericht) zurückgibt. Die Zutaten, oder ``Inputs'', werden dabei häufig als ``\textbf{Parameter}'' bezeichnet, währenddem das fertige Gericht, oder ``Resultat'' häufig als ``\textbf{\lstinline|return|-Wert}'' bezeichnet wird. Diese Idee ist in \cref{fig:funktion-einzeln}) veranschaulicht.
 
 \begin{figure}[H]
-% Use the \drawCube macro to draw various cubes
-\centering
-\begin{tikzpicture}
-\drawCube{1}{0}{2}{3}
-\node[fill=blue!50, rounded corners] (input1) at (llD11val){3};
-\node[fill=blue!50, rounded corners] (input2) at (llD21val){12};
-\draw[thick,->] (input1) -- (in11);
-\draw[thick,->] (input2) -- (in12);
-\node[fill=green!50, rounded corners](outVal1) at (5,-.6,3){36};
-\draw[thick,->] (out1) -- (outVal1);
-\end{tikzpicture}
-\caption{Illustration einer Funktion mit Inputs (Parametern) und Outputs (\lstinline|return|-Wert)}
-\label{fig:funktion-einzeln}
+	% Use the \drawCube macro to draw various cubes
+	\centering
+	\begin{tikzpicture}
+		\drawCube{1}{0}{2}{3}
+		\node[fill=blue!50, rounded corners] (input1) at (llD11val){3};
+		\node[fill=blue!50, rounded corners] (input2) at (llD21val){12};
+		\draw[thick,->] (input1) -- (in11);
+		\draw[thick,->] (input2) -- (in12);
+		\node[fill=green!50, rounded corners](outVal1) at (5,-.6,3){36};
+		\draw[thick,->] (out1) -- (outVal1);
+	\end{tikzpicture}
+	\caption{Illustration einer Funktion mit Inputs (Parametern) und Outputs (\lstinline|return|-Wert)}
+	\label{fig:funktion-einzeln}
 \end{figure}
 
 \begin{myexample}
 Betrachten Sie nochmals den folgenden, leicht modifizierten Code aus \cref{ex:sum-noreturn}. Wenn wir den Wert mit \lstinline|return| an das Hauptprogramm zurückgeben und in einer Variable (im Hauptprogramm, auf Zeile 5) abspeichern, funktioniert der Code nun.\\
 
 \begin{minipage}{\linewidth}
-\begin{lstlisting}
+	\begin{lstlisting}
 def summiere(x1, x2):
     summe = x1 + x2
     return (*@\colorbox{RoyalBlue!50}{sum\tikzmark{arrowFromEx01}me}@*)
@@ -315,44 +315,44 @@ def summiere(x1, x2):
 (*@\colorbox{ForestGreen!50}{re\tikzmark{arrowToEx02}s}@*)=(*@\colorbox{RoyalBlue!50}{summie\tikzmark{arrowToEx01}re(3, 5)}@*)
 print(res)
 \end{lstlisting}
-\begin{tikzpicture}[overlay,remember picture]
-   % Wert zurückgeben
-	\draw[RoyalBlue,-stealth, thick] (arrowFromEx01.south) to[bend left] node[align=left, pos=.15, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert an das Hauptprogramm zurückgeben...} (arrowToEx01.north);
-	
-	\draw[ForestGreen,-stealth, thick] (arrowToEx01.north) to[bend right] node[align=left, pos=.7, above right, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners] {...\textit{und} Wert in Variable speichern, z.B. \lstinline|res|} (arrowToEx02.north);
-\end{tikzpicture}
+	\begin{tikzpicture}[overlay,remember picture]
+		% Wert zurückgeben
+		\draw[RoyalBlue,-stealth, thick] (arrowFromEx01.south) to[bend left] node[align=left, pos=.15, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert an das Hauptprogramm zurückgeben...} (arrowToEx01.north);
+
+		\draw[ForestGreen,-stealth, thick] (arrowToEx01.north) to[bend right] node[align=left, pos=.7, above right, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners] {...\textit{und} Wert in Variable speichern, z.B. \lstinline|res|} (arrowToEx02.north);
+	\end{tikzpicture}
 \end{minipage}
 \end{myexample}
 
 \begin{mysubmission}\label{ex:dreieck-return}
-Gegeben seien die Höhe \texttt{h} und die Grundseite \texttt{b} eines Dreiecks. Schreiben Sie eine Funktion \lstinline|def flaeche_dreieck(h, b)|, welche den Flächeninhalt dieses Dreiecks berechnet und mit \lstinline|return| zurückgibt.
+	Gegeben seien die Höhe \texttt{h} und die Grundseite \texttt{b} eines Dreiecks. Schreiben Sie eine Funktion \lstinline|def flaeche_dreieck(h, b)|, welche den Flächeninhalt dieses Dreiecks berechnet und mit \lstinline|return| zurückgibt.
 
-Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
-\begin{myanswer}
-\begin{lstlisting}
+	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
+	\begin{myanswer}
+		\begin{lstlisting}
 def flaeche_dreieck(h, b):
     return h*b/2
 \end{lstlisting}
-\end{myanswer}
+	\end{myanswer}
 \end{mysubmission}
 
 \begin{mysubmission}\label{ex:quadrat-return}
-Geben sei eine ganze Zahl \texttt{n}. Schreiben Sie eine Funktion \lstinline|def square(n)|, welche das Quadrat von \lstinline|n| berechnet und mit \lstinline|return| zurückgibt.
+	Geben sei eine ganze Zahl \texttt{n}. Schreiben Sie eine Funktion \lstinline|def square(n)|, welche das Quadrat von \lstinline|n| berechnet und mit \lstinline|return| zurückgibt.
 
-Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
-\begin{myanswer}
-\begin{lstlisting}
+	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
+	\begin{myanswer}
+		\begin{lstlisting}
 def square(n):
     return n*n
 \end{lstlisting}
-\end{myanswer}
+	\end{myanswer}
 \end{mysubmission}
 
 \begin{myexercise}\label{ex:print-vs-return}
-In welchen Fällen ist es sinnvoller, einen Wert einfach per \lstinline|print| auf der Konsole auszugeben, und wann ist ein \lstinline|return|-Befehl sinnvoller? Ist das Zurückgeben des Werts in \cref{ex:quadrat-return} und \cref{ex:dreieck-return} sinnvoll, oder würde hier auch ein \lstinline|print| reichen?
-\begin{myanswer}
-\lstinline|return|-Ausdrücke ergeben vor allem dann sinn, wenn mit einem Wert, welcher in einer Funktion berechnet wurde, \textit{ausserhalb der Funktion weitergerechnet} werden soll. In allen anderen Fällen reicht ein \lstinline|print| meist aus. Auch bei \cref{ex:quadrat-return} und \cref{ex:dreieck-return} würde ein einfaches \lstinline|print| reichen.
-\end{myanswer}
+	In welchen Fällen ist es sinnvoller, einen Wert einfach per \lstinline|print| auf der Konsole auszugeben, und wann ist ein \lstinline|return|-Befehl sinnvoller? Ist das Zurückgeben des Werts in \cref{ex:quadrat-return} und \cref{ex:dreieck-return} sinnvoll, oder würde hier auch ein \lstinline|print| reichen?
+	\begin{myanswer}
+		\lstinline|return|-Ausdrücke ergeben vor allem dann sinn, wenn mit einem Wert, welcher in einer Funktion berechnet wurde, \textit{ausserhalb der Funktion weitergerechnet} werden soll. In allen anderen Fällen reicht ein \lstinline|print| meist aus. Auch bei \cref{ex:quadrat-return} und \cref{ex:dreieck-return} würde ein einfaches \lstinline|print| reichen.
+	\end{myanswer}
 \end{myexercise}
 
 
@@ -363,23 +363,23 @@ Wie Sie in \cref{ex:print-vs-return} gesehen haben, ist ein \lstinline|return| i
 Zum Vergleich: stellen Sie sich vor, Sie arbeiten in einer edlen Michelin-Sterne-Küche an einem raffinierten Gericht, in das viele Arbeitsschritte involviert sind. Häufig müssen in solchen Restaurants bis zu 200 Schritte pro Gericht ausgeführt werden. Daher könnte es sinnvoll sein, einzelne Aufgaben, wie beispielsweise die Herstellung der Saucen, an Ihre Sous-Chefs zu delegieren, und eine Person zu bestimmen, die das ganze Gericht zusammenfügt. Häufig werden Funktionen genau mit solchen komplexen Aufgaben im Hinterkopf geschrieben. Diese Idee ist in \cref{fig:funktionen-mehrere} illustriert.
 
 \begin{figure}[H]
-% Use the \drawCube macro to draw various cubes
-\centering
-\begin{tikzpicture}
-\drawCube{1}{0}{2}{3}
-% feed input values into a1
-\node[fill=blue!50, rounded corners] (input1) at (llD11val){3};
-\node[fill=blue!50, rounded corners] (input2) at (llD21val){12};
-\draw[thick,->] (input1) -- (in11);
-\draw[thick,->] (input2) -- (in12);
-\node[fill=green!50, rounded corners](outVal1) at (5,-.6,3){36};
-\draw[thick,->] (out1) -- (outVal1);
-\drawCube{2}{5.25}{3}{3}
-\drawCube{3}{10.5}{2}{3}
-\draw[thick,->,rounded corners] (out1) -- ++(0,-3.25,0) -- ++(3.15,0,0)node[below]{\lstinline{return out1}} -- ++(4.65,0,0) -- (in31);
-\end{tikzpicture}
-\caption{Illustration einer Code-Struktur, bei welcher mehrere Funktionen zusammenarbeiten}
-\label{fig:funktionen-mehrere}
+	% Use the \drawCube macro to draw various cubes
+	\centering
+	\begin{tikzpicture}
+		\drawCube{1}{0}{2}{3}
+		% feed input values into a1
+		\node[fill=blue!50, rounded corners] (input1) at (llD11val){3};
+		\node[fill=blue!50, rounded corners] (input2) at (llD21val){12};
+		\draw[thick,->] (input1) -- (in11);
+		\draw[thick,->] (input2) -- (in12);
+		\node[fill=green!50, rounded corners](outVal1) at (5,-.6,3){36};
+		\draw[thick,->] (out1) -- (outVal1);
+		\drawCube{2}{5.25}{3}{3}
+		\drawCube{3}{10.5}{2}{3}
+		\draw[thick,->,rounded corners] (out1) -- ++(0,-3.25,0) -- ++(3.15,0,0)node[below]{\lstinline{return out1}} -- ++(4.65,0,0) -- (in31);
+	\end{tikzpicture}
+	\caption{Illustration einer Code-Struktur, bei welcher mehrere Funktionen zusammenarbeiten}
+	\label{fig:funktionen-mehrere}
 \end{figure}
 
 In \cref{fig:funktionen-mehrere} haben wir eine Funktion \lstinline|a1|, die zwei Parameter entgegennimmt (\lstinline|x1| und \lstinline|x2|). Mit diesen Parametern macht sie etwas (z.B. die Summe berechnen, ein Quadrat zeichnen oder irgend eine sonstige Aufgabe) und gibt danach einen neuen, berechneten Wert \lstinline|a1| zurück. Dieser kann im Hauptprogramm abgespeichert und an andere Funktionen weitergegeben werden, beispielsweise an die Funktion \lstinline|a3|.
@@ -389,12 +389,12 @@ Stellen Sie sich vor, Sie arbeiten für einen Supermarkt und sollten den Preis I
 
 Folgender Code berechnet den Endpreis, für den Sie ihre Waren verkaufen werden, indem folgende zwei Funktionen aufgerufen werden:
 \begin{enumerate}
-\item \lstinline|berechne_rabatt| berechnet den Preis nach Abzug eines Rabatts für ein Produkt.
-\item \lstinline|berechnet_gesamtpreis| ruft \lstinline|berechne_rabatt| auf und fügt zum rabattierten Preis die Mehrwertsteuer hinzu.
+	\item \lstinline|berechne_rabatt| berechnet den Preis nach Abzug eines Rabatts für ein Produkt.
+	\item \lstinline|berechnet_gesamtpreis| ruft \lstinline|berechne_rabatt| auf und fügt zum rabattierten Preis die Mehrwertsteuer hinzu.
 \end{enumerate}
 
 \begin{minipage}{\linewidth}
-\begin{lstlisting}
+	\begin{lstlisting}
 def berechne_rabatt(preis, rabatt_prozent):
     rabatt = preis * (rabatt_prozent / 100)
     (*@\colorbox{CornflowerBlue}{return preis - \tikzmark{arrowFromEx11} rabatt}@*) # Gibt den Preis nach Abzug des Rabatts zurück
@@ -414,24 +414,24 @@ mwst_prozent = 7.7  # Mehrwertsteuer in %
 (*@\colorbox{CornflowerBlue}{endp\tikzmark{arrowToEx12}reis}@*) = berechne_gesamtpreis(preis, rabatt_prozent, mwst_prozent)
 print("Der Endpreis nach Rabatt und Mehrwertsteuer ist:", endpreis)
 \end{lstlisting}
-\begin{tikzpicture}[overlay,remember picture]
-   % Wert zurückgeben
-	\draw[red,-stealth] (arrowFromEx11.north) to[bend left] node[pos=.3, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben (und speichern)} (arrowToEx11);
-	\draw[red,-stealth] (arrowFromEx12.north) to[bend left] node[pos=.2, right, fill=RoyalBlue, fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben  (und speichern)} (arrowToEx12);
-\end{tikzpicture}
+	\begin{tikzpicture}[overlay,remember picture]
+		% Wert zurückgeben
+		\draw[red,-stealth] (arrowFromEx11.north) to[bend left] node[pos=.3, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben (und speichern)} (arrowToEx11);
+		\draw[red,-stealth] (arrowFromEx12.north) to[bend left] node[pos=.2, right, fill=RoyalBlue, fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben  (und speichern)} (arrowToEx12);
+	\end{tikzpicture}
 \end{minipage}
 \end{myexample}
 
 
 Mit folgendem Code können wir die Turtle eine Spirale aus mehreren Kreisen zeichnen lassen:\\
 \begin{minipage}{.65\textwidth}
-\lstinputlisting[language=Python,caption=\texttt{spirale\_kreis.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/spirale_kreis.py}
+	\lstinputlisting[language=Python,caption=\texttt{spirale\_kreis.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/spirale_kreis.py}
 \end{minipage}
 \begin{minipage}{.25\textwidth}
-\begin{figure}[H]
-	\centering
-    \includegraphics[keepaspectratio, width=\textwidth]{GrundlagenInfo/00_Programmieren/Figures/spirale.png}
-\end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[keepaspectratio, width=\textwidth]{GrundlagenInfo/00_Programmieren/Figures/spirale.png}
+	\end{figure}
 \end{minipage}\\
 
 \begin{myexample}
@@ -462,15 +462,15 @@ def vieleck_muster(umfang, ecken):
 
 
 \begin{mysubmission}
-Schreiben Sie eine Python-Funktion \lstinline|def notenskala(maxPunkte, erreichtePunkte)|, welche die erreichte Note in Abhängigkeit der maximal möglichen Punktzahl und der erreichten Punktzahl berechnet und per \lstinline|return| zurückgibt. Verwenden Sie dafür die folgende Formel:
+	Schreiben Sie eine Python-Funktion \lstinline|def notenskala(maxPunkte, erreichtePunkte)|, welche die erreichte Note in Abhängigkeit der maximal möglichen Punktzahl und der erreichten Punktzahl berechnet und per \lstinline|return| zurückgibt. Verwenden Sie dafür die folgende Formel:
 
-\[ \text{\texttt{note}} = \frac{\text{\texttt{erreichtePunkte}}}{\text{\texttt{maxPunkte}} }\cdot 5 + 1 \]
-\begin{myanswer}
-\begin{lstlisting}
+	\[ \text{\texttt{note}} = \frac{\text{\texttt{erreichtePunkte}}}{\text{\texttt{maxPunkte}} }\cdot 5 + 1 \]
+	\begin{myanswer}
+		\begin{lstlisting}
 def notenskala(maxPunkte, erreichtePunkte):
     return erreichtePunkte/maxPunkte * 5 + 1
 \end{lstlisting}
-\end{myanswer}
+	\end{myanswer}
 \end{mysubmission}
 
 
@@ -479,12 +479,12 @@ def notenskala(maxPunkte, erreichtePunkte):
 
 \begin{mychallenge}[\emoji{robot} \textbf{R2-D2}]
 
-Der Mikrocontroller einer R2-D2 Roboter-Einheit wurde beschädigt. Der Roboter kann deshalb nur noch einzelne, geradlinige \enquote{Schritte} nach links (l), rechts (r), oben (o) oder unten (u) (um jeweils eine Längeneinheit) durchführen. Die Bewegungsanweisung erhält der Roboter in Form des Strings \lstinline|bewegung|. Der String \lstinline|bewegung = 'lollru'| würde zum Beispiel dem Bewegungsablauf links, oben, links, links, rechts und unten (um jeweils eine Längeneinheit) entsprechen. Die R2-D2-Einheit bewegt sich auf dem zweidimensionalen Koordinatensystem und startet im Ursprung $(0,0)$.
+	Der Mikrocontroller einer R2-D2 Roboter-Einheit wurde beschädigt. Der Roboter kann deshalb nur noch einzelne, geradlinige \enquote{Schritte} nach links (l), rechts (r), oben (o) oder unten (u) (um jeweils eine Längeneinheit) durchführen. Die Bewegungsanweisung erhält der Roboter in Form des Strings \lstinline|bewegung|. Der String \lstinline|bewegung = 'lollru'| würde zum Beispiel dem Bewegungsablauf links, oben, links, links, rechts und unten (um jeweils eine Längeneinheit) entsprechen. Die R2-D2-Einheit bewegt sich auf dem zweidimensionalen Koordinatensystem und startet im Ursprung $(0,0)$.
 
 
-Schreiben Sie eine Python-Funktion \lstinline|def r2d2(bewegung)|, welche für eine gegebene beliebige Be\-we\-gungs\-an\-wei\-sung \lstinline|bewegung| entscheidet, ob sich der Roboter nach den Bewegungen wieder im Ursprung befindet (\lstinline|return True|) oder nicht (\lstinline|return False|). Hinweis: Auf die einzelnen Buchstaben eines Strings kann ebenso zugegriffen werden wie auf Listenelemente. Falls zum Beispiel \lstinline|wort = "Hallo"|, dann ist \lstinline|wort[0] == "H", wort[1], == "a"| und so weiter. Wie auch bei Listen, kann mit dem Befehl \lstinline|len(wort)| die Länge (Anzahl Buchstaben) eines Worts bestimmt werden.
+	Schreiben Sie eine Python-Funktion \lstinline|def r2d2(bewegung)|, welche für eine gegebene beliebige Be\-we\-gungs\-an\-wei\-sung \lstinline|bewegung| entscheidet, ob sich der Roboter nach den Bewegungen wieder im Ursprung befindet (\lstinline|return True|) oder nicht (\lstinline|return False|). Hinweis: Auf die einzelnen Buchstaben eines Strings kann ebenso zugegriffen werden wie auf Listenelemente. Falls zum Beispiel \lstinline|wort = "Hallo"|, dann ist \lstinline|wort[0] == "H", wort[1], == "a"| und so weiter. Wie auch bei Listen, kann mit dem Befehl \lstinline|len(wort)| die Länge (Anzahl Buchstaben) eines Worts bestimmt werden.
 
-\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
+	\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
 Beispiel 1:
 Input: bewegung = 'uurol'
 Output: False
@@ -494,8 +494,8 @@ Input: bewegung = 'rloulr'
 Output: True
 \end{lstlisting}
 
-\begin{myanswer}
-\begin{lstlisting}
+	\begin{myanswer}
+		\begin{lstlisting}
 def count_symbol(symbol, word):
     count = 0
     for buchstabe in word:
@@ -514,5 +514,5 @@ def r2d2(move):
     else:
         return False
 \end{lstlisting}
-\end{myanswer}
+	\end{myanswer}
 \end{mychallenge}

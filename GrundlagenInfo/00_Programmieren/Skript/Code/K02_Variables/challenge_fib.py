@@ -3,25 +3,33 @@ import turtle as t
 
 t.speed(10000)
 
+# Anzahl zu zeichnender "Halbkreise"
+anzahl_halbkreise = 8
+
+# wir stellen einen Viertelkreis durch einen Viertel
+# eines  Vieleck dar (je mehr Ecken desto genauer)
+anzahl_ecken_viertel = 40
+
+# Startwerte der Fibonacci-Folge
 f0 = 0
 f1 = 1
 
-n_circ = 8  # anzahl halbkreise
-steps = 40  # schritte pro halbkreis
+for _ in range(anzahl_halbkreise):
+    # f2 ist die nächste Zahl der Fibonacci-Folge
+    f2 = f0 + f1
 
-for _ in range(n_circ):
-    f2 = f0 + f1  # f2 ist die nächste Zahl der Fibonacci-Serie
+    # Kreis
+    radius = f2 * 10
+    umfang = 2 * radius * math.pi
 
-    radius = f2 * 10  # Radius ist
+    # Kantenlänge des Vielecks
+    kantenlaenge_vieleck = umfang / (4 * anzahl_ecken_viertel)
 
-    # umfang ist der Umfang des ganzen Kreises f2 * 10
-    umfang = radius * 2 * math.pi
+    for _ in range(anzahl_ecken_viertel):
+        t.fd(kantenlaenge_vieleck)
 
-    # wir machen einen Viertel des Umfangs (umfang / 4) in steps vielen Schritten
-    stepsize = (umfang / 4) / steps
-    for _ in range(steps):
-        t.fd(stepsize)
-        t.rt(90 / steps)
+        # nach einem Viertelkreis haben wir uns um 90 Grad gedreht
+        t.rt(90 / anzahl_ecken_viertel)
 
     # Update der Vorgänger
     f0 = f1
