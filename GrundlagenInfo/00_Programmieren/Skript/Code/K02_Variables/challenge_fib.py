@@ -3,11 +3,11 @@ import turtle as t
 
 t.speed(10000)
 
-# Anzahl zu zeichnender "Halbkreise"
+# Anzahl zu zeichnender "Viertelkreis"
 anzahl_halbkreise = 8
 
 # wir stellen einen Viertelkreis durch einen Viertel
-# eines  Vieleck dar (je mehr Ecken desto genauer)
+# eines Vielecks dar (je mehr Ecken desto genauer)
 anzahl_ecken_viertel = 40
 
 # Startwerte der Fibonacci-Folge
@@ -27,8 +27,12 @@ for _ in range(anzahl_halbkreise):
 
     for _ in range(anzahl_ecken_viertel):
         t.fd(kantenlaenge_vieleck)
+        """
+        nach einem Viertelkreis haben wir uns um 90 Grad gedreht
+        an jeder Ecke müssen wir deshalb um
+        90 Grad / anzahl_ecken_viertel drehen
 
-        # nach einem Viertelkreis haben wir uns um 90 Grad gedreht
+        """
         t.rt(90 / anzahl_ecken_viertel)
 
     # Update der Vorgänger
