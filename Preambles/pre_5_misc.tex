@@ -188,11 +188,11 @@
 
 			%			\HRule \\[0.5cm]
 			\iftoggle{oneauthor}{
-			\href{mailto:\mainauthormail}{\color{black}{\mainauthorA}}\\[0.5cm]
+				\href{mailto:\mainauthormail}{\color{black}{\mainauthorA}}\\[0.5cm]
 			}{
-			\href{mailto:\mainauthormail}{\color{black}{\mainauthorA, \mainauthorB}}\\[0.5cm]
+				\href{mailto:\mainauthormail}{\color{black}{\mainauthorA, \mainauthorB}}\\[0.5cm]
 			}
-			
+
 			{\large \textcopyleft{} \theplace, \today}
 
 			%      \tikz[remember picture,overlay] \node[opacity=0.3,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{LeeLogo}};
@@ -255,4 +255,17 @@
 			\stepcounter{col}
 		}
 	\stepcounter{row}
+}
+
+% to highlight matrix entries with tikz
+\tikzset{%
+	highlight/.style={rectangle,rounded corners,fill=cyan!15,draw=none,
+			fill opacity=0.4,thick,inner sep=0pt}
+}
+\newcommand{\tikzmark}[2]{\tikz[overlay,remember picture,
+		baseline=(#1.base)] \node (#1) {#2};}
+%
+\newcommand{\Highlight}[1][submatrix]{%
+	\tikz[overlay,remember picture]{
+		\node[highlight,fit=(left.north west) (right.south east)] (#1) {};}
 }

@@ -3,27 +3,28 @@ import turtle as t
 
 t.speed(10000)
 
-x = 0
-y = 1
+f0 = 0
+f1 = 1
 
 n_circ = 8  # anzahl halbkreise
 steps = 40  # schritte pro halbkreis
 
 for _ in range(n_circ):
-    z = x + y  # z ist die nächste Zahl der Fibonacci-Serie
-    radius = z * 10  # Radius ist z * 10
-    circumference = (
-        radius * 2 * math.pi
-    )  # circumference ist der Umfang des GANZEN Kreises
-    stepsize = (
-        circumference / 4 / steps
-    )  # wir machen einen Viertel des Umfangs (circumference / 4) in steps Schritten
-    print(stepsize)
+    f2 = f0 + f1  # f2 ist die nächste Zahl der Fibonacci-Serie
+
+    radius = f2 * 10  # Radius ist
+
+    # umfang ist der Umfang des ganzen Kreises f2 * 10
+    umfang = radius * 2 * math.pi
+
+    # wir machen einen Viertel des Umfangs (umfang / 4) in steps vielen Schritten
+    stepsize = (umfang / 4) / steps
     for _ in range(steps):
         t.fd(stepsize)
         t.rt(90 / steps)
 
-    x = y
-    y = z
+    # Update der Vorgänger
+    f0 = f1
+    f1 = f2
 
 t.done()

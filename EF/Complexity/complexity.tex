@@ -329,6 +329,102 @@
 	\end{itemize}
 \end{frame}
 
+
+\begin{frame}[fragile]
+	Sei $A$ eine $m\times n$-Matrix mit Einträgen
+	\begin{align*}
+		A =
+		\begin{pmatrix}
+			a_{1,1} & a_{1,2} & \dots & a_{1,n} \\
+			a_{2,1} & a_{2,2} & \dots & a_{2,n} \\
+			\vdots  & \vdots  &       & \vdots  \\
+			a_{m,1} & a_{m,2} & \dots & a_{m,n}
+		\end{pmatrix}
+	\end{align*}
+	und $x$ ein Vektor der Länge $n$ mit Einträgen
+	\begin{align*}
+		x =
+		\begin{pmatrix}
+			x_1    \\
+			x_2    \\
+			x_3    \\
+			\vdots \\
+			x_n
+		\end{pmatrix}.
+	\end{align*}
+\end{frame}
+
+
+\begin{frame}[fragile]{Matrix-Vektor-Multiplikation}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.9\textwidth]{EF/Complexity/mvm.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+	Dabei ist zum Beispiel die Komponente $b_3$ von $b$ gegeben durch die Zahl
+	\begin{align*}
+		a_{3,1}x_1 + a_{3,2}x_2 + \ldots + a_{3,n}x_n.
+	\end{align*}
+	Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
+	\begin{align*}
+		b_i := \sum_{k=1}^n a_{i,k}x_k = a_{i,1}x_1 + a_{i,2}x_2 + \ldots + a_{i,n}x_n, \quad (i=1,2,\ldots,m).
+	\end{align*}
+\end{frame}
+
+\begin{frame}[fragile]{Matrix-Vektor-Multiplikation}
+	\begin{lstlisting}[language=C++]
+// y = Ax + y
+mvm(A, x, y, n)
+{
+    for (i = 0; i < n; ++i)
+        for (j = 0; j < n; ++j)
+            y[i] += A[i*n + j] * x[j];
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Matrix-Matrix-Multiplikation}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\textwidth]{EF/Complexity/mmm.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	Im Allgemeinen ist der Eintrag $c_{i,j}$ von $C$ das Vektor-Vektor-Produkt der $i$-ten Zeile von $A$ mit der $j$-ten Spalte von $B$. Deshalb ist es notwendig, dass die \enquote{Breite} von $A$ genau der \enquote{Höhe} von $B$ entspricht. Das Produkt $C=AB$ wird die \enquote{Höhe} von $A$ und die \enquote{Breite} von $B$ haben. Formal definiert man die Einträge von $C$ wie folgt:
+	\begin{align}\label{eq:matrixproduct}
+		c_{i,j} := \sum_{k=1}^n a_{i,k}b_{k,j} = a_{i,1}b_{1,j}+a_{i,2}b_{2,j}+\ldots+a_{i,n}b_{n,j},
+	\end{align}
+	für $(i=1,2,\ldots ,m; j=1,2,\ldots,p)$.
+\end{frame}
+
+\begin{frame}[fragile]{Matrix-Matrix-Multiplikation}
+	\begin{lstlisting}[language=C++]
+/* Multiply n x n matrices a and b */
+void mmm(double *a, double *b, double *c, int n) {
+    int i, j, k;
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            for (k = 0; k < n; k++)
+                c[i*n + j] += a[i*n + k]*b[k*n + j];
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+	\begin{enumerate}
+		\item Beschreibe einen Algorithmus, welcher eine Laufzeit von $\Theta\lr{n^4}$ besitzt.
+		\item Beschreibe einen Algorithmus, welcher eine Laufzeit von $\Theta\lr{10^n}$ besitzt.
+		\item Beschreibe einen Algorithmus, welcher eine Laufzeit von $\Theta\lr{n^{n+1}}$ besitzt.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Best-Case}
+	Wie kann fast jeder Algorithmus modifiziert werden, dass er eine \enquote{schnelle} best-case Laufzeit hat?
+\end{frame}
+
 \begin{frame}{Referenzen}
 	\printbibliography[heading=none]
 \end{frame}
