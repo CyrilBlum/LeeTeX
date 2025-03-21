@@ -43,7 +43,7 @@ Im übertragenen Sinne kann man sich Definitionen vorstellen wie Kochrezepte, di
 
 Das Schreiben von Definitionen hat mehrere Vorteile:
 \begin{itemize}
-	\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|viereck()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|viereck_blume()|.
+	\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|viereck()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|viereck_blume()|. Auf diese Weise wird ein komplexer Code in einzelne, einfachere Teile (Module) unterteilt.
 	\item Der Code wird \textbf{übersichtlicher}: jede Teil-Aktivität ist eine Funktion
 	\item Falls das komplexere Programm nicht das gewünschte Resultat liefert, können wir es \textit{debuggen}, indem wir die einfacheren Funktionen zuerst aufrufen und sicherstellen, dass diese richtig funktionieren.
 \end{itemize}
@@ -260,16 +260,17 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
 \end{myexample}
 
 \begin{myexercise}
-	Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich auch noch die Stiftdicke verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie den Befehl \texttt{t.width(...)}.
+	Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich zur Farbe und der Anzahl Ecken auch noch die \textbf{Stiftdicke} für jedes Vieleck verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie den Befehl \texttt{t.width(...)}. 
 \end{myexercise}
 
 \section{Werte zurückgeben mit \texorpdfstring{\lstinline|return|}{return}}
 \subsection{Einzelne Funktionen}
 
-Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden: Sie beschreiben einen Ablauf, ohne jedoch diesen auszuführen. Damit der Ablauf ausgeführt wird, müssen Sie die Definition aufrufen. Dies kann nützlich sein, wenn sie eine Aufgabe mehrmals und in unterschiedlichen Varianten ausführen wollen, wie beispielsweise das Zeichnen einer Spirale. Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen, jedoch keine Werte an das Hauptprogramm zurückgeben konnten. In diesem Kapitel lernen wir, wie Funktionen wie ``Sous-Chefs'' in einer komplexen Küche Zutaten (Parameter) entgegennehmen und Resultate an andere ``Sous-Chefs''  (Definitionen) weitergeben können.
+Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden: Sie beschreiben einen Ablauf, ohne diesen auszuführen. Damit der Code einer Funktion (\lstinline|def|) ausgeführt wird, müssen Sie die Definition \textbf{aufrufen}: In \cref{ex:multiple-params} wurde dies Beispielsweise mit \lstinline|farb_vieleck(3, "red")| gemacht. Erst aufgrund dieser Zeile wurde etwas gezeichnet!
 
+Dies kann nützlich sein, wenn sie eine Aufgabe mehrmals und in unterschiedlichen Varianten ausführen wollen, wie beispielsweise in \cref{ex:multiple-params}. 
 
-Definitionen können zudem Inputs entgegennehmen, sogenannte \textbf{Parameter}. Wir konnten zwar bisher einen Wert einer Variable mittels \lstinline|print| drucken, Bisher konnten Sie jedoch nichts an das Hauptprogramm zurückgeben. Dies bedeutet, dass alle Variablen, die wir je in einer Definition erstellt haben, nur in dieser Definition ``lebten'' und nicht mehr zugreifbar waren, nachdem das Programm beendet wurde.
+Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen und auf der Konsole drucken konnten, allerdings verschwinden alle Parameter und lokalen Variablen nach der Ausführung einer Funktion.  Dies bedeutet, dass alle Variablen, die wir je in einer Definition erstellt haben, nur in dieser Definition ``lebten''. Wir konnten jedoch nicht mehr auf Parameter oder lokale Variablen zugreifen, nachdem das Programm beendet wurde.
 
 \begin{myexample}\label{ex:sum-noreturn}
 Betrachten Sie folgenden Code. Weshalb führt er zu einer Fehlermeldung?
@@ -283,10 +284,12 @@ print(summe)
 Die Konsole gibt folgende Meldung aus: \texttt{[Zeile: 5] NameError: name 'summe' is not defined}. Dies bedeutet, dass die Variable \lstinline|summe| auf Zeile 5 nicht existiert. Die Fehlermeldung erklärt sich dadurch, dass alle Variablen, die innerhalb einer Definition erstellt werden, nur innerhalb dieser Definition ``\textit{leben}'', also existieren. Dass Variablen mittels dem Befehl \lstinline|return| auch an das Hauptprogramm ``zurückgegeben'' werden können, lernen wir in diesem Kapitel.
 \end{myexample}
 
+
+Funktionen können jedoch auch Werte an das Hauptprogramm zurückgeben: In diesem Kapitel lernen wir, wie Funktionen, ähnlich wie ``Sous-Chefs'' (Hilfs-Köche) in einer komplexen Küche Zutaten (Parameter) entgegennehmen und Resultate an andere ``Sous-Chefs'' (Funktionen) via das Hauptprogramm weitergeben werden können.
+
 Eine Funktion kann man sich vorstellen wie ein Kochrezept, das einige Zutaten entgegennimmt und ein Resultat (Gericht) zurückgibt. Die Zutaten, oder ``Inputs'', werden dabei häufig als ``\textbf{Parameter}'' bezeichnet, währenddem das fertige Gericht, oder ``Resultat'' häufig als ``\textbf{\lstinline|return|-Wert}'' bezeichnet wird. Diese Idee ist in \cref{fig:funktion-einzeln}) veranschaulicht.
 
 \begin{figure}[H]
-	% Use the \drawCube macro to draw various cubes
 	\centering
 	\begin{tikzpicture}
 		\drawCube{1}{0}{2}{3}
@@ -302,10 +305,10 @@ Eine Funktion kann man sich vorstellen wie ein Kochrezept, das einige Zutaten en
 \end{figure}
 
 \begin{myexample}
-Betrachten Sie nochmals den folgenden, leicht modifizierten Code aus \cref{ex:sum-noreturn}. Wenn wir den Wert mit \lstinline|return| an das Hauptprogramm zurückgeben und in einer Variable (im Hauptprogramm, auf Zeile 5) abspeichern, funktioniert der Code nun.\\
+Betrachten Sie nochmals den folgenden, leicht modifizierten Code aus \cref{ex:sum-noreturn}. Wenn wir den Wert mit \lstinline|return| an das Hauptprogramm zurückgeben und in einer Variable (im Hauptprogramm, auf Zeile 5) abspeichern, funktioniert der Code nun: Wir können auch ausserhalb der Funktion \lstinline|summiere()| auf einen Wert zugreifen, welcher innerhalb der Definition berechnet wurde, und diesen potentiell weiterverwenden.\\
 
 \begin{minipage}{\linewidth}
-	\begin{lstlisting}
+	\begin{lstlisting}[numbers=left]
 def summiere(x1, x2):
     summe = x1 + x2
     return (*@\colorbox{RoyalBlue!50}{sum\tikzmark{arrowFromEx01}me}@*)
@@ -322,6 +325,10 @@ print(res)
 		\draw[ForestGreen,-stealth, thick] (arrowToEx01.north) to[bend right] node[align=left, pos=.7, above right, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners] {...\textit{und} Wert in Variable speichern, z.B. \lstinline|res|} (arrowToEx02.north);
 	\end{tikzpicture}
 \end{minipage}
+
+\begin{myattention}
+Man muss sich diesen Code wie folgt vorstellen: Auf Zeile 7 wird die Funktion  \lstinline|summiere| aufgerufen, die Werte 3 und 5 werden für die Parameter \lstinline|x1| und \lstinline|x2| übergeben. Zeile 2 berechnet nun die Summe dieser beiden Werte. Auf Zeile 3 wird \textcolor{red}{nicht} die Variable \lstinline|summe| an das Hauptprogramm zurückgegeben, sondern deren Wert (in diesem Fall: 8). Dies ist sehr wichtig: Nur weil wir \lstinline|return summe| schreiben, heisst dass nicht, dass wir ausserhalb der Funktion \lstinline|summiere| auf eine Variable \lstinline|summe| zugreifen können. Vielmehr kann man sich vorstellen, dass der blau markierte Bereich auf Zeile 7 nun \enquote{ersetzt} wird durch den Wert 8, welcher vom Unterprogramm an das Hauptprogramm zurückgegeben wird. Zeile 7 liest sich also nach der Ausführung des Unterprogramms so als ob man \lstinline|res = 8| geschrieben hätte. Man könnte selbstverständlich auch einen anderen Variablenname statt \lstinline|res| auswählen, z.B. \lstinline|x|, \lstinline|y|, \lstinline|resultat| (kurz  \lstinline|res|) oder einfach \lstinline|summe|. In letzterem Falle wäre \lstinline|summe| auf Zeile 7 eine globale Variable und somit gänzlich unterschiedlich von der lokalen Variable \lstinline|summe| auf Zeile 2.
+\end{myattention}
 \end{myexample}
 
 \begin{mysubmission}\label{ex:dreieck-return}
@@ -484,19 +491,23 @@ Formel: Durchschnittsgeschwindigkeit = Strecke (km) / Zeit (h)
 \end{myanswer}
 \end{myexercise}
 
-\begin{mysubmission}[Boxenstopp-Strategie \emoji{fuelpump}]
-Ein Formel-1-Rennteam möchte die Gesamtzeit eines Rennens inklusive Boxenstopps berechnen. Gegeben sind die Strecke in Km, die Durchschnittsgeschindigkeit in Km/h sowie die Anzahl Stopps sowie die Dauer pro Stopp.
+\begin{mysubmission}[Boxenstopp \emoji{fuelpump}]
+Ein Formel-1-Rennteam möchte die Gesamtzeit eines Rennens inklusive Boxenstopps berechnen. Gegeben sind die Gesamtstrecke in Km, die Durchschnittsgeschindigkeit in Km/h, die Anzahl Stopps sowie die Dauer pro Stopp in Sekunden.
 
 Schreiben Sie zwei Funktionen: 
 
 \begin{enumerate}
-\item  \lstinline|def fahrzeit_ohne_stopps(strecke_km, geschwindigkeit_kmh)|: Berechnet die reine Fahrzeit in Sekunden und gibt diese per \lstinline|return| zurück.
+\item  \lstinline|def fahrzeit_ohne_stopps(strecke_km, geschwindigkeit_kmh)|: Berechnet die reine Fahrzeit \textbf{in Sekunden} und gibt diese per \lstinline|return| zurück.
 \item  \lstinline|def gesamtzeit_mit_stopps(strecke_km, geschwindigkeit_kmh, anzahl_stopps, stoppdauer_sek)|: Berechnet zuerst die Fahrzeit ohne Stopps (mit der ersten Funktion) und berechnet dann die Gesamtzeit mit Stopps, indem zur Fahrzeit ohne Stopps die Anzahl Boxenstopps mal die Dauer eines Boxenstopps (in Sekunden) hinzugefügt wird. Das Resultat soll ebenfalls per \lstinline|return| zurückgegeben werden. 
 \end{enumerate}
 
 Formel 1: Fahrzeit (Sekunden) = Strecke (Km) / Geschindigkeit (Km/h) * 3600
 
 Formel 2: Gesamtzeit (Sekunden) = Fahrzeit + (Anzahl Stopps $\times$ Stoppdauer)
+
+\textbf{Tipp 1}: Schreiben Sie den Code zuerst in VSCode und testen sie ihn erst nachher auf Moodle.
+
+\textbf{Tipp 2}: Schreiben Sie zuerst die erste Funktion und testen Sie diese mit folgenden Testwerten: Geschwindigkeit = 210 km/h, Strecke = 305 km. Das Resultat sollte sein: 5228.57 Sekunden. Schreiben Sie erst danach die zweite Definition, und rufen Sie darin die erste Definition auf.
 
 \begin{myanswer}
 \lstinputlisting[language=Python,caption=\texttt{f1\_pitstops.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K03_Functions/f1_pitstops.py}
