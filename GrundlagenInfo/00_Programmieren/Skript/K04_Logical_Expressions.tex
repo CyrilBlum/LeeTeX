@@ -152,6 +152,46 @@ Verwenden Sie einen \lstinline|input|-Befehl aus \cref{ex:input}, um den Benutze
 \end{enumerate}
 \end{myexercise}
 
+\begin{mychallenge}[\emoji{robot} \textbf{R2-D2}]
+
+	Der Mikrocontroller einer R2-D2 Roboter-Einheit wurde beschädigt. Der Roboter kann deshalb nur noch einzelne, geradlinige \enquote{Schritte} nach links (l), rechts (r), oben (o) oder unten (u) (um jeweils eine Längeneinheit) durchführen. Die Bewegungsanweisung erhält der Roboter in Form des Strings \lstinline|bewegung|. Der String \lstinline|bewegung = 'lollru'| würde zum Beispiel dem Bewegungsablauf links, oben, links, links, rechts und unten (um jeweils eine Längeneinheit) entsprechen. Die R2-D2-Einheit bewegt sich auf dem zweidimensionalen Koordinatensystem und startet im Ursprung $(0,0)$.
+
+
+	Schreiben Sie eine Python-Funktion \lstinline|def r2d2(bewegung)|, welche für eine gegebene beliebige Be\-we\-gungs\-an\-wei\-sung \lstinline|bewegung| entscheidet, ob sich der Roboter nach den Bewegungen wieder im Ursprung befindet (\lstinline|return True|) oder nicht (\lstinline|return False|). Hinweis: Auf die einzelnen Buchstaben eines Strings kann ebenso zugegriffen werden wie auf Listenelemente. Falls zum Beispiel \lstinline|wort = "Hallo"|, dann ist \lstinline|wort[0] == "H", wort[1], == "a"| und so weiter. Wie auch bei Listen, kann mit dem Befehl \lstinline|len(wort)| die Länge (Anzahl Buchstaben) eines Worts bestimmt werden.
+
+	\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
+Beispiel 1:
+Input: bewegung = 'uurol'
+Output: False
+
+Beispiel 2:
+Input: bewegung = 'rloulr'
+Output: True
+\end{lstlisting}
+
+	\begin{myanswer}
+		\begin{lstlisting}
+def count_symbol(symbol, word):
+    count = 0
+    for buchstabe in word:
+        if buchstabe == symbol:
+            count += 1
+    return(count)
+
+
+def r2d2(move):
+    l = count_symbol('l', move)
+    r = count_symbol('r', move)
+    o = count_symbol('o', move)
+    u = count_symbol('u', move)
+    if (l-r == 0 and o-u == 0):
+        return True
+    else:
+        return False
+\end{lstlisting}
+	\end{myanswer}
+\end{mychallenge}
+
 
 \begin{mysubmission}
 Bei einer Flugreise darf der aufgegebene Koffer üblicherweise nicht schwerer sein als 20kg. Ansonsten bezahlt man einen Aufschlag von CHF 5.- pro kg Übergewicht.
