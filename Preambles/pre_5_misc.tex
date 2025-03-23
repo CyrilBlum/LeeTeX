@@ -103,6 +103,8 @@
 
 \pgfset{foreach/parallel foreach/.style args={#1in#2via#3}{evaluate=#3 as #1 using {{#2}[#3-1]}}}
 
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
 \newcommand{\makeSpiral}{
 	\begin{center}
 
@@ -111,11 +113,7 @@
 			% Define the desired (x, y) coordinate	          
 			% Create a scope for the centered image
 			% Insert your external image
-			\iftoggle{includelogo}{
-				\node[draw=white!10,fill=white!20, opacity=0.3,yshift=-1.5cm] at (0,5) {\centering\includegraphics[width=\logosize]{\thelogo}};
-			}{}
-			\begin{scope}[on background layer]
-				\begin{scope}
+			\begin{pgfonlayer}{bg}    % select the background layer
 					% Initialize a scaling factor for the emojis
 					\newcommand{\scaleFactor}{4}
 					\newcommand{\spacing}{0.3} % smaller number = emojis closer together
@@ -143,8 +141,7 @@
 								\node[scale=\scale,opacity=\emojiopacity] at (\angle:\radius) {\emoji{\theemoji}};
 							}
 					}
-				\end{scope}
-			\end{scope}
+			\end{pgfonlayer}
 		\end{tikzpicture}
 	\end{center}
 }
@@ -155,21 +152,15 @@
 	% arg2: subtitle
 	\begin{titlepage}
 		\vspace*{0.25\textheight}
-		\begin{center}
-
+			\begin{center}
 			% logo
-			%	      \begin{figure}[H]
-			%	        \centering
-			%	        \includegraphics[height=.15\textwidth]{LeeLogo}
-			%	      \end{figure}
+			\iftoggle{includelogo}{\begin{figure}[H]\centering\includegraphics[width=\logosize]{\thelogo}
+			\end{figure}}{}
 			\thesubject\\
-			% title
-			\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
-			%			\HRule \\[0.5cm]
 			\begin{tcolorbox}[enhanced,colframe=RoyalBlue!80,colback=RoyalBlue!20, hbox,lifted shadow={1mm}{-2mm}{3mm}{0.1mm}%
 						{Black!50!white}]
 				\begin{varwidth}{\textwidth}
-					\begin{center}
+					\begin{center}					
 						\ifblank{#2}{
 							% if no subtitle is given (#2 blank)
 							{\huge \textbf{#1}}\\[0.3cm]
@@ -181,7 +172,7 @@
 							\makeSpiral
 							{\large \textbf{#2}}\\[0.2cm]
 						}
-					\end{center}
+				\end{center}
 				\end{varwidth}
 			\end{tcolorbox}
 
