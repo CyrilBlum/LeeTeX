@@ -1,0 +1,373 @@
+\lstset{style=Python}
+\chapter{Anschluss von Datenbank an TigerJython-Game}
+\section{Einführung}
+
+In diesem Kapitel werden wir ein unser TigerJython-Game an eine Datenbank anschliessen, um neue Funktionalitäten wie ein Login-Fenster, einen Highscore und weitere Dinge zu ermöglichen. Hierzu möchten wir als erstes folgende Tabellen erstellen:
+
+% Stil für alle Tabellen
+\newtcolorbox{dbtable}[1]{colback=RoyalBlue!5!white,colframe=RoyalBlue!75!black,fonttitle=\bfseries,title=#1, width=7cm}
+
+%\begin{figure}[H]
+%\centering
+%\begin{tikzpicture}
+%    % Tabelle: Lieferant
+%    \node[right] (scores) {
+%        \begin{dbtable}{scores}
+%            \begin{table}[H]
+%            \centering
+%            \begin{tabular}{cc|c}
+%                        &Spalte&Typ\\\midrule\midrule
+%                        \emoji{key}&\texttt{id} &\texttt{INTEGER}\\\midrule
+%                        \emoji{up-right-arrow}  &          \texttt{user\_id}&\texttt{INTEGER}\node(score_userid){};\\\midrule
+%                            &       \texttt{score}&\texttt{INTEGER}\\\midrule
+%                              &      \texttt{date\_score}&\texttt{DATETIME}\\
+%                        \end{tabular}
+%            \end{table}
+%        \end{dbtable}
+%    };
+%
+%    % Tabelle: Kategorie
+%    \node[right=3cm of scores] (users) {
+%        \begin{dbtable}{users}
+%            \begin{table}[H]
+%                \centering
+%                \begin{tabular}{cc|c}
+%                    &Spalte&Typ\\\midrule\midrule
+%                     \node(users_id){};\emoji{key}&\texttt{id} &\texttt{INTEGER}\\\midrule
+%                      &          \texttt{user}&\texttt{VARCHAR(40)}\\\midrule
+%                        &       \texttt{password}&\texttt{VARCHAR(40)}\\
+%                    \end{tabular}
+%                \end{table}
+%        \end{dbtable}
+%    };
+%
+%
+%    % Beziehungen
+%    \draw[->] (score_userid) -- (users_id);
+%
+%\end{tikzpicture}
+%\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    table/.style={
+        matrix of nodes,
+        nodes={anchor=west, minimum height=1em, text depth=0.2em, text height=1em, align=left},
+        column 1/.style={right delimiter=|},
+        row sep=0pt,
+        column sep=2pt
+    }
+]
+
+% Tabelle scores
+\matrix (scores) [table] {
+    & \textbf{Spalte} & \textbf{Typ} \\\midrule\midrule
+    \emoji{key} & \texttt{id} & \texttt{INTEGER} \\\midrule
+    \emoji{up-right-arrow} & \texttt{user\_id} & \texttt{INTEGER} \\\midrule
+     & \texttt{score} & \texttt{INTEGER} \\\midrule
+     & \texttt{date\_score} & \texttt{DATETIME} \\
+};
+
+% Tabelle users
+\matrix (users) [table, right=5cm of scores] {
+    & \textbf{Spalte} & \textbf{Typ} \\\midrule\midrule
+    \emoji{key} & \texttt{id} & \texttt{INTEGER} \\\midrule
+     & \texttt{user} & \texttt{VARCHAR(40)} \\\midrule
+     & \texttt{password} & \texttt{VARCHAR(40)} \\
+};
+
+\node(userstitle)[above=5.5em of users.center, font=\bfseries, anchor=center]{Tabelle \texttt{users}};
+\node(scorestitle)[above=7em of scores.center, font=\bfseries, anchor=center]{Tabelle \texttt{scores}};
+
+% Pfeil von user_id (Zeile 3 in scores) zu id (Zeile 2 in users)
+\draw [->,>=latex, thick] ([yshift=10pt]scores-3-3.east) -- +(40pt,0) -| ([xshift=-40pt,yshift=10pt]users-2-1.west) -- ([yshift=10pt]users-2-1.west);
+
+\end{tikzpicture}
+\end{figure}
+
+Die Tabelle \texttt{users} speichert alle Benutzer-Daten für das Spiel, d.h., die Benutzer, welche sich in das Spiel eingeloggt haben. Die Tabelle \texttt{scores} speichert die Spielresultate jedes Spiels.
+
+\begin{myexercise}[\texttt{users}-Tabelle erstellen]
+Erstellen Sie ein Programm in TigerJython, um die Tabelle \texttt{users} in der Datenbank \texttt{game.db} zu erstellen. Die Datenbank wird mit dem unten stehenden Code automatisch angelegt, sollte sie nicht bereits existieren.
+
+\begin{lstlisting}
+from sqlite3 import *
+from prettytable import *   # Befehle zur Ausgabe von Tabellen
+
+# Datenbank game.db (wenn nötig) erzeugen und verbinden
+with connect("game.db") as con:
+    # Datenbank-Cursor (=Lese/Schreibestift) holen
+    cursor = con.cursor()
+    
+    #TODO Mehrzeiliger SQL-Code zur Erstellung einer Tabelle
+    sql = """
+        CREATE TABLE IF NOT EXISTS users (
+           ...
+    """
+    
+    # SQL ausführen
+    cursor.execute(sql)
+
+    print("New table X was created!")
+
+\end{lstlisting}
+\begin{myattention}[Windows-Users]
+\faWindows{} \textbf{Windows}: TigerJython im Admin-Modus ausführen, da sonst nicht auf die lokale SQLite-Datenbank zugegriffen werden kann!
+\end{myattention}
+
+\textbf{Tipp}: Primärschlüssel müssen erstellt werden mit dem Befehl \lstinline[style=sql]|PRIMARY KEY AUTOINCREMENT|:
+\begin{lstlisting}[style=sql]
+CREATE TABLE IF NOT EXISTS users(
+	id INTEGER PRIMARY KEY AUTOINCREMENT, ...
+)
+\end{lstlisting}
+Mit dem Zusatz \lstinline[style=sql]|AUTOINCREMENT| werden die Werte der Spalte \texttt{id} automatisch bei jedem Eintrag um 1 vergrössert, so dass kein Wert für \texttt{id} beim \lstinline[style=sql]|INSERT|-Befehl mitgegeben werden muss.
+\begin{myanswer}
+\begin{lstlisting}
+from sqlite3 import *
+
+# Verbindung zur DB game.db öffnen
+with connect("game.db") as con:
+    # Datenbank-Cursor (=Lese/Schreibestift) holen
+    cursor = con.cursor()
+    
+    # SQL-Code zur Erstellung der Tabelle
+    sql = """
+        CREATE TABLE IF NOT EXISTS users (
+            id_INTEGER PRIMARY KEY AUTOINCREMENT,
+            user VARCHAR(40),
+            password VARCHAR(40) 
+        )
+    """
+    
+    # SQL ausführen
+    cursor.execute(sql)
+
+    print("Table users was created!")
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Benutzer-Registrierung]
+Schreiben Sie ein Programm, um Sie mittels \lstinline|input("...")| nach einem Benutzernamen und Passwort zu fragen. Beides sollte danach mit Insert in der Tabelle \texttt{users} abgespeichert werden. Überprüfen Sie am Ende das Resultat mit folgendem Code:
+\begin{lstlisting}
+sql = "SELECT * FROM users"
+cursor.execute(sql)
+printTable(cursor)
+\end{lstlisting}
+\textbf{Tipp}: Mit dem Text-Befehl \lstinline|.format()| lassen sich die Variablen-Werte innerhalb der Platzhalter \lstinline|{}| in einen Text einfügen.
+
+\begin{lstlisting}
+sql = """INSERT INTO users (name, password)
+        VALUES('{}', '{}')""".format(username, password)
+\end{lstlisting}
+Die drei Anführungszeichen ermöglichen es, Texte über mehrere Zeilen zu schreiben.
+\begin{myanswer}
+\begin{lstlisting}
+from sqlite3 import *
+from prettytable import * # Befehle zur Ausgabe von Tabellen
+
+# Datenbank game.db (wenn nötig) erzeugen und verbinden
+with connect("game.db") as con:
+    # Datenbank-Cursor (=Lese/Schreibestift) holen
+    cursor = con.cursor()
+    
+    # Benutzername und Passwort abfragen
+    username = input("Enter username")
+    password = input("Enter password")
+    
+    # SQL-Code zum Einfügen eines neuen Datensatzes
+    sql = """
+        INSERT INTO users (user, password)
+        VALUES
+            ('{}', '{}')
+    """.format(username, password)
+    
+    # SQL ausführen
+    cursor.execute(sql)
+    
+    # Tabelle ausgeben
+    sql = "SELECT * FROM users"    
+    cursor.execute(sql)
+    printTable(cursor)
+
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}[Sicherheits-Überprüfung]
+Fügen Sie eine Bedingung ein, wonach eine Aufforderung erscheint, einen anderen Benutzernamen einzugeben, sollte es einen bestimmten Benutzer bereits geben.
+\begin{myanswer}
+\begin{lstlisting}
+from sqlite3 import *
+
+with connect("game.db") as con:
+    # Datenbank-Cursor (=Lese/Schreibestift) holen
+    cursor = con.cursor()
+
+    # Benutzername abfragen
+    repeat:
+        username = input("Enter username")
+        sql = """
+            SELECT * 
+            FROM users
+            WHERE user = '{}'
+        """.format(username)
+        cursor.execute(sql)
+        resultset = cursor.fetchall()
+        if len(resultset) == 0:
+            # Noch unbenutzer Benutzernamen --> alles OK
+            break
+        else:
+            print("This username is already taken. Choose a different one!")
+    
+    password = input("Enter password")
+
+    # Restlicher Code
+
+\end{lstlisting}
+\end{myanswer}
+\end{mychallenge}
+
+\begin{mychallenge}[Passwort verschlüsseln]
+In der Praxis werden Passwörter nicht im Klartext in Datenbanken gespeichert, sondern mit einer kryptografischen Einwegfunktion, einem sogenannten \textit{hash}, verschlüsselt. Dies dient dazu, dass nicht einmal der Administrator einer Webseite, welcher Zugriff auf die Datenbank hat, die Passwörter der BenutzerInnen lesen kann. Sie können anstelle des Passworts die Ausgabe der SHA1-Hashfunktion des Passworts wie folgt speichern:
+\begin{lstlisting}
+import hashlib
+password = 'helloworld!'              # Ihr Klartext-Passwort zum "hashen"
+hash_object = hashlib.sha1()          # SHA-1-Hash-Objekt erstellen
+hash_object.update(password.encode()) # Hash-Objekt updaten mit der Byte-Darstellung des Passworts
+hex_dig = hash_object.hexdigest()     # Hexadezimale Darstellung erhalten
+print("SHA-1 Hash:", hex_dig)         # Hash ausgeben
+
+\end{lstlisting}
+\begin{myanswer}
+\begin{lstlisting}
+from sqlite3 import *
+import hashlib
+
+# ...
+
+    password = input("Enter password")    # Ihr Klartext-Passwort zum "hashen"
+    hash_object = hashlib.sha1()          # SHA-1-Hash-Objekt erstellen
+    hash_object.update(password.encode()) # Hash-Objekt updaten mit der Byte-Darstellung des Passworts
+    password = hash_object.hexdigest()    # Hexadezimale Darstellung erhalten
+
+    # Restlicher Code
+\end{lstlisting}
+\end{myanswer}
+\end{mychallenge}
+
+\begin{myexercise}[Users-Tabelle mit Game verknüpfen]
+Erweitern Sie Ihr TigerJython-Game so, dass man zu Beginn aufgefordert wird, ein gültiges Login einzugeben. Erst wenn dies passiert ist, startet das Spiel. Sie können hierzu folgende Vorlage vervollständigen:
+\begin{lstlisting}
+while True:
+    username = input("Enter username")
+
+    # TODO Den User mit diesem Benutzernamen in der Tabelle users suchen
+    
+    if True: # TODO Bedingung anpassen: Wenn der User gefunden wurde…
+        break
+    else:
+        print("Unknown user. Try again.")
+
+while True:
+    password = input("Enter password")
+
+    if True: # TODO Bedingung anpassen: Wenn das eingegebene Passwort stimmt…
+        break
+    else:
+        print("Incorrect password. Try again.")
+\end{lstlisting}
+\begin{myanswer}
+\begin{lstlisting}
+from sqlite3 import *
+
+with connect("game.db") as con:
+    cursor = con.cursor()
+    
+    repeat:
+        username = input("Enter username")
+    
+        # Den User mit diesem Benutzernamen in der Tabelle users suchen
+        sql = """
+            SELECT * 
+            FROM users
+            WHERE user = '{}'
+        """.format(username)
+        cursor.execute(sql)
+        resultset = cursor.fetchall()
+        
+        if len(resultset) > 0: # Wenn der User gefunden wurde...
+            break
+        else:
+            print("Unknown user. Try again.")
+    
+    repeat:
+        password = input("Enter password")
+    
+        if resultset[0][2] == password: # Wenn das eingegebene Passwort stimmt
+            break
+        else:
+            print("Incorrect password. Try again.")
+            
+    print("Welcome", username)
+
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[\texttt{scores}-Tabelle mit Game verknüpfen]
+Schreiben Sie ein Programm zur Erstellung der \texttt{scores}-Tabelle und erweitern Sie ihr Game so, dass am Ende jedes Spiels die Punktzahl darin abgespeichert wird.
+
+\texttt{Tipp}: Verwenden Sie den SQL-Befehl \lstinline[style=sql]|DATETIME('NOW')|, um die aktuelle Datums- und Zeit-Angabe zu erhalten.
+\begin{myanswer}
+\begin{lstlisting}
+# ...
+
+with connect("game.db") as con:
+    # Datenbank-Cursor (=Lese/Schreibestift) holen
+    cursor = con.cursor()
+
+   # Benutzername abfragen
+    sql = """
+        INSERT INTO scores (user_id, achieved_score, achieved_date)
+        VALUES
+            ({}, {}, DATETIME('NOW'))
+    """.format(user_id, score)
+ 
+
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Highscore-Ansicht hinzufügen]
+Erweitern Sie Ihr Videogame mit einer Highscore-Ansicht, in welcher die zehn besten Punktestände inklusive Benutzernamen und Datum angezeigt werden.
+\begin{myanswer}
+\begin{lstlisting}
+from sqlite3 import *
+
+with connect("game.db") as con:
+    cursor = con.cursor()
+    
+    #TODO TOP 10 scores inkl. Userdaten auslesen
+    sql = """
+        SELECT *
+        FROM scores s
+        JOIN users u ON u.id = s.user_id
+        ORDER BY s.achieved_score DESC
+        LIMIT 10
+    """
+    
+    cursor.execute(sql)
+    resultset = cursor.fetchall()
+    
+    for i in range(len(resultset)):
+        hs = resultset[i]
+        print(i+1, " User:", hs[5], "    Points:", hs[2])
+        #TODO Mit GPanel-Befehl text() auf die Leinwand schreiben
+\end{lstlisting}
+\end{myanswer}
+
+\end{myexercise}
+
