@@ -231,3 +231,37 @@ GGT = 6 $\rightarrow$ Länge des Schlüsselworts.
 	        \raisebox{-0.5\height}{\includegraphics[width=.45\textwidth]{GrundlagenInfo/03_Kryptologie/Figures/friedmann1-klartext.png}}
 	\end{figure}}
 \end{frame}
+
+
+\begin{frame}[fragile]{Vigenère in Python}
+\begin{lstlisting}[language=Python,basicstyle=\ttfamily\tiny]
+def caesar_buchstabe(buchstabe, verschiebung):
+    return chr((ord(buchstabe) - ord("A") + verschiebung) % 26 + ord("A"))
+
+
+def caesar(text, verschiebung):
+    text_verschoben = ""
+
+    for buchstabe in text:
+        text_verschoben += caesar_buchstabe(buchstabe, verschiebung)
+
+    return text_verschoben
+
+def vigenere(text, schluessel, richtung="verschluesslung"):
+    text_verschoben = ""
+    k = 0
+    for buchstabe in text:
+        k %= len(schluessel)
+        if richtung == "verschluesslung":
+            text_verschoben += caesar_buchstabe(
+                buchstabe, ord(schluessel[k]) - ord("A")
+            )
+        else:
+            text_verschoben += caesar_buchstabe(
+                buchstabe, -(ord(schluessel[k]) - ord("A"))
+            )
+        k += 1
+
+    return text_verschoben
+\end{lstlisting}
+\end{frame}

@@ -1,0 +1,102 @@
+\input{GrundlagenInfo/03_Kryptologie/Makros}
+
+\lstset{style=sql, basicstyle=\ttfamily\scriptsize}
+
+\title[Datenbanken] {Datenbanken}
+
+\subtitle{\emoji{chart-increasing} Kryptoanalyse: Vigenère}
+
+\author[Wendl, Cyril] % (optional)
+{Naoki Peter\inst{1} \and Cyril Wendl \inst{2}}
+
+\institute[KZN] % (optional)
+{
+  \inst{1}%
+  Fachschaft Informatik\\
+  Kantonsschule Zürich-Nord
+  \and
+  \inst{2}%
+  Fachschaft Informatik\\
+  Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=.8cm]{\thelogo}}
+
+\titlegraphic{\includegraphics[width=\textwidth]{"GrundlagenInfo/06_Daten/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\input{Private/Vorstellung}
+
+\begin{frame}{Geheimschriften: \emoji{cat}- und \emoji{mouse}-Rennen}
+\begin{table}[H]
+\centering
+\begin{tabular}{l||p{2.3cm}cp{4cm}}
+ &\textbf{Kryptologie} & & \textbf{Kryptoanalyse}\\\midrule\midrule
+\resizebox{!}{1cm}{
+\begin{tikzpicture}
+                % Parameters
+                \def\boxwidth{1} % Width of each box
+                \def\numboxes{6} % Total number of boxes
+                \pgfmathtruncatemacro{\lastindex}{\numboxes-3} % Compute the last valid index for swapping
+                \pgfmathtruncatemacro{\lastindexLet}{\numboxes-1} % Compute the last valid index for swapping
+                
+            
+                % Draw the rectangle (sequence of letters)
+                \draw[thick] (0, 0) rectangle (\numboxes*\boxwidth, 1);
+                \foreach \i in {1,...,\numboxes} {
+                    \draw[thick] (\i*\boxwidth, 0) -- (\i*\boxwidth, 1);
+                }
+            
+                % Add ellipses on both sides
+                \node at (-0.5, 0.5) {\dots};
+                \node at (\numboxes*\boxwidth+0.5, 0.5) {\dots};
+            
+                % Add arrows for swapping
+                \foreach \i in {0,3,...,\lastindex} {
+                    \pgfmathsetmacro{\xstart}{\i*\boxwidth + 0.5*\boxwidth}
+                    \pgfmathsetmacro{\xend}{\xstart + \boxwidth*2}
+                    \draw[thick, cyan, <->] (\xstart, -0.2) -- (\xstart, -0.6) -- (\xend, -0.6) -- (\xend, -0.2);
+                }
+            
+                % Add letters above the boxes
+                \foreach \i in {0,...,\lastindexLet} {
+                    \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                    \pgfmathtruncatemacro{\letter}{65+\i} % ASCII value of A is 65
+                    \node at (\xpos, 1.2) {\char\letter};
+                }
+            
+                % Add swapped letters below the boxes
+                \foreach \i in {0,3,...,\lastindex} {
+            	    \pgfmathtruncatemacro{\swapletter}{65+\i+2} % ASCII value of A is 65
+            	    \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                    \node at (\xpos, -1) {\char\swapletter};
+                }
+                
+                \foreach \i in {2,5,...,\numboxes} {
+            	    \pgfmathtruncatemacro{\swapletter}{65+\i-2} % ASCII value of A is 65
+            	    \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                    \node at (\xpos, -1) {\char\swapletter};
+                }
+                
+                \foreach \i in {1,4,...,\lastindexLet} {
+            	    \pgfmathtruncatemacro{\swapletter}{65+\i} % ASCII value of A is 65
+            	    \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                    \node at (\xpos, -1) {\char\swapletter};
+                }
+            \end{tikzpicture}}&Buchstaben vertauschen & $\rightarrow$ & Ausprobieren\\\midrule
+\includegraphics[height=1cm]{GrundlagenInfo/03_Kryptologie/Figures/SkytaleWiki} &Skytale & $\rightarrow$ & Tabellen ausprobieren\\\midrule
+\resizebox{!}{1.5cm}{\caesar[6]} &Caesar & $\rightarrow$ & 26 Verschiebungen ausprobieren \textit{oder} Häufigkeitsanalyse\\
+\end{tabular}
+\end{table}
+\end{frame}
+
+
+
+\input{GrundlagenInfo/03_Kryptologie/Slides/L02a_Kryptoanalyse_Caesar}
+%\input{GrundlagenInfo/03_Kryptologie/Slides/L02b_Kryptoanalyse_Monoalph}
+\input{GrundlagenInfo/03_Kryptologie/Slides/L02c_Kryptoanalyse_Vigenere}
+%\input{GrundlagenInfo/03_Kryptologie/Slides/L02d_Kryptoanalyse_Vigenere_Friedman}
+\input{GrundlagenInfo/03_Kryptologie/Slides/L02e_Kryptoanalyse_Vigenere_Kasiski}
