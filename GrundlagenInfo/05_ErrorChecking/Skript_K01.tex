@@ -2,13 +2,13 @@
 
 \section{Einführung}
 
-Stellen Sie sich vor, Sie feiern Ihren 18. Geburtstag und wollen ihren besten Freunden einige Fotos aus ihrer Kindheit zeigen. Die Fotos sind aber leider alle verpixelt und können nicht richtig angezeigt werden! Oder stellen Sie sich vor, sie wollen in einigen Jahren Bilder von ihrem Date anschauen, die Bilder auf ihrer Festplatte sind aber alle unleserlich. \textit{Bad luck}? Fast genau dies ist dem Profi-Fotografen Tony Northrup geschehen, als er den 18. Geburtstag seiner Tochter mit Fotos aus deren Kindheit feiern wollte: \href{https://www.youtube.com/watch?v=xvbnhCDfREk}{Video}.
+Stellen Sie sich vor, Sie feiern Ihren 18. Geburtstag und wollen ihren besten Freunden einige Fotos aus ihrer Kindheit zeigen. Die Fotos sind aber leider alle verpixelt und können nicht richtig angezeigt werden! Oder stellen Sie sich vor, sie wollen in einigen Jahren Bilder von ihrem Date anschauen, die Bilder auf ihrer Festplatte sind jedoch unleserlich. \textit{Bad luck}? Fast genau dies ist dem Profi-Fotografen Tony Northrup geschehen, als er den 18. Geburtstag seiner Tochter mit Fotos aus deren Kindheit feiern wollte: \href{https://www.youtube.com/watch?v=xvbnhCDfREk}{Video}.
 
 Bei der Übertragung von Bits über das Internet können einzelne Bits spontan verändert oder gelöscht werden -- dies kann fatale Folgen haben! Bei spontaner Änderung von einem 1 zu einem 0 (oder umgekehrt) spricht man von sogenanntem \textit{bit rot}.
 
 \section{Prüfbits}
 
-Buchstaben können auf unterschiedliche Weise kodiert sein -- bei ASCII werden beispielsweise sechs Bits pro Zeichen verwendet:
+Buchstaben können auf unterschiedliche Weise kodiert sein -- bei ASCII werden beispielsweise sieben Bits pro Zeichen verwendet:
 
 \begin{table}[H]
 \centering
@@ -1204,15 +1204,24 @@ RAID 1 speichert eine vollständige Kopie aller Daten auf beiden Festplatten (Mi
 \end{myanswer}
 \end{myexercise}
 
-\subsection{RAID 5: Paritätsbits}
+\subsection{RAID 4: Paritätsbits}
+RAID 4, 5 und 6 nutzen für die Datensicherheit statt \textit{mirroring} (Spiegelung der Daten) einen effizienteren Ansatz, um Daten über mehrere Laufwerke zu verteilen, indem sie Paritätsbits verwenden. Dabei verwendet RAID 5 ein einzelnes Paritätsbit, welches es über verschiedene Festplatten verteilt, so dass jeder ``Striping-Block'' $A_1A_2A_3\cdots$ über genau ein Paritätsbit $A_p$ verfügt (\cref{fig:raid5}).
 
-RAID 5 und RAID 6 nutzen für die Datensicherheit statt mirroring einen effizienteren Ansatz, um Daten über mehrere Laufwerke zu verteilen, indem sie Paritätsbits verwenden. Dabei verwendet RAID 5 ein einzelnes Paritätsbit, welches es über verschiedene Festplatten verteilt, so dass jeder ``Striping-Block'' $A_1A_2A_3\cdots$ über genau ein Paritätsbit $A_p$ verfügt (\cref{fig:raid5}).
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/RAID_4}
+\caption{RAID-4-Architektur mit vier physischen Festplatten und einem Paritätsbit}
+\label{fig:raid4}
+\end{figure}
+
+\subsection{RAID 5: Verteilte Paritätsbits}
+Da das Paritätsbit bei jedem Schreibvorgang neu geschrieben werden muss (auch bei kleinen Dateien), wird bei RAID-4 die Paritäts-Festplatte übermässig stark beansprucht. Daher werden die Paritätsbits bei RAID-5 im Gegenteil zu RAID-4 auf alle Festplatten verteilt. Ansonsten funktioniert RAID-5 identisch wie RAID-4 (s. \cref{fig:raid5}).
 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.45\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/RAID_5}
-\caption{RAID-5-Architektur mit fünf physischen Festplatten und einem Paritätsbit}
+\caption{RAID-5-Architektur mit vier physischen Festplatten und einem \textit{verteilten} Paritätsbit}
 \label{fig:raid5}
 \end{figure}
 
@@ -1286,10 +1295,10 @@ Bei RAID-6 werden sogar zwei Paritätsbits verwendet, womit diese Konfiguration 
 RAID 6 verwendet zwei Paritätswerte: eine XOR-basierte Parität ($P$) wie in RAID 5 und eine zweite Parität $Q$, die durch eine Galois-Feld-Multiplikation berechnet wird. Für Beispiele einer Berechnung des zweiten Paritätsbits sei auf die Webseite von \href{https://blogs.oracle.com/solaris/post/understanding-raid-6-with-junior-high-math}{Oracle} hingewiesen.
 
 \begin{myexercise}
-Marina gründet eine IT-Firma und kauft sich 8 Festplatten für die Speicherung ihrer Daten. Da sie viele Daten hat, möchte sie möglichst viel nutzbaren Speicherplatz haben, gleichzeitig möchte sie gegen den Ausfall von \textit{einer} Festplatte geschützt sein. Welche RAID-Konfiguration empfehlen Sie Marcel?
+Marina gründet eine IT-Firma und kauft sich 8 Festplatten für die Speicherung ihrer Daten. Da sie viele Daten hat, möchte sie möglichst viel nutzbaren Speicherplatz haben, gleichzeitig möchte sie gegen den Ausfall von \textit{einer} Festplatte geschützt sein. Welche RAID-Konfiguration empfehlen Sie Marina (0, 1, 5 oder 6)? Begründen Sie Ihre Antwort.
 \begin{myanswer}
 \begin{itemize}
-    \item \textbf{Empfohlen: RAID 5} – Maximiert Speicherplatz, schützt vor \textbf{1 Plattenausfall}.
+    \item \textbf{Empfohlen: RAID 5} – Maximiert Speicherplatz, schützt vor \textbf{1 Festplatten-Ausfall}.
     \item \textbf{Speicherausnutzung:} 7 von 8 Platten für Daten, 1 für Parität.
     \item \textbf{Performance:} Gutes \textbf{Lesen}, etwas langsameres \textbf{Schreiben} (Paritätsberechnung).
     \item \textbf{Alternative: RAID 6} – Mehr Sicherheit (\textbf{2 Plattenausfälle möglich}), aber weniger Speicher (6 nutzbar).
@@ -1319,7 +1328,7 @@ Lara möchte ihre schönsten Fotos sichern und hat sich dazu zwei Festplatten ge
 \end{myexercise}
 
 \begin{myexercise}
-Bestimmen Sie für den Fall, dass sie 6 Festplatten gleicher Grösse besitzen, den verfügbaren Speicherplatz für die Konfigurationen RAID 0, RAID 1, RAID 5 und RAID 6. Geben Sie den verfügbaren Speicherplatz als Bruch an (z.B. 3/6). Geben Sie zudem die Ausfallsicherheit an (wie viele Festplatten können ausfallen ohne Datenverlust?).
+Bestimmen Sie für den Fall, dass sie 6 Festplatten gleicher Grösse besitzen, den verfügbaren Speicherplatz für die Konfigurationen RAID 0, RAID 1, RAID 4, RAID 5 und RAID 6. Geben Sie den verfügbaren Speicherplatz als Bruch an (z.B. 3/6). Geben Sie zudem die Ausfallsicherheit an (wie viele Festplatten können ausfallen ohne Datenverlust?).
 
 \begin{table}[H]
 \centering
@@ -1327,6 +1336,7 @@ Bestimmen Sie für den Fall, dass sie 6 Festplatten gleicher Grösse besitzen, d
 \textbf{Konfiguration} & \textbf{Verfügbare Festplatten} & \textbf{Ausfallsicherheit} \\\midrule\midrule
 \textbf{RAID 0} &  &  \\[1cm]\midrule
 \textbf{RAID 1} &  &  \\[1cm]\midrule
+\textbf{RAID 4} &  &  \\[1cm]\midrule
 \textbf{RAID 5} &  &  \\[1cm]\midrule
 \textbf{RAID 6} &  &  \\[1cm]
 \end{tabular}
