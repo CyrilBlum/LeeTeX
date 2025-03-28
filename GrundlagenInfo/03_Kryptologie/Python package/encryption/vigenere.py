@@ -6,9 +6,6 @@ from collections import Counter
 import re
 
 
-
-
-
 def vigenere(text, key, encrypt=True):
     text = preprocess_text(text)
     text_encrypted = []

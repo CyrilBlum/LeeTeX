@@ -1,0 +1,91 @@
+%\chapter{Arbeitsblatt Vigenère}
+\setcounter{chapter}{1}
+\lstset{style=Python}
+
+\begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]
+Finden Sie für folgenden Vigenère-Text den Klartext heraus, wenn Sie wissen, dass der Schlüssel Länge 3 hat:
+
+\colorstring[ForestGreen,RoyalBlue,Crimson]{IBUIXJLMLJHYWVOIKPRXYVXPGAAMAYISPIELRBLNXKILYILBPMHXBZXYBIKZMXUYKLMGZGAYMMADNTAXPXXUXYLVGAIGGMXSEFOSKPDHUX}
+
+\begin{enumerate}
+\item Finden Sie zuerst die häufigsten Buchstaben pro Gruppe heraus. Seien Sie genau, ansonsten müssen Sie später wieder von vorne beginnen!
+\notiz{4}
+\item Finden Sie danach den Schlüssel heraus, indem Sie annehmen, dass der häufigste Buchstabe im Geheimtext den Buchstaben \enquote{\texttt{E}} im Klartext repräsentiert. Für Gruppe 3 ist die Lösung bereits vorgegeben.
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+&\textbf{Häufigster Buchstabe} & $\rightarrow$ & \textbf{Schlüssel}\\\midrule\midrule
+\textbf{\textcolor{ForestGreen}{Gruppe 1}}&&$\rightarrow$&\\\midrule
+\textbf{\textcolor{RoyalBlue}{Gruppe 2}}&&$\rightarrow$&\\\midrule
+\textbf{\textcolor{Crimson}{Gruppe 3}}&\texttt{L}&$\rightarrow$&7 (=\texttt{H})\\\midrule
+\end{tabular}
+\end{table}
+\item Enschlüsseln Sie nun den Geheimtext, indem Sie die \href{https://naokipeter.gitlab.io/caesar/}{Caesar-Drehscheibe} verwenden.
+\end{enumerate}
+
+\colorstringunderline[ForestGreen,RoyalBlue,Crimson]{EINEECHTEFORSCHERINERREICHTIHREZIELENIEJEDESRESULTATISTFUERSIENUREINSCHRITTZUMWEITENTFERNTENZIELAMHORIZONT}
+\begin{myanswer}
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+&\textbf{Häufigster Buchstabe} & $\rightarrow$ & \textbf{Schlüssel}\\\midrule\midrule
+\textbf{\textcolor{ForestGreen}{Gruppe 1}}&\texttt{I}&$\rightarrow$&\texttt{E}\\\midrule
+\textbf{\textcolor{RoyalBlue}{Gruppe 2}}&\texttt{X}&$\rightarrow$&\texttt{T}\\\midrule
+\textbf{\textcolor{Crimson}{Gruppe 3}}&\texttt{L}&$\rightarrow$&\texttt{H}\\\midrule
+\end{tabular}
+\end{table}
+
+\colorstring[ForestGreen,RoyalBlue,Crimson]{EINEECHTEFORSCHERINERREICHTIHREZIELENIEJEDESRESULTATISTFUERSIENUREINSCHRITTZUMWEITENTFERNTENZIELAMHORIZONT}
+\end{myanswer}
+\end{myexercise}
+\begin{mychallenge}
+Versuchen Sie, auf diesem Link eine weitere Challenge-Aufgabe zu lösen, indem Sie die Werkzeuge \enquote{Frequency} (Häufigkeit) und \enquote{Vigenère} verwenden:
+
+\qrcode[height=2cm]{https://cryptbreaker.marcwidmer.xyz/problems/vigenere}
+\end{mychallenge}
+\clearpage
+
+\begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]
+Finden Sie den Klartext für folgende Nachricht heraus, wenn Sie wissen, dass der Text mit Vigenère verschlüsselt worden ist. Wenden Sie den Kasiski-Test an! 
+
+\begin{table}[H]
+\small
+\begin{tabular}{c||c}
+Position & \\\midrule
+Geheimtext & \texttt{UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOO}\\ \midrule
+Schlüssel & \\ \midrule
+Klartext &  \\ 
+\end{tabular}\vspace{1cm}
+\begin{tabular}{c||c}
+Position & \\\midrule
+Geheimtext & \texttt{CEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOO}\\ \midrule
+Schlüssel & \\ \midrule
+Klartext &  \\ 
+\end{tabular}\vspace{1cm}
+\begin{tabular}{c||c}
+Position & \\\midrule
+Geheimtext & \texttt{WAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ}\\ \midrule
+Schlüssel & \\ \midrule
+Klartext &  \\ 
+\end{tabular}
+\end{table}
+
+\textbf{Tipps:}
+\begin{itemize}
+\item Notieren Sie zuerst oberhalb der Buchstaben die Position an allen 10, 20, 30 etc. Buchstaben
+\item Schauen Sie sich die häufig vorkommenden Trigramme \textcolor{RoyalBlue}{\texttt{IOO}} und \textcolor{ForestGreen}{\texttt{RUI}} an und markieren Sie alle solchen Trigramme farbig. 
+\item Notieren Sie sich die \textbf{Anfangspositionen} aller Trigramme.
+\notiz{4}
+
+\item Zerlegen Sie alle Abstände zwischen den Trigrammen in Primfaktoren.
+\item Finden Sie den grössten gemeinsamen Teiler dieser Abstände, um die Schlüssellänge zu erraten.
+\item Der letzte Teil des Schlüssels ist ``\texttt{D}''. Entschlüsseln Sie den Text nun mit der \href{https://naokipeter.gitlab.io/caesar/}{Caesar-Drehscheibe}! Entschlüsseln Sie zuerst nur die erste Zeile, um zu überprüfen, ob ihr Schlüssel stimmt und zu einem sinnvollen Text führt.
+\end{itemize}
+\begin{myanswer}
+Schlüssel: \texttt{RAD}
+
+%\colorstring[ForestGreen,RoyalBlue,Crimson]{UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ}
+\colorstring[ForestGreen,RoyalBlue,Crimson]{DERROLLERMITROLFROLLTEUNDROLLTENACHUNTENROLFHATTESCHONANGSTDASSDASROLLENNIEAUFHOERTNUNGINGESBERGAUFUNDDERROLLERMITROLFHOERTEAUFZUROLLENROLFATMETEAUFUNDWOLLTEDIENAECHSTENTAGEVOMROLLERNICHTSMEHRHOEREN}
+\end{myanswer}
+\end{myexercise}
+

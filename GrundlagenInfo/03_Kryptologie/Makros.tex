@@ -1,3 +1,139 @@
+% Aktiviere die erweiterte Syntax von expl3 (LaTeX3)
+\ExplSyntaxOn
+
+% Erstelle eine neue Sequenzvariable für die Farbliste
+\seq_new:N \l_kaddon_colors_seq
+
+% Erstelle eine neue Ganzzahlvariable, um den aktuellen Farbindex zu verfolgen
+\int_new:N \l_kaddon_color_int
+
+% Definiere einen neuen geschützten Befehl mit zwei Argumenten:
+% #1 = Farbliste (als Komma-getrennte Liste), #2 = der zu färbende String
+\cs_new_protected:Nn \kaddon_color_string:nn
+{
+    % Konvertiere die Farbliste in eine Sequenz
+    \seq_set_from_clist:Nn \l_kaddon_colors_seq { #1 }
+
+    % Setze den Farbindex auf 0 (wird beim ersten Zeichen auf 1 erhöht)
+    \int_zero:N \l_kaddon_color_int
+
+    % Iteriere über jedes Zeichen in #2 und rufe \kaddon_color:n darauf auf
+    \tl_map_inline:nn { #2 } { \kaddon_color:n { ##1 } }
+}
+
+% Definiere einen neuen geschützten Befehl mit zwei Argumenten:
+% #1 = Farbliste (als Komma-getrennte Liste), #2 = der zu färbende String
+\cs_new_protected:Nn \kaddon_color_string_underline:nn
+{
+    % Konvertiere die Farbliste in eine Sequenz
+    \seq_set_from_clist:Nn \l_kaddon_colors_seq { #1 }
+
+    % Setze den Farbindex auf 0 (wird beim ersten Zeichen auf 1 erhöht)
+    \int_zero:N \l_kaddon_color_int
+
+    % Iteriere über jedes Zeichen in #2 und rufe \kaddon_color:n darauf auf
+    \tl_map_inline:nn { #2 } { \kaddon_color_underline:n { ##1 } }
+}
+
+
+% Erzeuge eine Variante des Befehls \kaddon_color_string:nn,
+% die statt einem normalen Tokenlisten-Argument ein Variablen-Argument (#2 als Variable) akzeptiert
+\cs_generate_variant:Nn \kaddon_color_string:nn { nV }
+
+% Definiere, wie ein einzelnes Zeichen eingefärbt werden soll
+\cs_new_protected:Nn \kaddon_color:n
+{
+    % Erhöhe den Farbindex um 1
+    \int_incr:N \l_kaddon_color_int
+	
+    % Falls der Index die Anzahl Farben übersteigt, beginne wieder bei 1
+    \int_compare:nT { \l_kaddon_color_int > \seq_count:N \l_kaddon_colors_seq }
+    {
+	     % Wenn Farbenliste durchlaufen wurde: Index zurücksetzen …
+	     \int_set:Nn \l_kaddon_color_int { 1 }
+	     	
+	     % … und zusätzlich ein farbloses Leerzeichen einfügen
+	     \hspace{3pt}
+    }
+
+    % Sonderbehandlung für Absatzzeichen: nicht färben, sondern einfach übernehmen
+    \str_if_eq:nnTF { #1 } { \par }
+    {
+        % Da kein sichtbares Zeichen, reduziere den Farbindex wieder
+        \int_decr:N \l_kaddon_color_int
+        \par
+    }
+    {
+        % Färbe das Zeichen mit der aktuellen Farbe aus der Sequenz
+        \textcolor{\seq_item:Nn \l_kaddon_colors_seq { \l_kaddon_color_int } } { #1 }
+    }
+}
+
+% Definiere, wie ein einzelnes Zeichen eingefärbt werden soll
+\cs_new_protected:Nn \kaddon_color_underline:n
+{
+    % Erhöhe den Farbindex um 1
+    \int_incr:N \l_kaddon_color_int
+	
+    % Falls der Index die Anzahl Farben übersteigt, beginne wieder bei 1
+    \int_compare:nT { \l_kaddon_color_int > \seq_count:N \l_kaddon_colors_seq }
+    {
+	     % Wenn Farbenliste durchlaufen wurde: Index zurücksetzen …
+	     \int_set:Nn \l_kaddon_color_int { 1 }
+	     	
+	     % … und zusätzlich ein farbloses Leerzeichen einfügen
+	     \hspace{3pt}
+    }
+
+    % Sonderbehandlung für Absatzzeichen: nicht färben, sondern einfach übernehmen
+    \str_if_eq:nnTF { #1 } { \par }
+    {
+        % Da kein sichtbares Zeichen, reduziere den Farbindex wieder
+        \int_decr:N \l_kaddon_color_int
+        \par
+    }
+    {
+        % Färbe das Zeichen mit der aktuellen Farbe aus der Sequenz
+        \textcolor{\seq_item:Nn \l_kaddon_colors_seq { \l_kaddon_color_int } } { \_ }
+    }
+}
+
+
+% Definiere den neuen Befehl \colorstring mit zwei Argumenten:
+% Optional: Farbliste (Standard: red,blue), Pflicht: Text
+\NewDocumentCommand{\colorstring}{ O{red,blue} m }
+{
+    % Wende die Hauptfunktion an: färbe den String entsprechend der Farbenfolge
+    \texttt{\kaddon_color_string:nn { #1 } { #2 }}
+
+    % Entferne eventuellen horizontalen Abstand am Ende
+    \unskip
+}
+
+% Definiere den neuen Befehl \colorstring mit zwei Argumenten:
+% Optional: Farbliste (Standard: red,blue), Pflicht: Text
+\NewDocumentCommand{\colorstringunderline}{ O{red,blue} m }
+{
+    % Wende die Hauptfunktion an: färbe den String entsprechend der Farbenfolge
+    \texttt{\kaddon_color_string_underline:nn { #1 } { #2 }}
+
+    % Entferne eventuellen horizontalen Abstand am Ende
+    \unskip
+}
+
+% Definiere eine neue Umgebung colorpar:
+% Optional: Farbliste (Standard: red,blue)
+% Inhalt wird automatisch eingefärbt
+\NewEnviron{colorpar}[1][red,blue]
+{
+        % Färbe den gesamten Inhalt der Umgebung (BODY)
+        \kaddon_color_string:nV { #1 } \BODY
+}
+
+% Beende die erweiterte Syntax
+\ExplSyntaxOff
+
+
 \newcommand{\vigenereFigFrom}{
 \begin{tikzpicture}
  % Klartext und Geheimtext Labels

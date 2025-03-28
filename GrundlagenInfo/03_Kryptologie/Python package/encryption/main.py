@@ -106,5 +106,5 @@ def monoalphabetic_main():
     print(shifts)
 
 
-friedman_main()
+vigenere_main()
 
