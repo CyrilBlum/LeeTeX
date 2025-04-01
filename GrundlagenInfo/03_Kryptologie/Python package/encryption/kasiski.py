@@ -30,7 +30,7 @@ def gcd_of_differences(position_dict):
 
 
 
-text_klar = "WEINSCHEINTMIRFEINZUSEIN"
+text_klar = "MEINKLEINERREIMSCHEINTKEINERZUSEIN"
 schluessel = "CODE"
 text = vigenere(text_klar, schluessel)
 print(text)
@@ -39,7 +39,7 @@ print(text)
 result = count_ngrams(text, 3, 5)
 print(result)
 
-ngrams = ["SLR", "IKB"]
+ngrams = ["HMP", "IKB"]
 result_pos = find_positions(ngrams, text)
 print(result_pos)
 
