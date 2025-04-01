@@ -89,7 +89,11 @@ In diesem Kapitel werden wir ein unser TigerJython-Game an eine Datenbank anschl
 Die Tabelle \texttt{users} speichert alle Benutzer-Daten für das Spiel, d.h., die Benutzer, welche sich in das Spiel eingeloggt haben. Die Tabelle \texttt{scores} speichert die Spielresultate jedes Spiels.
 
 \begin{myexercise}[\texttt{users}-Tabelle erstellen]
+
 Erstellen Sie ein Programm in TigerJython, um die Tabelle \texttt{users} in der Datenbank \texttt{game.db} zu erstellen. Die Datenbank wird mit dem unten stehenden Code automatisch angelegt, sollte sie nicht bereits existieren.
+\begin{myattention}[Windows-Users]
+\faWindows{} \textbf{Windows}: TigerJython im Admin-Modus ausführen, da sonst nicht auf die lokale SQLite-Datenbank zugegriffen werden kann!
+\end{myattention}
 
 \begin{lstlisting}
 from sqlite3 import *
@@ -112,9 +116,6 @@ with connect("game.db") as con:
     print("New table X was created!")
 
 \end{lstlisting}
-\begin{myattention}[Windows-Users]
-\faWindows{} \textbf{Windows}: TigerJython im Admin-Modus ausführen, da sonst nicht auf die lokale SQLite-Datenbank zugegriffen werden kann!
-\end{myattention}
 
 \textbf{Tipp}: Primärschlüssel müssen erstellt werden mit dem Befehl \lstinline[style=sql]|PRIMARY KEY AUTOINCREMENT|:
 \begin{lstlisting}[style=sql]
@@ -148,6 +149,31 @@ with connect("game.db") as con:
 \end{lstlisting}
 \end{myanswer}
 \end{myexercise}
+
+
+
+\begin{myexample}[SQL-Tabellen oder -Werte in Python ausgeben]
+Resultate von SQL-Abfragen können auf zwei Arten ausgegeben werden:
+\begin{enumerate}
+\item Einzelne Werte ausgeben:
+\begin{lstlisting}[style=Python]
+cursor.execute("SELECT * FROM games")
+resultset = cursor.fetchall()
+# gib die dritte Spalte (2) der ersten Zeile (0) aus
+print(resultset[0][2]) 
+\end{lstlisting}
+
+\item Um eine ganze Tabelle, schön dargestellt auszugeben, muss die Library \lstinline|prettytable| geladen und wie folgt verwendet werden:
+\begin{lstlisting}[style=Python]
+from prettytable import *
+
+# ... 
+
+cursor.execute("SELECT * FROM games")
+printTable(cursor)
+\end{lstlisting}
+\end{enumerate}
+\end{myexample}
 
 \begin{myexercise}[Benutzer-Registrierung]
 Schreiben Sie ein Programm, um Sie mittels \lstinline|input("...")| nach einem Benutzernamen und Passwort zu fragen. Beides sollte danach mit Insert in der Tabelle \texttt{users} abgespeichert werden. Überprüfen Sie am Ende das Resultat mit folgendem Code:
@@ -371,3 +397,10 @@ with connect("game.db") as con:
 
 \end{myexercise}
 
+\begin{mychallenge}
+Erstellen Sie einen Super-User und verändern Sie ihr Spiel so, dass die Grafik verändert wird, wenn der Super-User eingeloggt ist (z.B. wird ein goldener Ball statt einem normalen Ball angezeigt). Lassen Sie Ihrer Kreativität freien Lauf!
+\end{mychallenge}
+
+\begin{mychallenge}
+Zeigen Sie bei jedem Game-Start einen Text mit dem bisher höchsten Punktestand an, um den User dazu zu animieren, den Highscore zu knacken!
+\end{mychallenge}
