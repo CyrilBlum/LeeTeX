@@ -1,0 +1,63 @@
+\lstset{style=Python}
+\chapter*{Tennis-Datenbank}
+
+% Stil für alle Tabellen
+\newtcolorbox{dbtable}[1]{colback=RoyalBlue!5!white,colframe=RoyalBlue!75!black,fonttitle=\bfseries,title=#1, width=7cm}
+
+
+
+\begin{figure}[H]
+\footnotesize
+\centering
+\begin{tikzpicture}[
+    table/.style={
+        matrix of nodes,
+        nodes={anchor=west, minimum height=1em, text depth=0.2em, text height=1em, align=left},
+        column 1/.style={right delimiter=|},
+        row sep=0pt,
+        column sep=2pt
+    }
+]
+
+% Tabelle tournaments
+\matrix (tournaments) [table] {
+    & \textbf{Spalte} & \textbf{Typ} \\
+     & \texttt{tourney\_year} & \texttt{INTEGER} \\
+     & \texttt{tourney\_name} & \texttt{VARCHAR(255)} \\
+     & \texttt{tourney\_slug} & \texttt{VARCHAR(255)} \\
+     & \texttt{tourney\_conditions} & \texttt{VARCHAR(255)} \\
+     & \texttt{tourney\_surface} & \texttt{VARCHAR(255)} \\
+    \emoji{up-right-arrow} & \texttt{singles\_winner\_player\_id} & \texttt{VARCHAR(5)} \\
+    \emoji{up-right-arrow} & \texttt{doubles\_winner\_1\_player\_id} & \texttt{VARCHAR(5)} \\
+    \emoji{up-right-arrow} & \texttt{doubles\_winner\_2\_player\_id} & \texttt{VARCHAR(5)} \\
+};
+
+% Tabelle players
+\matrix (players) [table, right=3cm of tournaments] {
+    & \textbf{Spalte} & \textbf{Typ} \\
+    \emoji{key} & \texttt{player\_id} & \texttt{VARCHAR(5)} \\
+     & \texttt{first\_name} & \texttt{VARCHAR(255)} \\
+     & \texttt{last\_name} & \texttt{VARCHAR(255)} \\
+     & \texttt{flag\_code} & \texttt{VARCHAR(3)} \\
+     & \texttt{birthplace} & \texttt{VARCHAR(255)} \\
+     & \texttt{birthdate} & \texttt{VARCHAR(10)} \\
+     & \texttt{birth\_year} & \texttt{INTEGER} \\
+     & \texttt{birth\_month} & \texttt{INTEGER} \\
+     & \texttt{birth\_day} & \texttt{INTEGER} \\
+     & \texttt{turned\_pro} & \texttt{INTEGER} \\
+     & \texttt{weight\_kg} & \texttt{INTEGER} \\
+     & \texttt{height\_cm} & \texttt{INTEGER} \\
+     & \texttt{handedness} & \texttt{VARCHAR(255)} \\
+     & \texttt{backhand} & \texttt{VARCHAR(255)} \\
+};
+
+\node(tournamentstitle)[above=12em of tournaments.center, font=\bfseries, anchor=center]{Tabelle \texttt{tournaments}};
+\node(playerstitle)[above=16em of players.center, font=\bfseries, anchor=center]{Tabelle \texttt{players}};
+
+% Pfeile von tournaments zu players
+\draw [->,>=latex, thick] (tournaments-7-3.east) -- +(40pt,0) -| ([xshift=-40pt]players-2-1.west) -- (players-2-1.west);
+\draw [->,>=latex, thick] (tournaments-8-3.east) -- +(40pt,0) -| ([xshift=-40pt]players-2-1.west) -- (players-2-1.west);
+\draw [->,>=latex, thick] (tournaments-9-3.east) -- +(40pt,0) -| ([xshift=-40pt]players-2-1.west) -- (players-2-1.west);
+
+\end{tikzpicture}
+\end{figure}
