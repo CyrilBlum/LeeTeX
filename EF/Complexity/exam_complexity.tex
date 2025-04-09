@@ -1,0 +1,371 @@
+
+\newtoggle{withbonus} \toggletrue{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Ergänzungsfach Informatik}
+% name of the class
+\newcommand{\myclass}{4. Klassen}
+% set date
+\newcommand{\mydate}{09. April 2025}
+
+\title{\textbf{Zahlendarstellung, Komplexitätstheorie}}
+\author{Thomas Graf\\
+	\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $50$ Minuten
+				      %\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item Erlaubte Hilfsmittel:
+				      \begin{itemize}
+					      \item Schreibzeug
+					            % \item Taschenrechner
+				      \end{itemize}
+			\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note:
+	\vspace{10mm}
+
+	\rule{8mm}{1.2pt}
+\end{center}
+% \thispagestyle{empty}
+\clearpage
+
+
+\begin{questions}
+
+	\question[2]
+
+	Welche der folgenden Aussagen sind korrekt?
+	\begin{checkboxes}
+		\correctchoice $n - 4n^2 \in O(n^3)$ für $n\to\infty$
+		\begin{solution}
+			richtig, $(n - 4n^2)/(n^3) = 1/(n^2) - 4/n$ ist eine beschränkte Folge
+		\end{solution}
+		\choice $n - 4n^2 \in O(n)$ für $n\to\infty$
+		\begin{solution}
+			falsch, $(n - 4n^2)/n = 1-4n$ ist eine unbeschränkte Folge
+		\end{solution}
+		\correctchoice $n - 4n^2 \in O(n^2)$ für $n\to\infty$
+		\begin{solution}
+			richtig, $(n - 4n^2)/(n^2) = 1/n - 4$ ist eine beschränkte Folge
+		\end{solution}
+	\end{checkboxes}
+
+
+	\question
+
+	Es seien $(a_n)_n$ und $(b_n)_n$ positive Folgen reeller Zahlen. Zudem gilt gleichzeitig $a_n\in O(b_n)$ sowie $b_n\in O(a_n)$ für $n\to\infty$.
+	\begin{parts}
+		\part[2]
+		\textbf{Behauptung:}
+		\begin{center}
+			Sowohl $(a_n)_n$ als auch $(b_n)_n$ sind beschränkte Folgen.
+		\end{center}
+		\begin{solution}
+			falsch, $a_n = b_n = n$ sind unbeschränkte folgen und es gilt aber $n\in O(n)$
+		\end{solution}
+		\vspace{0.5cm}
+		Beweise oder widerlege die Behauptung oder finde ein Gegenbeispiel. Begründe deine Antwort!
+		\part[2]
+		\textbf{Behauptung:}
+		\begin{center}
+			Es existiert eine Konstante $C>0$ mit $C^{-1} < a_n / b_n < C$ für alle $n\in\N$.
+		\end{center}
+		\vspace{0.5cm}
+		Beweise oder widerlege die Behauptung oder finde ein Gegenbeispiel. Begründe deine Antwort!
+		\begin{solution}
+			richtig, $a_n\in O(b_n)$ impliziert, dass eine Konstante $C_0>0$ existiert mit $a_n / b_n < C_1$ und $b_n\in O(a_n)$ impliziert, dass eine Konstante $C_1>0$ existiert mit $b_n / a_n < C_1$. Wähle also $C:=\max{C_0, C_1}.
+		\end{solution}
+		\droptotalpoints
+	\end{parts}
+
+	\question
+	Begründe oder widerlege:
+	\begin{parts}
+		\part[1] $\lr{2n\sqrt{n}+10}\in\mathcal{O}\lr{n^2}$
+		\begin{solution}
+			Wegen
+			\begin{align*}
+				 & \limsup_{n\to\infty}\frac{\abs{2n\sqrt{n}+10}}{\abs{n^2}} =                              \\
+				 & =\limsup_{n\to\infty}\frac{\abs{n^2\lr{\frac{2}{\sqrt{n}}+\frac{10}{n^2}}}}{\abs{n^2}} = \\
+				 & =\limsup_{n\to\infty}\lr{\frac{2}{\sqrt{n}}+\frac{10}{n^2}} =                            \\
+				 & =\limsup_{n\to\infty}\lr{\frac{2}{\sqrt{n}}} + \limsup_{n\to\infty}\lr{\frac{10}{n^2}} = \\
+				 & =0 < \infty,
+			\end{align*}
+			ist die Behauptung wahr.
+		\end{solution}
+
+		\part[1] $\lr{5\cos\lr{m^2}m}\in\mathcal{O}\lr{m}$
+		\begin{solution}
+			Wegen
+			\begin{align*}
+				 & \limsup_{m\to\infty}\frac{\abs{5\cos\lr{m^2}m}}{\abs{m}} = \\
+				 & =\limsup_{m\to\infty} 5\abs{\cos\lr{m^2}} =                \\
+				 & =5 < \infty,
+			\end{align*}
+			ist die Behauptung wahr.
+		\end{solution}
+
+		\part[1] $2^{n+1}\in\mathcal{O}\lr{2^n}$
+		\begin{solution}
+			Wegen
+			\begin{align*}
+				 & \limsup_{n\to\infty}\frac{\abs{2^{n+1}}}{\abs{2^n}} = \\
+				 & =\limsup_{n\to\infty} 2 =                             \\
+				 & =2 < \infty,
+			\end{align*}
+			ist die Behauptung wahr.
+		\end{solution}
+
+		\part[1] $2^{2n}\in\mathcal{O}\lr{2^n}$
+		\begin{solution}
+			Es gilt
+			\begin{align*}
+				 & \limsup_{n\to\infty}\frac{\abs{2^{2n}}}{\abs{2^n}} =        \\
+				 & =\limsup_{n\to\infty}\frac{\abs{2^n\cdot 2^n}}{\abs{2^n}} = \\
+				 & =\limsup_{n\to\infty} = \infty.
+			\end{align*}
+			Deshalb ist die Behauptung falsch.
+		\end{solution}
+		\droptotalpoints
+	\end{parts}
+
+
+	\question[2] Erkläre genau, wie man fast jeden Algorithmus modifizieren kann, sodass er eine gute best-case Laufzeit hat. Erkläre die Modifikation am konkreten Beispiel von \texttt{InsertionSort}. Natürlich musst du hier nicht den \texttt{InsertionSort} Algorithmus hinschreiben.
+	\begin{solution}
+		Sei $A$ ein gegebener Algorithmus. Wir wollen $A$ modifizieren. Der modifizierte Algorithmus soll $B$ heissen. $B$ produziert zuerst einen zufälligen Output (im gewünschten Format) und überprüft, ob dieser Output das Ziel von $A$ erfüllt. Falls dies der Fall ist, dann ist $B$ mit der Arbeit fertig (best-case). Anderenfalls verwendet $B$ einfach, wie gewohnt, den Algorithmus $A$, um das Problem zu lösen. Die best-case Laufzeit reduziert sich also lediglich auf das Überprüfen einer Lösung, nicht jedoch auf das Produzieren einer solchen.
+
+		Konkret bei \texttt{InsertionSort}: $A$ ist der \texttt{InsertionSort} Algorithmus. $B$ permutiert die gegebene Liste zufällig und prüft, ob die Elemente nun bereits sortiert sind. Sollte dies der Fall sein, wird die permutierte Liste ausgegeben (best-case). Ansonsten ruft $B$ einfach $A$, also \texttt{InsertionSort} auf.
+	\end{solution}
+
+
+	\clearpage
+	\question
+	\begin{parts}
+		\part[1] Jeder denkbare Algorithmus, der die Matrix-Matrix-Multiplikation $C = AB$ einer beliebigen $n\times n$ Matrix $A$ mit einer beliebigen $n\times n$ Matrix $B$ berechnet, hat eine Laufzeit von
+		\begin{checkboxes}
+			\choice $\Omega\lr{n^3}$
+			\choice $\Theta\lr{n^3}$
+			\choice $\mathcal{O}\lr{n^3}$
+			\correctchoice keine der obigen Antworten ist richtig
+		\end{checkboxes}
+		\begin{solution}
+			Wir wissen, dass es Algorithmen gibt, welche eine gewünschte Matrix-Matrix-Multiplikation in $\mathcal{O}\lr{n^{2.38}}$ implementieren. Damit ist die erste Aussage sicherlich falsch.
+			Der Algorithmus
+			\begin{lstlisting}[language=Python, numbers=none]
+# Multiply n x n matrices a and b
+def mmm(A, B, C, n):
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                C[i*n + j] += A[i*n + k] * B[k*n + j]
+                for h in range(n):
+                    print(h)
+\end{lstlisting}
+			implementiert eine gewünschte Matrix-Matrix-Multiplikation in Zeit $\Theta\lr{n^4}$. Somit sind auch die zweite und dritte Behauptung falsch.
+		\end{solution}
+		\part[1] Beschreibe ein algorithmisches Problem und einen Algorithmus für dieses Problem, welcher eine Laufzeit von $\Theta\lr{n}$ hat.
+		\droptotalpoints
+		\begin{solution}
+			\begin{lstlisting}[language=Python, numbers=none]
+# finde maximales Element in Array A der Länge n
+def find_max(A):
+    currentMax = A[0]
+    for element in A:
+        if element > currentMax:
+            currentMax = element
+    return currentMax
+\end{lstlisting}
+		\end{solution}
+	\end{parts}
+
+
+	\question Gegeben sei der folgende Suchalgorithmus:
+	\begin{lstlisting}[language=Python]
+def search(E, n, key):
+    left = 0
+    right = n - 1
+
+    while left <= right:
+        if E[left] == key or E[right] == key:
+            return True
+
+        left += 1
+        right -= 1
+
+    return False
+\end{lstlisting}
+	Als Eingabe erhält er ein Array \verb|E| mit \verb|n| Einträgen sowie einen Schlüssel \verb|key| für den er überprüft, ob er in dem
+	Eingabe-Array enthalten ist oder nicht.
+	\begin{parts}
+		\part[1] Bestimme die exakte Anzahl der Vergleiche im best-case.
+		\begin{solution}
+			Für $n = 0$ ist es eine Operation. Für $n\geq 1$ sind es jeweils zwei Operationen.
+		\end{solution}
+		\part[1] Die Laufzeit des Algorithmus im worst-case ist:
+		\begin{checkboxes}
+			\choice $\Theta\lr{n\log(n)}$
+			\correctchoice $\Theta\lr{n}$
+			\choice $\Theta\lr{n^2}$
+			\choice $\Theta\lr{n^3}$
+			\choice keine der obigen Antworten ist richtig
+		\end{checkboxes}
+	\end{parts} \droptotalpoints
+
+	\clearpage
+	\question Bestimme jeweils die Laufzeit der folgenden Algorithmen in Abhängigkeit von $n\in\N$.
+	\begin{parts}
+		\part[1] \phantom{1}
+		\begin{lstlisting}[language=Python]
+import random
+
+a = 0
+b = 2
+
+for i in range(n):
+    for j in range(n):
+        b += random.randint(0, RAND_MAX)
+        a = a + b * random.randint(0, RAND_MAX)
+\end{lstlisting}
+		\begin{checkboxes}
+			\choice $\Theta\lr{n}$
+			\choice $\Theta\lr{\sqrt{n}}$
+			\choice $\Theta\lr{\log(n)}$
+			\correctchoice $\Theta\lr{n^2}$
+			\choice $\Theta\lr{n\log(n)}$
+			\choice keine der obigen Antworten ist richtig
+		\end{checkboxes}
+
+		\part[1] \phantom{1}
+		\begin{lstlisting}[language=Python]
+import random
+
+maximum = 1000
+
+a = 0
+b = 0
+
+for i in range(n):
+    a = a + random.randint(0, maximum)
+
+for j in range(n):
+    b = b + random.randint(0, maximum)
+\end{lstlisting}
+		\begin{checkboxes}
+			\correctchoice $\Theta\lr{n}$
+			\choice $\Theta\lr{\sqrt{n}}$
+			\choice $\Theta\lr{\log(n)}$
+			\choice $\Theta\lr{n^2}$
+			\choice $\Theta\lr{n\log(n)}$
+			\choice keine der obigen Antworten ist richtig
+		\end{checkboxes}
+		\part[1] \phantom{1}
+		\begin{lstlisting}[language=Python]
+a = 0
+i = n
+
+while i > 0:
+    a += i
+    i //= 2  # Integer division
+\end{lstlisting}
+		\begin{checkboxes}
+			\choice $\Theta\lr{n}$
+			\choice $\Theta\lr{\sqrt{n}}$
+			\correctchoice $\Theta\lr{\log(n)}$
+			\choice $\Theta\lr{n^2}$
+			\choice $\Theta\lr{n\log(n)}$
+			\choice keine der obigen Antworten ist richtig
+		\end{checkboxes}
+
+		\part[1] \phantom{1}
+		\begin{lstlisting}[language=Python]
+i = n // 2
+k = 0
+
+while i <= n:
+    j = 2
+    while j <= n:
+        k = k + n // 2
+        j = j * 2
+    i += 1
+\end{lstlisting}
+		\begin{checkboxes}
+			\choice $\Theta\lr{n}$
+			\choice $\Theta\lr{\sqrt{n}}$
+			\choice $\Theta\lr{\log(n)}$
+			\choice $\Theta\lr{n^2}$
+			\correctchoice $\Theta\lr{n\log(n)}$
+			\choice keine der obigen Antworten ist richtig
+		\end{checkboxes}
+	\end{parts} \droptotalpoints
+
+	\question Der Algorithmus \verb|bubbleSort| ist gegeben durch:
+	\begin{lstlisting}[language=Python]
+# A function to implement bubble sort
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        # Last i elements are already in place
+        for j in range(n - i - 1):
+            if arr[j] > arr[j + 1]:
+                # Swap elements
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+\end{lstlisting}
+	\begin{parts}
+		\part[2] Bestimme die worst-case Laufzeit von \verb|bubbleSort|. Zeige deine Schritte ausführlich.
+		\begin{solution}
+			Die Anzahl der durchgeführten Vergleiche ist
+			\begin{align*}
+				(n-1) + (n-2) + (n-3) +\ldots + 2 + 1 = n(n-1)/2.
+			\end{align*}
+		\end{solution}
+		\part[2] Bestimme ebenso die best-case Laufzeit von \verb|bubbleSort|. Erkläre deine Überlegungen. \droptotalpoints
+		\begin{solution}
+			Im best-case ist das Array schon sortiert und die Vergleiche stets falsch. Dennoch ist die Laufzeit $\Theta\lr{n^2}$, da die Schleifen ohnehin ausgeführt werden.
+		\end{solution}
+	\end{parts}
+	\clearpage
+	\noindent
+	Es seien $f$ und $g$ Folgen reeller Zahlen\footnote{Für unsere Zwecke reicht die Betrachtung von Folgen natürlicher Zahlen.}.\\
+	\vspace{0.5cm}
+	\centering
+	\small
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Notation} & \textbf{Definition}                                              & \textbf{Bedeutung}                                  \\
+		\hline
+		$f \in o(g)$      & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = 0$         & $f$ wächst langsamer als $g$                        \\
+		\hline
+		$f \in O(g)$      & $\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$ & $f$ wächst höchstens so schnell wie $g$             \\
+		\hline
+		$f \in \Omega(g)$ & $\liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} > 0$      & \makecell{$f$ wächst mindestens so schnell wie $g$, \\$g\in O(f)$}                          \\
+		\hline
+		$f \in \Theta(g)$ & \makecell{$f \in O(g)\cap \Omega(g)$,                                                                                  \\ $0 < \liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} \leq$ \\ $\leq\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$} & \makecell{$f$ wächst gleich schnell wie $g$,        \\sowohl $f\in O(g)$ als auch $f\in\Omega(g)$} \\
+		\hline
+		$f \in \omega(g)$ & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = \infty$    & \makecell{$f$ wächst schneller als $g$,             \\$g\in o(f)$}                                      \\
+		\hline
+	\end{tabular}
+
+	(Wir werden meist nur $\lim$ anstelle von $\limsup$ oder $\liminf$ betrachten müssen.)
+\end{questions}
