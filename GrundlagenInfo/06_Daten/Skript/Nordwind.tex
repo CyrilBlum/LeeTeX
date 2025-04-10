@@ -1,0 +1,186 @@
+\setcounter{chapter}{1}
+\section*{Die Nordwind-Datenbank}
+
+\subsection*{Kurz-Beschreibung}
+
+Die Nordwind-Datenbank wird als Beispiel-Datenbank zu Microsoft Access mitgeliefert. An diesem Beispiel kann man erkennen, wie das Rechnungswesen einer Firma mit Hilfe einer Datenbank durchgeführt werden kann.
+
+Folgendes wird durch die Tabellen der Nordwind-Datenbank abgebildet:
+\begin{itemize}
+\item Lieferanten liefern Artikel, die bestimmten Kategorien zugeordnet sind;
+\item Kunden bestellen gewisse Artikel;
+\item Die Bestellungen werden vom Personal der Firma bearbeitet;
+\item Die Auslieferung einer Bestellung erfolgt über eine Versandfirma.
+\end{itemize}
+
+
+Die Beziehungen zwischen den Tabellen lassen sich kurz wie folgt charakterisieren:
+
+\begin{itemize}
+\item Eine Firma kann mehrere Artikel liefern, ein Artikel kommt aber von genau einer Firma
+\item Eine Kategorie umfasst mehrere Artikel, jeder Artikel gehört genau einer Kategorie an
+\item Ein Artikel kann in mehreren Bestellungen vorkommen und zu einer Bestellung gehören ein oder mehrere Artikel
+\item Ein Kunde kann mehrere Bestellungen aufgeben, aber eine Bestellung gehört zu genau einem Kunden
+\item Ein Personalmitarbeiter bearbeitet mehrere Bestellungen, aber eine Bestellung wird immer von genau einem Mitarbeiter bearbeitet
+\item Eine Versandfirma liefert mehrere Bestellungen aus, aber eine Bestellung wird immer von einer Versandfirma ausgeliefert
+\end{itemize}
+
+\subsection*{Tabellen}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|p{12cm}}
+\textbf{Tabelle} & \textbf{Spalten} \\\midrule\midrule
+Lieferant&	\emoji{key} LieferantenNr, Firma, Kontaktperson, Position, Straße, Ort, Region, PLZ, Land, Telefon, Telefax, Homepage\\\midrule
+Kunde &	\emoji{key} KundenCode, Firma, Kontaktperson, Position, Straße, Ort, Region, PLZ, Land, Telefon, Telefax\\\midrule
+Versandfirma &	\emoji{key} FirmenNr, Firma, Telefon\\\midrule
+Personal &	\emoji{key} PersonalNr, Nachname, Vorname, Position, Anrede, Geburtsdatum, Einstellung, Straße, Ort, Region, PLZ, Land, TelefonPrivat, DurchwahlBüro, Bemerkungen, Vorgesetzter\\\midrule
+Kategorie 	&\emoji{key} KategorieNr, Kategoriename, Beschreibung\\\midrule
+Artikel 	&\emoji{key} ArtikelNr, Artikelname, LieferantenNr \emoji{up-right-arrow}, KategorieNr \emoji{up-right-arrow}, Liefereinheit, Einzelpreis, Lagerbestand, BestellteEinheiten, Mindestbestand, Auslaufartikel\\\midrule
+Bestellung 	& \emoji{key} BestellNr, KundenCode \emoji{up-right-arrow}, PersonalNr \emoji{up-right-arrow}, Bestelldatum, Lieferdatum, Versanddatum, FirmenNr \emoji{up-right-arrow}, Frachtkosten, Empfänger, Straße, Ort, Region, PLZ Bestimmungsland\\\midrule
+Bestelldetails &	BestellNr \emoji{up-right-arrow}, ArtikelNr \emoji{up-right-arrow}, Einzelpreis, Anzahl, Rabatt
+\end{tabular}
+\end{table}
+
+% Stil für alle Tabellen
+\newtcolorbox{dbtable}[1]{colback=blue!5!white,colframe=blue!75!black,fonttitle=\bfseries,title=#1, width=5cm}
+\newgeometry{margin=.7cm}
+\pagestyle{empty}
+
+\begin{minipage}{.75\textwidth}
+\begin{figure}[H]
+\centering
+
+\begin{tikzpicture}[
+    table/.style={
+        matrix of nodes,
+        nodes={anchor=west, minimum height=.7em, text depth=0.2em, text height=.7em, align=left},
+        column 1/.style={right delimiter=|},
+        row sep=0pt,
+        column sep=2pt
+    }
+]
+    % Tabellen
+        \matrix (Lieferant) [table, anchor=north west] {
+            \phantom{x}& \textbf{Spalte} &\\\hline\hline
+            \emoji{key} & \texttt{LieferantenNr} &\\\hline
+            \phantom{x} & \texttt{Firma} &\\\hline
+            & \texttt{Kontaktperson} &\\\hline
+            & \texttt{Position} &\\\hline
+            & \texttt{Strasse} &\\\hline
+            & \texttt{Ort} &\\\hline
+            & \texttt{Land} &\\\hline
+            & \texttt{...} &\phantom{x}\\
+        };
+    
+        \matrix (Artikel) [table, below=1.5cm of Lieferant.south west, anchor=north west] {
+            \phantom{x}& \textbf{Spalte} &\\\hline\hline
+            \emoji{key} & \texttt{ArtikelNr}& \\\hline
+            \phantom{x} & \texttt{Artikelname} \\\hline
+            \emoji{up-right-arrow} & \texttt{LieferantenNr}& \\\hline
+            \emoji{up-right-arrow} & \texttt{KategorieNr} &\\\hline
+            & \texttt{Liefereinheit} &\\\hline
+            & \texttt{...} &\phantom{x}\\
+        };
+        
+        \matrix (Bestellung) [table, below=1.5cm of Artikel.south west, anchor=north west]{
+                    \phantom{x}& \textbf{Spalte} &\\\hline\hline
+                    \emoji{key} & \texttt{BestellNr}& \\\hline
+                    \emoji{up-right-arrow} & \texttt{KundenCode} &\\\hline
+                    \emoji{up-right-arrow} & \texttt{PersonalNr} &\\\hline
+                    & \texttt{Bestelldatum}& \\\hline
+                    & \texttt{Lieferdatum}& \\\hline
+                    \emoji{up-right-arrow} & \texttt{FirmenNr} &\\\hline
+                    & \texttt{...} &\phantom{x}\\
+                };
+                
+         \matrix (Personal) [table, below=1.5cm of Bestellung.south west, anchor=north west]{
+                     \phantom{x}& \textbf{Spalte}& \\\hline\hline
+                     \emoji{key} & \texttt{PersonalNr}& \\\hline
+                     \phantom{x} & \texttt{Nachname} &\\\hline
+                     & \texttt{Vorname} &\\\hline
+                     & \texttt{Position}& \\\hline
+                     & \texttt{Geburtsdatum}& \\\hline
+                     & \texttt{Einstellung} &\\\hline
+                     & \texttt{...} &\phantom{x}\\
+                 };
+                 
+        \matrix (Kategorie) [table, right=1.5cm of Lieferant] {
+                    \phantom{x}& \textbf{Spalte}& \\\hline\hline
+                    \emoji{key} & \texttt{KategorieNr} &\\\hline
+                    \phantom{x} & \texttt{Kategoriename}& \\\hline
+                    & \texttt{Beschreibung}& \\\hline
+                    & \texttt{...}& \phantom{x}\\
+                };
+             
+    
+        \matrix (Kunde) [table, below=1.5cm of Kategorie.south west, anchor=north west]{
+            \phantom{x}& \textbf{Spalte}& \\\hline\hline
+            \emoji{key} & \texttt{KundenCode} &\\\hline
+            \phantom{x} & \texttt{Firma} &\\\hline
+            & \texttt{Kontaktperson} &\\\hline
+            & \texttt{Position} &\\\hline
+            & \texttt{Strasse}& \\\hline
+            & \texttt{Ort} &\\\hline
+            & \texttt{...} &\phantom{x}\\
+        };
+    
+        
+    
+        \matrix (Bestelldetails) [table, below=1.5cm of Kunde.south west, anchor=north west]{
+            \phantom{x}& \textbf{Spalte}& \\\hline\hline
+            \emoji{up-right-arrow} & \texttt{BestellNr} &\\\hline
+            \emoji{up-right-arrow} & \texttt{ArtikelNr} &\\\hline
+            & \texttt{Einzelpreis} &\\\hline
+            & \texttt{Anzahl} &\\\hline
+            & \texttt{Rabatt} &\\\hline
+            & \texttt{...}&\phantom{x}\\
+        };
+    
+        
+        \matrix (Versandfirma) [table, below=1.5cm of Bestelldetails.south west, anchor=north west]{
+            \phantom{x}& \textbf{Spalte} &\\\hline\hline
+            \emoji{key} & \texttt{FirmenNr} &\\\hline
+            \phantom{x} & \texttt{Firma}& \\\hline
+            & \texttt{...}&\phantom{x} \\
+        };
+	% Hintergrundlayer
+        \begin{pgfonlayer}{background}
+            \node[fill=gray!10, rounded corners=5pt, fit=(Lieferant-1-1)(Lieferant-9-3), inner sep=10pt] (bgLieferant) {};
+            \node[fill=gray!10, rounded corners=5pt, fit=(Kategorie-1-1)(Kategorie-5-3), inner sep=10pt] (bgKategorie) {};
+            \node[fill=gray!10, rounded corners=5pt, fit=(Artikel-1-1)(Artikel-7-3), inner sep=10pt] (bgArtikel) {};
+            \node[fill=gray!10, rounded corners=5pt, fit=(Kunde-1-1)(Kunde-8-3), inner sep=10pt] (bgKunde) {};
+            \node[fill=gray!10, rounded corners=5pt, fit=(Bestellung-1-1)(Bestellung-8-3), inner sep=10pt] (bgBestellung) {};
+            \node[fill=gray!10, rounded corners=5pt, fit=(Bestelldetails-1-1)(Bestelldetails-7-3), inner sep=10pt] (bgBestelldetails) {};
+            \node[fill=gray!10, rounded corners=5pt, fit=(Personal-1-1)(Personal-8-3), inner sep=10pt] (bgPersonal) {};
+            \node[fill=gray!10, rounded corners=5pt, fit=(Versandfirma-1-1)(Versandfirma-4-3), inner sep=10pt] (bgVersandfirma) {};
+        \end{pgfonlayer}
+    
+        % Titel
+        \node[above=3pt of bgLieferant.north, font=\bfseries] {\texttt{Lieferant}};
+        \node[above=3pt of bgKategorie.north, font=\bfseries] {\texttt{Kategorie}};
+        \node[above=3pt of bgArtikel.north, font=\bfseries] (artTitle){\texttt{Artikel}};
+        \node[above=3pt of bgKunde.north, font=\bfseries] {\texttt{Kunde}};
+        \node[above=3pt of bgBestellung.north, font=\bfseries] {\texttt{Bestellung}};
+        \node[above=3pt of bgBestelldetails.north, font=\bfseries] {\texttt{Bestelldetails}};
+        \node[above=3pt of bgPersonal.north, font=\bfseries] {\texttt{Personal}};
+        \node[above=3pt of bgVersandfirma.north, font=\bfseries] {\texttt{Versandfirma}};
+        
+    % Beziehungen mit rechten Winkeln
+        \draw[->, >=latex, thick, blue] (Artikel-4-1.west) -- +(-30pt,0) -| ([xshift=-30pt,yshift=2pt]Lieferant-2-1.west) -- ([yshift=2pt]Lieferant-2-1.west);
+        \draw[->, >=latex, thick, teal] (Artikel-5-1.west) -- +(-10pt,0) -| ([xshift=-10pt,yshift=20pt]bgArtikel.north west) -| ([xshift=-20pt,yshift=2pt, red]Kategorie-2-1.west) -- ([yshift=2pt]Kategorie-2-1.west);
+        \draw[->, >=latex, thick, orange] (Bestellung-3-2.east) -- +(20pt,0) -| ([xshift=-30pt,yshift=2pt]Kunde-2-1.west) -- ([yshift=2pt]Kunde-2-1.west);
+        \draw[->, >=latex, thick, violet] (Bestellung-4-1.west) -- +(-20pt,0) -| ([xshift=-20pt,yshift=2pt]Personal-2-1.west) -- ([yshift=2pt]Personal-2-1.west);
+        \draw[->, >=latex, thick, magenta] (Bestellung-7-2.east) -- +(20pt,0) -| ([xshift=-20pt,yshift=2pt]Versandfirma-2-1.west) -- ([yshift=2pt]Versandfirma-2-1.west);
+        \draw[->, >=latex, thick, cyan] (Bestelldetails-2-1.west) -- +(-40pt,0) -| ([xshift=50pt,yshift=2pt]Bestellung-2-2.east) -- ([yshift=2pt]Bestellung-2-2.east);
+        \draw[->, >=latex, thick] (Bestelldetails-3-1.west) -- +(-20pt,0) -| ([xshift=70pt,yshift=2pt]Artikel-2-2.east) -- ([yshift=2pt]Artikel-2-2.east);
+        
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}
+\begin{minipage}{.25\textwidth}
+\begin{myattention}
+Aus Platzgründen sind nicht alle Spalten aufgelistet! Für eine vollständige Darstellung, s. Rückseite
+\end{myattention}
+\end{minipage}
+

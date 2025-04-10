@@ -1,5 +1,5 @@
 \lstset{style=Python}
-\chapter*{Tennis-Datenbank}
+\chapter*{\emoji{tennis} Tennis-Datenbank \emoji{tennis}}
 
 % Stil für alle Tabellen
 \newtcolorbox{dbtable}[1]{colback=RoyalBlue!5!white,colframe=RoyalBlue!75!black,fonttitle=\bfseries,title=#1, width=7cm}
@@ -21,43 +21,69 @@
 
 % Tabelle tournaments
 \matrix (tournaments) [table] {
-    & \textbf{Spalte} & \textbf{Typ} \\
-     & \texttt{tourney\_year} & \texttt{INTEGER} \\
-     & \texttt{tourney\_name} & \texttt{VARCHAR(255)} \\
-     & \texttt{tourney\_slug} & \texttt{VARCHAR(255)} \\
-     & \texttt{tourney\_conditions} & \texttt{VARCHAR(255)} \\
-     & \texttt{tourney\_surface} & \texttt{VARCHAR(255)} \\
-    \emoji{up-right-arrow} & \texttt{singles\_winner\_player\_id} & \texttt{VARCHAR(5)} \\
-    \emoji{up-right-arrow} & \texttt{doubles\_winner\_1\_player\_id} & \texttt{VARCHAR(5)} \\
-    \emoji{up-right-arrow} & \texttt{doubles\_winner\_2\_player\_id} & \texttt{VARCHAR(5)} \\
+   \phantom{x} & \textbf{Spalte} & \textbf{Typ} \\\hline\hline
+     & \texttt{tourney\_year} & \texttt{INTEGER} \\\hline
+    \phantom{x} & \texttt{tourney\_name} & \texttt{VARCHAR(255)} \\\hline
+     & \texttt{tourney\_slug} & \texttt{VARCHAR(255)} \\\hline
+     & \texttt{tourney\_conditions} & \texttt{VARCHAR(255)} \\\hline
+     & \texttt{tourney\_location} & \texttt{VARCHAR(255)} \\\hline
+     & \texttt{tourney\_surface} & \texttt{VARCHAR(255)} \\\hline
+    \emoji{up-right-arrow} & \texttt{singles\_winner\_player\_id} & \texttt{VARCHAR(5)}\phantom{xy} \\\hline
+    \emoji{up-right-arrow} & \texttt{doubles\_winner\_1\_player\_id} & \texttt{VARCHAR(5)}\phantom{xy} \\\hline
+    \emoji{up-right-arrow} & \texttt{doubles\_winner\_2\_player\_id} & \texttt{VARCHAR(5)}\phantom{xy} \\
 };
 
 % Tabelle players
 \matrix (players) [table, right=3cm of tournaments] {
-    & \textbf{Spalte} & \textbf{Typ} \\
-    \emoji{key} & \texttt{player\_id} & \texttt{VARCHAR(5)} \\
-     & \texttt{first\_name} & \texttt{VARCHAR(255)} \\
-     & \texttt{last\_name} & \texttt{VARCHAR(255)} \\
-     & \texttt{flag\_code} & \texttt{VARCHAR(3)} \\
-     & \texttt{birthplace} & \texttt{VARCHAR(255)} \\
-     & \texttt{birthdate} & \texttt{VARCHAR(10)} \\
-     & \texttt{birth\_year} & \texttt{INTEGER} \\
-     & \texttt{birth\_month} & \texttt{INTEGER} \\
-     & \texttt{birth\_day} & \texttt{INTEGER} \\
-     & \texttt{turned\_pro} & \texttt{INTEGER} \\
-     & \texttt{weight\_kg} & \texttt{INTEGER} \\
-     & \texttt{height\_cm} & \texttt{INTEGER} \\
-     & \texttt{handedness} & \texttt{VARCHAR(255)} \\
+    \phantom{x}& \textbf{Spalte} & \textbf{Typ} \\\hline\hline
+    \emoji{key} & \texttt{player\_id} & \texttt{VARCHAR(5)} \\\hline
+     \phantom{x}& \texttt{first\_name} & \texttt{VARCHAR(255)} \\\hline
+     & \texttt{last\_name} & \texttt{VARCHAR(255)} \\\hline
+     & \texttt{flag\_code} & \texttt{VARCHAR(3)} \\\hline
+     & \texttt{birthplace} & \texttt{VARCHAR(255)} \\\hline
+     & \texttt{birthdate} & \texttt{VARCHAR(10)} \\\hline
+     & \texttt{birth\_year} & \texttt{INTEGER} \\\hline
+     & \texttt{birth\_month} & \texttt{INTEGER} \\\hline
+     & \texttt{birth\_day} & \texttt{INTEGER} \\\hline
+     & \texttt{turned\_pro} & \texttt{INTEGER} \\\hline
+     & \texttt{weight\_kg} & \texttt{INTEGER} \\\hline
+     & \texttt{height\_cm} & \texttt{INTEGER} \\\hline
+     & \texttt{handedness} & \texttt{VARCHAR(255)} \\\hline
      & \texttt{backhand} & \texttt{VARCHAR(255)} \\
 };
 
-\node(tournamentstitle)[above=12em of tournaments.center, font=\bfseries, anchor=center]{Tabelle \texttt{tournaments}};
-\node(playerstitle)[above=16em of players.center, font=\bfseries, anchor=center]{Tabelle \texttt{players}};
+% Background layer
+\begin{pgfonlayer}{background}
+    \node(bgplayers)[
+        fill=gray!10,
+        rounded corners=5pt,
+        fit=(players-1-1)(players-15-3),
+        inner sep=10pt
+    ] {};
+    \node(bgtourn)[
+            fill=gray!10,
+            rounded corners=5pt,
+            fit=(tournaments-1-1)(tournaments-10-3),
+            inner sep=10pt
+        ] {};
+\end{pgfonlayer}
+
+\node(playerstitle)[above=.5cm of bgplayers.north, font=\bfseries, anchor=center]{Tabelle \texttt{players}};
+\node(tournamentstitle)[above=.5cm of bgtourn.north, font=\bfseries, anchor=center]{Tabelle \texttt{tournaments}};
 
 % Pfeile von tournaments zu players
-\draw [->,>=latex, thick] (tournaments-7-3.east) -- +(40pt,0) -| ([xshift=-40pt]players-2-1.west) -- (players-2-1.west);
-\draw [->,>=latex, thick] (tournaments-8-3.east) -- +(40pt,0) -| ([xshift=-40pt]players-2-1.west) -- (players-2-1.west);
-\draw [->,>=latex, thick] (tournaments-9-3.east) -- +(40pt,0) -| ([xshift=-40pt]players-2-1.west) -- (players-2-1.west);
+\draw [->,>=latex, thick] (tournaments-8-3.east) -- +(40pt,0) -| ([xshift=-40pt,yshift=5pt]players-2-1.west) -- ([yshift=5pt]players-2-1.west);
+\draw [->,>=latex, thick] (tournaments-9-3.east) -- +(40pt,0) -| ([xshift=-40pt,yshift=5pt]players-2-1.west) -- ([yshift=5pt]players-2-1.west);
+\draw [->,>=latex, thick] (tournaments-10-3.east) -- +(40pt,0) -| ([xshift=-40pt,yshift=5pt]players-2-1.west) -- ([yshift=5pt]players-2-1.west);
 
 \end{tikzpicture}
+\caption{Beschreibung der sqlite3-Datenbank \texttt{tennis.db}}
 \end{figure}
+
+\textbf{Mögliche Fragestellungen}
+\begin{itemize}
+\item Welches Land hat die meisten Tennis-GewinnerInnen?
+\item Welche Spielweise (Rückhand / Vorhand) ist am beliebtesten?
+\item Welche Turniere wurden von Schweizer Teams gewonnen?
+\item Etc.
+\end{itemize}
