@@ -68,7 +68,9 @@ Ein EAN bezeichnet einen sogenannten European Article Number. Fast alle käuflic
 \end{figure}
 
 Ein EAN besteht aus 12 Ziffern und einer Prüfziffer:
-\[x_1x_2x_3x_4x_5x_6x_7x_8x_9x_{10}x_{11}x_{12}\textcolor{red}{x_{13}}\]
+\begin{equation}\label{eq:ean}
+x_1x_2x_3x_4x_5x_6x_7x_8x_9x_{10}x_{11}x_{12}\textcolor{red}{x_{13}}
+\end{equation}
 
 
 Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führen, weshalb EAN ebenfalls eine Prüfziffer enthalten, die sich wie folgt berechnet:
@@ -96,12 +98,127 @@ Berechnen Sie für 978314221213 die EAN-13-Prüfziffer.
 \end{myanswer}
 \end{myexercise}
 
-\begin{myexercise}
-Bestimmen Sie für den EAN-Code 4030538657465 alle Paare von benachbarten Ziffern, deren Austausch in der Reihenfolge nicht erkannt werden kann.
+\begin{myexercise}\label{ex:ean}
+Bestimmen Sie für den folgenden EAN-Code alle Paare von benachbarten Ziffern, deren Austausch in der Reihenfolge nicht erkannt werden kann:
+\begin{alltt}
+40\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{3}}}}{\texttt{\red{3}}}\)05\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{6}}}}{\texttt{\red{3}}}\)86\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{9}}}}{\texttt{\red{5}}}\)74\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{12}}}}{\texttt{\red{6}}}\)5
+\end{alltt} 
+\begin{myanswer}
+Damit ein Austausch zweier benachbarter Ziffern nicht entdeckt würde, müsste sich die Summe $s$ um ein Vielfaches von 10 (oder 0) ändern. Dies wäre beispielsweise der Fall, wenn die zwei Ziffern 3 und 8 (Positionen 6 und 7) vertauscht würden.
+
+Der Beitrag der Ziffern zu $s$ im ursprünglichen und im abgeänderten Code sind in folgender Tabelle aufgelistet:
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|p{3cm}|p{4cm}|l}
+\textbf{Position} & \textbf{Ziffer} & \textbf{Gewichtung\newline (s. \cref{eq:ean})} & \textbf{Beitrag zu $s$} \\
+\midrule
+6 & 3 & 3 & 9 \\
+7 & 8 & 1 & 8 \\
+\end{tabular}
+\end{table}
+\[\Downarrow\]
+\begin{table}[H]
+\centering
+\begin{tabular}{l|p{3cm}|p{4cm}|l}
+\textbf{Position} & \textbf{Ziffer\newline (vertauscht)} & \textbf{Gewichtung\newline (s. \cref{eq:ean})}& \textbf{Beitrag zu $s$} \\
+\midrule
+6 & 8 & 3 & 24 \\
+7 & 3 & 1 & 3 \\
+\end{tabular}
+\end{table}
+
+Die Summe $s$ ändert sich also um:
+\[
+(24 + 3) - (9 + 8) = 27 - 17 = +10
+\]
+
+Da sich $s$ um ein Vielfaches von 10 verändert, bleibt die Prüfziffer gleich, und der Fehler wird nicht entdeckt. 
+
+Dasselbe würde auch mit Positionen 5 und 6 funktionieren.
+\end{myanswer}
+
+\begin{mychallenge}
+Begründen Sie allgemein, für welche Arten von Ziffern ein Vertauschen zweier benachbarten Ziffern in einer EAN-Prüfziffer nicht entdeckt wird.
+\begin{myanswer}
+Damit ein Austausch zweier benachbarter Ziffern nicht entdeckt wird, darf sich die gewichtete Summe $s$ nicht ändern, da die Prüfziffer $x_{13}$ so gewählt ist, dass
+\[
+s + x_{13} \equiv 0 \mod 10
+\]
+gilt.
+
+Bezeichne die beiden benachbarten Ziffern mit $a$ und $b$ an den Positionen $i$ und $i+1$. Die zugehörigen Gewichte im EAN-System sind alternierend 1 und 3, also entweder $(g_i, g_{i+1}) = (1, 3)$ oder $(3, 1)$.
+
+Der ursprüngliche Beitrag dieser beiden Ziffern zur Summe $s$ ist:
+\[
+s_\text{alt} = g_i \cdot a + g_{i+1} \cdot b
+\]
+
+Nach dem Vertauschen lautet der Beitrag:
+\[
+s_\text{neu} = g_i \cdot b + g_{i+1} \cdot a
+\]
+
+Die Änderung der Summe beträgt also:
+\[
+\Delta s = s_\text{neu} - s_\text{alt} = g_i \cdot b + g_{i+1} \cdot a - (g_i \cdot a + g_{i+1} \cdot b)
+= (g_i - g_{i+1})(b - a)
+\]
+
+Da $g_i$ und $g_{i+1}$ abwechselnd $1$ und $3$ sind, ist $g_i - g_{i+1} \in \{-2, +2\}$. Es ergibt sich also:
+\[
+\Delta s = \pm 2 (b - a)
+\]
+
+Diese Änderung bleibt genau dann unbemerkt, wenn $\Delta s \equiv 0 \mod 10$ ist, also:
+\[
+\pm 2(b - a) \equiv 0 \mod 10 \quad \Leftrightarrow \quad b - a \equiv 0 \mod 5
+\]
+
+Es folgt:
+\[
+|b - a| \in \{0, 5\}
+\]
+
+Der Fall $b = a$ ist trivial, da keine Vertauschung erfolgt. Für eine echte Vertauschung mit $|b - a| = 5$ wird der Fehler \emph{nicht erkannt}.
+
+\medskip
+
+\textbf{Fazit:} Ein Vertauschen zweier benachbarter Ziffern im EAN-Code bleibt genau dann unentdeckt, wenn sich ihre Werte um 5 unterscheiden, also $|b - a| = 5$ gilt.
+
+\end{myanswer}
+\end{mychallenge}
+
+
+
 \end{myexercise}
 
 \begin{myexercise}
-Nehmen wir an, dass an der vierten Position in diesem Code eine 8 statt der 0 getippt wurde. Finden Sie mindestens 5 Möglichkeiten, an anderen Stellen den Fehler so zu machen, dass die fehlerhafte Darstellung einem EAN-Code entspricht und somit dieser Doppelfehler unbemerkt bleibt.
+Nehmen wir an, dass an der vierten Position im Code aus \cref{ex:ean} eine 8 statt der 0 getippt wurde. Finden Sie mindestens 5 Möglichkeiten, an anderen Stellen den Fehler so zu machen, dass die fehlerhafte Darstellung einem EAN-Code entspricht und somit dieser Doppelfehler unbemerkt bleibt.
+\begin{myanswer}
+Die Ziffer an Position 4 wurde von 0 auf 8 geändert. Da Position 4 das Gewicht 3 hat, verändert sich die Summe $s$ um
+\[
+(8-0) \cdot 3 = -24
+\]
+Damit der Doppelfehler unbemerkt bleibt, muss an einer anderen Stelle ein Fehler mit dem Beitrag $-24$, $-14$, $-4$, $+6$, $+16$ etc. gemacht werden. In diesem Fall verändert sich $s$ um 0, +10, +20, +30 etc., sodass $x_{13}$ gleich bleibt.
+
+Dies könnte mit folgenden möglichen Änderungen erfolgen:
+\[
+\begin{tabular}{l|l|l|l||l}
+\textbf{Position} & \textbf{Gewicht} & \textbf{Änderung} & \textbf{Fehlerbeitrag}  & \textbf{Gesamt-Fehler}\\
+\midrule\midrule
+1 & 1 & 4 $\rightarrow$ 0 & $-4$ & $24-4=20$ \\\midrule
+2 & 3 & 0 $\rightarrow$ 2 & $+6$ & $24+6=30$ \\\midrule
+3 & 1 & 3 $\rightarrow$ 9 & $+6$ & $24+6=30$ \\\midrule
+9 & 1 & 5 $\rightarrow$ 1 & $-4$ & $24-4=20$ \\\midrule
+10 & 3 & 7 $\rightarrow$ 9 & $+6$ & $24+6=30$ \\
+\end{tabular}
+\]
+
+In all diesen Fällen bleibt die Prüfziffer $x_{13}$ unverändert, der Doppelfehler wird also nicht erkannt.
+
+\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
@@ -118,6 +235,21 @@ ist ein Vielfaches von 11. Falls $x_{10} = 10$ ist das Prüfsymbol $X$.
 \end{itemize}
 \item Die neunstellige Zahl eines Buches ist 354042278. Bestimmen Sie das Prüfsymbol des ISBN-10-Codes des Buches.
 \end{enumerate}
+\begin{myanswer}
+\textbf{a) Prüfung der Symbolfolgen}
+
+Zur Erinnerung: Ein ISBN-10-Code ist gültig, wenn die gewichtete Summe
+\[
+10x_1 + 9x_2 + 8x_3 + \cdots + 2x_9 + x_{10} \equiv 0 \mod 11
+\]
+ist.
+
+Aufgabe (a): Wenn wir diese Formel anwenden, finden wir heraus, dass alle ausser dem zweiten Code gültige ISBN-Codes sind.
+
+Aufgabe (b): $3*10+5*9+4*8+0*7+4*6+2*5+2*4+7*3+8*2=186 \rightarrow x_{10}=1$, da $187=11*17$.
+
+\end{myanswer}
+
 \end{myexercise}
 
 \section{Fehler erkennen und korrigieren}
