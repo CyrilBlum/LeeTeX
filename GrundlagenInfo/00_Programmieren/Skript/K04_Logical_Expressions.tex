@@ -14,35 +14,35 @@ if note == 100:
 \end{lstlisting}
 Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=2cm, transform shape, ->]
-    \centering
-    
-    \node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson.")|};
-    \node (dec1) [decision, below of=start] {\lstinline|note == 100|};
-    \node (print) [code, below of=dec1] {\lstinline|print("Vielen Dank :)")|};
-    \node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
-    
-    \draw (start) -- (dec1);
-    \draw (dec1) -- node[anchor=east] {\lstinline|True|} (print);
-    \draw (dec1) --++ (3cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\lstinline|False|};
-    \draw (print) -- (end);
-    
-\end{tikzpicture}
+	\centering
+	\begin{tikzpicture}[node distance=2cm, transform shape, ->]
+		\centering
+
+		\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson.")|};
+		\node (dec1) [decision, below of=start] {\lstinline|note == 100|};
+		\node (print) [code, below of=dec1] {\lstinline|print("Vielen Dank :)")|};
+		\node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
+
+		\draw (start) -- (dec1);
+		\draw (dec1) -- node[anchor=east] {\lstinline|True|} (print);
+		\draw (dec1) --++ (3cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\lstinline|False|};
+		\draw (print) -- (end);
+
+	\end{tikzpicture}
 \end{figure}
 Dabei bezeichnen rote Boxen eine Zeile Code, grüne Formen einen Test der schwarze Punkt das Programmende.
 \end{myexample}
 
 \begin{myexercise}
-Entwickeln Sie einen Befehl \lstinline|def quadrat(laenge)| zum Zeichnen von
-Quadraten. Der Befehl soll aber nur etwas zeichnen, wenn die Seitenlänge
-mindestens 40 ist.
+	Entwickeln Sie einen Befehl \lstinline|def quadrat(laenge)| zum Zeichnen von
+	Quadraten. Der Befehl soll aber nur etwas zeichnen, wenn die Seitenlänge
+	mindestens 40 ist.
 \end{myexercise}
 
 \begin{myexercise}
-Entwickeln Sie ein Programm, das dem Benutzer im Rahmen eines Multiple-Choice-
-Tests drei Fragen stellt (mit dem Befehl \lstinline|input("...")|). Das Programm soll die Anzahl der richtigen Antworten
-zählen und diese Anzahl ausgeben.
+	Entwickeln Sie ein Programm, das dem Benutzer im Rahmen eines Multiple-Choice-
+	Tests drei Fragen stellt (mit dem Befehl \lstinline|input("...")|). Das Programm soll die Anzahl der richtigen Antworten
+	zählen und diese Anzahl ausgeben.
 \end{myexercise}
 
 
@@ -60,30 +60,37 @@ else:
 
 Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=1cm, transform shape, on grid, ->, font=\small]
-    % grid to easier see that the node centers line up while developing plot
-    %\draw [help lines] (-5,-9) grid (9,1);
-    \node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
-    \node (dec1) [decision, below=2cm of start] {\lstinline|note == 100|};
-    \node (printif) [code, below left=2cm and 4cm of dec1] {\lstinline|print("Vielen Dank :)")|};
-    \node (printelse) [code, below right=2cm and 4cm of dec1] {\lstinline|print("Geben Sie mir noch eine Chance")|};
-    \node (end) [circle,draw=black, fill=black, below=4cm of dec1] {};
-    
-    \draw (start) -- (dec1);
-    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
-    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|False|} (printelse);
-    \draw (printif) |- (end);
-    \draw (printelse) |- (end);
-    
-\end{tikzpicture}
+	\centering
+	\begin{tikzpicture}[node distance=1cm, transform shape, on grid, ->, font=\small]
+		% grid to easier see that the node centers line up while developing plot
+		%\draw [help lines] (-5,-9) grid (9,1);
+		\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
+		\node (dec1) [decision, below=2cm of start] {\lstinline|note == 100|};
+		\node (printif) [code, below left=2cm and 4cm of dec1] {\lstinline|print("Vielen Dank :)")|};
+		\node (printelse) [code, below right=2cm and 4cm of dec1] {\lstinline|print("Geben Sie mir noch eine Chance")|};
+		\node (end) [circle,draw=black, fill=black, below=4cm of dec1] {};
+
+		\draw (start) -- (dec1);
+		\draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+		\draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|False|} (printelse);
+		\draw (printif) |- (end);
+		\draw (printelse) |- (end);
+
+	\end{tikzpicture}
 \end{figure}
 \end{myexample}
 \begin{mysubmission}
-Schreiben Sie eine Python-Funktion \lstinline|def schaltjahr(jahr)|, welche berechnet, ob das aktuelle Jahr \lstinline|jahr| ein Schaltjahr ist. 2024 ist ein Schaltjahr, 2028 ebenso, sowie auch 2032, 2036, 2040 etc. (alle 4 Jahre). Um zu überprüfen, ob eine Zahl durch 4 teilbar ist, können Sie den Modulo-Operator (\% verwenden).
-\begin{myanswer}
-\lstinputlisting[language=Python,caption=\texttt{schaltjahr.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/schaltjahr.py}
-\end{myanswer}
+	Schreiben Sie eine Python-Funktion \lstinline|def ist_schaltjahr(jahr)|, welche berechnet, ob das aktuelle Jahr \lstinline|jahr| ein Schaltjahr ist oder nicht.
+
+	Ein Jahr ist ein Schaltjahr, genau dann wenn gilt:
+	\begin{enumerate}
+		\item Das Jahr ist durch 4 teilbar aber nicht durch 100
+		\item oder das Jahr ist durch 400 teilbar.
+	\end{enumerate}
+	Für die Prüfung auf Teilbarkeit sollen Sie den Modulo-Operator (\% verwenden).
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{schaltjahr.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/schaltjahr.py}
+	\end{myanswer}
 \end{mysubmission}
 \subsection{Logische Ausdrücke mit \texorpdfstring{\lstinline|if|}{if}, \texorpdfstring{\lstinline|elif|}{elif} und \texorpdfstring{\lstinline|else|}{else}}
 \begin{myexample}
@@ -101,60 +108,60 @@ else:
 Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=2cm, transform shape, on grid, ->]
-    % grid to easier see that the node centers line up while developing plot
-    %\draw [help lines] (-5,-9) grid (9,1);
-    \node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
-    \node (dec1) [decision, below of=start] {\lstinline|note == 100|};
-    \node (printif) [code, text width=5cm, right=6cm of dec1] {\lstinline|print("Vielen Dank :)")|};
-    \node (dec2) [decision, below of=dec1] {\lstinline|note > 60|};
-    \node (printelif) [code, text width=5cm, right=6cm of dec2] {\lstinline|print("Wie kann ich mich verbessern?")|};
-    \node (printelse) [code, text width=6cm, below of=dec2] {\lstinline|print("Geben Sie mir noch eine Chance")|};
-    \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
-    
-    \draw (start) -- (dec1);
-    \draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
-    \draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
-    
-    \draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
-    \draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
-    
-    \draw (printif) --++ (3.5cm,0cm) |- (end);
-    \draw (printelif) --++ (3.5cm,0cm) |- (end);
-    
-    \draw (printelse) -- (end);
-    
-\end{tikzpicture}
+	\centering
+	\begin{tikzpicture}[node distance=2cm, transform shape, on grid, ->]
+		% grid to easier see that the node centers line up while developing plot
+		%\draw [help lines] (-5,-9) grid (9,1);
+		\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
+		\node (dec1) [decision, below of=start] {\lstinline|note == 100|};
+		\node (printif) [code, text width=5cm, right=6cm of dec1] {\lstinline|print("Vielen Dank :)")|};
+		\node (dec2) [decision, below of=dec1] {\lstinline|note > 60|};
+		\node (printelif) [code, text width=5cm, right=6cm of dec2] {\lstinline|print("Wie kann ich mich verbessern?")|};
+		\node (printelse) [code, text width=6cm, below of=dec2] {\lstinline|print("Geben Sie mir noch eine Chance")|};
+		\node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
+
+		\draw (start) -- (dec1);
+		\draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+		\draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
+
+		\draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
+		\draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
+
+		\draw (printif) --++ (3.5cm,0cm) |- (end);
+		\draw (printelif) --++ (3.5cm,0cm) |- (end);
+
+		\draw (printelse) -- (end);
+
+	\end{tikzpicture}
 \end{figure}
 \end{myexample}
 
 \begin{mysubmission}
-Ein Bäcker möchte Kekse backen und gleichmässig in Keksdosen verpacken. Jede Dose fasst 12 Kekse. Schreibe ein Programm, das berechnet:
+	Ein Bäcker möchte Kekse backen und gleichmässig in Keksdosen verpacken. Jede Dose fasst 12 Kekse. Schreibe ein Programm, das berechnet:
 
-\begin{itemize}
-\item Wie viele Dosen benötigt werden für n Kekse.
-\item Wie viele Kekse übrig bleiben.
-\end{itemize}
+	\begin{itemize}
+		\item Wie viele Dosen benötigt werden für n Kekse.
+		\item Wie viele Kekse übrig bleiben.
+	\end{itemize}
 
-Falls mehr als 500 oder weniger als 1 für \texttt{n} eingegeben werden, soll ausgegeben werden:  \lstinline|"Ungültige Anzahl Kekse!"|
+	Falls mehr als 500 oder weniger als 1 für \texttt{n} eingegeben werden, soll ausgegeben werden:  \lstinline|"Ungültige Anzahl Kekse!"|
 
-Verwenden Sie die Ganzzahldivision (\lstinline|//|) und Modulo (\lstinline|%|)!
+	Verwenden Sie die Ganzzahldivision (\lstinline|//|) und Modulo (\lstinline|%|)!
 
-\begin{myanswer}
-\lstinputlisting[language=Python,caption=\texttt{kekse.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/kekse.py}
-\end{myanswer}
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{kekse.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/kekse.py}
+	\end{myanswer}
 \end{mysubmission}
 
 \begin{myexercise}
-Verwenden Sie den Code aus \cref{ex:multiple-params}.
+	Verwenden Sie den Code aus \cref{ex:multiple-params}.
 
-Verwenden Sie einen \lstinline|input|-Befehl aus \cref{ex:input}, um den Benutzer nach einer Zahl zu fragen. 
-\begin{enumerate}
-\item Falls die Zahl 1 eingegeben wird, soll ein blaues Viereck gezeichnet werden
-\item Falls eine Zahl von 2 bis und mit 5 eingegeben wird, soll ein grünes Sechseck gezeichnet werden
-\item Falls eine Zahl $n$ von 6 oder grösser eingegeben wird, soll ein schwarzes $n$-Eck gezeichnet werden.
-\end{enumerate}
+	Verwenden Sie einen \lstinline|input|-Befehl aus \cref{ex:input}, um den Benutzer nach einer Zahl zu fragen.
+	\begin{enumerate}
+		\item Falls die Zahl 1 eingegeben wird, soll ein blaues Viereck gezeichnet werden
+		\item Falls eine Zahl von 2 bis und mit 5 eingegeben wird, soll ein grünes Sechseck gezeichnet werden
+		\item Falls eine Zahl $n$ von 6 oder grösser eingegeben wird, soll ein schwarzes $n$-Eck gezeichnet werden.
+	\end{enumerate}
 \end{myexercise}
 
 \begin{mychallenge}[\emoji{robot} \textbf{R2-D2}]
@@ -199,28 +206,28 @@ def r2d2(move):
 
 
 \begin{mysubmission}
-Bei einer Flugreise darf der aufgegebene Koffer üblicherweise nicht schwerer sein als 20kg. Ansonsten bezahlt man einen Aufschlag von CHF 5.- pro kg Übergewicht.
+	Bei einer Flugreise darf der aufgegebene Koffer üblicherweise nicht schwerer sein als 20kg. Ansonsten bezahlt man einen Aufschlag von CHF 5.- pro kg Übergewicht.
 
-Schreiben Sie ein Unterprogramm koffer(gewicht), der einen Parameter Gewicht entgegennimmt und einen Text auf der Konsole druckt, je nach Fall:
+	Schreiben Sie ein Unterprogramm koffer(gewicht), der einen Parameter Gewicht entgegennimmt und einen Text auf der Konsole druckt, je nach Fall:
 
-\begin{itemize}
-\item Wenn der Koffer über 0 und bis und mit 20kg wiegt, muss kein Aufpreis bezahlt werden und es wird gedruckt \lstinline|"Der Koffer ist gratis"|
-\item Wenn der Koffer über 20 und bis und mit 100kg wiegt, muss der Aufpreis berechnet und ausgegeben werden (z.B. \lstinline|"Ihr Koffer hat X kg Übergewicht. Das kostet 5.-"|)
-\item Wenn der Koffer über 100 kg wiegt, wird er nicht transportiert (\lstinline|"Der Koffer ist zu schwer"|)
-\item  In allen anderen Fällen soll ausgegeben werden \lstinline|"Das eingegebene Gewicht ist nicht zulässig"|  (z.B. Text, *, 0, negative Zahlen etc.).
-\end{itemize}
+	\begin{itemize}
+		\item Wenn der Koffer über 0 und bis und mit 20kg wiegt, muss kein Aufpreis bezahlt werden und es wird gedruckt \lstinline|"Der Koffer ist gratis"|
+		\item Wenn der Koffer über 20 und bis und mit 100kg wiegt, muss der Aufpreis berechnet und ausgegeben werden (z.B. \lstinline|"Ihr Koffer hat X kg Übergewicht. Das kostet 5.-"|)
+		\item Wenn der Koffer über 100 kg wiegt, wird er nicht transportiert (\lstinline|"Der Koffer ist zu schwer"|)
+		\item  In allen anderen Fällen soll ausgegeben werden \lstinline|"Das eingegebene Gewicht ist nicht zulässig"|  (z.B. Text, *, 0, negative Zahlen etc.).
+	\end{itemize}
 
-*Der Code untenan enthält bereits einen Check dafür, ob der Parameter \texttt{gewicht} eine Zahl ist oder nicht. Den Rest müssen Sie noch schreiben.
+	*Der Code untenan enthält bereits einen Check dafür, ob der Parameter \texttt{gewicht} eine Zahl ist oder nicht. Den Rest müssen Sie noch schreiben.
 
-\lstinputlisting[language=Python,caption=\texttt{koffer\_template.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/koffer_template.py}
-\begin{myanswer}
-\lstinputlisting[language=Python,caption=\texttt{koffer.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/koffer.py}
-\end{myanswer}
+	\lstinputlisting[language=Python,caption=\texttt{koffer\_template.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/koffer_template.py}
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{koffer.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/koffer.py}
+	\end{myanswer}
 \end{mysubmission}
 
 \begin{myexercise}
-Wo liegt hier das Problem?
-\begin{lstlisting}        
+	Wo liegt hier das Problem?
+	\begin{lstlisting}        
 note = input("Benoten Sie die Lehrperson (0-100).") 
 # wir tippen 100 in das Fenster ein!
 
@@ -243,22 +250,22 @@ else:
 Wie Sie in den obigen Beispielen sehen, wird von einem Wahrheitstest ein \textbf{Wert} zurückgegeben: entweder der Wert \lstinline|True| (Wahr) oder \lstinline|False| (Falsch).
 
 Mögliche boolsche Relationen sind in \cref{table:bool} abgebildet.
-    \begin{table}[H]
-        \centering
-        \begin{tabular}{c||c}
-        \textbf{Python} & \textbf{Mathematische Bedeutung} \\\midrule 
-             \lstinline|==| & gleich ($=$)\\
-             \lstinline|!=| & ungleich ($\neq$) \\
-             \lstinline|<| & kleiner ($<$)\\
-             \lstinline|<=| & kleiner oder gleich ($\leq$) \\
-             \lstinline|>| & grösser ($>$) \\
-             \lstinline|>=| & grösser oder gleich ($\geq$)
-        \end{tabular}
-        \caption{Bool'sche Relationen und Schreibweise in Python}
-        \label{table:bool}
-    \end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c||c}
+		\textbf{Python} & \textbf{Mathematische Bedeutung} \\\midrule
+		\lstinline|==|  & gleich ($=$)                     \\
+		\lstinline|!=|  & ungleich ($\neq$)                \\
+		\lstinline|<|   & kleiner ($<$)                    \\
+		\lstinline|<=|  & kleiner oder gleich ($\leq$)     \\
+		\lstinline|>|   & grösser ($>$)                    \\
+		\lstinline|>=|  & grösser oder gleich ($\geq$)
+	\end{tabular}
+	\caption{Bool'sche Relationen und Schreibweise in Python}
+	\label{table:bool}
+\end{table}
 Bool'sche Audrücke wie z.B. \lstinline|3 < 45| führen zu einem Bool'schen Wert, also einem Wahrheitswert, welcher entweder den Wert \lstinline|True| (wahr) oder \lstinline|False| (falsch) hat.
- 
+
 Die typische Verwendungsart bool'scher Werte ist in folgendem Code abgebildet:
 \begin{lstlisting}
 if BOOLSCHER_WERT:
@@ -267,26 +274,26 @@ if BOOLSCHER_WERT:
 \end{lstlisting}
 
 \begin{myexercise}
-Entwickeln Sie einen Befehl, der Bilder abhängig von der Eingabe zeichnet. Wenn die Benutzerin eine 1 eingibt, soll der Befehl ein rotes Rechteck zeichnen. Bei einer 2 soll er ein grünes Dreieck zeichnen. Bei einer 3 soll er ein blaues Sechseck zeichnen. Bei allen anderen Eingaben soll der Befehl den Text \enquote{Nur die Zahlen 1, 2 oder 3 werden als Eingabe akzeptiert.} ausgeben.
+	Entwickeln Sie einen Befehl, der Bilder abhängig von der Eingabe zeichnet. Wenn die Benutzerin eine 1 eingibt, soll der Befehl ein rotes Rechteck zeichnen. Bei einer 2 soll er ein grünes Dreieck zeichnen. Bei einer 3 soll er ein blaues Sechseck zeichnen. Bei allen anderen Eingaben soll der Befehl den Text \enquote{Nur die Zahlen 1, 2 oder 3 werden als Eingabe akzeptiert.} ausgeben.
 \end{myexercise}
 
 \begin{mysubmission}
-Geben seien zwei Zahlen \lstinline|x1| und \lstinline|x2|. Schreiben Sie eine Funktion def \lstinline|maxzahl(x1, x2)|, welche die grössere der beiden Zahlen mit \lstinline|return| zurück an das Hauptprogramm gibt. Wenn beide Zahlen gleich gross sind, soll \lstinline|x2| zurückgegeben werden.
+	Geben seien zwei Zahlen \lstinline|x1| und \lstinline|x2|. Schreiben Sie eine Funktion def \lstinline|maxzahl(x1, x2)|, welche die grössere der beiden Zahlen mit \lstinline|return| zurück an das Hauptprogramm gibt. Wenn beide Zahlen gleich gross sind, soll \lstinline|x2| zurückgegeben werden.
 
-Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
-\begin{myanswer}
-\begin{lstlisting}
+	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
+	\begin{myanswer}
+		\begin{lstlisting}
 def maxzahl(x1, x2):
     if x1 > x2:
         return x1
     else: 
         return x2
 \end{lstlisting}
-\end{myanswer}
+	\end{myanswer}
 \end{mysubmission}
 
 \begin{mychallenge}
-Lösen Sie die Aufgabe ``Dynamisches Schachbrett'' auf Moodle.
+	Lösen Sie die Aufgabe ``Dynamisches Schachbrett'' auf Moodle.
 \end{mychallenge}
 \section{Fussgesteuerte Schleifen mit \texorpdfstring{\lstinline|break|}{break}}
 
@@ -295,9 +302,9 @@ Bisher haben wir eine Art von Schleife gesehen: \lstinline|for _ in range(...)|.
 
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=.2\linewidth]{GrundlagenInfo/00_Programmieren/Figures/spirale_while}
-\caption{Bild einer Spirale, deren grösste Seitenlänge \lstinline|max_seite| lang ist}
+	\centering
+	\includegraphics[width=.2\linewidth]{GrundlagenInfo/00_Programmieren/Figures/spirale_while}
+	\caption{Bild einer Spirale, deren grösste Seitenlänge \lstinline|max_seite| lang ist}
 \end{figure}
 
 Natürlich könnte man auch hier berechnen, wie viele Male die \lstinline|for|-Schleife ausgeführt werden muss. Die Formel, um dies zu berechnen, wäre:
@@ -319,7 +326,7 @@ Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endloss
 
 
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[escapechar=!]
+	\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 # Tempo der Turtle festlegen
@@ -339,11 +346,11 @@ while True:!\tikzmark{whileFrom}!                        !\tikzmark{while}!
 # Turtle-Zeichnung stehen lassen
 t.done()
 \end{lstlisting}
-\begin{tikzpicture}[overlay, remember picture,
-    every node/.style={text=white,rounded corners}]
-    \drawArrow{whileFrom}{while}{\footnotesize Unendliche Schleife}{DeepPink};
-    \drawArrow{breakFrom}{break}{\footnotesize Schleifenabbruch}{DeepPink};
-\end{tikzpicture}
+	\begin{tikzpicture}[overlay, remember picture,
+			every node/.style={text=white,rounded corners}]
+		\drawArrow{whileFrom}{while}{\footnotesize Unendliche Schleife}{DeepPink};
+		\drawArrow{breakFrom}{break}{\footnotesize Schleifenabbruch}{DeepPink};
+	\end{tikzpicture}
 \end{minipage}
 
 
@@ -353,8 +360,8 @@ t.done()
 Folgendes Beispiel zeigt, wie ein \lstinline|while| mit \lstinline|break| zu einem einfachen \lstinline|while| mit Ausführungs-Bedingung vereinfacht werden kann. Beide Codes machen dasselbe. Die Schleife wird solange ausgeführt, wie die Ausführungs-Bedingung wahr ist. Die Abbruchskondition wird vor jeder neuen Schleifenausführung überprüft und die Schleife wird nur dann ausgeführt, wenn die Ausführungs-Bedingung noch wahr ist. Beim linken Code verwenden wir nicht eine Ausführungs-Bedingung sondern eine Abbruch-Bedingung.
 
 \begin{center}
-\begin{minipage}{.48\textwidth}
-\begin{lstlisting}[escapechar=!]
+	\begin{minipage}{.48\textwidth}
+		\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 def spirale(seite, add, max_seite):
@@ -367,9 +374,9 @@ def spirale(seite, add, max_seite):
 
 spirale(10, 10, 100)
 \end{lstlisting}
-\end{minipage}
-\begin{minipage}{.48\textwidth}
-\begin{lstlisting}[escapechar=!]
+	\end{minipage}
+	\begin{minipage}{.48\textwidth}
+		\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 def spirale(seite, add, max_seite):
@@ -380,80 +387,80 @@ def spirale(seite, add, max_seite):
         
 spirale(10, 10, 100)
 \end{lstlisting}
-\end{minipage}
-\begin{tikzpicture}[overlay, remember picture,
-    every edge/.append style = { ->, thick, >=stealth, red!70},
-    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-	
-	\drawBrace{0em}{fromStart}{fromEnd}{}{.5}{}{}
-	\drawBrace{-.5em}{toStart}{toEnd}{}{.5}{mirror}{}
-	% arrow pointing from one code to other
-	\draw[->, style={thick, >=stealth, red!70}] (fromStartfromEnd-coord-arrow) to (toStarttoEnd-coord-arrow);
-\end{tikzpicture}
+	\end{minipage}
+	\begin{tikzpicture}[overlay, remember picture,
+			every edge/.append style = { ->, thick, >=stealth, red!70},
+			every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+
+		\drawBrace{0em}{fromStart}{fromEnd}{}{.5}{}{}
+		\drawBrace{-.5em}{toStart}{toEnd}{}{.5}{mirror}{}
+		% arrow pointing from one code to other
+		\draw[->, style={thick, >=stealth, red!70}] (fromStartfromEnd-coord-arrow) to (toStarttoEnd-coord-arrow);
+	\end{tikzpicture}
 \end{center}
 \end{myexample}
 
 
 \begin{myattention}[Endlos-Schleifen]
-Beachten Sie folgende Punkte:
-\begin{itemize}
-\item Passen Sie auf, dass Sie keine unendlichen Schleifen produzieren! In diesem Fall kann das Programm, auf dem Python läuft, hängen bleiben. Vergessen Sie daher nie die Abbruchkondition klar zu formulieren!
-\item Ein \lstinline|while True:| (unendliche Schleife) ohne \lstinline|break| kann zum Absturz des Programms führen \emoji{face-with-spiral-eyes}
-\item Je nachdem kann das auch in einem \lstinline|while| mit einer Kondition passieren, sofern die Bedingung nach dem \lstinline|while| so geschrieben ist, dass sie immer wahr (\lstinline|True|) ist (s. \cref{subsec:semantische-fehler} zu semantischen Fehlern).
-\item \textbf{Speichern Sie regelmässig Ihre Aufgaben!}
-\item Falls das Programm VSCodium hängenbleibt: Beenden mit \keys{Ctrl+Alt+\backdel} (Windows), bzw. Activity Monitor unter MacOS
-\end{itemize}
+	Beachten Sie folgende Punkte:
+	\begin{itemize}
+		\item Passen Sie auf, dass Sie keine unendlichen Schleifen produzieren! In diesem Fall kann das Programm, auf dem Python läuft, hängen bleiben. Vergessen Sie daher nie die Abbruchkondition klar zu formulieren!
+		\item Ein \lstinline|while True:| (unendliche Schleife) ohne \lstinline|break| kann zum Absturz des Programms führen \emoji{face-with-spiral-eyes}
+		\item Je nachdem kann das auch in einem \lstinline|while| mit einer Kondition passieren, sofern die Bedingung nach dem \lstinline|while| so geschrieben ist, dass sie immer wahr (\lstinline|True|) ist (s. \cref{subsec:semantische-fehler} zu semantischen Fehlern).
+		\item \textbf{Speichern Sie regelmässig Ihre Aufgaben!}
+		\item Falls das Programm VSCodium hängenbleibt: Beenden mit \keys{Ctrl+Alt+\backdel} (Windows), bzw. Activity Monitor unter MacOS
+	\end{itemize}
 \end{myattention}
 
 \begin{mysubmission}
-Schreiben Sie eine Funktion \lstinline|verdreifache_bis_ueber1Mio(zahl)|, welche eine Zahl \texttt{zahl} so lange immer wieder verdreifacht, bis \texttt{zahl} erstmals grösser als 1'000'000 ist. Dabei sollen alle Zwischenresultate in der Konsole ausgegeben werden. Am Schluss soll ausserdem die Anzahl Verdreifachungen ausgedruckt werden.
-\begin{myanswer}
-\lstinputlisting[language=Python,caption=\texttt{while\_verdreifache.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/while_verdreifache.py}
-\end{myanswer} 
+	Schreiben Sie eine Funktion \lstinline|verdreifache_bis_ueber1Mio(zahl)|, welche eine Zahl \texttt{zahl} so lange immer wieder verdreifacht, bis \texttt{zahl} erstmals grösser als 1'000'000 ist. Dabei sollen alle Zwischenresultate in der Konsole ausgegeben werden. Am Schluss soll ausserdem die Anzahl Verdreifachungen ausgedruckt werden.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{while\_verdreifache.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/while_verdreifache.py}
+	\end{myanswer}
 \end{mysubmission}
 
 
 \begin{myexercise}
-Entwickeln Sie einen Befehl \lstinline|def quadgleich(a, b, c)|, der quadratische
-Gleichungen der Form $ax^2 + bx + c = 0$ löst. Der Befehl soll zuerst $d = b^2 - 4аc$
-ausrechnen und abhängig vom Wert von d keine, eine oder zwei Lösungen aus-
-geben
+	Entwickeln Sie einen Befehl \lstinline|def quadgleich(a, b, c)|, der quadratische
+	Gleichungen der Form $ax^2 + bx + c = 0$ löst. Der Befehl soll zuerst $d = b^2 - 4аc$
+	ausrechnen und abhängig vom Wert von d keine, eine oder zwei Lösungen aus-
+	geben
 \end{myexercise}
 
 
 \begin{myexercise}
-Entwickeln Sie einen Befehl, dem eine Zahl $x > 1$ als Parameter übergeben wird. Aus $x$ wird nun eine Folge von Zahlen generiert und ausgegeben. Dabei wird folgende Regel angewendet: Wenn $x$ durch zwei teilbar ist, ist die nächste Zahl $x / 2$ . Wenn $x$ nicht durch zwei teilbar ist, ist die nächste Zahl $3 \cdot x + 1$ . Dieser Prozess wird wiederholt, solange die neu berechnete Zahl grösser als 1 ist.
+	Entwickeln Sie einen Befehl, dem eine Zahl $x > 1$ als Parameter übergeben wird. Aus $x$ wird nun eine Folge von Zahlen generiert und ausgegeben. Dabei wird folgende Regel angewendet: Wenn $x$ durch zwei teilbar ist, ist die nächste Zahl $x / 2$ . Wenn $x$ nicht durch zwei teilbar ist, ist die nächste Zahl $3 \cdot x + 1$ . Dieser Prozess wird wiederholt, solange die neu berechnete Zahl grösser als 1 ist.
 \end{myexercise}
 
 \begin{mychallenge}[Weizenkornlegende]
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.3\linewidth]{GrundlagenInfo/09_Tabellenkalkulation/Screenshots/Sissa}
-\end{figure}
-Sissa ibn Dahir lebte angeblich im dritten oder vierten Jahrhundert in Indien und gilt Legenden zufolge als der Erfinder des Schachspiels.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.3\linewidth]{GrundlagenInfo/09_Tabellenkalkulation/Screenshots/Sissa}
+	\end{figure}
+	Sissa ibn Dahir lebte angeblich im dritten oder vierten Jahrhundert in Indien und gilt Legenden zufolge als der Erfinder des Schachspiels.
 
-Der indische Herrscher Shihram tyrannisierte seine Untertanen und stürzte sein Land in Not und Elend. Um die Aufmerksamkeit des Königs auf seine Fehler zu lenken, ohne seinen Zorn zu entfachen, schuf der weise Brahmane Sissa ein Spiel, in welchem der König als wichtigste Figur ohne Hilfe anderer Figuren und Bauern nichts ausrichten kann. Der Unterricht im Schachspiel machte auf den Herrscher Shihram einen starken Eindruck. Er wurde milder und liess das Schachspiel verbreiten, damit alle davon Kenntnis nehmen.
+	Der indische Herrscher Shihram tyrannisierte seine Untertanen und stürzte sein Land in Not und Elend. Um die Aufmerksamkeit des Königs auf seine Fehler zu lenken, ohne seinen Zorn zu entfachen, schuf der weise Brahmane Sissa ein Spiel, in welchem der König als wichtigste Figur ohne Hilfe anderer Figuren und Bauern nichts ausrichten kann. Der Unterricht im Schachspiel machte auf den Herrscher Shihram einen starken Eindruck. Er wurde milder und liess das Schachspiel verbreiten, damit alle davon Kenntnis nehmen.
 
-Um sich für die anschauliche Lehre von Lebensweisheit und zugleich Unterhaltung zu bedanken, gewährte er dem Brahmanen einen freien Wunsch. Dieser wünschte sich Weizenkörner: Auf das erste Feld eines Schachbretts wollte er ein Korn, auf das zweite Feld das Doppelte, also zwei, auf das dritte wiederum die doppelte Menge, also vier und so weiter. 
+	Um sich für die anschauliche Lehre von Lebensweisheit und zugleich Unterhaltung zu bedanken, gewährte er dem Brahmanen einen freien Wunsch. Dieser wünschte sich Weizenkörner: Auf das erste Feld eines Schachbretts wollte er ein Korn, auf das zweite Feld das Doppelte, also zwei, auf das dritte wiederum die doppelte Menge, also vier und so weiter.
 
-Sie sollen die Menge Weizenkörner, welche Sissa vom Herrscher gefordert hat, berechnen. Gehen Sie folgendermassen vor:
+	Sie sollen die Menge Weizenkörner, welche Sissa vom Herrscher gefordert hat, berechnen. Gehen Sie folgendermassen vor:
 
-Auf dem ersten Schachfeld liegt 1 Reiskorn, auf dem zweiten Feld liegen 2 Reiskörner, auf dem dritten Feld liegen 4 Körner usw.
+	Auf dem ersten Schachfeld liegt 1 Reiskorn, auf dem zweiten Feld liegen 2 Reiskörner, auf dem dritten Feld liegen 4 Körner usw.
 
-Allgemein liegen auf dem \(n+1\)-ten Schachfeld genau doppelt soviele Körner wie auf dem \(n\)-ten Schachfeld. Unser Schachbrett habe \(n\)-Felder, wobei \(n \leq 67\). Wie viele Reiskörner würden in dieser Situation insgesamt auf dem Schachfeld liegen (angenommen so viel Reis hätte Platz)?
+	Allgemein liegen auf dem \(n+1\)-ten Schachfeld genau doppelt soviele Körner wie auf dem \(n\)-ten Schachfeld. Unser Schachbrett habe \(n\)-Felder, wobei \(n \leq 67\). Wie viele Reiskörner würden in dieser Situation insgesamt auf dem Schachfeld liegen (angenommen so viel Reis hätte Platz)?
 
-Schreiben Sie eine Funktion \lstinline|def reis(n)|, welche die gesuchte Anzahl Reiskörner in Abhängigkeit der Anzahl \(n\) der Felder berechnet und per \lstinline|return| zurückgibt.
+	Schreiben Sie eine Funktion \lstinline|def reis(n)|, welche die gesuchte Anzahl Reiskörner in Abhängigkeit der Anzahl \(n\) der Felder berechnet und per \lstinline|return| zurückgibt.
 
-\begin{itemize}
-\item \lstinline|reis(3)| sollte 7 ausgeben.
-\item \lstinline|reis(8)| sollte 255 ausgeben.
-\item \lstinline|reis(64)| sollte 18446744073709551615 ausgeben.
-\end{itemize}
+	\begin{itemize}
+		\item \lstinline|reis(3)| sollte 7 ausgeben.
+		\item \lstinline|reis(8)| sollte 255 ausgeben.
+		\item \lstinline|reis(64)| sollte 18446744073709551615 ausgeben.
+	\end{itemize}
 
-\begin{myanswer}
-\lstinputlisting[language=Python,caption=\texttt{reis.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/reis.py}
-\end{myanswer}
- 
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{reis.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/reis.py}
+	\end{myanswer}
+
 \end{mychallenge}
 
 
@@ -463,32 +470,32 @@ Schreiben Sie eine Funktion \lstinline|def reis(n)|, welche die gesuchte Anzahl 
 
 Folgende Beispiele sollen die meisten der bisher gelernten Programmier-Konzepte konkret veranschaulichen. Stellen Sie sich vor, Sie sind SportlerIn und möchten Ihren Kalorienbedarf berechnen, um sich für auf einen kommenden Wettkampf optimal zu ernähren. Hierzu wollen zunächst Sie Ihren täglichen (theoretischen) Kalorienbedarf berechnen. Ihr Kalorienbedarf berechnet sich wie folgt:
 \begin{enumerate}
-\item Ihr \textbf{Grundumsatz} (englisch \gls{BMR}): Dies ist ihr Grundbedarf, also die Anzahl Kalorien, welche Sie theoretisch benötigen, falls Sie sich gar nicht bewegen.
-\item Ihr \textbf{Leistungsumsatz}, d.h., zusätzliche Energie, die Sie bei Aktivitäten wie Spazieren, Radfahren, Joggen usw. verbrennen.
+	\item Ihr \textbf{Grundumsatz} (englisch \gls{BMR}): Dies ist ihr Grundbedarf, also die Anzahl Kalorien, welche Sie theoretisch benötigen, falls Sie sich gar nicht bewegen.
+	\item Ihr \textbf{Leistungsumsatz}, d.h., zusätzliche Energie, die Sie bei Aktivitäten wie Spazieren, Radfahren, Joggen usw. verbrennen.
 \end{enumerate}
 
 Beide Komponenten sind schwierig abzuschätzen. Sie möchten jedoch eine erste Einschätzung Ihrer \gls{BMR} haben, indem sie einige bekannte Formeln auf sich selber anwenden und diese vergleichen.
 
 \begin{mysubmission}\label{ex:bmr-simple}
-Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel berechnen und geben Sie das Resultat auf der Konsole aus.
-\begin{enumerate}
-\item Für Männer:
-\begin{align*}
-\text{BMR} = & 88.362 +\\ 
-& (13.397 \times \text{Gewicht in kg}) +\\ 
-& (4.799 \times \text{Körpergrösse in cm}) -\\
-& (5.677 \times \text{Alter in Jahren})
-\end{align*}
-\item Für Frauen:
-\begin{align*}
-\text{BMR} = & 447.593  +\\ 
-& (9.247 \times \text{Gewicht in kg}) +\\ 
-& (3.098 \times \text{Körpergrösse in cm}) -\\
-& (4.330 \times \text{Alter in Jahren})
-\end{align*}
-\end{enumerate}
-\begin{myanswer}
-\begin{lstlisting}
+	Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel berechnen und geben Sie das Resultat auf der Konsole aus.
+	\begin{enumerate}
+		\item Für Männer:
+		      \begin{align*}
+			      \text{BMR} = & 88.362 +                                   \\
+			                   & (13.397 \times \text{Gewicht in kg}) +     \\
+			                   & (4.799 \times \text{Körpergrösse in cm}) - \\
+			                   & (5.677 \times \text{Alter in Jahren})
+		      \end{align*}
+		\item Für Frauen:
+		      \begin{align*}
+			      \text{BMR} = & 447.593  +                                 \\
+			                   & (9.247 \times \text{Gewicht in kg}) +      \\
+			                   & (3.098 \times \text{Körpergrösse in cm}) - \\
+			                   & (4.330 \times \text{Alter in Jahren})
+		      \end{align*}
+	\end{enumerate}
+	\begin{myanswer}
+		\begin{lstlisting}
 def grundumsatz(gewicht, groesse, alter, geschlecht):
     """
     Berechnet den Grundumsatz (BMR) nach der Harris-Benedict-Formel.
@@ -518,13 +525,13 @@ geschlecht = 'mann'
 # berechne grundumsatz
 grundumsatz(gewicht, groesse, alter, geschlecht)
 \end{lstlisting}
-\end{myanswer}
+	\end{myanswer}
 \end{mysubmission}
 
 Nun möchten wir zum Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zum Grundumsatz auch noch unsere Aktivitäten hinzufügen, allerdings können wir nun nicht mehr auf die Variable \texttt{bmr} zurückgreifen. Wie können wir das ändern? Indem wir sie an das Programm zurückgeben und speichern. Wichtige Änderungen gegebüber den Lösungs-Code aus \cref{ex:bmr-simple} sind in \colorbox{CornflowerBlue}{blau} umrandet.
 
 \begin{minipage}{\linewidth}
-\begin{lstlisting}
+	\begin{lstlisting}
 def grundumsatz(gewicht, groesse, alter, geschlecht):
     if geschlecht == 'mann':
         bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
@@ -546,104 +553,104 @@ geschlecht = 'mann'
 \end{minipage}
 
 \begin{tikzpicture}[overlay,remember picture]
-   % Wert zurückgeben
+	% Wert zurückgeben
 	\draw[red,-stealth] (arrowFrom.north) to[bend left] node[right, fill=RoyalBlue,text=white,rounded corners] {Wert Zurückgeben} (arrowTo);
 \end{tikzpicture}
 
 Nun haben wir eine erste Einschätzung des \gls{BMR}. Allerdings gibt es auch noch weitere Formeln, die wir gerne berechnen möchten, um einen Vergleich der verschiedenen Methoden zu erhalten.
 
 \begin{mysubmission}\label{ex:bmr}
-Schreiben Sie eine weitere Definitionen, um den \gls{BMR} anhand der Mifflin-St-Jeor-Gleichung und der Katch-McArdle-Formel zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
-\begin{enumerate}
-\item Mifflin-St-Jeor-Gleichung:
-\begin{enumerate}
-\item Männer: 
-\begin{align*}
-\text{BMR} &= 10 \times \text{Gewicht (kg)} \\
-&\quad + 6.25 \times \text{Grösse (cm)} \\
-&\quad - 5 \times \text{Alter (Jahre)} \\
-&\quad + 5
-\end{align*}
-\item Frauen: 
-\begin{align*}
-\text{BMR} &= 10 \times \text{Gewicht (kg)} \\
-&\quad + 6.25 \times \text{Grösse (cm)} \\
-&\quad - 5 \times \text{Alter (Jahre)} \\
-&\quad - 161
-\end{align*}
-\end{enumerate}
-\item Katch-McArdle-Formel:
-\begin{enumerate}
-\item Grundformel:
-\begin{align*}
-\text{BMR} &= 370 \\
-&\quad + (21.6 \times \text{FFM in kg})
-\end{align*}
+	Schreiben Sie eine weitere Definitionen, um den \gls{BMR} anhand der Mifflin-St-Jeor-Gleichung und der Katch-McArdle-Formel zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
+	\begin{enumerate}
+		\item Mifflin-St-Jeor-Gleichung:
+		      \begin{enumerate}
+			      \item Männer:
+			            \begin{align*}
+				            \text{BMR} & = 10 \times \text{Gewicht (kg)}        \\
+				                       & \quad + 6.25 \times \text{Grösse (cm)} \\
+				                       & \quad - 5 \times \text{Alter (Jahre)}  \\
+				                       & \quad + 5
+			            \end{align*}
+			      \item Frauen:
+			            \begin{align*}
+				            \text{BMR} & = 10 \times \text{Gewicht (kg)}        \\
+				                       & \quad + 6.25 \times \text{Grösse (cm)} \\
+				                       & \quad - 5 \times \text{Alter (Jahre)}  \\
+				                       & \quad - 161
+			            \end{align*}
+		      \end{enumerate}
+		\item Katch-McArdle-Formel:
+		      \begin{enumerate}
+			      \item Grundformel:
+			            \begin{align*}
+				            \text{BMR} & = 370                                  \\
+				                       & \quad + (21.6 \times \text{FFM in kg})
+			            \end{align*}
 
-\item Fett-freie Masse (in kg): 
-\begin{align*}
-\text{FFM} &= \text{Körpergewicht (kg)} \\
-&\quad \times (1 - \text{Körperfettanteil})
-\end{align*}
+			      \item Fett-freie Masse (in kg):
+			            \begin{align*}
+				            \text{FFM} & = \text{Körpergewicht (kg)}                \\
+				                       & \quad \times (1 - \text{Körperfettanteil})
+			            \end{align*}
 
-\end{enumerate}
+		      \end{enumerate}
 
-\end{enumerate}
+	\end{enumerate}
 
-\begin{myanswer}
-\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/bmr.py}
-\end{myanswer}
+	\begin{myanswer}
+		\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/bmr.py}
+	\end{myanswer}
 \end{mysubmission}
 
 Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundbedarfs. Zu diesem können wir nun auch noch die Leistungsenergie hinzufügen, um den gesamten Energiebedarf zu berechnen.
 
 \begin{mysubmission}\label{ex:leistungsumsatz}
-Berechnen Sie Ihre Leistungsenergie anhand der Tabelle \ref{tab:kcal}, indem Sie für zwei Listen erstellen: 
-\begin{enumerate}
-\item Eine Liste für die Zeit, während der Sie täglich einer Aktivität nachgehen
-\item Eine Liste mit dem Kalorienverbrauch pro Minute für jede dieser Aktivitäten
-\end{enumerate} 
+	Berechnen Sie Ihre Leistungsenergie anhand der Tabelle \ref{tab:kcal}, indem Sie für zwei Listen erstellen:
+	\begin{enumerate}
+		\item Eine Liste für die Zeit, während der Sie täglich einer Aktivität nachgehen
+		\item Eine Liste mit dem Kalorienverbrauch pro Minute für jede dieser Aktivitäten
+	\end{enumerate}
 
-\begin{table}[H]
-\centering
-\begin{tabular}{c|*{10}{c}}
-\textbf{Gewicht (kg)} & 60 & 65 & 70 & 75 & 80 & 85 & 90 & 95 & 100 & 105 \\
-\midrule\midrule
-\textbf{Spazieren} & 4.5 & 5.1 & 5.4 & 5.7 & 6.0 & 6.4 & 6.7 & 7.3 & 8.0 & 9.0 \\
-\midrule
-\textbf{Schnelles Gehen} & 5.5 & 6.3 & 7.0 & 7.5 & 8.0 & 8.6 & 9.5 & 10.0 & 10.6 & 11.3 \\
-\midrule
-\textbf{Fahrradfahren} & 6.5 & 7.5 & 8.0 & 9.0 & 9.5 & 10.3 & 11.0 & 11.7 & 12.5 & 13.6 \\
-\midrule
-\textbf{Schwimmen} & 8.0 & 9.2 & 10.0 & 10.8 & 11.5 & 12.5 & 13.7 & 14.4 & 15.4 & 16.5 \\
-\midrule
-\textbf{Rudern} & 11.0 & 13.0 & 14.3 & 15.0 & 16.5 & 17.5 & 19.0 & 20.5 & 21.8 & 23.5 \\
-\midrule
-\textbf{Jogging} & 13.0 & 14.5 & 16.0 & 17.5 & 19.0 & 20.0 & 22.0 & 23.5 & 24.5 & 26.5 \\
-\midrule
-\textbf{Laufen} & 16.0 & 18.5 & 20.0 & 22.0 & 23.5 & 25.0 & 27.5 & 29.0 & 31.0 & 33.5 \\
-\midrule
-\textbf{Sprint} & 19.0 & 21.5 & 24.0 & 26.0 & 28.0 & 30.0 & 32.5 & 34.7 & 35.6 & 39.0 \\
-\end{tabular}
-\caption{Kalorienverbrauch für unterschiedliche Aktivitäten, pro Minute}
-\label{tab:kcal}
-\end{table}
-Wenn z.B. eine 80 kg schwere Person 1 Stunde lang rudert und 20 Minuten spaziert wären die Listen wie folgt:
-\begin{lstlisting}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c|*{10}{c}}
+			\textbf{Gewicht (kg)}    & 60   & 65   & 70   & 75   & 80   & 85   & 90   & 95   & 100  & 105  \\
+			\midrule\midrule
+			\textbf{Spazieren}       & 4.5  & 5.1  & 5.4  & 5.7  & 6.0  & 6.4  & 6.7  & 7.3  & 8.0  & 9.0  \\
+			\midrule
+			\textbf{Schnelles Gehen} & 5.5  & 6.3  & 7.0  & 7.5  & 8.0  & 8.6  & 9.5  & 10.0 & 10.6 & 11.3 \\
+			\midrule
+			\textbf{Fahrradfahren}   & 6.5  & 7.5  & 8.0  & 9.0  & 9.5  & 10.3 & 11.0 & 11.7 & 12.5 & 13.6 \\
+			\midrule
+			\textbf{Schwimmen}       & 8.0  & 9.2  & 10.0 & 10.8 & 11.5 & 12.5 & 13.7 & 14.4 & 15.4 & 16.5 \\
+			\midrule
+			\textbf{Rudern}          & 11.0 & 13.0 & 14.3 & 15.0 & 16.5 & 17.5 & 19.0 & 20.5 & 21.8 & 23.5 \\
+			\midrule
+			\textbf{Jogging}         & 13.0 & 14.5 & 16.0 & 17.5 & 19.0 & 20.0 & 22.0 & 23.5 & 24.5 & 26.5 \\
+			\midrule
+			\textbf{Laufen}          & 16.0 & 18.5 & 20.0 & 22.0 & 23.5 & 25.0 & 27.5 & 29.0 & 31.0 & 33.5 \\
+			\midrule
+			\textbf{Sprint}          & 19.0 & 21.5 & 24.0 & 26.0 & 28.0 & 30.0 & 32.5 & 34.7 & 35.6 & 39.0 \\
+		\end{tabular}
+		\caption{Kalorienverbrauch für unterschiedliche Aktivitäten, pro Minute}
+		\label{tab:kcal}
+	\end{table}
+	Wenn z.B. eine 80 kg schwere Person 1 Stunde lang rudert und 20 Minuten spaziert wären die Listen wie folgt:
+	\begin{lstlisting}
 l_zeit = [60, 20] # Zeit in Minuten
 l_kcal = [16.5, 6] # Kalorien pro Aktivität
 \end{lstlisting}
-Schreiben Sie eine Python-Funktion \lstinline|berechne_leistungsumsatz|, um Ihren Leistungsumsatz zu berechnen. Das erwartete Resultat für das Beispiel hier wäre: \lstinline|1110| (= Summe von \lstinline|[990, 120]|). Das Resultat soll an das Hauptprogramm zurückgegeben und in einer Variable \texttt{kalorienverbrauch} gespeichert werden.
-\begin{myanswer}
-\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/leistungsumsatz.py}
-\end{myanswer}
+	Schreiben Sie eine Python-Funktion \lstinline|berechne_leistungsumsatz|, um Ihren Leistungsumsatz zu berechnen. Das erwartete Resultat für das Beispiel hier wäre: \lstinline|1110| (= Summe von \lstinline|[990, 120]|). Das Resultat soll an das Hauptprogramm zurückgegeben und in einer Variable \texttt{kalorienverbrauch} gespeichert werden.
+	\begin{myanswer}
+		\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/leistungsumsatz.py}
+	\end{myanswer}
 
 \end{mysubmission}
 
 \begin{mysubmission}
-Schreiben Sie nun eine weitere Funktion, die Ihren gesamten Energieumsatz berechnet, als Summe Ihres BMRs, den Sie in \cref{ex:bmr} berechnet haben (durchschnitt der drei Formeln) und Ihres Leistungsumsatzes, den Sie in \cref{ex:leistungsumsatz} berechnet haben. Die Funktion ist extrem kurz und umfässt nur eine Zeile.
-\begin{myanswer}
-\begin{lstlisting}
+	Schreiben Sie nun eine weitere Funktion, die Ihren gesamten Energieumsatz berechnet, als Summe Ihres BMRs, den Sie in \cref{ex:bmr} berechnet haben (durchschnitt der drei Formeln) und Ihres Leistungsumsatzes, den Sie in \cref{ex:leistungsumsatz} berechnet haben. Die Funktion ist extrem kurz und umfässt nur eine Zeile.
+	\begin{myanswer}
+		\begin{lstlisting}
 bmr = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
 l = berechne_leistungsumsatz(l_zeit, l_kcal)
 
@@ -652,16 +659,16 @@ def berechne_total(bmr, l):
 
 total = berechne_total(bmr, l)
 \end{lstlisting}
-\end{myanswer}
+	\end{myanswer}
 \end{mysubmission}
 
 
 
 
 \begin{mycaution}
-Die Zahlen zu Energiebedarf und Kalorien, die Sie im Rahmen dieser Übungen berechnet haben, sollten Sie mit Vorsicht geniessen, aus folgenden Gründen:
-\begin{itemize}
-\item Ihr realer Energiebedarf kann signifikant von Ihrem berechneten Energiebedarf abweichen. Viele weitere Faktoren, die nicht in den Formeln enthalten sind, können diesen beeinflussen, beispielsweise Ihre Köpertemperatur, Ihre Fitness, Ihre Muskelmasse, sowie Ihre \gls{NEAT}, wobei Letzteres Energie bezeichnen, die Sie durch Bewegungen, die nicht Sport sind, verbrauchen (beispielsweise durch ``Zappeln'' aber auch kurze Spaziergänge und alltägliche Aktivitäten).
-\item Sie sollten sich bezüglich konsumierter Kalorien vor Augen halten, dass ``zu viele'' konsumierte Kalorien nicht automatisch mit einer Gewichtszunahme verbunden sind. In einem Kilo Körperfett stecken ca. 8000 Kilokalorien, wobei der Köper über verschiedene Mechanismen verfügt, um ein stabiles Körpergewicht zu halten, etwa die Erhöhung oder Senkung der Körpertemperatur im Falle eines kurzfristigen Kalorien-Überschusses, respektive -Defizits. Allerdings kann es interessant sein, zu wissen, dass einige, nicht sehr sättigende Lebensmittel besonders viele Kalorien enthalten –– wie beispielsweise hochverarbeitete Snacks oder Süssgetränke.
-\end{itemize}
+	Die Zahlen zu Energiebedarf und Kalorien, die Sie im Rahmen dieser Übungen berechnet haben, sollten Sie mit Vorsicht geniessen, aus folgenden Gründen:
+	\begin{itemize}
+		\item Ihr realer Energiebedarf kann signifikant von Ihrem berechneten Energiebedarf abweichen. Viele weitere Faktoren, die nicht in den Formeln enthalten sind, können diesen beeinflussen, beispielsweise Ihre Köpertemperatur, Ihre Fitness, Ihre Muskelmasse, sowie Ihre \gls{NEAT}, wobei Letzteres Energie bezeichnen, die Sie durch Bewegungen, die nicht Sport sind, verbrauchen (beispielsweise durch ``Zappeln'' aber auch kurze Spaziergänge und alltägliche Aktivitäten).
+		\item Sie sollten sich bezüglich konsumierter Kalorien vor Augen halten, dass ``zu viele'' konsumierte Kalorien nicht automatisch mit einer Gewichtszunahme verbunden sind. In einem Kilo Körperfett stecken ca. 8000 Kilokalorien, wobei der Köper über verschiedene Mechanismen verfügt, um ein stabiles Körpergewicht zu halten, etwa die Erhöhung oder Senkung der Körpertemperatur im Falle eines kurzfristigen Kalorien-Überschusses, respektive -Defizits. Allerdings kann es interessant sein, zu wissen, dass einige, nicht sehr sättigende Lebensmittel besonders viele Kalorien enthalten –– wie beispielsweise hochverarbeitete Snacks oder Süssgetränke.
+	\end{itemize}
 \end{mycaution}

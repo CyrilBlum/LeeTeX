@@ -1,7 +1,3 @@
-def schaltjahr(jahr):
-    if (jahr-2024)%4 == 0:
-        print("Schaltjahr!")
-    else:
-        print("Kein Schaltjahr!")
+def ist_schaltjahr(jahr):
+    return (jahr % 4 == 0 and jahr % 100 != 0) or (jahr % 400 == 0)
 
-schaltjahr(2029)
