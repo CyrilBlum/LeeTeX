@@ -2,22 +2,65 @@
 \fboxsep=.6pt
 
 % default settings for listings
-\lstset{style=TigerJython, basicstyle=\scriptsize\ttfamily,escapechar=!}
+\lstset{style=python, escapechar=!}
 
 \begin{frame}
     \centering
     \begin{figure}[H]
-        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{LeeLogo}
+        \includegraphics[keepaspectratio, width=\logosize, height=\paperheight]{\thelogo}
     \end{figure}
     Informatik: Programmieren\\
     \emoji{right-arrow-curving-up} Kapitel 4: \textbf{Verzweigung mit \lstinline|if|-Anweisung}
 \end{frame}
 
+\begin{frame}[fragile]{Verzweigungen: allgegenwärtig}
+\begin{itemize}[<+->]
+\item Promotionsentscheid (Notendurchschnitt)
+\only<1>{\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2cm, scale=.6, transform shape, on grid, ->]
+    \tikzstyle{every node}=[font=\small]
+    % grid to easier see that the node centers line up while developing plot
+    %\draw [help lines] (-5,-9) grid (9,1);
+    \node (start) [code] {\lstinline|note_schnitt = 3.6|};
+    \node (dec1) [decision, below of=start] {\lstinline|note_schnitt >= 3.75|};
+    \node (printif) [code, below left=2cm and 5cm of dec1] {\lstinline|print("Provisorische Promotion")|};
+    \node (printelse) [code, below right=2cm and 5cm of dec1] {\lstinline|print("Definitive Promotion")|};
+    \node (end) [circle,draw=black, fill=black, below of=dec1, yshift=-2cm] {};
+    
+    \draw (start) -- (dec1);
+    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|False|} (printelse);
+    \draw (printif) |- (end);
+    \draw (printelse) |- (end);
+    
+\end{tikzpicture}
+\end{figure}}
+\item Wie gehe ich zur Schule?
+\only<2>{\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{GrundlagenInfo/00_Programmieren/Figures/if-elif-else-weather}
+\end{figure}}
+\item Medizinische Entscheide
+\only<3>{\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{GrundlagenInfo/00_Programmieren/Figures/if-elif-else-cancer}
+\end{figure}}
+\item Etc.
+
+\end{itemize}
+
+
+
+\end{frame}
+
 \begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
 \begin{lstlisting}        
-note = input("Benoten Sie die Lehrperson (0-100).")
-if note == 100:
-        print("Echt jetzt? Vielen Dank :)")
+def benote_lehrperson(note):
+	if note == 100:
+		print("Echt jetzt? Vielen Dank :)")
+
+benote_lehrperson(100)
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -43,11 +86,13 @@ if note == 100:
 
 \begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
 \begin{lstlisting}        
-note = input("Benoten Sie die Lehrperson (0-100).")
-if note == 100:
-    print("Echt jetzt? Vielen Dank :)")
-else:
-    print("Geben Sie mir noch eine Chance")
+def benote_lehrperson(note):
+	if note == 100:
+	    print("Echt jetzt? Vielen Dank :)")
+	else:
+	    print("Geben Sie mir noch eine Chance")
+	    
+benote_lehrperson(30)
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -76,13 +121,13 @@ else:
 \raggedright
 
 \begin{lstlisting}        
-note = input("Benoten Sie die Lehrperson (0-100).")
-if note == 100:
-    print("Echt jetzt? Vielen Dank :)")
-elif note > 60:
-    print("Wie kann ich mich noch verbessern?")
-else:
-    print("Geben Sie mir noch eine Chance")
+def benote_lehrperson(note):
+	if note == 100:
+	    print("Echt jetzt? Vielen Dank :)")
+	elif note > 60:
+	    print("Wie kann ich mich noch verbessern?")
+	else:
+	    print("Geben Sie mir noch eine Chance")
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -120,15 +165,15 @@ else:
 \raggedright
 
 \begin{lstlisting}        
-note = input("Benoten Sie die Lehrperson (0-100).") 
-# wir tippen 100 in das Fenster ein
+def benote_lehrperson(note):
+	if note == 100:
+	    print("Echt jetzt? Vielen Dank :)")
+	if note > 60:
+	    print("Wie kann ich mich noch verbessern?")
+	else:
+	    print("Geben Sie mir noch eine Chance")
 
-if note == 100:
-    print("Echt jetzt? Vielen Dank :)")
-if note > 60:
-    print("Wie kann ich mich noch verbessern?")
-else:
-    print("Geben Sie mir noch eine Chance")
+benote_lehrperson(100)
 \end{lstlisting}
 \end{frame}
 
@@ -180,45 +225,63 @@ if BOOLSCHER_AUSDRUCK:
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Boolsche Ausdrücke}
-\begin{itemize}
-    \item \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele:
-    \begin{itemize}
-        \item \lstinline|3 == 5 # False|
-        \item \lstinline|(9 + 3) < (2 * 8) # True|
-    \end{itemize}
-    \item Weitere boolsche Relationen:
-    \begin{table}[H]
-        \centering
-        \footnotesize
-        \begin{tabular}{c|c||p{3.1cm}}
-        \textbf{(SQL)} &\textbf{Python} & \textbf{Mathematische\newline Bedeutung} \\\midrule 
-             \lstinline[style=sql]|=|&\lstinline|==| & gleich ($=$)\\
-             \lstinline[style=sql]|<>|&\lstinline|!=| & ungleich ($\neq$) \\
-             \lstinline[style=sql]|<|&\lstinline|<| & kleiner ($<$)\\
-             \lstinline[style=sql]|<=|&\lstinline|<=| & kleiner oder gleich ($\leq$) \\
-             \lstinline[style=sql]|>|&\lstinline|>| & grösser ($>$) \\
-             \lstinline[style=sql]|>=|&\lstinline|>=| & grösser oder gleich ($\geq$)
-        \end{tabular}
-    \end{table}
-    \item Verwendungsart
-\begin{lstlisting}
-if BOOLSCHER_AUSDRUCK:
-    # dieser Code wir höchstens dann ausgeführt, wenn 
-    # BOOLSCHER_AUSDRUCK wahr ist (True)
-\end{lstlisting}
-\end{itemize}
-\end{frame}
+
 
 \begin{frame}{Aufgaben}
 Lösen Sie folgende Aufgaben:
 \begin{itemize}
-    \item Lesen Sie Beispiel 4.1
-    \item \aufgabebox{Aufgaben 4.3, 4.6}
-    \item \abgabebox{Aufgabe 4.8 $\rightarrow$ Abgabe}
-    \item \abgabebox{Aufgabe 4.11 $\rightarrow$ Abgabe}
-    \item \aufgabebox{Aufgaben 4.12 - 4.14}
+    \item \aufgabebox{Aufgaben 5.1, 5.2, 5.5}
+    \item \abgabebox{Aufgabe 5.3, 5.4, 5.7, 5.12}
+    \item \aufgabebox{Aufgaben 5.8 - 5.11}
+    \item \challengebox{Aufgabe 5.6}
     \item \challengebox{``Dynamisches Schachbrett'' (Moodle)}
 \end{itemize}
 
 \end{frame}
+
+%\begin{frame}{Anhang}
+%\end{frame}
+
+%\begin{frame}{Aufgaben}{Buch}
+%Lösen Sie folgende Aufgaben:
+%\begin{itemize}
+%    \item Lesen Sie Beispiel 4.1
+%    \item \aufgabebox{Aufgaben 4.3, 4.6}
+%    \item \abgabebox{Aufgabe 4.8 $\rightarrow$ Abgabe}
+%    \item \abgabebox{Aufgabe 4.11 $\rightarrow$ Abgabe}
+%    \item \aufgabebox{Aufgaben 4.12 - 4.14}
+%    \item \challengebox{``Dynamisches Schachbrett'' (Moodle)}
+%\end{itemize}
+%
+%\end{frame}
+
+
+%\begin{frame}[fragile]{Boolsche Ausdrücke}
+%\begin{itemize}
+%    \item \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele:
+%    \begin{itemize}
+%        \item \lstinline|3 == 5 # False|
+%        \item \lstinline|(9 + 3) < (2 * 8) # True|
+%    \end{itemize}
+%    \item Weitere boolsche Relationen:
+%    \begin{table}[H]
+%        \centering
+%        \footnotesize
+%        \begin{tabular}{c|c||p{3.1cm}}
+%        \textbf{(SQL)} &\textbf{Python} & \textbf{Mathematische\newline Bedeutung} \\\midrule 
+%             \lstinline[style=sql]|=|&\lstinline|==| & gleich ($=$)\\
+%             \lstinline[style=sql]|<>|&\lstinline|!=| & ungleich ($\neq$) \\
+%             \lstinline[style=sql]|<|&\lstinline|<| & kleiner ($<$)\\
+%             \lstinline[style=sql]|<=|&\lstinline|<=| & kleiner oder gleich ($\leq$) \\
+%             \lstinline[style=sql]|>|&\lstinline|>| & grösser ($>$) \\
+%             \lstinline[style=sql]|>=|&\lstinline|>=| & grösser oder gleich ($\geq$)
+%        \end{tabular}
+%    \end{table}
+%    \item Verwendungsart
+%\begin{lstlisting}
+%if BOOLSCHER_AUSDRUCK:
+%    # dieser Code wir höchstens dann ausgeführt, wenn 
+%    # BOOLSCHER_AUSDRUCK wahr ist (True)
+%\end{lstlisting}
+%\end{itemize}
+%\end{frame}
