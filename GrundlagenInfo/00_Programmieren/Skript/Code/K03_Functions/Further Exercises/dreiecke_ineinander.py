@@ -13,5 +13,7 @@ def dreiecke_ineinander(anzahl, laenge):
         laenge = laenge / 2
         t.left(60)
 
-dreiecke_ineinander(3, 200)
-t.done
+t.speed(0)
+dreiecke_ineinander(5, 200)
+dreieck(200)
+t.done()
