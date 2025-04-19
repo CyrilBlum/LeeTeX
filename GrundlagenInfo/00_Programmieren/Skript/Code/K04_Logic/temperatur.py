@@ -1,10 +1,3 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-# Aufgabe 1: Ist die Person nicht volljährig?
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 def temperatur_ist_angenehm(temperatur):
     if temperatur >= 20 and temperatur <= 25:
         print("Die Temperatur ist angenehm.")
