@@ -1,8 +1,6 @@
 def koffer(gewicht):
     # überprüft, ob "gewicht" eine Zahl ist (int oder float)
-    if not isinstance(gewicht, (int, float)):
-        print("Das eingegebene Gewicht ist nicht zulässig!")
-    elif gewicht > 100:
+    if gewicht > 100:
         print("Der Koffer ist zu schwer")
     elif gewicht > 20:
         print("Ihr Koffer hat", gewicht-20, "kg Übergewicht. Das kostet",5*(gewicht-20),"Franken.")
@@ -12,3 +10,6 @@ def koffer(gewicht):
         print("Das eingegebene Gewicht ist nicht zulässig!")
 
 koffer(12)
+koffer(22)
+koffer(105)
+koffer(-30)
