@@ -13,63 +13,15 @@
     \emoji{right-arrow-curving-up} Kapitel 4: \textbf{Verzweigung mit \lstinline|if|-Anweisung}
 \end{frame}
 
-\begin{frame}[fragile]{Verzweigungen: allgegenwärtig}
-\begin{itemize}[<+->]
-\item Promotionsentscheid (Notendurchschnitt)
-\only<1>{\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=2cm, scale=.6, transform shape, on grid, ->]
-    \tikzstyle{every node}=[font=\small]
-    % grid to easier see that the node centers line up while developing plot
-    %\draw [help lines] (-5,-9) grid (9,1);
-    \node (start) [code] {\lstinline|note_schnitt = 3.6|};
-    \node (dec1) [decision, below of=start] {\lstinline|note_schnitt >= 3.75|};
-    \node (printif) [code, below left=2cm and 5cm of dec1] {\lstinline|print("Definitive Promotion")|};
-    \node (printelse) [code, below right=2cm and 5cm of dec1] {\lstinline|print("Provisorische  Promotion")|};
-    \node (end) [circle,draw=black, fill=black, below of=dec1, yshift=-2cm] {};
-    
-    \draw (start) -- (dec1);
-    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
-    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|False|} (printelse);
-    \draw (printif) |- (end);
-    \draw (printelse) |- (end);
-    
-\end{tikzpicture}
-\end{figure}}
-\item Wie gehe ich zur Schule?
-\only<2>{\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\linewidth]{GrundlagenInfo/00_Programmieren/Figures/if-elif-else-weather}
-\end{figure}
-$\rightarrow$ \textit{und wenn ich gesund bin / mich bewegen kann}}
-\item Medizinische Entscheide
-\only<3>{\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\linewidth]{GrundlagenInfo/00_Programmieren/Figures/if-elif-else-cancer}
-\end{figure}
-$\rightarrow$ \textit{Und wenn die Fachärzte dies bestätigen}}
-\item Etc.
-
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Ziele der heutigen Doppel-Lektion}
-Ziele
-\begin{itemize}[<+->]
-\item Seine Gedanken \textit{logisch} ausdrücken können
-\item Klare Entscheidungen unter gewissen Konditionen treffen können
-\item Konditionen negieren
-\item Konditionen miteinander verbinden
-\end{itemize}
-\end{frame}
+\input{GrundlagenInfo/00_Programmieren/Slides/K04Intro.tex}
 
 \begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
 \begin{lstlisting}        
-def benote_lehrperson(note):
-	if note == 100:
-		print("Echt jetzt? Vielen Dank :)")
+def beschreibe_wetter(temperatur):
+	if temperatur >= 30:
+		print("Es ist heiss")
 
-benote_lehrperson(100)
+beschreibe_wetter(33)
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -78,9 +30,9 @@ benote_lehrperson(100)
     \centering
     \tikzstyle{every node}=[font=\small]
     
-    \node (start) [code] {\lstinline|benote_lehrperson(100)|};
-    \node (dec1) [decision, below of=start] {\lstinline|note == 100|};
-    \node (print) [code, below of=dec1] {\lstinline|print("Echt jetzt? Vielen Dank :)"|};
+    \node (start) [code] {\lstinline|beschreibe_wetter(33)|};
+    \node (dec1) [decision, below of=start] {\lstinline|temperatur >= 30|};
+    \node (print) [code, below of=dec1] {\lstinline|print("Es ist heiss")|};
     \node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
     
     \draw (start) -- (dec1);
@@ -95,13 +47,13 @@ benote_lehrperson(100)
 
 \begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
 \begin{lstlisting}        
-def benote_lehrperson(note):
-	if note == 100:
-	    print("Echt jetzt? Vielen Dank :)")
-	else:
-	    print("Geben Sie mir noch eine Chance")
-	    
-benote_lehrperson(30)
+def beschreibe_wetter(temperatur):
+	if temperatur >= 30:
+		print("Es ist heiss")
+    else:
+        print("Es ist kühl")
+
+beschreibe_wetter(19)
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -110,10 +62,10 @@ benote_lehrperson(30)
     \tikzstyle{every node}=[font=\small]
     % grid to easier see that the node centers line up while developing plot
     %\draw [help lines] (-5,-9) grid (9,1);
-    \node (start) [code] {\lstinline|benote_lehrperson(100)|};
-    \node (dec1) [decision, below of=start] {\lstinline|note == 100|};
-    \node (printif) [code, below left=2cm and 5cm of dec1] {\lstinline|print("Echt jetzt? Vielen Dank :)"|};
-    \node (printelse) [code, below right=2cm and 5cm of dec1] {\lstinline|print("Geben Sie mir noch eine Chance"|};
+    \node (start) [code] {\lstinline|beschreibe_wetter(19)|};
+    \node (dec1) [decision, below of=start] {\lstinline|temperatur >= 30|};
+    \node (printif) [code, below left=2cm and 5cm of dec1] {\lstinline|print("Es ist heiss")|};
+    \node (printelse) [code, below right=2cm and 5cm of dec1] {\lstinline|print("Es ist kühl")|};
     \node (end) [circle,draw=black, fill=black, below of=dec1, yshift=-2cm] {};
     
     \draw (start) -- (dec1);
@@ -127,62 +79,68 @@ benote_lehrperson(30)
 \end{frame}
 
 \begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
-\raggedright
+\begin{columns}
+    \begin{column}{0.5\textwidth}
+        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+def beschreibe_wetter(temperatur):
+    if temperatur >= 30:
+        print("Es ist heiss")
+    elif temperatur >= 20:
+        print("Es ist warm")
+    else:
+        print("Es ist kühl")
 
-\begin{lstlisting}        
-def benote_lehrperson(note):
-	if note == 100:
-	    print("Echt jetzt? Vielen Dank :)")
-	elif note > 60:
-	    print("Wie kann ich mich noch verbessern?")
-	else:
-	    print("Geben Sie mir noch eine Chance")
-\end{lstlisting}
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=2.5cm, scale=.5, transform shape, on grid, ->]
-    \tikzstyle{every node}=[font=\small]
-    % grid to easier see that the node centers line up while developing plot
-    %\draw [help lines] (-5,-9) grid (9,1);
-    \node (start) [code] {\lstinline|benote_lehrperson(100)|};
-    \node (dec1) [decision, below of=start] {\lstinline|note == 100|};
-    \node (printif) [code, text width=7cm, right=7cm of dec1] {\lstinline|print("Echt jetzt? Vielen Dank :)")|};
-    \node (dec2) [decision, below of=dec1] {\lstinline|note > 60|};
-    \node (printelif) [code, text width=7cm, right=7cm of dec2] {\lstinline|print("Wie kann ich mich noch verbessern?")|};
-    \node (printelse) [code, text width=6cm, below of=dec2] {\lstinline|print("Geben Sie mir noch eine Chance")|};
-    \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
-    
-    \draw (start) -- (dec1);
-    \draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
-    \draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
-    
-    \draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
-    \draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
-    
-    \draw (printif) --++ (4.5cm,0cm) |- (end);
-    \draw (printelif) --++ (4.5cm,0cm) |- (end);
-    
-    \draw (printelse) -- (end);
-    
-\end{tikzpicture}
-\end{figure}
+beschreibe_wetter(19)
+        \end{lstlisting}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \only<2->{
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[node distance=2.6cm, scale=.55, transform shape, on grid, ->]
+                    \tikzstyle{every node}=[font=\small]
+                    \node (start) [code] {\lstinline|beschreibe_wetter(19)|};
+                    \node (dec1) [decision, below of=start] {\lstinline|temperatur >= 30|};
+                    \node (printif) [code, text width=4cm, right=1cm of dec1.east] {\lstinline|print("Es ist heiss")|};
+                    \node (dec2) [decision, below of=dec1] {\lstinline|temperatur >= 20|};
+                    \node (printelif) [code, text width=4cm, right=1cm of dec2.east] {\lstinline|print("Es ist warm")|};
+                    \node (printelse) [code, below of=dec2] {\lstinline|print("Es ist kühl")|};
+                    \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
+                    
+                    \draw (start) -- (dec1);
+                    \draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+                    \draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
+                    
+                    \draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
+                    \draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
+                    
+                    \draw (printif) --++ (2.5cm,0cm) |- (end);
+                    \draw (printelif) --++ (2.5cm,0cm) |- (end);
+                    
+                    \draw (printelse) -- (end);
+                \end{tikzpicture}
+                \end{figure}
+        }
+    \end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}{Wo liegt hier das Problem?}
-\raggedright
+\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
 
 \begin{lstlisting}        
-def benote_lehrperson(note):
-	if note == 100:
-	    print("Echt jetzt? Vielen Dank :)")
-	if note > 60:
-	    print("Wie kann ich mich noch verbessern?")
-	else:
-	    print("Geben Sie mir noch eine Chance")
+def beschreibe_wetter(temperatur):
+    if temperatur >= 30:
+        print("Es ist heiss")
+    if temperatur >= 20:
+        print("Es ist warm")
+    else:
+        print("Es ist kühl")
 
-benote_lehrperson(100)
+beschreibe_wetter(33)
 \end{lstlisting}
+\begin{center}
+    Was wird ausgegeben?
+\end{center}
 \end{frame}
 
 
