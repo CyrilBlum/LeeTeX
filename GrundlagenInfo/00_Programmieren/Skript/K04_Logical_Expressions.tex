@@ -6,37 +6,37 @@ In vielen Fällen möchten wir Code nur Ausführen, \textit{falls} eine gewisse 
 \subsection{Logische Ausdrücke mit \texorpdfstring{\lstinline|if|}{if}}
 
 \begin{myexample}
-Folgendes Beispiel führt nur zu einem Output, falls eine Note gleich 100 eingegeben wird.
-\begin{lstlisting}        
-note = input("Benoten Sie die Lehrperson (0-100).")
-if note == 100:
-        print("Vielen Dank :)")
-\end{lstlisting}
-Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=2cm, transform shape, ->]
+	Folgendes Beispiel führt nur zu einem Output, falls eine Note gleich 100 eingegeben wird.
+	\begin{lstlisting}        
+		note = input("Benoten Sie die Lehrperson (0-100).")
+		if note == 100:
+		print("Vielen Dank :)")
+	\end{lstlisting}
+	Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
+	\begin{figure}[H]
 		\centering
-
-		\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson.")|};
-		\node (dec1) [decision, below of=start] {\lstinline|note == 100|};
-		\node (print) [code, below of=dec1] {\lstinline|print("Vielen Dank :)")|};
-		\node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
-
-		\draw (start) -- (dec1);
-		\draw (dec1) -- node[anchor=east] {\lstinline|True|} (print);
-		\draw (dec1) --++ (3cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\lstinline|False|};
-		\draw (print) -- (end);
-
-	\end{tikzpicture}
-\end{figure}
-Dabei bezeichnen rote Boxen eine Zeile Code, grüne Formen einen Test der schwarze Punkt das Programmende.
+		\begin{tikzpicture}[node distance=2cm, transform shape, ->]
+			\centering
+			
+			\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson.")|};
+			\node (dec1) [decision, below of=start] {\lstinline|note == 100|};
+			\node (print) [code, below of=dec1] {\lstinline|print("Vielen Dank :)")|};
+			\node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
+			
+			\draw (start) -- (dec1);
+			\draw (dec1) -- node[anchor=east] {\lstinline|True|} (print);
+			\draw (dec1) --++ (3cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\lstinline|False|};
+			\draw (print) -- (end);
+			
+		\end{tikzpicture}
+	\end{figure}
+	Dabei bezeichnen rote Boxen eine Zeile Code, grüne Formen einen Test der schwarze Punkt das Programmende.
 \end{myexample}
 
 \begin{myexercise}
 	Entwickeln Sie eine Funktion \lstinline|def quadrat(laenge)| zum Zeichnen von Quadraten. Der Befehl soll aber nur etwas zeichnen, wenn die Seitenlänge mindestens 40 beträgt.
 	\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{quadrat40.py},label=listing:quadrat40]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/quadrat40.py}
+		\lstinputlisting[language=Python,caption=\texttt{quadrat40.py},label=listing:quadrat40]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/quadrat40.py}
 	\end{myanswer}
 \end{myexercise}
 
@@ -49,39 +49,39 @@ Dabei bezeichnen rote Boxen eine Zeile Code, grüne Formen einen Test der schwar
 \subsection{Logische Ausdrücke mit \texorpdfstring{\lstinline|if|}{if} und \texorpdfstring{\lstinline|else|}{else}}
 
 \begin{myexample}
-In folgendem Code wird mit dem \lstinline|else|-Ausdruck ein Fall definiert, welcher ausgeführt wird, sofern die \lstinline|if|-Kondition nicht zutrifft.
-\begin{lstlisting}        
-note = input("Benoten Sie die Lehrperson (0-100).")
-if note == 100:
-    print("Vielen Dank :)")
-else:
-    print("Geben Sie mir noch eine Chance")
-\end{lstlisting}
-
-Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=1cm, transform shape, on grid, ->, font=\small]
-		% grid to easier see that the node centers line up while developing plot
-		%\draw [help lines] (-5,-9) grid (9,1);
-		\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
-		\node (dec1) [decision, below=2cm of start] {\lstinline|note == 100|};
-		\node (printif) [code, below left=2cm and 4cm of dec1] {\lstinline|print("Vielen Dank :)")|};
-		\node (printelse) [code, below right=2cm and 4cm of dec1] {\lstinline|print("Geben Sie mir noch eine Chance")|};
-		\node (end) [circle,draw=black, fill=black, below=4cm of dec1] {};
-
-		\draw (start) -- (dec1);
-		\draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
-		\draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|False|} (printelse);
-		\draw (printif) |- (end);
-		\draw (printelse) |- (end);
-
-	\end{tikzpicture}
-\end{figure}
+	In folgendem Code wird mit dem \lstinline|else|-Ausdruck ein Fall definiert, welcher ausgeführt wird, sofern die \lstinline|if|-Kondition nicht zutrifft.
+	\begin{lstlisting}        
+		note = input("Benoten Sie die Lehrperson (0-100).")
+		if note == 100:
+		print("Vielen Dank :)")
+		else:
+		print("Geben Sie mir noch eine Chance")
+	\end{lstlisting}
+	
+	Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[node distance=1cm, transform shape, on grid, ->, font=\small]
+			% grid to easier see that the node centers line up while developing plot
+			%\draw [help lines] (-5,-9) grid (9,1);
+			\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
+			\node (dec1) [decision, below=2cm of start] {\lstinline|note == 100|};
+			\node (printif) [code, below left=2cm and 4cm of dec1] {\lstinline|print("Vielen Dank :)")|};
+			\node (printelse) [code, below right=2cm and 4cm of dec1] {\lstinline|print("Geben Sie mir noch eine Chance")|};
+			\node (end) [circle,draw=black, fill=black, below=4cm of dec1] {};
+			
+			\draw (start) -- (dec1);
+			\draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+			\draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|False|} (printelse);
+			\draw (printif) |- (end);
+			\draw (printelse) |- (end);
+			
+		\end{tikzpicture}
+	\end{figure}
 \end{myexample}
 \begin{mysubmission}
 	Schreiben Sie eine Python-Funktion \lstinline|def ist_schaltjahr(jahr)|, welche prüft, ob ein gegebenes Jahr ein Schaltjahr ist oder nicht.
-
+	
 	Ein Jahr ist ein Schaltjahr, genau dann wenn gilt:
 	\begin{enumerate}
 		\item (das Jahr ist durch 400 teilbar) oder
@@ -94,60 +94,60 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 \end{mysubmission}
 \subsection{Logische Ausdrücke mit \texorpdfstring{\lstinline|if|}{if}, \texorpdfstring{\lstinline|elif|}{elif} und \texorpdfstring{\lstinline|else|}{else}}
 \begin{myexample}
-Folgender Code führt eine von drei Möglichkeiten aus:
-\begin{lstlisting}        
-note = input("Benoten Sie die Lehrperson (0-100).")
-if note == 100:
-    print("Vielen Dank :)")
-elif note > 60:
-    print("Wie kann ich mich verbessern?")
-else:
-    print("Geben Sie mir noch eine Chance")
-\end{lstlisting}
-
-Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=2cm, transform shape, on grid, ->]
-		% grid to easier see that the node centers line up while developing plot
-		%\draw [help lines] (-5,-9) grid (9,1);
-		\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
-		\node (dec1) [decision, below of=start] {\lstinline|note == 100|};
-		\node (printif) [code, text width=5cm, right=6cm of dec1] {\lstinline|print("Vielen Dank :)")|};
-		\node (dec2) [decision, below of=dec1] {\lstinline|note > 60|};
-		\node (printelif) [code, text width=5cm, right=6cm of dec2] {\lstinline|print("Wie kann ich mich verbessern?")|};
-		\node (printelse) [code, text width=6cm, below of=dec2] {\lstinline|print("Geben Sie mir noch eine Chance")|};
-		\node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
-
-		\draw (start) -- (dec1);
-		\draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
-		\draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
-
-		\draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
-		\draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
-
-		\draw (printif) --++ (3.5cm,0cm) |- (end);
-		\draw (printelif) --++ (3.5cm,0cm) |- (end);
-
-		\draw (printelse) -- (end);
-
-	\end{tikzpicture}
-\end{figure}
+	Folgender Code führt eine von drei Möglichkeiten aus:
+	\begin{lstlisting}        
+		note = input("Benoten Sie die Lehrperson (0-100).")
+		if note == 100:
+		print("Vielen Dank :)")
+		elif note > 60:
+		print("Wie kann ich mich verbessern?")
+		else:
+		print("Geben Sie mir noch eine Chance")
+	\end{lstlisting}
+	
+	Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[node distance=2cm, transform shape, on grid, ->]
+			% grid to easier see that the node centers line up while developing plot
+			%\draw [help lines] (-5,-9) grid (9,1);
+			\node (start) [code] {\lstinline|note = input("Benoten Sie die Lehrperson")|};
+			\node (dec1) [decision, below of=start] {\lstinline|note == 100|};
+			\node (printif) [code, text width=5cm, right=6cm of dec1] {\lstinline|print("Vielen Dank :)")|};
+			\node (dec2) [decision, below of=dec1] {\lstinline|note > 60|};
+			\node (printelif) [code, text width=5cm, right=6cm of dec2] {\lstinline|print("Wie kann ich mich verbessern?")|};
+			\node (printelse) [code, text width=6cm, below of=dec2] {\lstinline|print("Geben Sie mir noch eine Chance")|};
+			\node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
+			
+			\draw (start) -- (dec1);
+			\draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+			\draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
+			
+			\draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
+			\draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
+			
+			\draw (printif) --++ (3.5cm,0cm) |- (end);
+			\draw (printelif) --++ (3.5cm,0cm) |- (end);
+			
+			\draw (printelse) -- (end);
+			
+		\end{tikzpicture}
+	\end{figure}
 \end{myexample}
 
 \begin{mysubmission}
 	Ein Bäcker möchte Kekse backen und gleichmässig in Keksdosen verpacken, so dass jede Dose voll ist. Jede Dose fasst 12 Kekse. Schreibe ein Programm, das berechnet:
-
+	
 	\begin{itemize}
 		\item Wie viele Dosen benötigt werden für n Kekse.
 		\item Wie viele Kekse übrig bleiben.
 	\end{itemize}
-
+	
 	Falls mehr als 500 oder weniger als 1 für \texttt{n} eingegeben werden, soll ausgegeben werden:  \lstinline|"Ungültige Anzahl Kekse!"|
-
+	
 	Verwenden Sie die Ganzzahldivision (\lstinline|//|) und Modulo (\lstinline|%|)!
-
+	
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{kekse.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/kekse.py}
 	\end{myanswer}
@@ -155,7 +155,7 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 
 \begin{myexercise}
 	Verwenden Sie den Code aus \cref{ex:multiple-params}.
-
+	
 	Verwenden Sie einen \lstinline|input|-Befehl aus \cref{ex:input}, um den Benutzer nach einer Zahl zu fragen.
 	\begin{enumerate}
 		\item Falls die Zahl 1 eingegeben wird, soll ein blaues Viereck gezeichnet werden
@@ -165,60 +165,60 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 \end{myexercise}
 
 \begin{mychallenge}[\emoji{robot} \textbf{R2-D2}]
-
+	
 	Der Mikrocontroller einer R2-D2 Roboter-Einheit wurde beschädigt. Der Roboter kann deshalb nur noch einzelne, geradlinige \enquote{Schritte} nach links (l), rechts (r), oben (o) oder unten (u) (um jeweils eine Längeneinheit) durchführen. Die Bewegungsanweisung erhält der Roboter in Form des Strings \lstinline|bewegung|. Der String \lstinline|bewegung = 'lollru'| würde zum Beispiel dem Bewegungsablauf links, oben, links, links, rechts und unten (um jeweils eine Längeneinheit) entsprechen. Die R2-D2-Einheit bewegt sich auf dem zweidimensionalen Koordinatensystem und startet im Ursprung $(0,0)$.
-
-
+	
+	
 	Schreiben Sie eine Python-Funktion \lstinline|def r2d2(bewegung)|, welche für eine gegebene beliebige Be\-we\-gungs\-an\-wei\-sung \lstinline|bewegung| entscheidet, ob sich der Roboter nach den Bewegungen wieder im Ursprung befindet (\lstinline|return True|) oder nicht (\lstinline|return False|). Hinweis: Auf die einzelnen Buchstaben eines Strings kann ebenso zugegriffen werden wie auf Listenelemente. Falls zum Beispiel \lstinline|wort = "Hallo"|, dann ist \lstinline|wort[0] == "H", wort[1], == "a"| und so weiter. Wie auch bei Listen, kann mit dem Befehl \lstinline|len(wort)| die Länge (Anzahl Buchstaben) eines Worts bestimmt werden.
-
+	
 	\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
-Beispiel 1:
-Input: bewegung = 'uurol'
-Output: False
-
-Beispiel 2:
-Input: bewegung = 'rloulr'
-Output: True
-\end{lstlisting}
-
+		Beispiel 1:
+		Input: bewegung = 'uurol'
+		Output: False
+		
+		Beispiel 2:
+		Input: bewegung = 'rloulr'
+		Output: True
+	\end{lstlisting}
+	
 	\begin{myanswer}
 		\begin{lstlisting}
-def count_symbol(symbol, word):
-    count = 0
-    for buchstabe in word:
-        if buchstabe == symbol:
-            count += 1
-    return(count)
-
-
-def r2d2(move):
-    l = count_symbol('l', move)
-    r = count_symbol('r', move)
-    o = count_symbol('o', move)
-    u = count_symbol('u', move)
-    if (l-r == 0 and o-u == 0):
-        return True
-    else:
-        return False
-\end{lstlisting}
+			def count_symbol(symbol, word):
+			count = 0
+			for buchstabe in word:
+			if buchstabe == symbol:
+			count += 1
+			return(count)
+			
+			
+			def r2d2(move):
+			l = count_symbol('l', move)
+			r = count_symbol('r', move)
+			o = count_symbol('o', move)
+			u = count_symbol('u', move)
+			if (l-r == 0 and o-u == 0):
+			return True
+			else:
+			return False
+		\end{lstlisting}
 	\end{myanswer}
 \end{mychallenge}
 
 
 \begin{mysubmission}
 	Bei einer Flugreise darf der aufgegebene Koffer üblicherweise nicht schwerer sein als 20kg. Ansonsten bezahlt man einen Aufschlag von CHF 5.- pro kg Übergewicht.
-
+	
 	Schreiben Sie ein Unterprogramm koffer(gewicht), der einen Parameter Gewicht entgegennimmt und einen Text auf der Konsole druckt, je nach Fall:
-
+	
 	\begin{itemize}
 		\item Wenn der Koffer über 0 und bis und mit 20kg wiegt, muss kein Aufpreis bezahlt werden und es wird gedruckt \lstinline|"Der Koffer ist gratis"|
 		\item Wenn der Koffer über 20 und bis und mit 100kg wiegt, muss der Aufpreis berechnet und ausgegeben werden (z.B. \lstinline|"Ihr Koffer hat X kg Übergewicht. Das kostet 5.-"|)
 		\item Wenn der Koffer über 100 kg wiegt, wird er nicht transportiert (\lstinline|"Der Koffer ist zu schwer"|)
 		\item  In allen anderen Fällen soll ausgegeben werden \lstinline|"Das eingegebene Gewicht ist nicht zulässig"|  (z.B. Text, *, 0, negative Zahlen etc.).
 	\end{itemize}
-
+	
 	Der Code untenan enthält bereits einen Check dafür, ob der Parameter \texttt{gewicht} eine Zahl ist oder nicht. Den Rest müssen Sie noch schreiben.
-
+	
 	\lstinputlisting[language=Python,caption=\texttt{koffer\_template.py},label=listing:kofferTemplate]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/koffer_template.py}
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{koffer.py},label=listing:koffer]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/koffer.py}
@@ -226,35 +226,35 @@ def r2d2(move):
 \end{mysubmission}
 
 \begin{myexercise}
-Entwickeln Sie eine Funktion \lstinline|def vielecke_sicher(anzahl, seite)| zum Zeichnen von regelmässigen Vielecken mit wählbarer Anzahl Ecken und wählbarer Seitenlänge. Wenn \lstinline|anzahl| (die Anzahl der Ecken) kleiner als 1 ist, soll das Programm nichts tun. Wenn \lstinline|anzahl == 1| ist, soll das Programm
-\lstinline|"Es gibt kein 1-Eck"| ausgeben. Wenn \lstinline|anzahl == 2| ist, soll das Programm
-\lstinline|"Es gibt kein 2-Eck"| ausgeben. Wenn \lstinline|anzahl >= 3| ist, soll das Programm das \lstinline|anzahl|-Eck mit Seitenlänge \lstinline|seite| zeichnen. Zeichnen Sie auch das dazugehörige Flussdiagramm.
+	Entwickeln Sie eine Funktion \lstinline|def vielecke_sicher(anzahl, seite)| zum Zeichnen von regelmässigen Vielecken mit wählbarer Anzahl Ecken und wählbarer Seitenlänge. Wenn \lstinline|anzahl| (die Anzahl der Ecken) kleiner als 1 ist, soll das Programm nichts tun. Wenn \lstinline|anzahl == 1| ist, soll das Programm
+	\lstinline|"Es gibt kein 1-Eck"| ausgeben. Wenn \lstinline|anzahl == 2| ist, soll das Programm
+	\lstinline|"Es gibt kein 2-Eck"| ausgeben. Wenn \lstinline|anzahl >= 3| ist, soll das Programm das \lstinline|anzahl|-Eck mit Seitenlänge \lstinline|seite| zeichnen. Zeichnen Sie auch das dazugehörige Flussdiagramm.
 \end{myexercise}
 
 \begin{myexercise}
-Entwickeln Sie eine Funktion \lstinline|def quadgleich(a, b, c)|, der quadratische Gleichungen der Form \(ax^2 + bx + c = 0\) löst. Der Befehl soll zuerst \(d = b^2 - 4аc\) ausrechnen und abhängig vom Wert von $d$ keine, eine oder zwei Lösungen ausgeben.
+	Entwickeln Sie eine Funktion \lstinline|def quadgleich(a, b, c)|, der quadratische Gleichungen der Form \(ax^2 + bx + c = 0\) löst. Der Befehl soll zuerst \(d = b^2 - 4аc\) ausrechnen und abhängig vom Wert von $d$ keine, eine oder zwei Lösungen ausgeben.
 \end{myexercise}
 
 \begin{myexercise}
 	Wo liegt hier das Problem?
 	\begin{lstlisting}        
-note = input("Benoten Sie die Lehrperson (0-100).") 
-# wir tippen 100 in das Fenster ein!
-
-if note == 100:
-    print("Vielen Dank :)")
-if note > 60:
-    print("Wie kann ich mich verbessern?")
-else:
-    print("Geben Sie mir noch eine Chance")
-\end{lstlisting}
+		note = input("Benoten Sie die Lehrperson (0-100).") 
+		# wir tippen 100 in das Fenster ein!
+		
+		if note == 100:
+		print("Vielen Dank :)")
+		if note > 60:
+		print("Wie kann ich mich verbessern?")
+		else:
+		print("Geben Sie mir noch eine Chance")
+	\end{lstlisting}
 \end{myexercise}
 
 \section{Bool'sche Ausdrücke}
 \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele sind:
 \begin{lstlisting}
-3 == 5 # gibt den Wert False zurück
-(9 + 3) < (2 * 8) # gibt den Wert True zurück
+	3 == 5 # gibt den Wert False zurück
+	(9 + 3) < (2 * 8) # gibt den Wert True zurück
 \end{lstlisting}
 
 Wie Sie in den obigen Beispielen sehen, wird von einem Wahrheitstest ein \textbf{Wert} zurückgegeben: entweder der Wert \lstinline|True| (Wahr) oder \lstinline|False| (Falsch).
@@ -278,9 +278,9 @@ Bool'sche Audrücke wie z.B. \lstinline|3 < 45| führen zu einem Bool'schen Wert
 
 Die typische Verwendungsart bool'scher Werte ist in folgendem Code abgebildet:
 \begin{lstlisting}
-if BOOLSCHER_WERT:
-    # dieser Code wir nur dann ausgeführt, wenn 
-    # BOOLSCHER_WERT wahr ist (True)
+	if BOOLSCHER_WERT:
+	# dieser Code wir nur dann ausgeführt, wenn 
+	# BOOLSCHER_WERT wahr ist (True)
 \end{lstlisting}
 
 \begin{myexercise}
@@ -289,16 +289,16 @@ if BOOLSCHER_WERT:
 
 \begin{mysubmission}
 	Geben seien zwei Zahlen \lstinline|x1| und \lstinline|x2|. Schreiben Sie eine Funktion def \lstinline|maxzahl(x1, x2)|, welche die grössere der beiden Zahlen mit \lstinline|return| zurück an das Hauptprogramm gibt. Wenn beide Zahlen gleich gross sind, soll \lstinline|x2| zurückgegeben werden.
-
+	
 	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
 	\begin{myanswer}
 		\begin{lstlisting}
-def maxzahl(x1, x2):
-    if x1 > x2:
-        return x1
-    else: 
-        return x2
-\end{lstlisting}
+			def maxzahl(x1, x2):
+			if x1 > x2:
+			return x1
+			else: 
+			return x2
+		\end{lstlisting}
 	\end{myanswer}
 \end{mysubmission}
 
@@ -310,255 +310,252 @@ def maxzahl(x1, x2):
 
 Häufig fällen wir im echten Leben Entscheidungen, welche nicht nur von einer Bedingung abhängen, sondern gleich von mehreren, so zum Beispiel:
 \begin{itemize}
-\item Ich gehe per Fahrrad zur Schule, \textit{falls} das Wetter schön ist \textit{und} ich mich körperlich fit fühle.
-\item Ich esse etwas, \textit{falls} ich Hunger habe \textit{oder} ich Lust darauf habe (auch wenn ich keinen Hunger habe).
+	\item Ich gehe per Fahrrad zur Schule, \textit{falls} das Wetter schön ist \textit{und} ich mich körperlich fit fühle.
+	\item Ich esse etwas, \textit{falls} ich Hunger habe \textit{oder} ich Lust darauf habe (auch wenn ich keinen Hunger habe).
 \end{itemize}
 Beim ersten Beispiel handelt es sich um eine Verbindung per ``\textit{und}'': beide Konditionen müssen wahr sein, damit etwas geschieht. Dies kann in Python mit \lstinline|and| (englisch für ``und'') umgesetzt werden.
 
 \begin{myexample}\label{example:fahrrad}
-Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft werden können:
-\begin{lstlisting}
-temperature = 25 # aktuelle Aussen-Temperatur
-fitness = 80 # körperliche Fitness (zwischen 0-100, subjektiv empfunden)
-if (temperature > 20) and (fitness > 80):
-	print("Ich gehe per Fahrrad zur Schule!")
-\end{lstlisting}
+	Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft werden können:
+	\begin{lstlisting}
+		temperature = 25 # aktuelle Aussen-Temperatur
+		fitness = 80 # körperliche Fitness (zwischen 0-100, subjektiv empfunden)
+		if (temperature > 20) and (fitness > 80):
+		print("Ich gehe per Fahrrad zur Schule!")
+	\end{lstlisting}
 \end{myexample}
 
 Beim zweiten Beispiel handelt es sich um eine Verbindung mehrer Bedingungen per ``\textit{oder}'': es reicht, dass eine von beiden Bedingungen wahr ist, damit etwas geschieht. Dies kann in Python mittels dem Wort \lstinline|or| (englisch für ``oder'') umgesetzt werden.
 \begin{myexample}
-Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft werden können:
-\begin{lstlisting}
-hunger = 25 # aktueller Hunger-Wert (zwischen 0-100, subjektiv empfunden)
-lecker = 80 # "Leckerheits-Wert" eines Lebensmittels (zwischen 0-100, subjektiv empfunden)
-if (hunger > 80) or (lecker > 80):
-	print("Ich will das essen!")
-\end{lstlisting}
+	Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft werden können:
+	\begin{lstlisting}
+		hunger = 25 # aktueller Hunger-Wert (zwischen 0-100, subjektiv empfunden)
+		lecker = 80 # "Leckerheits-Wert" eines Lebensmittels (zwischen 0-100, subjektiv empfunden)
+		if (hunger > 80) or (lecker > 80):
+		print("Ich will das essen!")
+	\end{lstlisting}
 \end{myexample}
 
 \begin{myexercise}\label{ex:geschwindigkeitAngemessen}
-Schreiben Sie eine Funktion \lstinline|def geschwindigkeit_angemessen(geschwindigkeit):|, welche als Parameter \lstinline|geschwindigkeit| eine Zahl entgegennimmt (z.B. \lstinline|50| oder \lstinline|120|). Falls die Geschwindigkeit zwischen 30 und 100 km/h liegt (einschliesslich), soll auf der Konsole ausgegeben werden: ``Die Geschwindigkeit ist angemessen''. Ansonsten soll nichts ausgegeben werden. Verwenden Sie dazu den Ausdruck \lstinline|and|.
+	Schreiben Sie eine Funktion \lstinline|def geschwindigkeit_angemessen(geschwindigkeit):|, welche als Parameter \lstinline|geschwindigkeit| eine Zahl entgegennimmt (z.B. \lstinline|50| oder \lstinline|120|). Falls die Geschwindigkeit zwischen 30 und 100 km/h liegt (einschliesslich), soll auf der Konsole ausgegeben werden: ``Die Geschwindigkeit ist angemessen''. Ansonsten soll nichts ausgegeben werden. Verwenden Sie dazu den Ausdruck \lstinline|and|.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{geschwindigkeit\_angemessen.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/geschwindigkeit_angemessen.py}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Schreiben Sie eine Funktion \lstinline|def temperatur_ist_angenehm(temperature):|, welche einen Parameter \lstinline|temperatur| als Zahl entgegennimmt. Falls die Temperatur grösser als 20 Grad aber kleiner als 25 Grad ist, soll auf der Konsole ausgegeben werden: ``Angenehme Temperatur''. Ansonsten soll ausgegeben werden: ``Unangenehme Temperatur''. Verwenden Sie dazu den Ausdruck \lstinline|and|.
-
+	Schreiben Sie eine Funktion \lstinline|def temperatur_ist_angenehm(temperature):|, welche einen Parameter \lstinline|temperatur| als Zahl entgegennimmt. Falls die Temperatur grösser als 20 Grad aber kleiner als 25 Grad ist, soll auf der Konsole ausgegeben werden: ``Angenehme Temperatur''. Ansonsten soll ausgegeben werden: ``Unangenehme Temperatur''. Verwenden Sie dazu den Ausdruck \lstinline|and|.
+	
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{temperatur.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/temperatur.py}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}\label{ex:posUndGerade}
-Schreiben Sie eine Funktion \lstinline|def positiv_und_gerade(zahl):|, welche einen Parameter \lstinline|zahl| entgegennimmt, und testet, ob die Zahl positiv \textit{und} gerade ist, und falls dies zutrifft, den Text ausgibt ``ist positiv und gerade''. Ansonsten soll nichts ausgegeben werden.
+	Schreiben Sie eine Funktion \lstinline|def positiv_und_gerade(zahl):|, welche einen Parameter \lstinline|zahl| entgegennimmt, und testet, ob die Zahl positiv \textit{und} gerade ist, und falls dies zutrifft, den Text ausgibt ``ist positiv und gerade''. Ansonsten soll nichts ausgegeben werden.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{pos\_und\_gerade.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/pos_und_gerade.py}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Entwickeln Sie eine Funktion \lstinline|def vieleck_kreis(anzahl_ecken, umfang):|, der ein Vieleck zeichnet. Damit das Vieleck aussieht wie ein Kreis, soll der Kreis nur gezeichnet werden, wenn die Anzahl der Ecken grösser als 35 ist und wenn der Umfang mindestens 100 ist.
-\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{vieleck\_kreis\_and.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_kreis_and.py}
-\end{myanswer}
+	Entwickeln Sie eine Funktion \lstinline|def vieleck_kreis(anzahl_ecken, umfang):|, der ein Vieleck zeichnet. Damit das Vieleck aussieht wie ein Kreis, soll der Kreis nur gezeichnet werden, wenn die Anzahl der Ecken grösser als 35 ist und wenn der Umfang mindestens 100 ist.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{vieleck\_kreis\_and.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_kreis_and.py}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Entwickeln Sie ein Programm, das alle natürlichen Zahlen zwischen 0 und 100 auf den Bildschirm schreibt, die durch 7, aber nicht durch 3 teilbar sind.
-\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{teiler\_7\_nicht3.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_7_nicht3.py}
-\end{myanswer}
+	Entwickeln Sie ein Programm, das alle natürlichen Zahlen zwischen 0 und 100 auf den Bildschirm schreibt, die durch 7, aber nicht durch 3 teilbar sind.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{teiler\_7\_nicht3.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_7_nicht3.py}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{mychallenge}
-Das harmonische Mittel von zwei Zahlen a und b ist $\frac{1}{\frac{1}{a}+\frac{1}{b}}$. Es lässt sich aber nur berechnen, wenn weder $a$ noch $b$ null sind. Entwickeln Sie eine Funktion, der für die Parameter $a$ und $b$ das harmonische Mittel ausrechnet, wenn sowohl $a$ als auch $b$ nicht null sind. Ansonsten gibt der Befehl den Text ``Das kann man nicht berechnen.'' aus.
-
-\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{harmonisches\_mittel.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/harmonisches_mittel.py}
-\end{myanswer}
+	Das harmonische Mittel von zwei Zahlen a und b ist $\frac{1}{\frac{1}{a}+\frac{1}{b}}$. Es lässt sich aber nur berechnen, wenn weder $a$ noch $b$ null sind. Entwickeln Sie eine Funktion, der für die Parameter $a$ und $b$ das harmonische Mittel ausrechnet, wenn sowohl $a$ als auch $b$ nicht null sind. Ansonsten gibt der Befehl den Text ``Das kann man nicht berechnen.'' aus.
+	
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{harmonisches\_mittel.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/harmonisches_mittel.py}
+	\end{myanswer}
 \end{mychallenge}
 
-\subsection{Bool'sche Ausdrücke miteinander negieren}
+\subsection{Bool'sche Ausdrücke negieren}
 \textit{Negieren} bedeutet in der Informatik \textit{nicht}, das Gegenteil einer (urpsrünglichen) Aussage zu machen, sondern \textit{alle Aussagen zu machen}, welche durch die ursprüngliche Aussage nicht gemacht wurden, also alles ``andere'' als die ursprüngliche Aussage zu sagen.
 
 \begin{myexample} Folgende Tabelle illustriert, was mit der Negation einer Aussage gemeint ist.
-\begin{table}[H]
-\centering
-	\begin{tabular}{p{5cm}|p{5cm}}
-	\textbf{Aussage} & \textbf{Negation} \\\midrule\midrule
-	``Das Mädchen heisst Elin''& ``Das Mädchen heisst nicht Elin''\\\midrule
-	``Niemand in dieser Klasse ist volljährig''& ``Mindestens eine Person in dieser Klasse ist volljährig''\\\midrule
-	$x > 2$ & $x \leq 2$
-	\end{tabular}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{p{5cm}|p{5cm}}
+			\textbf{Aussage} & \textbf{Negation} \\\midrule\midrule
+			``Das Mädchen heisst Elin''& ``Das Mädchen heisst nicht Elin''\\\midrule
+			``Niemand in dieser Klasse ist volljährig''& ``Mindestens eine Person in dieser Klasse ist volljährig''\\\midrule
+			$x > 2$ & $x \leq 2$
+		\end{tabular}
 	\end{table}
 \end{myexample}
 \begin{myexercise}
-(Von Hand) Notieren Sie zu folgenden Aussagen die Negation, \textit{ohne} die Wörter ``nicht'' oder ``kein'' zu verwenden:
-\begin{itemize}
-\item $x \leq 1$
-\item $x$ ist eine negative Zahl
-\item in der Variable \lstinline|name| ist der Wert ``Noa'' gespeichert.
-\item Im Auto sitzen mindestens zwei Menschen
-\item Der Schrank ist leer
-\item Das Programm ist falsch geschrieben
-\item Die Anzahl der Jugendlichen in der Klasse ist genau 22
-\item Morgen wird es in Basel mindestens 24 Grad Celsius warm
-\end{itemize}
+	(Von Hand) Notieren Sie zu folgenden Aussagen die Negation, \textit{ohne} die Wörter ``nicht'' oder ``kein'' zu verwenden:
+	\begin{itemize}
+		\item $x \leq 1$
+		\item $x$ ist eine negative Zahl
+		\item in der Variable \lstinline|name| ist der Wert ``Noa'' gespeichert.
+		\item Im Auto sitzen mindestens zwei Menschen
+		\item Der Schrank ist leer
+		\item Das Programm ist falsch geschrieben
+		\item Die Anzahl der Jugendlichen in der Klasse ist genau 22
+		\item Morgen wird es in Basel mindestens 24 Grad Celsius warm
+	\end{itemize}
 \end{myexercise}
 Die Negation einer Aussage kann in Python mit dem Ausdruck \lstinline|not| (englisch für ``nicht'') gemacht werden. Dieser Ausdruck ist insbesondere Praktisch, um die Negation einer Aussage zu machen, ohne die Aussage komplett umschreiben zu müssen.
 
 \begin{myexample}
-Wir können den Code aus \cref{example:fahrrad} einfach mit dem Ausdruck \lstinline|not| umschreiben, um auszugeben, unterwelchen Bedingungen wir \textit{nicht} per Fahrrad zu Schule gehen wollen:
-\begin{lstlisting}
-if not((temperature > 20) and (fitness > 80)):
-	print("Ich gehe nicht per Fahrrad zur Schule!")
-\end{lstlisting}
-Man könnte dieselbe Aussage auch folgendermassen formulieren: ``Falls ich mich nicht fit fühle \textit{oder} das Wetter schlecht ist, gehe ich nicht per Fahrrad zur Schule''. Dies sähe in Python folgendermassen aus:
-\begin{lstlisting}
-if (temperature <= 20) or (fitness <= 80):
-	print("Ich gehe nicht per Fahrrad zur Schule!")
-\end{lstlisting}
-Weshalb haben wir im ersten Code ein \lstinline|and| und im zweiten Code ein \lstinline|or|? Dank dem \lstinline|not| müssen wir nichts vom ursprünglichen Code in \cref{example:fahrrad} umformulieren, da wir mit dem \lstinline|not| einfach alljene Fälle negieren, welche innerhalb der Klammer stehen. Somit kommen beide Codes zum selben Resultat.
+	Wir können den Code aus \cref{example:fahrrad} einfach mit dem Ausdruck \lstinline|not| umschreiben, um auszugeben, unterwelchen Bedingungen wir \textit{nicht} per Fahrrad zu Schule gehen wollen:
+	\begin{lstlisting}
+		if not((temperature > 20) and (fitness > 80)):
+		print("Ich gehe nicht per Fahrrad zur Schule!")
+	\end{lstlisting}
+	Man könnte dieselbe Aussage auch folgendermassen formulieren: ``Falls ich mich nicht fit fühle \textit{oder} das Wetter schlecht ist, gehe ich nicht per Fahrrad zur Schule''. Dies sähe in Python folgendermassen aus:
+	\begin{lstlisting}
+		if (temperature <= 20) or (fitness <= 80):
+		print("Ich gehe nicht per Fahrrad zur Schule!")
+	\end{lstlisting}
+	Weshalb haben wir im ersten Code ein \lstinline|and| und im zweiten Code ein \lstinline|or|? Dank dem \lstinline|not| müssen wir nichts vom ursprünglichen Code in \cref{example:fahrrad} umformulieren, da wir mit dem \lstinline|not| einfach alljene Fälle negieren, welche innerhalb der Klammer stehen. Somit kommen beide Codes zum selben Resultat.
 \end{myexample}
 
 \begin{myexercise}
-Schreiben Sie Ihren Code aus \cref{ex:posUndGerade} so um, dass getestet wird, ob eine Zahl weder gerade noch positiv ist. Verwenden Sie dazu unter anderem den Ausdruck \lstinline|not|. Testen Sie ihre Funktion für die Werte -3, +3, -4 und +4.
-Schreiben Sie damals dieselbe Funktion nochmals, ohne den Ausdruck \lstinline|not| zu verwenden.
-\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{weder\_pos\_noch\_gerade.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/weder_pos_noch_gerade.py}
-\end{myanswer}
+	Schreiben Sie Ihren Code aus \cref{ex:posUndGerade} so um, dass getestet wird, ob eine Zahl weder gerade noch positiv ist. Verwenden Sie dazu unter anderem den Ausdruck \lstinline|not|. Testen Sie ihre Funktion für die Werte -3, +3, -4 und +4.
+	Schreiben Sie damals dieselbe Funktion nochmals, ohne den Ausdruck \lstinline|not| zu verwenden.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{weder\_pos\_noch\_gerade.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/weder_pos_noch_gerade.py}
+	\end{myanswer}
 \end{myexercise}
 
-<<<<<<< Updated upstream
 
 \subsection{Bool'sche Ausdrücke miteinander verbinden}
 
 Häufig fällen wir im echten Leben Entscheidungen, welche nicht nur von einer Bedingung abhängen, sondern gleich von mehreren, so zum Beispiel:
 \begin{itemize}
-\item Ich gehe per Fahrrad zur Schule, \textit{falls} das Wetter schön ist \textit{und} ich mich körperlich fit fühle.
-\item Ich esse etwas, \textit{falls} ich Hunger habe \textit{oder} ich Lust darauf habe (auch wenn ich keinen Hunger habe).
+	\item Ich gehe per Fahrrad zur Schule, \textit{falls} das Wetter schön ist \textit{und} ich mich körperlich fit fühle.
+	\item Ich esse etwas, \textit{falls} ich Hunger habe \textit{oder} ich Lust darauf habe (auch wenn ich keinen Hunger habe).
 \end{itemize}
 Beim ersten Beispiel handelt es sich um eine Verbindung per ``\textit{und}'': beide Konditionen müssen wahr sein, damit etwas geschieht. Dies kann in Python mit \lstinline|and| (englisch für ``und'') umgesetzt werden.
 \begin{myexample}\label{example:fahrrad}
-Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft werden können:
-\begin{lstlisting}
-temperature = 25 # aktuelle Aussen-Temperatur
-fitness = 80 # körperliche Fitness (zwischen 0-100, subjektiv empfunden)
-if (temperature > 20) and (fitness > 80):
-	print("Ich gehe per Fahrrad zur Schule!")
-\end{lstlisting}
+	Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft werden können:
+	\begin{lstlisting}
+		temperature = 25 # aktuelle Aussen-Temperatur
+		fitness = 80 # körperliche Fitness (zwischen 0-100, subjektiv empfunden)
+		if (temperature > 20) and (fitness > 80):
+		print("Ich gehe per Fahrrad zur Schule!")
+	\end{lstlisting}
 \end{myexample}
 
 Beim zweiten Beispiel handelt es sich um eine Verbindung mehrer Bedingungen per ``\textit{oder}'': es reicht, dass eine von beiden Bedingungen wahr ist, damit etwas geschieht. Dies kann in Python mittels dem Wort \lstinline|or| (englisch für ``oder'') umgesetzt werden.
 \begin{myexample}
-Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft werden können:
-\begin{lstlisting}
-hunger = 25 # aktueller Hunger-Wert (zwischen 0-100, subjektiv empfunden)
-lecker = 80 # "Leckerheits-Wert" eines Lebensmittels (zwischen 0-100, subjektiv empfunden)
-if (hunger > 80) or (lecker > 80):
-	print("Ich will das essen!")
-\end{lstlisting}
+	Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft werden können:
+	\begin{lstlisting}
+		hunger = 25 # aktueller Hunger-Wert (zwischen 0-100, subjektiv empfunden)
+		lecker = 80 # "Leckerheits-Wert" eines Lebensmittels (zwischen 0-100, subjektiv empfunden)
+		if (hunger > 80) or (lecker > 80):
+		print("Ich will das essen!")
+	\end{lstlisting}
 \end{myexample}
 
 \begin{myexercise}\label{ex:italienischKanton}
-Schreiben Sie eine Funktion \lstinline|def italienischsprachig(kanton):|, welcher als Parameter \lstinline|kanton| einen Text entgegennimmt (z.B. \lstinline|"Zürich"| oder \lstinline|"Tessin"|). Falls der Kanton Tessin oder der Kanton Graubünden eingegeben werden, soll auf der Konsole ausgegeben werden: ``Italienischsprachiger Kanton''. Ansonsten soll nichts ausgegeben werden. Verwenden Sie dazu den Ausdruck \lstinline|or|.
+	Schreiben Sie eine Funktion \lstinline|def italienischsprachig(kanton):|, welcher als Parameter \lstinline|kanton| einen Text entgegennimmt (z.B. \lstinline|"Zürich"| oder \lstinline|"Tessin"|). Falls der Kanton Tessin oder der Kanton Graubünden eingegeben werden, soll auf der Konsole ausgegeben werden: ``Italienischsprachiger Kanton''. Ansonsten soll nichts ausgegeben werden. Verwenden Sie dazu den Ausdruck \lstinline|or|.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{italienisch\_kanton.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/italienisch_kanton.py}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Schreiben Sie eine Funktion \lstinline|def temperatur_ist_angenehm(temperature):|, welche einen Parameter \lstinline|temperatur| als Zahl entgegennimmt. Falls die Temperatur grösser als 20 Grad aber kleiner als 25 Grad ist, soll auf der Konsole ausgegeben werden: ``Angenehme Temperatur''. Ansonsten soll ausgegeben werden: ``Unangenehme Temperatur''. Verwenden Sie dazu den Ausdruck \lstinline|and|.
-
+	Schreiben Sie eine Funktion \lstinline|def temperatur_ist_angenehm(temperature):|, welche einen Parameter \lstinline|temperatur| als Zahl entgegennimmt. Falls die Temperatur grösser als 20 Grad aber kleiner als 25 Grad ist, soll auf der Konsole ausgegeben werden: ``Angenehme Temperatur''. Ansonsten soll ausgegeben werden: ``Unangenehme Temperatur''. Verwenden Sie dazu den Ausdruck \lstinline|and|.
+	
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{temperatur.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/temperatur.py}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}\label{ex:posUndGerade}
-Schreiben Sie eine Funktion \lstinline|def positiv_und_gerade(zahl):|, welche einen Parameter \lstinline|zahl| entgegennimmt, und testet, ob die Zahl positiv \textit{und} gerade ist, und falls dies zutrifft, den Text ausgibt ``ist positiv und gerade''. Ansonsten soll nichts ausgegeben werden.
+	Schreiben Sie eine Funktion \lstinline|def positiv_und_gerade(zahl):|, welche einen Parameter \lstinline|zahl| entgegennimmt, und testet, ob die Zahl positiv \textit{und} gerade ist, und falls dies zutrifft, den Text ausgibt ``ist positiv und gerade''. Ansonsten soll nichts ausgegeben werden.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{pos\_und\_gerade.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/pos_und_gerade.py}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Entwickeln Sie einen Befehl \lstinline|def vieleck_kreis(anzahl_ecken, umfang):|, der ein Vieleck zeichnet. Damit das Vieleck aussieht wie ein Kreis, soll der Kreis nur gezeichnet werden, wenn die Anzahl der Ecken grösser als 35 ist und wenn der Umfang mindestens 100 ist.
-\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{vieleck\_kreis\_and.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_kreis_and.py}
-\end{myanswer}
+	Entwickeln Sie einen Befehl \lstinline|def vieleck_kreis(anzahl_ecken, umfang):|, der ein Vieleck zeichnet. Damit das Vieleck aussieht wie ein Kreis, soll der Kreis nur gezeichnet werden, wenn die Anzahl der Ecken grösser als 35 ist und wenn der Umfang mindestens 100 ist.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{vieleck\_kreis\_and.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_kreis_and.py}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Entwickeln Sie ein Programm, das alle natürlichen Zahlen zwischen 0 und 100 auf den Bildschirm schreibt, die durch 7, aber nicht durch 3 teilbar sind.
-\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{teiler\_7\_nicht3.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_7_nicht3.py}
-\end{myanswer}
+	Entwickeln Sie ein Programm, das alle natürlichen Zahlen zwischen 0 und 100 auf den Bildschirm schreibt, die durch 7, aber nicht durch 3 teilbar sind.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{teiler\_7\_nicht3.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_7_nicht3.py}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{mychallenge}
-Das harmonische Mittel von zwei Zahlen a und b ist $\frac{1}{\frac{1}{a}+\frac{1}{b}}$. Es lässt sich aber nur berechnen, wenn weder $a$ noch $b$ null sind. Entwickeln Sie einen Befehl, der für die Parameter $a$ und $b$ das harmonische Mittel ausrechnet, wenn sowohl $a$ als auch $b$ nicht null sind. Ansonsten gibt der Befehl den Text ``Das kann man nicht berechnen.'' aus.
-
-\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{harmonisches\_mittel.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/harmonisches_mittel.py}
-\end{myanswer}
+	Das harmonische Mittel von zwei Zahlen a und b ist $\frac{1}{\frac{1}{a}+\frac{1}{b}}$. Es lässt sich aber nur berechnen, wenn weder $a$ noch $b$ null sind. Entwickeln Sie einen Befehl, der für die Parameter $a$ und $b$ das harmonische Mittel ausrechnet, wenn sowohl $a$ als auch $b$ nicht null sind. Ansonsten gibt der Befehl den Text ``Das kann man nicht berechnen.'' aus.
+	
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{harmonisches\_mittel.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/harmonisches_mittel.py}
+	\end{myanswer}
 \end{mychallenge}
 
 \subsection{Bool'sche Ausdrücke miteinander negieren}
 \textit{Negieren} bedeutet in der Informatik \textit{nicht}, das Gegenteil einer (urpsrünglichen) Aussage zu machen, sondern \textit{alle Aussagen zu machen}, welche durch die ursprüngliche Aussage nicht gemacht wurden, also alles ``andere'' als die ursprüngliche Aussage zu sagen.
 
 \begin{myexample} Folgende Tabelle illustriert, was mit der Negation einer Aussage gemeint ist.
-\begin{table}[H]
-\centering
-	\begin{tabular}{p{5cm}|p{5cm}}
-	\textbf{Aussage} & \textbf{Negation} \\\midrule\midrule
-	``Das Mädchen heisst Elin''& ``Das Mädchen heisst nicht Elin''\\\midrule
-	``Niemand in dieser Klasse ist volljährig''& ``Mindestens eine Person in dieser Klasse ist volljährig''\\\midrule
-	$x > 2$ & $x \leq 2$
-	\end{tabular}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{p{5cm}|p{5cm}}
+			\textbf{Aussage} & \textbf{Negation} \\\midrule\midrule
+			``Das Mädchen heisst Elin''& ``Das Mädchen heisst nicht Elin''\\\midrule
+			``Niemand in dieser Klasse ist volljährig''& ``Mindestens eine Person in dieser Klasse ist volljährig''\\\midrule
+			$x > 2$ & $x \leq 2$
+		\end{tabular}
 	\end{table}
 \end{myexample}
 \begin{myexercise}
-(Von Hand) Notieren Sie zu folgenden Aussagen die Negation, \textit{ohne} die Wörter ``nicht'' oder ``kein'' zu verwenden:
-\begin{itemize}
-\item $x \leq 1$
-\item $x$ ist eine negative Zahl
-\item in der Variable \lstinline|name| ist der Wert ``Noa'' gespeichert.
-\item Im Auto sitzen mindestens zwei Menschen
-\item Der Schrank ist leer
-\item Das Programm ist falsch geschrieben
-\item Die Anzahl der Jugendlichen in der Klasse ist genau 22
-\item Morgen wird es in Basel mindestens 24 Grad Celsius warm
-\end{itemize}
+	(Von Hand) Notieren Sie zu folgenden Aussagen die Negation, \textit{ohne} die Wörter ``nicht'' oder ``kein'' zu verwenden:
+	\begin{itemize}
+		\item $x \leq 1$
+		\item $x$ ist eine negative Zahl
+		\item in der Variable \lstinline|name| ist der Wert ``Noa'' gespeichert.
+		\item Im Auto sitzen mindestens zwei Menschen
+		\item Der Schrank ist leer
+		\item Das Programm ist falsch geschrieben
+		\item Die Anzahl der Jugendlichen in der Klasse ist genau 22
+		\item Morgen wird es in Basel mindestens 24 Grad Celsius warm
+	\end{itemize}
 \end{myexercise}
 Die Negation einer Aussage kann in Python mit dem Ausdruck \lstinline|not| (englisch für ``nicht'') gemacht werden. Dieser Ausdruck ist insbesondere Praktisch, um die Negation einer Aussage zu machen, ohne die Aussage komplett umschreiben zu müssen.
 
 \begin{myexample}
-Wir können den Code aus \cref{example:fahrrad} einfach mit dem Ausdruck \lstinline|not| umschreiben, um auszugeben, unterwelchen Bedingungen wir \textit{nicht} per Fahrrad zu Schule gehen wollen:
-\begin{lstlisting}
-if not((temperature > 20) and (fitness > 80)):
-	print("Ich gehe nicht per Fahrrad zur Schule!")
-\end{lstlisting}
-Man könnte dieselbe Aussage auch folgendermassen formulieren: ``Falls ich mich nicht fit fühle \textit{oder} das Wetter schlecht ist, gehe ich nicht per Fahrrad zur Schule''. Dies sähe in Python folgendermassen aus:
-\begin{lstlisting}
-if (temperature <= 20) or (fitness <= 80):
-	print("Ich gehe nicht per Fahrrad zur Schule!")
-\end{lstlisting}
-Weshalb haben wir im ersten Code ein \lstinline|and| und im zweiten Code ein \lstinline|or|? Dank dem \lstinline|not| müssen wir nichts vom ursprünglichen Code in \cref{example:fahrrad} umformulieren, da wir mit dem \lstinline|not| einfach alljene Fälle negieren, welche innerhalb der Klammer stehen. Somit kommen beide Codes zum selben Resultat.
+	Wir können den Code aus \cref{example:fahrrad} einfach mit dem Ausdruck \lstinline|not| umschreiben, um auszugeben, unterwelchen Bedingungen wir \textit{nicht} per Fahrrad zu Schule gehen wollen:
+	\begin{lstlisting}
+		if not((temperature > 20) and (fitness > 80)):
+		print("Ich gehe nicht per Fahrrad zur Schule!")
+	\end{lstlisting}
+	Man könnte dieselbe Aussage auch folgendermassen formulieren: ``Falls ich mich nicht fit fühle \textit{oder} das Wetter schlecht ist, gehe ich nicht per Fahrrad zur Schule''. Dies sähe in Python folgendermassen aus:
+	\begin{lstlisting}
+		if (temperature <= 20) or (fitness <= 80):
+		print("Ich gehe nicht per Fahrrad zur Schule!")
+	\end{lstlisting}
+	Weshalb haben wir im ersten Code ein \lstinline|and| und im zweiten Code ein \lstinline|or|? Dank dem \lstinline|not| müssen wir nichts vom ursprünglichen Code in \cref{example:fahrrad} umformulieren, da wir mit dem \lstinline|not| einfach alljene Fälle negieren, welche innerhalb der Klammer stehen. Somit kommen beide Codes zum selben Resultat.
 \end{myexample}
 
 \begin{myexercise}
-Schreiben Sie Ihren Code aus \cref{ex:posUndGerade} so um, dass getestet wird, ob eine Zahl weder gerade noch positiv ist. Verwenden Sie dazu unter anderem den Ausdruck \lstinline|not|. Testen Sie ihre Funktion für die Werte -3, +3, -4 und +4.
-Schreiben Sie damals dieselbe Funktion nochmals, ohne den Ausdruck \lstinline|not| zu verwenden.
-\begin{myanswer}
-	\lstinputlisting[language=Python,caption=\texttt{weder\_pos\_noch\_gerade.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/weder_pos_noch_gerade.py}
-\end{myanswer}
+	Schreiben Sie Ihren Code aus \cref{ex:posUndGerade} so um, dass getestet wird, ob eine Zahl weder gerade noch positiv ist. Verwenden Sie dazu unter anderem den Ausdruck \lstinline|not|. Testen Sie ihre Funktion für die Werte -3, +3, -4 und +4.
+	Schreiben Sie damals dieselbe Funktion nochmals, ohne den Ausdruck \lstinline|not| zu verwenden.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{weder\_pos\_noch\_gerade.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/weder_pos_noch_gerade.py}
+	\end{myanswer}
 \end{myexercise}
 
-=======
->>>>>>> Stashed changes
 \section{Fussgesteuerte Schleifen mit \texorpdfstring{\lstinline|break|}{break}}
 
 Bisher haben wir eine Art von Schleife gesehen: \lstinline|for _ in range(...)|. Dabei gibt die Zahl innerhalb des Befehls \lstinline|range(...)| an, wie viele Mal der Schleifenkörper wiederholt wird. Manchmal wissen wir jedoch nicht im voraus, wie viele Male eine Schleife wiederholt werden soll, wir kennen jedoch eine Bedingung, bei der die Schleife abgebrochen werden soll. Dies könnte beispielsweise der Fall sein, wenn wir eine Spirale zeichnen wolle, die immer grösser wird, bis die Seitenlänge eine gewisse maximale Länge \lstinline|max_seite| erreicht hat.
@@ -579,11 +576,11 @@ Es geht allerdings auch einfacher, indem wir eine ``unendliche'' Schleife starte
 Grundsätzlich können wir auch direkt die Werte \lstinline|True| (Wahr) oder \lstinline|False| (Falsch) in Bool'schen Ausdrücken verwenden:
 
 \begin{myexample}
-Der \lstinline|print|-Befehl in folgendem Beispiel wird immer ausgeführt:
-\begin{lstlisting}
-if True:
-	print("Hello World")
-\end{lstlisting}
+	Der \lstinline|print|-Befehl in folgendem Beispiel wird immer ausgeführt:
+	\begin{lstlisting}
+		if True:
+		print("Hello World")
+	\end{lstlisting}
 \end{myexample}
 
 Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endlosschleife mit \lstinline|while True:| zu konstruieren.
@@ -591,27 +588,27 @@ Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endloss
 
 \begin{minipage}{\linewidth}
 	\begin{lstlisting}[escapechar=!]
-import turtle as t
-
-# Tempo der Turtle festlegen
-t.speed(100)
-
-# gleichseitiges Dreieck zeichnen
-seite = 5
-max_seite = 50
-increment = 5
-while True:!\tikzmark{whileFrom}!                        !\tikzmark{while}!
-    if seite > max_seite:
-        break!\tikzmark{breakFrom}!                     !\tikzmark{break}!
-    t.fd(seite)
-    t.rt(90)
-    seite += increment
-
-# Turtle-Zeichnung stehen lassen
-t.done()
-\end{lstlisting}
+		import turtle as t
+		
+		# Tempo der Turtle festlegen
+		t.speed(100)
+		
+		# gleichseitiges Dreieck zeichnen
+		seite = 5
+		max_seite = 50
+		increment = 5
+		while True:!\tikzmark{whileFrom}!                        !\tikzmark{while}!
+		if seite > max_seite:
+		break!\tikzmark{breakFrom}!                     !\tikzmark{break}!
+		t.fd(seite)
+		t.rt(90)
+		seite += increment
+		
+		# Turtle-Zeichnung stehen lassen
+		t.done()
+	\end{lstlisting}
 	\begin{tikzpicture}[overlay, remember picture,
-			every node/.style={text=white,rounded corners}]
+		every node/.style={text=white,rounded corners}]
 		\drawArrow{whileFrom}{while}{\footnotesize Unendliche Schleife}{DeepPink};
 		\drawArrow{breakFrom}{break}{\footnotesize Schleifenabbruch}{DeepPink};
 	\end{tikzpicture}
@@ -621,47 +618,47 @@ t.done()
 \section{Kopfgesteuerte Schleifen mit \texorpdfstring{\lstinline|while|}{while}}
 
 \begin{myexample}
-Folgendes Beispiel zeigt, wie ein \lstinline|while| mit \lstinline|break| zu einem einfachen \lstinline|while| mit Ausführungs-Bedingung vereinfacht werden kann. Beide Codes machen dasselbe. Die Schleife wird solange ausgeführt, wie die Ausführungs-Bedingung wahr ist. Die Abbruchskondition wird vor jeder neuen Schleifenausführung überprüft und die Schleife wird nur dann ausgeführt, wenn die Ausführungs-Bedingung noch wahr ist. Beim linken Code verwenden wir nicht eine Ausführungs-Bedingung sondern eine Abbruch-Bedingung.
-
-\begin{center}
-	\begin{minipage}{.48\textwidth}
-		\begin{lstlisting}[escapechar=!]
-import turtle as t
-
-def spirale(seite, add, max_seite):
-    while True:               !\tikzmark{fromStart}!
-    	if seite > max_seite:
-    	    break             !\tikzmark{fromEnd}!
-        t.fd(seite)
-        t.rt(90)
-        seite+=add
-
-spirale(10, 10, 100)
-\end{lstlisting}
-	\end{minipage}
-	\begin{minipage}{.48\textwidth}
-		\begin{lstlisting}[escapechar=!]
-import turtle as t
-
-def spirale(seite, add, max_seite):
-    !\tikzmark{toStart}!!\tikzmark{toEnd}!while seite > max_seite:
-        t.fd(seite)
-        t.rt(90)
-        seite+=add
-        
-spirale(10, 10, 100)
-\end{lstlisting}
-	\end{minipage}
-	\begin{tikzpicture}[overlay, remember picture,
+	Folgendes Beispiel zeigt, wie ein \lstinline|while| mit \lstinline|break| zu einem einfachen \lstinline|while| mit Ausführungs-Bedingung vereinfacht werden kann. Beide Codes machen dasselbe. Die Schleife wird solange ausgeführt, wie die Ausführungs-Bedingung wahr ist. Die Abbruchskondition wird vor jeder neuen Schleifenausführung überprüft und die Schleife wird nur dann ausgeführt, wenn die Ausführungs-Bedingung noch wahr ist. Beim linken Code verwenden wir nicht eine Ausführungs-Bedingung sondern eine Abbruch-Bedingung.
+	
+	\begin{center}
+		\begin{minipage}{.48\textwidth}
+			\begin{lstlisting}[escapechar=!]
+				import turtle as t
+				
+				def spirale(seite, add, max_seite):
+				while True:               !\tikzmark{fromStart}!
+				if seite > max_seite:
+				break             !\tikzmark{fromEnd}!
+				t.fd(seite)
+				t.rt(90)
+				seite+=add
+				
+				spirale(10, 10, 100)
+			\end{lstlisting}
+		\end{minipage}
+		\begin{minipage}{.48\textwidth}
+			\begin{lstlisting}[escapechar=!]
+				import turtle as t
+				
+				def spirale(seite, add, max_seite):
+				!\tikzmark{toStart}!!\tikzmark{toEnd}!while seite > max_seite:
+				t.fd(seite)
+				t.rt(90)
+				seite+=add
+				
+				spirale(10, 10, 100)
+			\end{lstlisting}
+		\end{minipage}
+		\begin{tikzpicture}[overlay, remember picture,
 			every edge/.append style = { ->, thick, >=stealth, red!70},
 			every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-
-		\drawBrace{0em}{fromStart}{fromEnd}{}{.5}{}{}
-		\drawBrace{-.5em}{toStart}{toEnd}{}{.5}{mirror}{}
-		% arrow pointing from one code to other
-		\draw[->, style={thick, >=stealth, red!70}] (fromStartfromEnd-coord-arrow) to (toStarttoEnd-coord-arrow);
-	\end{tikzpicture}
-\end{center}
+			
+			\drawBrace{0em}{fromStart}{fromEnd}{}{.5}{}{}
+			\drawBrace{-.5em}{toStart}{toEnd}{}{.5}{mirror}{}
+			% arrow pointing from one code to other
+			\draw[->, style={thick, >=stealth, red!70}] (fromStartfromEnd-coord-arrow) to (toStarttoEnd-coord-arrow);
+		\end{tikzpicture}
+	\end{center}
 \end{myexample}
 
 
@@ -702,29 +699,29 @@ spirale(10, 10, 100)
 		\includegraphics[width=0.3\linewidth]{GrundlagenInfo/09_Tabellenkalkulation/Screenshots/Sissa}
 	\end{figure}
 	Sissa ibn Dahir lebte angeblich im dritten oder vierten Jahrhundert in Indien und gilt Legenden zufolge als der Erfinder des Schachspiels.
-
+	
 	Der indische Herrscher Shihram tyrannisierte seine Untertanen und stürzte sein Land in Not und Elend. Um die Aufmerksamkeit des Königs auf seine Fehler zu lenken, ohne seinen Zorn zu entfachen, schuf der weise Brahmane Sissa ein Spiel, in welchem der König als wichtigste Figur ohne Hilfe anderer Figuren und Bauern nichts ausrichten kann. Der Unterricht im Schachspiel machte auf den Herrscher Shihram einen starken Eindruck. Er wurde milder und liess das Schachspiel verbreiten, damit alle davon Kenntnis nehmen.
-
+	
 	Um sich für die anschauliche Lehre von Lebensweisheit und zugleich Unterhaltung zu bedanken, gewährte er dem Brahmanen einen freien Wunsch. Dieser wünschte sich Weizenkörner: Auf das erste Feld eines Schachbretts wollte er ein Korn, auf das zweite Feld das Doppelte, also zwei, auf das dritte wiederum die doppelte Menge, also vier und so weiter.
-
+	
 	Sie sollen die Menge Weizenkörner, welche Sissa vom Herrscher gefordert hat, berechnen. Gehen Sie folgendermassen vor:
-
+	
 	Auf dem ersten Schachfeld liegt 1 Reiskorn, auf dem zweiten Feld liegen 2 Reiskörner, auf dem dritten Feld liegen 4 Körner usw.
-
+	
 	Allgemein liegen auf dem \(n+1\)-ten Schachfeld genau doppelt soviele Körner wie auf dem \(n\)-ten Schachfeld. Unser Schachbrett habe \(n\)-Felder, wobei \(n \leq 67\). Wie viele Reiskörner würden in dieser Situation insgesamt auf dem Schachfeld liegen (angenommen so viel Reis hätte Platz)?
-
+	
 	Schreiben Sie eine Funktion \lstinline|def reis(n)|, welche die gesuchte Anzahl Reiskörner in Abhängigkeit der Anzahl \(n\) der Felder berechnet und per \lstinline|return| zurückgibt.
-
+	
 	\begin{itemize}
 		\item \lstinline|reis(3)| sollte 7 ausgeben.
 		\item \lstinline|reis(8)| sollte 255 ausgeben.
 		\item \lstinline|reis(64)| sollte 18446744073709551615 ausgeben.
 	\end{itemize}
-
+	
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{reis.py},label=listing:spirale]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/reis.py}
 	\end{myanswer}
-
+	
 \end{mychallenge}
 
 
@@ -744,51 +741,51 @@ Beide Komponenten sind schwierig abzuschätzen. Sie möchten jedoch eine erste E
 	Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel berechnen und geben Sie das Resultat auf der Konsole aus.
 	\begin{enumerate}
 		\item Für Männer:
-		      \begin{align*}
-			      \text{BMR} = & 88.362 +                                   \\
-			                   & (13.397 \times \text{Gewicht in kg}) +     \\
-			                   & (4.799 \times \text{Körpergrösse in cm}) - \\
-			                   & (5.677 \times \text{Alter in Jahren})
-		      \end{align*}
+		\begin{align*}
+			\text{BMR} = & 88.362 +                                   \\
+			& (13.397 \times \text{Gewicht in kg}) +     \\
+			& (4.799 \times \text{Körpergrösse in cm}) - \\
+			& (5.677 \times \text{Alter in Jahren})
+		\end{align*}
 		\item Für Frauen:
-		      \begin{align*}
-			      \text{BMR} = & 447.593  +                                 \\
-			                   & (9.247 \times \text{Gewicht in kg}) +      \\
-			                   & (3.098 \times \text{Körpergrösse in cm}) - \\
-			                   & (4.330 \times \text{Alter in Jahren})
-		      \end{align*}
+		\begin{align*}
+			\text{BMR} = & 447.593  +                                 \\
+			& (9.247 \times \text{Gewicht in kg}) +      \\
+			& (3.098 \times \text{Körpergrösse in cm}) - \\
+			& (4.330 \times \text{Alter in Jahren})
+		\end{align*}
 	\end{enumerate}
 	\begin{myanswer}
 		\begin{lstlisting}
-def grundumsatz(gewicht, groesse, alter, geschlecht):
-    """
-    Berechnet den Grundumsatz (BMR) nach der Harris-Benedict-Formel.
-    
-    Parameter:
-    - gewicht: Gewicht in kg
-    - groesse: Körpergrösse in cm
-    - alter: Alter in Jahren
-    - geschlecht: 'mann' oder 'frau'
-    
-    Rückgabe:
-    - BMR: Grundumsatz in Kalorien
-    """
-    if geschlecht == 'mann':
-        bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
-    elif geschlecht == 'frau':
-        bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
-    
-    print("Der Grundumsatz beträgt:", round(bmr, 2), "Kalorien")
-
-# Beispiel:
-gewicht = 75  # kg
-groesse = 180  # cm
-alter = 30  # jahre
-geschlecht = 'mann'
-
-# berechne grundumsatz
-grundumsatz(gewicht, groesse, alter, geschlecht)
-\end{lstlisting}
+			def grundumsatz(gewicht, groesse, alter, geschlecht):
+			"""
+			Berechnet den Grundumsatz (BMR) nach der Harris-Benedict-Formel.
+			
+			Parameter:
+			- gewicht: Gewicht in kg
+			- groesse: Körpergrösse in cm
+			- alter: Alter in Jahren
+			- geschlecht: 'mann' oder 'frau'
+			
+			Rückgabe:
+			- BMR: Grundumsatz in Kalorien
+			"""
+			if geschlecht == 'mann':
+			bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
+			elif geschlecht == 'frau':
+			bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
+			
+			print("Der Grundumsatz beträgt:", round(bmr, 2), "Kalorien")
+			
+			# Beispiel:
+			gewicht = 75  # kg
+			groesse = 180  # cm
+			alter = 30  # jahre
+			geschlecht = 'mann'
+			
+			# berechne grundumsatz
+			grundumsatz(gewicht, groesse, alter, geschlecht)
+		\end{lstlisting}
 	\end{myanswer}
 \end{mysubmission}
 
@@ -796,24 +793,24 @@ Nun möchten wir zum Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zu
 
 \begin{minipage}{\linewidth}
 	\begin{lstlisting}
-def grundumsatz(gewicht, groesse, alter, geschlecht):
-    if geschlecht == 'mann':
-        bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
-    elif geschlecht == 'frau':
-        bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
-    
-     (*@\colorbox{CornflowerBlue}{return b\tikzmark{arrowFrom}mr}@*) # gib den bmr an das Programm zurück
-
-# Beispiel:
-gewicht = 75  # kg
-groesse = 180  # cm
-alter = 30  # jahre
-geschlecht = 'mann'
-
-# berechne grundumsatz(*@\colorbox{CornflowerBlue}{und speichere das Resultat in einer neuen Variable resultat}@*)
-(*@\colorbox{CornflowerBlue}{resu\tikzmark{arrowTo}ltat = }@*) grundumsatz(gewicht, groesse, alter, geschlecht)
-(*@\colorbox{CornflowerBlue}{print("Der Grundumsatz beträgt:", round(resultat, 2), "Kalorien")}@*)
-\end{lstlisting}
+		def grundumsatz(gewicht, groesse, alter, geschlecht):
+		if geschlecht == 'mann':
+		bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
+		elif geschlecht == 'frau':
+		bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
+		
+		(*@\colorbox{CornflowerBlue}{return b\tikzmark{arrowFrom}mr}@*) # gib den bmr an das Programm zurück
+		
+		# Beispiel:
+		gewicht = 75  # kg
+		groesse = 180  # cm
+		alter = 30  # jahre
+		geschlecht = 'mann'
+		
+		# berechne grundumsatz(*@\colorbox{CornflowerBlue}{und speichere das Resultat in einer neuen Variable resultat}@*)
+		(*@\colorbox{CornflowerBlue}{resu\tikzmark{arrowTo}ltat = }@*) grundumsatz(gewicht, groesse, alter, geschlecht)
+		(*@\colorbox{CornflowerBlue}{print("Der Grundumsatz beträgt:", round(resultat, 2), "Kalorien")}@*)
+	\end{lstlisting}
 \end{minipage}
 
 \begin{tikzpicture}[overlay,remember picture]
@@ -827,40 +824,40 @@ Nun haben wir eine erste Einschätzung des \gls{BMR}. Allerdings gibt es auch no
 	Schreiben Sie eine weitere Funktionen, um den \gls{BMR} anhand der Mifflin-St-Jeor-Gleichung und der Katch-McArdle-Formel zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
 	\begin{enumerate}
 		\item Mifflin-St-Jeor-Gleichung:
-		      \begin{enumerate}
-			      \item Männer:
-			            \begin{align*}
-				            \text{BMR} & = 10 \times \text{Gewicht (kg)}        \\
-				                       & \quad + 6.25 \times \text{Grösse (cm)} \\
-				                       & \quad - 5 \times \text{Alter (Jahre)}  \\
-				                       & \quad + 5
-			            \end{align*}
-			      \item Frauen:
-			            \begin{align*}
-				            \text{BMR} & = 10 \times \text{Gewicht (kg)}        \\
-				                       & \quad + 6.25 \times \text{Grösse (cm)} \\
-				                       & \quad - 5 \times \text{Alter (Jahre)}  \\
-				                       & \quad - 161
-			            \end{align*}
-		      \end{enumerate}
+		\begin{enumerate}
+			\item Männer:
+			\begin{align*}
+				\text{BMR} & = 10 \times \text{Gewicht (kg)}        \\
+				& \quad + 6.25 \times \text{Grösse (cm)} \\
+				& \quad - 5 \times \text{Alter (Jahre)}  \\
+				& \quad + 5
+			\end{align*}
+			\item Frauen:
+			\begin{align*}
+				\text{BMR} & = 10 \times \text{Gewicht (kg)}        \\
+				& \quad + 6.25 \times \text{Grösse (cm)} \\
+				& \quad - 5 \times \text{Alter (Jahre)}  \\
+				& \quad - 161
+			\end{align*}
+		\end{enumerate}
 		\item Katch-McArdle-Formel:
-		      \begin{enumerate}
-			      \item Grundformel:
-			            \begin{align*}
-				            \text{BMR} & = 370                                  \\
-				                       & \quad + (21.6 \times \text{FFM in kg})
-			            \end{align*}
-
-			      \item Fett-freie Masse (in kg):
-			            \begin{align*}
-				            \text{FFM} & = \text{Körpergewicht (kg)}                \\
-				                       & \quad \times (1 - \text{Körperfettanteil})
-			            \end{align*}
-
-		      \end{enumerate}
-
+		\begin{enumerate}
+			\item Grundformel:
+			\begin{align*}
+				\text{BMR} & = 370                                  \\
+				& \quad + (21.6 \times \text{FFM in kg})
+			\end{align*}
+			
+			\item Fett-freie Masse (in kg):
+			\begin{align*}
+				\text{FFM} & = \text{Körpergewicht (kg)}                \\
+				& \quad \times (1 - \text{Körperfettanteil})
+			\end{align*}
+			
+		\end{enumerate}
+		
 	\end{enumerate}
-
+	
 	\begin{myanswer}
 		\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/bmr.py}
 	\end{myanswer}
@@ -874,7 +871,7 @@ Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundbedarfs. Zu 
 		\item Eine Liste für die Zeit, während der Sie täglich einer Aktivität nachgehen
 		\item Eine Liste mit dem Kalorienverbrauch pro Minute für jede dieser Aktivitäten
 	\end{enumerate}
-
+	
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{c|*{10}{c}}
@@ -901,28 +898,28 @@ Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundbedarfs. Zu 
 	\end{table}
 	Wenn z.B. eine 80 kg schwere Person 1 Stunde lang rudert und 20 Minuten spaziert wären die Listen wie folgt:
 	\begin{lstlisting}
-l_zeit = [60, 20] # Zeit in Minuten
-l_kcal = [16.5, 6] # Kalorien pro Aktivität
-\end{lstlisting}
+		l_zeit = [60, 20] # Zeit in Minuten
+		l_kcal = [16.5, 6] # Kalorien pro Aktivität
+	\end{lstlisting}
 	Schreiben Sie eine Python-Funktion \lstinline|berechne_leistungsumsatz|, um Ihren Leistungsumsatz zu berechnen. Das erwartete Resultat für das Beispiel hier wäre: \lstinline|1110| (= Summe von \lstinline|[990, 120]|). Das Resultat soll an das Hauptprogramm zurückgegeben und in einer Variable \texttt{kalorienverbrauch} gespeichert werden.
 	\begin{myanswer}
 		\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/leistungsumsatz.py}
 	\end{myanswer}
-
+	
 \end{mysubmission}
 
 \begin{mysubmission}
 	Schreiben Sie nun eine weitere Funktion, die Ihren gesamten Energieumsatz berechnet, als Summe Ihres BMRs, den Sie in \cref{ex:bmr} berechnet haben (durchschnitt der drei Formeln) und Ihres Leistungsumsatzes, den Sie in \cref{ex:leistungsumsatz} berechnet haben. Die Funktion ist extrem kurz und umfässt nur eine Zeile.
 	\begin{myanswer}
 		\begin{lstlisting}
-bmr = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
-l = berechne_leistungsumsatz(l_zeit, l_kcal)
-
-def berechne_total(bmr, l):
-    return bmr + l
-
-total = berechne_total(bmr, l)
-\end{lstlisting}
+			bmr = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
+			l = berechne_leistungsumsatz(l_zeit, l_kcal)
+			
+			def berechne_total(bmr, l):
+			return bmr + l
+			
+			total = berechne_total(bmr, l)
+		\end{lstlisting}
 	\end{myanswer}
 \end{mysubmission}
 
