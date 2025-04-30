@@ -1,32 +1,32 @@
 \chapter{Kolmogorov-Komplexität}\label{ch:kolmogorov}
 Wir führen hier den wichtigen Begriff der Kolmogorov-Komplexität ein. Die Kolmogorov-Komplexität gibt uns eine Möglichkeit den Informationsinhalt von Texten zu bestimmen und erlaubt uns über kürzeste Darstellungen zu sprechen.
-Die Kolmogorov-Komplexität gibt uns auch eine sinnvolle Definition der Bedeutung von Zufälligkeit von Texten.
+Die Kolmogorov-Komplexität gibt uns auch eine sinnvolle Definition der Bedeutung von Zufälligkeit von Texten und Zahlen. \textit{Zufall} ist ein zentraler Begriff der modernen Wissenschaft.
 
-\section{Intuitiion}
-In diesem Kapitel fassen wir Wörter (Texte) als von Information auf.
+\section{Intuition}
+In diesem Kapitel fassen wir Wörter (Texte) als Träger von Information auf.
 Wir versuchen eine robuste Methode zur Messung des Informationsgehalts eines Wortes zu entwickeln.
 
 \begin{myexample}\label{myexample:passwort}
 Alice hat ein langes binäres Passwort für den Zugriff auf eine Streaming-Platform gewählt.
-Bob möchte gerne die neueste Staffel seiner Lieblingsserie schauen und ruft dazu Alice an um sie um das Passwort zu bitten\footnote{Bob scheint nicht mit dem \textit{BitTorrent} Kommunikationsprotokoll (peer-to-peer file sharing) vertraut zu sein.
+Bob möchte gerne die neueste Staffel seiner Lieblingsserie schauen und ruft dazu Alice an, um sie um das Passwort zu bitten\footnote{Bob scheint nicht mit dem \textit{BitTorrent} Kommunikationsprotokoll (peer-to-peer file sharing) vertraut zu sein.
 	Vielleicht benötigt er aber auch nur einen Vorwand, um Alice anzurufen.}.
 
 \begin{itemize}
-	\item Angenommen Alices Passwort lautet $p_0 := 01011010110001101101111010$. Wie könnte Sie Bob das Passwort $p_0$ per Telefon diktieren? Ihr wird (mehr oder weniger) nichts Schlaueres übrig bleiben, als das Passwort Bob Bit für Bit (Ziffer um Ziffer) zu diktieren.
+	\item Angenommen Alices Passwort lautet $p_0 := 01011010110001101101111010$. Wie könnte Sie Bob das Passwort $p_0$ per Telefon mitteilen? Ihr wird (mehr oder weniger) nichts Schlaueres übrig bleiben, als das Passwort Bob Bit um Bit (Ziffer um Ziffer) zu diktieren.
 	\item Anders hingegen wäre die Situation bei dem Passwort
 	      \begin{align*}
 		      p_1 := 11100111001110011100111001110011100 = (11100)^7,
 	      \end{align*}
-	      Das Passwort $p_1$ weist eine starke Regelmässigkeit auf. Natürlich könnte Alice auch dieses Passwort Bit für Bit an Bob diktieren. Offensichtlich ist es jedoch einfacher, wenn Sie ihm einfach sagen würde:
+	      Das Passwort $p_1$ weist eine starke Regelmässigkeit auf. Natürlich könnte Alice auch dieses Passwort Bit für Bit an Bob diktieren. Offensichtlich ist es jedoch einfacher, wenn Sie ihm einfach mitteilen würde:
 	      \begin{center}
-		      \enquote{Du erhältst das Passwort, wenn du siebenmal das Wort $11100$ hintereinander schreibst.}
+		      \enquote{Du erhältst das Passwort, indem du siebenmal das Wort $11100$ hintereinander schreibst.}
 	      \end{center}
 	      Dadurch hat Alice die Darstellung von $p_1$ \textit{komprimiert}.
 \end{itemize}
 \end{myexample}
 
-\cref{myexample:passwort} motiviert die folgende intuitive Vorstellung: Wir wollen einem Wort einen kleinen Informationsgehalt beimessen, falls es eine kurze Darstellung besitzt (komprimierbar ist) und
-einen grossen Informationsgehalt, falls das Wort so unregelmässig ist, dass keine kurze Darstellung zulässt.
+\cref{myexample:passwort} motiviert die folgende intuitive Vorstellung: Wir wollen einem Wort einen kleinen Informationsgehalt beimessen, falls es eine kurze Darstellung / Beschreibung besitzt (komprimierbar ist) und
+einen grossen Informationsgehalt, falls das Wort so unregelmässig ist, dass keine kurze Darstellung / Beschreibung zulässt.
 
 \begin{mydefinition}[Komprimierung]\label{mydefinition:Komprimierung}
 Die Erstellung einer kürzeren Darstellung eines Wortes $w$ nennen wir eine
@@ -48,7 +48,8 @@ Es existieren unendlich viele Komprimierungsmethoden, welche für eine feste Wah
 Doch welche Komprimierungsmethode stellt nun die korrekte Wahl dar? Das Problem wird sein, dass, egal welche Komprimierung verwendet wird, immer eine andere Komprimierung existiert, welche für unendlich viele Wörter kürzere Darstellungen erzeugt.
 
 \begin{myexample}[Komprimierung durch Ausnutzung von Wiederholungen]\label{myexample:Wiederholungen}
-Lassen Sie uns ein binäres Wort mit zahlreichen Wiederholungen von Teilwörtern untersuchen. Konkret wollen wir das Wort    \begin{align*}
+Lassen Sie uns ein binäres Wort mit zahlreichen Wiederholungen von Teilwörtern untersuchen. Konkret wollen wir das Wort
+\begin{align*}
 	w := 00(101)^{\textcolor{Red}{25}}(01010)^{\textcolor{Blue}{9}}(1011)^{\textcolor{Green}{16}} = 00(101)\textcolor{Red}{11001}(01010)\textcolor{Blue}{1001}(1011)\textcolor{Green}{10000}
 \end{align*}
 untersuchen, wobei wir die Exponenten in Basis 10 durch ihre binäre Darstellung ersetzt haben. Die resultierende Darstellung ist jedoch noch immer kein binäres Wort. Tatsächlich ist es ein Wort über dem Alphabet $\lrc{0, 1, (, )}$, welches vier Symbole erhält. Mit der Vereinbarung
@@ -85,9 +86,22 @@ Es sei $w$ ein beliebiges Wort. Wir sagen, dass ein Programm (ein Algorithmus) $
 Das Programm
 \begin{lstlisting}
         def A():
-            print("00110111")
+            print('00110111')
     \end{lstlisting}
 generiert das Wort $00110111$.
+\end{myexample}
+
+\begin{myexample}
+Das Programm
+\begin{lstlisting}
+        def B():
+            n = 99005
+            wort = ''
+            for _ in range(n):
+                wort += '1'
+            print(wort)
+    \end{lstlisting}
+generiert das Wort $1^{99005} = \underbrace{11\ldots 111}_{\text{99005 Einsen}}$.
 \end{myexample}
 
 \begin{mydefinition}[Kolmogorov-Komplexität]\label{mydefinition:kolmogorov}
@@ -96,21 +110,70 @@ Es sei $w$ ein binäres Wort. Die Kolmogorov-Komplexität $K(w)$ von $w$ ist def
 Für ein binäres Wort $w$ betrachten wir alle (unendlich vielen) Maschinencodes von Python-Programmen, die $w$ generieren. Die Länge eine kürzesten\footnote{Im Allgemeinen kann es mehrere verschiedene kürzeste Maschinencodes geben, die $w$ generieren.} solcher Maschinencodes ist dann $K(w)$.
 
 \begin{myremark}
-	Ist $K(w)$ nun ein geeignetes Mass für den Informationsgehalt des binären Wortes $w$? Ja, da jede Komprimierungsmethode als Programm formuliert werden kann, bezieht die Kolmogorov-Komplexität jede Komprimierungsmethode ein.
-	Es sei $x$ ein binäres Wort und $f$ eine Komprimierungsmethode, die zu $x$ eine komprimierte Darstellung $x' := f(x)$ generiert. Es sei $f^{-1}$ die Umkehrung der Komprimierung $f$, also $f^{-1}(f(x)) = f^{-1}(x') = x$. Dann können wir ein Programm schreiben, welches (das kurze Wort) $x'$ als Parameter beinhaltet und $x$ wieder aus $x'$ mithilfe von $f^{-1}$ erzeugt und schliesslich ausgibt. Dazu muss $f^{-1}$ natürlich auch im Programm kodiert sein. Doch die binäre Länge der Beschreibung dieser Umkehrfunktion ist unabhängig von der Längen von $x$ und $x'$ und kann somit als konstant angesehen werden.
+	Zur einfacheren Beschreibung werden wir im folgenden annehmen, dass unsere Platform Python-Code direkt in Maschinencode übersetzt und diesen dann direkt ausführt\footnote{\texttt{Cython} macht dies übrigens tatsächlich.}.
 \end{myremark}
 
-\begin{mytheorem}[$K(w)$ ist auf keiinen Fall wesentlich länger als $\abs{w}$]
+\begin{myremark}
+	Ist $K(w)$ nun ein geeignetes Mass für den Informationsgehalt des binären Wortes $w$? Ja, da jede Komprimierungsmethode als Programm formuliert werden kann, bezieht die Kolmogorov-Komplexität jede Komprimierungsmethode ein.	Es sei $x$ ein binäres Wort und $f$ eine Komprimierungsmethode (Funktion), die zu $x$ eine komprimierte Darstellung $x' := f(x)$ generiert. Es sei $f^{-1}$ die Umkehrung der Komprimierung $f$, also $f^{-1}(f(x)) = f^{-1}(x') = x$. Dann können wir ein Programm schreiben, welches lediglich (das kurze Wort) $x'$ als Parameter beinhaltet und $x$ wieder aus $x'$ mithilfe von $f^{-1}$ erzeugt und schliesslich ausgibt. Dazu muss $f^{-1}$ natürlich auch im Programm kodiert sein. Doch die binäre Länge der Beschreibung dieser Umkehrfunktion ist unabhängig von der Längen von $x$ und $x'$ und kann somit als konstant angesehen werden. Das so aufgebaute Programm würde dann $x$ generieren, ohne die Darstellung von $x$ speichern zu müssen.
+\end{myremark}
+
+Offensichtlich kann ein beliebiges binäres Wort $w$ sicherlich beschrieben werden, indem man jedes Bit des Wortes einzeln angiebt ($w$ also Bit für Bit diktiert). Diese offensichtliche Beobachtung lässt vermuten, dass die Kolmogorov-Komplexit eines jeden binären Wortes $w$ nicht (wesentlich) länger ist als die Anzahl Bits von $w$ (Länge von $w$). Diese Vermutung ist korrekt, wie, \cref{mytheorem:upperbound} zeigt.
+
+\clearpage
+
+\begin{mytheorem}[$K(w)$ ist auf keinen Fall wesentlich länger als $\abs{w}$]\label{mytheorem:upperbound}
 	Es existiert eine Konstante $c$, so dass für jedes binäre Wort $w$ gilt
 	\begin{align*}
 		K(w) \leq \abs{w} + c.
 	\end{align*}
 	\begin{myproof}
-		Es genügt, ein Programm anzugeben, welches $w$ generiert und eine binäre Länge aufweist, welche kleiner oder gleich $\abs{w} + c$ ist (für eine geeignete Konstante $c$). Das Programm
-		\begin{lstlisting}
-            def A():
-                print(x)
+		Es genügt, ein Programm anzugeben, welches ein beliebiges binäres Wort $w$ generiert und eine binäre Länge aufweist, welche kleiner oder gleich $\abs{w} + c$ ist (für eine geeignete Konstante $c$). Das Programm
+		\begin{lstlisting}[escapechar=!] 
+            !\colorbox{Yellow}{def Aw():}!
+            !\colorbox{Yellow}{\hspace*{1.5em}print(}!!\colorbox{Magenta}{w}!!\colorbox{YellowGreen}{)}!
         \end{lstlisting}
-		generiert $x$. Doch wie gross ist die binäre Länge von $A$?
+		generiert $w$. Der gelbe und der grüne Teil des Programms sind die gleichen für jedes Wort $w$. Das Wort \colorbox{Magenta}{\texttt{w}} soll im Maschinencode unverändert (binär) dargestellt werden. Nun ist noch nicht klar, wo genau in der binären Darstellung des Programms \texttt{Aw} das Wort $w$ beginnt und endet. Dazu geben wir am Anfang der binären Kodierung von \texttt{Aw} zwei natürliche Zahlen $b$ und $e$ an. Diese beiden Zahlen werden in ASCII-Kodierung dargestellt und voneinander durch ein vereinbartes Symbol (z.B. ein Komma) getrennt und vom eigentlichen Programm durch ein anderes Symbol (z.B. ein Rautesymbol) getrennt. Die Zahl $b$ gibt die binäre Länge des Programmteils vor dem Wort $w$ an (hier der gelbe Teil) und $e$ die binäre Länge des Programmteils nach dem Wort $w$ (hier der grüne Teil). Der gelbe Teil (Präfix) und der grüne Teil (Suffix) werden mithilfe der ASCII-Kodierung binär kodiert. Das (binäre) Wort $w$ wird direkt in dem Maschinencode übernommen. Natürlich muss diese spezifische Form von Maschinencode von einem leicht modfizierten Kernel ausgeführt werden, welcher zunächst einmal die beiden Kodierungen von $b$ und $e$ liest und korrekt interpretiert. Dies ist aber ein technisches Detail.
+
+		Bitte beachten Sie, dass weder die Zahl $b$ noch $e$ von der Länge von $w$ (oder überhaupt von $w$) abhängig sind! Der resultierende Maschinencode hat also eine Länge von $\abs{w}$ vielen Bits (für die Darstellung des binären Wortes $w$) und zusätzlich noch irgendeine konstante Anzahl Bits $c$ für die Kodierung von $b$, $e$ und dem eigentlichen Programm (gelber Teil und grüner Teil). Die Anzahl Bits $c$ ist konstant, in dem Sinne, dass sie nicht von $w$ abhängig ist. Damit haben wir ein Programm angegeben, welches $w$ generiert und eine binäre Länge von $\abs{w} + c$ hat. Somit gilt $K(w) \leq \abs{w} + c$ für eine Konstante $c$. Die Kolmogorov-Komplexit von $w$ ist also sicherlich (bis auf eine Konstante) nicht grösser als die Länge von $w$.
 	\end{myproof}
 \end{mytheorem}
+
+\cref{mytheorem:upperbound} gibt lediglich eine obere Schranke für die Kolmogorov-Komplexit von binären Wörtern an. Wörter $w$, die eine hohe Regelmässigkeit aufweisen, müssen nicht Bit für Bit angegeben werden, sondern lassen sich (unter Ausnutzung ihrer Regelmässigkeit) deutlich kürzer beschreiben als mit $\abs{w} + c$ vielen Bits.
+
+\begin{myexample}
+Es sei $w_n := 1^n$ für jede natürliche Zahl $n > 0$. Das Wort $w_n$ besteht also genau aus $n$-vielen Einsen (und hat insbesondere die Länge $n$). Es handelt sich also um ein sehr regelmässiges Wort, welches (intuitiv) nicht Bit für Bit beschrieben werden muss. Das folgende Programm \texttt{Cn} generiert das Wort $w_n$:
+\begin{lstlisting}[escapechar=!] 
+        !\colorbox{Yellow}{def Cn():}!
+        !\colorbox{Yellow}{\hspace*{1.5em}wort = ''}!
+        !\colorbox{Yellow}{\hspace*{1.5em}for k in range(}!!\colorbox{Magenta}{n}!!\colorbox{YellowGreen}{):}!
+        !\colorbox{YellowGreen}{\hspace*{1.5em}\hspace*{1.5em}wort += '1'}!
+        !\colorbox{YellowGreen}{\hspace*{1.5em}print(wort)}!
+    \end{lstlisting}
+Für jedes $n$ unterscheiden sich die Programme \texttt{Cn} lediglich um die binäre Kodierung der Zahl \colorbox{Magenta}{\texttt{w}}. Gemäss \cref{mytheorem:AnzahlZiffern} benötigen wir zur binären Darstellung von $n$ genau $\ceil{\log_2(n+1)}$ viele Bits. Der Rest des Programms ist unabhängig von $w_n$. Damit existiert Konstanten $c_0$ und $c_1$ (siehe auch \cref{mytheorem:upperbound}), so dass
+\begin{align*}
+	K(w_n) \leq c_0 + \ceil{\log_2(n+1)} = \log_2(n) + c_1 = \log_2(\abs{w_n}) + c_1
+\end{align*}
+für alle natürlichen Zahlen $n>0$.
+\end{myexample}
+
+\begin{myexample}
+Es sei $v_n := 1^{(n^2)}$ für jede natürliche Zahl $n > 0$. Das Wort $v_n$ besteht also genau aus $n^2$-vielen Einsen. Offensichtlich gilt $\abs{v_n} = n^2$ und somit $n = \sqrt{\abs{v_n}}$. Das folgende Programm \texttt{Dn} generiert das Wort $v_n$:
+\begin{lstlisting}[escapechar=!] 
+        !\colorbox{Yellow}{def Dn():}!
+        !\colorbox{Yellow}{\hspace*{1.5em}wort = ''}!
+        !\colorbox{Yellow}{\hspace*{1.5em}M = }!!\colorbox{Magenta}{n}!
+        !\colorbox{YellowGreen}{\hspace*{1.5em}M = M * M}!
+        !\colorbox{YellowGreen}{\hspace*{1.5em}for k in range(M)}!
+        !\colorbox{YellowGreen}{\hspace*{1.5em}\hspace*{1.5em}wort += '1'}!
+        !\colorbox{YellowGreen}{\hspace*{1.5em}print(wort)}!
+    \end{lstlisting}
+Für jedes $n$ unterscheiden sich die Programme \texttt{Dn} lediglich um die binäre Kodierung der Zahl \colorbox{Magenta}{\texttt{w}}. Gemäss \cref{mytheorem:AnzahlZiffern} benötigen wir zur binären Darstellung von $n$ genau $\ceil{\log_2(n+1)}$ viele Bits. Der Rest des Programms ist unabhängig von $v_n$. Damit existiert Konstanten $c_2$ und $c_3$ (siehe auch \cref{mytheorem:upperbound}), so dass
+\begin{align*}
+	K(v_n) \leq c_3 + \ceil{\log_2(n+1)} = \log_2(n) + c_4 = \log_2\lr{\sqrt{\abs{w_n}}} + c_4
+\end{align*}
+für alle natürlichen Zahlen $n>0$.
+
+
+Bei der Bestimmung einer oberen Schranke für die Kolmogorov-Komplexit eines Wortes, interessieren wir uns lediglich dafür, wie viele Bits wir für die \textbf{Beschreibung} dieses Wortes benötigen! Dass die Inhalte von Variablen wie zum Beispiel von \texttt{M} während er Ausführung des Programms \texttt{Dn} gigantisch gross werden könnten oder eine Berechnung wie \texttt{M * M} möglicherweise sehr viel Rechenzeit in Anspruch nimmt, tut überhaupt nichts zur Sache.
+\end{myexample}
+

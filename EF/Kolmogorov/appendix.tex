@@ -1,0 +1,68 @@
+\chapter{Details}\label{ch:Details}
+
+\section{Werkzeuge}\label{sec:Werkzeuge}
+\begin{mydefinition}[$bin$ und $dec$]\label{mydefinition:binunddec}
+\phantom{1}
+\begin{itemize}
+	\item Es sei $n>0$ eine natürliche Zahl. Dann bezeichnen wir mit $bin(n)$ die binäre (Basis 2) Zahlendarstellung von $n$ ohne führende Nullen.
+	\item Es sei $n>0$ eine natürliche Zahl. Dann bezeichnen wir mit $dec(n)$ die dezimale (Basis 10) Zahlendarstellung von $n$ ohne führende Nullen.
+	\item Wir definieren zusätzlich $bin(0) := 0$ sowie $dec(0) := 0$.
+\end{itemize}
+\end{mydefinition}
+
+
+\begin{mytheorem}[geometrische Summe]\label{mytheorem:geometrischeSumme}
+	Es sei $q \neq 0$ eine reelle Zahl und $n$ eine natürliche Zahl. Dann gilt
+	\begin{align*}
+		\sum_{k = 0}^n q^k = q^0 + q^1 + \ldots + q^n = \frac{q^{n+1}-1}{q-1}.
+	\end{align*}
+	\begin{myproof}
+		Wir beweisen die Aussage durch vollständige Induktion.
+		\begin{itemize}
+			\item Für $n = 0$ gilt die Aussage, da
+			      \begin{align*}
+				      \sum_{k = 0}^0 q^k = q^0 = 1 = \frac{q^{0+1}-1}{q-1}.
+			      \end{align*}
+			\item Die Aussage gelte nun für eine natürliche Zahl $n$. Wir zeigen, dass sie auch für $n+1$ gilt.
+			      \begin{align*}
+				      \sum_{k = 0}^{n+1} q^k = q^{n+1} + \sum_{k = 0}^n q^k = q^{n+1} + \frac{q^{n+1}-1}{q-1} = \frac{q^{n+2}-1}{q-1}.
+			      \end{align*}
+		\end{itemize}
+	\end{myproof}
+\end{mytheorem}
+
+
+\begin{mytheorem}[verallgemeinerte geometrische Summe]\label{mytheorem:verallgemeinertegeometrischeSumme}
+	Es sei $q \neq 0$ eine reelle Zahl und $n$ und $m$ natürliche Zahlen. Dann gilt
+	\begin{align*}
+		\sum_{k = m}^n q^k = q^m + q^{m+1} + \ldots + q^n = \frac{q^{n+1}-q^m}{q-1}.
+	\end{align*}
+	\begin{myproof}
+		Unter Verwendung von \cref{mytheorem:geometrischeSumme} finden wir
+		\begin{align*}
+			\sum_{k = m}^n q^k =
+			\sum_{k = 0}^n q^k - \sum_{k = 0}^{m-1} q^k =
+			\frac{q^{n+1}-1}{q-1} - \frac{q^m - 1}{q-1} =
+			\frac{q^{n+1}-q^m}{q-1}.
+		\end{align*}
+	\end{myproof}
+\end{mytheorem}
+
+
+\begin{mytheorem}[Anzahl Ziffern in Zahlendarstellung]\label{mytheorem:AnzahlZiffern}
+	Es seien $n>0$ und $b>1$ natürliche Zahlen. Die kürzeste $b$-adische Darstellung von $n$ (Darstellung ohne führende Nullen) hat genau $\ceil{\log_b(n + 1)}$ Stellen.
+	\begin{myproof}
+		Es sei $s$ die Anzahl der Stellen der kürzesten $b$-adischen Darstellung von $n$. Die grösste $s$-stellige Zahl in Basis $b$ (kürzeste Darstellung) ist
+		\begin{align*}
+			 & \sum_{k = 0}^{s-1} (b-1)b^{k} = (b-1)\sum_{k = 0}^{s-1} b^{k} = (b-1)\frac{b^s - 1}{b - 1} = b^s - 1,
+		\end{align*}
+		wobei wir \cref{mytheorem:geometrischeSumme} verwendet haben. Die kleinste $s$-stellige Zahl Basis $b$ (kürzeste Darstellung) ist $b^{s-1}$. Somit gilt
+		\begin{align*}
+			b^{s-1} - 1 < n \leq b^s - 1 \iff \\
+			b^{s-1} < n + 1 \leq b^s \iff     \\
+			s-1 < \log_b(n+1) \leq s,
+		\end{align*}
+		wobei wir verwendet haben, dass $\log$ eine streng monoton wachsende Funktion ist.
+		Dann folgt aber $\ceil{\log_b(n + 1)} = s$.
+	\end{myproof}
+\end{mytheorem}
