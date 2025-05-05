@@ -1,0 +1,22 @@
+\begin{tikzpicture}[node distance=2.6cm, transform shape, on grid, ->]
+    \tikzstyle{every node}=[font=\small]
+    \node (start) [code] {\lstinline|beschreibe_wetter(19)|};
+    \node (dec1) [decision, below of=start] {\lstinline|temperatur >= 30|};
+    \node (printif) [code, text width=4cm, right=1cm of dec1.east] {\lstinline|print("Es ist heiss")|};
+    \node (dec2) [decision, below of=dec1] {\lstinline|temperatur >= 20|};
+    \node (printelif) [code, text width=4cm, right=1cm of dec2.east] {\lstinline|print("Es ist warm")|};
+    \node (printelse) [code, below of=dec2] {\lstinline|print("Es ist kühl")|};
+    \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
+    
+    \draw (start) -- (dec1);
+    \draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+    \draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
+    
+    \draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
+    \draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
+    
+    \draw (printif) --++ (2.5cm,0cm) |- (end);
+    \draw (printelif) --++ (2.5cm,0cm) |- (end);
+    
+    \draw (printelse) -- (end);
+\end{tikzpicture}
