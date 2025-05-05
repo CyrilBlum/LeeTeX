@@ -112,11 +112,7 @@ Das Programm
 void A() {
     std::cout << "00110111" << std::endl;
 }
-int main() {
-    A();
-    return 0;
-}
-    \end{lstlisting}
+\end{lstlisting}
 generiert das Wort $00110111$.
 \end{myexample}
 
@@ -129,11 +125,7 @@ void B() {
     std::string wort(9900507, '1');
     std::cout << wort << std::endl;
 }
-int main() {
-    B();
-    return 0;
-}
-    \end{lstlisting}
+\end{lstlisting}
 generiert das Wort $w := 1^{9900507} = \underbrace{11\ldots 111}_{\text{9900507 Einsen}}$.
 \par
 Beachte, dass der Algorithmus \texttt{B} eine kurze Beschreibung von $w$ relativ zur grossen Länge von $w$ darstellt.
@@ -148,10 +140,6 @@ Zunächst möchten wir das kleine und etwas mühsames Detail der sogenannten \te
 void A() {
     std::cout << "00110111" << std::endl;
 }
-int main() {
-    A();
-    return 0;
-}
 \end{lstlisting}
 Das Problem ist, dass wir typischerweise die Symbole der Tastatur in Binärcode durch Folgen von $7$ Nullen und Einsen (zum Beispiels mittels der ASCII-Kodierung) darstellen müssen. Wenn wir aber das gesammte Programm \texttt{A} so kodieren, dann würden wir für das Wort $w := 00110111$ nicht nur $\abs{w}$ Bits benötigen sondern $7\abs{w}$. Diesen Faktor von $7$ möchten wir gerne vermeiden. Trotzdem muss klar sein, welcher Teil im Programm \texttt{A} dem Wort $w$ entspricht. Um dies zu erreichen, müssen wir eine ganz leicht modfizierte Version des \texttt{g++} Compilers und der Programmiersprache \texttt{C++} designen. Lass uns diesen modifizierten Compiler \texttt{g'++} nennen und die angepasste Sprache \texttt{C'++}.
 \par
@@ -160,10 +148,6 @@ Die Sprache \texttt{C'++} unterscheidet sich von standard \texttt{C++} lediglich
 #include <iostream>
 void A() {
     std::cout << "***00110111+++" << std::endl;
-}
-int main() {
-    A();
-    return 0;
 }
 \end{lstlisting}
 
@@ -214,10 +198,6 @@ Ein beliebiges binäres Wort $w$ kann sicherlich immer beschrieben werden, indem
         !\colorbox{Yellow}{void A() \{}!
             !\colorbox{Yellow}{\hspace*{1.5em}std::cout << \texttt{"}***}!!\colorbox{YellowGreen}{w}!!\colorbox{Yellow}{+++\texttt{"} << std::endl;}!
         !\colorbox{Yellow}{\texttt{\}}}!
-        !\colorbox{Yellow}{int main() \{}!
-            !\colorbox{Yellow}{\hspace*{1.5em}A();}!
-            !\colorbox{Yellow}{\hspace*{1.5em}return 0;}!
-        !\colorbox{Yellow}{\texttt{\}}}!
         \end{lstlisting}
 		generiert $w$. Der gelbe Teil des Programms ist gleich für jedes Wort $w$. Das Wort \colorbox{YellowGreen}{\texttt{w}} wird unverändert (binär) im Maschinencode vorkommen. Der resultierende Maschinencode hat also eine Länge von $\abs{w}$ vielen Bits (für die Darstellung des binären Wortes $w$) und zusätzlich noch irgendeine konstante Anzahl Bits $c$ für die Kodierung des eigentlichen Programms (gelber Teil). Die Anzahl Bits $c$ ist konstant, in dem Sinne, dass sie nicht von $w$ abhängig ist. Damit haben wir ein Programm angegeben, welches $w$ generiert und eine binäre Länge von $\abs{w} + c$ hat. Somit gilt $K(w) \leq \abs{w} + c$ für eine Konstante $c$.
 	\end{myproof}
@@ -236,11 +216,6 @@ Es sei $w_n := 1^n$ für eine beliebige natürliche Zahl $n > 0$. Das Wort $w_n$
 void Cn() {
     std::string wort(***!\colorbox{YellowGreen}{bin(n)}!+++, '1');
     std::cout << wort << std::endl;
-}
-
-int main() {
-    Cn();
-    return 0;
 }
 \end{lstlisting}
 Im Programm \texttt{Cn} ist einzig die binäre Kodierung \colorbox{YellowGreen}{\texttt{bin(n)}} der Zahl $n$ abhängig von $n$ beziehungsweise $w_n$. Der Rest des Programms ist unabhängig von der konkreten Wahl von $n$ (für jede Wahl von $n$ gleich). Gemäss \cref{mytheorem:AnzahlZiffern} benötigen wir zur binären Darstellung von $n$ genau $\ceil{\log_2(n+1)}$ viele Bits. Der Rest des Programms ist unabhängig von $w_n$. Damit existiert Konstanten $c_0$ und $c_1$, so dass
@@ -267,11 +242,6 @@ void Dn() {
     }
 
     std::cout << wort << std::endl;
-}
-
-int main() {
-    Dn();
-    return 0;
 }
     \end{lstlisting}
 Analog zu \cref{myexample:wn}, ist auch hier einzig die binäre Kodierung \colorbox{YellowGreen}{\texttt{bin(n)}} der Zahl $n$ abhängig von $n$ beziehungsweise $v_n$. Der Rest des Programms ist wieder unabhängig von der konkreten Wahl von $n$ (für jede Wahl von $n$ gleich). Zur binären Darstellung von $n$ benötigen wir genau $\ceil{\log_2(n+1)}$ viele Bits. Der Rest des Programms ist unabhängig von $v_n$. Damit existiert Konstanten $c_2$ und $c_3$, so dass
@@ -305,11 +275,6 @@ void Fn() {
     }
 
     std::cout << wort << std::endl;
-}
-
-int main() {
-    Fn();
-    return 0;
 }
     \end{lstlisting}
 	Warum beweist dieses Programm sicherlich eine schlechtere obere Schranke für die Kolmogorov-Komplexität von $v_n$ als \cref{myexample:vn}?
