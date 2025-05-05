@@ -1,0 +1,42 @@
+\begin{frame}[fragile]{Mehrere Bedingungen zusammenfassen}
+\begin{columns}
+\begin{column}{.4\textwidth}
+\begin{lstlisting}[escapechar=!, basicstyle=\tiny\ttfamily]
+antwort = input("Nenne einen Kanton, in dem man Italienisch spricht")
+
+if antwort == "Tessin":         !\tikzmark{fromStart}!
+    print("Richtig")
+
+elif antwort == "Graubünden": 
+    print("Richtig")            !\tikzmark{fromEnd}!
+
+else:
+    print("Falsch")
+\end{lstlisting}
+\end{column}
+\begin{column}{.6\textwidth}
+\begin{lstlisting}[escapechar=!, basicstyle=\tiny\ttfamily]
+antwort = input("Nenne einen Kanton, in dem man Italienisch spricht")
+
+!\tikzmark{toStart}!if antwort == "Tessin" or antwort == "Graubünden":
+!\tikzmark{toEnd}!    print("Richtig")
+
+else:
+    print("Falsch")
+\end{lstlisting}
+\end{column}
+\end{columns}
+
+% annotate listings
+\begin{tikzpicture}[overlay, remember picture,
+    every edge/.append style = { ->, thick, >=stealth, red!70},
+    every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+	\only<2->{
+	\drawBrace{0em}{fromStart}{fromEnd}{}{.5}{}{}
+	\drawBrace{-.5em}{toStart}{toEnd}{}{.5}{mirror}{}
+	 % arrow pointing from one code to other
+  \draw[->, style={thick, >=stealth, red!70}] (fromStartfromEnd-coord-arrow) to (toStarttoEnd-coord-arrow);
+		}
+\end{tikzpicture}
+\end{frame}
+
