@@ -82,19 +82,7 @@ In vielen Fällen möchten wir Code nur Ausführen, \textit{falls} eine gewisse 
 		\end{tikzpicture}
 	\end{figure}
 \end{myexample}
-\begin{mysubmission}
-	Schreiben Sie eine Python-Funktion \lstinline|def ist_schaltjahr(jahr)|, welche prüft, ob ein gegebenes Jahr ein Schaltjahr ist oder nicht.
-	
-	Ein Jahr ist ein Schaltjahr, genau dann wenn gilt:
-	\begin{enumerate}
-		\item (das Jahr ist durch 400 teilbar) oder
-		\item (das Jahr ist durch 4 teilbar aber nicht durch 100)
-	\end{enumerate}
-	Für die Prüfung auf Teilbarkeit sollen Sie den Modulo-Operator (\lstinline|%| verwenden).
-	\begin{myanswer}
-		\lstinputlisting[language=Python,caption=\texttt{schaltjahr.py},label=listing:schaltjahr]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/schaltjahr.py}
-	\end{myanswer}
-\end{mysubmission}
+
 \subsection{Verzweigungen mit \texorpdfstring{\lstinline|if|}{if}, \texorpdfstring{\lstinline|elif|}{elif} und \texorpdfstring{\lstinline|else|}{else}}
 \begin{myexample}
 	Folgender Code führt eine von drei Möglichkeiten aus:
@@ -173,9 +161,9 @@ In vielen Fällen möchten wir Code nur Ausführen, \textit{falls} eine gewisse 
 	Schreiben Sie ein Unterprogramm koffer(gewicht), der einen Parameter Gewicht entgegennimmt und einen Text auf der Konsole druckt, je nach Fall:
 	
 	\begin{itemize}
-		\item Wenn der Koffer über 0 kg und bis und mit 20 kg wiegt, muss kein Aufpreis bezahlt werden und es wird gedruckt \lstinline|"Der Koffer ist gratis"|
-		\item Wenn der Koffer über 20 kg und bis und mit 100 kg wiegt, muss der Aufpreis berechnet und ausgegeben werden (z.B. \lstinline|"Ihr Koffer hat X kg Übergewicht. Das kostet 5.-"|)
 		\item Wenn der Koffer über 100 kg wiegt, wird er nicht transportiert (\lstinline|"Der Koffer ist zu schwer"|)
+		\item Wenn der Koffer über 20 kg und bis und mit 100 kg wiegt, muss der Aufpreis berechnet und ausgegeben werden (z.B. \lstinline|"Ihr Koffer hat X kg Übergewicht. Das kostet 5.-"|)
+		\item Wenn der Koffer über 0 kg und bis und mit 20 kg wiegt, muss kein Aufpreis bezahlt werden und es wird gedruckt \lstinline|"Der Koffer ist gratis"|
 		\item  In allen anderen Fällen soll ausgegeben werden \lstinline|"Das eingegebene Gewicht ist nicht zulässig"|  (0, negative Zahlen etc.).
 	\end{itemize}
 	\begin{myanswer}
@@ -187,25 +175,36 @@ In vielen Fällen möchten wir Code nur Ausführen, \textit{falls} eine gewisse 
 	Entwickeln Sie eine Funktion \lstinline|def vielecke_sicher(anzahl, seite)| zum Zeichnen von regelmässigen Vielecken mit wählbarer Anzahl Ecken und wählbarer Seitenlänge. Wenn \lstinline|anzahl| (die Anzahl der Ecken) kleiner als 1 ist, soll das Programm nichts tun. Wenn \lstinline|anzahl == 1| ist, soll das Programm
 	\lstinline|"Es gibt kein 1-Eck"| ausgeben. Wenn \lstinline|anzahl == 2| ist, soll das Programm
 	\lstinline|"Es gibt kein 2-Eck"| ausgeben. Wenn \lstinline|anzahl >= 3| ist, soll das Programm das \lstinline|anzahl|-Eck mit Seitenlänge \lstinline|seite| zeichnen. Zeichnen Sie auch das dazugehörige Flussdiagramm.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{vieleck\_sicher.py},label=listing:vieleck_sicher]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_sicher.py}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
 	Entwickeln Sie eine Funktion \lstinline|def quadgleich(a, b, c)|, der quadratische Gleichungen der Form \(ax^2 + bx + c = 0\) löst. Der Befehl soll zuerst \(d = b^2 - 4аc\) ausrechnen und abhängig vom Wert von $d$ keine, eine oder zwei Lösungen ausgeben.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{quadgleich.py},label=listing:quadgleich]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/quadgleich.py}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-	Wo liegt hier das Problem?
+	Was gibt dieser Code aus? Ist die Ausgabe sinnvoll? Weshalb (nicht)?
 	\begin{lstlisting}        
-		note = input("Benoten Sie die Lehrperson (0-100).") 
-		# wir tippen 100 in das Fenster ein!
+		def beschreibe_wetter(temperatur):
+			if temperatur >= 30:
+				print("Es ist heiss")
+			if temperatur >= 20:
+				print("Es ist warm")
+			else:
+				print("Es ist kühl")
 		
-		if note == 100:
-			print("Vielen Dank :)")
-		if note > 60:
-			print("Wie kann ich mich verbessern?")
-		else:
-			print("Geben Sie mir noch eine Chance")
-	\end{lstlisting}
+		beschreibe_wetter(33)
+		\end{lstlisting}
+	\begin{myanswer}
+		Der Code gibt sowohl \lstinline|"Es ist heiss"| als auch \lstinline|"Es ist warm"| aus. Dies ist nicht sinnvoll, da die Temperatur 33 Grad beträgt und somit nur eine der beiden Aussagen wahr sein kann.
+
+		Der Grund dafür ist, dass die zweite \lstinline|if|-Bedingung unabhängig von der ersten \lstinline|if|-Bedingung ist. Das \lstinline|else| gehört nur zur zweiten \lstinline|if|-Bedingung. Das bedeutet, dass die zweite \lstinline|if|-Bedingung immer ausgeführt wird, selbst wenn die erste \lstinline|if|-Bedingung bereits wahr war. Aus diesem Grund wäre es sinnvoller, statt einem \lstinline|if|-Befehl eine \lstinline|elif|-Bedingung zu verwenden.
+	\end{myanswer}
 \end{myexercise}
 
 \section{Logische Ausdrücke}
@@ -217,7 +216,7 @@ In vielen Fällen möchten wir Code nur Ausführen, \textit{falls} eine gewisse 
 
 Wie Sie in den obigen Beispielen sehen, wird von einem Wahrheitstest ein \textbf{Wert} zurückgegeben: entweder der Wert \lstinline|True| (Wahr) oder \lstinline|False| (Falsch).
 
-Mögliche boolsche Relationen sind in \cref{table:bool} abgebildet.
+Mögliche logische Relationen sind in \cref{table:bool} abgebildet.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c||c}
@@ -229,19 +228,22 @@ Mögliche boolsche Relationen sind in \cref{table:bool} abgebildet.
 		\lstinline|>|   & grösser ($>$)                    \\
 		\lstinline|>=|  & grösser oder gleich ($\geq$)
 	\end{tabular}
-	\caption{Bool'sche Relationen und Schreibweise in Python}
+	\caption{Logische Relationen und Schreibweise in Python}
 	\label{table:bool}
 \end{table}
-Bool'sche Audrücke wie z.B. \lstinline|3 < 45| führen zu einem Bool'schen Wert, also einem Wahrheitswert, welcher entweder den Wert \lstinline|True| (wahr) oder \lstinline|False| (falsch) hat.
+Logische (oder auch bool'sche) Audrücke wie z.B. \lstinline|3 < 45| führen zu einem \tib{Bool'schen Wert}, also einem Wahrheitswert, welcher entweder den Wert \lstinline|True| (wahr) oder \lstinline|False| (falsch) hat.
 
-Die typische Verwendungsart bool'scher Werte ist in folgendem Code abgebildet:
+Die typische Verwendungsart logischer Ausdrücke ist in folgendem Code abgebildet:
 \begin{lstlisting}
 	if BOOLSCHER_WERT:
 		# dieser Code wird nicht ausgeführt, wenn BOOLSCHER_WERT falsch ist (False)
 \end{lstlisting}
 
 \begin{myexercise}
-	Entwickeln Sie eine Funktion, der Bilder abhängig von der Eingabe zeichnet. Wenn die Benutzerin eine 1 eingibt, soll der Befehl ein rotes Rechteck zeichnen. Bei einer 2 soll er ein grünes Dreieck zeichnen. Bei einer 3 soll er ein blaues Sechseck zeichnen. Bei allen anderen Eingaben soll der Befehl den Text \enquote{Nur die Zahlen 1, 2 oder 3 werden als Eingabe akzeptiert.} ausgeben.
+	Entwickeln Sie eine Funktion, die Bilder abhängig von der Eingabe zeichnet. Wenn die Benutzerin eine 1 eingibt, soll der Befehl ein rotes Rechteck zeichnen. Bei einer 2 soll er ein grünes Dreieck zeichnen. Bei einer 3 soll er ein blaues Sechseck zeichnen. Bei allen anderen Eingaben soll der Befehl den Text \enquote{Nur die Zahlen 1, 2 oder 3 werden als Eingabe akzeptiert.} ausgeben.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{vieleck\_if\_elif.py},label=listing:vieleck_if_elif]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_if_elif.py}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{mysubmission}
@@ -257,7 +259,7 @@ Die typische Verwendungsart bool'scher Werte ist in folgendem Code abgebildet:
 	Lösen Sie die Aufgabe ``Dynamisches Schachbrett'' auf Moodle.
 \end{mychallenge}
 
-\subsection{Bool'sche Ausdrücke miteinander verbinden}
+\subsection{Logische Ausdrücke miteinander verbinden}
 
 
 
@@ -341,7 +343,21 @@ Beim zweiten Beispiel handelt es sich um eine Verbindung mehrerer Bedingungen pe
 	\end{myanswer}
 \end{mychallenge}
 
-\subsection{Bool'sche Ausdrücke negieren}
+\begin{mychallenge}
+	Schreiben Sie eine Python-Funktion \lstinline|def ist_schaltjahr(jahr)|, welche prüft, ob ein gegebenes Jahr ein Schaltjahr ist oder nicht.
+	
+	Ein Jahr ist ein Schaltjahr, genau dann wenn gilt:
+	\begin{enumerate}
+		\item (das Jahr ist durch 400 teilbar) oder
+		\item (das Jahr ist durch 4 teilbar aber nicht durch 100)
+	\end{enumerate}
+	Für die Prüfung auf Teilbarkeit sollen Sie den Modulo-Operator (\lstinline|%| verwenden).
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{schaltjahr.py},label=listing:schaltjahr]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/schaltjahr.py}
+	\end{myanswer}
+\end{mychallenge}
+
+\subsection{Logische Ausdrücke negieren}
 \textit{Negieren} bedeutet in der Informatik \textit{nicht}, das Gegenteil einer (urpsrünglichen) Aussage zu machen, sondern \textit{alle Aussagen zu machen}, welche durch die ursprüngliche Aussage nicht gemacht wurden, also alles ``andere'' als die ursprüngliche Aussage zu sagen.
 
 \begin{myexample} Folgende Tabelle illustriert, was mit der Negation einer Aussage gemeint ist.
@@ -421,7 +437,7 @@ Natürlich könnte man auch hier berechnen, wie viele Male die \lstinline|for|-S
 
 Es geht allerdings auch einfacher, indem wir eine ``unendliche'' Schleife starten, die wir abbrechen, sobald eine gewisse Kondition wahr ist.
 
-Grundsätzlich können wir auch direkt die Werte \lstinline|True| (Wahr) oder \lstinline|False| (Falsch) in Bool'schen Ausdrücken verwenden:
+Grundsätzlich können wir auch direkt die Werte \lstinline|True| (Wahr) oder \lstinline|False| (Falsch) in Logischen Ausdrücken verwenden:
 
 \begin{myexample}
 	Der \lstinline|print|-Befehl in folgendem Beispiel wird immer ausgeführt:

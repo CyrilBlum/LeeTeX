@@ -1,5 +1,4 @@
 def koffer(gewicht):
-    # überprüft, ob "gewicht" eine Zahl ist (int oder float)
     if gewicht > 100:
         print("Der Koffer ist zu schwer")
     elif gewicht > 20:
