@@ -18,11 +18,48 @@ Auf dem Flussdiagramm werden die einzelnen Schritte des Codes als Boxen dargeste
 	\caption{Flussdiagrammm für den Code aus \cref{ex:if}}
 	\label{fig:if-flussdiagramm}
 \end{figure}
-Dabei bezeichnen rote Boxen eine Zeile Code, grüne Formen einen Test der schwarze Punkt das Programmende.
+Dabei bezeichnen blaue, rechteckig-abgerundete Boxen eine Zeile Code, grüne, rauteförmige Formen einen Test der schwarze Punkt das Programmende. Wenn immer eine Verzweigung vorliegt, geht der Pfeil für \lstinline|True| nach links, der Pfeil für \lstinline|False| geht nach rechts
 \end{myexample}
 
+Nach jedem \lstinline|if| steht ein logischer Ausdruck oder ein logischer Wert.
+
+\begin{mydefinition}
+	\tib{Logische Ausdrücke}, auch \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele sind:
+\begin{lstlisting}
+3 == 5 # gibt den Wert False zurück
+(9 + 3) < (2 * 8) # gibt den Wert True zurück
+\end{lstlisting}
+
+Wie Sie im obigen Beispiel sehen, wird von einem Wahrheitstest ein \textbf{Wert} zurückgegeben: entweder der Wert \lstinline|True| (Wahr) oder \lstinline|False| (Falsch).
+
+Mögliche logische Relationen sind in \cref{table:bool} abgebildet.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c||c}
+		\textbf{Python} & \textbf{Mathematische Bedeutung} \\\midrule
+		\lstinline|==|  & gleich ($=$)                     \\
+		\lstinline|!=|  & ungleich ($\neq$)                \\
+		\lstinline|<|   & kleiner ($<$)                    \\
+		\lstinline|<=|  & kleiner oder gleich ($\leq$)     \\
+		\lstinline|>|   & grösser ($>$)                    \\
+		\lstinline|>=|  & grösser oder gleich ($\geq$)
+	\end{tabular}
+	\caption{Logische Relationen und Schreibweise in Python}
+	\label{table:bool}
+\end{table}
+Logische (oder auch bool'sche) Audrücke wie z.B. \lstinline|3 < 45| führen zu einem \tib{Bool'schen Wert}, also einem Wahrheitswert, welcher entweder den Wert \lstinline|True| (wahr) oder \lstinline|False| (falsch) hat.
+
+Die typische Verwendungsart logischer Ausdrücke ist in folgendem Code abgebildet:
+\begin{lstlisting}
+	if BOOLSCHER_WERT:
+		# dieser Code wird nicht ausgeführt, wenn BOOLSCHER_WERT falsch ist (False)
+\end{lstlisting}
+\end{mydefinition}
+
+
+
 \begin{myexercise}
-	Entwickeln Sie eine Funktion \lstinline|def quadrat(laenge)| zum Zeichnen von Quadraten. Der Befehl soll aber nur etwas zeichnen, wenn die Seitenlänge mindestens 40 beträgt.
+	Entwickeln Sie eine Funktion \lstinline|def quadrat(laenge)| zum Zeichnen von Quadraten. Der Befehl soll aber nur etwas zeichnen, wenn die Seitenlänge mindestens 40 beträgt. Zeichnen Sie sich zuerst ein Flussdiagramm des Codes auf Papier auf.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{quadrat40.py},label=listing:quadrat40]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/quadrat40.py}
 	\end{myanswer}
@@ -30,7 +67,7 @@ Dabei bezeichnen rote Boxen eine Zeile Code, grüne Formen einen Test der schwar
 
 \begin{myexercise}
 	Entwickeln Sie ein Programm, das dem Benutzer im Rahmen einer interaktiven Fragerunde drei Fragen stellt (mit dem Befehl \lstinline|input("...")|). Das Programm soll die Anzahl der richtigen Antworten
-	zählen und diese Anzahl ausgeben.
+	zählen und diese Anzahl ausgeben. Zeichnen Sie sich zuerst ein Flussdiagramm des Codes auf Papier auf.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{fragerunde.py},label=listing:fragerunde]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/fragerunde.py}
 	\end{myanswer}
@@ -43,7 +80,9 @@ Dabei bezeichnen rote Boxen eine Zeile Code, grüne Formen einen Test der schwar
 In folgendem Code wird mit dem \lstinline|else|-Ausdruck ein Fall definiert, welcher ausgeführt wird, sofern die \lstinline|if|-Kondition nicht zutrifft.
 \lstinputlisting[language=Python]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_else.py}
 
-Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
+Beachten Sie, dass nach dem \lstinline|else| \textit{kein} logischer Ausdruck steht, da der Code unterhalb des \lstinline|else| nur dann stattfindet, wenn alle zuvor genannten Tests falsch waren.
+
+Der Code kann ebenfalls als Fluss-Diagramm aufgezeichnet werden:
 \begin{figure}[H]
 	\centering
 	\input{GrundlagenInfo/00_Programmieren/Skript/Figures/k04-if-else.tex}
@@ -71,8 +110,8 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 		\item Wie viele Kekse übrig bleiben.
 	\end{itemize}
 
-	Falls mehr als 500 oder weniger als 1 für \texttt{n} eingegeben werden, soll ausgegeben werden:  
-	
+	Falls mehr als 500 oder weniger als 1 für \texttt{n} eingegeben werden, soll ausgegeben werden:
+
 	\lstinline|"Ungültige Anzahl Kekse!"|
 
 	Verwenden Sie die Ganzzahldivision (\lstinline|//|) und Modulo (\lstinline|%|)!
@@ -87,9 +126,12 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 	Verwenden Sie einen \lstinline|input|-Befehl aus \cref{ex:input}, um den Benutzer nach einer Zahl zu fragen.
 	\begin{enumerate}
 		\item Falls die Zahl 1 eingegeben wird, soll ein blaues Viereck gezeichnet werden
-		\item Falls eine Zahl von 2 bis und mit 5 eingegeben wird, soll ein grünes Sechseck gezeichnet werden
-		\item Falls eine Zahl $n$ von 6 oder grösser eingegeben wird, soll ein schwarzes $n$-Eck gezeichnet werden.
+		\item Falls eine Zahl von 2 bis und mit 6 eingegeben wird, soll ein grünes Sechseck gezeichnet werden
+		\item Falls eine Zahl $n$ von 7 oder grösser eingegeben wird, soll ein schwarzes $n$-Eck gezeichnet werden.
 	\end{enumerate}
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{vieleck\_if\_elif\_2.py},label=listing:vieleck_if_elif_2]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_if_elif_2.py}
+	\end{myanswer}
 \end{myexercise}
 
 
@@ -118,6 +160,24 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 	\end{myanswer}
 \end{myexercise}
 
+\begin{myexercise}\label{ex:if-if-else}
+	Was gibt dieser Code aus? Ist die Ausgabe sinnvoll? Weshalb (nicht)?
+	\lstinputlisting[language=Python]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_if_else.py}
+	\begin{myanswer}
+		Der Code gibt sowohl \lstinline|"Es ist heiss"| als auch \lstinline|"Es ist warm"| aus. Dies ist nicht sinnvoll, da die Temperatur 33 Grad beträgt und somit nur eine der beiden Aussagen wahr sein kann.
+
+		Der Grund dafür ist, dass die zweite \lstinline|if|-Bedingung unabhängig von der ersten \lstinline|if|-Bedingung ist. Das \lstinline|else| gehört nur zur zweiten \lstinline|if|-Bedingung. Das bedeutet, dass die zweite \lstinline|if|-Bedingung immer ausgeführt wird, selbst wenn die erste \lstinline|if|-Bedingung bereits wahr war. Aus diesem Grund wäre es sinnvoller, statt einem \lstinline|if|-Befehl eine \lstinline|elif|-Bedingung zu verwenden.
+	
+		Das Flussdiagramm zeigt dieses Problem grafisch auf. Der rote, dicke Pfeil zeigt auf das Problem
+		\begin{figure}[H]
+			\centering
+			\input{GrundlagenInfo/00_Programmieren/Skript/Figures/k04-if-if-else.tex}
+			\caption{Flussdiagramm für den Code aus \cref{ex:if-if-else}}
+			\label{fig:if-if-else}
+		\end{figure}
+	\end{myanswer}
+\end{myexercise}
+
 \begin{myexercise}
 	Entwickeln Sie eine Funktion \lstinline|def quadgleich(a, b, c)|, der quadratische Gleichungen der Form \(ax^2 + bx + c = 0\) löst. Der Befehl soll zuerst \(d = b^2 - 4ac\) ausrechnen und abhängig vom Wert von $d$ keine, eine oder zwei Lösungen ausgeben.
 	\begin{myanswer}
@@ -125,54 +185,6 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 	\end{myanswer}
 \end{myexercise}
 
-\begin{myexercise}
-	Was gibt dieser Code aus? Ist die Ausgabe sinnvoll? Weshalb (nicht)?
-	\lstinputlisting[language=Python]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_if_else.py}
-	\begin{myanswer}
-		Der Code gibt sowohl \lstinline|"Es ist heiss"| als auch \lstinline|"Es ist warm"| aus. Dies ist nicht sinnvoll, da die Temperatur 33 Grad beträgt und somit nur eine der beiden Aussagen wahr sein kann.
-
-		Der Grund dafür ist, dass die zweite \lstinline|if|-Bedingung unabhängig von der ersten \lstinline|if|-Bedingung ist. Das \lstinline|else| gehört nur zur zweiten \lstinline|if|-Bedingung. Das bedeutet, dass die zweite \lstinline|if|-Bedingung immer ausgeführt wird, selbst wenn die erste \lstinline|if|-Bedingung bereits wahr war. Aus diesem Grund wäre es sinnvoller, statt einem \lstinline|if|-Befehl eine \lstinline|elif|-Bedingung zu verwenden.
-	\end{myanswer}
-\end{myexercise}
-
-\section{Logische Ausdrücke}
-\tib{Logische Ausdrücke}, auch \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele sind:
-\begin{lstlisting}
-	3 == 5 # gibt den Wert False zurück
-	(9 + 3) < (2 * 8) # gibt den Wert True zurück
-\end{lstlisting}
-
-Wie Sie in den obigen Beispielen sehen, wird von einem Wahrheitstest ein \textbf{Wert} zurückgegeben: entweder der Wert \lstinline|True| (Wahr) oder \lstinline|False| (Falsch).
-
-Mögliche logische Relationen sind in \cref{table:bool} abgebildet.
-\begin{table}[H]
-	\centering
-	\begin{tabular}{c||c}
-		\textbf{Python} & \textbf{Mathematische Bedeutung} \\\midrule
-		\lstinline|==|  & gleich ($=$)                     \\
-		\lstinline|!=|  & ungleich ($\neq$)                \\
-		\lstinline|<|   & kleiner ($<$)                    \\
-		\lstinline|<=|  & kleiner oder gleich ($\leq$)     \\
-		\lstinline|>|   & grösser ($>$)                    \\
-		\lstinline|>=|  & grösser oder gleich ($\geq$)
-	\end{tabular}
-	\caption{Logische Relationen und Schreibweise in Python}
-	\label{table:bool}
-\end{table}
-Logische (oder auch bool'sche) Audrücke wie z.B. \lstinline|3 < 45| führen zu einem \tib{Bool'schen Wert}, also einem Wahrheitswert, welcher entweder den Wert \lstinline|True| (wahr) oder \lstinline|False| (falsch) hat.
-
-Die typische Verwendungsart logischer Ausdrücke ist in folgendem Code abgebildet:
-\begin{lstlisting}
-	if BOOLSCHER_WERT:
-		# dieser Code wird nicht ausgeführt, wenn BOOLSCHER_WERT falsch ist (False)
-\end{lstlisting}
-
-\begin{myexercise}
-	Entwickeln Sie eine Funktion, die Bilder abhängig von der Eingabe zeichnet. Wenn die Benutzerin eine 1 eingibt, soll der Befehl ein rotes Rechteck zeichnen. Bei einer 2 soll er ein grünes Dreieck zeichnen. Bei einer 3 soll er ein blaues Sechseck zeichnen. Bei allen anderen Eingaben soll der Befehl den Text \enquote{Nur die Zahlen 1, 2 oder 3 werden als Eingabe akzeptiert.} ausgeben.
-	\begin{myanswer}
-		\lstinputlisting[language=Python,caption=\texttt{vieleck\_if\_elif.py},label=listing:vieleck_if_elif]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_if_elif.py}
-	\end{myanswer}
-\end{myexercise}
 
 \begin{mysubmission}
 	Geben seien zwei Zahlen \lstinline|x1| und \lstinline|x2|. Schreiben Sie eine Funktion def \lstinline|maxzahl(x1, x2)|, welche die grössere der beiden Zahlen mit \lstinline|return| zurück an das Hauptprogramm gibt. Wenn beide Zahlen gleich gross sind, soll \lstinline|x2| zurückgegeben werden.
@@ -483,9 +495,9 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 				
 				def spirale(seite, add, max_seite):
 					!\tikzmark{toStart}!!\tikzmark{toEnd}!while seite > max_seite:
-					t.fd(seite)
-					t.rt(90)
-					seite+=add
+						t.fd(seite)
+						t.rt(90)
+						seite+=add
 				
 				spirale(10, 10, 100)
 			\end{lstlisting}
@@ -521,17 +533,11 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 	\end{myanswer}
 \end{mysubmission}
 
-
-\begin{myexercise}
-	Entwickeln Sie eine Funktion \lstinline|def quadgleich(a, b, c)|, der quadratische
-	Gleichungen der Form $ax^2 + bx + c = 0$ löst. Der Befehl soll zuerst $d = b^2 - 4ac$
-	ausrechnen und abhängig vom Wert von d keine, eine oder zwei Lösungen aus-
-	geben
-\end{myexercise}
-
-
 \begin{myexercise}
 	Entwickeln Sie eine Funktion, dem eine Zahl $x > 1$ als Parameter übergeben wird. Aus $x$ wird nun eine Folge von Zahlen generiert und ausgegeben. Dabei wird folgende Regel angewendet: Wenn $x$ durch zwei teilbar ist, ist die nächste Zahl $x / 2$ . Wenn $x$ nicht durch zwei teilbar ist, ist die nächste Zahl $3 \cdot x + 1$ . Dieser Prozess wird wiederholt, solange die neu berechnete Zahl grösser als 1 ist.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{zahlenfolge.py},label=listing:zahlenfolge]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/zahlenfolge.py}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{mychallenge}[Weizenkornlegende]
@@ -564,177 +570,3 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 	\end{myanswer}
 
 \end{mychallenge}
-
-
-
-
-\subsection{Anwendungs-Aufgaben}
-
-Folgende Beispiele sollen die meisten der bisher gelernten Programmier-Konzepte konkret veranschaulichen. Stellen Sie sich vor, Sie sind SportlerIn und möchten Ihren Kalorienbedarf berechnen, um sich für auf einen kommenden Wettkampf optimal zu ernähren. Hierzu wollen zunächst Sie Ihren täglichen (theoretischen) Kalorienbedarf berechnen. Ihr Kalorienbedarf berechnet sich wie folgt:
-\begin{enumerate}
-	\item Ihr \textbf{Grundumsatz} (englisch \gls{BMR}): Dies ist ihr Grundbedarf, also die Anzahl Kalorien, welche Sie theoretisch benötigen, falls Sie sich gar nicht bewegen.
-	\item Ihr \textbf{Leistungsumsatz}, d.h., zusätzliche Energie, die Sie bei Aktivitäten wie Spazieren, Radfahren, Joggen usw. verbrennen.
-\end{enumerate}
-
-Beide Komponenten sind schwierig abzuschätzen. Sie möchten jedoch eine erste Einschätzung Ihrer \gls{BMR} haben, indem sie einige bekannte Formeln auf sich selber anwenden und diese vergleichen.
-
-\begin{mysubmission}\label{ex:bmr-simple}
-	Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel berechnen und geben Sie das Resultat auf der Konsole aus.
-	\begin{enumerate}
-		\item Für Männer:
-		      \begin{align*}
-			      \text{BMR} = & 88.362 +                                   \\
-			                   & (13.397 \times \text{Gewicht in kg}) +     \\
-			                   & (4.799 \times \text{Körpergrösse in cm}) - \\
-			                   & (5.677 \times \text{Alter in Jahren})
-		      \end{align*}
-		\item Für Frauen:
-		      \begin{align*}
-			      \text{BMR} = & 447.593  +                                 \\
-			                   & (9.247 \times \text{Gewicht in kg}) +      \\
-			                   & (3.098 \times \text{Körpergrösse in cm}) - \\
-			                   & (4.330 \times \text{Alter in Jahren})
-		      \end{align*}
-	\end{enumerate}
-	\begin{myanswer}
-		\lstinputlisting[language=Python]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/grundumsatz.py}
-	\end{myanswer}
-\end{mysubmission}
-
-Nun möchten wir zum Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zum Grundumsatz auch noch unsere Aktivitäten hinzufügen, allerdings können wir nun nicht mehr auf die Variable \texttt{bmr} zurückgreifen. Wie können wir das ändern? Indem wir sie an das Programm zurückgeben und speichern. Wichtige Änderungen gegebüber den Lösungs-Code aus \cref{ex:bmr-simple} sind in \colorbox{CornflowerBlue}{blau} umrandet.
-
-\begin{minipage}{\linewidth}
-	\begin{lstlisting}
-		def grundumsatz(gewicht, groesse, alter, geschlecht):
-			if geschlecht == 'mann':
-				bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
-			elif geschlecht == 'frau':
-				bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
-			
-			(*@\colorbox{CornflowerBlue}{return b\tikzmark{arrowFrom}mr}@*) # gib den bmr an das Programm zurück
-		
-		# Beispiel:
-		gewicht = 75  # kg
-		groesse = 180  # cm
-		alter = 30  # jahre
-		geschlecht = 'mann'
-		
-		# berechne grundumsatz(*@\colorbox{CornflowerBlue}{und speichere das Resultat in einer neuen Variable resultat}@*)
-		(*@\colorbox{CornflowerBlue}{resu\tikzmark{arrowTo}ltat = }@*) grundumsatz(gewicht, groesse, alter, geschlecht)
-		(*@\colorbox{CornflowerBlue}{print("Der Grundumsatz beträgt:", round(resultat, 2), "Kalorien")}@*)
-	\end{lstlisting}
-\end{minipage}
-
-\begin{tikzpicture}[overlay,remember picture]
-	% Wert zurückgeben
-	\draw[red,-stealth] (arrowFrom.north) to[bend left] node[right, fill=RoyalBlue,text=white,rounded corners] {Wert Zurückgeben} (arrowTo);
-\end{tikzpicture}
-
-Nun haben wir eine erste Einschätzung des \gls{BMR}. Allerdings gibt es auch noch weitere Formeln, die wir gerne berechnen möchten, um einen Vergleich der verschiedenen Methoden zu erhalten.
-
-\begin{mysubmission}\label{ex:bmr}
-	Schreiben Sie eine weitere Funktionen, um den \gls{BMR} anhand der Mifflin-St-Jeor-Gleichung und der Katch-McArdle-Formel zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
-	\begin{enumerate}
-		\item Mifflin-St-Jeor-Gleichung:
-		      \begin{enumerate}
-			      \item Männer:
-			            \begin{align*}
-				            \text{BMR} & = 10 \times \text{Gewicht (kg)}        \\
-				                       & \quad + 6.25 \times \text{Grösse (cm)} \\
-				                       & \quad - 5 \times \text{Alter (Jahre)}  \\
-				                       & \quad + 5
-			            \end{align*}
-			      \item Frauen:
-			            \begin{align*}
-				            \text{BMR} & = 10 \times \text{Gewicht (kg)}        \\
-				                       & \quad + 6.25 \times \text{Grösse (cm)} \\
-				                       & \quad - 5 \times \text{Alter (Jahre)}  \\
-				                       & \quad - 161
-			            \end{align*}
-		      \end{enumerate}
-		\item Katch-McArdle-Formel:
-		      \begin{enumerate}
-			      \item Grundformel:
-			            \begin{align*}
-				            \text{BMR} & = 370                                  \\
-				                       & \quad + (21.6 \times \text{FFM in kg})
-			            \end{align*}
-
-			      \item Fett-freie Masse (in kg):
-			            \begin{align*}
-				            \text{FFM} & = \text{Körpergewicht (kg)}                \\
-				                       & \quad \times (1 - \text{Körperfettanteil})
-			            \end{align*}
-
-		      \end{enumerate}
-
-	\end{enumerate}
-
-	\begin{myanswer}
-		\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/bmr.py}
-	\end{myanswer}
-\end{mysubmission}
-
-Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundbedarfs. Zu diesem können wir nun auch noch die Leistungsenergie hinzufügen, um den gesamten Energiebedarf zu berechnen.
-
-\begin{mysubmission}\label{ex:leistungsumsatz}
-	Berechnen Sie Ihre Leistungsenergie anhand der Tabelle \ref{tab:kcal}, indem Sie zwei Listen erstellen:
-	\begin{enumerate}
-		\item Eine Liste für die Zeit, während der Sie täglich einer Aktivität nachgehen
-		\item Eine Liste mit dem Kalorienverbrauch pro Minute für jede dieser Aktivitäten
-	\end{enumerate}
-
-	\begin{table}[H]
-		\centering
-		\begin{tabular}{c|*{10}{c}}
-			\textbf{Gewicht (kg)}    & 60   & 65   & 70   & 75   & 80   & 85   & 90   & 95   & 100  & 105  \\
-			\midrule\midrule
-			\textbf{Spazieren}       & 4.5  & 5.1  & 5.4  & 5.7  & 6.0  & 6.4  & 6.7  & 7.3  & 8.0  & 9.0  \\
-			\midrule
-			\textbf{Schnelles Gehen} & 5.5  & 6.3  & 7.0  & 7.5  & 8.0  & 8.6  & 9.5  & 10.0 & 10.6 & 11.3 \\
-			\midrule
-			\textbf{Fahrradfahren}   & 6.5  & 7.5  & 8.0  & 9.0  & 9.5  & 10.3 & 11.0 & 11.7 & 12.5 & 13.6 \\
-			\midrule
-			\textbf{Schwimmen}       & 8.0  & 9.2  & 10.0 & 10.8 & 11.5 & 12.5 & 13.7 & 14.4 & 15.4 & 16.5 \\
-			\midrule
-			\textbf{Rudern}          & 11.0 & 13.0 & 14.3 & 15.0 & 16.5 & 17.5 & 19.0 & 20.5 & 21.8 & 23.5 \\
-			\midrule
-			\textbf{Jogging}         & 13.0 & 14.5 & 16.0 & 17.5 & 19.0 & 20.0 & 22.0 & 23.5 & 24.5 & 26.5 \\
-			\midrule
-			\textbf{Laufen}          & 16.0 & 18.5 & 20.0 & 22.0 & 23.5 & 25.0 & 27.5 & 29.0 & 31.0 & 33.5 \\
-			\midrule
-			\textbf{Sprint}          & 19.0 & 21.5 & 24.0 & 26.0 & 28.0 & 30.0 & 32.5 & 34.7 & 35.6 & 39.0 \\
-		\end{tabular}
-		\caption{Kalorienverbrauch für unterschiedliche Aktivitäten, pro Minute}
-		\label{tab:kcal}
-	\end{table}
-	Wenn z.B. eine 80 kg schwere Person 1 Stunde lang rudert und 20 Minuten spaziert wären die Listen wie folgt:
-	\begin{lstlisting}
-		l_zeit = [60, 20] # Zeit in Minuten
-		l_kcal = [16.5, 6] # Kalorien pro Aktivität
-	\end{lstlisting}
-	Schreiben Sie eine Python-Funktion \lstinline|berechne_leistungsumsatz|, um Ihren Leistungsumsatz zu berechnen. Das erwartete Resultat für das Beispiel hier wäre: \lstinline|1110| (= Summe von \lstinline|[990, 120]|). Das Resultat soll an das Hauptprogramm zurückgegeben und in einer Variable \texttt{kalorienverbrauch} gespeichert werden.
-	\begin{myanswer}
-		\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/leistungsumsatz.py}
-	\end{myanswer}
-
-\end{mysubmission}
-
-\begin{mysubmission}
-	Schreiben Sie nun eine weitere Funktion, die Ihren gesamten Energieumsatz berechnet, als Summe Ihres BMRs, den Sie in \cref{ex:bmr} berechnet haben (durchschnitt der drei Formeln) und Ihres Leistungsumsatzes, den Sie in \cref{ex:leistungsumsatz} berechnet haben. Die Funktion ist extrem kurz und umfässt nur eine Zeile.
-	\begin{myanswer}
-		Angenommen, die bisher geschriebenen Funktionen wurden in den Dateien \texttt{bmr.py} und \texttt{leistungsumsatz.py} gespeichert, so können Sie die Funktion \lstinline|def total(bmr, leistungsumsatz)| wie folgt schreiben:
-		\lstinputlisting{GrundlagenInfo/00_Programmieren/Python/bmr_functions/total.py}
-	\end{myanswer}
-\end{mysubmission}
-
-
-
-
-\begin{mycaution}
-	Die Zahlen zu Energiebedarf und Kalorien, die Sie im Rahmen dieser Übungen berechnet haben, sollten Sie mit Vorsicht geniessen, aus folgenden Gründen:
-	\begin{itemize}
-		\item Ihr realer Energiebedarf kann signifikant von Ihrem berechneten Energiebedarf abweichen. Viele weitere Faktoren, die nicht in den Formeln enthalten sind, können diesen beeinflussen, beispielsweise Ihre Köpertemperatur, Ihre Fitness, Ihre Muskelmasse, sowie Ihre \gls{NEAT}, wobei Letzteres Energie bezeichnet, die Sie durch Bewegungen, die nicht Sport sind, verbrauchen (beispielsweise durch ``Zappeln'' aber auch kurze Spaziergänge und alltägliche Aktivitäten).
-		\item Sie sollten sich bezüglich konsumierter Kalorien vor Augen halten, dass ``zu viele'' konsumierte Kalorien nicht automatisch mit einer Gewichtszunahme verbunden sind. In einem Kilo Körperfett stecken ca. 8000 Kilokalorien, wobei der Köper über verschiedene Mechanismen verfügt, um ein stabiles Körpergewicht zu halten, etwa die Erhöhung oder Senkung der Körpertemperatur im Falle eines kurzfristigen Kalorien-Überschusses, respektive -Defizits. Allerdings kann es interessant sein, zu wissen, dass einige, nicht sehr sättigende Lebensmittel besonders viele Kalorien enthalten –– wie beispielsweise hochverarbeitete Snacks oder Süssgetränke.
-	\end{itemize}
-\end{mycaution}

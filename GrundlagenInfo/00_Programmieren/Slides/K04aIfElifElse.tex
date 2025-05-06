@@ -10,227 +10,152 @@
         \includegraphics[keepaspectratio, width=\logosize, height=\paperheight]{\thelogo}
     \end{figure}
     Informatik: Programmieren\\
-    \emoji{right-arrow-curving-up} Kapitel 4: \textbf{Verzweigung mit \lstinline|if|-Anweisung}
+    \emoji{right-arrow-curving-up} Kapitel 5: \textbf{Verzweigung mit \lstinline|if|-Anweisung}
 \end{frame}
 
 \input{GrundlagenInfo/00_Programmieren/Slides/K04Intro.tex}
 
-\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
-\begin{lstlisting}        
-def beschreibe_wetter(temperatur):
-	if temperatur >= 30:
-		print("Es ist heiss")
 
-beschreibe_wetter(33)
-\end{lstlisting}
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=2cm, scale=.6, transform shape, ->]
-    \centering
-    \tikzstyle{every node}=[font=\small]
-    
-    \node (start) [code] {\lstinline|beschreibe_wetter(33)|};
-    \node (dec1) [decision, below of=start] {\lstinline|temperatur >= 30|};
-    \node (print) [code, below of=dec1] {\lstinline|print("Es ist heiss")|};
-    \node (end) [circle,draw=black, fill=black, below of=print, yshift=.5cm] {};
-    
-    \draw (start) -- (dec1);
-    \draw (dec1) -- node[anchor=east] {\lstinline|True|} (print);
-    \draw (dec1) --++ (5cm,0cm) |- (end) node[text width=1.5cm, align=left,pos=-0.05] {\lstinline|False|};
-    \draw (print) -- (end);
-    
-\end{tikzpicture}
-\end{figure}
-
-\end{frame}
-
-\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
-\begin{lstlisting}        
-def beschreibe_wetter(temperatur):
-	if temperatur >= 30:
-		print("Es ist heiss")
-    else:
-        print("Es ist kühl")
-
-beschreibe_wetter(19)
-\end{lstlisting}
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=2cm, scale=.6, transform shape, on grid, ->]
-    \tikzstyle{every node}=[font=\small]
-    % grid to easier see that the node centers line up while developing plot
-    %\draw [help lines] (-5,-9) grid (9,1);
-    \node (start) [code] {\lstinline|beschreibe_wetter(19)|};
-    \node (dec1) [decision, below of=start] {\lstinline|temperatur >= 30|};
-    \node (printif) [code, below left=2cm and 5cm of dec1] {\lstinline|print("Es ist heiss")|};
-    \node (printelse) [code, below right=2cm and 5cm of dec1] {\lstinline|print("Es ist kühl")|};
-    \node (end) [circle,draw=black, fill=black, below of=dec1, yshift=-2cm] {};
-    
-    \draw (start) -- (dec1);
-    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
-    \draw (dec1) -| node[anchor=top, above=.1cm] {\lstinline|False|} (printelse);
-    \draw (printif) |- (end);
-    \draw (printelse) |- (end);
-    
-\end{tikzpicture}
-\end{figure}
-\end{frame}
-
-\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
-\begin{columns}
-    \begin{column}{0.5\textwidth}
-        \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-def beschreibe_wetter(temperatur):
-    if temperatur >= 30:
-        print("Es ist heiss")
-    elif temperatur >= 20:
-        print("Es ist warm")
-    else:
-        print("Es ist kühl")
-
-beschreibe_wetter(19)
-        \end{lstlisting}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-        \only<2->{
-            \begin{figure}[H]
-                \centering
-                \begin{tikzpicture}[node distance=2.6cm, scale=.55, transform shape, on grid, ->]
-                    \tikzstyle{every node}=[font=\small]
-                    \node (start) [code] {\lstinline|beschreibe_wetter(19)|};
-                    \node (dec1) [decision, below of=start] {\lstinline|temperatur >= 30|};
-                    \node (printif) [code, text width=4cm, right=1cm of dec1.east] {\lstinline|print("Es ist heiss")|};
-                    \node (dec2) [decision, below of=dec1] {\lstinline|temperatur >= 20|};
-                    \node (printelif) [code, text width=4cm, right=1cm of dec2.east] {\lstinline|print("Es ist warm")|};
-                    \node (printelse) [code, below of=dec2] {\lstinline|print("Es ist kühl")|};
-                    \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
-                    
-                    \draw (start) -- (dec1);
-                    \draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
-                    \draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
-                    
-                    \draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
-                    \draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
-                    
-                    \draw (printif) --++ (2.5cm,0cm) |- (end);
-                    \draw (printelif) --++ (2.5cm,0cm) |- (end);
-                    
-                    \draw (printelse) -- (end);
-                \end{tikzpicture}
-                \end{figure}
-        }
-    \end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
-
-\begin{lstlisting}        
-def beschreibe_wetter(temperatur):
-    if temperatur >= 30:
-        print("Es ist heiss")
-    if temperatur >= 20:
-        print("Es ist warm")
-    else:
-        print("Es ist kühl")
-
-beschreibe_wetter(33)
-\end{lstlisting}
-\begin{center}
-    Was wird ausgegeben?
-\end{center}
-\end{frame}
-
-
-\begin{frame}[fragile]{Boolsche Ausdrücke}
-\begin{itemize}
-    \item \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele:
-    \begin{itemize}
-        \item \lstinline|3 == 5 # False|
-        \item \lstinline|(9 + 3) < (2 * 8) # True|
+\begin{frame}[fragile]{Ziele der heutigen Doppel-Lektion}
+    Ziele
+    \begin{itemize}[<+->]
+        \item Seine Gedanken \textit{logisch} ausdrücken können
+        \item Klare Entscheidungen unter gewissen Konditionen treffen können
+        \item Konditionen negieren
+        \item Konditionen miteinander verbinden
     \end{itemize}
-    \item Weitere boolsche Relationen:
-    \begin{table}[H]
-        \centering
-        \footnotesize
-        \begin{tabular}{c||p{3.1cm}}
-        \textbf{Python} & \textbf{Mathematische\newline Bedeutung} \\\midrule 
-             \lstinline|==| & gleich ($=$)\\
-             \lstinline|!=| & ungleich ($\neq$) \\
-             \lstinline|<| & kleiner ($<$)\\
-             \lstinline|<=| & kleiner oder gleich ($\leq$) \\
-             \lstinline|>| & grösser ($>$) \\
-             \lstinline|>=| & grösser oder gleich ($\geq$)
-        \end{tabular}
-    \end{table}
-    \item Verwendungsart
-\begin{lstlisting}
-if BOOLSCHER_AUSDRUCK:
-    # dieser Code wir nur dann ausgeführt, wenn 
-    # BOOLSCHER_AUSDRUCK wahr ist (True)
-\end{lstlisting}
-\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
+    \lstinputlisting[language=Python]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if.py}
+
+    \only<2->{
+        \begin{figure}[H]
+            \centering
+            \resizebox{.8\textwidth}{!}{\input{GrundlagenInfo/00_Programmieren/Skript/Figures/k04-if.tex}}
+        \end{figure}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Logische Ausdrücke}
+    \begin{itemize}
+        \item \tib{Logische} oder \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele:
+              \begin{itemize}
+                  \item \lstinline|3 == 5 # False|
+                  \item \lstinline|(9 + 3) < (2 * 8) # True|
+              \end{itemize}
+        \item Weitere boolsche Relationen:
+              \begin{table}[H]
+                  \centering
+                  \footnotesize
+                  \begin{tabular}{c||p{3.1cm}}
+                      \textbf{Python} & \textbf{Mathematische\newline Bedeutung} \\\midrule
+                      \lstinline|==|  & gleich ($=$)                             \\
+                      \lstinline|!=|  & ungleich ($\neq$)                        \\
+                      \lstinline|<|   & kleiner ($<$)                            \\
+                      \lstinline|<=|  & kleiner oder gleich ($\leq$)             \\
+                      \lstinline|>|   & grösser ($>$)                            \\
+                      \lstinline|>=|  & grösser oder gleich ($\geq$)
+                  \end{tabular}
+              \end{table}
+        \item Verwendungsart
+              \begin{lstlisting}
+    if BOOLSCHER_AUSDRUCK:
+        # dieser Code wird nicht ausgeführt, wenn BOOLSCHER_AUSDRUCK falsch (False) ist.
+    \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
+    \lstinputlisting[language=Python, basicstyle=\footnotesize\ttfamily]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_else.py}
+
+    \only<2->{
+        \begin{figure}[H]
+            \centering
+            \resizebox{.6\textwidth}{!}{\input{GrundlagenInfo/00_Programmieren/Skript/Figures/k04-if-else.tex}}
+        \end{figure}
+    }
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
+    \begin{adjustwidth}{-2cm}{-2cm}
+        \begin{columns}
+            \begin{column}{0.55\textwidth}
+                \lstinputlisting[language=Python, basicstyle=\footnotesize\ttfamily]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_elif_else.py}
+            \end{column}
+            \begin{column}{0.6\textwidth}
+                \only<2->{
+                    \begin{figure}[H]
+                        \centering
+                        \resizebox{\textwidth}{!}{\input{GrundlagenInfo/00_Programmieren/Skript/Figures/k04-if-elif-else.tex}}
+                    \end{figure}
+                }
+            \end{column}
+        \end{columns}
+    \end{adjustwidth}
+\end{frame}
+
+\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \lstinputlisting[language=Python, basicstyle=\footnotesize\ttfamily]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_elif_else_both.py}
+        \end{column}
+        \only<2->{
+            \begin{column}{0.05\textwidth}
+                \centering
+                $\Rightarrow$
+            \end{column}
+            \begin{column}{0.5\textwidth}
+                \lstinputlisting[language=Python, basicstyle=\footnotesize\ttfamily]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_elif_else_both_fixed.py}
+            \end{column}
+        }
+    \end{columns}
+
+
+    \vspace{0.5cm}
+    \rule{\textwidth}{.5pt}
+    \begin{center}
+        Was wird ausgegeben?
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Konditionale Entscheidungen mit Verzweigungen}
+    \begin{columns}
+        \begin{column}{0.54\textwidth}
+            \lstinputlisting[language=Python, basicstyle=\footnotesize\ttfamily]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_if_else.py}
+        \end{column}
+        \only<2->{
+            \begin{column}{0.05\textwidth}
+                \centering
+                $\Rightarrow$
+            \end{column}
+            \begin{column}{0.54\textwidth}
+                \lstinputlisting[language=Python, basicstyle=\footnotesize\ttfamily]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/ex_if_if_else_fixed.py}
+            \end{column}
+        }
+    \end{columns}
+
+
+    \vspace{0.5cm}
+    \rule{\textwidth}{.5pt}
+    \begin{center}
+        Was wird ausgegeben?
+    \end{center}
 \end{frame}
 
 
 
 \begin{frame}{Aufgaben}
-Lösen Sie folgende Aufgaben:
-\begin{itemize}
-    \item \aufgabebox{Aufgaben 5.1, 5.2, 5.5}
-    \item \abgabebox{Aufgabe 5.3, 5.4, 5.7, 5.12}
-    \item \aufgabebox{Aufgaben 5.8 - 5.11}
-    \item \challengebox{Aufgabe 5.6}
-    \item \challengebox{``Dynamisches Schachbrett'' (Moodle)}
-\end{itemize}
-
+    Lösen Sie folgende Aufgaben:
+    \begin{itemize}
+        \item \lstinline|if|: \aufgabebox{5.1, 5.2}
+        \item \lstinline|if|, \lstinline|elif| und \lstinline|else|:
+              \begin{itemize}
+                  \item \aufgabebox{5.4, 5.6, 5.7, 5.8, 5.9}
+                  \item \abgabebox{5.3, 5.5, 5.10}
+                  \item \challengebox{5.11}
+              \end{itemize}
+    \end{itemize}
 \end{frame}
-
-%\begin{frame}{Anhang}
-%\end{frame}
-
-%\begin{frame}{Aufgaben}{Buch}
-%Lösen Sie folgende Aufgaben:
-%\begin{itemize}
-%    \item Lesen Sie Beispiel 4.1
-%    \item \aufgabebox{Aufgaben 4.3, 4.6}
-%    \item \abgabebox{Aufgabe 4.8 $\rightarrow$ Abgabe}
-%    \item \abgabebox{Aufgabe 4.11 $\rightarrow$ Abgabe}
-%    \item \aufgabebox{Aufgaben 4.12 - 4.14}
-%    \item \challengebox{``Dynamisches Schachbrett'' (Moodle)}
-%\end{itemize}
-%
-%\end{frame}
-
-
-%\begin{frame}[fragile]{Boolsche Ausdrücke}
-%\begin{itemize}
-%    \item \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele:
-%    \begin{itemize}
-%        \item \lstinline|3 == 5 # False|
-%        \item \lstinline|(9 + 3) < (2 * 8) # True|
-%    \end{itemize}
-%    \item Weitere boolsche Relationen:
-%    \begin{table}[H]
-%        \centering
-%        \footnotesize
-%        \begin{tabular}{c|c||p{3.1cm}}
-%        \textbf{(SQL)} &\textbf{Python} & \textbf{Mathematische\newline Bedeutung} \\\midrule 
-%             \lstinline[style=sql]|=|&\lstinline|==| & gleich ($=$)\\
-%             \lstinline[style=sql]|<>|&\lstinline|!=| & ungleich ($\neq$) \\
-%             \lstinline[style=sql]|<|&\lstinline|<| & kleiner ($<$)\\
-%             \lstinline[style=sql]|<=|&\lstinline|<=| & kleiner oder gleich ($\leq$) \\
-%             \lstinline[style=sql]|>|&\lstinline|>| & grösser ($>$) \\
-%             \lstinline[style=sql]|>=|&\lstinline|>=| & grösser oder gleich ($\geq$)
-%        \end{tabular}
-%    \end{table}
-%    \item Verwendungsart
-%\begin{lstlisting}
-%if BOOLSCHER_AUSDRUCK:
-%    # dieser Code wir höchstens dann ausgeführt, wenn 
-%    # BOOLSCHER_AUSDRUCK wahr ist (True)
-%\end{lstlisting}
-%\end{itemize}
-%\end{frame}

@@ -2,21 +2,24 @@
     \tikzstyle{every node}=[font=\small]
     \node (start) [code] {\lstinline|beschreibe_wetter(19)|};
     \node (dec1) [decision, below of=start] {\lstinline|temperatur >= 30|};
-    \node (printif) [code, text width=4cm, right=1cm of dec1.east] {\lstinline|print("Es ist heiss")|};
+    \node (printif1) [code, text width=4cm, right=1cm of dec1.east] {\lstinline|print("Es ist heiss")|};
     \node (dec2) [decision, below=2.5cm of dec1] {\lstinline|temperatur >= 20|};
-    \node (printelif) [code, text width=4cm, right=1cm of dec2.east] {\lstinline|print("Es ist warm")|};
+    \node (printif2) [code, text width=4cm, right=1cm of dec2.east] {\lstinline|print("Es ist warm")|};
     \node (printelse) [code, below of=dec2] {\lstinline|print("Es ist kühl")|};
     \node (end) [circle,draw=black, fill=black, below of=printelse, yshift=.8cm] {};
+    \node (intermediate1) [coordinate, below=1.5cm of end] {};
+    \node (intermediate2) [coordinate, left=3.5cm of dec2] {};
     
     \draw (start) -- (dec1);
-    \draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif);
+    \draw (dec1) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif1);
     \draw (dec1) -- node[anchor=east] {\lstinline|False|} (dec2);
     
-    \draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printelif);
+    \draw (dec2) -- node[anchor=top, above=.1cm] {\lstinline|True|} (printif2);
     \draw (dec2) -- node[anchor=east] {\lstinline|False|} (printelse);
     
-    \draw (printif) --++ (2.5cm,0cm) |- (end);
-    \draw (printelif) --++ (2.5cm,0cm) |- (end);
+    \draw[red, thick] (printif1) --++ (3.5cm,0cm) |- (intermediate1) -| (intermediate2) -- (dec2);
+    \draw (printif2) --++ (2.5cm,0cm) |- (end);
+    \draw (printelse) -- (end);
     
     \draw (printelse) -- (end);
 \end{tikzpicture}
