@@ -24,7 +24,7 @@ Dabei bezeichnen blaue, rechteckig-abgerundete Boxen eine Zeile Code, grüne, ra
 Nach jedem \lstinline|if| steht ein logischer Ausdruck oder ein logischer Wert.
 
 \begin{mydefinition}
-	\tib{Logische Ausdrücke}, auch \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele sind:
+\tib{Logische Ausdrücke}, auch \tib{Boolsche Ausdrücke} sind Ausdrücke, die genau zwei verschiedene Werte annehmen können: entweder \textit{wahr} (\lstinline|True|) oder \textit{falsch} (\lstinline|False|). Beispiele sind:
 \begin{lstlisting}
 3 == 5 # gibt den Wert False zurück
 (9 + 3) < (2 * 8) # gibt den Wert True zurück
@@ -52,7 +52,7 @@ Logische (oder auch bool'sche) Audrücke wie z.B. \lstinline|3 < 45| führen zu 
 Die typische Verwendungsart logischer Ausdrücke ist in folgendem Code abgebildet:
 \begin{lstlisting}
 	if BOOLSCHER_WERT:
-		# dieser Code wird nicht ausgeführt, wenn BOOLSCHER_WERT falsch ist (False)
+		# dieser Code wird nur dann ausgeführt, wenn BOOLSCHER_WERT wahr (True) ist.
 \end{lstlisting}
 \end{mydefinition}
 
@@ -66,8 +66,26 @@ Die typische Verwendungsart logischer Ausdrücke ist in folgendem Code abgebilde
 \end{myexercise}
 
 \begin{myexercise}
-	Entwickeln Sie ein Programm, das dem Benutzer im Rahmen einer interaktiven Fragerunde drei Fragen stellt (mit dem Befehl \lstinline|input("...")|). Das Programm soll die Anzahl der richtigen Antworten
-	zählen und diese Anzahl ausgeben. Zeichnen Sie sich zuerst ein Flussdiagramm des Codes auf Papier auf.
+	Entwickeln Sie ein Programm, das dem Benutzer im Rahmen einer interaktiven Fragerunde drei Fragen stellt (mit dem Befehl \lstinline|input("...")|).
+
+	Das Programm soll die Anzahl der richtigen Antworten
+	zählen und diese Anzahl ausgeben.
+
+	\textbf{Zur Erinnerung}: \lstinline|input("Frage")| gibt den Text \lstinline|"Frage"| auf dem Bildschirm aus und wartet auf eine Eingabe des Benutzers. Um die Antwort zu speichern, muss der Befehl in eine Variable gespeicher werden. Zum Beispiel:
+
+	\begin{lstlisting}
+		name = input("Wie heisst du?")
+		print("Hallo " + name)
+	\end{lstlisting}
+
+	Die Eingabe eines \lstinline|input("...")|-Befehls wird immer als Text zurückgegeben, selbst wenn eine Zahl eingetippt wird. Um die Eingabe als Zahl zu interpretieren, muss der Text in eine Zahl umgewandelt werden. Dies geschieht mit dem Befehl \lstinline|int(input("Frage"))|. Beispiel:
+
+	\begin{lstlisting}
+		age = int(input("Wie alt sind Sie?"))
+		print("Sie sind " + str(age) + " Jahre alt.")
+	\end{lstlisting}
+
+	Zeichnen Sie Ihre Lösung als Flussdiagramm des Codes auf Papier auf.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{fragerunde.py},label=listing:fragerunde]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/fragerunde.py}
 	\end{myanswer}
@@ -114,7 +132,7 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 
 	\lstinline|"Ungültige Anzahl Kekse!"|
 
-	Verwenden Sie die Ganzzahldivision (\lstinline|//|) und Modulo (\lstinline|%|)!
+	Verwenden Sie die Ganzzahldivision (\lstinline|//|) und Modulo (\lstinline|%|)! Zur Erinnerung: \lstinline|//| gibt den ganzzahligen Teil der Division zurück, \lstinline|%| gibt den Rest der Division zurück.
 
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{kekse.py},label=listing:kekse]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/kekse.py}
@@ -122,11 +140,10 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 \end{mysubmission}
 
 \begin{myexercise}
-	Verwenden Sie den Code aus \cref{ex:multiple-params}.
-	Verwenden Sie einen \lstinline|input|-Befehl aus \cref{ex:input}, um den Benutzer nach einer Zahl zu fragen.
+	Verwenden Sie einen \lstinline|input|-Befehl, um den Benutzer nach einer Zahl $n$ zu fragen.
 	\begin{enumerate}
-		\item Falls die Zahl 1 eingegeben wird, soll ein blaues Viereck gezeichnet werden
-		\item Falls eine Zahl von 2 bis und mit 6 eingegeben wird, soll ein grünes Sechseck gezeichnet werden
+		\item Falls die Zahl $n$=1 eingegeben wird, soll ein blaues Viereck gezeichnet werden.
+		\item Falls eine Zahl $n$ von 2 bis und mit 6 eingegeben wird, soll ein grünes Sechseck gezeichnet werden.
 		\item Falls eine Zahl $n$ von 7 oder grösser eingegeben wird, soll ein schwarzes $n$-Eck gezeichnet werden.
 	\end{enumerate}
 	\begin{myanswer}
@@ -141,9 +158,9 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 	Schreiben Sie ein Unterprogramm koffer(gewicht), der einen Parameter Gewicht entgegennimmt und einen Text auf der Konsole druckt, je nach Fall:
 
 	\begin{itemize}
-		\item Wenn der Koffer über 100 kg wiegt, wird er nicht transportiert (\lstinline|"Der Koffer ist zu schwer"|)
-		\item Wenn der Koffer über 20 kg und bis und mit 100 kg wiegt, muss der Aufpreis berechnet und ausgegeben werden (z.B. \lstinline|"Ihr Koffer hat X kg Übergewicht. Das kostet 5.-"|)
-		\item Wenn der Koffer über 0 kg und bis und mit 20 kg wiegt, muss kein Aufpreis bezahlt werden und es wird gedruckt \lstinline|"Der Koffer ist gratis"|
+		\item Wenn der Koffer über 100 kg wiegt, wird er nicht transportiert (\lstinline|"Der Koffer ist zu schwer"|).
+		\item Wenn der Koffer über 20 kg und bis und mit 100 kg wiegt, muss der Aufpreis berechnet und ausgegeben werden (z.B. \lstinline|"Ihr Koffer hat X kg Übergewicht. Das kostet 5.-"|).
+		\item Wenn der Koffer über 0 kg und bis und mit 20 kg wiegt, muss kein Aufpreis bezahlt werden und es wird gedruckt \lstinline|"Der Koffer ist gratis"|.
 		\item  In allen anderen Fällen soll ausgegeben werden ``Das eingegebene Gewicht ist nicht zulässig''  (0, negative Zahlen etc.).
 	\end{itemize}
 	\begin{myanswer}
@@ -167,8 +184,9 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 		Der Code gibt sowohl \lstinline|"Es ist heiss"| als auch \lstinline|"Es ist warm"| aus. Dies ist nicht sinnvoll, da die Temperatur 33 Grad beträgt und somit nur eine der beiden Aussagen wahr sein kann.
 
 		Der Grund dafür ist, dass die zweite \lstinline|if|-Bedingung unabhängig von der ersten \lstinline|if|-Bedingung ist. Das \lstinline|else| gehört nur zur zweiten \lstinline|if|-Bedingung. Das bedeutet, dass die zweite \lstinline|if|-Bedingung immer ausgeführt wird, selbst wenn die erste \lstinline|if|-Bedingung bereits wahr war. Aus diesem Grund wäre es sinnvoller, statt einem \lstinline|if|-Befehl eine \lstinline|elif|-Bedingung zu verwenden.
-	
-		Das Flussdiagramm zeigt dieses Problem grafisch auf. Der rote, dicke Pfeil zeigt auf das Problem
+
+		Das Flussdiagramm zeigt dieses Problem grafisch auf. Der rote, dicke Pfeil zeigt den problematischen Teil des Codes auf. Der zweite Test wird immer ausgeführt, auch wenn die erste Bedingung bereits wahr war. Zudem gehört das \lstinline|else| nur zur zweiten \lstinline|if|-Bedingung.
+
 		\begin{figure}[H]
 			\centering
 			\input{GrundlagenInfo/00_Programmieren/Skript/Figures/k04-if-if-else.tex}
@@ -179,7 +197,13 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 \end{myexercise}
 
 \begin{myexercise}
-	Entwickeln Sie eine Funktion \lstinline|def quadgleich(a, b, c)|, der quadratische Gleichungen der Form \(ax^2 + bx + c = 0\) löst. Der Befehl soll zuerst \(d = b^2 - 4ac\) ausrechnen und abhängig vom Wert von $d$ keine, eine oder zwei Lösungen ausgeben.
+	Entwickeln Sie eine Funktion \lstinline|def quadgleich(a, b, c)|, welche quadratische Gleichungen der Form \(ax^2 + bx + c = 0\) löst.
+
+	Zur Erinnerung: die Formel zur Berechnung der Lösungen ist:
+	\begin{equation}
+		x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+	\end{equation}
+	Der Befehl soll zuerst \(d = b^2 - 4ac\) ausrechnen und abhängig vom Wert von $d$ keine, eine oder zwei Lösungen ausgeben. Wenn d < 0, gibt es keine Lösung. Wenn d = 0, gibt es eine Lösung. Wenn d > 0, gibt es zwei Lösungen.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{quadgleich.py},label=listing:quadgleich]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/quadgleich.py}
 	\end{myanswer}
@@ -187,7 +211,7 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 
 
 \begin{mysubmission}
-	Geben seien zwei Zahlen \lstinline|x1| und \lstinline|x2|. Schreiben Sie eine Funktion def \lstinline|maxzahl(x1, x2)|, welche die grössere der beiden Zahlen mit \lstinline|return| zurück an das Hauptprogramm gibt. Wenn beide Zahlen gleich gross sind, soll \lstinline|x2| zurückgegeben werden.
+	Geben seien zwei Zahlen \lstinline|x1| und \lstinline|x2|. Schreiben Sie eine Funktion \lstinline|def maxzahl(x1, x2)|, welche die grössere der beiden Zahlen mit \lstinline|return| ausgibt. Wenn beide Zahlen gleich gross sind, soll \lstinline|x2| ausgegeben werden.
 
 	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
 	\begin{myanswer}
@@ -195,8 +219,47 @@ Der Code kann folgendermassen als Fluss-Diagramm aufgezeichnet werden:
 	\end{myanswer}
 \end{mysubmission}
 
-\begin{mychallenge}
-	Lösen Sie die Aufgabe ``Dynamisches Schachbrett'' auf Moodle.
+\begin{mychallenge}[Dynamisches Schachbrett]
+
+
+	Wir möchten ein quadratisches Schachbrettmuster mit $n \times n$ Feldern erzeugen, wobei $n$ eine gerade positive natürliche Zahl ist. Jedes der $n^2$ Felder soll dabei eine Grösse von genau $s \times s$ Zeichen haben ($s \geq 1$). Die Zahl~1 repräsentiere die schwarzen Felder, die Zahl~0 die weissen Felder.
+
+	Zusätzlich möchten wir wählen können, ob das linke obere Feld schwarz oder weiss sein soll (\lstinline|upper_left = 'black'| oder \lstinline|upper_left = 'white'|). Folgende Beispiele zeigen die entsprechenden Schachbrettmuster für verschiedene Wahlen der drei Parameter $n$, $s$ und \lstinline|upper_left|:
+
+	\begin{verbatim}
+# Schachbrettmuster für n = 2, s = 3, upper_left = 'white'
+000111
+000111
+000111
+111000
+111000
+111000
+
+# Schachbrettmuster für n = 4, s = 1, upper_left = 'black'
+1010
+0101
+1010
+0101
+
+# Schachbrettmuster für n = 6, s = 2, upper_left = 'black'
+110011001100
+110011001100
+001100110011
+001100110011
+110011001100
+110011001100
+001100110011
+001100110011
+110011001100
+110011001100
+001100110011
+001100110011
+\end{verbatim}
+
+	Allgemein soll das Muster immer genau $ns$ Zeichen breit und ebenso hoch sein. Schreiben Sie ein Python-Programm, welches die drei oben beschriebenen Parameter akzeptiert und das entsprechende Schachbrettmuster ausgibt.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{dynamisches\_schachbrett.py},label=listing:dynamisches_schachbrett]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/dynamisches_schachbrett.py}
+	\end{myanswer}
 \end{mychallenge}
 
 \subsection{Logische Ausdrücke miteinander verbinden}
@@ -232,14 +295,14 @@ Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft w
 \end{myexample}
 
 \begin{myexercise}\label{ex:geschwindigkeitAngemessen}
-	Schreiben Sie eine Funktion \lstinline|def geschwindigkeit_angemessen(geschwindigkeit):|, welche als Parameter \lstinline|geschwindigkeit| eine Zahl entgegennimmt (z.B. \lstinline|50| oder \lstinline|120|). Falls die Geschwindigkeit zwischen 30 und 100 km/h liegt (einschliesslich dieser Werte), soll auf der Konsole ausgegeben werden: ``Die Geschwindigkeit ist angemessen''. Ansonsten soll ausgegeben werden ``Die Geschwindigkeit ist nicht angemessen''. Verwenden Sie dazu den Ausdruck \lstinline|and|.
+	Schreiben Sie eine Funktion \lstinline|def geschwindigkeit_angemessen(geschwindigkeit)|, welche als Parameter \lstinline|geschwindigkeit| eine Zahl entgegennimmt (z.B. \lstinline|50| oder \lstinline|120|). Falls die Geschwindigkeit zwischen 30 und 100 km/h liegt (einschliesslich dieser Werte), soll auf der Konsole ausgegeben werden: ``Die Geschwindigkeit ist angemessen''. Ansonsten soll ausgegeben werden ``Die Geschwindigkeit ist nicht angemessen''. Verwenden Sie dazu den Ausdruck \lstinline|and|.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{geschwindigkeit\_angemessen.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/geschwindigkeit_angemessen.py}
 	\end{myanswer}
 \end{myexercise}
 
-\begin{myexercise}
-	Schreiben Sie eine Funktion \lstinline|def temperatur_ist_unangenehm(temperatur):|, welche einen Parameter \lstinline|temperatur| als Zahl entgegennimmt. Falls die Temperatur kleiner als 10 Grad oder grösser als 30 Grad ist, soll auf der Konsole ausgegeben werden: ``Unangenehme Temperatur''. Ansonsten soll ausgegeben werden: ``Angenehme Temperatur''. Verwenden Sie dazu den Ausdruck \lstinline|or|.
+\begin{myexercise}\label{ex:tempUnangenehm}
+	Schreiben Sie eine Funktion \lstinline|def temperatur_ist_unangenehm(temperatur)|, welche einen Parameter \lstinline|temperatur| als Zahl entgegennimmt. Falls die Temperatur kleiner als 10 Grad oder grösser als 30 Grad ist, soll auf der Konsole ausgegeben werden: ``Unangenehme Temperatur''. Ansonsten soll ausgegeben werden: ``Angenehme Temperatur''. Verwenden Sie dazu den Ausdruck \lstinline|or|.
 
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{temperatur.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/temperatur.py}
@@ -247,9 +310,13 @@ Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft w
 \end{myexercise}
 
 \begin{myexercise}\label{ex:posUndGerade}
-	Schreiben Sie eine Funktion \lstinline|def positiv_und_gerade(zahl):|, welche einen Parameter \lstinline|zahl| entgegennimmt, und testet, ob die Zahl positiv \textit{und} gerade ist, und falls dies zutrifft, den Text ausgibt \lstinline|"Die Zahl ist positiv und gerade"|. Ansonsten soll nichts ausgegeben werden.
+	Schreiben Sie eine Funktion \lstinline|def positiv_und_gerade(zahl)|, welche einen Parameter \lstinline|zahl| entgegennimmt, und testet, ob die Zahl positiv \textit{und} gerade ist, und falls dies zutrifft, den Text ausgibt \lstinline|"Die Zahl ist positiv und gerade"|. Ansonsten soll nichts ausgegeben werden.
 
-	Zur Erinnerung: Eine Zahl ist gerade, wenn sie durch 2 teilbar ist. Dies kann in Python mit dem Modulo-Operator \lstinline|%| getestet werden. Beispiel: \lstinline|zahl % 2 == 0| gibt \lstinline|True| zurück, wenn die Zahl gerade ist.
+	\textbf{Zur Erinnerung}: Eine Zahl ist gerade, wenn sie ohne Rest durch 2 teilbar ist. Der Rest einer Ganzzahldivision kann in Python mit dem Modulo-Operator \lstinline|%| berechnet werden. Beispiel: 
+	\begin{lstlisting}
+		zahl % 2 == 0
+	\end{lstlisting}
+	Dieser Ausdruck gibt \lstinline|True| zurück, wenn die Zahl gerade ist, da sie dann vollständig (ohne Rest) durch 2 teilbar ist. Andernfalls gibt der Ausdruck den Wert \lstinline|False| zurück.
 
 
 	\begin{myanswer}
@@ -258,11 +325,50 @@ Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft w
 \end{myexercise}
 
 \begin{myexercise}
-	Entwickeln Sie eine Funktion \lstinline|def vieleck_kreis(anzahl_ecken, umfang):|, die ein Vieleck zeichnet. Damit das Vieleck aussieht wie ein Kreis, soll es nur gezeichnet werden, wenn die Anzahl der Ecken grösser als 35 ist und wenn der Umfang mindestens 100 ist.
+	Entwickeln Sie ein Programm, das alle natürlichen Zahlen zwischen 0 und 100 auf den Bildschirm schreibt, die durch 7, aber nicht durch 3 teilbar sind.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{teiler\_7\_nicht3.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_7_nicht3.py}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	Entwickeln Sie eine Funktion \lstinline|def vieleck_kreis(anzahl_ecken, umfang)|, die ein Vieleck zeichnet. Damit das Vieleck aussieht wie ein Kreis, soll es nur gezeichnet werden, wenn die Anzahl der Ecken grösser als 35 ist und wenn der Umfang mindestens 100 ist.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{vieleck\_kreis\_and.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/vieleck_kreis_and.py}
 	\end{myanswer}
 \end{myexercise}
+
+\begin{mychallenge}
+Einen Code mit mehreren Bedingungen kann man statt mit \lstinline|or| häufig auch mit \lstinline|if|, \lstinline|elif| und \lstinline|else| umsetzen. Überlegen Sie sich, wie Sie den Code aus \cref{ex:tempUnangenehm} mit \lstinline|if|, \lstinline|elif| und \lstinline|else| statt mit \lstinline|or| schreiben könnten.
+
+In welchen Fällen ist es sinnvoller, \lstinline|if|, \lstinline|elif| und \lstinline|else| zu verwenden? In welchen Fällen ist es sinnvoller \lstinline|or| zu verwenden?
+	\begin{myanswer}
+		\lstinline|if|, \lstinline|elif| und \lstinline|else| sind primär dann sinnvoll, wenn unterschiedliche Ausgaben gemacht werden sollen, je nachdem, welche Bedingung zutrifft. \lstinline|or| ist sinnvoll, wenn nur eine Bedingung wahr sein muss, damit etwas geschieht. Beispiel: \lstinline|if (a == 1) or (b == 2)| -- hier ist es egal, ob nur eine der beiden Bedingungen wahr ist oder beide.
+	\end{myanswer}
+\end{mychallenge}
+
+\begin{mychallenge}
+	Einen Code mit mehreren Bedingungen kann man statt mit \lstinline|and| häufig auch mit verschachtelten \lstinline|if|-Bedingungen umsetzen. Überlegen Sie sich, wie Sie den Code aus \cref{ex:geschwindigkeitAngemessen} mit verschachtelten \lstinline|if|-Bedingungen statt mit \lstinline|and| schreiben könnten.
+	
+	In welchen Fällen ist es sinnvoller, \lstinline|and| zu verwenden? In welchen Fällen sind verschachtelte \lstinline|if|-Bedingungen besser geeignet?
+		\begin{myanswer}
+			\lstinline|and| ist primär dann sinnvoll, wenn alle Bedingungen gleichzeitig erfüllt sein müssen, damit etwas geschieht, und die Logik klar und einfach bleibt. Beispiel: \lstinline|if (a > 0) and (b > 0)| -- hier ist es leicht verständlich, dass beide Bedingungen erfüllt sein müssen.
+
+			Verschachtelte \lstinline|if|-Bedingungen sind besser geeignet, wenn die Bedingungen in einer bestimmten Reihenfolge geprüft werden sollen oder wenn unterschiedliche Aktionen bei Nichterfüllung der Bedingungen notwendig sind. 
+
+			\textbf{Vorteile von \lstinline|and|:}
+			\begin{itemize}
+				\item Kürzerer und übersichtlicherer Code.
+				\item Gut geeignet für einfache Bedingungen.
+			\end{itemize}
+
+			\textbf{Vorteile von verschachtelten \lstinline|if|-Bedingungen:}
+			\begin{itemize}
+				\item Flexibler bei komplexeren Logiken.
+				\item Ermöglicht unterschiedliche Aktionen bei Nichterfüllung einzelner Bedingungen.
+			\end{itemize}
+		\end{myanswer}
+	\end{mychallenge}
 
 \begin{mychallenge}
 	Diskutieren Sie den Gebrauch der Begriffe \enquote{und} und \enquote{oder} im Alltag und in der Informatik. Wo sehen Sie Unterschiede in der Verwendung dieser Begriffe?
@@ -271,13 +377,6 @@ Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft w
 			\item \enquote{und} bedeutet in der Informatik, dass beide Bedingungen erfüllt sein müssen, damit etwas geschieht. Im Alltag kann \enquote{und} auch bedeuten, dass nur eine der beiden Bedingungen erfüllt sein muss, oder dass die genannten Aspekte nacheinander eintreten (nicht gleichzeitig, wie in der Informatik), wie in folgendem Beispiel: \enquote{Ich gehe zur Schule und dann gehe ich nach Hause}.
 			\item \enquote{oder} bedeutet in der Informatik, dass mindestens eine der beiden Bedingungen erfüllt sein muss, damit etwas geschieht. Im Alltag kann \enquote{oder} auch bedeuten, dass beide Bedingungen möglich sind. Beispiel: \enquote{Ich nehme das Auto oder das Fahrrad.} -- Hier ist die Bedeutung unklar: Vielleicht nimmt die Person nur eines der beiden, aber auch beide (in Kombination) wären theoretisch möglich.
 		\end{itemize}
-	\end{myanswer}
-\end{mychallenge}
-
-\begin{mychallenge}
-	Entwickeln Sie ein Programm, das alle natürlichen Zahlen zwischen 0 und 100 auf den Bildschirm schreibt, die durch 7, aber nicht durch 3 teilbar sind.
-	\begin{myanswer}
-		\lstinputlisting[language=Python,caption=\texttt{teiler\_7\_nicht3.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_7_nicht3.py}
 	\end{myanswer}
 \end{mychallenge}
 
@@ -301,7 +400,7 @@ Folgendes Beispiel illustriert, wie mehrere Bedingungen miteinander verknüpft w
 		\item (das Jahr ist durch 400 teilbar) oder
 		\item (das Jahr ist durch 4 teilbar aber nicht durch 100)
 	\end{enumerate}
-	Für die Prüfung auf Teilbarkeit sollen Sie den Modulo-Operator (\lstinline|%| verwenden).
+	Für die Prüfung auf Teilbarkeit sollen Sie den Modulo-Operator (\lstinline|%|) verwenden.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{schaltjahr.py},label=listing:schaltjahr]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/schaltjahr.py}
 	\end{myanswer}

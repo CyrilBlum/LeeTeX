@@ -5,7 +5,7 @@ def wetter_kleider(temperatur):
         print("Hosen")
         print("T-Shirt")
     elif temperatur < 10:
-        print("Pullover")
+        print("Pulli")
     elif temperatur < 0:
         print("Jacke")
 

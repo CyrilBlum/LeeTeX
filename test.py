@@ -1,11 +1,11 @@
 def wetter_kleider(temperatur):
-    if temperatur > 100: 
+    if temperatur > 100:
         print("Ungültige Zahl")
     if temperatur < 100:
         print("Hosen")
         print("T-Shirt")
     if temperatur < 10:
-        print("Pulli")
+        print("Pullover")
     if temperatur < 0:
         print("Jacke")
 

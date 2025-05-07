@@ -18,7 +18,7 @@ def zeichne_vieleck():
             t.forward(100)
             t.right(360 / n)
     else:
-        print("Bitte eine Zahl größer oder gleich 1 eingeben.")
+        print("Bitte eine Zahl grösser oder gleich 1 eingeben.")
     t.done()
 
 zeichne_vieleck()

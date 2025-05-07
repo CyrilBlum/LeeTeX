@@ -1,9 +1,9 @@
 def beschreibe_wetter(temperatur):
     if temperatur >= 30:
-        print("Es ist heiss")
+        print("heiss")
     elif temperatur >= 20:
-        print("Es ist warm")
+        print("warm")
     else:
-        print("Es ist kühl")
+        print("kühl")
     
 beschreibe_wetter(33)
