@@ -143,7 +143,7 @@ void A() {
 \end{lstlisting}
 Das Problem ist, dass wir typischerweise die Symbole der Tastatur in Binärcode durch Folgen von $7$ Nullen und Einsen (zum Beispiels mittels der ASCII-Kodierung) darstellen müssen. Wenn wir aber das gesammte Programm \texttt{A} so kodieren, dann würden wir für das Wort $w := 00110111$ nicht nur $\abs{w}$ Bits benötigen sondern $7\abs{w}$. Diesen Faktor von $7$ möchten wir gerne vermeiden. Trotzdem muss klar sein, welcher Teil im Programm \texttt{A} dem Wort $w$ entspricht. Um dies zu erreichen, müssen wir eine ganz leicht modfizierte Version des \texttt{g++} Compilers und der Programmiersprache \texttt{C++} designen. Lass uns diesen modifizierten Compiler \texttt{g'++} nennen und die angepasste Sprache \texttt{C'++}.
 \par
-Die Sprache \texttt{C'++} unterscheidet sich von standard \texttt{C++} lediglich darin, dass wir in einem \texttt{C'++} Programm die Escape-Sequenzen \cppinline{***} und \cppinline{+++} verwenden dürfen. Der modifizierte Compiler \texttt{g'++} übersetzt dann das Programm ganz normal in Maschinencode, integriert aber die binären Programmteile, deren Beginn mit \cppinline{***} und Ende mit \cppinline{+++} gekennzeichnet wird, direkt in den Maschinencode. Eine Verwendung dieser Escape-Sequenzen für einen anderen Zweck wäre dann ein semantischer Fehler.
+Die Sprache \texttt{C'++} unterscheidet sich von standard \texttt{C++} lediglich darin, dass wir in einem \texttt{C'++} Programm die Escape-Sequenzen \cppinline{***} und \cppinline{+++} verwenden dürfen. Der modifizierte Compiler \texttt{g'++} übersetzt dann das Programm ganz normal in Maschinencode, integriert aber die (binäre Darstellung der) Programmteile, deren Beginn mit \cppinline{***} und Ende mit \cppinline{+++} gekennzeichnet wird, direkt in den Maschinencode. Eine Verwendung dieser Escape-Sequenzen für einen anderen Zweck wäre dann ein semantischer Fehler.
 \begin{lstlisting}[language=C++,escapechar=!] 
 #include <iostream>
 void A() {
@@ -176,8 +176,8 @@ Man könnte sich denken, dass die Wahl einer festen Programmiersprache wiederum 
 		\begin{itemize}
 			\item Da die Sprachen $A$ und $B$ turingvollständig sind, existiert ein Programm $T_{B\to A}$ in Sprache $A$, welches jedes Programm in Sprach $B$ in ein äquivalentes Programm in Sprache $A$ übersetzt. Analog existiert ein Programm $T_{A\to B}$ in Sprache $B$, welches jedes Programm in Sprache $A$ in äquivalentes Programm in Sprache $B$ übersetzt.
 			\item Es sei $B_w$ ein Programm in Sprache $B$, welches $w$ generiert. Dann können wir $B_w$ dem Programm $T_{B\to A}$ als Parameter übergeben. Dann ist $T_{B\to A}\lr{B_w}$ ein Programm, in Sprache $A$, welches $w$ generiert.
-			      Wir bezeichnen die binäre Länge des Programms $T_{B\to A}$ mit $c_{B\to A}$. Somit gilt $K_A(w) \leq K_B + c_{B\to A}$.
-			\item Analog (von $A$ zu $B$) finden wir $K_B(w) \leq K_A + c_{A\to B}$.
+			      Wir bezeichnen die binäre Länge des Programms $T_{B\to A}$ mit $c_{B\to A}$. Somit gilt $K_A(w) \leq K_B(w) + c_{B\to A}$.
+			\item Analog (von $A$ zu $B$) finden wir $K_B(w) \leq K_A(w) + c_{A\to B}$.
 			\item Der Unterschied $\abs{K_A(w) - K_B(w)}$ ist also nicht grösser als $c_{A, B} := \max\lrc{c_{A\to B}, c_{B\to A}}$.
 		\end{itemize}
 	\end{myproof}
@@ -214,13 +214,13 @@ Es sei $w_n := 1^n$ für eine beliebige natürliche Zahl $n > 0$. Das Wort $w_n$
 #include <string>
 
 void Cn() {
-    std::string wort(***!\colorbox{YellowGreen}{bin(n)}!+++, '1');
+    std::string wort(***!\colorbox{YellowGreen}{n}!+++, '1');
     std::cout << wort << std::endl;
 }
 \end{lstlisting}
-Im Programm \texttt{Cn} ist einzig die binäre Kodierung \colorbox{YellowGreen}{\texttt{bin(n)}} der Zahl $n$ abhängig von $n$ beziehungsweise $w_n$. Der Rest des Programms ist unabhängig von der konkreten Wahl von $n$ (für jede Wahl von $n$ gleich). Gemäss \cref{mytheorem:AnzahlZiffern} benötigen wir zur binären Darstellung von $n$ genau $\ceil{\log_2(n+1)}$ viele Bits. Der Rest des Programms ist unabhängig von $w_n$. Damit existiert Konstanten $c_0$ und $c_1$, so dass
+Im Programm \texttt{Cn} ist einzig die binäre Kodierung \colorbox{YellowGreen}{\texttt{n}} der Zahl $n$ abhängig von $n$ beziehungsweise $w_n$. Der Rest des Programms ist unabhängig von der konkreten Wahl von $n$ (für jede Wahl von $n$ gleich). Gemäss \cref{mytheorem:AnzahlZiffern} benötigen wir zur binären Darstellung von $n$ genau $\ceil{\log_2(n+1)}$ viele Bits. Der Rest des Programms ist unabhängig von $w_n$. Damit existiert Konstanten $c_0$ und $c_1$, so dass
 \begin{align*}
-	K(w_n) \leq c_0 + \ceil{\log_2(n+1)} = \log_2(n) + c_1 = \log_2(\abs{w_n}) + c_1
+	K(w_n) \leq c_0 + \ceil{\log_2(n+1)} \leq \log_2(n) + c_1 = \log_2(\abs{w_n}) + c_1
 \end{align*}
 für beliebiges natürliches $n>0$.
 \end{myexample}
@@ -233,7 +233,7 @@ Es sei $v_n := 1^{(n^2)}$ für eine beliebige natürliche Zahl $n > 0$. Das Wort
 
 void Dn() {
     std::string wort;
-    M = ***!\colorbox{YellowGreen}{bin(n)}!+++
+    M = ***!\colorbox{YellowGreen}{n}!+++
     M = M * M
     wort.reserve(M);
 
@@ -244,9 +244,9 @@ void Dn() {
     std::cout << wort << std::endl;
 }
     \end{lstlisting}
-Analog zu \cref{myexample:wn}, ist auch hier einzig die binäre Kodierung \colorbox{YellowGreen}{\texttt{bin(n)}} der Zahl $n$ abhängig von $n$ beziehungsweise $v_n$. Der Rest des Programms ist wieder unabhängig von der konkreten Wahl von $n$ (für jede Wahl von $n$ gleich). Zur binären Darstellung von $n$ benötigen wir genau $\ceil{\log_2(n+1)}$ viele Bits. Der Rest des Programms ist unabhängig von $v_n$. Damit existiert Konstanten $c_2$ und $c_3$, so dass
+Analog zu \cref{myexample:wn}, ist auch hier einzig die binäre Kodierung \colorbox{YellowGreen}{\texttt{n}} der Zahl $n$ abhängig von $n$ beziehungsweise $v_n$. Der Rest des Programms ist wieder unabhängig von der konkreten Wahl von $n$ (für jede Wahl von $n$ gleich). Zur binären Darstellung von $n$ benötigen wir genau $\ceil{\log_2(n+1)}$ viele Bits. Der Rest des Programms ist unabhängig von $v_n$. Damit existiert Konstanten $c_2$ und $c_3$, so dass
 \begin{align*}
-	K(v_n) \leq c_3 + \ceil{\log_2(n+1)} = \log_2(n) + c_4 = \log_2\lr{\sqrt{\abs{v_n}}} + c_4
+	K(v_n) \leq c_3 + \ceil{\log_2(n+1)} \leq \log_2(n) + c_4 = \log_2\lr{\sqrt{\abs{v_n}}} + c_4
 \end{align*}
 für beliebiges natürliches $n>0$.
 
@@ -268,9 +268,9 @@ tut hier nichts zur Sache! Uns interessiert einzig und alleine die binäre Läng
 
 void Fn() {
     std::string wort;
-    wort.reserve(***bin(n)+++);
+    wort.reserve(***n**2+++);
 
-    for (int i = 0; i < ***bin(n)+++; ++i) {
+    for (int i = 0; i < ***n**2+++; ++i) {
         wort += '1';
     }
 
@@ -279,12 +279,63 @@ void Fn() {
     \end{lstlisting}
 	Warum beweist dieses Programm sicherlich eine schlechtere obere Schranke für die Kolmogorov-Komplexität von $v_n$ als \cref{myexample:vn}?
 	\begin{myanswer}
-		Da \texttt{Fn} zweimal die binäre Kodierung von $n$ enthält, kann \texttt{Fn} sicherlich keine bessere obere Schranke liefern als $K(v_n)\leq c + \textcolor{Magenta}{2}\log_2\lr{\sqrt{\abs{v_n}}}$ für eine geeignete Konstante $c$.
+		Da \texttt{Fn} zweimal die binäre Kodierung von $n^2$ enthält, kann \texttt{Fn} sicherlich keine bessere obere Schranke liefern als
+		\begin{align*}
+			K(v_n)\leq c + 2\ceil{\log_2\lr{n^2 + 1}} = c' + 2\log_2{n^2} = c' + 4\log_2\lr{\sqrt{\abs{v_n}}}
+		\end{align*}
+		für geeignete Konstante $c, c'$.
 	\end{myanswer}
 \end{myexercise}
 
 \section{Nichtkomprimierbare Wörter und Zufall}
-Wir haben die Kolmogorov-Komplexität nur für binäre Wörter definiert. Wir können die Kolmogorov-Komplexität aber auch ganz einfach für natürliche Zahlen definieren, indem wir folgendes festlegen:
+Wir haben die Kolmogorov-Komplexität nur für binäre Wörter definiert. Wir können die Kolmogorov-Komplexität aber auch ganz einfach für natürliche Zahlen definieren, indem wir die natürliche Zahl einfach in Basis 2 (binär) darstllen, um ein binäres Wort zu erhalten.
+
 \begin{mydefinition}[Kolmogorov-Komplexität einer natürlichen Zahl]
-Die Kolmogorov-Komplexität $K(n)$ einer natürlichen Zahl $n$ ist $K(n) := K(bin(n))$. Beachte, dass $bin(n)$ lediglich ein binäres Wort ist.
+Die Kolmogorov-Komplexität $K(n)$ einer natürlichen Zahl $n$ ist $K(n) := K(bin(n))$.
 \end{mydefinition}
+
+Es existieren Wörter, die nicht komprimierbar sind, die also eine Kolmogorov-Komplexität besitzen, die nicht kleiner ist als ihre Länge.
+
+\begin{mytheorem}[Existenz nichtkomprimierbarer Wörter]\label{mytheorem:nichtkomprimierbar}
+	Für jede natürliche Zahl $n>0$ existiert (mindestens) ein binäres Wort $w$ der Länge $n$, für welches gilt
+	\begin{align*}
+		K(w)\geq n = \abs{w},
+	\end{align*}
+	das heisst, für jede Länge $n$ existiert (mindestens) ein Wort dieser Länge, welches sich nicht komprimieren lässt.
+	\begin{myproof}
+		Unser Beweis verwendet ein einfaches kombinatorisches Argument (Abzählen): Ein Maschinencode kann höchstens ein binäres Wort generieren. Beachte auch, dass ein Maschinencode der Länge $0$ (leerer Maschinencode) kein Wort generieren kann. Wie viele nichtleere Maschinencodes der Länge kleiner als $n$ gibt es höchstens? Sicherlich sind es nicht mehr als es Elemente in der Menge
+		\begin{align*}
+			S := \setct{w}{$w$ ist ein binäres Wort mit $1\leq\abs{w}\leq n-1$}
+		\end{align*}
+		gibt. Es gibt genau $2^1$ binäre Wörter der Länge $1$, $2^2$ binäre Wörter der Länge $2$ und allgemein $2^k$ binäre Wörter der Länge $k$. Insgesamt enthält die Menge $S$ also genau
+		\begin{align*}
+			\sum_{k = 1}^{n-1} 2^k \stackrel{\cref{mytheorem:verallgemeinertegeometrischeSumme}}{=} 2^n - 2
+		\end{align*}
+		Elemente. Doch es gibt genau $2^n$ binäre Wörter der Länge $n$. Dies sind aber mehr als es nichtleere verschiedene Maschinencodes der Länge $<n$ gibt. Damit muss ein binäres Wort $x$ der Länge $n$ existieren, für welches kein Maschinencode mit Länge $<n$ existiert und somit $K(w) \geq n = \abs{w}$.
+	\end{myproof}
+\end{mytheorem}
+
+Ein nichtkomprimierbares Wort erlaubt also keine kürzere Beschreibung, als das Wort vollständig zu beschreiben. Es gibt also keinen anderen Plan zur seiner Generierung als einzig seine vollständige Beschreibung. Damit ist es plausible, dass \cref{mydefinition:zufall} unsere bislang beste bekannte Formalisierung des informellen Begriffes \enquote{zufällig} ist.
+
+\begin{mydefinition}[Zufälliges binäres Wort, zufällige Zahl]\label{mydefinition:zufall}
+\phantom{1}
+\begin{itemize}
+	\item Ein binäres Wort $w$ heisst \textit{zufällig}, falls $K(w)\geq\abs{w}$.
+	\item Eine natürliche Zahl $n>0$ heisst zufällig, falls $K(n) = K(bin(n)) \geq \ceil{\log_2(n+1)} - 1$.
+\end{itemize}
+\end{mydefinition}
+
+\begin{myexercise}
+	\phantom{1}
+	Woher kommt der Term $-1$ in der Definition einer zufälligen Zahl (siehe \cref{mydefinition:zufall})?
+	\begin{myanswer}
+		Die binären Darstellungen aller natürlichen Zahlen $n>0$ beginnen alle mit einer $1$. Das erste Bit in der binären Darstellung von $n$ ist also bereits bekannt. Es ist also sinnvoll die Zahl auch schon als zufällig anzuschauen, falls alle Bits ausser dem ersten genannt werden müssen.
+	\end{myanswer}
+\end{myexercise}
+
+
+\section{Die Kolmogorov-Komplexität ist nicht berechnenbar}
+
+\begin{mytheorem}[$K(w)$ ist nicht für jedes binäre Wort berechenbar]\label{mytheorem:Knotcomputable}
+	Das Problem, für jedes binäre Wort $w$ die Kolmogorov-Komplexität $K(w)$ von $w$ zu berechnen, ist algorithmisch unlösbar.
+\end{mytheorem}
