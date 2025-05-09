@@ -1,0 +1,126 @@
+\section{Daten vorhersagen}
+Eine der häufigsten Anwendungen in der künstlichen Intelligenz ist die Vorhersage von Daten. Dabei wird ein Modell erstellt, das auf Basis von vorhandenen Daten Vorhersagen für zukünftige Daten trifft.
+
+Bevor wir uns mit der Vorhersage von Daten befassen, sollten wir zuerst einige grundlegende Begriffe klären.
+
+\subsection{Korrelation und Kausalität}
+\begin{mydefinition}[Korrelation]
+\begin{itemize}
+    \item \textbf{Korrelation} beschreibt eine statistische Beziehung zwischen zwei Variablen. Eine Korrelation bedeutet nicht zwangsläufig, dass eine Variable die andere beeinflusst (s. Definition zu Kausalität untenan). Es kann auch sein, dass beide Variablen von einer dritten Variable beeinflusst werden oder dass die Korrelation rein zufällig ist.
+    \item \textbf{Positive Korrelation} bedeutet, dass wenn eine Variable steigt, auch die andere Variable steigt.
+    \item \textbf{Negative Korrelation} bedeutet, dass wenn eine Variable steigt, die andere Variable sinkt.
+\end{itemize}
+\end{mydefinition}
+
+\begin{myexample}[Korrelation]\label{ex:korrelation}
+\cref{fig:Korrelationen} zeigt zwei Beispiele für Korrelationen. Die linke Grafik zeigt eine positive Korrelation zwischen der Anzahl Polizeipatrouillen und der Anzahl begangener Straftaten. Die rechte Grafik zeigt eine negative Korrelation zwischen der Nutzung von Social Media und der Zufriedenheit. In beiden Fällen bedeutet die Korrelation nicht automatisch, dass eine Variable die andere beeinflusst. Es könnte auch sein, dass beide Variablen von einer dritten Variable beeinflusst werden (\textbf{indirekte Kausalität}) oder dass die Korrelation rein zufällig ist (\textbf{Koinzidenz}).
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet"}
+        \caption{Anzahl Polizeipatrouillen und begangene Straftaten}
+        \label{fig:polizei_vs_kriminalitaet}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/socialmedia_vs_zufriedenheit"}
+        \caption{Social-Media-Nutzung und Zufriedenheit}
+        \label{fig:socialmedia_vs_zufriedenheit}
+    \end{subfigure}
+    \caption{Beispiele für Korrelationen}
+    \label{fig:Korrelationen}
+\end{figure}
+\end{myexample}
+
+\begin{mydefinition}[Kausalität]
+\textbf{Kausalität} beschreibt eine Ursache-Wirkung-Beziehung zwischen zwei Variablen. Wenn eine Variable (Ursache) eine andere Variable (Wirkung) beeinflusst, spricht man in diesem Fall von Kausalität. Um zu beurteilen, ob eine Kausalität vorliegt, ist es wichtig, den Zusammenhang zwischen den Variablen zu analysieren und zu verstehen. Kausalität kann häufig nur durch wissenschaftliche  Experimente oder statistische Analysen nachgewiesen werden. Kausalität ist ein sehr komplexes Thema und es gibt viele verschiedene Arten von Kausalität. In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
+\begin{itemize}
+    \item \textbf{Koinzidenz} beschreibt eine zufällige Korrelation zwischen zwei Variablen, die keine kausale Beziehung haben.
+    \item \textbf{Zyklische Beeinflussung} beschreibt eine Situation, in der zwei Variablen sich gegenseitig beeinflussen. Zum Beispiel könnte A B beeinflussen und B wiederum A beeinflussen.
+    \item \textbf{Gemeinsamer Grund} beschreibt eine Situation, in der eine dritte Variable sowohl A als auch B beeinflusst. Zum Beispiel könnte C sowohl A als auch B beeinflussen.
+    \item \textbf{Indirekte Kausalität} beschreibt eine Situation, in der A B beeinflusst, aber nicht direkt. Zum Beispiel könnte A C beeinflussen und C B beeinflussen.
+    \item \textbf{Direkte Kausalität} beschreibt eine Situation, in der A B direkt beeinflusst. Zum Beispiel könnte A B beeinflussen, ohne dass eine dritte Variable dazwischen steht.
+\end{itemize}
+\end{mydefinition}
+
+\begin{myexercise}
+    In einer Klasse wurde ein Programmier-Test durchgeführt. Die Schüler mussten 10 Fragen beantworten. Für jede richtige Antwort gab es 1 Punkt, für jede falsche Antwort gab es 0 Punkte. Die Schüler wurden anschliessend in eine Rangliste eingeteilt, wobei der Schüler mit den meisten Punkten den ersten Platz belegte. Die Tabelle \ref{tab:rangliste} zeigt die Ergebnisse des Tests.
+    \begin{table}[H]
+        \centering
+        \caption{Rangliste des Programmier-Tests}
+        \label{tab:rangliste}
+        \begin{tabular}{clrr}
+            \midrule
+            Nr. & Name         & Anzahl Punkte & Rang \\
+            \midrule
+            1   & Anna Keller  & 2.5           & 5    \\
+            2   & Jonas Meier  & 4.0           & ?    \\
+            3   & Lara Schmid  & 1.0           & 7    \\
+            4   & Elias Huber  & 3.5           & 3    \\
+            5   & Mia Müller   & 5.0           & 1    \\
+            6   & Noah Fischer & 2.0           & ?    \\
+            7   & Sofia Weber  & 3.0           & 4    \\
+            \midrule
+        \end{tabular}
+        \caption{Die Rangliste des Programmier-Tests}
+        \label{tab:rangliste}
+    \end{table}
+\end{myexercise}
+
+\begin{myexercise}
+    Bestimmen Sie für folgende Aussagen, ob eine Korrelation oder eine Kausalität vorliegt. Wenn eine Kausalität vorliegt, bestimmen Sie auch, um welche Art von Kausalität es sich handelt:
+
+    \begin{enumerate}
+        \item Die Durchschnittsnote in der Klasse steigt über das Schuljahr hinweg. Gleichzeitig wird mehr Kaffee im Lehrerzimmer konsumiert.
+        \item In den Sommermonaten nehmen sowohl die Anzahl Sonnenbrände wie auch der Verkauf von Glacé zu. 
+        \item In den letzten zehn Jahren hat der Konsum von Avocados in der Schweiz zugenommen. Gleichzeitig ist die Zahl bestandener Maturaprüfungen gestiegen.
+        \item Die Messung der Schlafdaten von Sportlern hat ergeben, Menschen, die viel Sport treiben, bessere Prüfungsergebnisse erzielen.
+        \item Eine Untersuchung von 1000 SchülerInnnen hat gezeigt, dass SchülerInnen, welche sehr gestresst sind, schlechtere Noten erzielen.
+
+    \end{enumerate}
+
+    \begin{myanswer}
+        \begin{itemize}
+            \item \textbf{Koinzidenz}: Keine kausale Beeinflussung. Die Korrelation ist zufällig höchstens oder durch eine Drittvariable erklärbar (z.B. die Lehrpersonen investieren mehr Zeit in den Unterricht $\rightarrow$ mehr Stress $\rightarrow$ mehr Kaffee).
+
+            \item \textbf{Gemeinsamer Grund}: Beide Grössen werden durch eine gemeinsame Drittvariable beeinflusst: das Wetter bzw. die Jahreszeit. Es handelt sich um eine klassische Scheinkorrelation.
+            \item \textbf{Koinzidenz}Keine echte Beeinflussung. Es handelt sich um eine Scheinkorrelation ohne sinnvollen Zusammenhang. Der gleichzeitige Trend ist rein zufällig.
+        \end{itemize}
+    \end{myanswer}
+\end{myexercise}
+
+\subsection{Die Korrelation als Zahl berechnen}
+
+Um Zusammenhänge zwischen zwei Variablen nicht nur quantifizieren, sondern auch vergleichen zu können, wäre es hilfreich, den Zusammenhang zwischen zwei Zahlen in einer einzigen Zahl $r$ ausdrücken zu können. Damit könnten Fragen wie die Folgende beantwortet werden:
+
+Welcher Zusammenhang ist stärker – Schlafdauer vs. Konzentration (r = 0.6) oder Handynutzung vs. Noten (r = –0.4)? 
+
+In Psychologie, Wirtschaft, Medizin oder Sport begegnet man Korrelationen oft: z. B. ``Bewegung korreliert mit geringerer Krankheitsanfälligkeit''. Wer $r$ versteht, kann solche Aussagen kritisch beurteilen und selbst Studien sinnvoll interpretieren.
+
+Die Korrelation zwischen zwei Variablen kann durch eine mathematische Formel berechnet werden. Eine Möglichkeit, dies zu tun, ist die Berechnung des Korrelationskoeffizienten \( Z \). Die Formel lautet:
+
+\[
+Z = x_1 \cdot y_1 + x_2 \cdot y_2 + \dots + x_n \cdot y_n
+\]
+
+Dabei stehen \( x_i \) und \( y_i \) für die Werte der beiden Variablen in den jeweiligen Beobachtungen. Der Korrelationskoeffizient gibt an, wie stark der Zusammenhang zwischen den beiden Variablen ist.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet"}
+        \caption{Anzahl Polizeipatrouillen und begangene Straftaten}
+        \label{fig:polizei_vs_kriminalitaet}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl"}
+        \caption{Normalisierte Daten}
+        \label{fig:socialmedia_vs_zufriedenheit}
+    \end{subfigure}
+\end{figure}
