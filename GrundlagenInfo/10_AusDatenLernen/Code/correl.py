@@ -3,6 +3,8 @@ from adjustText import adjust_text
 import matplotlib.pyplot as plt
 
 a = generiere_korrelationsdaten("polizei_vs_kriminalitaet", n=20)
+a.to_csv("GrundlagenInfo/10_AusDatenLernen/Code/polizei_vs_kriminalitaet.csv", index=False)
+
 # Describe each column with statistics using .describe()
 print("Column Statistics:")
 print(a.describe())

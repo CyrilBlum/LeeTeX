@@ -32,3 +32,5 @@ def generiere_korrelationsdaten(szenario: str, n: int = 100, seed: int = 42) -> 
     else:
         raise ValueError(f"Unbekanntes Szenario: {szenario}")
     
+generiere_korrelationsdaten("berufserfahrung_vs_einladung", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Code/berufserfahrung_vs_einladung.csv", index=False)
+generiere_korrelationsdaten("socialmedia_vs_zufriedenheit", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Code/socialmedia_vs_zufriedenheit.csv", index=False)
