@@ -1,0 +1,323 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Daten Vorhersagen]{Daten Vorhersagen}
+
+\subtitle{Korrelation \& Kausalität}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl \inst{1}}
+
+\institute[KLW] % (optional)
+{
+    \inst{1}%
+    Fachschaft Informatik\\
+    Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{\thelogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"GrundlagenInfo/06_Datenbanken/Figures/title-emojis"}}
+
+
+
+\frame{\titlepage}
+
+\begin{frame}{Maschinelles Lernen}
+    \begin{figure}[H]
+        \only<1->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_spam.jpg"}}
+        \only<2->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_scan.jpg"}}
+        \only<3->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_recommendation.jpg"}}
+        \only<4->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_maps.jpeg"}}
+        \only<5->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_chatGPT.jpeg"}}
+        \only<6->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_YT.jpg"}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Polizeipatrouillen und Straftaten}
+    \begin{center}
+        Am Anfang steht häufig ein Vergleich zweier Variablen (= Datenreihen), z.B.:
+    \end{center}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet"}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Ziele der heutigen Lektion}
+    Ziele
+    \begin{enumerate}[<+->]
+        \item \faCheckSquare{} Ich kann beschreiben, was \textbf{Korrelation} und \textbf{Kausalität} sind.
+        \item \faCheckSquare{} Ich kann begründen, welche Art der Beeinflussung zwischen zwei Variablen vorliegt.
+        \item \faCheckSquare{} Ich wende bei der Interpretation von korrelierten Daten Vorsicht an, bevor ich Aussagen über Ursache und Wirkung treffe.
+        \item \faCheckSquare{} Ich kann die Zahl \( Z \) berechnen und interpretieren.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Definition: Kausalität}
+    \begin{mydefinition}[Kausalität]
+    \textbf{Kausalität} beschreibt:
+    \begin{itemize}
+        \item Ursache-Wirkung-Beziehung zwischen zwei Variablen A und B.
+        \item Ursprung des Begriffs: lat. \textit{causa} = Ursache
+        \item Bedarf eines Nachweises (z.B. Experimente oder statistische Analysen).
+        \item Verschiedenen Arten von Kausalität existieren.
+    \end{itemize}
+    \end{mydefinition}
+\end{frame}
+
+\begin{frame}{Arten von Kausalität: Koinzidenz (=Zufall)}
+    \textbf{Koinzidenz} beschreibt eine zufällige Korrelation zwischen zwei Variablen, die keine kausale Beziehung haben.
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw] (A) at (0,0) {A};
+            \node[circle, draw] (B) at (3,0) {B};
+            \draw[<->, dashed] (A) -- (B) node[midway, above] {zufällig};
+        \end{tikzpicture}
+    \end{center}
+    \begin{center}
+        Beispiel: \textit{Der Pro-Kopf-Verbrauch von Mozzarella-Käse sowie die verliehenen Bauingenieurs-Doktortitel in den USA sind zwischen den Jahren 2000 bis 2009 beide angestiegen.}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Arten von Kausalität: Zyklische Beeinflussung}
+    \textbf{Zyklische Beeinflussung} beschreibt eine Situation, in der zwei Variablen sich gegenseitig beeinflussen. Zum Beispiel könnte A B beeinflussen und B wiederum A beeinflussen.
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw] (A) at (0,0) {A};
+            \node[circle, draw] (B) at (3,0) {B};
+            \draw[->] (A) to[bend left] (B);
+            \draw[->] (B) to[bend left] (A);
+        \end{tikzpicture}
+    \end{center}
+    \begin{center}
+        Beispiel: \textit{Schlafmangel führt zu mehr Stress, was wiederum zu Schlafmangel führt.}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Arten von Kausalität: Gemeinsamer Grund}
+    \textbf{Gemeinsamer Grund} beschreibt eine Situation, in der eine dritte Variable sowohl A als auch B beeinflusst. Zum Beispiel könnte C sowohl A als auch B beeinflussen.
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw] (C) at (1.5,1.5) {C};
+            \node[circle, draw] (A) at (0,0) {A};
+            \node[circle, draw] (B) at (3,0) {B};
+            \draw[->] (C) -- (A);
+            \draw[->] (C) -- (B);
+        \end{tikzpicture}
+    \end{center}
+    \begin{center}
+        Beispiel: \textit{Zwischen November und Januar stiegen sowohl der Verkauf von Winterreifen als auch die Häufigkeit von Erkältungen an (Grund: Jahreszeit).}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Arten von Kausalität: Indirekte Kausalität}
+    \textbf{Indirekte Kausalität} beschreibt eine Situation, in der A B beeinflusst, aber nicht direkt. Zum Beispiel könnte A C beeinflussen und C B beeinflussen.
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw] (A) at (0,0) {A};
+            \node[circle, draw] (C) at (1.5,1.5) {C};
+            \node[circle, draw] (B) at (3,0) {B};
+            \draw[->] (A) -- (C);
+            \draw[->] (C) -- (B);
+        \end{tikzpicture}
+    \end{center}
+    \begin{center}
+        Beispiel: \textit{Sport führt zu besserem Schlaf, was wiederum zu besseren Prüfungsergebnissen führt.}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Arten von Kausalität: Direkte Kausalität}
+    \textbf{Direkte Kausalität} beschreibt eine Situation, in der A B direkt beeinflusst.
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw] (A) at (0,0) {A};
+            \node[circle, draw] (B) at (3,0) {B};
+            \draw[->] (A) -- (B);
+        \end{tikzpicture}
+    \end{center}
+    \begin{center}
+        Beispiel: Mehr Video-Streams führen automatisch zu mehr Geld für den Youtuber.
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag}{(Aufgabe 1.2 im Skript)}
+
+            Welche Art der Beeinflussung liegt vor? 
+            \textbf{(a)} Koinzidenz, 
+            \textbf{(b)} Zyklische Beeinflussung, 
+            \textbf{(c)} Gemeinsamer Grund, 
+            \textbf{(d)} Indirekte Kausalität, 
+            \textbf{(e)} Direkte Kausalität?
+
+            \begin{enumerate}
+                \item Die Durchschnittsnote in der Klasse steigt über das Schuljahr hinweg. Gleichzeitig wird mehr Kaffee im Lehrerzimmer konsumiert.
+                \item In den Sommermonaten nehmen sowohl die Anzahl Sonnenbrände wie auch der Verkauf von Glacé zu.
+                \item In den letzten zehn Jahren hat der Konsum von Avocados in der Schweiz zugenommen. Gleichzeitig ist die Zahl bestandener Maturaprüfungen gestiegen.
+                \item Eine Messung hat ergeben, Menschen, die viel Sport treiben, bessere Prüfungsergebnisse erzielen.
+                \item Eine Untersuchung von 1000 SchülerInnnen hat gezeigt, dass SchülerInnen, welche gestresst sind, schlechtere Noten erzielen.
+            \end{enumerate}
+\end{frame}
+
+\begin{frame}{Lösungsvorschlag: Durchschnittsnote und Kaffee}
+    \begin{center}
+        ``Die Durchschnittsnote in der Klasse steigt über das Schuljahr hinweg. Gleichzeitig wird mehr Kaffee im Lehrerzimmer konsumiert.''
+    \end{center}
+    \only<2->{\textbf{Lösung:} \textbf{Koinzidenz}: Keine kausale Beeinflussung. Die Korrelation ist zufällig oder durch eine Drittvariable erklärbar (z.B. mehr Stress $\rightarrow$ mehr Kaffee).
+        \begin{center}
+            \begin{tikzpicture}
+                \node[circle, draw] (A) at (0,0) {\Large\emoji{hundred-points}};
+                \node[circle, draw] (B) at (4,0) {\Large\emoji{coffee}};
+                \draw[<->, dashed] (A) -- (B) node[midway, above] {zufällig (?)};
+            \end{tikzpicture}
+        \end{center}}
+\end{frame}
+
+\begin{frame}{Lösungsvorschlag: Sonnenbrände und Glacé}
+    \begin{center}
+        ``In den Sommermonaten nehmen sowohl die Anzahl Sonnenbrände wie auch der Verkauf von Glacé zu.''
+    \end{center}
+    \only<2->{\textbf{Lösung:} \textbf{Gemeinsamer Grund}: Beide Grössen werden durch eine Drittvariable beeinflusst: das Wetter bzw. die Jahreszeit.
+        \begin{center}
+            \begin{tikzpicture}
+                \node[circle, draw] (C) at (1.5,1.5) {\Large\emoji{sun}};
+                \node[circle, draw] (A) at (0,0) {\Large\emoji{ice-cream}};
+                \node[circle, draw] (B) at (3,0) {\Large\emoji{hot-face}};
+                \draw[->] (C) -- (A);
+                \draw[->] (C) -- (B);
+            \end{tikzpicture}
+        \end{center}}
+\end{frame}
+
+\begin{frame}{Lösungsvorschlag: Avocados und Maturaprüfungen}
+    \begin{center}
+        ``In den letzten zehn Jahren hat der Konsum von Avocados in der Schweiz zugenommen. Gleichzeitig ist die Zahl bestandener Maturaprüfungen gestiegen.''
+    \end{center}
+    \only<2->{\textbf{Lösung:} \textbf{Koinzidenz}: Keine echte Beeinflussung. Es handelt sich um eine Scheinkorrelation ohne sinnvollen Zusammenhang.
+        \begin{center}
+            \begin{tikzpicture}
+                \node[circle, draw] (A) at (0,0) {\Large\emoji{avocado}};
+                \node[circle, draw] (B) at (4,0) {\Large\emoji{pen}};
+                \draw[<->, dashed] (A) -- (B) node[midway, above] {zufällig (?)};
+            \end{tikzpicture}
+        \end{center}}
+\end{frame}
+
+\begin{frame}{Lösungsvorschlag: Sport und Prüfungsergebnisse}
+    \begin{center}
+        ``Die Messung der Schlafdaten von Sportlern hat ergeben, Menschen, die viel Sport treiben, bessere Prüfungsergebnisse erzielen.''
+    \end{center}
+    \only<2->{\textbf{Lösung:} \textbf{Indirekte Kausalität}: SportlerInnen schlafen besser, was zu besseren Prüfungsergebnissen führt.
+        \begin{center}
+            \begin{tikzpicture}
+                \node[circle, draw] (A) at (0,0) {\Large\emoji{person-running}};
+                \node[circle, draw] (C) at (1.5,1.5) {\Large\emoji{zzz}};
+                \node[circle, draw] (B) at (3,0) {\Large\emoji{mortar-board}};
+                \draw[->] (A) -- (C);
+                \draw[->] (C) -- (B);
+            \end{tikzpicture}
+        \end{center}}
+\end{frame}
+
+\begin{frame}{Lösungsvorschlag: Stress und Noten}
+    \begin{center}
+        ``Eine Untersuchung von 1000 SchülerInnnen hat gezeigt, dass SchülerInnen, welche sehr gestresst sind, schlechtere Noten erzielen.''
+    \end{center}
+    \only<2->{\textbf{Lösung:} \textbf{Zyklische Beeinflussung}: Stress führt zu schlechteren Noten, was wiederum zu mehr Stress führt.
+        \begin{center}
+            \begin{tikzpicture}
+                \node[circle, draw] (A) at (0,0) {\Large\emoji{face-with-spiral-eyes}};
+                \node[circle, draw] (B) at (3,0) {\Large\emoji{memo}};
+                \draw[->] (A) to[bend left] (B);
+                \draw[->] (B) to[bend left] (A);
+            \end{tikzpicture}
+        \end{center}}
+\end{frame}
+\begin{frame}{Definition: Korrelation}
+    \begin{mydefinition}[Korrelation]
+    \textbf{Korrelation} beschreibt:
+    \begin{itemize}[<+->]
+        \item Statistische Beziehung zwischen zwei Variablen.
+        \item Ursprung des Begriffs:
+              \begin{itemize}
+                  \item \textit{co(n)-} = \enquote{mit}.
+                  \item \textit{relatio} = Beziehung.
+              \end{itemize}
+        \item Bedeutung: Gegenseitige Beziehung oder Wechselbeziehung (\emoji{arrows-counterclockwise}).
+        \item Häufig als Zahl ausgedrückt (zwischen -1 und 1).
+    \end{itemize}
+    \end{mydefinition}
+\end{frame}
+
+
+\begin{frame}{Korrelations-Beispiel: Abweichung vom Mittelwert}
+    \begin{onlyenv}<1>
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=.95\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl"}
+        \end{figure}
+    \end{onlyenv}
+    \begin{onlyenv}<2->
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=.95\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl_norm"}
+        \end{figure}
+    \end{onlyenv}
+    \only<3->{
+        \[
+            Z = x_1' \cdot y_1'\only<3>{+\dots} \only<4->{+ x_2' \cdot y_2'}\only<4>{+\dots} \only<5->{+ \dots + x_n' \cdot y_n'}
+        \]
+        \begin{itemize}
+            \item \( x_i' \): Abweichung der Variable \(x\) vom Mittelwert
+            \item \( y_i' \): Abweichung der Variable \(y\) vom Mittelwert
+        \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag}
+    \begin{itemize}
+        \item \aufgabebox{1.3 im Skript, mit Excel \faFileExcel{}}\\
+    \end{itemize}
+
+    $\rightarrow$ Blatt 1 (Beispiel) gut anschauen!
+
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{l|l}
+            \textbf{Excel-Befehl}   & \textbf{Bedeutung}             \\\midrule\midrule
+            \verb|=MITTELWERT(...)| & Mittelwert berechnen           \\\midrule
+            \verb|=SUMME(...)|      & Summe berechnen                \\\midrule
+            \verb|=A1*B1|           & Zahlen multiplizieren          \\\midrule
+            \verb|=$A$2|            & Referenz auf Zelle A2 fixieren \\
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Sicherung}
+    \begin{itemize}[<+->]
+        \item \faCheckSquare{} Ich kann den Unterschied zwischen Korrelation und Kausalität erklären.
+        \item \faCheckSquare{} Ich kann begründete Einschätzungen über die Kausationsart zwischen zwei Variablen abgeben, indem ich folgende Begriffe verwende:
+              \begin{itemize}
+                  \item \faCheckSquare{} Koinzidenz
+                  \item \faCheckSquare{} Zyklische Beeinflussung
+                  \item \faCheckSquare{} Gemeinsamer Grund
+                  \item \faCheckSquare{} Indirekte Kausalität
+                  \item \faCheckSquare{} Direkte Kausalität
+              \end{itemize}
+        \item \faCheckSquare{} Ich wende bei der Interpretation von korrelierten Daten Vorsicht an, bevor ich Aussagen über Kausalität treffe.
+        \item \faCheckSquare{} Ich kann die Zahl \( Z \) berechnen und interpretieren.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/sales-shaved-heads"}
+    \end{figure}
+\end{frame}
