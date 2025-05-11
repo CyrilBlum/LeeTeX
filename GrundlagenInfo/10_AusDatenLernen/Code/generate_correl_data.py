@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def generiere_korrelationsdaten(szenario: str, n: int = 100, seed: int = 42) -> pd.DataFrame:
     np.random.seed(seed)
@@ -28,9 +29,17 @@ def generiere_korrelationsdaten(szenario: str, n: int = 100, seed: int = 42) -> 
         x = np.random.poisson(5, n)  # Beiträge pro Tag
         y = np.clip(8 - 0.5 * x + np.random.normal(0, 1, n), 0, 10)  # mehr Beiträge → weniger Zufriedenheit
         return pd.DataFrame({"Beiträge pro Tag": x, "Zufriedenheit (0–10)": y})
-    
-    else:
-        raise ValueError(f"Unbekanntes Szenario: {szenario}")
+    elif szenario == "haarlaenge_vs_notenschnitt":
+        x = np.random.normal(30, 10, n)  # Haarlänge in cm
+        y = np.clip(3 + 0.05 * x + np.random.normal(0, 0.5, n), 1, 6)  # längere Haare → schlechterer Notenschnitt
+        
+        # Füge Ausreißer hinzu
+        num_outliers = max(1, n // 20)  # 1 oder 2 Ausreißer pro 20
+        outlier_indices = np.random.choice(n, num_outliers, replace=False)
+        y[outlier_indices] = np.random.uniform(1, 6, num_outliers)  # zufällige Werte innerhalb des Notenschnittbereichs
+        
+        return pd.DataFrame({"Haarlänge (cm)": x, "Notenschnitt": y})
     
 generiere_korrelationsdaten("berufserfahrung_vs_einladung", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Code/berufserfahrung_vs_einladung.csv", index=False)
 generiere_korrelationsdaten("socialmedia_vs_zufriedenheit", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Code/socialmedia_vs_zufriedenheit.csv", index=False)
+generiere_korrelationsdaten("haarlaenge_vs_notenschnitt", n=14, seed=1).to_csv("GrundlagenInfo/10_AusDatenLernen/Code/haarlaenge_vs_notenschnitt.csv", index=False)

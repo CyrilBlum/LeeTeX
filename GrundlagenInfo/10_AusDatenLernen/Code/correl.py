@@ -1,6 +1,7 @@
 from generate_correl_data import *
 from adjustText import adjust_text
 import matplotlib.pyplot as plt
+plt.style.use('ggplot')
 
 def visualize_normalized_data(df_correl, normalize=True, save=True):
     if normalize:
@@ -65,7 +66,10 @@ def visualize_normalized_data(df_correl, normalize=True, save=True):
     plt.grid(True)
     plt.legend()
     if save:
-        plt.savefig("GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl"+("_norm" if normalize else "") +".pdf")  # Save the plot to a PDF file
+        plt.savefig(
+            "GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl" + ("_norm" if normalize else "") + ".pdf",
+            bbox_inches='tight'  # Remove white margins
+        )  # Save the plot to a PDF file
         plt.close()
     else:
         plt.show()
