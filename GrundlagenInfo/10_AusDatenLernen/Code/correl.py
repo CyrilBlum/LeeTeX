@@ -21,7 +21,7 @@ def visualize_normalized_data(df_correl, normalize=True, save=True):
             plt.text(
                 x + 0.1, y,  # Slightly shift labels to the right
                 f"x'={x:.0f}\ny'={y:.1f}" if normalize else f"x={x:.0f}\ny={y:.1f}",
-                fontsize=8,
+                fontsize=10,
                 color='white',
                 bbox=dict(
                     boxstyle="round,pad=0.3",
@@ -52,8 +52,8 @@ def visualize_normalized_data(df_correl, normalize=True, save=True):
 
     else:
         # Add horizontal and vertical lines at mean values
-        plt.axhline(df_correl["Straftaten"].mean(), color='ForestGreen', linestyle='--', linewidth=1, label='$\overline{y}$')
-        plt.axvline(df_correl["Polizeistreifen"].mean(), color='RoyalBlue', linestyle='--', linewidth=1, label='$\overline{x}$')
+        plt.axhline(df_correl["Straftaten"].mean(), color='ForestGreen', linestyle='--', linewidth=1, label=f'$\overline{{y}}$={df_correl["Straftaten"].mean():.2f}')
+        plt.axvline(df_correl["Polizeistreifen"].mean(), color='RoyalBlue', linestyle='--', linewidth=1, label=f'$\overline{{x}}$={df_correl["Polizeistreifen"].mean():.2f}')
 
     # Set x and y limits to the actual plot limits
     plt.xlim(x_min, x_max)
@@ -64,7 +64,7 @@ def visualize_normalized_data(df_correl, normalize=True, save=True):
     plt.xlabel("Polizeistreifen")
     plt.ylabel("Straftaten")
     plt.grid(True)
-    plt.legend()
+    plt.legend()   
     if save:
         plt.savefig(
             "GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl" + ("_norm" if normalize else "") + ".pdf",

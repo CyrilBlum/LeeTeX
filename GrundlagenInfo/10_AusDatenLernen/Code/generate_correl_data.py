@@ -39,6 +39,11 @@ def generiere_korrelationsdaten(szenario: str, n: int = 100, seed: int = 42) -> 
         y[outlier_indices] = np.random.uniform(1, 6, num_outliers)  # zufällige Werte innerhalb des Notenschnittbereichs
         
         return pd.DataFrame({"Haarlänge (cm)": x, "Notenschnitt": y})
+    elif szenario == "schuhgroesse_vs_buecher":
+        x = np.random.uniform(0, 100, n)  # Zufällige Werte für X
+        y = np.random.uniform(0, 100, n)  # Unabhängige zufällige Werte für Y
+        return pd.DataFrame({"Bücher gelesen": x, "Schuhgrösse": y})
+
     
 generiere_korrelationsdaten("berufserfahrung_vs_einladung", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Code/berufserfahrung_vs_einladung.csv", index=False)
 generiere_korrelationsdaten("socialmedia_vs_zufriedenheit", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Code/socialmedia_vs_zufriedenheit.csv", index=False)

@@ -22,3 +22,7 @@ vis_correl_data(a, "Beiträge pro Tag", "Zufriedenheit (0–10)", "socialmedia_v
 # Visualize the third dataset (Haarlänge vs. Notenschnitt)
 df = generiere_korrelationsdaten("haarlaenge_vs_notenschnitt", n=14, seed=1)
 vis_correl_data(df, "Haarlänge (cm)", "Notenschnitt", "haarlange_vs_notenschnitt")
+
+# Visualize the third dataset (Haarlänge vs. Notenschnitt)
+df = generiere_korrelationsdaten("schuhgroesse_vs_buecher", n=14, seed=1)
+vis_correl_data(df, "Bücher gelesen", "Schuhgrösse", "buecher_vs_schuhgroesse")
