@@ -31,3 +31,7 @@ vis_correl_data(df, "Bücher gelesen", "Schuhgrösse", "buecher_vs_schuhgroesse"
 # Visualize Berufserfahrung vs. Einladungswahrscheinlichkeit
 df = generiere_korrelationsdaten("berufserfahrung_vs_einladung", n=14, seed=1)
 vis_correl_data(df, "Berufsjahre", "Einladungswahrscheinlichkeit", "berufserfahrung_vs_einladung")
+
+# Visualize Schlafdauer vs. Notenschnitt
+df = generiere_korrelationsdaten("schlafdauer_vs_notenschnitt", n=25)
+vis_correl_data(df, "Schlafdauer (h)", "Notenschnitt", "schlafdauer_vs_notenschnitt")
