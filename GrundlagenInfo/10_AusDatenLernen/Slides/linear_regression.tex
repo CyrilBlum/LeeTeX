@@ -1,0 +1,181 @@
+% command to make sure colorboxes don't create whitespace between code lines
+% Reduce the space inside colorboxes to avoid extra whitespace between lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Daten Vorhersagen]{Daten Vorhersagen}
+
+\subtitle{Lineare Regression}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl}
+
+\institute[KLW] % (optional)
+{
+    Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{\thelogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"GrundlagenInfo/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+
+\begin{frame}{Themenübersicht}
+    \begin{enumerate}
+        \item[\faCheckSquare{}] Daten verstehen (analysieren und visualisieren)
+        \item[\faSquare] \textbf{Zahlen vorhersagen}
+        \item[\faSquare] Kategorien vorhersagen
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Maschinelles Lernen}
+    \begin{figure}[H]
+        \only<1->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_spam.jpg"}}
+        \only<2->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_YT.jpg"}}
+        \only<3->{\centering\includegraphics[width=0.26\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_scan.jpg"}}
+        % \only<4->{\centering\includegraphics[width=0.3\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_recommendation.jpg"}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Zahlen vorhersagen mit Regression}{Unabhängige und abhängige Variablen}
+    \begin{table}
+        \centering
+        \begin{tabular}{rcl}
+            \textbf{Unabhängige Variable} &               & \textbf{Abhängige Variable} \\ \midrule\midrule
+            Lernzeit                      & $\rightarrow$ & Note in der Prüfung         \\ \midrule
+            Alter eines Autos             & $\rightarrow$ & Wiederverkaufswert          \\ \midrule
+            Anzahl Schritte pro Tag       & $\rightarrow$ & Kalorienverbrauch           \\ \midrule
+            Aussentemperatur              & $\rightarrow$ & Eisverkaufszahlen           \\ \midrule
+            Anzahl Likes auf Social Media & $\rightarrow$ & Reichweite eines Posts      \\
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{\textbf{Unabhängige} und \textbf{abhängige Variablen}}
+    \begin{table}
+        \centering
+        \begin{tabular}{p{3cm}|p{5cm}}
+            \textbf{Unabhängige Variable} & Kontrollierbare Grösse, beeinflusst andere Variable(n).               \\ \midrule
+            \textbf{Abhängige Variable}   & Messbare Grösse, wird beeinflusst von \textit{unabhängiger} Variable. \\
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Zahlen vorhersagen mit Regression}{Unabhängige und abhängige Variablen}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_notenschnitt.pdf"}
+    \end{figure}
+    \begin{itemize}[<+->]
+        \item Unabhängige Variable: Schlafdauer
+        \item Abhängige Variable: Notenschnitt
+        \item Ziel: Vorhersage des Notenschnitts anhand der Schlafdauer
+        \item Beispiel: 3.54 Stunden Schlaf $\rightarrow$ Notenschnitt 3.57
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lineare Funktion}
+    \begin{columns}
+        \column{0.4\textwidth}
+        Einfache Idee: zwei Datenpunkte verbinden, um eine Gerade zu berechnen:
+
+        \begin{table}
+            \centering
+            \begin{tabular}{p{1.5cm}p{1.5cm}}
+                \toprule
+                \textbf{Schlaf-\newline Dauer\newline(=x)} & \textbf{Noten-\newline Schnitt\newline(=y)} \\
+                \midrule
+                3.54                                       & 3.57                                        \\
+                9.617                                      & 6.0                                         \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+        \[m = \frac{y_2 - y_1}{x_2 - x_1}\]
+
+        \[q = y_1 - m \cdot x_1\]
+
+        \column{0.7\textwidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_notenschnitt_2points.pdf"}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \begin{table}
+        \footnotesize
+        \centering
+        \begin{tabular}{rrrrr}
+            \toprule
+            Punkt   & Schlafdauer & Notenschnitt & Vorhersage & Unterschied \\
+            \midrule
+            Punkt 1 & 5.39        & 4.61         & 4.61       & 0.00        \\
+            Punkt 2 & 7.06        & 6.00         & 5.52       & 0.48        \\
+            Punkt 3 & 7.87        & 5.95         & 5.95       & 0.00        \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_notenschnitt_3points.pdf"}
+    \end{figure}
+    Fehler:
+    $$0^2+(-0.484)^2+0^2= 0.235$$
+\end{frame}
+
+\begin{frame}{Lineare Regression mit \textbf{OLS} - Ordinary Least Squares (Kleinste Quadrate)}
+    $$m = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2}$$
+    Das berechnete $m$ ist die Steigung der Geraden, die den Fehler minimiert. Diese kann nun in die Gleichung für $q$ eingesetzt werden:
+    $$q = \frac{\sum y_i - m\sum x_i}{n}$$
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=.8\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_notenschnitt_ols.pdf"}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Multiple lineare Regression}{Mehrere unabhängige Variablen}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{itemize}
+            \item Beispiel: Note über Lernaufwand und Schlaf
+            \item Erklärung:
+                  \begin{itemize}
+                      \item $x_1$: Lernaufwand
+                      \item $x_2$: Schlaf
+                      \item $y$: Note
+                  \end{itemize}
+        \end{itemize}
+        \begin{block}{Formeln}
+            \begin{itemize}
+                \item Einfach: \\
+                $y = q + mx$
+                \item Multipel: \\
+                $y = a_0 + a_1x_1 + a_2x_2$
+            \end{itemize}
+        \end{block}
+        \column{0.65\textwidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/linreg_3d.pdf"}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Auftrag}{Jupyter Notebooks}
+    \begin{itemize}
+        \item Aufgabenblatt 3a durchlesen und vervollständigen
+        \item Aufgabenblatt 3b lösen
+    \end{itemize}
+\end{frame}
