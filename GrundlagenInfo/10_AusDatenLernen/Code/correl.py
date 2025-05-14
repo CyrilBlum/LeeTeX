@@ -3,7 +3,7 @@ from adjustText import adjust_text
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 
-def visualize_normalized_data(df_correl, normalize=True, save=True):
+def visualize_normalized_data(df_correl, normalize=True, save=True, add_mean=True):
     if normalize:
         for column in df_correl.columns:
             # Normalize the data
@@ -44,29 +44,30 @@ def visualize_normalized_data(df_correl, normalize=True, save=True):
         plt.axhline(0, color='black', linestyle='--', linewidth=1)
         plt.axvline(0, color='black', linestyle='--', linewidth=1)
 
-        # Add background colors for each quadrant using actual plot limits
+        # Add background colors for each quadrant using actual plot limits¨
         plt.axhspan(0, y_max, xmin=(0 - x_min) / (x_max - x_min), xmax=x_max, facecolor='lightblue', alpha=0.3, label='Quadrant I')
         plt.axhspan(0, y_max, xmin=0, xmax=(0 - x_min) / (x_max - x_min), facecolor='lightgreen', alpha=0.3, label='Quadrant II')
         plt.axhspan(y_min, 0, xmin=0, xmax=(0 - x_min) / (x_max - x_min), facecolor='lightcoral', alpha=0.3, label='Quadrant III')
         plt.axhspan(y_min, 0, xmin=(0 - x_min) / (x_max - x_min), xmax=x_max, facecolor='moccasin', alpha=0.3, label='Quadrant IV')
 
     else:
-        # Add horizontal and vertical lines at mean values
-        plt.axhline(df_correl["Straftaten"].mean(), color='ForestGreen', linestyle='--', linewidth=1, label=f'$\overline{{y}}$={df_correl["Straftaten"].mean():.1f}')
-        plt.axvline(df_correl["Polizeistreifen"].mean(), color='RoyalBlue', linestyle='--', linewidth=1, label=f'$\overline{{x}}$={df_correl["Polizeistreifen"].mean():.1f}')
+        if add_mean:
+            # Add horizontal and vertical lines at mean values
+            plt.axhline(df_correl["Straftaten"].mean(), color='ForestGreen', linestyle='--', linewidth=1, label=f'$\overline{{y}}$={df_correl["Straftaten"].mean():.1f}')
+            plt.axvline(df_correl["Polizeistreifen"].mean(), color='RoyalBlue', linestyle='--', linewidth=1, label=f'$\overline{{x}}$={df_correl["Polizeistreifen"].mean():.1f}')
 
     # Set x and y limits to the actual plot limits
     plt.xlim(x_min, x_max)
     plt.ylim(y_min, y_max)
 
     # Add title, labels, grid, and legend
-    plt.xlabel("Anzahl Polizeistreifen")
-    plt.ylabel("Anzahl Straftaten")
+    plt.xlabel("Anzahl Polizeistreifen " + ("(=x)" if not normalize else "(=x')"))
+    plt.ylabel("Anzahl Straftaten "+ ("(=y)" if not normalize else "(=y')"))
     plt.grid(True)
     plt.legend()   
     if save:
         plt.savefig(
-            "GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl" + ("_norm" if normalize else "") + ".pdf",
+            "GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl" + ("_norm" if normalize else "") + ("_mean" if add_mean and not normalize else "") + ".pdf",
             bbox_inches='tight'  # Remove white margins
         )  # Save the plot to a PDF file
         plt.close()
@@ -75,8 +76,10 @@ def visualize_normalized_data(df_correl, normalize=True, save=True):
 
 df_pol = generiere_korrelationsdaten("polizei_vs_kriminalitaet", n=20)
 df_pol.to_csv("GrundlagenInfo/10_AusDatenLernen/Code/polizei_vs_kriminalitaet.csv", index=False)
-visualize_normalized_data(df_pol, normalize=False, save=True)
-visualize_normalized_data(df_pol, normalize=True, save=True)
+visualize_normalized_data(df_pol, normalize=False, save=True, add_mean=False)
+visualize_normalized_data(df_pol, normalize=False, save=True, add_mean=True)
+visualize_normalized_data(df_pol, normalize=True, save=True, add_mean=False)
+
 
 # Korrelationskoeffizient manuell berechnen
 
