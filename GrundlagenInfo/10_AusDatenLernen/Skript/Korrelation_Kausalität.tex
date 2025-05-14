@@ -1,14 +1,16 @@
 \chapter{Daten vorhersagen}
+Eine der häufigsten Anwendungen in der künstlichen Intelligenz ist die Vorhersage von Daten. Dabei wird ein Modell erstellt, das auf Basis von vorhandenen Daten Vorhersagen für zukünftige Daten trifft.
 
-\cref{fig:Korrelationen} zeigt zwei Beispiele für Datenreihen (Variablen). Die linke Grafik zeigt eine Datenreihe der Anzahl Polizeipatrouillen und der Anzahl begangener Straftaten. Die rechte Grafik zeigt eine Datenreihe der Nutzung von Social Media und der Zufriedenheit der BenutzerInnen.
+Bevor wir uns mit der Vorhersage von Daten befassen, sollten wir zuerst einige grundlegende Begriffe klären.
+
+\cref{fig:Korrelationen} zeigt zwei Beispiele für Datenreihen (Variablen). Die linke Grafik zeigt eine Datenreihe der Verteilung der Noten sowie der Haarlänge in einer weiblichen Schulklasse. Die rechte Grafik zeigt eine Datenreihe der Nutzung von Social Media und der allgemeinen Lebenszufriedenheit der BenutzerInnen.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet"}
-        \caption{Anzahl Polizeipatrouillen und begangene Straftaten}
-        \label{fig:polizei_vs_kriminalitaet}
+        \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/haarlange_vs_notenschnitt"}
+        \caption{Haarlänge und Notenschnitt in einer Schulklasse}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.48\textwidth}
@@ -21,23 +23,23 @@
     \label{fig:Korrelationen}
 \end{figure}
 
-Die linke Grafik zeigt einen positiven Zusammenhang zwischen der Anzahl Polizeipatrouillen und der Anzahl begangener Straftaten. Bei der Interpretation solcher Daten ist vorsicht geboten: Es könnte sein, dass zwei Quartiere gleich \enquote{gefährlich} sind, aber in einem Quartier mehr Polizeipatrouillen unterwegs sind als im anderen. In diesem Fall würde die Korrelation nicht bedeuten, dass die Polizeipatrouillen die Straftaten beeinflussen. Die höhere Anzahl Straftaten ist in diesem Fall lediglich auf die höhere Anzahl Polizeipatrouillen zurückzuführen. Tiefere Analysen sind notwendig, um den Zusammenhang zwischen den Variablen zu verstehen.
+Die linke Grafik zeigt einen positiven Zusammenhang zwischen der Haarlänge und der Schulnote. Bei der Interpretation solcher Daten ist Vorsicht geboten: Es könnte sein, dass die Daten rein zufällig so aussehen. Wenn man mehrere Klassen anschaut, sähe man eventuell keinen Trend. Eine allfällige These, wie etwa, dass längere Haare zu besseren Noten führen, müsste in einem wissenschaftlichen Experiment überprüft werden. Tiefere Analysen sind notwendig, um den Zusammenhang zwischen den Variablen zu verstehen.
 
 Die rechte Grafik zeigt einen negativen Zusammenhang zwischen der Nutzung von Social Media und der Zufriedenheit. Wenn die Nutzung von Social Media steigt, sinkt die Zufriedenheit. Auch hier ist Vorsicht geboten: Es könnte sein, dass Menschen, die unzufrieden sind, mehr Zeit in sozialen Medien verbringen. Es könnte aber auch sein, dass die Nutzung von Social Media selbst unglücklicher macht. Auch hier ist eine tiefere Analyse notwendig, um den Zusammenhang zwischen den Variablen zu verstehen.
 
-In beiden Fällen kann lediglich ein Zusammenhang zwischen zwei Variablen beobachtet werden: \enquote{steigt A, steigt auch B (linke Abbildung)}, bzw. \enquote{steigt A, sinkt B (rechte Abbildung)}. Man spricht in diesem Fall von einer \textbf{Korrelation}. Eine Korrelation beschreibt eine statistische Beziehung zwischen zwei Variablen. Eine Korrelation bedeutet nicht zwangsläufig, dass eine Variable die andere beeinflusst. Es kann auch sein, dass beide Variablen von einer dritten Variable beeinflusst werden oder dass die Korrelation rein zufällig ist.
+In beiden Fällen kann lediglich ein Zusammenhang zwischen zwei Variablen beobachtet werden. Auf der linken Grafik erkennt man: \enquote{steigt A, steigt auch B}, bzw. \enquote{steigt B, steigt auch A} (linke Abbildung). Auf der rechten Grafik kann beobachtet werden: \enquote{steigt A, sinkt B}, bzw. \enquote{steigt B, sinkt  A}. In diesen Fällen spricht man von einer \textbf{Korrelation}. Eine Korrelation beschreibt eine statistische Beziehung zwischen zwei Variablen. Eine Korrelation bedeutet nicht zwangsläufig, dass eine Variable die andere beeinflusst. Es kann auch sein, dass beide Variablen von einer dritten Variable beeinflusst werden oder dass die Korrelation rein zufällig ist.
 \begin{itemize}
     \item \textbf{Positive Korrelation} bedeutet, dass wenn eine Variable steigt, auch die andere Variable steigt.
     \item \textbf{Negative Korrelation} bedeutet, dass wenn eine Variable steigt, die andere Variable sinkt.
-    \item \textbf{Keine Korrelation} bedeutet, dass es keinen Zusammenhang zwischen den beiden Variablen gibt.
+    \item \textbf{Keine Korrelation} bedeutet, dass es keinen linearen Zusammenhang zwischen den beiden Variablen gibt.
 \end{itemize}
 
-Bevor wir uns mit der Vorhersage von Daten befassen, sollten wir zuerst einige grundlegende Begriffe klären. In diesem Kapitel werden wir uns mit den Begriffen Korrelation und Kausalität beschäftigen.
+In diesem Kapitel werden wir uns mit den Begriffen Korrelation und Kausalität beschäftigen.
 
 \section{Kausalität}
 
 \begin{mydefinition}[Kausalität]\label{def:kausalitaet}
-\textbf{Kausalität} beschreibt eine Ursache-Wirkung-Beziehung zwischen zwei Variablen, welche wir im Allgemeienen A und B nennen.
+\textbf{Kausalität} beschreibt eine Ursache-Wirkung-Beziehung zwischen zwei Variablen, welche wir im Allgemeinen A und B nennen.
 
 Wenn eine Variable A (Ursache) eine andere Variable B (Wirkung) beeinflusst, spricht man in diesem Fall von Kausalität. Um zu beurteilen, ob eine Kausalität vorliegt, ist es wichtig, den Zusammenhang zwischen den Variablen zu analysieren und zu verstehen. Kausalität kann häufig nur durch wissenschaftliche  Experimente oder statistische Analysen nachgewiesen werden. Kausalität ist ein sehr komplexes Thema und es gibt viele verschiedene Arten von Kausalität.
 
@@ -45,7 +47,7 @@ Der Begriff \textit{Kausalität} hat seinen Ursprung im Lateinischen. Das Wort e
 
 In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
 \begin{enumerate}
-    \item \textbf{Koinzidenz} beschreibt eine zufällige Korrelation zwischen zwei Variablen, die keine kausale Beziehung haben.
+    \item \textbf{Koinzidenz} (\enquote{nicht-Kausalität}) beschreibt eine zufällige Korrelation zwischen zwei Variablen, die keine kausale Beziehung haben.
           \begin{center}
               \begin{tikzpicture}
                   \node[circle, draw] (A) at (0,0) {A};
@@ -53,8 +55,8 @@ In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
                   \draw[<->, dashed] (A) -- (B) node[midway, above] {zufällig};
               \end{tikzpicture}
           \end{center}
-
-    \item \textbf{Zyklische Beeinflussung} beschreibt eine Situation, in der zwei Variablen sich gegenseitig beeinflussen. Zum Beispiel könnte A B beeinflussen und B wiederum A beeinflussen.
+          Beispiel: \textit{Der Pro-Kopf-Verbrauch von Mozzarella-Käse sowie die verliehenen Bauingenieurs-Doktortitel in den USA sind zwischen den Jahren 2000 bis 2009 beide angestiegen.}
+    \item \textbf{Zyklische Beeinflussung} beschreibt eine Situation, in der zwei Variablen sich gegenseitig beeinflussen (gegenseitige Verstärkung im positiven oder negativen Sinn).
           \begin{center}
               \begin{tikzpicture}
                   \node[circle, draw] (A) at (0,0) {A};
@@ -63,8 +65,8 @@ In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
                   \draw[->] (B) to[bend left] (A);
               \end{tikzpicture}
           \end{center}
-
-    \item \textbf{Gemeinsamer Grund} beschreibt eine Situation, in der eine dritte Variable sowohl A als auch B beeinflusst. Zum Beispiel könnte C sowohl A als auch B beeinflussen.
+          Beispiel: \textit{Schlafmangel führt zu mehr Stress, was wiederum zu mehr Schlafmangel führt.}
+    \item \textbf{Gemeinsamer Grund} beschreibt eine Situation, in der eine dritte Variable C sowohl A als auch B beeinflusst.
           \begin{center}
               \begin{tikzpicture}
                   \node[circle, draw] (C) at (1.5,1.5) {C};
@@ -74,8 +76,9 @@ In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
                   \draw[->] (C) -- (B);
               \end{tikzpicture}
           \end{center}
+          Beispiel: \textit{Zwischen November und Januar steigen sowohl der Verkauf von Winterreifen als auch die Häufigkeit von Erkältungen an (Grund: Jahreszeit).}
 
-    \item \textbf{Indirekte Kausalität} beschreibt eine Situation, in der A B beeinflusst, aber nicht direkt. Zum Beispiel könnte A C beeinflussen und C B beeinflussen.
+    \item \textbf{Indirekte Kausalität} beschreibt eine Situation, in der A B beeinflusst, aber nicht direkt, sondern via eine dritte Variable C.
           \begin{center}
               \begin{tikzpicture}
                   \node[circle, draw] (A) at (0,0) {A};
@@ -85,7 +88,7 @@ In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
                   \draw[->] (C) -- (B);
               \end{tikzpicture}
           \end{center}
-
+          Beispiel: \textit{Sport führt zu besserem Schlaf, was wiederum zu besseren Prüfungsergebnissen führt.}
     \item \textbf{Direkte Kausalität} beschreibt eine Situation, in der A B direkt beeinflusst.
           \begin{center}
               \begin{tikzpicture}
@@ -94,11 +97,12 @@ In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
                   \draw[->] (A) -- (B);
               \end{tikzpicture}
           \end{center}
+          Beispiel: \textit{Mehr Video-Streams führen automatisch zu mehr Einnahmen für die Youtuberin.}
 \end{enumerate}
 \end{mydefinition}
 
 \begin{myexercise}
-    In einer Klasse wurde ein Programmier-Test durchgeführt. Die Schüler mussten 10 Fragen beantworten. Für jede richtige Antwort gab es 1 Punkt, für jede falsche Antwort gab es 0 Punkte. Die Schüler wurden anschliessend in eine Rangliste eingeteilt, wobei der Schüler mit den meisten Punkten den ersten Platz belegte. Die Tabelle \ref{tab:rangliste} zeigt die Ergebnisse des Tests.
+    In einer Klasse wurde ein Programmier-Test durchgeführt. Die SchülerInnen mussten 10 Fragen beantworten. Für jede richtige Antwort gab es 1 Punkt, für jede falsche Antwort gab es 0 Punkte. Die SchülerInnen wurden anschliessend in eine Rangliste eingeteilt, wobei die Person mit den meisten Punkten den ersten Platz belegte. Die Tabelle \ref{tab:rangliste} zeigt die Ergebnisse des Tests. Vervollständigen Sie die fehlenden Daten. Um welche Art von Zusammenhang (s. \cref{def:kausalitaet}) handelt es sich?
     \begin{table}[H]
         \centering
         \begin{tabular}{clrr}
@@ -118,24 +122,24 @@ In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
         \label{tab:rangliste}
     \end{table}
     \begin{myanswer}
-        Der Rang lässt sich direkt aus der Anzahl Punkte ableiten. Es handelt sich um eine \textbf{direkte Kausalität}, da die Rangliste direkt von der Anzahl Punkte abhängt. Wenn jemand mehr Punkte hat, hat er auch einen höheren Rang.
+        Der Rang lässt sich direkt aus der Anzahl Punkte ableiten: Jonas belegt den 2. Rang und Noah den 6. Rang. Es handelt sich um eine \textbf{direkte Kausalität}, da die Rangliste direkt von der Anzahl Punkte abhängt. Wenn jemand mehr Punkte hat, hat er / sie auch einen höheren Rang.
     \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-    Bestimmen Sie für folgende Aussagen, ob eine Korrelation oder eine Kausalität vorliegt. Wenn eine Kausalität vorliegt, bestimmen Sie auch, um welche Art von Kausalität es sich handelt:
+    Bestimmen Sie für folgende Aussagen, welche Art von Kausalität vorliegt:
 
     \begin{enumerate}
-        \item Die Durchschnittsnote in der Klasse steigt über das Schuljahr hinweg. Gleichzeitig wird mehr Kaffee im Lehrerzimmer konsumiert.
+        \item Die Durchschnittsnote in der Klasse steigt über das Schuljahr hinweg. Im gleichen Zeitraum haben die Lehrpersonen ihren Kaffeekonsum gesteigert.
         \item In den Sommermonaten nehmen sowohl die Anzahl Sonnenbrände wie auch der Verkauf von Glacé zu.
-        \item In den letzten zehn Jahren hat der Konsum von Avocados in der Schweiz zugenommen. Gleichzeitig ist die Zahl bestandener Maturaprüfungen gestiegen.
-        \item Die Messung der Schlafdaten von Sportlern hat ergeben, Menschen, die viel Sport treiben, bessere Prüfungsergebnisse erzielen.
+        \item In den letzten zehn Jahren hat der Konsum von Avocados in der Schweiz zugenommen. Im gleichen Jahrzehnt ist die Zahl bestandener Maturaprüfungen gestiegen.
+        \item Eine Studie hat gezeigt, dass HunderbesitzerInnen weniger Risiko haben, übergewichtig zu werden.
         \item Eine Untersuchung von 1000 SchülerInnnen hat gezeigt, dass SchülerInnen, welche sehr gestresst sind, schlechtere Noten erzielen.
     \end{enumerate}
 
     \begin{myanswer}
         \begin{itemize}
-            \item \textbf{Koinzidenz}: Keine kausale Beeinflussung. Die Korrelation ist zufällig höchstens oder durch eine Drittvariable erklärbar (z.B. die Lehrpersonen investieren mehr Zeit in den Unterricht $\rightarrow$ mehr Stress $\rightarrow$ mehr Kaffee).
+            \item \textbf{Koinzidenz}: Keine kausale Beeinflussung. Die Korrelation ist zufällig, oder höchstens durch eine Drittvariable erklärbar (z.B. die Lehrpersonen investieren mehr Zeit in den Unterricht $\rightarrow$ mehr Stress $\rightarrow$ mehr Kaffee).
                   \begin{center}
                       \begin{tikzpicture}
                           \node[circle, draw] (A) at (0,0) {\Large\emoji{hundred-points}};
@@ -164,14 +168,14 @@ In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
                       \end{tikzpicture}
                   \end{center}
 
-            \item \textbf{Indirekte Kausalität}: SportlerInnen schlafen besser, weil sie Sport treiben. Das führt zu besseren Prüfungsergebnissen, da Schlaf die kognitiven Fähigkeiten verbessert.
+            \item \textbf{Indirekte Kausalität}: HundebesitzerInnen bewegen sich mehr, was zu weniger Übergewicht führt. Es handelt sich um eine indirekte Kausalität.
                   \begin{center}
                       \begin{tikzpicture}
-                          \node[circle, draw] (A) at (0,0) {\Large\emoji{person-running}};
-                          \node[circle, draw] (C) at (1.5,1.5) {\Large\emoji{zzz}};
-                          \node[circle, draw] (B) at (3,0) {\Large\emoji{mortar-board}};
-                          \draw[->] (A) -- (C);
-                          \draw[->] (C) -- (B);
+                          \node[circle, draw, minimum size=1cm] (A) at (0,0) {\Large\emoji{guide-dog}};
+                          \node[circle, draw, minimum size=1cm] (C) at (1.5,1.5) {\Large\emoji{person-walking}};
+                          \node[circle, draw, minimum size=1cm] (B) at (3,0) {\Large\emoji{flexed-biceps}};
+                          \draw[->, thick] (A) -- (C);
+                          \draw[->, thick] (C) -- (B);
                       \end{tikzpicture}
                   \end{center}
 
@@ -189,11 +193,7 @@ In der Regel wird Kausalität in fünf verschiedene Kategorien unterteilt:
 \end{myexercise}
 
 \section{Korrelation}
-Eine der häufigsten Anwendungen in der künstlichen Intelligenz ist die Vorhersage von Daten. Dabei wird ein Modell erstellt, das auf Basis von vorhandenen Daten Vorhersagen für zukünftige Daten trifft.
 
-Bevor wir uns mit der Vorhersage von Daten befassen, sollten wir zuerst einige grundlegende Begriffe klären.
-
-\subsection{Korrelation und Kausalität}
 \begin{mydefinition}[Korrelation]
 
 \textbf{Korrelation} beschreibt eine statistische Beziehung zwischen zwei Variablen. Das Wort Korrelation kommt von den lateinischen Wörtern \textit{co(n)-}=\enquote{mit} und \textit{relatio} = Beziehung, was soviel wie eine gegenseitige Beziehung oder auch Wechselbeziehung bedeutet (\emoji{arrows-counterclockwise}). Im Kern bedeutet dies lediglich eine statistische Beziehung zwischen zwei Variablen (Beobachtungen) A und B.
@@ -202,21 +202,45 @@ Eine Korrelation bedeutet nicht zwangsläufig, dass eine Variable die andere bee
 \begin{itemize}
     \item \textbf{Positive Korrelation} bedeutet, dass wenn eine Variable steigt, auch die andere Variable steigt.
     \item \textbf{Negative Korrelation} bedeutet, dass wenn eine Variable steigt, die andere Variable sinkt.
-    \item \textbf{Keine Korrelation} bedeutet, dass es keinen Zusammenhang zwischen den beiden Variablen gibt.
+    \item \textbf{Keine Korrelation} bedeutet, dass es keinen linearen Zusammenhang zwischen den beiden Variablen gibt.
 \end{itemize}
+
+Der Korrelationskoeffizient wird typischerweise als Zahl $r$ angegeben, welche sich zwischen -1 (perfekte negative Korrelation) und 1 (perfekte positive Korrelation) bewegt (s. \cref{fig:korr-r--1} und \cref{fig:korr-r-1}). Ein Wert von 0 bedeutet, dass es keinen linearen Zusammenhang zwischen den beiden Variablen gibt (s. \cref{fig:korr-r-0}). Dies schliesst jedoch nicht aus, dass es einen anderen, nicht-linearen Zusammenhang gibt (s. \cref{fig:korr-r-oth0}).
+
+\begin{figure}[H]
+    \centering
+    \foreach \corr in {-1, -0.8, -0.4, 0, 0.4, 0.8, 1} {\begin{subfigure}[t]{0.16\pagewidth}
+                \centering
+                \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/correlation_\corr"}
+                \caption{r=\textbf{\corr}}
+                \label{fig:korr-r-\corr}
+            \end{subfigure}
+        }
+    \begin{subfigure}[t]{0.16\pagewidth}
+        \centering
+        \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/correl_ex_15"}
+        \caption{r$\simeq$\textbf{0}}
+        \label{fig:korr-r-oth0}
+    \end{subfigure}
+    \caption{Beispiele für den Korrelationskoeffizienten $r$}
+    \label{fig:korr-r-bsp}
+\end{figure}
+
 \end{mydefinition}
 
-\subsection{Die Korrelation als Zahl berechnen}
+\cref{fig:Korrelationen} zeigt zwei Beispiele für Korrelationen. In der linken Grafik ist eine positive Korrelation zwischen der Haarlänge und dem Notendurchschnitt zu sehen. In der rechten Grafik ist eine negative Korrelation zwischen der Nutzung von Social Media und der Zufriedenheit zu sehen.
 
-Um Zusammenhänge zwischen zwei Variablen nicht nur quantifizieren, sondern auch vergleichen zu können, wäre es hilfreich, den Zusammenhang zwischen zwei Zahlen in einer einzigen Zahl $r$ ausdrücken zu können. Damit könnten Fragen wie die Folgende beantwortet werden:
+Um Zusammenhänge zwischen zwei Variablen nicht nur zu benennen, sondern auch quantifizieren und vergleichen zu können, wäre es hilfreich, den Zusammenhang zwischen zwei Datenreihen in einer einzigen Zahl $r$ ausdrücken zu können. Hilfreich wäre es zudem, falls diese Zahl positiv wäre bei positiven Korrelationen und negativ bei negativer Korrelation. Damit könnten Fragen wie die Folgende beantwortet werden:
 
-Welcher Zusammenhang ist stärker – Schlafdauer vs. Konzentration (r = 0.6) oder Handynutzung vs. Noten (r = –0.4)?
+\enquote{Welcher Zusammenhang ist stärker -- Schlafdauer vs. Konzentration (r = 0.6) oder Handynutzung vs. Noten (r = –0.4)?}
 
-In Psychologie, Wirtschaft, Medizin oder Sport begegnet man Korrelationen oft: z. B. ``Bewegung korreliert mit geringerer Krankheitsanfälligkeit''. Wer $r$ versteht, kann solche Aussagen kritisch beurteilen und Studienergebnisse kritisch interpretieren.
+In Psychologie, Wirtschaft, Medizin oder Sport begegnet man Korrelationen oft: z.B. ``Bewegung korreliert mit geringerer Krankheitsanfälligkeit''. Wer $r$ versteht, kann solche Aussagen kritisch beurteilen und Studienergebnisse kritisch interpretieren.
 
-Die Korrelation zwischen zwei Variablen kann durch eine mathematische Formel berechnet werden. Eine Möglichkeit, dies zu tun, ist die Berechnung des Korrelationskoeffizienten \( r \).
+Die Stärke der Korrelation zwischen zwei Variablen kann durch eine mathematische Formel berechnet werden. Eine Möglichkeit, dies zu tun, ist die Berechnung des Korrelationskoeffizienten \( r \).
 
-Der erste Schritt zur Berechnung des Korrelationskoeffizienten ist die Berechnung der Abweichung der einzelnen Werte von ihrem Mittelwert (s. \cref{fig:Korrelationen}). Der Mittelwert ist der Durchschnittswert aller Werte einer Variablen. Die Abweichung eines Wertes \(x_i\) von seinem Mittelwert \(\overline{x}\) wird als \( x_i' \) bezeichnet.
+Der erste Schritt zur Berechnung des Korrelationskoeffizienten ist die Berechnung der Mittelwerte aller Variablen, $\overline{x}$ und $\overline{y}$ (s. \cref{fig:Korrelationen-Ursprung}). Der Mittelwert ist der arithmetische Durchschnittswert aller Werte einer Variablen.
+
+In einem zweiten Schritt berechnen wir die Abweichung der ursprünglichen Werte von ihrem Mittelwert (s. \cref{fig:Korrelationen-Abweichung-Ursprung}).  Die Abweichung eines Wertes \(x_i\) von seinem Mittelwert \(\overline{x}\) wird als \( x_i' \) bezeichnet.
 
 \begin{figure}[H]
     \centering
@@ -224,30 +248,30 @@ Der erste Schritt zur Berechnung des Korrelationskoeffizienten ist die Berechnun
         \centering
         \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl"}
         \caption{Ursprüngliche Daten}
+        \label{fig:Korrelationen-Ursprung}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=\linewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/polizei_vs_kriminalitaet_correl_norm"}
         \caption{Daten als Abweichung vom Mittelwert}
+        \label{fig:Korrelationen-Abweichung-Ursprung}
     \end{subfigure}
     \caption{Korrelations-Beispiel mit Abweichung vom Mittelwert}
     \label{fig:Korrelationen-Abweichung}
 \end{figure}
 
-Wie man in \cref{fig:Korrelationen-Abweichung} sieht, sieht die Abbildung der Daten als Abweichung vom Mittelwert fast gleich wie die ursprünglichen Werte selber aus, ausser dass die Werte jetzt um 0 zentriert sind. Somit kann folgenden \enquote{Trick} anwenden, um den Korrelationskoeffizienten zu berechnen: Wir multiplizieren die Abweichungen der beiden Variablen miteinander und addieren die Produkte auf. Das Ergebnis ist eine Zahl, die den Zusammenhang zwischen den beiden Variablen beschreibt. Wenn die Daten im roten oder grünen Bereich liegen, ist das Produkt von \(x_i'\) und \(y_i'\) positiv. Wenn die Daten im blauen oder gelben Bereich liegen, ist das Produkt negativ. Wenn die Daten im gelben Bereich liegen, ist das Produkt null.
+Wie man in \cref{fig:Korrelationen-Abweichung} erkennen kann, sieht die Abbildung der Daten als Abweichung vom Mittelwert fast gleich wie die ursprünglichen Werte selber aus, ausser dass die Werte jetzt um 0 zentriert sind. Somit kann man folgenden \enquote{Trick} anwenden, um den Korrelationskoeffizienten zu berechnen: Wir multiplizieren die Abweichungen der beiden Variablen miteinander und addieren die Produkte auf. Das Ergebnis ist eine Zahl, die den Zusammenhang zwischen den beiden Variablen beschreibt. Wenn die Daten im roten oder blauen Bereich liegen, ist das Produkt \(x_i' \cdot y_i'\) positiv. Wenn die Daten im grünen oder gelben Bereich liegen, ist das Produkt negativ.
 
-Wir berechnen nun also \(Z\):
+Wir berechnen nun also die Zahl \(Z\):
 
 \[
     Z = x_1' \cdot y_1' + x_2' \cdot y_2' + \dots + x_n' \cdot y_n'
 \]
 
-Dabei stehen \( x_i' \) und \( y_i' \) für die Werte der beiden Variablen in den jeweiligen Beobachtungen, als Abweichung vom Mittelwert.
-
 
 \begin{myexercise}\label{ex:z-excel}
-    Verwenden Sie die Excel-Datei auf Moodle und berechnen Sie den Korrelationskoeffizienten \(Z\) für die beiden Datenserien. Welche Korrelation liegt vor? Ist es eine positive oder negative Korrelation? Wie stark ist die Korrelation? Ist die Korrelation signifikant?
+    Verwenden Sie die Excel-Datei auf Moodle und berechnen Sie die Zahl \(Z\) für die beiden Datenserien. Welche Korrelation liegt vor? Ist es eine positive oder negative Korrelation?
     \begin{myanswer}
         \begin{itemize}
             \item Die Korrelation zwischen der Berufserfahrung (Jahre) und der Einladungswahrscheinlichkeit beträgt \(Z = 44.66\). Es handelt sich um eine positive Korrelation.
@@ -256,25 +280,25 @@ Dabei stehen \( x_i' \) und \( y_i' \) für die Werte der beiden Variablen in de
     \end{myanswer}
 \end{myexercise}
 \begin{myexercise}\label{ex:z-excel2}
-    Verwandeln Sie in Aufgabe \cref{ex:z-excel} die Anzahl Jahre Berufserfahrung in eine neue Variable, die die Anzahl Jahre Berufserfahrung in Monaten angibt. Berechnen Sie den Korrelationskoeffizienten \(Z\) für die beiden Datenserien. Wie verändert sich die Korrelation?
+    Verwandeln Sie in Aufgabe \cref{ex:z-excel} die Anzahl Jahre Berufserfahrung in eine neue Variable, die die Anzahl Jahre Berufserfahrung in Monaten angibt. Berechnen Sie die Zahl \(Z\) für die beiden Datenserien. Wie verändert sich die Korrelation?
     \begin{myanswer}
         Die Korrelation zwischen der Berufserfahrung (Monate) und der Einladungswahrscheinlichkeit beträgt nun neu \(Z = 18.78\). Der Korrelationswert hat sich also nur aufgrund einer andere Grösseneinheit verändert. Dies wirft die Frage auf, wie man einen Korrelationskoeffizienten erschaffen könnte, der nicht von der Grösseneinheit abhängt.
     \end{myanswer}
 \end{myexercise}
 
-Wie wir in \cref{ex:z-excel2} gesehen haben, ist der Korrelationskoeffizient \(Z\) von der Grösseneinheit abhängig. Das bedeutet, dass wir den Korrelationskoeffizienten nicht direkt vergleichen können, wenn die Variablen unterschiedliche Grösseneinheiten haben. Um dies zu umgehen, verwenden wir den \textbf{Korrelationskoeffizienten \(r\)}, welcher den Korrelationskoeffizienten \(Z\) normiert, indem er ihn durch die Wurzel der Summe der quadrierten Abweichungen der beiden Variablen teilt:
+Wie wir in \cref{ex:z-excel2} gesehen haben, ist die Zahl \(Z\) von der Grösseneinheit abhängig. Das bedeutet, dass wir die Stärke der Korrelation nicht direkt vergleichen können, wenn die Variablen unterschiedliche Grösseneinheiten haben. Um dies zu lösen, verwenden wir den \textbf{Korrelationskoeffizienten \(r\)}, welcher die Zahl \(Z\) zwischen -1 und 1 normiert:
 \begin{equation}
     \begin{aligned}
         r      & = \frac{Z}{\sqrt{\Big((x_1')^2 + (x_2')^2 + \dots + (x_n')^2\Big) \cdot \Big((y_1')^2 + (y_2')^2 + \dots + (y_n')^2\Big)}} \\
-        \Bigg( & = \frac{Z}{\sqrt{\Big(\sum_{i=1}^n (x_i')^2\Big) \cdot \Big(\sum_{i=1}^n (y_i')^2\Big)}}\Bigg)
+         & = \frac{Z}{\sqrt{\Big(\sum_{i=1}^n (x_i')^2\Big) \cdot \Big(\sum_{i=1}^n (y_i')^2\Big)}}
     \end{aligned}
 \end{equation}
 
 
-Der Korrelationskoeffizient \(r\) ist eine standardisierte Version des Korrelationskoeffizienten \(Z\). Der Korrelationskoeffizient \(r\) liegt immer zwischen -1 und 1. Ein Wert von 1 bedeutet, dass die beiden Variablen in einem perfekten positiven, linearen Zusammenhang stehen. Ein Wert von -1 bedeutet, dass die beiden Variablen in einem perfekten negativen linearen Zusammenhang stehen. Ein Wert von 0 bedeutet, dass es keinen linearen Zusammenhang zwischen den beiden Variablen gibt.
+Der Korrelationskoeffizient \(r\) ist eine standardisierte Version der Zahl \(Z\). Der Korrelationskoeffizient \(r\) liegt immer zwischen -1 und 1. Ein Wert von 1 bedeutet, dass die beiden Variablen in einem perfekten positiven linearen Zusammenhang stehen. Ein Wert von -1 bedeutet, dass die beiden Variablen in einem perfekten negativen linearen Zusammenhang stehen. Ein Wert von 0 bedeutet, dass es keinen linearen Zusammenhang zwischen den beiden Variablen gibt. Dies schliesst jedoch nicht aus, dass es einen anderen, nicht-linearen Zusammenhang gibt.
 
 \begin{myexercise}
-    Berechnen Sie den Korrelationskoeffizienten \(r\) für die beiden Datenserien in \cref{ex:z-excel}. Wie verändert sich die Korrelation? Ist die Korrelation signifikant?
+    Berechnen Sie den Korrelationskoeffizienten \(r\) für die beiden Datenserien in \cref{ex:z-excel}. Wie stark ist die jeweilige Korrelation?
     \begin{myanswer}
         \begin{itemize}
             \item Die Korrelation zwischen der Berufserfahrung (Jahre) und der Einladungswahrscheinlichkeit beträgt \(r = 0.96\). Es handelt sich um eine sehr starke positive Korrelation.
@@ -282,17 +306,6 @@ Der Korrelationskoeffizient \(r\) ist eine standardisierte Version des Korrelati
         \end{itemize}
     \end{myanswer}
 \end{myexercise}
-
-\begin{myexercise}
-    Berechnen Sie den Korrelationskoeffizienten \(r\) für die beiden Datenserien in \cref{fig:Korrelationen}. Wie verändert sich die Korrelation? Ist die Korrelation signifikant?
-    \begin{myanswer}
-        \begin{itemize}
-            \item Die Korrelation zwischen der Anzahl Polizeipatrouillen und der Anzahl begangener Straftaten beträgt \(r = 0.98\). Es handelt sich um eine sehr starke positive Korrelation.
-            \item Die Korrelation zwischen der Nutzung von Social Media und der Zufriedenheit beträgt \(r = -0.95\). Es handelt sich um eine sehr starke negative Korrelation.
-        \end{itemize}
-    \end{myanswer}
-\end{myexercise}
-
 
 \begin{myexercise}
     Ordnen Sie die folgenden Bilder steigend nach dem Korrelationskoeffizienten \(r\) ein. Welches Bild hat den höchsten Korrelationskoeffizienten? Welches Bild hat den tiefsten Korrelationskoeffizienten?
@@ -311,20 +324,20 @@ Der Korrelationskoeffizient \(r\) ist eine standardisierte Version des Korrelati
 \begin{myexercise}
     Luca und Mira bereiten sich auf eine Prüfung vor. Sie erfassen während der Vorbereitung drei Grössen:
     \begin{itemize}
-        \item \textbf{B:} Zeitpunkt des Lernbeginns in Stunden (z.\,B. 8.5 = 8:30 Uhr),
-        \item \textbf{D:} Dauer der Lerneinheit in Stunden,
-        \item \textbf{A:} Anzahl bearbeiteter Seiten pro Tag.
+        \item \textbf{B:} \textbf{B}eginn der Lernphase (z.\,B. 8.5 = 8:30 Uhr)
+        \item \textbf{D:} \textbf{D}auer der Lerneinheit in Stunden
+        \item \textbf{A:} \textbf{A}nzahl bearbeiteter Seiten pro Tag
     \end{itemize}
     Die folgende Tabelle zeigt die Korrelationen zwischen diesen drei Variablen:
 
     \begin{table}[H]
         \centering
-        \begin{tabular}{l|c|c|c}
+        \begin{tabular}{l||c|c|c}
 
-                 & B und D & B und A & D und A \\
+                          & \textbf{B und D} & \textbf{B und A} & \textbf{D und A} \\
             \midrule\midrule
-            Luca & $-0.69$ & $-0.04$ & $0.25$  \\\midrule
-            Mira & $0.64$  & $0.54$  & $0.89$  \\
+            \textbf{Luca} & $-0.69$          & $-0.04$          & $0.25$           \\\midrule
+            \textbf{Mira} & $0.64$           & $0.54$           & $0.89$           \\
         \end{tabular}
     \end{table}
 
@@ -346,7 +359,7 @@ Der Korrelationskoeffizient \(r\) ist eine standardisierte Version des Korrelati
                       \item Bei B und A gibt es bei \textbf{Luca} eine Korrelation von fast 0: Der Zeitpunkt des Lernstarts hat keinen Einfluss auf die Anzahl bearbeiteter Seiten.
                       \item Bei \textbf{beiden} gibt es eine positive Korrelation: Wenn die Dauer der Lerneinheit steigt, steigt auch die Anzahl bearbeiteter Seiten. Bei Mira ist die Korrelation jedoch viel stärker (0.89) als bei Luca (0.25).
                   \end{enumerate}
-            \item Das kann aufgrund der gegebenen Information nicht mit Sicherheit gesagt werden. Manbräuchte dazu genauere Kenntnisse über die Daten.
+            \item Das kann aufgrund der gegebenen Information nicht mit Sicherheit gesagt werden. Man bräuchte dazu genauere Kenntnisse über die Daten.
         \end{enumerate}
     \end{myanswer}
 \end{myexercise}

@@ -475,6 +475,13 @@ Weshalb haben wir im ersten Code ein \lstinline|and| und im zweiten Code ein \ls
 	\end{myanswer}
 \end{myexercise}
 
+\begin{myexercise}
+	Entwickeln Sie ein Programm, das alle Zahlen von 1 bis 24 mit \lstinline|print| ausgibt, die nicht Teiler von 24 sind. Verwenden Sie den Ausdruck \lstinline|not|.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{teiler\_24.py}]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_24.py}
+	\end{myanswer}
+\end{myexercise}
+
 \section{Fussgesteuerte Schleifen mit \texorpdfstring{\lstinline|break|}{break}}
 
 Bisher haben wir eine Art von Schleife gesehen: \lstinline|for _ in range(...)|. Dabei gibt die Zahl innerhalb des Befehls \lstinline|range(...)| an, wie viele Mal der Schleifenkörper wiederholt wird. Manchmal wissen wir jedoch nicht im voraus, wie viele Male eine Schleife wiederholt werden soll, wir kennen jedoch eine Bedingung, bei der die Schleife abgebrochen werden soll. Dies könnte beispielsweise der Fall sein, wenn wir eine Spirale zeichnen wolle, die immer grösser wird, bis die Seitenlänge eine gewisse maximale Länge \lstinline|max_seite| erreicht hat.
@@ -573,6 +580,39 @@ Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endloss
 	\end{myanswer}
 \end{myexercise}
 
+\begin{myexercise}{Quadratzahl erkennen mit \texttt{for}-Schleife}
+	Schreiben Sie ein Python-Programm, das überprüft, ob eine gegebene natürliche Zahl $x$ eine Quadratzahl ist (also ob es eine ganze Zahl $a$ gibt mit $x = a \cdot a$).
+
+	Das Programm soll alle Werte $a = 1, 2, 3, \dots$ durchgehen und jeweils $a \cdot a$ berechnen. Falls $a \cdot a = x$, soll $a$ ausgegeben werden.
+
+	Falls $a \cdot a > x$, bevor ein passender Wert gefunden wurde, soll das Programm abbrechen und ausgeben: \texttt{x ist kein Quadrat.}
+
+	Verwenden Sie dazu eine \lstinline|for _ in range(...)|-Schleife. Zeichnen Sie zusätzlich ein passendes Flussdiagramm zum Ablauf des Programms.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{quadratzahl.py},label=listing:quadratzahl]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/quadratzahl.py}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}
+	Welche Folge hat es, wenn die \texttt{if}-Bedingung im Körper einer \texttt{for \_ in range(...)}-Schleife nur Variablen verwendet, deren Werte sich im Schleifenrumpf nie ändern?
+
+	\begin{myanswer}
+		Die Bedingung bleibt während der gesamten Schleife gleich. Das hat folgende Konsequenzen:
+
+		\begin{itemize}
+			\item Falls die Bedingung zu Beginn \texttt{True} ist, wird sie in jedem Durchlauf erfüllt – der zugehörige Code wird immer ausgeführt.
+			\item Falls die Bedingung zu Beginn \texttt{False} ist, wird sie nie erfüllt – der zugehörige Code wird nie ausgeführt.
+		\end{itemize}
+
+		Dies kann zu unerwartetem Verhalten führen, zum Beispiel:
+		\begin{itemize}
+			\item unnötige Wiederholungen desselben Codes,
+			\item nicht eintretende Aktionen, obwohl sie vorgesehen sind,
+			\item oder ineffizienter Programmablauf.
+		\end{itemize}
+	\end{myanswer}
+\end{mychallenge}
+
 \section{Kopfgesteuerte Schleifen mit \texorpdfstring{\lstinline|while|}{while}}
 
 \begin{myexample}
@@ -645,7 +685,53 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 	\end{myanswer}
 \end{myexercise}
 
-\begin{mychallenge}[Weizenkornlegende]
+\begin{myexercise}
+	Entwickeln Sie ein Programm, das eine siebeneckige Spirale von aussen nach innen zeichnet. Die Startlänge der Seite und die Verkleinerung der Seite in jedem Schritt sollen Parameter sein. Verwenden Sie eine \lstinline|while|-Schleife und lassen Sie die Spirale so lange zeichnen, wie die Seitenlänge grösser als \lstinline|10| ist.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{spirale\_sieben.py},label=listing:spirale_sieben]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/spirale_sieben.py}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	Verwenden Sie eine \lstinline|while|-Schleife, um für eine natürliche Zahl \lstinline|x| den kleinsten Teiler \lstinline|min > 1| und den grössten Teiler \lstinline|tmax < x| zu finden. Wenn \lstinline|min = x| und \lstinline|tmax = 1|, soll das Programm schreiben, dass \lstinline|x| eine Primzahl ist.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{teiler\_prim.py},label=listing:teiler_prim]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_prim.py}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	Wenn man die folgende Zahlenfolge von Brüchen immer weiter addiert, wird die Summe immer grösser:
+
+	\[
+		\frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \frac{1}{5} + \dots
+	\]
+
+	Wie viele Brüche müssen addiert werden, damit die Summe mindestens gleich einer gegebenen Zahl $x$ wird?
+
+	Schreiben Sie ein Python-Programm, das die Brüche addiert, solange deren Summe kleiner als $x$ ist. Am Ende soll das Programm ausgeben, welcher Nenner beim letzten hinzugefügten Bruch verwendet wurde und wie gross die Summe insgesamt ist.
+
+	Wenn über 100 Brüche addiert wurden, soll die \lstinline|while|-Schleife abgebrochen werden (mit \lstinline|break|).
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{bruch\_addieren.py},label=listing:bruch_addieren]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/bruch_addieren.py}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}
+	Wie viele Schleifen durchläuft das folgende Programm?
+	\lstinputlisting[language=Python,caption=\texttt{schleifen\_wiederh.py},label=listing:schleifen_wiederh]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/schleifen_wiederh.py}
+	\begin{myanswer}
+		Das Programm durchläuft potentiell unendliche viele Schleifen. Es handelt sich hier um eine asymptotische Funktion, welche sich immer weiter der Zahl 2 annähert, diese aber aber nie erreicht.
+	\end{myanswer}
+\end{mychallenge}
+
+\begin{myexercise}
+	Schreiben Sie ein Programm, das den Benutzer wiederholt auffordert, Wörter einzugeben. Sobald das Wort \enquote{Voldemort} eingegeben wird, soll der Prozess beendet werden. Der Computer soll anschließend eine Aneinanderreihung aller vor \enquote{Voldemort} eingegebenen Wörter ausgeben.
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{voldemort.py},label=listing:voldemort]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/voldemort.py}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{mysubmission}[Weizenkornlegende]
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.3\linewidth]{GrundlagenInfo/09_Tabellenkalkulation/Screenshots/Sissa}
@@ -673,5 +759,4 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{reis.py},label=listing:reis]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/reis.py}
 	\end{myanswer}
-
-\end{mychallenge}
+\end{mysubmission}
