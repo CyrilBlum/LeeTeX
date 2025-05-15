@@ -337,5 +337,30 @@ Ein nichtkomprimierbares Wort erlaubt also keine kürzere Beschreibung, als das 
 \section{Die Kolmogorov-Komplexität ist nicht berechnenbar}
 
 \begin{mytheorem}[$K(w)$ ist nicht für jedes binäre Wort berechenbar]\label{mytheorem:Knotcomputable}
-	Das Problem, für jedes binäre Wort $w$ die Kolmogorov-Komplexität $K(w)$ von $w$ zu berechnen, ist algorithmisch unlösbar.
+	Das Problem, für jedes binäre Wort $w$ die Kolmogorov-Komplexität $K(w)$ zu berechnen, ist algorithmisch unlösbar (nicht berechenbar).
+	\begin{myproof}
+		Für jede natürliche Zahl $n>0$ sei $G_n$ die Menge aller binären Wörter mit der Länge exakt $n$. Gemäss \cref{mytheorem:nichtkomprimierbar} existiert in $G_n$ mindestens ein nichtkomprimierbares Wort, also eine Wort $w$ mit $K(w)\geq n$. Unter allen diesen nichtkomprimierbaren Wörtern, sei $\alpha$ definiert als das erste solche Wort in der kanonischen Ordung über dem binären Alphabet. Es gilt also insbesondere $K(\alpha)\geq n$.
+
+		Angenommen es würde ein Algorithmus $Q$ existieren, der zu jedem binären Wort $w$ die Zahl $K(w)$ berechnet. Wir verwenden $Q$ um eine kurze Beschreibung von $\alpha$ anzugeben. Für jede natürliche Zahl $n>0$ sucht und generiert das folgende \texttt{C'++} Programm das Wort $\alpha$:
+		\begin{lstlisting}[language=C++]
+#include <iostream>
+#include <string>
+void seeking_alpha_n() {
+    x = leeres Wort;
+    k = Q(x);
+    while (k < ***n++ +) {
+        x = Nachfolger von x in der kanonischen Ordnung über{0, 1} ^ *
+    }
+
+    std::cout << x << std::endl;
+}
+        \end{lstlisting}
+		Für jede natürliche Zahl $n>0$, generiert das Programm \cppinline{seeking_alpha_n} das Wort $\alpha$. Beachten Sie, dass alle Algorithmen \cppinline{seeking_alpha_n} identisch sind bis auf die Zahl $n$. Es sei $c$ die Länge des Maschinencodes von \cppinline{seeking_alpha_n} bis auf die Angabe von $n$. Damit ist bewiesen, dass $K(\alpha) \leq c + \ceil{\log_2(n+1)}$.
+
+		Nach Definition von $\alpha$ gilt aber auch $K(\alpha) \geq n$ für alle $n\in\N$ mit $n>0$. Doch die Ungleichungen
+		\begin{align*}
+			n \leq K(\alpha) \leq c + \ceil{\log_2(n+1)}
+		\end{align*}
+		können höchstens für endlich viele natürliche Zahlen $n>0$ gelten. Dies ist ein Widerspruch zur Annahme, dass ein Algorithmus $Q$ zur Berechung der Kolmogorov-Komplexität von allen binären Wörtern existiert.
+	\end{myproof}
 \end{mytheorem}
