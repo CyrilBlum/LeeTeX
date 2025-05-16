@@ -1,4 +1,4 @@
-\chapter{Verzweigungen und Logische Ausdrücke}\label{ch:K03_logical}
+\chapter{Verzweigungen und Bedingte Schleifen}\label{ch:K03_logical}
 
 \section{Verzweigungen mit \texorpdfstring{\lstinline|if|}{if}, \texorpdfstring{\lstinline|elif|}{elif} und \texorpdfstring{\lstinline|else|}{else}}
 In vielen Fällen möchten wir Code nur Ausführen, \textit{falls} eine gewisse Bedingung wahr ist: beispielsweise möchte ein Arzt nur dann eine Warnung erhalten, wenn der Blutdruck eines Patienten zu hoch ist, oder ein selbstfahrendes Auto sollte nur dann piepsen, wenn der Fahrer nicht aufmerksam auf die Strasse schaut. Um solche \textit{konditionale} (bedingte) Logik zu programmieren, können wir die Begriffe \lstinline|if| (\enquote{falls}), \lstinline|elif| (\enquote{sonst falls}) und \lstinline|else| (\enquote{in allen anderen Fällen}) verwenden.
@@ -487,7 +487,6 @@ Weshalb haben wir im ersten Code ein \lstinline|and| und im zweiten Code ein \ls
 Bisher haben wir eine Art von Schleife gesehen: \lstinline|for _ in range(...)|. Dabei gibt die Zahl innerhalb des Befehls \lstinline|range(...)| an, wie viele Mal der Schleifenkörper wiederholt wird. Manchmal wissen wir jedoch nicht im voraus, wie viele Male eine Schleife wiederholt werden soll, wir kennen jedoch eine Bedingung, bei der die Schleife abgebrochen werden soll. Dies könnte beispielsweise der Fall sein, wenn wir eine Spirale zeichnen wolle, die immer grösser wird, bis die Seitenlänge eine gewisse maximale Länge \lstinline|max_seite| erreicht hat.
 
 
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.2\linewidth]{GrundlagenInfo/00_Programmieren/Figures/spirale_while}
@@ -541,10 +540,10 @@ Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endloss
 \end{minipage}
 
 \begin{myexercise}
-	Schreiben Sie eine Funktion \lstinline|def erraten_zahl():|, die ein einfaches Zahlenratespiel implementiert. Die Funktion soll:
+	Schreiben Sie eine Funktion \lstinline|def erraten_zahl()|, die ein einfaches Zahlenratespiel implementiert (s. Code-Vorlage untenan). Die Funktion soll:
 	\begin{enumerate}
-		\item Eine zufällige Zahl zwischen 1 und 100 generieren (verwenden Sie dazu \lstinline|random.randint(1, 100)|).
-		\item Den Benutzer in einer Schleife auffordern, die Zahl zu erraten (\lstinline|input("Rate die Zahl: ")|).
+		\item Eine zufällige Zahl zwischen 1 und 100 generieren (dies wird gemacht mit dem Befehl \lstinline|random.randint(1, 100)|, ist im Code bereits gemacht).
+		\item Den Benutzer in einer Schleife auffordern, die Zahl zu erraten (\lstinline|int(input("Rate die Zahl: "))|).
 		\item Falls die Eingabe kleiner als die gesuchte Zahl ist, soll ausgegeben werden: \enquote{Die Zahl ist grösser.}.
 		\item Falls die Eingabe grösser als die gesuchte Zahl ist, soll ausgegeben werden: \enquote{Die Zahl ist kleiner.}.
 		\item Falls die Eingabe korrekt ist, soll die Nachricht \enquote{Richtig! Du hast die Zahl erraten.} ausgegeben werden und die Schleife mit \lstinline|break| beendet werden.
@@ -559,7 +558,8 @@ Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endloss
 					ziel_zahl = random.randint(1, 100)
 					
 					while True:
-						# Ihr Code hier
+						x = int(input("Errate die Zahl!"))
+						# IHR CODE HIER
 		\end{lstlisting}
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{erraten\_zahl.py},label=listing:erraten_zahl]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/erraten_zahl.py}
@@ -580,12 +580,12 @@ Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endloss
 	\end{myanswer}
 \end{myexercise}
 
-\begin{myexercise}{Quadratzahl erkennen mit \texttt{for}-Schleife}
-	Schreiben Sie ein Python-Programm, das überprüft, ob eine gegebene natürliche Zahl $x$ eine Quadratzahl ist (also ob es eine ganze Zahl $a$ gibt mit $x = a \cdot a$).
+\begin{myexercise}
+	Schreiben Sie eine Funktion \lstinline|def ist_quadrat(x)|, die überprüft, ob eine gegebene natürliche Zahl $x$ eine Quadratzahl ist (also ob es eine ganze Zahl $a$ gibt, so dass $x = a \cdot a$).
 
-	Das Programm soll alle Werte $a = 1, 2, 3, \dots$ durchgehen und jeweils $a \cdot a$ berechnen. Falls $a \cdot a = x$, soll $a$ ausgegeben werden.
+	Das Programm soll mit $a = 1$ starten und überprüfen, ob $a \cdot a = x$. Falls $a \cdot a = x$, soll $a$ ausgegeben werden und die Schleife abgebrochen werden. Ansonsten fährt man mit $a = a+1$ weiter.
 
-	Falls $a \cdot a > x$, bevor ein passender Wert gefunden wurde, soll das Programm abbrechen und ausgeben: \texttt{x ist kein Quadrat.}
+	Sobald $a \cdot a > x$ soll das Programm abgebrochen und ausgegeben werden: \texttt{x ist kein Quadrat.}
 
 	Verwenden Sie dazu eine \lstinline|for _ in range(...)|-Schleife. Zeichnen Sie zusätzlich ein passendes Flussdiagramm zum Ablauf des Programms.
 	\begin{myanswer}
@@ -639,7 +639,7 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 				import turtle as t
 				
 				def spirale(seite, add, max_seite):
-					!\tikzmark{toStart}!!\tikzmark{toEnd}!while seite > max_seite:
+					!\tikzmark{toStart}!!\tikzmark{toEnd}!while seite < max_seite:
 						t.fd(seite)
 						t.rt(90)
 						seite+=add
@@ -672,7 +672,7 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 \end{myattention}
 
 \begin{mysubmission}
-	Schreiben Sie eine Funktion \lstinline|verdreifache_bis_ueber1Mio(zahl)|, welche eine Zahl \texttt{zahl} so lange immer wieder verdreifacht, bis \texttt{zahl} erstmals grösser als 1'000'000 ist. Dabei sollen alle Zwischenresultate in der Konsole ausgegeben werden. Am Schluss soll ausserdem die Anzahl Verdreifachungen ausgedruckt werden.
+	Schreiben Sie eine Funktion \lstinline|def verdreifache_bis_ueber1Mio(zahl)|, welche eine Zahl \texttt{zahl} so lange immer wieder verdreifacht, bis \texttt{zahl} erstmals grösser als 1'000'000 ist. Dabei sollen alle Zwischenresultate in der Konsole ausgegeben werden. Am Schluss soll ausserdem die Anzahl Verdreifachungen ausgedruckt werden.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{while\_verdreifache.py},label=listing:while-verdreifache]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/while_verdreifache.py}
 	\end{myanswer}
@@ -725,7 +725,7 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 \end{mychallenge}
 
 \begin{myexercise}
-	Schreiben Sie ein Programm, das den Benutzer wiederholt auffordert, Wörter einzugeben. Sobald das Wort \enquote{Voldemort} eingegeben wird, soll der Prozess beendet werden. Der Computer soll anschließend eine Aneinanderreihung aller vor \enquote{Voldemort} eingegebenen Wörter ausgeben.
+	Schreiben Sie ein Programm, das den Benutzer wiederholt auffordert, Wörter einzugeben. Sobald das Wort \enquote{Voldemort} eingegeben wird, soll der Prozess beendet werden. Der Computer soll anschliessend eine Aneinanderreihung aller vor \enquote{Voldemort} eingegebenen Wörter ausgeben.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{voldemort.py},label=listing:voldemort]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/voldemort.py}
 	\end{myanswer}
