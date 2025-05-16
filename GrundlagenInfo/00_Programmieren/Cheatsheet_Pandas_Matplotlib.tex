@@ -1,0 +1,140 @@
+% Pandas & Matplotlib Cheatsheet
+\scriptsize
+\newgeometry{margin=.5cm}
+\lstset{style=python, basicstyle=\ttfamily\scriptsize}
+\pagestyle{empty}
+\raggedcolumns
+\footnotesize
+\newcommand{\cheatSheetColor}{ForestGreen}
+\newtcolorbox{cheatSheetBox}[1][]{
+  enhanced jigsaw,
+  colback=\cheatSheetColor!10,
+  colframe=\cheatSheetColor,
+  colbacktitle=\cheatSheetColor!30,
+  fonttitle=\bfseries,
+  parbox=false,
+  attach boxed title to top text left={yshift=-5mm,yshifttext=-3.5mm},
+  coltitle=black,
+  #1}
+
+\begin{landscape}
+  \footnotesize
+  \begin{multicols*}{3}
+    \textcolor{\cheatSheetColor}{\begin{center}
+        \section*{Data Science Cheatsheet}
+      \end{center}\hrule
+      Das folgende Cheatsheet enthält die wichtigsten Befehle für den Umgang mit den Libraries \texttt{pandas}, \texttt{matplotlib} und \texttt{statsmodels}.
+    }
+
+    % Pandas Basics
+    \begin{cheatSheetBox}[title=Libraries Importieren]
+      \begin{lstlisting}
+import pandas as pd
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as smf
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=CSV-Datei laden]
+      \begin{lstlisting}
+df = pd.read_csv('datei.csv')
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Erste/letzte Zeilen anzeigen]
+      \begin{lstlisting}
+df.head()   # erste 5 Zeilen
+df.tail()   # letzte 5 Zeilen
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Typ einer Variable anzeigen]
+      \begin{lstlisting}
+type(df) # Tabelle (DataFrame)
+type(df['col']) # Spalte (Series)
+type(1) # Zahl (int)
+type('Text') # Text (str)
+df.dtypes # Daten-Typen aller Spalten
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Spalten auswählen]
+      \begin{lstlisting}
+df['Spalte']   # einzelne Spalte
+df[['A', 'B']] # mehrere Spalten
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Aggregatsfunktionen]
+      \begin{lstlisting}
+df['Spalte'].mean() # Mittelwert
+df['Spalte'].sum()  # Summe
+df['Spalte'].min()  # Minimum
+df['Spalte'].max()  # Maximum
+df['Spalte'].count() # Anzahl Einträge
+df['Spalte'].std()  # Standardabweichung
+df['Spalte'].unique() # Einzigartige Werte
+df['Spalte'].value_counts() # Häufigkeit der Werte
+\end{lstlisting}
+
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Zeilen filtern]
+      \begin{lstlisting}
+df[df['Alter'] > 18] # Filter 
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Neue Spalte erstellen]
+      \begin{lstlisting}
+df['BMI'] = df['Gewicht'] / (df['Grösse']/100)**2
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Grafiken erstellen]
+      \begin{lstlisting}
+df["column"].value_counts().plot.pie() # Kuchendiagramm
+df["column"].value_counts().plot.bar() # Balkendiagramm
+df.plot.line(x='x_column', y='y_column') # Liniendiagramm
+df.plot.scatter(x='x_column', y='y_column') # Streudiagramm
+
+# scatter plots nach Kategorien einfärben
+df['category_column'] = df['category_column'].astype('category') 
+df.plot.scatter(x='x_column', y='y_column', c='category_column', colormap='viridis')
+
+# Histogramm mit 10 Grössenklassen
+df['column'].plot.hist(bins=10)
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Gruppieren]
+      \begin{lstlisting}
+df.groupby('Spalte').mean()
+\end{lstlisting}
+    \end{cheatSheetBox}
+
+    %\section*{Lineare Regression}
+
+    \begin{cheatSheetBox}[title=Lineare Funktion]
+      Formel einer linearen Funktion:
+      \[y = m \cdot x + q\]
+      Wobei m die Steigung und q den y-Achsenabschnitt darstellt.
+      \[m=\frac{y_2 - y_1}{x_2 - x_1}\]
+      \[q = y_1 - m \cdot x_1\]
+    \end{cheatSheetBox}
+    \begin{cheatSheetBox}[title=Lineare Regression]
+      \begin{itemize}
+        \item \textbf{Unabhängige Variable}: \lstinline|df['x']|
+        \item \textbf{Abhängige Variable}: \lstinline|df['y']|
+      \end{itemize}
+      \begin{lstlisting}
+model = smf.ols(formula='y ~ x', data=df).fit()
+print(model.params) # Koeffizienten
+
+# Vorhersage
+df['y_pred'] = model.predict(df['x'])
+\end{lstlisting}
+
+    \end{cheatSheetBox}
+  \end{multicols*}
+\end{landscape}
