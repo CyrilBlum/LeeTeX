@@ -1,0 +1,186 @@
+\input{GrundlagenInfo/05_ErrorChecking/Skript/Macros}
+
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Fehlerkorrigierende Codes]{Fehlerkorrigierende Codes}
+
+\subtitle{Fehler automatisch erkennen}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl}
+
+\institute[KLW] % (optional)
+{
+    Fachschaft Informatik\\
+    Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{\thelogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"GrundlagenInfo/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}{Weshalb gibt es überhaupt Fehler?}
+    \begin{itemize}
+        \item Wie werden Daten dargestellt in Computern?
+        \item Wie werden diese übertragen?
+        \item Wie viele 0 / 1 erhalten Sie pro Sekunde bei einem Youtube-Video?
+              \begin{itemize}
+                  \item Youtube, 2160p (4k): 35--45 Mbit/s $\approx$ 40 Millionen Einsen oder Nullen pro Sekunde, über WLAN
+              \end{itemize}
+        \item Elektrische Ladungen sind nicht perfekt
+        \item Auch Computer machen Fehler\dots{} Das sollte Sie aber nicht beunruhigen
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Verkehrsschilder}
+    \begin{center}
+        \includegraphics[width=\textwidth]{GrundlagenInfo/05_ErrorChecking/Figures/traffic-signs.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Fehler in binärer Kodierung}
+    \begin{itemize}
+        \item In Computersystemen werden Informationen durch Bitfolgen kodiert, z.\,B.\ A~$\rightarrow$~01000001
+        \item Ein häufiger Fehler beim Übertragen von Informationen ist das Umflippen eines Bits (0~$\rightarrow$~1 bzw. 1~$\rightarrow$~0)
+        \item Eine Kodierung heißt \textbf{k-fehlererkennend}, wenn das Umflippen von 1, 2, \dots, bis $k$ Bits in der Nachricht als Fehler erkannt wird
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Qualität einer Kodierung}
+    \textbf{Qualität}: Wie viele Fehler können garantiert erkannt werden?
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c|c|c}
+                             & \textbf{Kodierung$_1$} & \textbf{Kodierung$_2$}     & \textbf{Kodierung$_3$}                \\
+            \midrule\midrule
+            \textbf{Weiss}   & 00                     & 00\textcolor{orange}{0000} & 00\textcolor{orange}{00\underline{0}} \\
+            \midrule
+            \textbf{Gelb}    & 01                     & 01\textcolor{orange}{0101} & 01\textcolor{orange}{01\underline{1}} \\
+            \midrule
+            \textbf{Blau}    & 10                     & 10\textcolor{orange}{1010} & 10\textcolor{orange}{10\underline{1}} \\
+            \midrule
+            \textbf{Schwarz} & 11                     & 11\textcolor{orange}{1111} & 11\textcolor{orange}{11\underline{0}} \\
+        \end{tabular}
+        \label{tab:codes}
+    \end{table}
+    Welche Kodierung ist am besten?
+    \begin{itemize}
+        \item Kodierung$_1$: 0 Fehler erkannt
+        \item Kodierung$_2$: 2 Fehler erkannt
+        \item Kodierung$_3$: 2 Fehler erkannt (aber kürzer!)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Abstand einer Kodierung}{ANNA, ENZO und HANS}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c@{\hspace{1.5cm}}c@{\hspace{1.5cm}}c}
+            \begin{tabular}{c}
+                A N N A             \\
+                \underline{E N Z O} \\
+                x o x x             \\
+                \textcolor{orange}{Abstand 3}
+            \end{tabular}
+             &
+            \begin{tabular}{c}
+                A N N A             \\
+                \underline{H A N S} \\
+                x x o x             \\
+                \textcolor{orange}{Abstand 3}
+            \end{tabular}
+             &
+            \begin{tabular}{c}
+                E N Z O             \\
+                \underline{H A N S} \\
+                x x x x             \\
+                \textcolor{orange}{Abstand 4}
+            \end{tabular}
+        \end{tabular}
+        \caption{Abstände zwischen den Codewörtern ANNA, ENZO und HANS}
+        \label{tab:hans}
+    \end{table}
+    \begin{itemize}
+        \item Abstand dieser Kodierung: \textcolor{red}{3}
+        \item Abstand = Minimum aller paarweisen Abstände der Codewörter
+        \item Bis zu zwei Buchstaben können geändert werden, ohne dass man von einem Wort zu einem anderen übergeht
+        \item Beispiel: \enquote{ENZO} mutiert zu \enquote{\red{A}N\red{N}O} $\rightarrow$ kein anderes gültiges Wort, also Fehler erkannt
+    \end{itemize}
+\end{frame}
+\begin{frame}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c@{\hspace{1.5cm}}c@{\hspace{1.5cm}}c}
+            \begin{tabular}{c}
+                \texttt{0 0 0 0 0 0} \\
+                \texttt{0 1 0 1 0 1} \\
+                \hline
+                \texttt{o x o x o x} \\
+                \textcolor{orange}{Abstand 3}
+            \end{tabular}
+             &
+            \begin{tabular}{c}
+                \texttt{0 0 0 0 0 0} \\
+                \texttt{1 0 1 0 1 0} \\
+                \hline
+                \texttt{x o x o x o} \\
+                \textcolor{orange}{Abstand 3}
+            \end{tabular}
+             &
+            \begin{tabular}{c}
+                \texttt{0 0 0 0 0 0} \\
+                \texttt{1 1 1 1 1 1} \\
+                \hline
+                \texttt{x x x x x x} \\
+                \textcolor{orange}{Abstand 6}
+            \end{tabular} \\
+            \begin{tabular}{c}
+                \texttt{0 1 0 1 0 1} \\
+                \texttt{1 0 1 0 1 0} \\
+                \hline
+                \texttt{x x x x x x} \\
+                \textcolor{orange}{Abstand 6}
+            \end{tabular}
+             &
+            \begin{tabular}{c}
+                \texttt{0 1 0 1 0 1} \\
+                \texttt{1 1 1 1 1 1} \\
+                \hline
+                \texttt{x o x o x o} \\
+                \textcolor{orange}{Abstand 3}
+            \end{tabular}
+             &                           \\
+            \begin{tabular}{c}
+                \texttt{1 0 1 0 1 0} \\
+                \texttt{1 1 1 1 1 1} \\
+                \hline
+                \texttt{o x o x o x} \\
+                \textcolor{orange}{Abstand 3}
+            \end{tabular}
+             &
+             &                           \\
+        \end{tabular}
+        \caption{Abstände zwischen allen Codewörtern der Kodierung$_2$}
+        \label{tab:abst-codes}
+    \end{table}
+    \begin{itemize}
+        \item Abstand dieser Kodierung: \textcolor{red}{3}
+        \item Abstand = Minimum aller paarweisen Abstände der Codewörter
+        \item Bis zu zwei Bits können geändert werden, ohne dass man von einem Wort zu einem anderen übergeht
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Auftrag}{Skript \enquote{Error Checking} auf Moodle}
+    \begin{itemize}
+        \item \aufgabebox{1.7, 1.8}
+        \item \challengebox{Aufgaben 1.9, 1.10}
+    \end{itemize}
+\end{frame}
