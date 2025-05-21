@@ -29,9 +29,10 @@
     % Pandas Basics
     \begin{cheatSheetBox}[title=Libraries Importieren]
       \begin{lstlisting}
-import pandas as pd
-import matplotlib.pyplot as plt
-import statsmodels.formula.api as smf
+import pandas as pd # für Datenanalyse, Tabellen
+import matplotlib.pyplot as plt # für Grafiken
+import statsmodels.formula.api as smf # für statistische Modelle
+import numpy as np # für numerische Berechnungen
 \end{lstlisting}
     \end{cheatSheetBox}
 
@@ -134,7 +135,43 @@ print(model.params) # Koeffizienten
 # Vorhersage
 df['y_pred'] = model.predict(df['x'])
 \end{lstlisting}
+    \end{cheatSheetBox}
 
+    \begin{cheatSheetBox}[title=Markov-Ketten: Übergangsmatrix erstellen]
+      \begin{lstlisting}
+# Zustände: 0 = Sonne, 1 = Regen
+P = np.array([
+    [0.9, 0.1],
+    [0.2, 0.8]
+])
+
+P
+      \end{lstlisting}
+    \end{cheatSheetBox}
+    \begin{cheatSheetBox}[title=Markov-Ketten: Vorhersage (Matrixmultiplikation)]
+      \begin{lstlisting}
+# Startzustand: 100% Sonne
+v0 = np.array([1, 0])
+
+# Nach einem Tag
+v1 = v0 @ P
+print("Nach 1 Tag:", v1)
+
+# Nach zwei Tagen
+v2 = v1 @ P
+print("Nach 2 Tagen:", v2)
+      \end{lstlisting}
+    \end{cheatSheetBox}
+    \begin{cheatSheetBox}[title=Markov-Ketten: Vorhersage (Zufallsimulation)]
+      \begin{lstlisting}
+# Vorhersage für 10 Schritte
+steps = 10
+initial_state = np.array([1, 0]) # Startzustand: Sonne
+state = initial_state
+for i in range(steps):
+    state = np.dot(state, P)
+    print(f'Schritt {i+1}: {state}')
+      \end{lstlisting}
     \end{cheatSheetBox}
   \end{multicols*}
 \end{landscape}
