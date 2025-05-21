@@ -1,4 +1,4 @@
-\chapter{Fehlerkorrigierende Codes}
+\chapter{Datenintegrität}
 
 \section{Einführung}
 
@@ -6,9 +6,11 @@ Stellen Sie sich vor, Sie feiern Ihren 18. Geburtstag und wollen ihren besten Fr
 
 Bei der Übertragung von Bits über das Internet können einzelne Bits spontan verändert oder gelöscht werden -- dies kann fatale Folgen haben! Bei spontaner Änderung von einem 1 zu einem 0 (oder umgekehrt) spricht man von sogenanntem \textit{bit rot}.
 
+Dies ist ein klassisches Beispiel für einen Fehler, der bei der Übertragung von Daten auftreten kann. Mit dem Begriff ``Datenintegrität'' bezeichnen wir die Korrektheit und Vollständigkeit von Daten. Datenintegrität ist ein wichtiges Thema in der Informatik, da es darum geht, sicherzustellen, dass Daten während ihrer Speicherung und Übertragung nicht verändert oder beschädigt werden.
+
 \section{Prüfbits}
 
-Buchstaben können auf unterschiedliche Weise kodiert sein -- bei ASCII werden beispielsweise sieben Bits pro Zeichen verwendet:
+Buchstaben können auf unterschiedliche Weise kodiert sein -- bei \gls{ASCII} werden beispielsweise sieben Bits pro Zeichen verwendet:
 
 \begin{table}[H]
     \centering
@@ -58,22 +60,22 @@ Die Idee von Prüfziffern ist, dass jede Prüfziffer nach dem gleichen Prinzip b
     \end{myanswer}
 \end{myexercise}
 
-Ein EAN bezeichnet einen sogenannten European Article Number. Fast alle käuflich erhältlichen Waren auf dem Markt enthalten einen solchen Code, welcher aus 13 Ziffern besteht. Häufig wird er in Form eines Strichcodes dargestellt, wobei zwei Striche eine Ziffer darstellen, sowie 2 mal 2 Striche, die den Rand angeben (s. \cref{fig:ean}).
+Mit einem \gls{EAN} wird ein Standard für die Kodierung von Waren entwickelt. Fast alle käuflich erhältlichen Waren auf dem Markt enthalten einen solchen Code, welcher aus 13 Ziffern besteht. Häufig wird er in Form eines Strichcodes dargestellt, wobei zwei Striche eine Ziffer darstellen, sowie 2 mal 2 Striche, die den Rand angeben (s. \cref{fig:ean}).
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/EAN}
-    \caption{Bestandteile eines EAN}
+    \includegraphics[width=0.7\linewidth]{GrundlagenInfo/05_DatenIntegritaet/Figures/EAN}
+    \caption{Bestandteile eines \gls{EAN}}
     \label{fig:ean}
 \end{figure}
 
-Ein EAN besteht aus 12 Ziffern und einer Prüfziffer:
+Ein \gls{EAN} besteht aus 12 Ziffern und einer Prüfziffer:
 \begin{equation}\label{eq:ean}
     x_1x_2x_3x_4x_5x_6x_7x_8x_9x_{10}x_{11}x_{12}\textcolor{red}{x_{13}}
 \end{equation}
 
 
-Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führen, weshalb EAN ebenfalls eine Prüfziffer enthalten, die sich wie folgt berechnet:
+Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führen, weshalb\gls{EAN}ebenfalls eine Prüfziffer enthalten, die sich wie folgt berechnet:
 
 \begin{enumerate}
     \item $s=x_1+x_3+ x_5+ x_7+ x_9+ x_{11}+3\times( x_2+ x_4+ x_6+ x_8+ x_{10}+ x_{12})$
@@ -82,7 +84,7 @@ Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führe
 
 
 \begin{myexercise}
-    Welche folgender Fehler werden durch einen EAN erkannt?
+    Welche folgender Fehler werden durch einen\gls{EAN}erkannt?
     \begin{itemize}
         \item Vertippen (eine Ziffer ist falsch)
         \item Vertauschen zweier benachbarter Ziffern
@@ -92,14 +94,14 @@ Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führe
 \end{myexercise}
 
 \begin{myexercise}
-    Berechnen Sie für 978314221213 die EAN-13-Prüfziffer.
+    Berechnen Sie für 978314221213 die \gls{EAN}-13-Prüfziffer.
     \begin{myanswer}
         5
     \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}\label{ex:ean}
-    Bestimmen Sie für den folgenden EAN-Code alle Paare von benachbarten Ziffern, deren Austausch in der Reihenfolge nicht erkannt werden kann:
+    Bestimmen Sie für den folgenden \gls{EAN}-Code alle Paare von benachbarten Ziffern, deren Austausch in der Reihenfolge nicht erkannt werden kann:
     \begin{alltt}
         40\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{3}}}}{\texttt{\red{3}}}\)05\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{6}}}}{\texttt{\red{3}}}\)86\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{9}}}}{\texttt{\red{5}}}\)74\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{12}}}}{\texttt{\red{6}}}\)5
     \end{alltt}
@@ -140,7 +142,7 @@ Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führe
     \end{myanswer}
 
     \begin{mychallenge}
-        Begründen Sie allgemein, für welche Arten von Ziffern ein Vertauschen zweier benachbarten Ziffern in einer EAN-Prüfziffer nicht entdeckt wird.
+        Begründen Sie allgemein, für welche Arten von Ziffern ein Vertauschen zweier benachbarten Ziffern in einer \gls{EAN}-Prüfziffer nicht entdeckt wird.
         \begin{myanswer}
             Damit ein Austausch zweier benachbarter Ziffern nicht entdeckt wird, darf sich die gewichtete Summe $s$ nicht ändern, da die Prüfziffer $x_{13}$ so gewählt ist, dass
             \[
@@ -148,7 +150,7 @@ Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führe
             \]
             gilt.
 
-            Bezeichne die beiden benachbarten Ziffern mit $a$ und $b$ an den Positionen $i$ und $i+1$. Die zugehörigen Gewichte im EAN-System sind alternierend 1 und 3, also entweder $(g_i, g_{i+1}) = (1, 3)$ oder $(3, 1)$.
+            Bezeichne die beiden benachbarten Ziffern mit $a$ und $b$ an den Positionen $i$ und $i+1$. Die zugehörigen Gewichte im \gls{EAN}-System sind alternierend 1 und 3, also entweder $(g_i, g_{i+1}) = (1, 3)$ oder $(3, 1)$.
 
             Der ursprüngliche Beitrag dieser beiden Ziffern zur Summe $s$ ist:
             \[
@@ -185,7 +187,7 @@ Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führe
 
             \medskip
 
-            \textbf{Fazit:} Ein Vertauschen zweier benachbarter Ziffern im EAN-Code bleibt genau dann unentdeckt, wenn sich ihre Werte um 5 unterscheiden, also $|b - a| = 5$ gilt.
+            \textbf{Fazit:} Ein Vertauschen zweier benachbarter Ziffern im \gls{EAN}-Code bleibt genau dann unentdeckt, wenn sich ihre Werte um 5 unterscheiden, also $|b - a| = 5$ gilt.
 
         \end{myanswer}
     \end{mychallenge}
@@ -195,7 +197,7 @@ Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führe
 \end{myexercise}
 
 \begin{myexercise}
-    Nehmen wir an, dass an der vierten Position im Code aus \cref{ex:ean} eine 8 statt der 0 getippt wurde. Finden Sie mindestens 5 Möglichkeiten, an anderen Stellen den Fehler so zu machen, dass die fehlerhafte Darstellung einem EAN-Code entspricht und somit dieser Doppelfehler unbemerkt bleibt.
+    Nehmen wir an, dass an der vierten Position im Code aus \cref{ex:ean} eine 8 statt der 0 getippt wurde. Finden Sie mindestens 5 Möglichkeiten, an anderen Stellen den Fehler so zu machen, dass die fehlerhafte Darstellung einem \gls{EAN}-Code entspricht und somit dieser Doppelfehler unbemerkt bleibt.
     \begin{myanswer}
         Die Ziffer an Position 4 wurde von 0 auf 8 geändert. Da Position 4 das Gewicht 3 hat, verändert sich die Summe $s$ um
         \[
@@ -222,29 +224,29 @@ Das Scannen eines falschen Codes könnte zu falschen Preisen an der Kasse führe
 \end{myexercise}
 
 \begin{myexercise}
-    Die ursprünglichen ISBN-10-Codes zur eindeutigen Bezeichnung von Büchern bestanden aus 9 Ziffern und einem Prüfsymbol aus {0,1,2,3,4,5,6,7,8,9,X}, wobei X die Zahl 10 repräsentierte. Für die neun Ziffern $x_1$, $x_2$, $\cdots$, $x_9$, hat man das Prüfsymbol $x_{10}$ wie folgt bestimmt:
+    Die ursprünglichen \gls{ISBN}-10-Codes zur eindeutigen Bezeichnung von Büchern bestanden aus 9 Ziffern und einem Prüfsymbol aus {0,1,2,3,4,5,6,7,8,9,X}, wobei X die Zahl 10 repräsentierte. Für die neun Ziffern $x_1$, $x_2$, $\cdots$, $x_9$, hat man das Prüfsymbol $x_{10}$ wie folgt bestimmt:
     \[10\times x_1+9\times x_2+8\times x_3\cdots+2\times x_9 + x_{10}\]
     ist ein Vielfaches von 11. Falls $x_{10} = 10$ ist das Prüfsymbol $X$.
     \begin{enumerate}
-        \item Bestimmen Sie für die folgenden Symbolfolgen, welche ISBN-10-Codes sind und welche es nicht sind:
+        \item Bestimmen Sie für die folgenden Symbolfolgen, welche \gls{ISBN}-10-Codes sind und welche es nicht sind:
               \begin{itemize}
                   \item 020144124\textbf{1}
                   \item 270004302\textbf{X}
                   \item 809004048\textbf{9}
                   \item 010144124\textbf{X}
               \end{itemize}
-        \item Die neunstellige Zahl eines Buches ist 354042278. Bestimmen Sie das Prüfsymbol des ISBN-10-Codes des Buches.
+        \item Die neunstellige Zahl eines Buches ist 354042278. Bestimmen Sie das Prüfsymbol des \gls{ISBN}-10-Codes des Buches.
     \end{enumerate}
     \begin{myanswer}
         \textbf{a) Prüfung der Symbolfolgen}
 
-        Zur Erinnerung: Ein ISBN-10-Code ist gültig, wenn die gewichtete Summe
+        Zur Erinnerung: Ein \gls{ISBN}-10-Code ist gültig, wenn die gewichtete Summe
         \[
             10x_1 + 9x_2 + 8x_3 + \cdots + 2x_9 + x_{10} \equiv 0 \mod 11
         \]
         ist.
 
-        Aufgabe (a): Wenn wir diese Formel anwenden, finden wir heraus, dass alle ausser dem zweiten Code gültige ISBN-Codes sind.
+        Aufgabe (a): Wenn wir diese Formel anwenden, finden wir heraus, dass alle ausser dem zweiten Code gültige \gls{ISBN}-Codes sind.
 
         Aufgabe (b): $3*10+5*9+4*8+0*7+4*6+2*5+2*4+7*3+8*2=186 \rightarrow x_{10}=1$, da $187=11*17$.
 
@@ -258,7 +260,7 @@ Sie kennen Fehlererkennung bereits aus Ihrem Alltag: So beispielsweise bei der R
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/Word}
+    \includegraphics[width=0.7\linewidth]{GrundlagenInfo/05_DatenIntegritaet/Figures/Word}
     \caption{Rechtschreibprüfung im Programm Microsoft Word}
     \label{fig:word}
 \end{figure}
@@ -762,8 +764,10 @@ Um die Anzahl möglicher 1-fehlerkorrigierender Codewörter für eine gewisse Co
 \begin{enumerate}
     \item Wähle irgendein Codewort als erstes Codewort aus, z.B., \texttt{0000}.
     \item Streiche alle Code-Wörter, welche von allen bisher ausgewählten Codewörtern weniger als Abstand 3 entfernt sind, also alle Codewörter mit Abstand 1 oder 2.
-    \item Wiederhole Schritte 1 und 2, bis alle Codewörter entweder ausgewählt oder durchgestrichen sind. Die Anzahl ausgewählte Codewörter bestimmt, wie viele Wörter wir kodieren können bei gleichzeitiger Garantie, immer bis zu einem Fehler korrigieren zu können.
+    \item Wiederhole Schritte 1 und 2, bis alle Codewörter entweder ausgewählt oder durchgestrichen sind. 
 \end{enumerate}
+Auf diese Weise erhalten wir eine maximale Anzahl an Codewörtern, die 1-fehlerkorrigierend sind. Diese Methode funktioniert auch für andere Code-Längen, wie z.B. 3 (\cref{fig:3d}) oder 5 (\cref{fig:5d}).
+
 Soll der Code nur 1-fehlererkennend und nicht 1-fehlerkorrigierend sein, reicht es aus, in Schritt 2 alle Codewörter mit Abstand 1 zu streichen.
 
 Dieses Vorgehen funktioniert auch für andere Code-Längen, beispielsweise 2 (\cref{fig:2d}), 3 (\cref{fig:3d}) oder 5 (\cref{fig:5d}).
@@ -1284,7 +1288,7 @@ RAID 0 verteilt Daten in Blöcken auf mehrere Festplatten (\textit{striping}), u
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.25\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/RAID_0}
+    \includegraphics[width=0.25\linewidth]{GrundlagenInfo/05_DatenIntegritaet/Figures/RAID_0}
     \caption{RAID-0-Architektur mit zwei physischen Festplatten}
     \label{fig:raid0}
 \end{figure}
@@ -1320,7 +1324,7 @@ RAID 1 speichert identische Kopien der Daten auf zwei Festplatten (\textit{mirro
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.25\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/RAID_1}
+    \includegraphics[width=0.25\linewidth]{GrundlagenInfo/05_DatenIntegritaet/Figures/RAID_1}
     \caption{RAID-1-Architektur mit zwei physischen Festplatten}
     \label{fig:raid1}
 \end{figure}
@@ -1340,7 +1344,7 @@ RAID 4, 5 und 6 nutzen für die Datensicherheit statt \textit{mirroring} (Spiege
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.45\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/RAID_4}
+    \includegraphics[width=0.45\linewidth]{GrundlagenInfo/05_DatenIntegritaet/Figures/RAID_4}
     \caption{RAID-4-Architektur mit vier physischen Festplatten und einem Paritätsbit}
     \label{fig:raid4}
 \end{figure}
@@ -1351,7 +1355,7 @@ Da das Paritätsbit bei jedem Schreibvorgang neu geschrieben werden muss (auch b
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.45\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/RAID_5}
+    \includegraphics[width=0.45\linewidth]{GrundlagenInfo/05_DatenIntegritaet/Figures/RAID_5}
     \caption{RAID-5-Architektur mit vier physischen Festplatten und einem \textit{verteilten} Paritätsbit}
     \label{fig:raid5}
 \end{figure}
@@ -1418,7 +1422,7 @@ Bei RAID-6 werden sogar zwei Paritätsbits verwendet, womit diese Konfiguration 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{GrundlagenInfo/05_ErrorChecking/Figures/RAID_6}
+    \includegraphics[width=0.5\linewidth]{GrundlagenInfo/05_DatenIntegritaet/Figures/RAID_6}
     \caption{RAID 5-Architektur mit fünf physischen Festplatten und zwei Paritätsbits}
     \label{fig:raid6}
 \end{figure}
@@ -1478,7 +1482,7 @@ RAID 6 verwendet zwei Paritätswerte: eine XOR-basierte Parität ($P$) wie in RA
             \begin{tabular}{c||c|c}
                 \textbf{Konfiguration} & \textbf{Verfügbare Festplatten} & \textbf{Ausfallsicherheit} \\\midrule\midrule
                 \textbf{RAID 0}        & 6/6                             & 0                          \\\midrule
-                \textbf{RAID 1}        & 3/6                             & 1                          \\\midrule
+                \textbf{RAID 1}        &/6                             & 1                          \\\midrule
                 \textbf{RAID 5}        & 5/6                             & 1                          \\\midrule
                 \textbf{RAID 6}        & 4/6                             & 2                          \\
             \end{tabular}

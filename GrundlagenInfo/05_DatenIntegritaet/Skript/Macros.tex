@@ -73,16 +73,21 @@
     \int_incr:c {l__hyper_\int_use:N \l__binb_int _int}
   }
   \int_step_inline:nnnn {0} {1} {\l__binc_int}
-  {
-    \int_to_bin:Nn \l__bina_tl {##1}
-    \bin_hamming_weight:NN \l__binb_int \l__bina_tl
-    \int_step_inline:nnnn {1} {1} {\l__binp_int}
     {
-      \bin_flip_one:NNn \l__bina_tl \l__binb_tl {####1}
-      \draw[every~ hypercube~ edge/.try] (hg- \l__bina_tl) -- (hg- \l__binb_tl);
+      \int_to_bin:Nn \l__bina_tl {##1}
+      \bin_hamming_weight:NN \l__binb_int \l__bina_tl
+      \int_step_inline:nnnn {1} {1} {\l__binp_int}
+      {
+        \bin_flip_one:NNn \l__bina_tl \l__binb_tl {####1}
+        \tl_if_eq:NNTF \l__bina_tl \l__binb_tl
+          { % do nothing if nodes are the same
+          }
+          {
+            \draw[every~ hypercube~ edge/.try] (hg- \l__bina_tl) -- (hg- \l__binb_tl);
+          }
+      }
     }
   }
-}
 
 \ExplSyntaxOff
 
