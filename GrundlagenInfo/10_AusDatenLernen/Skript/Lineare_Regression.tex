@@ -30,15 +30,13 @@ Der Begriff \textit{Regression} wurde erstmals vom britischen Statistiker Franci
 
 Beispielsweise könnten wir versuchen, folgende Frage zu beantworten: \textbf{Welche Note werde ich erreichen, wenn ich im Schnitt 8 Stunden pro Nacht schlafe?}
 
-\section{Unabhängige und abhängige Variablen}
+Bevor wir mit der linearen Regression beginnen, sollten jedoch noch die Begriffe \textbf{unabhängige} und \textbf{abhängige Variable} geklärt werden.
 
-Bevor wir mit der linearen Regression beginnen, müssen wir zwischen unabhängigen und abhängigen Variablen unterscheiden:
-
-\begin{mydefinition}[Unabhängige und abhängige Variable]
-\begin{itemize}
+\begin{mydefinition}[Unabhängige und abhängige Variable]\leavevmode
+    \begin{itemize}
     \item Die \textbf{unabhängige Variable} (auch Prädiktor- oder Eingabevariable genannt) ist die Variable, die wir kontrollieren oder messen, um eine Vorhersage zu treffen. In unserem Beispiel ist die Schlafdauer die unabhängige Variable.
     \item Die \textbf{abhängige Variable} (auch Zielvariable, Responsevariable oder Ausgabevariable genannt) ist die Variable, die wir vorhersagen wollen. In unserem Beispiel ist der Notenschnitt die abhängige Variable.
-\end{itemize}
+    \end{itemize}
 \end{mydefinition}
 
 In Streudiagrammen wird üblicherweise die unabhängige Variable auf der x-Achse und die abhängige Variable auf der y-Achse dargestellt.
@@ -77,7 +75,7 @@ Um einen ersten Eindruck zu bekommen, wie eine Regressionsgerade funktioniert, b
 Um diese Gerade zu bestimmen, benötigen wir ihre Steigung und ihren y-Achsenabschnitt:
 
 \begin{itemize}
-    \item Die Steigung $m$ berechnet sich aus: $m = \frac{y_2 - y_1}{x_2 - x_1}$, wobei $(x_1, y_1)$ und $(x_2, y_2)$ die beiden Punkte sind.
+    \item Die Steigung $m$ berechnet sich aus: $m = \frac{y_2 - y_1}{x_2 - x_1}$, wobei $(x_1, y_1)$ und $(x_2, y_2)$ die beiden miteinander verbundenen Punkte sind.
     \item Der y-Achsenabschnitt $q$ berechnet sich aus: $q = y_1 - m \cdot x_1$
 \end{itemize}
 
@@ -119,19 +117,17 @@ Diese Abweichungen werden als \textbf{Residuen} bezeichnet. Das Ziel der Methode
 
 wobei $(x_i, y_i)$ die Datenpunkte sind und $n$ die Gesamtzahl der Datenpunkte.
 
-Um die Werte für $m$ und $q$ zu finden, die $S$ minimieren, setzen wir die partiellen Ableitungen von $S$ nach $m$ und $q$ gleich Null und lösen das resultierende Gleichungssystem. Dies führt zu den folgenden Formeln:
+Um die Werte für $m$ und $q$ zu finden, die $S$ minimieren, setzen wir die partiellen Ableitungen von $S$ nach $m$ und $q$ gleich Null und lösen das resultierende Gleichungssystem (s. \cref{sec:appendix_methode_der_kleinsten_quadrate}). Dies führt zu den folgenden Formeln:
 
 \[m = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2}\]
 
 \[q = \frac{\sum y_i - m\sum x_i}{n}\]
 
-\begin{myexercise}
+\begin{mychallenge}
     Betrachten Sie die folgenden Datenpunkte, die die Schlafdauer (in Stunden) und den Notenschnitt darstellen:
     \begin{center}
         \begin{tabular}{c||c|c|c|c|c}
-            \midrule\midrule
-            Schlafdauer (x) & 5 & 6 & 7 & 8 & 9 \\
-            \midrule
+            Schlafdauer (x) & 5 & 6 & 7 & 8 & 9 \\\midrule
             Notenschnitt (y) & 3.8 & 4.2 & 4.8 & 5.1 & 5.6 
         \end{tabular}
     \end{center}
@@ -168,7 +164,7 @@ Um die Werte für $m$ und $q$ zu finden, die $S$ minimieren, setzen wir die part
             Man würde einen Notenschnitt von 4.93 erwarten.
         \end{enumerate}
     \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
 \section{Implementierung mit Python}
 
@@ -193,17 +189,6 @@ model = smf.ols(formula="Notenschnitt ~ Schlafdauer", data=df).fit()
 
 # Ergebnisse ausgeben
 print(model.params)
-
-# Visualisierung
-plt.scatter(df["Schlafdauer"], df["Notenschnitt"], label="Datenpunkte")
-x_values = [min(df["Schlafdauer"]), max(df["Schlafdauer"])]
-y_values = [model.params[1] * x + model.params[0] for x in x_values]
-plt.plot(x_values, y_values, color="red", label="Regressionsgerade")
-plt.xlabel("Schlafdauer (Stunden)")
-plt.ylabel("Notenschnitt")
-plt.legend()
-plt.title("Schlafdauer und Notenschnitt mit Regressionsgerade")
-plt.show()
 \end{lstlisting}
 
 Die Ergebnisse der Regression enthalten die Steigung (\texttt{Schlafdauer}) und den y-Achsenabschnitt (\texttt{Intercept}):
@@ -216,9 +201,7 @@ dtype: float64
 
 \section{Qualität einer Regression}
 
-Wie gut passt eine Regressionsgerade zu den Daten? Um diese Frage zu beantworten, verwenden wir verschiedene Masse:
-
-\subsection{Residuen und Summe der quadrierten Residuen}
+Wie gut passt eine Regressionsgerade zu den Daten? Um diese Frage zu beantworten, betrachten wir insbesondere die Residuen und die Summe der quadrierten Residuen
 
 Wie bereits erwähnt, sind Residuen die Abweichungen zwischen den tatsächlichen y-Werten und den durch die Regressionsgerade vorhergesagten y-Werten. Die Summe der quadrierten Residuen (auch als Residuenquadratsumme oder RSS bezeichnet) ist ein Mass für die Gesamtabweichung:
 
@@ -285,71 +268,3 @@ Die lineare Regression hat jedoch auch Einschränkungen:
     \item Ich kann eine lineare Regression mit Python implementieren.
     \item Ich kenne die Anwendungen und Grenzen der linearen Regression.
 \end{todolist}
-
-\section{Appendix: Herleitung der Methode der kleinsten Quadrate}
-
-\subsection{Definition der Zielfunktion}
-Das Ziel der linearen Regression besteht darin, die bestmögliche Gerade $y = mx + q$ zu finden, die die Summe der quadrierten Residuen zwischen den vorhergesagten Werten und den tatsächlichen Datenpunkten minimiert. Die Summe der quadrierten Abstände zwischen den Datenpunkten und der Geraden wird definiert als:
-$$
-S = \sum_{i=1}^n (y_i - (mx_i + q))^2
-$$
-
-\subsection{Partielle Ableitungen}
-Um $S$ zu minimieren, nehmen wir die partiellen Ableitungen bezüglich $m$ und $q$ und setzen diese gleich Null.
-
-\subsubsection{Partielle Ableitung nach $m$}
-$$
-\frac{\partial S}{\partial m} = \frac{\partial}{\partial m} \sum_{i=1}^n (y_i - mx_i - q)^2
-$$
-$$
-= \sum_{i=1}^n 2(y_i - mx_i - q)(-x_i)
-$$
-$$
-= -2 \sum_{i=1}^n x_i(y_i - mx_i - q)
-$$
-Auf Null setzen für die Minimierung:
-$$
-\sum x_iy_i - m\sum x_i^2 - q\sum x_i = 0
-$$
-$$
-\sum x_iy_i = m\sum x_i^2 + q\sum x_i \quad \text{(Gleichung 1)}
-$$
-
-\subsubsection{Partielle Ableitung nach $q$}
-$$
-\frac{\partial S}{\partial q} = \frac{\partial}{\partial q} \sum_{i=1}^n (y_i - mx_i - q)^2
-$$
-$$
-= \sum_{i=1}^n 2(y_i - mx_i - q)(-1)
-$$
-$$
-= -2 \sum_{i=1}^n (y_i - mx_i - q)
-$$
-Auf Null setzen für die Minimierung:
-$$
-\sum y_i - m\sum x_i - nq = 0
-$$
-$$
-\sum y_i = m\sum x_i + nq \quad \text{(Gleichung 2)}
-$$
-
-\subsection{Lösung der Gleichungen}
-Aus Gleichung 2:
-$$
-q = \frac{\sum y_i - m\sum x_i}{n} \quad \text{(Gleichung 3)}
-$$
-Einsetzen der Gleichung 3 in Gleichung 1:
-$$
-\sum x_iy_i = m\sum x_i^2 + \left(\frac{\sum y_i - m\sum x_i}{n}\right)\sum x_i
-$$
-$$
-\sum x_iy_i = m\sum x_i^2 + \frac{(\sum y_i)\sum x_i}{n} - \frac{m(\sum x_i)^2}{n}
-$$
-Auflösen nach $m$:
-$$
-m = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2}
-$$
-Bestimmen von $q$ über Einsetzen von $m$ in Gleichung 3:
-$$
-q = \frac{\sum y_i - m\sum x_i}{n}
-$$

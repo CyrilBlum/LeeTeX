@@ -1,3 +1,4 @@
+\lstset{style=python}
 \chapter{Kategorien Vorhersagen mit Markov-Ketten}
 \section{Einleitung}
 
@@ -15,8 +16,8 @@ Das Prinzip von Markov-Ketten lässt sich gut am Beispiel des Wetters illustrier
         \item Das Wetter morgen kann gut vorhergesagt werden anhand des heutigen Wetters.
         \item Die Wahrscheinlichkeit, dass ein Schüler heute seine Hausaufgaben macht, hängt davon ab, ob er sie gestern und vorgestern gemacht hat.
         \item Die Position einer Spielfigur auf einem Spielbrett hängt nur vom aktuellen Feld und dem nächsten Würfelergebnis ab.
-        \item Die Wahrscheinlichkeit, dass ein Computer abstürzt, hängt davon ab, wie lange er bereits ohne Neustart läuft.
-        \item Die Wahrscheinlichkeit, dass ein Kunde ein Produkt kauft, hängt nur davon ab, ob er gerade Werbung gesehen hat.
+        \item Die Wahrscheinlichkeit, dass ein Computer abstürzt, hängt davon ab, was bereits alles auf dem Computer gemacht wurde.
+        \item Die Wahrscheinlichkeit, dass eine Person Kleider einer bestimmten Marke kauft, hängt nur davon ab, ob das zuletzt gekaufte Kleidungsstück von dieser Marke war.
     \end{enumerate}
     \begin{myanswer}
         \begin{enumerate}
@@ -24,7 +25,7 @@ Das Prinzip von Markov-Ketten lässt sich gut am Beispiel des Wetters illustrier
             \item \textbf{Nicht erfüllt}, da die Entscheidung vom Zustand der letzten zwei Tage abhängt.
             \item \textbf{Erfüllt}, da nur das aktuelle Feld und das nächste Würfelergebnis relevant sind.
             \item \textbf{Nicht erfüllt}, da die Absturz-Wahrscheinlichkeit von der gesamten Laufzeit abhängt, nicht nur vom aktuellen Zustand.
-            \item \textbf{Erfüllt}, wenn nur der aktuelle Werbekontakt zählt.
+            \item \textbf{Erfüllt}, da die Kaufentscheidung nur vom zuletzt gekauften Kleidungsstück abhängt.
         \end{enumerate}
     \end{myanswer}
 \end{myexercise}
@@ -62,19 +63,19 @@ Die Zeilen entsprechen dem heutigen Zustand (\emoji{sun}, \emoji{umbrella}), die
 
 Um zu berechnen, wie wahrscheinlich es ist, dass es in zwei Tagen sonnig ist, wenn es heute regnerisch ist, erstellen wir zunächst einen \textbf{Startvektor} $\pi_0$, der den heutigen Zustand (also den Zustand $\pi$ am Tag 0) beschreibt. In diesem Fall ist der Startvektor (mit Emojis):
 
-[
-\begin{aligned}
-    \pi_0 =
-     & \begin{pmatrix}
-           0 & 1
-       \end{pmatrix}                                                   \\
-     & \begin{matrix}
-           \;\; \Uparrow & \Uparrow
-       \end{matrix}                                         \\
-     & \begin{matrix}
-           \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
-       \end{matrix}
-\end{aligned}
+\[
+    \begin{aligned}
+        \pi_0 =
+         & \begin{pmatrix}
+               0 & 1
+           \end{pmatrix}                                                   \\
+         & \begin{matrix}
+               \;\; \Uparrow & \Uparrow
+           \end{matrix}                                         \\
+         & \begin{matrix}
+               \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
+           \end{matrix}
+    \end{aligned}
 \]
 
 Nun multiplizieren wir den Startvektor $\pi_0$ mit der Übergangsmatrix $P$, um $\pi_1$, also den Zustand nach einem Tag, zu berechnen. Dabei verwenden wir die Matrixmultiplikation. Die Matrixmultiplikation ist definiert als:
@@ -150,8 +151,7 @@ Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zust
         \[
             \pi_0 =
             \begin{pmatrix}
-                1 \\
-                0 \\
+                1 & 0
             \end{pmatrix}
         \]
 
@@ -193,7 +193,7 @@ Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zust
     \end{myanswer}
 \end{myexercise}
 
-\begin{myexercise}[Pendlerverhalten]
+\begin{mychallenge}[Pendlerverhalten]
     Eine Pendlerin fährt jeden Morgen entweder mit dem Fahrrad oder mit dem Bus zur Arbeit. Die Übergangswahrscheinlichkeiten sind:
     \begin{itemize}
         \item Nach einer Fahrt mit dem Fahrrad nimmt sie am nächsten Tag mit Wahrscheinlichkeit $0{,}9$ wieder das Fahrrad und mit $0{,}1$ den Bus.
@@ -217,10 +217,10 @@ Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zust
         \[
             \pi_0 =
             \begin{pmatrix}
-                1 \\
-                0 \\
+                1 & 0
             \end{pmatrix}
         \]
+
         Wir berechnen den Zustand nach einem Tag:
         \[
             \pi_1 = \pi_0 \cdot P =
@@ -255,7 +255,7 @@ Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zust
         \]
         Die Wahrscheinlichkeit, dass die Pendlerin nach zwei Tagen mit dem Bus fährt, wenn sie heute mit dem Fahrrad fährt, beträgt also $0{,}15$.
     \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
 \begin{mychallenge}[Tourist in Thailand]\label{ex:tourist}
     Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden geniessen: Samui und Phangan.
@@ -389,118 +389,6 @@ Bei dieser Darstellung wird besonders deutlich, wie die Übergänge zwischen den
 
 Für komplexere Markov-Ketten mit vielen Zuständen kann die graphische Darstellung schnell unübersichtlich werden. In solchen Fällen ist die Matrixdarstellung oft praktikabler.
 
-
-\section{Eigenschaften von Markov-Ketten}
-
-Markov-Ketten und ihre Zustände lassen sich durch verschiedene Eigenschaften charakterisieren. Diese Eigenschaften helfen, das Langzeitverhalten der Kette besser zu verstehen.
-
-\begin{itemize}
-    \item \textbf{Aperiodizität:} Ein Zustand $i$ hat die Periode $k \geq 1$, wenn jede Rückkehr zu $i$ nur in einer Anzahl von Schritten möglich ist, die durch $k$ teilbar ist. Ist $k=1$, so heisst der Zustand \emph{aperiodisch}. Sind alle Zustände aperiodisch, so ist die Markov-Kette aperiodisch.
-    \item \textbf{Irreduzibilität:} Eine Markov-Kette heisst \emph{irreduzibel}, wenn es zwischen jedem Zustandspaar $i$ und $j$ eine Kette von Schritten mit positiver Wahrscheinlichkeit gibt.
-    \item \textbf{Absorbierende Zustände:} Ein Zustand $i$ ist \emph{absorbierend}, wenn $P_{i,i} = 1$ gilt, d.h. die Kette bleibt nach Erreichen dieses Zustands immer dort.
-    \item \textbf{Rekurrenz und Transienz:} Ein Zustand ist \emph{rekurrent}, wenn die Kette mit Wahrscheinlichkeit $1$ irgendwann wieder in diesen Zustand zurückkehrt. Andernfalls ist er \emph{transient}. Ist die erwartete Rückkehrzeit endlich, heisst der Zustand \emph{positiv rekurrent}, sonst \emph{null-rekurrent}.
-    \item \textbf{Ergodizität:} Ein Zustand ist \emph{ergodisch}, wenn er positiv rekurrent und aperiodisch ist. Eine Markov-Kette ist ergodisch, wenn alle ihre Zustände ergodisch sind.
-\end{itemize}
-
-\begin{mychallenge}[Aperiodizität]
-    Gegeben sei die folgende Übergangsmatrix:
-    \[
-        P = \begin{pmatrix}
-            0{,}5 & 0{,}5 \\
-            0{,}5 & 0{,}5 \\
-        \end{pmatrix}
-    \]
-    Untersuchen Sie, ob die Markov-Kette aperiodisch ist.
-
-    \begin{myanswer}
-        Von jedem Zustand kann man in einem Schritt in jeden anderen Zustand (auch in sich selbst) gelangen. Die Rückkehr zu einem Zustand ist also in jedem Schritt möglich, insbesondere in aufeinanderfolgenden Schritten. Daher ist die Periode $k=1$ und die Kette ist aperiodisch.
-    \end{myanswer}
-\end{mychallenge}
-
-\begin{mychallenge}[Irreduzibilität]
-    Gegeben sei die Übergangsmatrix:
-    \[
-        P = \begin{pmatrix}
-            0 & 1 \\
-            1 & 0 \\
-        \end{pmatrix}
-    \]
-    Ist diese Markov-Kette irreduzibel? Ist sie aperiodisch?
-
-    \begin{myanswer}
-        Von jedem Zustand kann man in einem Schritt zum jeweils anderen Zustand gelangen, also ist die Kette irreduzibel. Die Rückkehr zu einem Zustand ist aber nur in einer geraden Anzahl von Schritten möglich (2, 4, 6, ...), daher ist die Periode $k=2$ und die Kette ist periodisch (nicht aperiodisch).
-    \end{myanswer}
-\end{mychallenge}
-
-\begin{mychallenge}[Absorbierende Zustände]
-    Gegeben sei die Übergangsmatrix:
-    \[
-        P = \begin{pmatrix}
-            1     & 0     \\
-            0{,}3 & 0{,}7 \\
-        \end{pmatrix}
-    \]
-    Gibt es einen absorbierenden Zustand?
-
-    \begin{myanswer}
-        Der Zustand 1 ist absorbierend, da $P_{1,1} = 1$. Das heisst, wenn die Kette einmal in Zustand 1 ist, bleibt sie dort.
-    \end{myanswer}
-\end{mychallenge}
-
-\begin{mychallenge}[Rekurrenz und Transienz]
-    Betrachten Sie die folgende Übergangsmatrix:
-    \[
-        P = \begin{pmatrix}
-            0{,}6 & 0{,}4 \\
-            0{,}2 & 0{,}8 \\
-        \end{pmatrix}
-    \]
-    Ist die Kette irreduzibel? Sind die Zustände rekurrent oder transient?
-
-    \begin{myanswer}
-        Von jedem Zustand kann man mit positiver Wahrscheinlichkeit in den anderen gelangen, also ist die Kette irreduzibel. Da es nur zwei Zustände gibt und man immer wieder zurückkehren kann, sind beide Zustände rekurrent.
-    \end{myanswer}
-\end{mychallenge}
-
-\begin{mychallenge}[Typen von Rekurrenz und Transienz]
-    Ordnen Sie für jeden Zustand der folgenden Markov-Ketten die Begriffe \emph{positiv rekurrent}, \emph{null-rekurrent} oder \emph{transient} zu. Begründen Sie Ihre Antwort jeweils kurz.
-
-    \begin{enumerate}
-        \item \textbf{Kette A:} \\
-              $P = \begin{pmatrix}
-                      0{,}5 & 0{,}5 \\
-                      0{,}5 & 0{,}5 \\
-                  \end{pmatrix}$
-
-        \item \textbf{Kette B:} \\
-              $P = \begin{pmatrix}
-                      1     & 0     \\
-                      0{,}3 & 0{,}7 \\
-                  \end{pmatrix}$
-
-        \item \textbf{Kette C:} (Zustände $1,2,3,\ldots$; von $i$ geht es immer mit Wahrscheinlichkeit $1$ zu $i+1$)
-
-        \item \textbf{Kette D:} (Zustände $1,2,3,\ldots$; von $i$ geht es mit Wahrscheinlichkeit $1/2$ zu $i+1$ und mit $1/2$ zu $i-1$, wobei von $1$ aus nur nach $2$ möglich ist)
-    \end{enumerate}
-
-    \begin{myanswer}
-        \begin{enumerate}
-            \item \textbf{Kette A:} Beide Zustände sind \emph{positiv rekurrent}, da die Rückkehrzeiten endlich sind und die Kette endlich und irreduzibel ist.
-            \item \textbf{Kette B:} Zustand 1 ist \emph{positiv rekurrent} (absorbierend), Zustand 2 ist \emph{transient}, da man von 2 mit positiver Wahrscheinlichkeit nach 1 gelangt und dann nie zurückkehrt.
-            \item \textbf{Kette C:} Alle Zustände sind \emph{transient}, da man nie in einen Zustand zurückkehren kann (es geht immer nur vorwärts).
-            \item \textbf{Kette D:} Alle Zustände sind \emph{null-rekurrent}, da man zwar mit Wahrscheinlichkeit 1 zurückkehrt, aber die erwartete Rückkehrzeit unendlich ist.
-        \end{enumerate}
-    \end{myanswer}
-\end{mychallenge}
-
-\begin{mychallenge}[Ergodizität]
-    Welche Bedingungen müssen erfüllt sein, damit eine Markov-Kette ergodisch ist?
-
-    \begin{myanswer}
-        Alle Zustände müssen positiv rekurrent und aperiodisch sein.
-    \end{myanswer}
-\end{mychallenge}
-
 \section{Stationäre Verteilung}
 
 Bei vielen Markov-Ketten interessiert uns besonders das Langzeitverhalten: Gibt es eine stabile Wahrscheinlichkeitsverteilung, die sich nach vielen Schritten einstellt?
@@ -515,7 +403,7 @@ Das bedeutet: Wenn die Kette die Verteilung $\pi$ erreicht hat, bleibt diese Ver
 
 Die stationäre Verteilung kann durch Lösen des linearen Gleichungssystems $\pi = \pi \cdot P$ zusammen mit der Normierungsbedingung $\sum_i \pi_i = 1$ bestimmt werden.
 
-Für endliche, irreduzible und aperiodische Markov-Ketten gilt der \textbf{Ergodensatz}: Es existiert genau eine stationäre Verteilung, und die Verteilung nach $n$ Schritten konvergiert gegen diese stationäre Verteilung, unabhängig vom Anfangszustand:
+Für endliche, irreduzible und aperiodische Markov-Ketten (s. \cref{app:markov-properties}) gilt der \textbf{Ergodensatz}: Es existiert genau eine stationäre Verteilung, und die Verteilung nach $n$ Schritten konvergiert gegen diese stationäre Verteilung, unabhängig vom Anfangszustand:
 \[
     \lim_{n\to\infty} \pi^{(0)} \cdot P^n = \pi
 \]
@@ -611,6 +499,71 @@ Das bedeutet: Langfristig ist es an zwei von drei Tagen sonnig und an einem von 
         Das bedeutet, dass der Schüler langfristig beide Apps gleich häufig nutzt, unabhängig davon, mit welcher App er startet.
     \end{myanswer}
 \end{myexercise}
+
+\section{Zufallssimulation einer Markov-Kette}
+
+Markov-Ketten lassen sich nicht nur rechnerisch mit Matrizen analysieren, sondern auch durch Zufallssimulation experimentell untersuchen. Dabei wird der Ablauf der Kette Schritt für Schritt mit Hilfe von Zufallszahlen simuliert. So kann man zum Beispiel typische Pfade, Häufigkeiten der Zustände oder das Langzeitverhalten beobachten.
+
+\subsection{Ablauf einer Simulation}
+
+Um eine Markov-Kette zu simulieren, gehen Sie wie folgt vor:
+\begin{enumerate}
+    \item Wählen Sie einen beliebigen Startzustand und erstellen Sie den dazugehörigen Startvektor.
+    \item Erzeugen Sie für jeden Zeitschritt eine Zufallszahl zwischen 0 und 1.
+    \item Wechseln Sie gemäss der Übergangswahrscheinlichkeiten in den nächsten Zustand.
+    \item Wiederholen Sie die Schritte, um einen Pfad der Kette zu erzeugen.
+\end{enumerate}
+
+\subsection{Beispiel: Wettermodell}
+
+Angenommen, wir simulieren das Wettermodell aus dem Kapitelanfang mit den Zuständen \emph{sonnig} und \emph{regnerisch} und folgender Übergangsmatrix:
+\[
+    P =
+    \begin{pmatrix}
+        0{,}8 & 0{,}2 \\
+        0{,}4 & 0{,}6 \\
+    \end{pmatrix}
+\]
+Wir starten z.\,B. mit \emph{regnerisch}. Für jeden Tag ziehen wir eine Zufallszahl $z$:
+\begin{itemize}
+    \item Ist es heute regnerisch: $z < 0{,}4$ $\rightarrow$ morgen sonnig, sonst regnerisch.
+    \item Ist es heute sonnig: $z < 0{,}8$ $\rightarrow$ morgen sonnig, sonst regnerisch.
+\end{itemize}
+
+\subsection{Python-Code zur Simulation}
+
+Mit Python lässt sich eine solche Simulation einfach umsetzen:
+
+\begin{lstlisting}[language=Python, caption={Simulation einer Markov-Kette (Wettermodell)}]
+import random
+
+states = ["Sonne", "Regen"]
+P_dict = {
+    "Sonne": [0.8, 0.2],
+    "Regen": [0.4, 0.6]
+}
+
+current_state = "Sonne"
+history = [current_state]
+
+for _ in range(20):
+    # Zufälligen Zustand wählen, gewichtet mit den aktuellen Wahrscheinlichkeiten
+    next_state = random.choices(states, weights=P_dict[current_state])[0]
+    history.append(next_state)
+    current_state = next_state
+
+print(history)
+\end{lstlisting}
+
+\subsection{Auswertung}
+
+Durch mehrfache Simulation kann man empirisch die Häufigkeiten der Zustände bestimmen und mit der theoretischen stationären Verteilung vergleichen. So lässt sich das Langzeitverhalten der Markov-Kette anschaulich nachvollziehen.
+
+\begin{myexercise}
+    Simulieren Sie das Wettermodell 1000 Schritte lang und bestimmen Sie den Anteil der sonnigen Tage. Vergleichen Sie das Ergebnis mit der stationären Verteilung.
+\end{myexercise}
+
+
 \section{Grenzen von Markov-Ketten}
 
 Markov-Ketten sind ein mächtiges Werkzeug zur Modellierung stochastischer Prozesse, aber sie haben auch klare Grenzen:
@@ -646,29 +599,3 @@ In solchen Fällen sind erweiterte Modelle wie \emph{höherer Ordnung} Markov-Ke
 
 
 \end{todolist}
-
-
-\appendix
-\chapter{Formelle Definition von Markov-Ketten}\label{ch:markov-formal}
-
-Formal definieren wir eine Markov-Kette über einen diskreten Zustandsraum $S$ und eine Übergangsmatrix $P$.
-
-\begin{mydefinition}[Markov-Kette]
-Eine \textbf{Markov-Kette} ist ein stochastischer Prozess $\{X_n : n \in \mathbb{N}_0\}$ mit Werten in einem abzählbaren Zustandsraum $S$, der die Markov-Eigenschaft erfüllt:
-\[
-    P(X_{n+1} = j | X_n = i, X_{n-1} = i_{n-1}, \ldots, X_0 = i_0) = P(X_{n+1} = j | X_n = i)
-\]
-
-Die Wahrscheinlichkeit $p_{ij} = P(X_{n+1} = j | X_n = i)$ bezeichnet die Übergangswahrscheinlichkeit von Zustand $i$ zu Zustand $j$. Die Matrix $P = (p_{ij})_{i,j \in S}$ heisst \textbf{Übergangsmatrix} der Markov-Kette.
-
-Eine Markov-Kette heisst \textbf{homogen}, wenn die Übergangswahrscheinlichkeiten nicht vom Zeitpunkt $n$ abhängen, sondern nur von den beteiligten Zuständen $i$ und $j$.
-\end{mydefinition}
-
-Der Zustandsvektor $\pi^{(n)} = (\pi_1^{(n)}, \pi_2^{(n)}, \ldots)$ gibt die Wahrscheinlichkeitsverteilung der Zustände zum Zeitpunkt $n$ an, wobei $\pi_i^{(n)} = P(X_n = i)$. Der Anfangszustand wird durch den Vektor $\pi^{(0)}$ beschrieben.
-
-Die zeitliche Entwicklung einer Markov-Kette lässt sich durch wiederholte Multiplikation mit der Übergangsmatrix $P$ berechnen:
-\[
-    \pi^{(n+1)} = \pi^{(n)} \cdot P
-\]
-
-Das bedeutet, dass die Verteilung nach $n$ Schritten durch $\pi^{(n)} = \pi^{(0)} \cdot P^n$ gegeben ist.
