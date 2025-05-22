@@ -3,9 +3,10 @@
 
 Viele Vorgänge in unserem Alltag lassen sich als Abfolge von Zuständen beschreiben: Das Wetter ändert sich von Tag zu Tag, Menschen wechseln zwischen verschiedenen Apps auf ihrem Smartphone oder ein Zug ist mal pünktlich, mal verspätet. Dabei interessiert uns oft, wie wahrscheinlich der nächste Zustand ist. Hier setzen \textbf{Markov-Ketten} an. Diese können genutzt werden, um Kategorien (z.B. Wetterzustände, App-Nutzung) in einem zeitlichen Verlauf zu modellieren und Vorhersagen zu treffen.
 
-Eine Markov-Kette ist ein mathematisches Modell zur Beschreibung solcher Prozesse. Ihr zentrales Merkmal ist die sogenannte \emph{Markov-Eigenschaft}: Der nächste Zustand hängt nur vom aktuellen Zustand ab – nicht davon, wie man in diesen Zustand gekommen ist. Das macht Markov-Ketten zu einem besonders einfachen und sehr verbreiteten Werkzeug.
+Eine Markov-Kette ist ein mathematisches Modell zur Beschreibung solcher Prozesse. Ihr zentrales Merkmal ist die sogenannte \emph{Markov-Eigenschaft}: Der nächste Zustand hängt nur vom aktuellen Zustand ab – nicht davon, wie man in diesen Zustand gekommen ist. Das macht Markov-Ketten zu einem besonders einfachen und sehr verbreiteten Werkzeug. Die formelle Definition von Markov-Ketten ist in \cref{ch:markov-formal} zu finden.
 
 Das Prinzip von Markov-Ketten lässt sich gut am Beispiel des Wetters illustrieren. Wenn es heute sonnig ist, so können Sie mit einer gewissen Wahrscheinlichkeit abschätzen, wie das Wetter morgen sein wird – zum Beispiel wieder sonnig, wolkig oder regnerisch. Die genaue Wahrscheinlichkeit hängt nur vom heutigen Wetter ab, nicht von den Wetterverhältnissen der letzten Tage.
+
 
 \begin{myexercise}
     Entscheiden Sie für jede der folgenden Situationen, ob die Markov-Eigenschaft erfüllt ist. Begründen Sie Ihre Antwort jeweils kurz.
@@ -36,17 +37,20 @@ Stellen Sie sich vor, das Wetter kann nur zwei Zustände annehmen: \emph{sonnig}
     \item Ist es heute sonnig, so ist die Wahrscheinlichkeit, dass es morgen wieder sonnig ist, $0{,}8$; die Wahrscheinlichkeit für Regen beträgt $0{,}2$.
     \item Ist es heute regnerisch, so ist die Wahrscheinlichkeit, dass es morgen wieder regnet, $0{,}6$; die Wahrscheinlichkeit für Sonne beträgt $0{,}4$.
 \end{itemize}
-Diese Wahrscheinlichkeiten lassen sich in einer sogenannten \emph{Übergangsmatrix} darstellen:
-\[
-    P =
-    \begin{tabular}{c||c|c}
-                   & sonnig & regnerisch \\
-        \\\midrule\midrule
-        sonnig     & 0{,}8  & 0{,}2      \\\midrule
-        regnerisch & 0{,}4  & 0{,}6      \\
+Diese Wahrscheinlichkeiten lassen sich in einer sogenannten \emph{Übergangsmatrix} darstellen (mit Emojis, \emoji{sun} = sonnig, \emoji{umbrella} = regnerisch):
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c c|c|c}
+                                                      &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
+                                                      &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
+        \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0{,}8                             & 0{,}2            \\\cmidrule{2-4}
+                                                      & \emoji{umbrella} & 0{,}4                             & 0{,}6            \\
     \end{tabular}
-\]
-Die Zeilen entsprechen dem heutigen Zustand (Sonne, Regen), die Spalten dem morgigen Zustand. Häufig wird die Übergangsmatrix ohne Zeilen- und Spaltenbeschriftung dargestellt:
+\end{table}
+
+Die Zeilen entsprechen dem heutigen Zustand (\emoji{sun}, \emoji{umbrella}), die Spalten dem morgigen Zustand. Häufig wird die Übergangsmatrix ohne Zeilen- und Spaltenbeschriftung dargestellt:
 
 \[
     P =
@@ -56,12 +60,28 @@ Die Zeilen entsprechen dem heutigen Zustand (Sonne, Regen), die Spalten dem morg
     \end{pmatrix}
 \]
 
-Um zu Berechnen, wie wahrscheinlich es ist, dass es in zwei Tagen sonnig ist, wenn es heute regnerisch ist, multiplizieren wir die Übergangsmatrix mit sich selbst. Zur Erinnerung: Eine Matrixmultiplikation funktioniert wie folgt:
+Um zu berechnen, wie wahrscheinlich es ist, dass es in zwei Tagen sonnig ist, wenn es heute regnerisch ist, erstellen wir zunächst einen \textbf{Startvektor} $\pi_0$, der den heutigen Zustand (also den Zustand $\pi$ am Tag 0) beschreibt. In diesem Fall ist der Startvektor (mit Emojis):
+
+[
+\begin{aligned}
+    \pi_0 =
+     & \begin{pmatrix}
+           0 & 1
+       \end{pmatrix}                                                   \\
+     & \begin{matrix}
+           \;\; \Uparrow & \Uparrow
+       \end{matrix}                                         \\
+     & \begin{matrix}
+           \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
+       \end{matrix}
+\end{aligned}
+\]
+
+Nun multiplizieren wir den Startvektor $\pi_0$ mit der Übergangsmatrix $P$, um $\pi_1$, also den Zustand nach einem Tag, zu berechnen. Dabei verwenden wir die Matrixmultiplikation. Die Matrixmultiplikation ist definiert als:
 
 \[
     \begin{pmatrix}
         a & b \\
-        c & d \\
     \end{pmatrix}
     \cdot
     \begin{pmatrix}
@@ -71,72 +91,107 @@ Um zu Berechnen, wie wahrscheinlich es ist, dass es in zwei Tagen sonnig ist, we
     =
     \begin{pmatrix}
         a \cdot e + b \cdot g & a \cdot f + b \cdot h \\
-        c \cdot e + d \cdot g & c \cdot f + d \cdot h \\
     \end{pmatrix}
 \]
-Wir berechnen also $P^2 = P \cdot P$:
+Wir berechnen nun also $\pi_1$:
 \[
-    \begin{aligned}
-        P^2 & =
-        \begin{pmatrix}
-            0{,}8                    & 0{,}2                    \\
-            \colorbox{yellow}{0{,}4} & \colorbox{yellow}{0{,}6} \\
-        \end{pmatrix}
-        \cdot
-        \begin{pmatrix}
-            \colorbox{yellow}{0{,}8} & 0{,}2 \\
-            \colorbox{yellow}{0{,}4} & 0{,}6 \\
-        \end{pmatrix}                                                                                                                                                 \\
-            & =
-        \begin{pmatrix}
-            0{,}8 \cdot 0{,}8 + 0{,}2 \cdot 0{,}4                      & 0{,}8 \cdot 0{,}2 + 0{,}2 \cdot 0{,}6 \\
-            \colorbox{yellow}{$0{,}4 \cdot 0{,}8 + 0{,}6 \cdot 0{,}4$} & 0{,}4 \cdot 0{,}2 + 0{,}6 \cdot 0{,}6 \\
-        \end{pmatrix} \\
-            & =
-        \begin{pmatrix}
-            0{,}64                    & 0{,}36 \\
-            \colorbox{yellow}{0{,}36} & 0{,}64 \\
-        \end{pmatrix}
-    \end{aligned}
-\]
-Die Einträge in der Matrix $P^2$ geben die Wahrscheinlichkeiten für die Zustände nach zwei Tagen an. Die Wahrscheinlichkeit, dass es in zwei Tagen sonnig ist, beträgt also $0{,}36$.
-\end{myexample}
-
-\begin{myexample}[App-Nutzung]
-
-Ein Schüler nutzt auf seinem Smartphone entweder WhatsApp (W) oder Instagram (I). Nach jeder Nutzung entscheidet er sich mit einer Wahrscheinlichkeit von $0{,}7$ wieder für dieselbe App und mit $0{,}3$ für die andere. Die Übergangsmatrix lautet:
-\[
-    P =
-    \begin{tabular}{c||c|c}
-                  & WhatsApp & Instagram \\
-        \midrule\midrule
-        WhatsApp  & 0{,}7    & 0{,}3     \\
-        \midrule
-        Instagram & 0{,}3    & 0{,}7     \\
-    \end{tabular}
-\]
-Berechnen Sie die Wahrscheinlichkeit, dass der Schüler nach zwei Nutzungen bei Instagram landet, wenn er mit WhatsApp startet. Dazu multiplizieren Sie die Übergangsmatrix mit sich selbst:
-\[
-    P^2 = P \cdot P =
+    \pi_1 = \pi_0 \cdot P =
     \begin{pmatrix}
-        0{,}7 & 0{,}3 \\
-        0{,}3 & 0{,}7 \\
+        0 & 1 \\
     \end{pmatrix}
     \cdot
     \begin{pmatrix}
-        0{,}7 & 0{,}3 \\
-        0{,}3 & 0{,}7 \\
+        0{,}8 & 0{,}2 \\
+        0{,}4 & 0{,}6 \\
     \end{pmatrix}
     =
     \begin{pmatrix}
-        0{,}58 & 0{,}42 \\
-        0{,}42 & 0{,}58 \\
+        0{,}4 & 0{,}6 \\
     \end{pmatrix}
 \]
-Die Einträge in der Matrix $P^2$ geben die Wahrscheinlichkeiten für die Zustände nach zwei Nutzungen an. Die Wahrscheinlichkeit, dass der Schüler nach zwei Nutzungen bei Instagram landet, beträgt also $0{,}42$.
 
-Markov-Ketten werden an vielen Orten genutzt, zum Beispiel in der Wettervorhersage, in der Finanzmathematik oder in der Informatik. Sie sind ein wichtiges Werkzeug zur Modellierung und Analyse von stochastischen Prozessen.
+Die Einträge im Vektor $\pi_1$ geben die Wahrscheinlichkeiten für die Zustände nach einem Tag an. Die Wahrscheinlichkeit, dass es morgen sonnig ist, beträgt also $0{,}4$. Um die Wahrscheinlichkeit zu berechnen, dass es in zwei Tagen sonnig ist, multiplizieren wir den Zustand nach einem Tag erneut mit der Übergangsmatrix:
+\[
+    \pi_2 = \pi_1 \cdot P =
+    \begin{pmatrix}
+        0{,}4 & 0{,}6 \\
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+        0{,}8 & 0{,}2 \\
+        0{,}4 & 0{,}6 \\
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        0{,}56 & 0{,}44 \\
+    \end{pmatrix}
+\]
+Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zustände nach zwei Tagen an. Die Wahrscheinlichkeit, dass es in zwei Tagen sonnig ist, beträgt also $0{,}56$.
 \end{myexample}
+
+\begin{myexercise}[App-Nutzung]
+
+    Ein Schüler nutzt auf seinem Smartphone entweder WhatsApp (W) oder Instagram (I). Nach jeder Nutzung entscheidet er sich mit einer Wahrscheinlichkeit von $0{,}7$ wieder für dieselbe App und mit $0{,}3$ für die andere. Die Übergangsmatrix lautet:
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c c|c|c}
+                                                          &   & \multicolumn{2}{c}{\textbf{Nach}}         \\
+                                                          &   & W                                 & I     \\\midrule\midrule
+            \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & W & 0{,}7                             & 0{,}3 \\\cmidrule{2-4}
+                                                          & I & 0{,}3                             & 0{,}7 \\
+        \end{tabular}
+    \end{table}
+
+    Wie gross ist die Wahrscheinlichkeit, dass der Schüler nach zwei Nutzungen bei Instagram landet, wenn er mit WhatsApp startet? Berechnen Sie die Lösung mit Hilfe von Matrizen.
+
+    \begin{myanswer}
+        Wir definieren den Startvektor $\pi_0$:
+        \[
+            \pi_0 =
+            \begin{pmatrix}
+                1 \\
+                0 \\
+            \end{pmatrix}
+        \]
+
+        Zuerst berechnen wir den Zustand nach einer Nutzung:
+        \[
+            \pi_1 = \pi_0 \cdot P =
+            \begin{pmatrix}
+                1 & 0 \\
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0{,}7 & 0{,}3 \\
+                0{,}3 & 0{,}7 \\
+            \end{pmatrix}
+            =
+            \begin{pmatrix}
+                0{,}7 & 0{,}3 \\
+            \end{pmatrix}
+        \]
+
+        Dann berechnen wir den Zustand nach zwei Nutzungen:
+        \[
+            \pi_2 = \pi_1 \cdot P =
+            \begin{pmatrix}
+                0{,}7 & 0{,}3 \\
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0{,}7 & 0{,}3 \\
+                0{,}3 & 0{,}7 \\
+            \end{pmatrix}
+            =
+            \begin{pmatrix}
+                0{,}58 & 0{,}42 \\
+            \end{pmatrix}
+        \]
+
+        Die Wahrscheinlichkeit, dass der Schüler nach zwei Nutzungen bei Instagram landet, beträgt also $0{,}42$.
+    \end{myanswer}
+\end{myexercise}
 
 \begin{myexercise}[Pendlerverhalten]
     Eine Pendlerin fährt jeden Morgen entweder mit dem Fahrrad oder mit dem Bus zur Arbeit. Die Übergangswahrscheinlichkeiten sind:
@@ -144,54 +199,65 @@ Markov-Ketten werden an vielen Orten genutzt, zum Beispiel in der Wettervorhersa
         \item Nach einer Fahrt mit dem Fahrrad nimmt sie am nächsten Tag mit Wahrscheinlichkeit $0{,}9$ wieder das Fahrrad und mit $0{,}1$ den Bus.
         \item Nach einer Busfahrt nimmt sie am nächsten Tag mit Wahrscheinlichkeit $0{,}6$ wieder den Bus und mit $0{,}4$ das Fahrrad.
     \end{itemize}
-    Die Übergangsmatrix lautet:
-    \[
-        P =
-        \begin{tabular}{c||c|c}
-                    & Fahrrad & Bus   \\
-            \midrule\midrule
-            Fahrrad & 0{,}9   & 0{,}1 \\
-            \midrule
-            Bus     & 0{,}4   & 0{,}6 \\
-        \end{tabular}
-    \]
-    Wie gross ist die Wahrscheinlichkeit, dass die Pendlerin nach zwei Tagen mit dem Bus fährt, wenn sie heute mit dem Fahrrad fährt?
+    Wie sieht die Übergangsmatrix aus? Wie gross ist die Wahrscheinlichkeit, dass die Pendlerin nach zwei Tagen mit dem Bus fährt, wenn sie heute mit dem Fahrrad fährt?
     \begin{myanswer}
-        Wir berechnen $P^2$:
-
+        Die Übergangsmatrix lautet:
         \[
-            \begin{aligned}
-                P^2 =
-                \begin{pmatrix}
-                    0{,}9 & 0{,}1 \\
-                    0{,}4 & 0{,}6 \\
-                \end{pmatrix}
-                \cdot
-                \begin{pmatrix}
-                    0{,}9 & 0{,}1 \\
-                    0{,}4 & 0{,}6 \\
-                \end{pmatrix}
-                 & =
-                \begin{pmatrix}
-                    0{,}9 \cdot 0{,}9 + 0{,}1 \cdot 0{,}4 & 0{,}9 \cdot 0{,}1 + 0{,}1 \cdot 0{,}6 \\
-                    0{,}4 \cdot 0{,}9 + 0{,}6 \cdot 0{,}4 & 0{,}4 \cdot 0{,}1 + 0{,}6 \cdot 0{,}6 \\
-                \end{pmatrix} \\
-                 & =
-                \begin{tabular}{c||c|c}
-                            & Fahrrad & Bus                       \\
-                    \midrule\midrule
-                    Fahrrad & 0{,}85  & \colorbox{yellow}{0{,}15} \\
-                    \midrule
-                    Bus     & 0{,}60  & 0{,}40                    \\
-                \end{tabular}
-            \end{aligned}
+            P =
+            \begin{tabular}{c||c|c}
+                        & Fahrrad & Bus   \\
+                \midrule\midrule
+                Fahrrad & 0{,}9   & 0{,}1 \\
+                \midrule
+                Bus     & 0{,}4   & 0{,}6 \\
+            \end{tabular}
         \]
 
-        Die Wahrscheinlichkeit, dass die Pendlerin nach zwei Tagen mit dem Bus fährt, wenn sie heute mit dem Fahrrad fährt, ist $0{,}15$.
+        Der Startvektor ist:
+        \[
+            \pi_0 =
+            \begin{pmatrix}
+                1 \\
+                0 \\
+            \end{pmatrix}
+        \]
+        Wir berechnen den Zustand nach einem Tag:
+        \[
+            \pi_1 = \pi_0 \cdot P =
+            \begin{pmatrix}
+                1 & 0 \\
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0{,}9 & 0{,}1 \\
+                0{,}4 & 0{,}6 \\
+            \end{pmatrix}
+            =
+            \begin{pmatrix}
+                0{,}9 & 0{,}1 \\
+            \end{pmatrix}
+        \]
+        Dann berechnen wir den Zustand nach zwei Tagen:
+        \[
+            \pi_2 = \pi_1 \cdot P =
+            \begin{pmatrix}
+                0{,}9 & 0{,}1 \\
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0{,}9 & 0{,}1 \\
+                0{,}4 & 0{,}6 \\
+            \end{pmatrix}
+            =
+            \begin{pmatrix}
+                0{,}85 & 0{,}15 \\
+            \end{pmatrix}
+        \]
+        Die Wahrscheinlichkeit, dass die Pendlerin nach zwei Tagen mit dem Bus fährt, wenn sie heute mit dem Fahrrad fährt, beträgt also $0{,}15$.
     \end{myanswer}
 \end{myexercise}
 
-\begin{mychallenge}[Tourist in Thailand]
+\begin{mychallenge}[Tourist in Thailand]\label{ex:tourist}
     Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden geniessen: Samui und Phangan.
 
     Laut einer Umfrage gilt:
@@ -215,9 +281,9 @@ Markov-Ketten werden an vielen Orten genutzt, zum Beispiel in der Wettervorhersa
     Wie gross ist die Wahrscheinlichkeit (in Prozent), dass der Tourist nach 3 Tagen wieder auf dem Festland ist, wenn er am ersten Tag auf dem Festland startet?
 
     \begin{myanswer}
-        Wir berechnen die Verteilung nach 3 Tagen. Startvektor: $v_0 = (1, 0, 0)$.
+        Wir berechnen die Verteilung nach 3 Tagen. Startvektor: $\pi_0 = (1, 0, 0)$.
 
-        Berechne $v_3 = v_0 \cdot P^3$.
+        Berechne $\pi_3 = \pi_0 \cdot P^3$.
 
         Zuerst $P^2$:
         \[
@@ -269,6 +335,61 @@ Markov-Ketten werden an vielen Orten genutzt, zum Beispiel in der Wettervorhersa
     \end{myanswer}
 \end{mychallenge}
 
+\section{Visualisierung von Markov-Ketten}
+
+Markov-Ketten lassen sich gut als gerichtete Graphen visualisieren, wobei die Zustände als Knoten und die Übergangswahrscheinlichkeiten als beschriftete Kanten dargestellt werden.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=3cm, auto, thick]
+        \node[state] (S) {Sonnig};
+        \node[state] (R) [right of=S] {Regnerisch};
+
+        \path[->]
+        (S) edge[bend left] node {0,2} (R)
+        (R) edge[bend left] node {0,4} (S)
+        (S) edge[loop above] node {0,8} (S)
+        (R) edge[loop above] node {0,6} (R);
+    \end{tikzpicture}
+    \caption{Visualisierung des Wetter-Beispiels als gerichteter Graph}
+    \label{fig:markov-weather}
+\end{figure}
+
+Bei dieser Darstellung wird besonders deutlich, wie die Übergänge zwischen den Zuständen erfolgen. Die Kantenbeschriftungen geben die Übergangswahrscheinlichkeiten an, wobei die ausgehenden Kanten eines Knotens in der Summe immer 1 ergeben müssen.
+
+\begin{myexercise}[Visualisierung der Thailand-Markov-Kette]
+    Zeichnen Sie die Markov-Kette für das Thailand-Beispiel aus \cref{ex:tourist} als gerichteten Graphen. Die Zustände sind \emph{Festland}, \emph{Samui} und \emph{Phangan}.
+
+    \begin{myanswer}
+        Die Visualisierung als gerichteter Graph sieht wie folgt aus:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=2.5cm, auto, thick]
+                \node[state] (F) {Festland};
+                \node[state] (S) [right of=F] {Samui};
+                \node[state] (P) [right of=S] {Phangan};
+
+                \path[->]
+                (F) edge[bend left=5] node {0,7} (S)
+                (S) edge[bend left=5] node {0,1} (F)
+                (F) edge[bend left=70] node {0,2} (P)
+                (P) edge[bend left=40] node {0,4} (F)
+                (S) edge[bend left=5] node {0,5} (P)
+                (P) edge[bend left=5] node {0,3} (S)
+                (F) edge[loop left] node {0,1} (F)
+                (S) edge[loop above, min distance=10mm, in=60, out=120] node {0,4} (S)
+                (P) edge[loop right] node {0,3} (P);
+            \end{tikzpicture}
+            \caption{Visualisierung des Thailand-Beispiels}
+            \label{fig:markov-thailand}
+        \end{figure}
+    \end{myanswer}
+\end{myexercise}
+
+Für komplexere Markov-Ketten mit vielen Zuständen kann die graphische Darstellung schnell unübersichtlich werden. In solchen Fällen ist die Matrixdarstellung oft praktikabler.
+
+
 \section{Eigenschaften von Markov-Ketten}
 
 Markov-Ketten und ihre Zustände lassen sich durch verschiedene Eigenschaften charakterisieren. Diese Eigenschaften helfen, das Langzeitverhalten der Kette besser zu verstehen.
@@ -281,7 +402,7 @@ Markov-Ketten und ihre Zustände lassen sich durch verschiedene Eigenschaften ch
     \item \textbf{Ergodizität:} Ein Zustand ist \emph{ergodisch}, wenn er positiv rekurrent und aperiodisch ist. Eine Markov-Kette ist ergodisch, wenn alle ihre Zustände ergodisch sind.
 \end{itemize}
 
-\begin{myexercise}[Aperiodizität]
+\begin{mychallenge}[Aperiodizität]
     Gegeben sei die folgende Übergangsmatrix:
     \[
         P = \begin{pmatrix}
@@ -294,9 +415,9 @@ Markov-Ketten und ihre Zustände lassen sich durch verschiedene Eigenschaften ch
     \begin{myanswer}
         Von jedem Zustand kann man in einem Schritt in jeden anderen Zustand (auch in sich selbst) gelangen. Die Rückkehr zu einem Zustand ist also in jedem Schritt möglich, insbesondere in aufeinanderfolgenden Schritten. Daher ist die Periode $k=1$ und die Kette ist aperiodisch.
     \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
-\begin{myexercise}[Irreduzibilität]
+\begin{mychallenge}[Irreduzibilität]
     Gegeben sei die Übergangsmatrix:
     \[
         P = \begin{pmatrix}
@@ -309,9 +430,9 @@ Markov-Ketten und ihre Zustände lassen sich durch verschiedene Eigenschaften ch
     \begin{myanswer}
         Von jedem Zustand kann man in einem Schritt zum jeweils anderen Zustand gelangen, also ist die Kette irreduzibel. Die Rückkehr zu einem Zustand ist aber nur in einer geraden Anzahl von Schritten möglich (2, 4, 6, ...), daher ist die Periode $k=2$ und die Kette ist periodisch (nicht aperiodisch).
     \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
-\begin{myexercise}[Absorbierende Zustände]
+\begin{mychallenge}[Absorbierende Zustände]
     Gegeben sei die Übergangsmatrix:
     \[
         P = \begin{pmatrix}
@@ -324,9 +445,9 @@ Markov-Ketten und ihre Zustände lassen sich durch verschiedene Eigenschaften ch
     \begin{myanswer}
         Der Zustand 1 ist absorbierend, da $P_{1,1} = 1$. Das heisst, wenn die Kette einmal in Zustand 1 ist, bleibt sie dort.
     \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
-\begin{myexercise}[Rekurrenz und Transienz]
+\begin{mychallenge}[Rekurrenz und Transienz]
     Betrachten Sie die folgende Übergangsmatrix:
     \[
         P = \begin{pmatrix}
@@ -339,23 +460,23 @@ Markov-Ketten und ihre Zustände lassen sich durch verschiedene Eigenschaften ch
     \begin{myanswer}
         Von jedem Zustand kann man mit positiver Wahrscheinlichkeit in den anderen gelangen, also ist die Kette irreduzibel. Da es nur zwei Zustände gibt und man immer wieder zurückkehren kann, sind beide Zustände rekurrent.
     \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
-\begin{myexercise}[Typen von Rekurrenz und Transienz]
+\begin{mychallenge}[Typen von Rekurrenz und Transienz]
     Ordnen Sie für jeden Zustand der folgenden Markov-Ketten die Begriffe \emph{positiv rekurrent}, \emph{null-rekurrent} oder \emph{transient} zu. Begründen Sie Ihre Antwort jeweils kurz.
 
     \begin{enumerate}
         \item \textbf{Kette A:} \\
-        $P = \begin{pmatrix}
-            0{,}5 & 0{,}5 \\
-            0{,}5 & 0{,}5 \\
-        \end{pmatrix}$
+              $P = \begin{pmatrix}
+                      0{,}5 & 0{,}5 \\
+                      0{,}5 & 0{,}5 \\
+                  \end{pmatrix}$
 
         \item \textbf{Kette B:} \\
-        $P = \begin{pmatrix}
-            1 & 0 \\
-            0{,}3 & 0{,}7 \\
-        \end{pmatrix}$
+              $P = \begin{pmatrix}
+                      1     & 0     \\
+                      0{,}3 & 0{,}7 \\
+                  \end{pmatrix}$
 
         \item \textbf{Kette C:} (Zustände $1,2,3,\ldots$; von $i$ geht es immer mit Wahrscheinlichkeit $1$ zu $i+1$)
 
@@ -370,16 +491,126 @@ Markov-Ketten und ihre Zustände lassen sich durch verschiedene Eigenschaften ch
             \item \textbf{Kette D:} Alle Zustände sind \emph{null-rekurrent}, da man zwar mit Wahrscheinlichkeit 1 zurückkehrt, aber die erwartete Rückkehrzeit unendlich ist.
         \end{enumerate}
     \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
-\begin{myexercise}[Ergodizität]
+\begin{mychallenge}[Ergodizität]
     Welche Bedingungen müssen erfüllt sein, damit eine Markov-Kette ergodisch ist?
 
     \begin{myanswer}
         Alle Zustände müssen positiv rekurrent und aperiodisch sein.
     \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
+\section{Stationäre Verteilung}
+
+Bei vielen Markov-Ketten interessiert uns besonders das Langzeitverhalten: Gibt es eine stabile Wahrscheinlichkeitsverteilung, die sich nach vielen Schritten einstellt?
+
+\begin{mydefinition}[Stationäre Verteilung]
+Eine Wahrscheinlichkeitsverteilung $\pi = (\pi_1, \pi_2, \ldots)$ heisst \textbf{stationäre Verteilung} einer Markov-Kette mit Übergangsmatrix $P$, wenn gilt:
+\[
+    \pi = \pi \cdot P
+\]
+Das bedeutet: Wenn die Kette die Verteilung $\pi$ erreicht hat, bleibt diese Verteilung bei jedem weiteren Schritt unverändert.
+\end{mydefinition}
+
+Die stationäre Verteilung kann durch Lösen des linearen Gleichungssystems $\pi = \pi \cdot P$ zusammen mit der Normierungsbedingung $\sum_i \pi_i = 1$ bestimmt werden.
+
+Für endliche, irreduzible und aperiodische Markov-Ketten gilt der \textbf{Ergodensatz}: Es existiert genau eine stationäre Verteilung, und die Verteilung nach $n$ Schritten konvergiert gegen diese stationäre Verteilung, unabhängig vom Anfangszustand:
+\[
+    \lim_{n\to\infty} \pi^{(0)} \cdot P^n = \pi
+\]
+
+\begin{myexample}[Stationäre Verteilung beim Wetterbeispiel]
+Betrachten wir nochmals die Übergangsmatrix aus dem Wetterbeispiel:
+\[
+    P =
+    \begin{pmatrix}
+        0{,}8 & 0{,}2 \\
+        0{,}4 & 0{,}6 \\
+    \end{pmatrix}
+\]
+Um die stationäre Verteilung $\pi = (\pi_1, \pi_2)$ zu finden, müssen wir das Gleichungssystem $\pi = \pi \cdot P$ lösen:
+\[
+    \begin{aligned}
+        (\pi_1, \pi_2) & = (\pi_1, \pi_2) \cdot
+        \begin{pmatrix}
+            0{,}8 & 0{,}2 \\
+            0{,}4 & 0{,}6 \\
+        \end{pmatrix}                                                        \\
+                       & = (0{,}8\pi_1 + 0{,}4\pi_2, 0{,}2\pi_1 + 0{,}6\pi_2)
+    \end{aligned}
+\]
+
+Dies führt zu den Gleichungen:
+\begin{align}
+    \pi_1 & = 0{,}8\pi_1 + 0{,}4\pi_2 \\
+    \pi_2 & = 0{,}2\pi_1 + 0{,}6\pi_2
+\end{align}
+
+Aus der ersten Gleichung erhalten wir:
+\begin{align}
+    \pi_1 - 0{,}8\pi_1 & = 0{,}4\pi_2 \\
+    0{,}2\pi_1         & = 0{,}4\pi_2 \\
+    \pi_1              & = 2\pi_2
+\end{align}
+
+Mit der Normierungsbedingung $\pi_1 + \pi_2 = 1$ ergibt sich:
+\begin{align}
+    2\pi_2 + \pi_2 & = 1           \\
+    3\pi_2         & = 1           \\
+    \pi_2          & = \frac{1}{3}
+\end{align}
+
+Damit ist $\pi_1 = \frac{2}{3}$. Die stationäre Verteilung ist also $\pi = (\frac{2}{3}, \frac{1}{3})$.
+
+Das bedeutet: Langfristig ist es an zwei von drei Tagen sonnig und an einem von drei Tagen regnerisch, unabhängig davon, mit welchem Wetter wir starten.
+\end{myexample}
+
+\begin{myexercise}
+    Bestimmen Sie die stationäre Verteilung für die Markov-Kette mit der Übergangsmatrix
+    \[
+        P = \begin{pmatrix}
+            0{,}7 & 0{,}3 \\
+            0{,}3 & 0{,}7 \\
+        \end{pmatrix}
+    \]
+    aus dem App-Nutzungs-Beispiel.
+
+    \begin{myanswer}
+        Wir lösen das Gleichungssystem $\pi = \pi \cdot P$:
+        \begin{align}
+            (\pi_1, \pi_2) & = (\pi_1, \pi_2) \cdot
+            \begin{pmatrix}
+                0{,}7 & 0{,}3 \\
+                0{,}3 & 0{,}7 \\
+            \end{pmatrix}
+        \end{align}
+
+        Dies führt zu:
+        \begin{align}
+            \pi_1 & = 0{,}7\pi_1 + 0{,}3\pi_2 \\
+            \pi_2 & = 0{,}3\pi_1 + 0{,}7\pi_2
+        \end{align}
+
+        Aus der ersten Gleichung:
+        \begin{align}
+            \pi_1 - 0{,}7\pi_1 & = 0{,}3\pi_2 \\
+            0{,}3\pi_1         & = 0{,}3\pi_2 \\
+            \pi_1              & = \pi_2
+        \end{align}
+
+        Mit $\pi_1 + \pi_2 = 1$ ergibt sich:
+        \begin{align}
+            \pi_1 + \pi_1 & = 1     \\
+            2\pi_1        & = 1     \\
+            \pi_1         & = 0{,}5
+        \end{align}
+
+        Also ist $\pi_2 = 0{,}5$ und die stationäre Verteilung ist $\pi = (0{,}5, 0{,}5)$.
+
+        Das bedeutet, dass der Schüler langfristig beide Apps gleich häufig nutzt, unabhängig davon, mit welcher App er startet.
+    \end{myanswer}
+\end{myexercise}
 \section{Grenzen von Markov-Ketten}
 
 Markov-Ketten sind ein mächtiges Werkzeug zur Modellierung stochastischer Prozesse, aber sie haben auch klare Grenzen:
@@ -413,4 +644,31 @@ In solchen Fällen sind erweiterte Modelle wie \emph{höherer Ordnung} Markov-Ke
 
     \item Ich kann die Aussagekraft und Grenzen von stochastischen Modellen in einem konkreten Kontext reflektieren.
 
+
 \end{todolist}
+
+
+\appendix
+\chapter{Formelle Definition von Markov-Ketten}\label{ch:markov-formal}
+
+Formal definieren wir eine Markov-Kette über einen diskreten Zustandsraum $S$ und eine Übergangsmatrix $P$.
+
+\begin{mydefinition}[Markov-Kette]
+Eine \textbf{Markov-Kette} ist ein stochastischer Prozess $\{X_n : n \in \mathbb{N}_0\}$ mit Werten in einem abzählbaren Zustandsraum $S$, der die Markov-Eigenschaft erfüllt:
+\[
+    P(X_{n+1} = j | X_n = i, X_{n-1} = i_{n-1}, \ldots, X_0 = i_0) = P(X_{n+1} = j | X_n = i)
+\]
+
+Die Wahrscheinlichkeit $p_{ij} = P(X_{n+1} = j | X_n = i)$ bezeichnet die Übergangswahrscheinlichkeit von Zustand $i$ zu Zustand $j$. Die Matrix $P = (p_{ij})_{i,j \in S}$ heisst \textbf{Übergangsmatrix} der Markov-Kette.
+
+Eine Markov-Kette heisst \textbf{homogen}, wenn die Übergangswahrscheinlichkeiten nicht vom Zeitpunkt $n$ abhängen, sondern nur von den beteiligten Zuständen $i$ und $j$.
+\end{mydefinition}
+
+Der Zustandsvektor $\pi^{(n)} = (\pi_1^{(n)}, \pi_2^{(n)}, \ldots)$ gibt die Wahrscheinlichkeitsverteilung der Zustände zum Zeitpunkt $n$ an, wobei $\pi_i^{(n)} = P(X_n = i)$. Der Anfangszustand wird durch den Vektor $\pi^{(0)}$ beschrieben.
+
+Die zeitliche Entwicklung einer Markov-Kette lässt sich durch wiederholte Multiplikation mit der Übergangsmatrix $P$ berechnen:
+\[
+    \pi^{(n+1)} = \pi^{(n)} \cdot P
+\]
+
+Das bedeutet, dass die Verteilung nach $n$ Schritten durch $\pi^{(n)} = \pi^{(0)} \cdot P^n$ gegeben ist.

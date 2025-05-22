@@ -1,5 +1,355 @@
+\lstset{style=python}
 \chapter{Lineare Regression}
 
-\section{Einleitung}
-Die lineare Regression ist ein statistisches Verfahren, das verwendet wird, um den Zusammenhang zwischen einer abhängigen Variablen und einer oder mehreren unabhängigen Variablen zu modellieren. Sie wird häufig in der Datenanalyse und im maschinellen Lernen eingesetzt, um Vorhersagen zu treffen und Muster in Daten zu erkennen.
+Eine häufige Aufgabe im Bereich der künstlichen Intelligenz besteht darin, für unbekannte Datenpunkte Vorhersagen zu treffen. In diesem Kapitel beschäftigen wir uns mit der linearen Regression, einer der grundlegendsten und am häufigsten verwendeten Methoden zur Vorhersage von Werten.
 
+\section{Grundlagen der linearen Regression}
+
+\begin{mydefinition}[Lineare Regression]
+\textbf{Lineare Regression} ist ein Verfahren zur Vorhersage einer abhängigen Variablen auf Basis einer unabhängigen Variablen. Dabei wird eine Gerade (lineare Funktion) durch die Datenpunkte gelegt, die den besten Fit (die beste \enquote{Passung}) zu den Datenpunkten hat. Diese Gerade wird als Regressionsgerade bezeichnet.
+
+Die Regressionsgerade hat die Form: $y = mx + q$, wobei:
+\begin{itemize}
+    \item $y$ die abhängige Variable ist (die Variable, die wir vorhersagen wollen)
+    \item $x$ die unabhängige Variable ist (die Variable, die wir zur Vorhersage verwenden)
+    \item $m$ die Steigung der Geraden ist
+    \item $q$ der y-Achsenabschnitt ist (der Wert von $y$, wenn $x = 0$)
+\end{itemize}
+
+Der Begriff \textit{Regression} wurde erstmals vom britischen Statistiker Francis Galton verwendet, der die \enquote{Rückkehr zum Mittelwert} (engl. \enquote{regression toward the mean}) beschrieb. In der modernen Statistik bezieht sich der Begriff auf verschiedene Methoden zur Modellierung von Beziehungen zwischen Variablen.
+\end{mydefinition}
+
+\cref{fig:schlafdauer_vs_notenschnitt} zeigt ein Beispiel für ein Streudiagramm, das den Zusammenhang zwischen Schlafdauer und Notenschnitt darstellt. Wir können beobachten, dass es einen positiven Zusammenhang zwischen diesen beiden Variablen gibt: Je mehr Schlaf, desto besser der Notenschnitt. Aber wie können wir diesen Zusammenhang nutzen, um Vorhersagen zu treffen?
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_notenschnitt"}
+    \caption{Schlafdauer und Notenschnitt}
+    \label{fig:schlafdauer_vs_notenschnitt}
+\end{figure}
+
+Beispielsweise könnten wir versuchen, folgende Frage zu beantworten: \textbf{Welche Note werde ich erreichen, wenn ich im Schnitt 8 Stunden pro Nacht schlafe?}
+
+\section{Unabhängige und abhängige Variablen}
+
+Bevor wir mit der linearen Regression beginnen, müssen wir zwischen unabhängigen und abhängigen Variablen unterscheiden:
+
+\begin{mydefinition}[Unabhängige und abhängige Variable]
+\begin{itemize}
+    \item Die \textbf{unabhängige Variable} (auch Prädiktor- oder Eingabevariable genannt) ist die Variable, die wir kontrollieren oder messen, um eine Vorhersage zu treffen. In unserem Beispiel ist die Schlafdauer die unabhängige Variable.
+    \item Die \textbf{abhängige Variable} (auch Zielvariable, Responsevariable oder Ausgabevariable genannt) ist die Variable, die wir vorhersagen wollen. In unserem Beispiel ist der Notenschnitt die abhängige Variable.
+\end{itemize}
+\end{mydefinition}
+
+In Streudiagrammen wird üblicherweise die unabhängige Variable auf der x-Achse und die abhängige Variable auf der y-Achse dargestellt.
+
+\begin{myexercise}
+    Für die folgenden Paare von Variablen, bestimmen Sie, welche Variable typischerweise die unabhängige und welche die abhängige Variable ist:
+    \begin{enumerate}
+        \item Lernzeit und Prüfungsergebnis
+        \item Körpergrösse und Gewicht
+        \item Anzahl der Trainingsstunden und sportliche Leistung
+        \item Temperatur und Eisverkäufe
+    \end{enumerate}
+    \begin{myanswer}
+        \begin{enumerate}
+            \item Unabhängige Variable: Lernzeit, Abhängige Variable: Prüfungsergebnis
+            \item Unabhängige Variable: Körpergrösse, Abhängige Variable: Gewicht
+            \item Unabhängige Variable: Anzahl der Trainingsstunden, Abhängige Variable: sportliche Leistung
+            \item Unabhängige Variable: Temperatur, Abhängige Variable: Eisverkäufe
+        \end{enumerate}
+    \end{myanswer}
+\end{myexercise}
+
+\section{Einfache lineare Regression}
+
+\subsection{Eine erste Näherung}
+
+Um einen ersten Eindruck zu bekommen, wie eine Regressionsgerade funktioniert, betrachten wir einen einfachen Ansatz: Wir verbinden den Datenpunkt mit der kleinsten x-Koordinate mit dem Datenpunkt mit der grössten x-Koordinate.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_notenschnitt_2p_reg.pdf"}
+    \caption{Einfache Regressionsgerade durch Verbinden des ersten und letzten Punktes}
+    \label{fig:simple_regression_line}
+\end{figure}
+
+Um diese Gerade zu bestimmen, benötigen wir ihre Steigung und ihren y-Achsenabschnitt:
+
+\begin{itemize}
+    \item Die Steigung $m$ berechnet sich aus: $m = \frac{y_2 - y_1}{x_2 - x_1}$, wobei $(x_1, y_1)$ und $(x_2, y_2)$ die beiden Punkte sind.
+    \item Der y-Achsenabschnitt $q$ berechnet sich aus: $q = y_1 - m \cdot x_1$
+\end{itemize}
+
+Mit dieser Geraden können wir nun Vorhersagen treffen: Für einen gegebenen x-Wert (z.B. 8 Stunden Schlaf) berechnen wir den entsprechenden y-Wert (den vorhergesagten Notenschnitt) mit der Formel $y = m \cdot x + q$.
+
+\begin{myexercise}
+    Gegeben seien die Punkte $(4, 3.5)$ und $(9, 5.2)$, die die Schlafdauer in Stunden und den Notenschnitt darstellen.
+    \begin{enumerate}
+        \item Berechnen Sie die Steigung $m$ und den y-Achsenabschnitt $q$ der Geraden durch diese Punkte.
+        \item Welchen Notenschnitt würde man bei 7 Stunden Schlaf erwarten?
+    \end{enumerate}
+    \begin{myanswer}
+        \begin{enumerate}
+            \item Steigung: $m = \frac{5.2 - 3.5}{9 - 4} = \frac{1.7}{5} = 0.34$\\
+                  y-Achsenabschnitt: $q = 3.5 - 0.34 \cdot 4 = 3.5 - 1.36 = 2.14$\\
+                  Die Geradengleichung lautet also: $y = 0.34x + 2.14$
+            \item Bei 7 Stunden Schlaf: $y = 0.34 \cdot 7 + 2.14 = 2.38 + 2.14 = 4.52$\\
+                  Man würde einen Notenschnitt von 4.52 erwarten.
+        \end{enumerate}
+    \end{myanswer}
+\end{myexercise}
+
+Diese Methode ist einfach, hat aber einen grossen Nachteil: Sie berücksichtigt nur zwei Datenpunkte und ignoriert alle anderen Datenpunkte. Dadurch kann sie sehr anfällig für Ausreisser sein.
+
+\subsection{Methode der kleinsten Quadrate}
+
+Eine bessere Methode zur Bestimmung der Regressionsgerade ist die \textbf{Methode der kleinsten Quadrate} (engl. \textit{Ordinary Least Squares}, OLS). Diese Methode wählt die Gerade so, dass die Summe der quadrierten Abweichungen zwischen den tatsächlichen y-Werten und den vorhergesagten y-Werten minimal ist.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_notenschnitt_3points.pdf"}
+    \caption{Darstellung der Residuen (Abweichungen) bei der linearen Regression}
+    \label{fig:residuals}
+\end{figure}
+
+Diese Abweichungen werden als \textbf{Residuen} bezeichnet. Das Ziel der Methode der kleinsten Quadrate ist es, die Summe der quadrierten Residuen zu minimieren:
+
+\[S = \sum_{i=1}^{n} (y_i - (mx_i + q))^2\]
+
+wobei $(x_i, y_i)$ die Datenpunkte sind und $n$ die Gesamtzahl der Datenpunkte.
+
+Um die Werte für $m$ und $q$ zu finden, die $S$ minimieren, setzen wir die partiellen Ableitungen von $S$ nach $m$ und $q$ gleich Null und lösen das resultierende Gleichungssystem. Dies führt zu den folgenden Formeln:
+
+\[m = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2}\]
+
+\[q = \frac{\sum y_i - m\sum x_i}{n}\]
+
+\begin{myexercise}
+    Betrachten Sie die folgenden Datenpunkte, die die Schlafdauer (in Stunden) und den Notenschnitt darstellen:
+    \begin{center}
+        \begin{tabular}{c||c|c|c|c|c}
+            \midrule\midrule
+            Schlafdauer (x) & 5 & 6 & 7 & 8 & 9 \\
+            \midrule
+            Notenschnitt (y) & 3.8 & 4.2 & 4.8 & 5.1 & 5.6 
+        \end{tabular}
+    \end{center}
+    
+    \begin{enumerate}
+        \item Berechnen Sie die Steigung $m$ und den y-Achsenabschnitt $q$ mit der Methode der kleinsten Quadrate.
+        \item Welchen Notenschnitt würde man bei 7.5 Stunden Schlaf erwarten?
+    \end{enumerate}
+    
+    \begin{myanswer}
+        \begin{enumerate}
+            \item Um die Werte für $m$ und $q$ zu berechnen, bestimmen wir zuerst die Summen:
+            
+            $n = 5$
+            
+            $\sum x_i = 5 + 6 + 7 + 8 + 9 = 35$
+            
+            $\sum y_i = 3.8 + 4.2 + 4.8 + 5.1 + 5.6 = 23.5$
+            
+            $\sum x_i y_i = 5 \cdot 3.8 + 6 \cdot 4.2 + 7 \cdot 4.8 + 8 \cdot 5.1 + 9 \cdot 5.6 = 19 + 25.2 + 33.6 + 40.8 + 50.4 = 169$
+            
+            $\sum x_i^2 = 5^2 + 6^2 + 7^2 + 8^2 + 9^2 = 25 + 36 + 49 + 64 + 81 = 255$
+            
+            Nun können wir $m$ berechnen:
+            $m = \frac{5 \cdot 169 - 35 \cdot 23.5}{5 \cdot 255 - 35^2} = \frac{845 - 822.5}{1275 - 1225} = \frac{22.5}{50} = 0.45$
+            
+            Und $q$:
+            $q = \frac{23.5 - 0.45 \cdot 35}{5} = \frac{23.5 - 15.75}{5} = \frac{7.75}{5} = 1.55$
+            
+            Die Regressionsgleichung lautet also: $y = 0.45x + 1.55$
+            
+            \item Bei 7.5 Stunden Schlaf: $y = 0.45 \cdot 7.5 + 1.55 = 3.375 + 1.55 = 4.925$
+            
+            Man würde einen Notenschnitt von 4.93 erwarten.
+        \end{enumerate}
+    \end{myanswer}
+\end{myexercise}
+
+\section{Implementierung mit Python}
+
+In der Praxis wird die lineare Regression oft mit statistischen Softwarepaketen oder Programmiersprachen wie Python implementiert. In Python gibt es mehrere Bibliotheken, die lineare Regressionen unterstützen, darunter \texttt{statsmodels} und \texttt{scikit-learn}.
+
+Hier ist ein Beispiel für die Implementierung einer linearen Regression mit \texttt{statsmodels}:
+
+\begin{lstlisting}
+import pandas as pd
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+# Daten erstellen
+data = {
+    'Schlafdauer': [5, 6, 7, 8, 9],
+    'Notenschnitt': [3.8, 4.2, 4.8, 5.1, 5.6]
+}
+df = pd.DataFrame(data)
+
+# Lineare Regression durchführen
+model = smf.ols(formula="Notenschnitt ~ Schlafdauer", data=df).fit()
+
+# Ergebnisse ausgeben
+print(model.params)
+
+# Visualisierung
+plt.scatter(df["Schlafdauer"], df["Notenschnitt"], label="Datenpunkte")
+x_values = [min(df["Schlafdauer"]), max(df["Schlafdauer"])]
+y_values = [model.params[1] * x + model.params[0] for x in x_values]
+plt.plot(x_values, y_values, color="red", label="Regressionsgerade")
+plt.xlabel("Schlafdauer (Stunden)")
+plt.ylabel("Notenschnitt")
+plt.legend()
+plt.title("Schlafdauer und Notenschnitt mit Regressionsgerade")
+plt.show()
+\end{lstlisting}
+
+Die Ergebnisse der Regression enthalten die Steigung (\texttt{Schlafdauer}) und den y-Achsenabschnitt (\texttt{Intercept}):
+
+\begin{lstlisting}[language=Python]
+Intercept      1.55
+Schlafdauer    0.45
+dtype: float64
+\end{lstlisting}
+
+\section{Qualität einer Regression}
+
+Wie gut passt eine Regressionsgerade zu den Daten? Um diese Frage zu beantworten, verwenden wir verschiedene Masse:
+
+\subsection{Residuen und Summe der quadrierten Residuen}
+
+Wie bereits erwähnt, sind Residuen die Abweichungen zwischen den tatsächlichen y-Werten und den durch die Regressionsgerade vorhergesagten y-Werten. Die Summe der quadrierten Residuen (auch als Residuenquadratsumme oder RSS bezeichnet) ist ein Mass für die Gesamtabweichung:
+
+\[RSS = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2\]
+
+wobei $\hat{y}_i = mx_i + q$ der vorhergesagte Wert für den i-ten Datenpunkt ist.
+
+Je kleiner die RSS, desto besser passt die Regressionsgerade zu den Daten.
+
+\section{Anwendungen und Grenzen der linearen Regression}
+
+\subsection{Anwendungen}
+
+Die lineare Regression hat vielfältige Anwendungen in verschiedenen Bereichen:
+
+\begin{itemize}
+    \item \textbf{Wirtschaft}: Vorhersage von Verkaufszahlen, Aktienkursen oder wirtschaftlichen Indikatoren
+    \item \textbf{Medizin}: Untersuchung des Zusammenhangs zwischen Risikofaktoren und Krankheiten
+    \item \textbf{Psychologie}: Analyse von Beziehungen zwischen psychologischen Variablen
+    \item \textbf{Maschinelles Lernen}: Grundlage für komplexere Vorhersagemodelle
+\end{itemize}
+
+\subsection{Grenzen und Voraussetzungen}
+
+Die lineare Regression hat jedoch auch Einschränkungen:
+
+\begin{itemize}
+    \item \textbf{Linearität}: Die Beziehung zwischen den Variablen muss annähernd linear sein.
+    \item \textbf{Unabhängigkeit}: Die Beobachtungen sollten unabhängig voneinander sein.
+    \item \textbf{Homoskedastizität}: Die Varianz der Residuen sollte konstant sein.
+    \item \textbf{Normalverteilung}: Die Residuen sollten normalverteilt sein.
+    \item \textbf{Keine Multikollinearität}: Bei multipler Regression sollten die unabhängigen Variablen nicht stark miteinander korrelieren.
+    \item \textbf{Korrelation ≠ Kausalität}: Eine starke Korrelation impliziert nicht notwendigerweise eine kausale Beziehung (wie im vorherigen Kapitel diskutiert).
+\end{itemize}
+
+\begin{myexercise}
+    Für jede der folgenden Situationen, entscheiden Sie, ob die lineare Regression ein geeignetes Modell ist. Begründen Sie Ihre Antwort.
+    \begin{enumerate}
+        \item Vorhersage des Hauswerts basierend auf der Wohnfläche
+        \item Vorhersage der Körpergrösse eines Kindes basierend auf seinem Alter (von 0 bis 18 Jahre)
+        \item Vorhersage der Windgeschwindigkeit basierend auf der Temperatur
+        \item Vorhersage des CO2-Ausstosses eines Autos basierend auf seiner Motorleistung
+    \end{enumerate}
+    \begin{myanswer}
+        \begin{enumerate}
+            \item \textbf{Geeignet}: Es gibt oft einen annähernd linearen Zusammenhang zwischen Wohnfläche und Hauswert, besonders innerhalb eines bestimmten Marktsegments.
+            
+            \item \textbf{Nicht geeignet}: Das Wachstum von Kindern folgt keiner linearen Funktion über den gesamten Altersbereich. Es gibt Wachstumsschübe, besonders während der Pubertät, die eine nichtlineare Beziehung schaffen.
+            
+            \item \textbf{Nicht geeignet}: Die Beziehung zwischen Temperatur und Windgeschwindigkeit ist komplex und nicht linear. Viele andere Faktoren beeinflussen die Windgeschwindigkeit.
+            
+            \item \textbf{Geeignet}: Es gibt oft eine annähernd lineare Beziehung zwischen Motorleistung und CO2-Ausstoss, besonders bei ähnlichen Fahrzeugtypen.
+        \end{enumerate}
+    \end{myanswer}
+\end{myexercise}
+
+\section{Lernziele}
+
+\begin{todolist}
+    \item Ich kann erklären, was lineare Regression ist und wofür sie verwendet wird.
+    \item Ich kann zwischen unabhängigen und abhängigen Variablen unterscheiden.
+    \item Ich kann die Regressionsgerade für einen Datensatz manuell berechnen.
+    \item Ich kann die Qualität einer Regression beurteilen.
+    \item Ich kann eine lineare Regression mit Python implementieren.
+    \item Ich kenne die Anwendungen und Grenzen der linearen Regression.
+\end{todolist}
+
+\section{Appendix: Herleitung der Methode der kleinsten Quadrate}
+
+\subsection{Definition der Zielfunktion}
+Das Ziel der linearen Regression besteht darin, die bestmögliche Gerade $y = mx + q$ zu finden, die die Summe der quadrierten Residuen zwischen den vorhergesagten Werten und den tatsächlichen Datenpunkten minimiert. Die Summe der quadrierten Abstände zwischen den Datenpunkten und der Geraden wird definiert als:
+$$
+S = \sum_{i=1}^n (y_i - (mx_i + q))^2
+$$
+
+\subsection{Partielle Ableitungen}
+Um $S$ zu minimieren, nehmen wir die partiellen Ableitungen bezüglich $m$ und $q$ und setzen diese gleich Null.
+
+\subsubsection{Partielle Ableitung nach $m$}
+$$
+\frac{\partial S}{\partial m} = \frac{\partial}{\partial m} \sum_{i=1}^n (y_i - mx_i - q)^2
+$$
+$$
+= \sum_{i=1}^n 2(y_i - mx_i - q)(-x_i)
+$$
+$$
+= -2 \sum_{i=1}^n x_i(y_i - mx_i - q)
+$$
+Auf Null setzen für die Minimierung:
+$$
+\sum x_iy_i - m\sum x_i^2 - q\sum x_i = 0
+$$
+$$
+\sum x_iy_i = m\sum x_i^2 + q\sum x_i \quad \text{(Gleichung 1)}
+$$
+
+\subsubsection{Partielle Ableitung nach $q$}
+$$
+\frac{\partial S}{\partial q} = \frac{\partial}{\partial q} \sum_{i=1}^n (y_i - mx_i - q)^2
+$$
+$$
+= \sum_{i=1}^n 2(y_i - mx_i - q)(-1)
+$$
+$$
+= -2 \sum_{i=1}^n (y_i - mx_i - q)
+$$
+Auf Null setzen für die Minimierung:
+$$
+\sum y_i - m\sum x_i - nq = 0
+$$
+$$
+\sum y_i = m\sum x_i + nq \quad \text{(Gleichung 2)}
+$$
+
+\subsection{Lösung der Gleichungen}
+Aus Gleichung 2:
+$$
+q = \frac{\sum y_i - m\sum x_i}{n} \quad \text{(Gleichung 3)}
+$$
+Einsetzen der Gleichung 3 in Gleichung 1:
+$$
+\sum x_iy_i = m\sum x_i^2 + \left(\frac{\sum y_i - m\sum x_i}{n}\right)\sum x_i
+$$
+$$
+\sum x_iy_i = m\sum x_i^2 + \frac{(\sum y_i)\sum x_i}{n} - \frac{m(\sum x_i)^2}{n}
+$$
+Auflösen nach $m$:
+$$
+m = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2}
+$$
+Bestimmen von $q$ über Einsetzen von $m$ in Gleichung 3:
+$$
+q = \frac{\sum y_i - m\sum x_i}{n}
+$$

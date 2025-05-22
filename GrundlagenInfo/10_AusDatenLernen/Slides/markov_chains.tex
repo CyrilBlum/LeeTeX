@@ -1,0 +1,417 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Daten Vorhersagen]{Daten Vorhersagen}
+
+\subtitle{Markov-Ketten}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl\inst{2} \and Naoki Peter \inst{1}}
+
+\institute[KZN] % (optional)
+{
+    \inst{1}%
+    Fachschaft Informatik\\
+    Kantonsschule Zürich-Nord
+    \and
+    \inst{2}%
+    Fachschaft Informatik\\
+    Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{\thelogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"GrundlagenInfo/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}{Themenübersicht}
+    \begin{enumerate}
+        \item[\faCheckSquare{}] Daten verstehen (analysieren und visualisieren)
+        \item[\faCheckSquare{}] Zahlen vorhersagen (lineare Regression)
+        \item[\faSquare] \textbf{Kategorien vorhersagen (Markov-Ketten)}
+    \end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Anwendungen von Markov-Ketten}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.25\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_chatGPT"}
+        \end{figure}
+        \begin{itemize}[<+->]
+            \item \textbf{Textgenerierung} in ChatGPT und anderen KI-Modellen
+            \item \textbf{Wettervorhersage}
+            \item \textbf{PageRank-Algorithmus} von Google
+            \item \textbf{Biologische Systeme} (Gensequenzen)
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \begin{figure}[H]
+            \only<5->{\centering\includegraphics[width=0.35\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_recommendation"}}
+        \end{figure}
+        \begin{itemize}[<+->]
+            \item \textbf{Finanzmodelle} (Aktienkurse)
+            \item \textbf{Verkehrssimulationen}
+            \item \textbf{Warteschlangensysteme}
+            \item \textbf{Spieltheorie} (Entscheidungsprozesse)
+            \item \ldots
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Lernziele}
+    \begin{itemize}[<+->]
+        \item \faSquare{} Ich kann erklären, was eine Markov-Kette ist und wie die Markov-Eigenschaft funktioniert.
+        \item \faSquare{} Ich kann aus einer realen Problemstellung eine Übergangsmatrix erstellen.
+        \item \faSquare{} Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette über mehrere Schritte entwickelt.
+        \item \faSquare{} Ich kann die stationäre Verteilung einer Markov-Kette berechnen und interpretieren.
+        \item \faSquare{} Ich kann Anwendungen von Markov-Ketten in der Informatik beschreiben.
+        \item \faSquare{} Ich kann die Aussagekraft und Grenzen von stochastischen Modellen reflektieren.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Was sind Markov-Ketten?}
+    \begin{itemize}[<+->]
+        \item Mathematisches Modell für \textbf{Abfolgen von Zuständen}
+        \item Zentral: Die \textbf{Markov-Eigenschaft}
+        \item Der nächste Zustand hängt \textbf{nur vom aktuellen Zustand} ab
+        \item Nicht davon, wie wir zu diesem Zustand gekommen sind
+        \item Beschrieben durch eine \textbf{Übergangsmatrix}
+        \item Einfaches, aber mächtiges Werkzeug zur Modellierung von Prozessen
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Beispiel: Wettervorhersage}
+    \begin{itemize}[<+->]
+        \item Zwei mögliche Zustände: \emoji{sun} (sonnig) oder \emoji{umbrella} (regnerisch)
+        \item Übergangswahrscheinlichkeiten:
+              \begin{itemize}
+                  \item Wenn heute \emoji{sun}: Morgen zu 80\% \emoji{sun}, zu 20\% \emoji{umbrella}
+                  \item Wenn heute \emoji{umbrella}: Morgen zu 40\% \emoji{sun}, zu 60\% \emoji{umbrella}
+              \end{itemize}
+    \end{itemize}
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c c|c|c}
+                                                          &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
+                                                          &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
+            \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0{,}8                             & 0{,}2            \\\cmidrule{2-4}
+                                                          & \emoji{umbrella} & 0{,}4                             & 0{,}6            \\
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Die Übergangsmatrix}
+    Die Übergangsmatrix fasst alle Übergangswahrscheinlichkeiten zusammen:
+
+    \[
+        P =
+        \begin{pmatrix}
+            0{,}8 & 0{,}2 \\
+            0{,}4 & 0{,}6 \\
+        \end{pmatrix}
+    \]
+
+    \begin{itemize}[<+->]
+        \item Zeilen: Ausgangszustände (von welchem Zustand starten wir?)
+        \item Spalten: Zielzustände (zu welchem Zustand wechseln wir?)
+        \item Jede Zeile summiert sich zu 1 (Wahrscheinlichkeiten!)
+        \item $P_{i,j}$ = Wahrscheinlichkeit, von Zustand $i$ zu Zustand $j$ zu wechseln
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Startvektor und Entwicklung}
+    \begin{itemize}[<+->]
+        \item Startvektor $\pi_0$ gibt den Anfangszustand (=Wahrscheinlichkeit, in einem Zustand zu sein) an
+        \item Beispiel: Heute ist es regnerisch
+              \[
+                  \begin{aligned}
+                      \pi_0 =
+                       & \begin{pmatrix}
+                             0 & 1
+                         \end{pmatrix}                                                   \\
+                       & \begin{matrix}
+                             \;\; \Uparrow & \Uparrow
+                         \end{matrix}                                         \\
+                       & \begin{matrix}
+                             \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
+                         \end{matrix}
+                  \end{aligned}
+              \]
+        \item Die Entwicklung nach einem Schritt: $\pi_1 = \pi_0 \cdot P$
+    \end{itemize}
+
+    \only<4->{
+        \begin{align*}
+            \pi_1 = \pi_0 \cdot P & =
+            \begin{pmatrix}
+                0 & 1 \\
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0{,}8 & 0{,}2 \\
+                0{,}4 & 0{,}6 \\
+            \end{pmatrix}            \\
+                                  & =
+            \begin{pmatrix}
+                0{,}4 & 0{,}6 \\
+            \end{pmatrix}
+        \end{align*}
+    }
+\end{frame}
+
+\begin{frame}{Wettervorhersage für übermorgen}
+    Wie ist das Wetter in zwei Tagen, wenn es heute regnet?
+
+    \begin{align*}
+        \pi_2 = \pi_1 \cdot P & =
+        \begin{pmatrix}
+            0{,}4 & 0{,}6 \\
+        \end{pmatrix}
+        \cdot
+        \begin{pmatrix}
+            0{,}8 & 0{,}2 \\
+            0{,}4 & 0{,}6 \\
+        \end{pmatrix}            \\
+                              & =
+        \begin{pmatrix}
+            0{,}56 & 0{,}44 \\
+        \end{pmatrix}
+    \end{align*}
+
+    \only<2->{
+        Die Wahrscheinlichkeit, dass es in zwei Tagen sonnig ist, beträgt 56\%.
+    }
+\end{frame}
+
+\begin{frame}{Auftrag}{Skript}
+    \begin{itemize}
+        \item \aufgabebox{1.1-1.2}
+        \item \challengebox{1.3}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{App-Nutzung: Berechnung}
+    Startvektor: $\pi_0 = (1, 0)$ (WhatsApp)
+
+    \begin{align*}
+        \pi_1 = \pi_0 \cdot P & =
+        \begin{pmatrix}
+            1 & 0 \\
+        \end{pmatrix}
+        \cdot
+        \begin{pmatrix}
+            0{,}7 & 0{,}3 \\
+            0{,}3 & 0{,}7 \\
+        \end{pmatrix}            \\
+                              & =
+        \begin{pmatrix}
+            0{,}7 & 0{,}3 \\
+        \end{pmatrix}
+    \end{align*}
+
+    \begin{align*}
+        \pi_2 = \pi_1 \cdot P & =
+        \begin{pmatrix}
+            0{,}7 & 0{,}3 \\
+        \end{pmatrix}
+        \cdot
+        \begin{pmatrix}
+            0{,}7 & 0{,}3 \\
+            0{,}3 & 0{,}7 \\
+        \end{pmatrix}            \\
+                              & =
+        \begin{pmatrix}
+            0{,}58 & 0{,}42 \\
+        \end{pmatrix}
+    \end{align*}
+
+    \only<2->{
+        Die Wahrscheinlichkeit für Instagram nach zwei Nutzungen beträgt 42\%.
+    }
+\end{frame}
+
+\begin{frame}{Visualisierung von Markov-Ketten}
+    Markov-Ketten können als \textbf{gerichtete Graphen} dargestellt werden:
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[node distance=3cm, auto, thick]
+            \node[state] (S) {Sonnig};
+            \node[state] (R) [right of=S] {Regnerisch};
+
+            \path[->]
+            (S) edge[bend left] node {0,2} (R)
+            (R) edge[bend left] node {0,4} (S)
+            (S) edge[loop above] node {0,8} (S)
+            (R) edge[loop above] node {0,6} (R);
+        \end{tikzpicture}
+    \end{figure}
+
+    \begin{itemize}[<+->]
+        \item Knoten = Zustände
+        \item Kanten = Übergänge mit Wahrscheinlichkeiten
+        \item Summe der ausgehenden Kanten = 1
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Eigenschaften von Markov-Ketten}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{itemize}[<+->]
+            \item \textbf{Irreduzibilität:} Von jedem Zustand kann man jeden anderen erreichen
+            \item \textbf{Aperiodizität:} Rückkehr zu einem Zustand nicht nur in festen Zeitabständen
+            \item \textbf{Absorbierende Zustände:} Zustände, die nicht mehr verlassen werden
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \begin{itemize}[<+->]
+            \item \textbf{Rekurrenz:} Wahrscheinlichkeit, wieder in einen Zustand zurückzukehren
+            \item \textbf{Transienz:} Zustände, die irgendwann nicht mehr erreicht werden
+            \item \textbf{Ergodizität:} Positive Rekurrenz und Aperiodizität
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Absorbierende Zustände}
+    \begin{columns}
+        \column{0.6\textwidth}
+        Beispiel:
+        \[
+            P = \begin{pmatrix}
+                1     & 0     \\
+                0{,}3 & 0{,}7 \\
+            \end{pmatrix}
+        \]
+
+        \column{0.4\textwidth}
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=2cm, auto, thick, scale=0.7, transform shape]
+                \node[state] (1) {1};
+                \node[state] (2) [below of=1] {2};
+
+                \path[->]
+                (1) edge[loop right] node {1,0} (1)
+                (2) edge[bend left] node {0,3} (1)
+                (2) edge[loop right] node {0,7} (2);
+            \end{tikzpicture}
+        \end{figure}
+    \end{columns}
+
+    \only<2->{
+        \begin{itemize}
+            \item Zustand 1 ist \textbf{absorbierend}: $P_{1,1} = 1$
+            \item Wenn die Kette in Zustand 1 ist, bleibt sie dort für immer
+            \item Zustand 2 ist \textbf{transient}: Irgendwann wird er verlassen und nie wieder erreicht
+        \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}{Stationäre Verteilung}
+    \begin{mydefinition}[Stationäre Verteilung]
+    Eine Wahrscheinlichkeitsverteilung $\pi = (\pi_1, \pi_2, \ldots)$ heisst \textbf{stationäre Verteilung} einer Markov-Kette mit Übergangsmatrix $P$, wenn gilt:
+    \[
+        \pi = \pi \cdot P
+    \]
+    \end{mydefinition}
+
+    \begin{itemize}[<+->]
+        \item Langfristige, stabile Verteilung der Wahrscheinlichkeiten
+        \item Bleibt nach Multiplikation mit $P$ unverändert
+        \item Für endliche, irreduzible, aperiodische Markov-Ketten immer eindeutig
+        \item Unabhängig vom Anfangszustand erreicht
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Berechnung der stationären Verteilung}
+    Wetter-Beispiel: $P = \begin{pmatrix} 0{,}8 & 0{,}2 \\ 0{,}4 & 0{,}6 \end{pmatrix}$
+
+    \begin{enumerate}[<+->]
+        \item $\pi = \pi \cdot P$ aufstellen: $(\pi_1, \pi_2) = (\pi_1, \pi_2) \cdot \begin{pmatrix} 0{,}8 & 0{,}2 \\ 0{,}4 & 0{,}6 \end{pmatrix}$
+        \item Gleichungen: $\pi_1 = 0{,}8\pi_1 + 0{,}4\pi_2$ und $\pi_2 = 0{,}2\pi_1 + 0{,}6\pi_2$
+        \item Umformen: $0{,}2\pi_1 = 0{,}4\pi_2$ → $\pi_1 = 2\pi_2$
+        \item Normierung: $\pi_1 + \pi_2 = 1$ → $2\pi_2 + \pi_2 = 1$ → $3\pi_2 = 1$ → $\pi_2 = \frac{1}{3}$
+        \item Ergebnis: $\pi_1 = \frac{2}{3}$ und $\pi_2 = \frac{1}{3}$
+    \end{enumerate}
+
+    \only<6->{
+        Langfristig ist es an 2/3 der Tage sonnig und an 1/3 der Tage regnerisch.
+    }
+\end{frame}
+
+\begin{frame}{App-Nutzung: Stationäre Verteilung}
+    Für die App-Nutzung: $P = \begin{pmatrix} 0{,}7 & 0{,}3 \\ 0{,}3 & 0{,}7 \end{pmatrix}$
+
+    \begin{enumerate}[<+->]
+        \item Aus $\pi_1 = 0{,}7\pi_1 + 0{,}3\pi_2$ folgt $0{,}3\pi_1 = 0{,}3\pi_2$ → $\pi_1 = \pi_2$
+        \item Mit $\pi_1 + \pi_2 = 1$ folgt $\pi_1 = \pi_2 = 0{,}5$
+    \end{enumerate}
+
+    \only<3->{
+        Langfristig werden beide Apps gleich häufig genutzt.
+    }
+\end{frame}
+
+\begin{frame}{Grenzen von Markov-Ketten}
+    \begin{itemize}[<+->]
+        \item \textbf{Markov-Eigenschaft:} Nicht immer realistisch, manchmal hängt die Zukunft von mehr als nur dem aktuellen Zustand ab
+        \item \textbf{Feste Übergangswahrscheinlichkeiten:} In der Realität können sich Wahrscheinlichkeiten ändern
+        \item \textbf{Komplexe Abhängigkeiten:} Können nicht abgebildet werden
+        \item \textbf{Zustandsraum:} Bei vielen Zuständen wird die Berechnung aufwändig
+        \item \textbf{Keine Kausalität:} Beschreiben nur Wahrscheinlichkeiten, keine Ursachen
+    \end{itemize}
+
+    \only<6->{
+        \textbf{Erweiterungen:}
+        \begin{itemize}
+            \item Markov-Ketten höherer Ordnung
+            \item Hidden Markov Models
+            \item Andere stochastische Prozesse
+        \end{itemize}
+    }
+\end{frame}
+
+
+\begin{frame}{Auftrag: Jupyter Notebooks}
+    Skript ``Aus Daten lernen''
+
+    \begin{itemize}
+        \item Zuerst jeweils Beispiele genau durchlesen und ausführen
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Lernziele}
+    \begin{itemize}[<+->]
+        \item \faCheckSquare{} Ich kann erklären, was eine Markov-Kette ist und wie die Markov-Eigenschaft funktioniert.
+        \item \faCheckSquare{} Ich kann aus einer realen Problemstellung eine Übergangsmatrix erstellen.
+        \item \faCheckSquare{} Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette über mehrere Schritte entwickelt.
+        \item \faCheckSquare{} Ich kann die stationäre Verteilung einer Markov-Kette berechnen und interpretieren.
+        \item \faCheckSquare{} Ich kann Anwendungen von Markov-Ketten in der Informatik beschreiben.
+        \item \faCheckSquare{} Ich kann die Aussagekraft und Grenzen von stochastischen Modellen reflektieren.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \centering
+    \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-2"}
+\end{frame}
+
+\begin{frame}
+    \centering
+    \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-3"}
+\end{frame}
+
+\begin{frame}
+    \centering
+    \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-1"}
+\end{frame}

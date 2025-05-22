@@ -1,0 +1,341 @@
+\section{Python-Implementierung von Markov-Ketten}
+
+Markov-Ketten lassen sich mit Python sehr elegant implementieren und visualisieren. Im Folgenden zeigen wir eine einfache Implementation, die es erlaubt, Markov-Ketten zu simulieren und deren Eigenschaften zu analysieren.
+
+\begin{lstlisting}[language=Python, caption=Grundlegende Implementation einer Markov-Kette in Python]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Einfache Markov-Ketten Implementierung
+class MarkovChain:
+    def __init__(self, transition_matrix, states=None):
+        """
+        Initialisiert eine Markov-Kette mit einer Übergangsmatrix.
+
+        Args:
+            transition_matrix: Eine quadratische Matrix als numpy-Array
+            states: Optional - Liste mit Namen der Zustände
+        """
+        self.P = np.array(transition_matrix)
+        n = self.P.shape[0]
+        if states is None:
+            self.states = [str(i) for i in range(n)]
+        else:
+            self.states = states
+
+        # Überprüfen, ob die Übergangsmatrix gültig ist
+        row_sums = self.P.sum(axis=1)
+        if not np.allclose(row_sums, 1.0):
+            raise ValueError("Die Zeilen der Übergangsmatrix müssen sich zu 1 summieren.")
+
+    def simulate(self, steps, start_state=0):
+        """
+        Simuliert die Markov-Kette für eine bestimmte Anzahl von Schritten.
+
+        Args:
+            steps: Anzahl der Simulationsschritte
+            start_state: Anfangszustand (als Index)
+
+        Returns:
+            Liste der besuchten Zustände (als Indizes)
+        """
+        n = self.P.shape[0]
+        if start_state >= n:
+            raise ValueError(f"Startzustand muss kleiner als {n} sein")
+
+        # Simulation initialisieren
+        states = [start_state]
+        current = start_state
+
+        # Für jeden Schritt
+        for _ in range(steps):
+            # Übergangswahrscheinlichkeiten für den aktuellen Zustand
+            probs = self.P[current]
+
+            # Nächsten Zustand zufällig auswählen
+            current = np.random.choice(n, p=probs)
+            states.append(current)
+
+        return states
+
+    def compute_stationary_distribution(self):
+        """
+        Berechnet die stationäre Verteilung der Markov-Kette.
+
+        Returns:
+            Stationäre Verteilung als numpy-Array
+        """
+        # Eigenwerte und Eigenvektoren der transponierten Matrix
+        eigenvalues, eigenvectors = np.linalg.eig(self.P.T)
+
+        # Finde den Eigenvektor zum Eigenwert 1
+        one_eigenvector = eigenvectors[:, np.isclose(eigenvalues, 1.0)]
+
+        # Normalisieren, damit die Summe 1 ergibt
+        stationary = one_eigenvector[:, 0].real
+        stationary = stationary / stationary.sum()
+
+        return stationary
+\end{lstlisting}
+
+Mit dieser Klasse können wir nun einfach Markov-Ketten simulieren und analysieren. Zum Beispiel können wir unser Wetter-Beispiel implementieren:
+
+\begin{lstlisting}[language=Python, caption=Anwendung der MarkovChain-Klasse auf das Wetter-Beispiel]
+# Wetter-Markov-Kette
+weather_matrix = [
+    [0.8, 0.2],  # Sonnig -> Sonnig, Sonnig -> Regnerisch
+    [0.4, 0.6]   # Regnerisch -> Sonnig, Regnerisch -> Regnerisch
+]
+
+weather_chain = MarkovChain(weather_matrix, states=["Sonnig", "Regnerisch"])
+
+# Simulation für 20 Tage, beginnend mit sonnigem Wetter
+simulation = weather_chain.simulate(20, start_state=0)
+weather_states = [weather_chain.states[s] for s in simulation]
+
+print("Wettersimulation für 20 Tage:")
+print(weather_states)
+
+# Stationäre Verteilung berechnen
+stationary = weather_chain.compute_stationary_distribution()
+print("\nStationäre Verteilung:")
+for i, state in enumerate(weather_chain.states):
+    print(f"{state}: {stationary[i]:.2f}")
+\end{lstlisting}
+
+Eine mögliche Ausgabe könnte sein:
+\begin{verbatim}
+Wettersimulation für 20 Tage:
+['Sonnig', 'Sonnig', 'Sonnig', 'Regnerisch', 'Regnerisch', 'Sonnig', 
+'Sonnig', 'Sonnig', 'Sonnig', 'Sonnig', 'Sonnig', 'Regnerisch', 
+'Regnerisch', 'Regnerisch', 'Sonnig', 'Sonnig', 'Sonnig', 'Sonnig', 
+'Sonnig', 'Sonnig', 'Sonnig']
+
+Stationäre Verteilung:
+Sonnig: 0.67
+Regnerisch: 0.33
+\end{verbatim}
+
+Diese Python-Implementation erlaubt es uns, schnell verschiedene Markov-Ketten zu modellieren und zu simulieren. Besonders nützlich ist die Möglichkeit, die stationäre Verteilung zu berechnen und zu visualisieren, wie sich die Zustandsverteilung über die Zeit entwickelt.
+
+\begin{myexercise}[Python-Simulation]
+    Erweitern Sie den obigen Code, um die App-Nutzung aus unserem früheren Beispiel zu simulieren. Die Übergangsmatrix ist:
+    \[
+        P = \begin{pmatrix}
+            0{,}7 & 0{,}3 \\
+            0{,}3 & 0{,}7 \\
+        \end{pmatrix}
+    \]
+
+    Führen Sie eine Simulation für 100 Schritte durch und berechnen Sie die stationäre Verteilung. Vergleichen Sie die stationäre Verteilung mit dem analytischen Ergebnis aus dem früheren Beispiel.
+
+    \begin{myanswer}
+        Hier ist der Code für die Simulation der App-Nutzung:
+
+        \begin{lstlisting}[language=Python]
+# App-Nutzungs-Markov-Kette
+app_matrix = [
+    [0.7, 0.3],  # WhatsApp -> WhatsApp, WhatsApp -> Instagram
+    [0.3, 0.7]   # Instagram -> WhatsApp, Instagram -> Instagram
+]
+
+app_chain = MarkovChain(app_matrix, states=["WhatsApp", "Instagram"])
+
+# Simulation für 100 Nutzungen, beginnend mit WhatsApp
+simulation = app_chain.simulate(100, start_state=0)
+
+# Zählen, wie oft jede App genutzt wurde
+whatsapp_count = simulation.count(0)
+instagram_count = simulation.count(1)
+print(f"WhatsApp wurde {whatsapp_count} mal genutzt")
+print(f"Instagram wurde {instagram_count} mal genutzt")
+print(f"Verhältnis WhatsApp/Instagram: {whatsapp_count/(whatsapp_count+instagram_count):.2f}")
+
+# Stationäre Verteilung berechnen
+stationary = app_chain.compute_stationary_distribution()
+print("\nStationäre Verteilung:")
+for i, state in enumerate(app_chain.states):
+    print(f"{state}: {stationary[i]:.2f}")
+\end{lstlisting}
+
+        Die stationäre Verteilung ist $\pi = (0.5, 0.5)$, was genau dem analytischen Ergebnis entspricht. Bei einer langen Simulation sollte sich das Verhältnis der App-Nutzung diesem Wert annähern.
+    \end{myanswer}
+\end{myexercise}
+
+\section{PageRank-Algorithmus: Eine Anwendung von Markov-Ketten}
+
+Eine der bekanntesten Anwendungen von Markov-Ketten ist der PageRank-Algorithmus, der von Google-Gründern Larry Page und Sergey Brin entwickelt wurde. PageRank ist ein Algorithmus zur Bewertung der Wichtigkeit von Webseiten und bildete die Grundlage der frühen Google-Suchmaschine.
+
+\subsection{Grundprinzip des PageRank}
+
+Die grundlegende Idee hinter PageRank ist einfach und elegant: Die Wichtigkeit einer Webseite wird durch die Anzahl und Qualität der Links bestimmt, die auf sie verweisen. Eine Webseite ist wichtig, wenn viele andere wichtige Seiten auf sie verlinken.
+
+Diese rekursive Definition lässt sich mathematisch als Markov-Kette modellieren:
+
+\begin{itemize}
+    \item Jede Webseite entspricht einem Zustand in der Markov-Kette.
+    \item Die Übergangswahrscheinlichkeiten werden aus der Linkstruktur abgeleitet: Wenn Seite A auf $n$ andere Seiten verlinkt, beträgt die Übergangswahrscheinlichkeit zu jeder dieser Seiten $1/n$.
+    \item Der PageRank einer Seite ist proportional zur Wahrscheinlichkeit, dass ein zufällig durch das Web surfender Nutzer auf dieser Seite landet.
+\end{itemize}
+
+\subsection{Mathematische Formulierung}
+
+Formal lässt sich der PageRank-Wert $PR(p_i)$ einer Seite $p_i$ wie folgt definieren:
+
+\[
+    PR(p_i) = \frac{1-d}{N} + d \sum_{p_j \in M(p_i)} \frac{PR(p_j)}{L(p_j)}
+\]
+
+wobei:
+\begin{itemize}
+    \item $d$ ist ein Dämpfungsfaktor, typischerweise $0{,}85$
+    \item $N$ ist die Gesamtzahl der Webseiten
+    \item $M(p_i)$ ist die Menge aller Seiten, die auf $p_i$ verlinken
+    \item $L(p_j)$ ist die Anzahl der ausgehenden Links von Seite $p_j$
+\end{itemize}
+
+Der Dämpfungsfaktor $d$ modelliert die Wahrscheinlichkeit, dass ein Nutzer einem Link folgt, anstatt direkt zu einer zufälligen anderen Seite zu springen.
+
+\subsection{Beziehung zu Markov-Ketten}
+
+Der PageRank-Algorithmus lässt sich direkt als Markov-Kette interpretieren:
+
+\begin{itemize}
+    \item Die Übergangsmatrix $P$ beschreibt die Linkstruktur des Webs.
+    \item Der PageRank-Vektor entspricht der stationären Verteilung dieser Markov-Kette.
+    \item Der Dämpfungsfaktor sorgt dafür, dass die Markov-Kette irreduzibel und aperiodisch wird, was die Existenz und Eindeutigkeit der stationären Verteilung garantiert.
+\end{itemize}
+
+\begin{myexample}[PageRank für ein kleines Web]
+Betrachten wir ein einfaches Web mit vier Seiten A, B, C und D mit folgender Linkstruktur:
+\begin{itemize}
+    \item Seite A verlinkt auf B und C
+    \item Seite B verlinkt auf C
+    \item Seite C verlinkt auf A
+    \item Seite D verlinkt auf A, B und C
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=2.5cm, auto, thick]
+        \node[state] (A) {A};
+        \node[state] (B) [right of=A] {B};
+        \node[state] (C) [below of=B] {C};
+        \node[state] (D) [below of=A] {D};
+
+        \path[->]
+        (A) edge (B)
+        (A) edge (C)
+        (B) edge (C)
+        (C) edge (A)
+        (D) edge (A)
+        (D) edge (B)
+        (D) edge (C);
+    \end{tikzpicture}
+    \caption{Linkstruktur des Beispiel-Webs}
+    \label{fig:pagerank-example}
+\end{figure}
+
+Die Übergangsmatrix ohne Dämpfungsfaktor wäre:
+\[
+    P = \begin{pmatrix}
+        0    & 0.5  & 0.5  & 0 \\
+        0    & 0    & 1    & 0 \\
+        1    & 0    & 0    & 0 \\
+        0.33 & 0.33 & 0.33 & 0
+    \end{pmatrix}
+\]
+
+Mit einem Dämpfungsfaktor von $d = 0{,}85$ und $N = 4$ wird die angepasste Übergangsmatrix:
+\[
+    P' = 0{,}85 \cdot P + 0{,}15 \cdot \frac{1}{4} \cdot \begin{pmatrix}
+        1 & 1 & 1 & 1 \\
+        1 & 1 & 1 & 1 \\
+        1 & 1 & 1 & 1 \\
+        1 & 1 & 1 & 1
+    \end{pmatrix}
+\]
+
+Die stationäre Verteilung dieser Markov-Kette, berechnet durch Lösen von $\pi = \pi \cdot P'$ und $\sum \pi_i = 1$, ergibt den PageRank-Vektor:
+\[
+    PR \approx (0.32, 0.17, 0.39, 0.12)
+\]
+
+Dies bedeutet:
+\begin{itemize}
+    \item Seite C hat den höchsten PageRank (0.39)
+    \item Gefolgt von Seite A (0.32)
+    \item Dann Seite B (0.17)
+    \item Seite D hat den niedrigsten PageRank (0.12)
+\end{itemize}
+
+Dieses Ergebnis ist intuitiv nachvollziehbar: Seite C erhält Links von drei Seiten (A, B und D), während Seite D keine eingehenden Links hat.
+\end{myexample}
+
+\subsection{PageRank-Implementierung in Python}
+
+Mit unserer MarkovChain-Klasse können wir eine einfache Version des PageRank-Algorithmus implementieren:
+
+\begin{lstlisting}[language=Python, caption=Einfache PageRank-Implementierung mit der MarkovChain-Klasse]
+def calculate_pagerank(links, damping_factor=0.85, num_pages=None):
+    """
+    Berechnet PageRank für ein Netzwerk von Webseiten.
+
+    Args:
+        links: Dictionary mit {Seite: [Liste der Seiten, auf die verlinkt wird]}
+        damping_factor: Dämpfungsfaktor (Standard: 0.85)
+        num_pages: Anzahl der Seiten (Optional, wird sonst automatisch bestimmt)
+
+    Returns:
+        Dictionary mit {Seite: PageRank-Wert}
+    """
+    # Alle Seiten identifizieren (verlinkte und verlinkende)
+    all_pages = set()
+    for page, outlinks in links.items():
+        all_pages.add(page)
+        all_pages.update(outlinks)
+
+    # Seiten in sortierte Liste umwandeln für konsistente Indizierung
+    pages = sorted(list(all_pages))
+    n = len(pages)
+
+    if num_pages is not None and num_pages > n:
+        n = num_pages
+
+    # Übergangsmatrix erstellen
+    P = np.zeros((n, n))
+
+    # Übergangswahrscheinlichkeiten basierend auf Links setzen
+    page_indices = {page: i for i, page in enumerate(pages)}
+    for page, outlinks in links.items():
+        if outlinks:  # Wenn die Seite ausgehende Links hat
+            i = page_indices[page]
+            for target in outlinks:
+                j = page_indices[target]
+                P[i, j] = 1.0 / len(outlinks)
+
+    # Dämpfungsfaktor anwenden
+    P = damping_factor * P + (1 - damping_factor) / n * np.ones((n, n))
+
+    # Markov-Kette erstellen und stationäre Verteilung berechnen
+    mc = MarkovChain(P, states=pages)
+    stationary = mc.compute_stationary_distribution()
+
+    # PageRank als Dictionary zurückgeben
+    pagerank = {page: stationary[i] for i, page in enumerate(pages)}
+    return pagerank
+
+# Beispiel: Unser kleines Web
+web = {
+    'A': ['B', 'C'],
+    'B': ['C'],
+    'C': ['A'],
+    'D': ['A', 'B', 'C']
+}
+
+pagerank = calculate_pagerank(web)
+for page, rank in sorted(pagerank.items()):
+    print(f"Seite {page}: PageRank = {rank:.4f}")
+\end{lstlisting}
+
+Der PageRank-Algorithmus zeigt eindrücklich, wie Markov-Ketten in der Praxis eingesetzt werden können, um komplexe Probleme zu lösen. Die stationäre Verteilung einer geeignet konstruierten Markov-Kette kann wertvolle Einblicke in die Struktur vernetzter Systeme liefern.
