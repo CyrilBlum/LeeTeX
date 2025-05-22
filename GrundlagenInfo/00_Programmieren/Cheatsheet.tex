@@ -1,126 +1,495 @@
-\newgeometry{margin=.7cm}
+\newgeometry{margin=.5cm}
 \pagestyle{empty}
 \raggedcolumns
 \footnotesize
 \newcommand{\cheatSheetColor}{RoyalBlue}
 \newtcolorbox{cheatSheetBox}[1][]{
-	enhanced jigsaw,
+  enhanced jigsaw,
 %	breakable,
-	colback=\cheatSheetColor!10,
-	colframe=\cheatSheetColor,
-	colbacktitle=\cheatSheetColor!30,
-	fonttitle=\bfseries,
-	parbox=false,
-	attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
-	coltitle=black,
-	#1}
+  colback=\cheatSheetColor!10,
+  colframe=\cheatSheetColor,
+  colbacktitle=\cheatSheetColor!30,
+  fonttitle=\bfseries,
+  parbox=false,
+  attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+  coltitle=black,
+  #1}
+
+\lstset{style=python, basicstyle=\ttfamily\footnotesize}
 
 \begin{landscape}
 \footnotesize
 \begin{multicols*}{4}
 \textcolor{\cheatSheetColor}{\begin{center}
-\section*{Cheatsheet}
+\section{Python Cheatsheet}
 \end{center}\hrule}
 
-\begin{cheatSheetBox}[title=Variablen erstellen]
-\begin{center}
-$ \tikzmarknode{b}{\text{\texttt{a}}} =\tikzmarknode{a}{\color{red}\underbrace{\color{black}\text{\texttt{10+3}}}}$
-	
-	\tikz[remember picture, overlay]{\draw[-latex,red] ([yshift=0.1em]a.south) to[bend left] ([yshift=-0.3em]b.south);}
-\end{center}
+% ==== KAPITEL 1-2: EINFÜHRUNG ====
+\textcolor{\cheatSheetColor}{\subsection*{Einführung}}
+
+\begin{cheatSheetBox}[title=Python-Grundgerüst]
+Ein einfaches Python-Programm:
+\begin{lstlisting}
+# Dies ist ein Kommentar
+print("Hallo Welt!")  # Ausgabe von Text
+\end{lstlisting}
 \end{cheatSheetBox}
 
-\begin{cheatSheetBox}[title=Schleifen mit \lstinline|for|]
+\begin{cheatSheetBox}[title=Grundrechenarten]
 \begin{lstlisting}
+# Addition
+3 + 5       # ergibt 8
+
+# Subtraktion
+10 - 4      # ergibt 6
+
+# Multiplikation
+3 * 7       # ergibt 21
+
+# Division
+10 / 3      # ergibt 3.3333...
+
+# Ganzzahldivision
+10 // 3     # ergibt 3
+
+# Modulo (Rest)
+10 % 3      # ergibt 1
+
+# Potenz
+2 ** 3      # ergibt 8
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=String-Operationen]
+\begin{lstlisting}
+# Strings verknüpfen
+"Hallo" + " " + "Welt"  # "Hallo Welt"
+
+# String wiederholen
+"Ha" * 3               # "HaHaHa"
+
+# Länge eines Strings
+len("Python")          # 6
+
+# Zeichen an Position (Index)
+"Python"[0]            # "P"
+"Python"[1]            # "y"
+"Python"[-1]           # "n"
+
+# Teilstring
+"Python"[0:2]          # "Py"
+"Python"[2:]           # "thon"
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Einfache Schleifen mit \lstinline|for|]
+\begin{lstlisting}
+# N-mal wiederholen
 for _ in range(5):
-	# mach etwas 5 mal!
-# hier ist die Schleife fertig
+    print("Hallo")  # Gibt 5x "Hallo" aus
+
+# Durch Zahlenbereich iterieren
+for i in range(1, 6):  # 1, 2, 3, 4, 5
+    print(i)
 \end{lstlisting}
 \end{cheatSheetBox}
 
-\begin{cheatSheetBox}[title=Modulo (\lstinline|%|)]
-Modulo berechnet den Rest der Ganzzahldivision.
+% ==== KAPITEL 3: VARIABLEN ====
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Variablen}}
+
+\begin{cheatSheetBox}[title=Variablen deklarieren]
 \begin{lstlisting}
-print(9 % 5) # 4
+# Variable erstellen und Wert zuweisen
+name = "Max"
+alter = 25
+pi = 3.14159
+ist_student = True
+
+# Mehrere Zuweisungen
+a, b, c = 1, 2, 3
 \end{lstlisting}
 \end{cheatSheetBox}
 
-
-\begin{cheatSheetBox}[title=Wert bei Ausführung eingeben]
+\begin{cheatSheetBox}[title=Eingabe und Ausgabe]
 \begin{lstlisting}
-name = input("name")
-print("Hallo" + name)
+# Eingabe vom Benutzer
+name = input("Gib deinen Namen ein: ")
+
+# Umwandlung in Zahl
+alter = int(input("Gib dein Alter ein: "))
+gewicht = float(input("Gewicht in kg: "))
+
+# Ausgabe mit print()
+print("Hallo", name)
+print("Du bist", alter, "Jahre alt")
+
+# Formatierte Ausgabe
+print(f"Hallo {name}, du bist {alter} Jahre alt")
 \end{lstlisting}
 \end{cheatSheetBox}
 
-%\begin{cheatSheetBox}[title=Arbeiten mit Text]
-%\end{cheatSheetBox}
+\begin{cheatSheetBox}[title=Wert verändern]
+\begin{lstlisting}
+# Neuen Wert zuweisen
+zahl = 10
+zahl = 20  # zahl ist jetzt 20
+
+# Wert erhöhen/verringern
+zahl = zahl + 5  # zahl ist jetzt 25
+zahl += 5        # zahl ist jetzt 30
+zahl -= 10       # zahl ist jetzt 20
+zahl *= 2        # zahl ist jetzt 40
+zahl //= 4       # zahl ist jetzt 10
+\end{lstlisting}
+\end{cheatSheetBox}
+
+% ==== KAPITEL 4: FUNKTIONEN ====
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Funktionen}}
+
+\begin{cheatSheetBox}[title=Funktionen definieren]
+\begin{lstlisting}
+# Einfache Funktion ohne Parameter
+def begrüssung():
+    print("Hallo!")
+
+# Funktion mit Parametern
+def begrüsse_person(name):
+    print(f"Hallo {name}!")
+
+# Funktion mit Rückgabewert
+def quadrat(zahl):
+    return zahl * zahl
+
+# Funktion mit mehreren Parametern
+def rechteck_fläche(länge, breite):
+    return länge * breite
+
+# Funktion mit Standardwert
+def potenz(basis, exponent=2):
+    return basis ** exponent
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Funktionen aufrufen]
+\begin{lstlisting}
+# Funktion aufrufen
+begrüssung()                # Hallo!
+
+# Mit Parameter
+begrüsse_person("Lea")      # Hallo Lea!
+
+# Rückgabewert verwenden
+ergebnis = quadrat(5)      # ergebnis = 25
+print(ergebnis)
+
+# Mehrere Parameter
+fläche = rechteck_fläche(4, 5)  # 20
+
+# Mit Standardwert
+potenz(3)       # 9 (3²)
+potenz(2, 3)    # 8 (2³)
+\end{lstlisting}
+\end{cheatSheetBox}
+
+% ==== KAPITEL 5: LOGISCHE AUSDRÜCKE ====
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Verzweigungen und Bedingungen}}
+
+\begin{cheatSheetBox}[title=Vergleichsoperatoren]
+\begin{lstlisting}
+# Gleichheit
+a == b  # Ist a gleich b?
+
+# Ungleichheit
+a != b  # Ist a ungleich b?
+
+# Grösser/Kleiner
+a > b   # Ist a grösser als b?
+a < b   # Ist a kleiner als b?
+a >= b  # Ist a grösser oder gleich b?
+a <= b  # Ist a kleiner oder gleich b?
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title={if, elif, else}]
+\begin{lstlisting}
+# Einfaches if
+if alter >= 18:
+    print("Volljährig")
+
+# if-else
+if punkte >= 50:
+    print("Bestanden")
+else:
+    print("Nicht bestanden")
+
+# if-elif-else
+if note == 6:
+    print("Sehr gut")
+elif note >= 5:
+    print("Gut")
+elif note >= 4:
+    print("Genügend")
+else:
+    print("Ungenügend")
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Logische Operatoren]
+\begin{lstlisting}
+# UND: Beide Bedingungen müssen wahr sein
+if alter >= 18 and hat_führerschein:
+    print("Darf Auto fahren")
+
+# ODER: Eine der Bedingungen muss wahr sein
+if hat_mitgliedskarte or ist_gast:
+    print("Zutritt erlaubt")
+
+# NICHT: Negiert die Bedingung
+if not ist_gesperrt:
+    print("Zugriff möglich")
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=while-Schleife]
+\begin{lstlisting}
+# Zähler mit while
+zähler = 0
+while zähler < 5:
+    print(zähler)
+    zähler += 1
+
+# Abbruch mit break
+while True:
+    eingabe = input("Weiter? (j/n): ")
+    if eingabe == "n":
+        break
+\end{lstlisting}
+\end{cheatSheetBox}
+
+% ==== KAPITEL 6: LISTEN ====
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Listen}}
+
+\begin{cheatSheetBox}[title=Listen erstellen]
+\begin{lstlisting}
+# Leere Liste
+meine_liste = []
+
+# Liste mit Werten
+zahlen = [1, 2, 3, 4, 5]
+namen = ["Anna", "Ben", "Carla"]
+gemischt = [1, "Hallo", True, 3.14]
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Auf Listen zugreifen]
+\begin{lstlisting}
+# Element an Position
+zahlen = [10, 20, 30, 40, 50]
+zahlen[0]    # 10 (erstes Element)
+zahlen[2]    # 30 (drittes Element)
+zahlen[-1]   # 50 (letztes Element)
+
+# Teilbereich
+zahlen[1:3]  # [20, 30]
+zahlen[:2]   # [10, 20]
+zahlen[3:]   # [40, 50]
+
+# Element ändern
+zahlen[0] = 15  # [15, 20, 30, 40, 50]
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Listen verarbeiten]
+\begin{lstlisting}
+# Länge einer Liste
+len(zahlen)  # 5
+
+# Durch Liste iterieren
+for zahl in zahlen:
+    print(zahl)
+
+# Mit Index iterieren
+for i in range(len(zahlen)):
+    print(f"Position {i}: {zahlen[i]}")
+
+# Listen-Methoden
+zahlen.append(60)    # [15,20,30,40,50,60]
+zahlen.insert(1, 25) # [15,25,20,30,40,50,60]
+letzter = zahlen.pop() # entfernt 60
+zahlen.remove(30)    # entfernt ersten Wert 30
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Algorithmen mit Listen]
+\begin{lstlisting}
+# Maximum finden
+def finde_maximum(liste):
+    maximum = liste[0]
+    for zahl in liste:
+        if zahl > maximum:
+            maximum = zahl
+    return maximum
+
+# Summe berechnen
+def summe_berechnen(liste):
+    summe = 0
+    for zahl in liste:
+        summe += zahl
+    return summe
+\end{lstlisting}
+\end{cheatSheetBox}
+
+% ==== KAPITEL 7: DICTIONARIES ====
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Dictionaries}}
+
+\begin{cheatSheetBox}[title=Dictionary erstellen]
+\begin{lstlisting}
+# Leeres Dictionary
+mein_dict = {}
+
+# Dictionary mit Werten
+person = {
+    "name": "Anna",
+    "alter": 25,
+    "stadt": "Zürich"
+}
+
+# Verschachtelte Dictionaries
+schüler = {
+    "max": {
+        "alter": 16,
+        "note": 5.5
+    },
+    "lisa": {
+        "alter": 17,
+        "note": 6.0
+    }
+}
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Auf Dictionary zugreifen]
+\begin{lstlisting}
+# Wert abfragen
+person["name"]      # "Anna"
+person.get("name")  # "Anna"
+
+# Wert ändern
+person["alter"] = 26
+
+# Neuen Schlüssel hinzufügen
+person["beruf"] = "Informatikerin"
+
+# Schlüssel entfernen
+del person["stadt"]
+
+# Prüfen, ob Schlüssel existiert
+if "name" in person:
+    print(person["name"])
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Dictionary durchlaufen]
+\begin{lstlisting}
+# Alle Schlüssel durchlaufen
+for schlüssel in person:
+    print(schlüssel)
+
+# Schlüssel und Werte
+for schlüssel, wert in person.items():
+    print(f"{schlüssel}: {wert}")
+
+# Nur Werte
+for wert in person.values():
+    print(wert)
+
+# Nur Schlüssel
+for schlüssel in person.keys():
+    print(schlüssel)
+\end{lstlisting}
+\end{cheatSheetBox}
+
+% ==== KAPITEL 8: KLASSEN ====
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Objektorientierte\\ Programmierung}}
+
+\begin{cheatSheetBox}[title=Klassen definieren]
+\begin{lstlisting}
+class Person:
+    # Konstruktor
+    def __init__(self, name, alter):
+        self.name = name
+        self.alter = alter
+    
+    # Methode
+    def vorstellen(self):
+        print(f"Ich bin {self.name}, {self.alter} Jahre alt.")
+    
+    # Methode mit Rückgabewert
+    def ist_volljährig(self):
+        return self.alter >= 18
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Objekte erstellen und verwenden]
+\begin{lstlisting}
+# Objekt erstellen
+max = Person("Max", 17)
+anna = Person("Anna", 25)
+
+# Methoden aufrufen
+max.vorstellen()  # Ich bin Max, 17 Jahre alt.
+anna.vorstellen() # Ich bin Anna, 25 Jahre alt.
+
+# Attribute verwenden
+print(max.name)   # Max
+max.alter = 18    # Alter ändern
+
+# Methode mit Rückgabewert
+if anna.ist_volljährig():
+    print("Anna ist volljährig")
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Klassenattribute]
+\begin{lstlisting}
+class Schüler:
+    # Klassenattribut (für alle Instanzen gleich)
+    schule = "Kantonsschule im Lee"
+    anzahl = 0
+    
+    def __init__(self, name, klasse):
+        self.name = name
+        self.klasse = klasse
+        Schüler.anzahl += 1
+    
+    # Klassenmethode
+    @classmethod
+    def get_anzahl(cls):
+        return cls.anzahl
+\end{lstlisting}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Vererbung]
+\begin{lstlisting}
+class Fahrzeug:
+    def __init__(self, marke, modell):
+        self.marke = marke
+        self.modell = modell
+    
+    def info(self):
+        return f"{self.marke} {self.modell}"
+
+class Auto(Fahrzeug):
+    def __init__(self, marke, modell, türen):
+        super().__init__(marke, modell)
+        self.türen = türen
+    
+    def info(self):
+        basis_info = super().info()
+        return f"{basis_info} mit {self.türen} Türen"
+\end{lstlisting}
+\end{cheatSheetBox}
+
 \end{multicols*}
-
-%\begin{table}[H]
-% \centering
-%\begin{tabular}{l|p{0.3\linewidth}|p{0.4\linewidth}}
-%\textbf{Python} & \textbf{Beschreibung} & \textbf{Beispiel} \\\midrule\midrule
-%\lstinline|len(s)| & Gibt die Länge des Textes \lstinline|s| zurück. & 
-%
-%\begin{minipage}{\linewidth}
-%\begin{lstlisting}[numbers=none]
-%n = len("hallo") # 5
-%\end{lstlisting}
-%\end{minipage} \\\midrule\midrule
-%\lstinline|s[index]| & Greift auf das Zeichen an der Index-Position \lstinline|index| zu. Bei negativen Indizes zählt man von rechts. & \begin{minipage}{\linewidth}
-%\begin{lstlisting}[numbers=none]
-%s = "hallo"
-%s = "hallo"
-%c0 = s[0]  # "h"
-%c1 = s[1]  # "a"
-%c2 = s[-1] # "o"
-%\end{lstlisting}
-%\end{minipage}
-% \\\midrule
-%\lstinline|s[start:end]| & Extrahiert den Teiltext vom Index \lstinline|start| bis und ohne \lstinline|end| & \begin{minipage}{\linewidth}
-%\begin{lstlisting}[numbers=none]
-%s1 = "hallo"
-%s2 = s1[1:4] # "all"
-%\end{lstlisting}
-%\end{minipage}\\\midrule\midrule
-%\lstinline|ord(c)| & Gibt die Position des Zeichens \lstinline|c| in der \href{https://en.wikipedia.org/wiki/List_of_Unicode_characters}{Unicode-Tabelle} zurück & \begin{minipage}{\linewidth}
-%\begin{lstlisting}[numbers=none]
-%n1 = ord('A') # 65
-%n2 = ord('B') # 66
-%n3 = ord('Z') # 90
-%\end{lstlisting}
-%\end{minipage}\\\midrule
-%\lstinline|chr(n)| & Gibt die das Zeichen an der \lstinline|n|-ten Position er \href{https://en.wikipedia.org/wiki/List_of_Unicode_characters}{Unicode-Tabelle} zurück & \begin{minipage}{\linewidth}
-%\begin{lstlisting}[numbers=none]
-%c1 = chr(65) # "A"
-%c2 = chr(66) # "B"
-%c3 = chr(67) # "C"
-%\end{lstlisting}\end{minipage}\\\midrule\midrule
-%\lstinline|s1.count(s2)| & Zählt, wie oft der Text \lstinline|s2| im Text \lstinline|s1| vorkommt & \begin{minipage}{\linewidth}
-%\begin{lstlisting}[numbers=none]
-%s1 = "Das Haus ist gross und das Dach ist grün."
-%s2 = "ist"
-%n = s1.count(s2) # 2
-%\end{lstlisting}
-%\end{minipage}\\\midrule
-%\lstinline|s1.find(s2)| & Gibt den niedrigsten Index des Teiltexts \lstinline|s2| zurück, falls dieser vorhanden ist, ansonsten \lstinline|-1| & \begin{minipage}{\linewidth}
-%\begin{lstlisting}[numbers=none]
-%s = "Das Haus ist gross und das Dach ist grün."
-%n = s.find("ist") # 9
-%\end{lstlisting}
-%\end{minipage}\\\midrule
-%\lstinline|s1.replace(old, new)| & Ersetzt alle Vorkommen des Teil-Texts \lstinline|old| durch \lstinline|new|. & \begin{minipage}{\linewidth}
-%\begin{lstlisting}[numbers=none]
-%s1 = "hallo"
-%s2 = s1.replace("a", "e") # "hello"
-%\end{lstlisting}
-%\end{minipage}
-%\end{tabular}
-%\caption{Übersicht von Zeichenketten-Befehlen}
-%\label{tab:string-op}
-%\end{table}
-
-
 \end{landscape}
 
