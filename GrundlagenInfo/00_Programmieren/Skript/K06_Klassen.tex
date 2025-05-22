@@ -1,0 +1,377 @@
+\chapter{Objektorientierte Programmierung}
+\section{Klassen}
+Bisher haben wir mit einfachen Datentypen (integer, string, boolean) und Datenstrukturen (Listen, Dictionaries) gearbeitet. In vielen Anwendungen möchten wir jedoch komplexere Objekte modellieren, die sowohl Daten (Eigenschaften) als auch Funktionalität (Methoden) besitzen. Hier kommen \textbf{Klassen} ins Spiel.
+
+\begin{mydefinition}
+Eine \textbf{Klasse} ist eine Vorlage für Objekte, die Daten (Attribute) und Funktionen (Methoden) zusammenfasst. Sie definiert die Eigenschaften und das Verhalten einer Gruppe von Objekten. Ein \textbf{Objekt} ist eine konkrete Instanz (=eine konkrete Kopie) einer Klasse.
+\end{mydefinition}
+
+\begin{myexample}[Klassen definieren]
+Eine Klasse wird mit dem Schlüsselwort \lstinline|class| definiert. Im folgenden Beispiel erstellen wir eine Klasse \lstinline|Person| mit den Attributen \lstinline|name| und \lstinline|alter| sowie einer Methode \lstinline|geburtstag_feiern|.
+
+\lstinputlisting{GrundlagenInfo/00_Programmieren/Skript/Code/K06_Klassen/person.py}
+\end{myexample}
+
+In diesem Beispiel sehen wir mehrere wichtige Konzepte:
+
+\begin{itemize}
+    \item \lstinline|__init__| ist eine spezielle Methode (Konstruktor), die beim Erstellen eines Objekts aufgerufen wird.
+    \item \lstinline|self| bezieht sich auf das aktuelle Objekt und muss der erste Parameter jeder Methode sein.
+    \item Objektattribute werden mit \lstinline|self.attributname| definiert und zugegriffen.
+    \item Methoden werden mit \lstinline|objekt.methode()| aufgerufen.
+\end{itemize}
+
+\begin{myexample}[Bankkonto-Klasse]
+Ein praktisches Beispiel ist eine Klasse für Bankkonten:
+
+\lstinputlisting{GrundlagenInfo/00_Programmieren/Skript/Code/K06_Klassen/bankkonto.py}
+\end{myexample}
+
+\begin{myexercise}
+    Erstellen Sie eine Klasse \lstinline|Buch| mit den Attributen \lstinline|titel|, \lstinline|autor| und \lstinline|seitenzahl|. Implementieren Sie eine Methode \lstinline|info()|, die eine Zusammenfassung der Buchinformationen ausgibt. Erstellen Sie zwei Buchobjekte und rufen Sie die \lstinline|info()|-Methode auf.
+
+    \begin{myanswer}
+\lstinputlisting{GrundlagenInfo/00_Programmieren/Skript/Code/K06_Klassen/buch.py}
+    \end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+    Erweitern Sie die \lstinline|Bankkonto|-Klasse um eine Methode \lstinline|ueberweisen(zielkonto, betrag)|, die Geld von einem Konto auf ein anderes überweist. Die Methode soll prüfen, ob genügend Guthaben vorhanden ist, und dann den Betrag vom aktuellen Konto abziehen und zum Zielkonto hinzufügen.
+
+    \begin{myanswer}
+\lstinputlisting{GrundlagenInfo/00_Programmieren/Skript/Code/K06_Klassen/bankkonto_ueberweisung.py}
+    \end{myanswer}
+\end{myexercise}
+
+\section{Klassenmethoden und Attribute}
+
+Neben den Instanzattributen (die zu jedem Objekt gehören) können Klassen auch Klassenattribute haben, die für alle Instanzen gleich sind.
+
+\begin{myexample}[Klassenattribute]
+\lstinputlisting{GrundlagenInfo/00_Programmieren/Skript/Code/K06_Klassen/klassenattribute.py}
+\end{myexample}
+
+\begin{myexample}[Instanzzähler]
+Ein häufiger Anwendungsfall für Klassenattribute ist das Zählen von Instanzen:
+
+\lstinputlisting{GrundlagenInfo/00_Programmieren/Skript/Code/K06_Klassen/instanzzaehler.py}
+\end{myexample}
+
+\begin{myexercise}
+    Erstellen Sie eine Klasse \lstinline|Auto| mit den Instanzattributen \lstinline|marke|, \lstinline|modell| und \lstinline|baujahr|. Fügen Sie ein Klassenattribut \lstinline|anzahl_autos| hinzu, das die Gesamtzahl der erstellten Auto-Objekte zählt. Implementieren Sie eine Klassenmethode \lstinline|get_statistik()|, die die Anzahl der Autos zurückgibt.
+
+    \begin{myanswer}
+        \lstinputlisting{GrundlagenInfo/00_Programmieren/Skript/Code/K06_Klassen/auto.py}
+    \end{myanswer}
+\end{myexercise}
+
+\section{Vererbung}
+
+Ein mächtiges Konzept der Objektorientierung ist die Vererbung. Sie ermöglicht es, eine neue Klasse basierend auf einer vorhandenen Klasse zu erstellen und deren Eigenschaften und Methoden zu übernehmen.
+
+\begin{mydefinition}
+Bei der \textbf{Vererbung} erbt eine Kindklasse (Subklasse) Attribute und Methoden von einer Elternklasse (Superklasse). Die Kindklasse kann zusätzliche Attribute und Methoden haben oder vorhandene überschreiben.
+\end{mydefinition}
+
+\begin{myexample}[Vererbung]
+\lstinputlisting{GrundlagenInfo/00_Programmieren/Skript/Code/K06_Klassen/elektroauto.py}
+\end{myexample}
+
+In diesem Beispiel:
+\begin{itemize}
+    \item \lstinline|ElektroAuto| erbt von \lstinline|Fahrzeug| und erhält alle seine Attribute und Methoden.
+    \item Mit \lstinline|super().__init__(...)| rufen wir den Konstruktor der Elternklasse auf.
+    \item Die Methode \lstinline|fahren()| wird in der Kindklasse überschrieben, um die spezifische Funktionalität eines Elektroautos zu implementieren.
+    \item Mit \lstinline|super().info()| greifen wir auf die Methode der Elternklasse zu.
+\end{itemize}
+
+\begin{myexercise}
+    Erstellen Sie eine Elternklasse \lstinline|Person| mit den Attributen \lstinline|name| und \lstinline|alter| sowie einer Methode \lstinline|geburtstag_feiern()|. Erstellen Sie dann eine Kindklasse \lstinline|Schueler| mit einem zusätzlichen Attribut \lstinline|klasse| und einer überschriebenen Methode \lstinline|vorstellen()|, die auch die Klasse ausgibt.
+
+    \begin{myanswer}
+        \begin{lstlisting}
+class Person:
+    def __init__(self, name, alter):
+        self.name = name
+        self.alter = alter
+    
+    def geburtstag_feiern(self):
+        self.alter += 1
+        print(f"{self.name} ist jetzt {self.alter} Jahre alt.")
+    
+    def vorstellen(self):
+        print(f"Hallo, ich bin {self.name} und {self.alter} Jahre alt.")
+
+class Schueler(Person):
+    def __init__(self, name, alter, klasse):
+        super().__init__(name, alter)
+        self.klasse = klasse
+    
+    def vorstellen(self):
+        print(f"Hallo, ich bin {self.name}, {self.alter} Jahre alt und besuche die Klasse {self.klasse}.")
+    
+    def klasse_wechseln(self, neue_klasse):
+        self.klasse = neue_klasse
+        print(f"{self.name} besucht jetzt die Klasse {self.klasse}.")
+
+# Test
+person = Person("Anna", 35)
+schueler = Schueler("Max", 16, "4b")
+
+person.vorstellen()
+person.geburtstag_feiern()
+
+schueler.vorstellen()
+schueler.geburtstag_feiern()
+schueler.klasse_wechseln("5a")
+schueler.vorstellen()
+\end{lstlisting}
+    \end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+    Erstellen Sie eine Basisklasse \lstinline|Bankkonto| wie im vorherigen Beispiel. Dann erstellen Sie eine Unterklasse \lstinline|Sparkonto|, die eine zusätzliche Methode \lstinline|zinsen_gutschreiben(zinssatz)| hat, die Zinsen basierend auf dem aktuellen Kontostand gutschreibt.
+
+    \begin{myanswer}
+        \begin{lstlisting}
+class Bankkonto:
+    def __init__(self, kontonummer, inhaber, kontostand=0):
+        self.kontonummer = kontonummer
+        self.inhaber = inhaber
+        self.kontostand = kontostand
+    
+    def einzahlen(self, betrag):
+        if betrag > 0:
+            self.kontostand += betrag
+            print(f"CHF {betrag} eingezahlt. Neuer Kontostand: CHF {self.kontostand}")
+        else:
+            print("Fehler: Betrag muss positiv sein")
+    
+    def abheben(self, betrag):
+        if betrag > 0:
+            if betrag <= self.kontostand:
+                self.kontostand -= betrag
+                print(f"CHF {betrag} abgehoben. Neuer Kontostand: CHF {self.kontostand}")
+                return True
+            else:
+                print("Fehler: Nicht genügend Guthaben")
+                return False
+        else:
+            print("Fehler: Betrag muss positiv sein")
+            return False
+    
+    def kontoinfo(self):
+        return f"Konto {self.kontonummer} ({self.inhaber}): CHF {self.kontostand}"
+
+class Sparkonto(Bankkonto):
+    def __init__(self, kontonummer, inhaber, kontostand=0, zinssatz=0.01):
+        super().__init__(kontonummer, inhaber, kontostand)
+        self.zinssatz = zinssatz
+    
+    def zinsen_gutschreiben(self):
+        zinsen = self.kontostand * self.zinssatz
+        self.kontostand += zinsen
+        print(f"CHF {zinsen:.2f} Zinsen gutgeschrieben. Neuer Kontostand: CHF {self.kontostand:.2f}")
+    
+    def kontoinfo(self):
+        basis_info = super().kontoinfo()
+        return f"{basis_info} (Zinssatz: {self.zinssatz*100:.2f}%)"
+
+# Test
+sparkonto = Sparkonto("CH789", "Sarah", 1000, 0.02)
+print(sparkonto.kontoinfo())
+sparkonto.einzahlen(500)
+sparkonto.zinsen_gutschreiben()
+print(sparkonto.kontoinfo())
+\end{lstlisting}
+    \end{myanswer}
+\end{myexercise}
+
+\section{Praktisches Beispiel: Bibliothekssystem}
+
+Als umfassenderes Beispiel implementieren wir ein einfaches Bibliothekssystem mit mehreren Klassen, die verschiedene Aspekte einer Bibliothek modellieren.
+
+\begin{myexample}[Bibliothekssystem]
+\begin{lstlisting}
+class Buch:
+    def __init__(self, titel, autor, isbn):
+        self.titel = titel
+        self.autor = autor
+        self.isbn = isbn
+        self.ausgeliehen = False
+    
+    def info(self):
+        status = "ausgeliehen" if self.ausgeliehen else "verfügbar"
+        return f'"{self.titel}" von {self.autor} (ISBN: {self.isbn}) - {status}'
+
+class Bibliotheksmitglied:
+    def __init__(self, name, mitgliedsnummer):
+        self.name = name
+        self.mitgliedsnummer = mitgliedsnummer
+        self.ausgeliehene_buecher = []
+    
+    def buch_ausleihen(self, buch):
+        if not buch.ausgeliehen:
+            self.ausgeliehene_buecher.append(buch)
+            buch.ausgeliehen = True
+            print(f"{self.name} hat '{buch.titel}' ausgeliehen.")
+            return True
+        else:
+            print(f"Fehler: '{buch.titel}' ist bereits ausgeliehen.")
+            return False
+    
+    def buch_zurueckgeben(self, buch):
+        if buch in self.ausgeliehene_buecher:
+            self.ausgeliehene_buecher.remove(buch)
+            buch.ausgeliehen = False
+            print(f"{self.name} hat '{buch.titel}' zurückgegeben.")
+            return True
+        else:
+            print(f"Fehler: {self.name} hat '{buch.titel}' nicht ausgeliehen.")
+            return False
+    
+    def info(self):
+        anzahl = len(self.ausgeliehene_buecher)
+        info = f"{self.name} (Nr. {self.mitgliedsnummer}) - {anzahl} Bücher ausgeliehen"
+        if anzahl > 0:
+            info += ":\n"
+            for buch in self.ausgeliehene_buecher:
+                info += f"- {buch.titel}\n"
+        return info
+
+class Bibliothek:
+    def __init__(self, name):
+        self.name = name
+        self.buecher = []
+        self.mitglieder = []
+    
+    def buch_hinzufuegen(self, buch):
+        self.buecher.append(buch)
+        print(f"Buch '{buch.titel}' wurde zur Bibliothek hinzugefügt.")
+    
+    def mitglied_registrieren(self, mitglied):
+        self.mitglieder.append(mitglied)
+        print(f"{mitglied.name} wurde als Mitglied registriert.")
+    
+    def buch_suchen(self, suchbegriff):
+        ergebnisse = []
+        for buch in self.buecher:
+            if (suchbegriff.lower() in buch.titel.lower() or 
+                suchbegriff.lower() in buch.autor.lower() or 
+                suchbegriff in buch.isbn):
+                ergebnisse.append(buch)
+        return ergebnisse
+    
+    def verfuegbare_buecher(self):
+        return [buch for buch in self.buecher if not buch.ausgeliehen]
+    
+    def statistik(self):
+        verfuegbar = len(self.verfuegbare_buecher())
+        ausgeliehen = len(self.buecher) - verfuegbar
+        return f"Bibliothek {self.name}:\n" \
+               f"- Gesamtzahl Bücher: {len(self.buecher)}\n" \
+               f"- Verfügbare Bücher: {verfuegbar}\n" \
+               f"- Ausgeliehene Bücher: {ausgeliehen}\n" \
+               f"- Anzahl Mitglieder: {len(self.mitglieder)}"
+
+# Beispielverwendung
+bibliothek = Bibliothek("Stadtbibliothek Winterthur")
+
+# Bücher erstellen und hinzufügen
+buch1 = Buch("Harry Potter und der Stein der Weisen", "J.K. Rowling", "9783551557414")
+buch2 = Buch("Der Herr der Ringe", "J.R.R. Tolkien", "9783608939842")
+buch3 = Buch("Die unendliche Geschichte", "Michael Ende", "9783522202664")
+
+bibliothek.buch_hinzufuegen(buch1)
+bibliothek.buch_hinzufuegen(buch2)
+bibliothek.buch_hinzufuegen(buch3)
+
+# Mitglieder erstellen und registrieren
+mitglied1 = Bibliotheksmitglied("Lisa Müller", "M001")
+mitglied2 = Bibliotheksmitglied("Tom Schneider", "M002")
+
+bibliothek.mitglied_registrieren(mitglied1)
+bibliothek.mitglied_registrieren(mitglied2)
+
+# Bücher ausleihen
+mitglied1.buch_ausleihen(buch1)
+mitglied2.buch_ausleihen(buch3)
+
+# Suche durchführen
+print("\nSuchergebnisse für 'Harry':")
+ergebnisse = bibliothek.buch_suchen("Harry")
+for buch in ergebnisse:
+    print(buch.info())
+
+# Statistik anzeigen
+print("\n" + bibliothek.statistik())
+
+# Infos zu Mitgliedern anzeigen
+print("\nMitgliederinformationen:")
+print(mitglied1.info())
+print(mitglied2.info())
+
+# Buch zurückgeben
+mitglied1.buch_zurueckgeben(buch1)
+
+# Aktualisierte Statistik
+print("\n" + bibliothek.statistik())
+\end{lstlisting}
+\end{myexample}
+
+\begin{myexercise}
+    Erweitern Sie das Bibliothekssystem um eine neue Klasse \lstinline|Zeitschrift|, die von \lstinline|Buch| erbt, aber zusätzlich eine \lstinline|ausgabe| (z.B. "Mai 2024") hat. Überschreiben Sie die \lstinline|info()|-Methode entsprechend, und fügen Sie mindestens eine Zeitschrift zur Bibliothek hinzu.
+
+    \begin{myanswer}
+        \begin{lstlisting}
+class Zeitschrift(Buch):
+    def __init__(self, titel, verlag, isbn, ausgabe):
+        super().__init__(titel, verlag, isbn)
+        self.ausgabe = ausgabe
+    
+    def info(self):
+        basis_info = super().info()
+        return f"{basis_info}, Ausgabe: {self.ausgabe}"
+
+# Beispielnutzung
+zeitschrift1 = Zeitschrift("National Geographic", "National Geographic Society", "NGM202405", "Mai 2024")
+zeitschrift2 = Zeitschrift("Der Spiegel", "Spiegel-Verlag", "SP202422", "22/2024")
+
+bibliothek.buch_hinzufuegen(zeitschrift1)
+bibliothek.buch_hinzufuegen(zeitschrift2)
+
+mitglied1.buch_ausleihen(zeitschrift1)
+
+print("\nZeitschriften in der Bibliothek:")
+for buch in bibliothek.buecher:
+    if isinstance(buch, Zeitschrift):
+        print(buch.info())
+\end{lstlisting}
+    \end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}
+    Entwickeln Sie ein vollständiges Lagerverwaltungssystem mit folgenden Klassen:
+    \begin{itemize}
+        \item \lstinline|Produkt| (Basisklasse mit Name, Artikelnummer, Preis)
+        \item \lstinline|Elektronikprodukt| (erbt von Produkt, zusätzlich mit Garantiedauer)
+        \item \lstinline|Lebensmittel| (erbt von Produkt, zusätzlich mit Haltbarkeitsdatum)
+        \item \lstinline|Lager| (verwaltet Produkte, mit Methoden zum Hinzufügen, Entfernen, Suchen und Bestandsanzeige)
+        \item \lstinline|Bestellung| (enthält Produkte und Mengen, berechnet Gesamtpreis)
+    \end{itemize}
+
+    Implementieren Sie auch eine Methode, die abgelaufene Lebensmittel identifiziert und aus dem Lager entfernt.
+\end{mychallenge}
+
+\section{Zusammenfassung}
+Die objektorientierte Programmierung mit Klassen ist ein mächtiges Werkzeug zur Strukturierung von Code und Modellierung realer Objekte. Wichtige Konzepte sind:
+
+\begin{itemize}
+    \item Klassen definieren Vorlagen für Objekte mit Attributen und Methoden
+    \item Objekte sind konkrete Instanzen von Klassen
+    \item Vererbung ermöglicht die Wiederverwendung und Erweiterung von Code
+    \item Methoden definieren das Verhalten von Objekten
+    \item Kapselung erlaubt es, zusammengehörige Daten und Funktionen zu bündeln
+\end{itemize}
+
+Durch die Verwendung von Klassen können komplexe Systeme modelliert und implementiert werden, wodurch der Code besser strukturiert, lesbarer und wartbarer wird.
