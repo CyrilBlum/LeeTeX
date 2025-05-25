@@ -66,16 +66,17 @@ df[['A', 'B']] # mehrere Spalten
 \end{lstlisting}
     \end{cheatSheetBox}
 
-    \begin{cheatSheetBox}[title=Aggregatsfunktionen]
+    \begin{cheatSheetBox}[title=Tabellen-Statistiken]
       \begin{lstlisting}
-df['Spalte'].mean() # Mittelwert
-df['Spalte'].sum()  # Summe
-df['Spalte'].min()  # Minimum
-df['Spalte'].max()  # Maximum
+df['Spalte'].mean()  # Mittelwert
+df['Spalte'].sum()   # Summe
+df['Spalte'].min()   # Minimum
+df['Spalte'].max()   # Maximum
 df['Spalte'].count() # Anzahl Einträge
-df['Spalte'].std()  # Standardabweichung
+df['Spalte'].std()   # Standardabweichung
 df['Spalte'].unique() # Einzigartige Werte
 df['Spalte'].value_counts() # Häufigkeit der Werte
+df['Spalte'].shape # Anzahl Zeilen und Spalten
 \end{lstlisting}
 
     \end{cheatSheetBox}
@@ -94,23 +95,24 @@ df['BMI'] = df['Gewicht'] / (df['Grösse']/100)**2
 
     \begin{cheatSheetBox}[title=Grafiken erstellen]
       \begin{lstlisting}
-df["column"].value_counts().plot.pie() # Kuchendiagramm
-df["column"].value_counts().plot.bar() # Balkendiagramm
-df.plot.line(x='x_column', y='y_column') # Liniendiagramm
-df.plot.scatter(x='x_column', y='y_column') # Streudiagramm
+df["Spalte"].value_counts().plot.pie() # Kuchendiagramm
+df["Spalte"].value_counts().plot.bar() # Balkendiagramm
+df.plot.line(x='x_spalte', y='y_spalte') # Liniendiagramm
+df.plot.scatter(x='x_spalte', y='y_spalte') # Streudiagramm
 
 # scatter plots nach Kategorien einfärben
-df['category_column'] = df['category_column'].astype('category') 
-df.plot.scatter(x='x_column', y='y_column', c='category_column', colormap='viridis')
+df['kategorie_spalte'] = df['kategorie_spalte'].astype('category') 
+df.plot.scatter(x='x_spalte', y='y_spalte', c='category_spalte', colormap='viridis')
 
 # Histogramm mit 10 Grössenklassen
-df['column'].plot.hist(bins=10)
+df['Spalte'].plot.hist(bins=10)
 \end{lstlisting}
     \end{cheatSheetBox}
 
     \begin{cheatSheetBox}[title=Gruppieren]
+      Nach \texttt{spalte\_gruppe} gruppieren und Mittelwert von \texttt{spalte\_statistik} berechnen:
       \begin{lstlisting}
-df.groupby('Spalte').mean()
+df.groupby('spalte_gruppe')["spalte_statistik"].mean()
 \end{lstlisting}
     \end{cheatSheetBox}
 
@@ -125,15 +127,15 @@ df.groupby('Spalte').mean()
     \end{cheatSheetBox}
     \begin{cheatSheetBox}[title=Lineare Regression]
       \begin{itemize}
-        \item \textbf{Unabhängige Variable}: \lstinline|df['x']|
-        \item \textbf{Abhängige Variable}: \lstinline|df['y']|
+        \item \textbf{Unabhängige Variable}: \lstinline|df['Schlaf']|
+        \item \textbf{Abhängige Variable}: \lstinline|df['Note']|
       \end{itemize}
       \begin{lstlisting}
-model = smf.ols(formula='y ~ x', data=df).fit()
+model = smf.ols(formula='Note ~ Schlaf', data=df).fit()
 print(model.params) # Koeffizienten
 
 # Vorhersage
-df['y_pred'] = model.predict(df['x'])
+df['Note_pred'] = model.predict(df['Schlaf'])
 \end{lstlisting}
     \end{cheatSheetBox}
 
@@ -145,21 +147,20 @@ P = np.array([
     [0.2, 0.8]
 ])
 
-P
-      \end{lstlisting}
+P\end{lstlisting}
     \end{cheatSheetBox}
     \begin{cheatSheetBox}[title=Markov-Ketten: Vorhersage (Matrixmultiplikation)]
       \begin{lstlisting}
 # Startzustand: 100% Sonne
-v0 = np.array([1, 0])
+pi0 = np.array([1, 0])
 
 # Nach einem Tag
-v1 = v0 @ P
-print("Nach 1 Tag:", v1)
+pi1 = pi0 @ P
+print("Nach 1 Tag:", pi1)
 
 # Nach zwei Tagen
-v2 = v1 @ P
-print("Nach 2 Tagen:", v2)
+pi2 = pi1 @ P
+print("Nach 2 Tagen:", pi2)
       \end{lstlisting}
     \end{cheatSheetBox}
     \begin{cheatSheetBox}[title=Markov-Ketten: Vorhersage (Zufallsimulation)]
