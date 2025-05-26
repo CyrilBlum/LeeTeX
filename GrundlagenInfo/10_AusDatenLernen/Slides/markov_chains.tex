@@ -8,16 +8,16 @@
 
 \subtitle{Markov-Ketten}
 
-\author[Wendl, Cyril] % (optional)
-{Cyril Wendl\inst{2} \and Naoki Peter \inst{1}}
+\author[Wendl, Cyril]{Cyril Wendl}
+%\author[Wendl, Cyril]{Cyril Wendl\inst{2} \and Naoki Peter \inst{1}}
 
 \institute[KZN] % (optional)
 {
-    \inst{1}%
-    Fachschaft Informatik\\
-    Kantonsschule Zürich-Nord
-    \and
-    \inst{2}%
+    % \inst{1}%
+    % Fachschaft Informatik\\
+    % Kantonsschule Zürich-Nord
+    % \and
+    % \inst{2}%
     Fachschaft Informatik\\
     Kantonsschule im Lee
 }
@@ -30,6 +30,8 @@
 
 \frame{\titlepage}
 
+\section{Markov}
+
 \begin{frame}{Themenübersicht}
     \begin{enumerate}
         \item[\faCheckSquare{}] Daten verstehen (analysieren und visualisieren)
@@ -37,6 +39,64 @@
         \item[\faSquare] \textbf{Zustände vorhersagen (Markov-Ketten)}
     \end{enumerate}
 \end{frame}
+
+\begin{frame}{Anwendungen von Markov-Ketten}{Google PageRank-Algorithmus}
+    \begin{itemize}[<+->]
+        \item Das Surfen im Web kann als Markov-Kette modelliert werden.
+        \item Jeder Kreis steht für eine Webseite (Zustand).
+        \item Die Pfeile zeigen die Übergangswahrscheinlichkeiten zwischen den Seiten.
+        \item Die Wahrscheinlichkeit, auf eine andere Seite zu wechseln, hängt nur von der aktuellen Seite ab – genau wie bei einer Markov-Kette!
+    \end{itemize}
+
+    \begin{figure}[H]
+        \begin{tikzpicture}[scale=0.7, transform shape, ->, >=stealth', node distance=4cm, thick,
+                website/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
+
+            \node[website] (A) {news.com};
+            \node[website] (B) [right of=A] {blog.org};
+            \node[website] (C) [below of=A] {shop.net};
+            \node[website] (D) [below of=B] {wiki.edu};
+
+            \path[->]
+            (A) edge[bend left] node[above] {0.5} (B)
+            (A) edge[bend right=15] node[left] {0.5} (C)
+            (B) edge[bend left] node[below] {1.0} (A)
+            (B) edge node[right] {1.0} (C)
+            (C) edge node[below right] {1.0} (D)
+            (D) edge[bend left] node[below] {0.6} (A)
+            (D) edge[bend right=15] node[left] {0.4} (B);
+        \end{tikzpicture}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Anwendungen von Markov-Ketten}{Wortgenerierung mit ChatGPT}
+    \begin{itemize}[<+->]
+        \item Die Textgenerierung in ChatGPT kann als Markov-Kette modelliert werden.
+        \item Jeder Kreis steht für ein Wort (Zustand).
+        \item Die Pfeile zeigen die Übergangswahrscheinlichkeiten zum nächsten Wort.
+        \item Die Wahrscheinlichkeit, welches Wort als nächstes kommt, hängt (im einfachsten Modell) nur vom aktuellen Wort ab – wie bei einer Markov-Kette!
+    \end{itemize}
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[scale=0.7, transform shape, ->, >=stealth', node distance=4cm, thick,
+                word/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
+
+            \node[word] (Hallo) {Hallo};
+            \node[word] (wie) [right of=Hallo] {wie};
+            \node[word] (geht) [below of=Hallo] {geht};
+            \node[word] (dir) [below of=wie] {dir?};
+
+            \path[->]
+            (Hallo) edge[bend left] node[above] {0.8} (wie)
+            (Hallo) edge[bend right=15] node[left] {0.2} (geht)
+            (wie) edge node[right] {.6} (geht)
+            (wie) edge node[right] {.4} (dir)
+            (geht) edge node[below right] {1.0} (dir);
+        \end{tikzpicture}
+    \end{figure}
+\end{frame}
+
 
 
 \begin{frame}{Anwendungen von Markov-Ketten}
@@ -54,9 +114,6 @@
         \end{itemize}
 
         \column{0.5\textwidth}
-        \begin{figure}[H]
-            \only<5->{\centering\includegraphics[width=0.35\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/intro_recommendation"}}
-        \end{figure}
         \begin{itemize}[<+->]
             \item \textbf{Finanzmodelle} (Aktienkurse)
             \item \textbf{Verkehrssimulationen}
@@ -69,24 +126,35 @@
 
 \begin{frame}[fragile]{Lernziele}
     \begin{itemize}[<+->]
-        \item \faSquare{} Ich kann erklären, was eine Markov-Kette ist und wie die Markov-Eigenschaft funktioniert.
-        \item \faSquare{} Ich kann aus einer realen Problemstellung eine Übergangsmatrix erstellen.
-        \item \faSquare{} Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette über mehrere Schritte entwickelt.
-        \item \faSquare{} Ich kann die stationäre Verteilung einer Markov-Kette berechnen und interpretieren.
-        \item \faSquare{} Ich kann Anwendungen von Markov-Ketten in der Informatik beschreiben.
-        \item \faSquare{} Ich kann die Aussagekraft und Grenzen von stochastischen Modellen reflektieren.
+        \item \faCheckSquare{} Ich kann \textbf{Anwendungen} von Markov-Ketten in der Informatik beschreiben.
+        \item \faSquare{} Ich kann erklären, was eine \textbf{Markov-Kette} ist und wie die \textbf{Markov-Eigenschaft} funktioniert.
+        \item \faSquare{} Ich kann aus einer realen Problemstellung eine \textbf{Übergangsmatrix} erstellen.
+        \item \faSquare{} Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette \textbf{über mehrere Schritte entwickelt}.
+              % \item \faSquare{} Ich kann die stationäre Verteilung einer Markov-Kette berechnen und interpretieren.
+        \item \faSquare{} Ich kann kurze Texte mit Markov-Ketten \textbf{generieren}.
+        \item \faSquare{} Ich kann die \textbf{Grenzen} von Markov-Ketten reflektieren.
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Was sind Markov-Ketten?}
+    \begin{mydefinition}
     \begin{itemize}[<+->]
         \item Mathematisches Modell für \textbf{Abfolgen von Zuständen}
-        \item Zentral: Die \textbf{Markov-Eigenschaft}
-        \item Der nächste Zustand hängt \textbf{nur vom aktuellen Zustand} ab
-        \item Nicht davon, wie wir zu diesem Zustand gekommen sind
-        \item Beschrieben durch eine \textbf{Übergangsmatrix}
-        \item Einfaches, aber mächtiges Werkzeug zur Modellierung von Prozessen
+        \item \textbf{Markov-Eigenschaft}: Der nächste Zustand hängt \textbf{nur vom aktuellen Zustand} ab
     \end{itemize}
+    \end{mydefinition}
+\end{frame}
+
+\begin{frame}
+    \begin{myexercise}[Markov-Eigenschaft gegeben oder nicht?]
+        \begin{enumerate}
+            \item Das Wetter morgen kann gut vorhergesagt werden anhand des heutigen Wetters.
+            \item Die Wahrscheinlichkeit, dass ein Schüler heute seine Hausaufgaben macht, hängt davon ab, ob er sie gestern und vorgestern gemacht hat.
+            \item Die Position einer Spielfigur auf einem Spielbrett hängt nur vom aktuellen Feld und dem nächsten Würfelergebnis ab.
+            \item Die Wahrscheinlichkeit, dass ein Computer abstürzt, hängt davon ab, was bereits alles auf dem Computer gemacht wurde.
+            \item Die Wahrscheinlichkeit, dass eine Person Kleider einer bestimmten Marke kauft, hängt nur davon ab, ob das zuletzt gekaufte Kleidungsstück von dieser Marke war.
+        \end{enumerate}
+    \end{myexercise}
 \end{frame}
 
 \begin{frame}{Beispiel: Wettervorhersage}
@@ -98,16 +166,22 @@
                   \item Wenn heute \emoji{umbrella}: Morgen zu 40\% \emoji{sun}, zu 60\% \emoji{umbrella}
               \end{itemize}
     \end{itemize}
-
-    \begin{table}[H]
-        \centering
-        \begin{tabular}{c c|c|c}
-                                                          &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
-                                                          &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
-            \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0{,}8                             & 0{,}2            \\\cmidrule{2-4}
-                                                          & \emoji{umbrella} & 0{,}4                             & 0{,}6            \\
-        \end{tabular}
-    \end{table}
+    \only<5->{
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{c c|c|c}
+                                                              &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
+                                                              &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
+                \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0{,}8                             & 0{,}2            \\\cmidrule{2-4}
+                                                              & \emoji{umbrella} & 0{,}4                             & 0{,}6            \\
+            \end{tabular}
+        \end{table}
+    }
+    \only<6->{
+        \begin{myexercise}[Social-Media-Apps]\small
+            Jedes Mal, wenn Sie Instagram benutzen, benutzen Sie als nächste App wieder Instagram mit 80\% Wahrscheinlichkeit, oder TikTok mit 20\%. Wenn Sie zuerst TikTok benutzen, wechseln Sie danach mit 30\% Wahrscheinlichkeit zu Instagram und bleiben bei TikTok mit 70\% Wahrscheinlichkeit. Wie sieht die Übergangsmatrix aus?
+        \end{myexercise}
+    }
 \end{frame}
 
 \begin{frame}{Die Übergangsmatrix}
@@ -125,8 +199,62 @@
         \item Zeilen: Ausgangszustände (von welchem Zustand starten wir?)
         \item Spalten: Zielzustände (zu welchem Zustand wechseln wir?)
         \item Jede Zeile summiert sich zu 1 (Wahrscheinlichkeiten!)
-        \item $P_{i,j}$ = Wahrscheinlichkeit, von Zustand $i$ zu Zustand $j$ zu wechseln
     \end{itemize}
+\end{frame}
+
+\begin{frame}{Erinnerung: Matrixmultiplikation}
+    \only<1-3>{\begin{itemize}[<+->]
+            \item Um die Entwicklung einer Markov-Kette zu berechnen, multiplizieren wir einen Zeilenvektor mit einer Matrix.
+            \item Beispiel:
+        \end{itemize}}
+    \[
+        \begin{pmatrix}
+            \textcolor{red}{a} & \textcolor{blue}{b} \\
+        \end{pmatrix}
+        \cdot
+        \begin{pmatrix}
+            \textcolor{teal}{e}   & \textcolor{violet}{f} \\
+            \textcolor{orange}{g} & \textcolor{brown}{h}  \\
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \textcolor{red}{a} \cdot \textcolor{teal}{e} + \textcolor{blue}{b} \cdot \textcolor{orange}{g} & \textcolor{red}{a} \cdot \textcolor{violet}{f} + \textcolor{blue}{b} \cdot \textcolor{brown}{h} \\
+        \end{pmatrix}
+    \]
+    \only<3->{
+        \begin{myexercise}[Matrix-Multiplikation]
+            Multiplizieren Sie $\begin{pmatrix} 0{,}3 & 0{,}7 \end{pmatrix}$ mit $\begin{pmatrix} 0{,}8 & 0{,}2 \\ 0{,}4 & 0{,}6 \end{pmatrix}$.
+            \only<4->{
+                \begin{myanswer}
+                    \[
+                        \begin{aligned}
+                             &
+                            \begin{pmatrix}
+                                \textcolor{red}{0.3} & \textcolor{blue}{0.7} \\
+                            \end{pmatrix}
+                            \cdot
+                            \begin{pmatrix}
+                                \textcolor{teal}{0.8}   & \textcolor{violet}{0.2} \\
+                                \textcolor{orange}{0.4} & \textcolor{brown}{0.6}  \\
+                            \end{pmatrix}
+                            \\&=
+                            \begin{pmatrix}
+                                \textcolor{red}{0.3} \cdot \textcolor{teal}{0.8} + \textcolor{blue}{0.7} \cdot \textcolor{orange}{0.4} & \textcolor{red}{0.3} \cdot \textcolor{violet}{0.2} + \textcolor{blue}{0.7} \cdot \textcolor{brown}{0.6} \\
+                            \end{pmatrix}
+                            \\&=
+                            \begin{pmatrix}
+                                0.24 + 0.28 & 0.06 + 0.42 \\
+                            \end{pmatrix}
+                            =
+                            \begin{pmatrix}
+                                0.52 & 0.48 \\
+                            \end{pmatrix}
+                        \end{aligned}
+                    \]
+                \end{myanswer}
+            }
+        \end{myexercise}
+    }
 \end{frame}
 
 \begin{frame}{Startvektor und Entwicklung}
@@ -195,8 +323,8 @@
 
 \begin{frame}{Auftrag}{Skript}
     \begin{itemize}
-        \item \aufgabebox{1.1-1.2}
-        \item \challengebox{1.3}
+        \item \aufgabebox{3.2}
+        \item \challengebox{3.3, 3.4}
     \end{itemize}
 \end{frame}
 
@@ -262,6 +390,211 @@
         \item Kanten = Übergänge mit Wahrscheinlichkeiten
         \item Summe der ausgehenden Kanten = 1
     \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Auftrag: Jupyter Notebooks}
+    Skript ``Aus Daten lernen''
+
+    \begin{itemize}
+        \item Zuerst jeweils Beispiele genau durchlesen und ausführen
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Textvorhersage mit Markov-Ketten}
+    \begin{itemize}[<+->]
+        \item Markov-Ketten können genutzt werden, um \textbf{Texte zu generieren}.
+        \item Die Idee: Jedes Wort (oder Zeichen) ist ein Zustand.
+        \item Die Wahrscheinlichkeit für das nächste Wort hängt nur vom aktuellen Wort ab.
+    \end{itemize}
+    \vspace{0.5cm}
+    \begin{block}{Beispiel:}
+        \textit{„Ich mag Pizza und ich mag Pasta.“}
+    \end{block}
+    \vspace{0.3cm}
+    \only<3->{
+        \begin{itemize}
+            \item Übergänge (vereinfacht):\\
+                  \texttt{Ich} $\rightarrow$ \texttt{mag} $\rightarrow$ \texttt{Pizza} $\rightarrow$ \texttt{und} $\rightarrow$ \texttt{ich} $\rightarrow$ \texttt{mag} $\rightarrow$ \texttt{Pasta}
+        \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}{Visualisierung: Markov-Kette für Text}
+    \centering
+    \begin{tikzpicture}[node distance=2.5cm, auto, thick, >=stealth']
+        \node[state] (Ich) {\texttt{Ich}};
+        \node[state] (mag) [right of=Ich] {\texttt{mag}};
+        \node[state] (Pizza) [right of=mag] {\texttt{Pizza}};
+        \node[state] (und) [below of=Pizza] {\texttt{und}};
+        \node[state] (Pasta) [above of=Pizza] {\texttt{Pasta}};
+
+        \path[->]
+        (Ich) edge node {1.0} (mag)
+        (mag) edge node[below] {0.5} (Pizza)
+        (mag) edge node[below] {0.5} (Pasta)
+        (Pizza) edge node {1.0} (und)
+        (und) edge node {1.0} (Ich);
+    \end{tikzpicture}
+    \vspace{0.5cm}
+
+    \only<2->{
+        \begin{itemize}
+            \item Jeder Pfeil steht für eine mögliche Fortsetzung im Text.
+            \item Die Wahrscheinlichkeiten werden aus Beispielsätzen gezählt.
+        \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Kurze Textgenerierung (Beispiel)}
+    \begin{itemize}[<+->]
+        \item Start: \texttt{Ich}
+        \item Nächstes Wort: \texttt{mag}
+        \item Danach: zufällig \texttt{Pizza} oder \texttt{Pasta}
+        \item usw.
+    \end{itemize}
+    \vspace{0.3cm}
+    \begin{block}{Mögliche generierte Sätze:}
+        \texttt{Ich mag Pizza und ich mag Pasta.}\\
+        \texttt{Ich mag Pasta.}
+    \end{block}
+    \vspace{0.3cm}
+    \only<5->{
+        Markov-Ketten können einfache, aber oft überraschende Texte erzeugen!
+    }
+\end{frame}
+
+\begin{frame}
+    \begin{itemize}
+        \item \aufgabebox{Text-Generierung mit Markov-Ketten}
+        \item \challengebox{1.3}
+    \end{itemize}
+\end{frame}
+\begin{frame}{Lernkontrolle: Markov-Ketten für Text}
+    \begin{myexercise}
+
+            \texttt{Hallo Welt Info Hallo Info Welt Hallo Hallo Welt Info Info Welt Hallo}
+
+        \begin{enumerate}
+            \item Leiten Sie aus dem Text eine Übergangsmatrix für die Wörter \texttt{Hallo}, \texttt{Welt} und \texttt{Info} her.
+            \item Was ist der wahrscheinlichste Text mit 3 Wörtern, wenn Sie mit \texttt{Hallo} starten?
+        \end{enumerate}
+        \textit{Hinweis: Überlegen Sie sich sinnvolle Übergangswahrscheinlichkeiten!}
+        
+    \end{myexercise}
+\end{frame}
+
+\begin{frame}
+\begin{enumerate}
+            \item \textbf{Übergangszählung:}
+            \begin{table}[H]
+                                \centering
+                                \begin{tabular}{c|ccc}
+                                        & \texttt{Hallo} & \texttt{Welt} & \texttt{Info} \\
+                                        \hline
+                                        \texttt{Hallo} (5x) & 1 & 2 & 1 \\
+                                        \texttt{Welt} (4x) & 2 & 0 & 2 \\
+                                        \texttt{Info} (4x) & 1 & 2 & 1 \\
+                                \end{tabular}
+                                \end{table}
+
+                                \textbf{Übergangsmatrix:}
+
+                                Für jede Zeile normieren wir auf die Summe der Übergänge von diesem Wort:
+
+                                \[
+                                P = \begin{pmatrix}
+                                & \texttt{Hallo} & \texttt{Welt} & \texttt{Info} \\
+                                \texttt{Hallo} & \frac{1}{4} & \frac{2}{4} & \frac{1}{4} \\
+                                \texttt{Welt} & \frac{2}{4} & 0 & \frac{2}{4} \\
+                                \texttt{Info} & \frac{1}{4} & \frac{2}{4} & \frac{1}{4} \\
+                                \end{pmatrix}
+                                \]
+
+                                \item \textbf{Wahrscheinlichster Text mit 3 Wörtern, Start \texttt{Hallo}:}
+
+                                Von \texttt{Hallo} aus ist der wahrscheinlichste Übergang zu \texttt{Welt} (2 von 4 Übergängen), danach von \texttt{Welt} zu \texttt{Hallo} oder \texttt{Info} (je 2 von 4 Übergängen).
+
+                                \begin{itemize}
+                                \item \texttt{Hallo} $\rightarrow$ \texttt{Welt} ($0{,}5$), dann \texttt{Welt} $\rightarrow$ \texttt{Hallo} ($0{,}5$):\\
+                                \texttt{Hallo Welt Hallo}
+                                \item \texttt{Hallo} $\rightarrow$ \texttt{Welt} ($0{,}5$), dann \texttt{Welt} $\rightarrow$ \texttt{Info} ($0{,}5$):\\
+                                \texttt{Hallo Welt Info}
+                                \end{itemize}
+
+                                Beide sind gleich wahrscheinlich und am wahrscheinlichsten.
+
+            \textbf{Übergangsmatrix:}
+
+            Für jede Zeile normieren wir auf die Summe der Übergänge von diesem Wort:
+
+            \[
+            P = \begin{pmatrix}
+            & \texttt{Hallo} & \texttt{Welt} & \texttt{Info} \\
+            \texttt{Hallo} & 0 & \frac{3}{6} & \frac{3}{6} \\
+            \texttt{Welt} & \frac{2}{5} & 0 & \frac{3}{5} \\
+            \texttt{Info} & \frac{3}{5} & \frac{2}{5} & 0 \\
+            \end{pmatrix}
+            \]
+
+            \item \textbf{Wahrscheinlichster Text mit 3 Wörtern, Start \texttt{Hallo}:}
+
+            Von \texttt{Hallo} aus gibt es gleichwahrscheinliche Übergänge zu \texttt{Welt} und \texttt{Info}. Danach ist der wahrscheinlichste nächste Schritt jeweils der Übergang mit der höchsten Wahrscheinlichkeit:
+
+            \begin{itemize}
+            \item \texttt{Hallo} $\rightarrow$ \texttt{Welt} ($0{,}5$), dann \texttt{Welt} $\rightarrow$ \texttt{Info} ($0{,}6$):\\
+            \texttt{Hallo Welt Info}
+            \item \texttt{Hallo} $\rightarrow$ \texttt{Info} ($0{,}5$), dann \texttt{Info} $\rightarrow$ \texttt{Hallo} ($0{,}6$):\\
+            \texttt{Hallo Info Hallo}
+            \end{itemize}
+
+            Beide sind gleich wahrscheinlich und am wahrscheinlichsten.
+        \end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Grenzen von Markov-Ketten}
+    \begin{itemize}[<+->]
+        \item \textbf{Markov-Eigenschaft:} Nicht immer realistisch, manchmal hängt die Zukunft von mehr als nur dem aktuellen Zustand ab
+        \item \textbf{Feste Übergangswahrscheinlichkeiten:} In der Realität können sich Wahrscheinlichkeiten ändern
+        \item \textbf{Komplexe Abhängigkeiten:} Können nicht abgebildet werden
+        \item \textbf{Zustandsraum:} Bei vielen Zuständen wird die Berechnung aufwändig
+        \item \textbf{Keine Kausalität:} Beschreiben nur Wahrscheinlichkeiten, keine Ursachen
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Lernziele}
+    \begin{itemize}[<+->]
+        \item \faCheckSquare{} Ich kann \textbf{Anwendungen} von Markov-Ketten in der Informatik beschreiben.
+        \item \faCheckSquare{} Ich kann erklären, was eine \textbf{Markov-Kette} ist und wie die \textbf{Markov-Eigenschaft} funktioniert.
+        \item \faCheckSquare{} Ich kann aus einer realen Problemstellung eine \textbf{Übergangsmatrix} erstellen.
+        \item \faCheckSquare{} Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette \textbf{über mehrere Schritte entwickelt}.
+              % \item \faSquare{} Ich kann die stationäre Verteilung einer Markov-Kette berechnen und interpretieren.
+        \item \faCheckSquare{} Ich kann kurze Texte mit Markov-Ketten \textbf{generieren}.
+        \item \faCheckSquare{} Ich kann die \textbf{Grenzen} von Markov-Ketten reflektieren.
+    \end{itemize}
+\end{frame}
+
+% \begin{frame}
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-2"}
+% \end{frame}
+
+% \begin{frame}
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-3"}
+% \end{frame}
+
+% \begin{frame}
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-1"}
+% \end{frame}
+
+\appendix
+\begin{frame}[plain,noframenumbering]
+    \centering
+    \vspace{2cm}
+    {\Huge\textbf{Anhang}}
 \end{frame}
 
 \begin{frame}{Eigenschaften von Markov-Ketten}
@@ -360,58 +693,4 @@
     \only<3->{
         Langfristig werden beide Apps gleich häufig genutzt.
     }
-\end{frame}
-
-\begin{frame}{Grenzen von Markov-Ketten}
-    \begin{itemize}[<+->]
-        \item \textbf{Markov-Eigenschaft:} Nicht immer realistisch, manchmal hängt die Zukunft von mehr als nur dem aktuellen Zustand ab
-        \item \textbf{Feste Übergangswahrscheinlichkeiten:} In der Realität können sich Wahrscheinlichkeiten ändern
-        \item \textbf{Komplexe Abhängigkeiten:} Können nicht abgebildet werden
-        \item \textbf{Zustandsraum:} Bei vielen Zuständen wird die Berechnung aufwändig
-        \item \textbf{Keine Kausalität:} Beschreiben nur Wahrscheinlichkeiten, keine Ursachen
-    \end{itemize}
-
-    \only<6->{
-        \textbf{Erweiterungen:}
-        \begin{itemize}
-            \item Markov-Ketten höherer Ordnung
-            \item Hidden Markov Models
-            \item Andere stochastische Prozesse
-        \end{itemize}
-    }
-\end{frame}
-
-
-\begin{frame}{Auftrag: Jupyter Notebooks}
-    Skript ``Aus Daten lernen''
-
-    \begin{itemize}
-        \item Zuerst jeweils Beispiele genau durchlesen und ausführen
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Lernziele}
-    \begin{itemize}[<+->]
-        \item \faCheckSquare{} Ich kann erklären, was eine Markov-Kette ist und wie die Markov-Eigenschaft funktioniert.
-        \item \faCheckSquare{} Ich kann aus einer realen Problemstellung eine Übergangsmatrix erstellen.
-        \item \faCheckSquare{} Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette über mehrere Schritte entwickelt.
-        \item \faCheckSquare{} Ich kann die stationäre Verteilung einer Markov-Kette berechnen und interpretieren.
-        \item \faCheckSquare{} Ich kann Anwendungen von Markov-Ketten in der Informatik beschreiben.
-        \item \faCheckSquare{} Ich kann die Aussagekraft und Grenzen von stochastischen Modellen reflektieren.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \centering
-    \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-2"}
-\end{frame}
-
-\begin{frame}
-    \centering
-    \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-3"}
-\end{frame}
-
-\begin{frame}
-    \centering
-    \includegraphics[width=0.7\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/markov-meme-chatGPT-1"}
 \end{frame}
