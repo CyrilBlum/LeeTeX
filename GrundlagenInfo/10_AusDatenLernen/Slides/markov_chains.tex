@@ -24,7 +24,7 @@
 
 \date[\today] % (optional)
 
-\logo{\includegraphics[width=2cm]{\thelogo}}
+\logo{\includegraphics[width=.7cm]{\thelogo}}
 
 \titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"GrundlagenInfo/06_Datenbanken/Figures/title-emojis"}}
 
@@ -75,26 +75,31 @@
         \item Jeder Kreis steht für ein Wort (Zustand).
         \item Die Pfeile zeigen die Übergangswahrscheinlichkeiten zum nächsten Wort.
         \item Die Wahrscheinlichkeit, welches Wort als nächstes kommt, hängt (im einfachsten Modell) nur vom aktuellen Wort ab – wie bei einer Markov-Kette!
-    \end{itemize}
+        \end{itemize}
 
-    \begin{figure}[H]
+        \begin{figure}[H]
         \centering
         \begin{tikzpicture}[scale=0.7, transform shape, ->, >=stealth', node distance=4cm, thick,
-                word/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
+            word/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
 
             \node[word] (Hallo) {Hallo};
             \node[word] (wie) [right of=Hallo] {wie};
             \node[word] (geht) [below of=Hallo] {geht};
             \node[word] (dir) [below of=wie] {dir?};
+            \node[word] (es) [below right=1cm and 1cm of wie] {es};
 
             \path[->]
-            (Hallo) edge[bend left] node[above] {0.8} (wie)
+            (Hallo) edge[bend left] node[above] {0.7} (wie)
             (Hallo) edge[bend right=15] node[left] {0.2} (geht)
-            (wie) edge node[right] {0.6} (geht)
-            (wie) edge node[right] {0.4} (dir)
-            (geht) edge node[below right] {1.0} (dir);
+            (Hallo) edge[bend right=40] node[left] {0.1} (es)
+            (wie) edge node[right] {0.5} (geht)
+            (wie) edge node[right] {0.3} (dir)
+            (wie) edge[bend left=20] node[above right] {0.2} (es)
+            (geht) edge node[below right] {0.7} (dir)
+            (geht) edge[bend left=20] node[below] {0.3} (es)
+            (es) edge[bend left=20] node[left] {1.0} (dir);
         \end{tikzpicture}
-    \end{figure}
+        \end{figure}
 \end{frame}
 
 
@@ -132,7 +137,7 @@
                   \item[#1] Ich kann erklären, was eine \textbf{Markov-Kette} ist und wie die \textbf{Markov-Eigenschaft} funktioniert.
                   \item[#1] Ich kann aus einer realen Problemstellung eine Abbildung in Form eines \textbf{gerichteten Graphen} erstellen.
                   \item[#1] Ich kann aus einer realen Problemstellung eine \textbf{Übergangsmatrix} erstellen.
-                  \item[#1] Ich kann eine einfache Matrixmultiplikation durchführen.
+                  \item[#1] Ich kann eine einfache \textbf{Matrixmultiplikation} (mit 2 Zuständen) durchführen.
               \end{itemize}
         \item Lektionen 2 \& 3
               \begin{itemize}[<+->]
@@ -251,7 +256,7 @@
         \only<5->{
             \begin{myexercise}
                 \small
-                Jedes Mal, wenn Sie Instagram (\textbf{I}) benutzen, benutzen Sie als nächste App zu \textbf{80\%} nochmals Instagram, und auf TikTok (\textbf{T}) mit \textbf{20\%}. Wenn Sie zuerst TikTok benutzen, wechseln Sie zu \textbf{30\%} zu Instagram und bleiben zu \textbf{70\%} auf TikTok. Erstellen Sie den \textbf{gerichteten Graphen} für die Zustände \textbf{I} und \textbf{T}.
+                Jedes Mal, wenn Sie Instagram (\textbf{I}) benutzen, benutzen Sie als nächste App zu \textbf{60\%} nochmals Instagram, und auf TikTok (\textbf{T}) mit \textbf{40\%}. Wenn Sie zuerst TikTok benutzen, wechseln Sie zu \textbf{10\%} zu Instagram und bleiben zu \textbf{90\%} auf TikTok. Erstellen Sie den \textbf{gerichteten Graphen} für die Zustände \textbf{I} und \textbf{T}.
             \end{myexercise}
         }
     \end{columns}
@@ -265,10 +270,10 @@
             \node[state] (T) [right of=I] {T};
 
             \path[->]
-            (I) edge[bend left] node[above] {0.2} (T)
-            (I) edge[loop above] node {0.8} (I)
-            (T) edge[bend left] node[below] {0.3} (I)
-            (T) edge[loop above] node {0.7} (T);
+            (I) edge[bend left] node[above] {0.4} (T)
+            (I) edge[loop above] node {0.6} (I)
+            (T) edge[bend left] node[below] {0.1} (I)
+            (T) edge[loop above] node {0.9} (T);
         \end{tikzpicture}
         \caption*{Gerichteter Graph für \textbf{Instagram (I)} und \textbf{TikTok (T)}}
     \end{figure}
@@ -277,15 +282,15 @@
 \begin{frame}{Gerichtete Graphen}{Übung: Thailändischer Tourist}
     \begin{myexercise}
         \small
-        Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden geniessen: Samui und Phangan.
+        Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden (Samui und Phangan) geniessen, sowie das Festland besichtigen.
 
         Laut einer Umfrage gilt:
         \begin{itemize}
-            \item Ist der Tourist auf dem (\textbf{F}), so fährt er am nächsten Tag mit Wahrscheinlichkeit $70\%$ nach Samui (\textbf{S}), mit $20\%$ nach Phangan (\textbf{P}) und bleibt mit $10\%$ auf dem Festland.
+            \item Ist der Tourist auf dem Festland (\textbf{F}), so fährt er am nächsten Tag mit Wahrscheinlichkeit $70\%$ nach Samui (\textbf{S}), mit $20\%$ nach Phangan (\textbf{P}) und bleibt mit $10\%$ auf dem Festland.
             \item Ist er auf Samui, bleibt er mit $40\%$ dort, fährt mit $50\%$ nach Phangan und kehrt mit $10\%$ aufs Festland zurück.
             \item Ist er auf Phangan, bleibt er mit $30\%$ dort, fährt mit $30\%$ nach Samui und kehrt mit $40\%$ aufs Festland zurück.
         \end{itemize}
-        Erstellen Sie den gerichteten Graphen für die Zustände \textbf{F}, \textbf{S} und \textbf{P} (\red{\textbf{danach nicht ausradieren!}}).
+        Erstellen Sie den gerichteten Graphen für die Zustände \textbf{F}, \textbf{S} und \textbf{P}.
     \end{myexercise}
 \end{frame}
 
@@ -310,7 +315,11 @@
         \end{tikzpicture}
         \label{fig:markov-thailand}
     \end{figure}
-    $\Rightarrow$ Übersichtlichere Lösung?
+    \begin{center}
+        \only<2->{
+            $\Rightarrow$ Übersichtlichere Lösung?
+        }
+    \end{center}
 \end{frame}
 
 \begin{frame}{Die Übergangsmatrix}
@@ -369,21 +378,43 @@
         \item Spalten: Zielzustände (zu welchem Zustand wechseln wir?)
         \item Jede Zeile summiert sich zu 1 (Wahrscheinlichkeiten!)
     \end{itemize}
-    \only<4->{
-        \begin{myexercise}[Übergangsmatrix: Thailändischer Tourist]
-            Erstellen Sie die Übergangsmatrix für den gerichteten Graphen des thailändischen Touristen (\textbf{F}, \textbf{S}, \textbf{P})
-            \only<5->{
-                \[
-                    P =
-                    \begin{pmatrix}
-                        0.1 & 0.7 & 0.2 \\
-                        0.1 & 0.4 & 0.5 \\
-                        0.4 & 0.3 & 0.3 \\
-                    \end{pmatrix}
-                \]
-            }
-        \end{myexercise}
-    }
+\end{frame}
+
+\begin{frame}{Gerichtete Graphen}{Übung: Thailändischer Tourist}
+    \begin{myexercise}
+        \small
+        Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden geniessen(Samui und Phangan), sowie das Festland besichtigen.
+
+        Laut einer Umfrage gilt:
+        \begin{itemize}
+            \item Ist der Tourist auf dem (\textbf{F}), so fährt er am nächsten Tag mit Wahrscheinlichkeit $70\%$ nach Samui (\textbf{S}), mit $20\%$ nach Phangan (\textbf{P}) und bleibt mit $10\%$ auf dem Festland.
+            \item Ist er auf Samui, bleibt er mit $40\%$ dort, fährt mit $50\%$ nach Phangan und kehrt mit $10\%$ aufs Festland zurück.
+            \item Ist er auf Phangan, bleibt er mit $30\%$ dort, fährt mit $30\%$ nach Samui und kehrt mit $40\%$ aufs Festland zurück.
+        \end{itemize}
+        Erstellen Sie die \textbf{Übergangsmatrix} für die Zustände \textbf{F}, \textbf{S} und \textbf{P}.
+    \end{myexercise}
+\end{frame}
+
+\begin{frame}{Lösung: Übergangsmatrix für den thailändischen Tourist}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c c|c|c|c}
+                                              &                  & \multicolumn{3}{c}{\textbf{Nach}}            \\
+                                              &                  & \textbf{F} & \textbf{S} & \textbf{P}        \\\midrule\midrule
+            \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} & 0.1        & 0.7        & 0.2        \\\cmidrule{2-5}
+                                              & \textbf{S}      & 0.1        & 0.4        & 0.5        \\\cmidrule{2-5}
+                                              & \textbf{P}      & 0.4        & 0.3        & 0.3        \\
+        \end{tabular}
+        \caption*{\textbf{Übergangsmatrix für F (Festland), S (Samui), P (Phangan)}}
+    \end{table}
+
+    \[
+        P = \begin{pmatrix}
+            0.1 & 0.7 & 0.2 \\
+            0.1 & 0.4 & 0.5 \\
+            0.4 & 0.3 & 0.3 \\
+        \end{pmatrix}
+    \]
 \end{frame}
 
 \begin{frame}{Erinnerung: Matrixmultiplikation}
@@ -483,40 +514,29 @@
 \end{frame}
 
 \begin{frame}{Wettervorhersage für übermorgen}
-    Wie ist das Wetter in zwei Tagen, wenn es heute regnet?
-
-    \begin{align*}
-        \pi_2 = \pi_1 \cdot P & =
-        \begin{pmatrix}
-            0.4 & 0.6 \\
-        \end{pmatrix}
-        \cdot
-        \begin{pmatrix}
-            0.8 & 0.2 \\
-            0.4 & 0.6 \\
-        \end{pmatrix}            \\
-                              & =
-        \begin{pmatrix}
-            0.56 & 0.44 \\
-        \end{pmatrix}
-    \end{align*}
-
-    \only<2->{
-        Die Wahrscheinlichkeit, dass es in zwei Tagen sonnig ist, beträgt 56\%.
+    \begin{itemize}[<+->]
+        \item Startvektor: \(\pi_0 = \begin{pmatrix} 0 & 1 \end{pmatrix}\) \hspace{0.5em} (heute regnerisch)
+        \item Nach einem Tag:
+              \[
+                  \pi_1 = \pi_0 \cdot P = \begin{pmatrix} 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 0.8 & 0.2 \\ 0.4 & 0.6 \end{pmatrix} = \begin{pmatrix} 0.4 & 0.6 \end{pmatrix}
+              \]
+        \item Nach zwei Tagen:
+              \[
+                  \pi_2 = \pi_1 \cdot P = \begin{pmatrix} 0.4 & 0.6 \end{pmatrix} \cdot \begin{pmatrix} 0.8 & 0.2 \\ 0.4 & 0.6 \end{pmatrix} = \begin{pmatrix} 0.56 & 0.44 \end{pmatrix}
+              \]
+    \end{itemize}
+    \only<4->{
+        Wahrscheinlichkeit, dass es in zwei Tagen sonnig ist: \textbf{56\%}.
     }
-    \only<3->{
-        \begin{myexercise}[Instagram oder TikTok nach 2 Schritten?]
-            Wie gross ist die Wahrscheinlichkeit, dass der Schüler nach zwei Nutzungen bei Instagram landet, wenn er mit TikTok startet? 
-            
-            Die Übergangsmatrix ist:
-            \(
-                P = \begin{pmatrix}
-                    0.8 & 0.2 \\
-                    0.3 & 0.7 \\
-                \end{pmatrix}
-            \)
 
-        \end{myexercise}
+    \only<5->{
+        \begin{tcolorbox}[colback=teal!10, colframe=teal, boxrule=0.8pt, enhanced, left=2mm, right=2mm, top=1mm, bottom=1mm, box align=base]
+            \textbf{Auftrag}: Im Skript (von Hand)
+            \begin{itemize}
+                \item \aufgabebox{3.2}
+                \item \challengebox{3.3, 3.4}
+            \end{itemize}
+        \end{tcolorbox}
     }
 \end{frame}
 \begin{frame}{Übung: TikTok / Instagram nach 2 Schritten?}
@@ -524,70 +544,23 @@
         \item Übergangsmatrix:
               \[
                   P = \begin{pmatrix}
-                      0.8 & 0.2 \\
-                      0.3 & 0.7 \\
+                      0.6 & 0.4 \\
+                      0.1 & 0.9 \\
                   \end{pmatrix}
               \]
         \item Startvektor: $\pi_0 = (0, 1)$ (Start bei TikTok)
         \item Nach einem Schritt:
               \[
-                  \pi_1 = \pi_0 \cdot P = \begin{pmatrix} 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 0.8 & 0.2 \\ 0.3 & 0.7 \end{pmatrix} = \begin{pmatrix} 0.3 & 0.7 \end{pmatrix}
+                  \pi_1 = \pi_0 \cdot P = \begin{pmatrix} 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 0.6 & 0.4 \\ 0.1 & 0.9 \end{pmatrix} = \begin{pmatrix} 0.1 & 0.9 \end{pmatrix}
               \]
         \item Nach zwei Schritten:
               \[
-                  \pi_2 = \pi_1 \cdot P = \begin{pmatrix} 0.3 & 0.7 \end{pmatrix} \cdot \begin{pmatrix} 0.8 & 0.2 \\ 0.3 & 0.7 \end{pmatrix} = \begin{pmatrix} 0.45 & 0.55 \end{pmatrix}
+                  \pi_2 = \pi_1 \cdot P = \begin{pmatrix} 0.1 & 0.9 \end{pmatrix} \cdot \begin{pmatrix} 0.6 & 0.4 \\ 0.1 & 0.9 \end{pmatrix} = \begin{pmatrix} 0.15 & 0.85 \end{pmatrix}
               \]
-        \item Die Wahrscheinlichkeit, nach zwei Nutzungen bei Instagram zu landen, beträgt \textbf{45\%}.
+        \item Die Wahrscheinlichkeit, nach zwei Nutzungen bei Instagram zu landen, beträgt \textbf{15\%}.
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Auftrag}
-    Im Skript (von Hand):
-    \begin{itemize}
-        \item \aufgabebox{3.2}
-        \item \challengebox{3.3, 3.4}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{App-Nutzung: Berechnung}
-    Startvektor: $\pi_0 = (1, 0)$ (WhatsApp)
-
-    \begin{align*}
-        \pi_1 = \pi_0 \cdot P & =
-        \begin{pmatrix}
-            1 & 0 \\
-        \end{pmatrix}
-        \cdot
-        \begin{pmatrix}
-            0.7 & 0.3 \\
-            0.3 & 0.7 \\
-        \end{pmatrix}            \\
-                              & =
-        \begin{pmatrix}
-            0.7 & 0.3 \\
-        \end{pmatrix}
-    \end{align*}
-
-    \begin{align*}
-        \pi_2 = \pi_1 \cdot P & =
-        \begin{pmatrix}
-            0.7 & 0.3 \\
-        \end{pmatrix}
-        \cdot
-        \begin{pmatrix}
-            0.7 & 0.3 \\
-            0.3 & 0.7 \\
-        \end{pmatrix}            \\
-                              & =
-        \begin{pmatrix}
-            0.58 & 0.42 \\
-        \end{pmatrix}
-    \end{align*}
-
-    \only<2->{
-        Die Wahrscheinlichkeit für Instagram nach zwei Nutzungen beträgt 42\%.
-    }
-\end{frame}
 
 \begin{frame}{Auftrag: Jupyter Notebooks}
     Skript ``Aus Daten lernen''
