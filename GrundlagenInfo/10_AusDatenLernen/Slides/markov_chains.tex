@@ -1,19 +1,18 @@
-\newcommand{\lernziele}[1]{
+\newcommand{\lernzielePtOne}[1]{
     \begin{itemize}[<+->]
-        \item Lektion 1
-              \begin{itemize}[<+->]
-                  \item[#1] Ich kann \textbf{Anwendungen} von Markov-Ketten in der Informatik beschreiben.
-                  \item[#1] Ich kann erklären, was eine \textbf{Markov-Kette} ist und wie die \textbf{Markov-Eigenschaft} funktioniert.
-                  \item[#1] Ich kann aus einer realen Problemstellung eine Abbildung in Form eines \textbf{gerichteten Graphen} erstellen.
-                  \item[#1] Ich kann aus einer realen Problemstellung eine \textbf{Übergangsmatrix} erstellen.
-              \end{itemize}
-        \item Lektion 2
-              \begin{itemize}[<+->]
-                  \item[#1] Ich kann eine einfache \textbf{Matrixmultiplikation} (mit 2 Zuständen) durchführen.
-                  \item[#1] Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette \textbf{über mehrere Schritte entwickelt}.
-                  \item[#1] Ich kann Markov-Ketten \textbf{in Python} implementieren
-                  \item[#1] Ich kann die \textbf{Grenzen} von Markov-Ketten reflektieren.
-              \end{itemize}
+        \item[#1] Ich kann \textbf{Anwendungen} von Markov-Ketten in der Informatik beschreiben.
+        \item[#1] Ich kann erklären, was eine \textbf{Markov-Kette} ist und wie die \textbf{Markov-Eigenschaft} funktioniert.
+        \item[#1] Ich kann aus einer realen Problemstellung eine Abbildung in Form eines \textbf{gerichteten Graphen} erstellen.
+        \item[#1] Ich kann aus einer realen Problemstellung eine \textbf{Übergangsmatrix} erstellen.
+    \end{itemize}
+}
+
+\newcommand{\lernzielePtTwo}[1]{
+    \begin{itemize}[<+->]
+        \item[#1] Ich kann eine einfache \textbf{Matrixmultiplikation} (mit 2 Zuständen) durchführen.
+        \item[#1] Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette \textbf{über mehrere Schritte entwickelt}.
+        \item[#1] Ich kann Markov-Ketten \textbf{in Python} implementieren
+        \item[#1] Ich kann die \textbf{Grenzen} von Markov-Ketten reflektieren.
     \end{itemize}
 }
 
@@ -81,12 +80,12 @@
                 (intranet) edge node[right] {0.2} (yt);
             }
             \only<4->{
-                \path[->] (yt) edge node[below right] {1} (20min);
+                \path[->] (yt.west) edge[bend left] node[below] {1} (20min.east);
             }
             \only<5->{
                 \path[->]
-                (20min) edge[bend left] node[below] {0.6} (yt)
-                (20min) edge[bend right=15] node[left] {0.4} (intranet);
+                (20min.east) edge[bend left] node[above] {0.6} (yt.west)
+                (20min) edge node[left] {0.4} (moodle);
             }
 
         \end{tikzpicture}
@@ -100,7 +99,7 @@
 
 
 \begin{frame}[fragile]{Lernziele}
-    \lernziele{\faSquare}
+    \lernzielePtOne{\faSquare}
 \end{frame}
 
 \begin{frame}{Zustände}
@@ -108,19 +107,19 @@
         \begin{tikzpicture}[scale=.7, transform shape, ->, >=stealth', node distance=4cm, thick,
                 website/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
 
-            \node[website] (moodle) {\texttt{moodle.ch}};
-            \node[website] (intranet) [right of=moodle] {\texttt{intranet.kzn.ch}};
-            \node[website] (yt) [below of=intranet] {\texttt{youtube.com}};
-            \node[website] (20min) [below of=moodle] {\texttt{20minuten.ch}};
+                            \node[website] (moodle) {\texttt{moodle.ch}};
+                            \node[website] (intranet) [right of=moodle] {\texttt{intranet.kzn.ch}};
+                            \node[website] (yt) [below of=intranet] {\texttt{youtube.com}};
+                            \node[website] (20min) [below of=moodle] {\texttt{20minuten.ch}};
 
-            \path[->]
-            (moodle) edge[bend left] node[above] {0.9} (intranet)
-            (moodle) edge[bend right=15] node[left] {0.1} (yt)
-            (intranet) edge[bend left] node[below] {0.8} (moodle)
-            (intranet) edge node[right] {0.2} (yt)
-            (yt) edge node[below right] {1} (20min)
-            (20min) edge[bend left] node[below] {0.6} (yt)
-            (20min) edge[bend right=15] node[left] {0.4} (intranet);
+                            \path[->]
+                                (moodle) edge[bend left] node[above] {0.9} (intranet)
+                                (moodle) edge[bend right=15] node[left] {0.1} (yt)
+                                (intranet) edge[bend left] node[below] {0.8} (moodle)
+                                (intranet) edge node[right] {0.2} (yt)
+                                (yt.west) edge[bend left] node[below] {1} (20min.east)
+                                (20min.east) edge[bend left] node[above] {0.6} (yt.west)
+                                (20min) edge node[left] {0.4} (moodle);
 
         \end{tikzpicture}
     \end{figure}
@@ -135,7 +134,6 @@
               \end{itemize}
         \item Allgemein: Zustand = \textbf{eine Situation oder ein Status, in dem sich etwas befindet}
     \end{itemize}
-
 \end{frame}
 
 \begin{frame}{Was sind Markov-Ketten?}
@@ -338,12 +336,12 @@
         \only<3->{
             \begin{table}[H]
                 \centering
-                \begin{tabular}{c c|c|c|c}
-                                                          &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
-                                                          &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
+                \begin{tabular}{c c||c|c|c}
+                                                                  &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
+                                                                  &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
                     \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} & 0.1                               & 0.7        & 0.2        \\\cmidrule{2-5}
-                                                          & \textbf{S} & 0.1                               & 0.4        & 0.5        \\\cmidrule{2-5}
-                                                          & \textbf{P} & 0.4                               & 0.3        & 0.3        \\
+                                                                  & \textbf{S} & 0.1                               & 0.4        & 0.5        \\\cmidrule{2-5}
+                                                                  & \textbf{P} & 0.4                               & 0.3        & 0.3        \\
                 \end{tabular}
                 \caption*{\textbf{Übergangsmatrix}}
             \end{table}
@@ -421,7 +419,7 @@
         \end{itemize}
         Erstellen Sie die \textbf{Übergangsmatrix}:
         \small
-        \begin{tabular}{c c|c|c|c}
+        \begin{tabular}{c c||c|c|c}
                                                           &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
                                                           &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
             \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} &                                   &            &            \\\cmidrule{2-5}
@@ -434,7 +432,7 @@
 \begin{frame}{Lösung: Übergangsmatrix für den thailändischen Tourist}
     \begin{table}[H]
         \centering
-        \begin{tabular}{c c|c|c|c}
+        \begin{tabular}{c c||c|c|c}
                                                           &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
                                                           &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
             \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} & 0.1                               & 0.7        & 0.2        \\\cmidrule{2-5}
@@ -453,99 +451,22 @@
     \]
 \end{frame}
 
-\begin{frame}{Matrixmultiplikation}
-    \only<1-3>{\begin{itemize}[<+->]
-            \item Um die Entwicklung einer Markov-Kette zu berechnen, multiplizieren wir einen Zeilenvektor mit einer Matrix.
-        \end{itemize}}
+\begin{frame}[fragile]{Lernziele}
+    \begin{itemize}[<+->]
+        \item Heute:
+        \lernzielePtOne{\faCheckSquare}
+        \item Nächstes Mal:
+        \lernzielePtTwo{\faSquare}
+    \end{itemize}
+\end{frame}
 
-    \only<1>{
-        \[
-            \begin{array}{c}
-                \Big(
-                \fcolorbox{red!10}{red!10}{$a \;\; b$}
-                \Big)
-                \cdot
-                \left(
-                \begin{array}{>{\columncolor{red!10}}c c}
-                        e & f \\
-                        g & h \\
-                    \end{array}
-                \right)
-                =
-                \Big(
-                \fcolorbox{red!10}{red!10}{$a \cdot e + b \cdot g$}\fcolorbox{white}{white}{$\;\; a \cdot f + b \cdot h$}
-                \Big)
-            \end{array}
-        \]}
-
-     \only<2>{
-        \[
-            \begin{array}{c}
-                \Big(
-                \fcolorbox{red!10}{red!10}{$a \;\; b$}
-                \Big)
-                \cdot
-                \left(
-                \begin{array}{c >{\columncolor{red!10}}c}
-                        e & f \\
-                        g & h \\
-                    \end{array}
-                \right)
-                =
-                \Big(
-                \fcolorbox{white}{white}{$a \cdot e + b \cdot g$}\fcolorbox{red!10}{red!10}{$\;\; a \cdot f + b \cdot h$}
-                \Big)
-            \end{array}
-        \]}
-    \only<3->{
-        \[
-            \begin{pmatrix}
-                \textcolor{red}{a} & \textcolor{blue}{b} \\
-            \end{pmatrix}
-            \cdot
-            \begin{pmatrix}
-                \textcolor{teal}{e}   & \textcolor{violet}{f} \\
-                \textcolor{orange}{g} & \textcolor{brown}{h}  \\
-            \end{pmatrix}
-            =
-            \begin{pmatrix}
-                \textcolor{red}{a} \cdot \textcolor{teal}{e} + \textcolor{blue}{b} \cdot \textcolor{orange}{g} & \textcolor{red}{a} \cdot \textcolor{violet}{f} + \textcolor{blue}{b} \cdot \textcolor{brown}{h} \\
-            \end{pmatrix}
-        \]
-    }
-    \only<4->{
-        \begin{myexercise}[\faCalculator{} Matrix-Multiplikation] 
-            Multiplizieren Sie $\begin{pmatrix} \textcolor{red}{0.7} & \textcolor{blue}{0.3} \end{pmatrix} \cdot \begin{pmatrix} \textcolor{teal}{0.8} & \textcolor{violet}{0.2} \\ \textcolor{orange}{0.4} & \textcolor{brown}{0.6} \end{pmatrix}$.
-            \only<5->{
-                \begin{myanswer}
-                    \[
-                    \begin{aligned}
-                        &
-                        \begin{pmatrix}
-                            \textcolor{red}{0.7} & \textcolor{blue}{0.3} \\
-                        \end{pmatrix}
-                        \cdot
-                        \begin{pmatrix}
-                            \textcolor{teal}{0.8} & \textcolor{violet}{0.2} \\
-                            \textcolor{orange}{0.4} & \textcolor{brown}{0.6} \\
-                        \end{pmatrix}
-                        \\&=
-                        \begin{pmatrix}
-                            \textcolor{red}{0.7} \cdot \textcolor{teal}{0.8} + \textcolor{blue}{0.3} \cdot \textcolor{orange}{0.4} & \textcolor{red}{0.7} \cdot \textcolor{violet}{0.2} + \textcolor{blue}{0.3} \cdot \textcolor{brown}{0.6} \\
-                        \end{pmatrix}
-                        \\&=
-                        \begin{pmatrix}
-                            0.56 + 0.12 & 0.14 + 0.18 \\
-                        \end{pmatrix}
-                        =
-                        \begin{pmatrix}
-                            0.68 & 0.32 \\
-                        \end{pmatrix}
-                    \end{aligned}\]
-                \end{myanswer}
-            }
-        \end{myexercise}
-    }
+\begin{frame}[fragile]{Lernziele}
+    \begin{itemize}[<+->]
+        \item Letztes Mal:
+        \lernzielePtOne{\faCheckSquare}
+        \item Heute:
+        \lernzielePtTwo{\faSquare}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Startvektor und Entwicklung}
@@ -586,6 +507,101 @@
                 0.4 & 0.6 \\
             \end{pmatrix}
         \end{align*}
+    }
+\end{frame}
+
+\begin{frame}{Matrixmultiplikation}
+    \only<1-3>{\begin{itemize}[<+->]
+            \item Um die Entwicklung einer Markov-Kette zu berechnen, multiplizieren wir einen Zeilenvektor mit einer Matrix.
+        \end{itemize}}
+
+    \only<1>{
+        \[
+            \begin{array}{c}
+                \Big(
+                \fcolorbox{red!10}{red!10}{$a \;\; b$}
+                \Big)
+                \cdot
+                \left(
+                \begin{array}{>{\columncolor{red!10}}c c}
+                        e & f \\
+                        g & h \\
+                    \end{array}
+                \right)
+                =
+                \Big(
+                \fcolorbox{red!10}{red!10}{$a \cdot e + b \cdot g$}\fcolorbox{white}{white}{$\;\; a \cdot f + b \cdot h$}
+                \Big)
+            \end{array}
+        \]}
+
+    \only<2>{
+        \[
+            \begin{array}{c}
+                \Big(
+                \fcolorbox{red!10}{red!10}{$a \;\; b$}
+                \Big)
+                \cdot
+                \left(
+                \begin{array}{c >{\columncolor{red!10}}c}
+                        e & f \\
+                        g & h \\
+                    \end{array}
+                \right)
+                =
+                \Big(
+                \fcolorbox{white}{white}{$a \cdot e + b \cdot g$}\fcolorbox{red!10}{red!10}{$\;\; a \cdot f + b \cdot h$}
+                \Big)
+            \end{array}
+        \]}
+    \only<3->{
+        \[
+            \begin{pmatrix}
+                \textcolor{red}{a} & \textcolor{blue}{b} \\
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                \textcolor{teal}{e}   & \textcolor{violet}{f} \\
+                \textcolor{orange}{g} & \textcolor{brown}{h}  \\
+            \end{pmatrix}
+            =
+            \begin{pmatrix}
+                \textcolor{red}{a} \cdot \textcolor{teal}{e} + \textcolor{blue}{b} \cdot \textcolor{orange}{g} & \textcolor{red}{a} \cdot \textcolor{violet}{f} + \textcolor{blue}{b} \cdot \textcolor{brown}{h} \\
+            \end{pmatrix}
+        \]
+    }
+    \only<4->{
+        \begin{myexercise}[\faCalculator{} Matrix-Multiplikation]
+            Multiplizieren Sie $\begin{pmatrix} \textcolor{red}{0.7} & \textcolor{blue}{0.3} \end{pmatrix} \cdot \begin{pmatrix} \textcolor{teal}{0.8} & \textcolor{violet}{0.2} \\ \textcolor{orange}{0.4} & \textcolor{brown}{0.6} \end{pmatrix}$.
+            \only<5->{
+                \begin{myanswer}
+                    \[
+                        \begin{aligned}
+                             &
+                            \begin{pmatrix}
+                                \textcolor{red}{0.7} & \textcolor{blue}{0.3} \\
+                            \end{pmatrix}
+                            \cdot
+                            \begin{pmatrix}
+                                \textcolor{teal}{0.8}   & \textcolor{violet}{0.2} \\
+                                \textcolor{orange}{0.4} & \textcolor{brown}{0.6}  \\
+                            \end{pmatrix}
+                            \\&=
+                            \begin{pmatrix}
+                                \textcolor{red}{0.7} \cdot \textcolor{teal}{0.8} + \textcolor{blue}{0.3} \cdot \textcolor{orange}{0.4} & \textcolor{red}{0.7} \cdot \textcolor{violet}{0.2} + \textcolor{blue}{0.3} \cdot \textcolor{brown}{0.6} \\
+                            \end{pmatrix}
+                            \\&=
+                            \begin{pmatrix}
+                                0.56 + 0.12 & 0.14 + 0.18 \\
+                            \end{pmatrix}
+                            =
+                            \begin{pmatrix}
+                                0.68 & 0.32 \\
+                            \end{pmatrix}
+                        \end{aligned}\]
+                \end{myanswer}
+            }
+        \end{myexercise}
     }
 \end{frame}
 
@@ -657,5 +673,8 @@
 \end{frame}
 
 \begin{frame}[fragile]{Lernziele}
-    \lernziele{\faCheckSquare}
+    Lektion 1:
+    \lernzielePtOne{\faCheckSquare} 
+    Lektion 2:
+    \lernzielePtTwo{\faSquare}
 \end{frame}
