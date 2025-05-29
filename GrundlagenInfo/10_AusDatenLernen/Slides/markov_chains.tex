@@ -4,15 +4,15 @@
         \item[#1] Ich kann erklären, was eine \textbf{Markov-Kette} ist und wie die \textbf{Markov-Eigenschaft} funktioniert.
         \item[#1] Ich kann aus einer realen Problemstellung eine Abbildung in Form eines \textbf{gerichteten Graphen} erstellen.
         \item[#1] Ich kann aus einer realen Problemstellung eine \textbf{Übergangsmatrix} erstellen.
+        \item[#1] Ich kann eine einfache \textbf{Matrixmultiplikation} (mit 2 Zuständen) durchführen.
     \end{itemize}
 }
 
 \newcommand{\lernzielePtTwo}[1]{
     \begin{itemize}[<+->]
-        \item[#1] Ich kann eine einfache \textbf{Matrixmultiplikation} (mit 2 Zuständen) durchführen.
         \item[#1] Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette \textbf{über mehrere Schritte entwickelt}.
         \item[#1] Ich kann Markov-Ketten \textbf{in Python} implementieren
-        \item[#1] Ich kann die \textbf{Grenzen} von Markov-Ketten reflektieren.
+        \item[#1] Ich kann die langfristige Verteilung von Markov-Ketten mit Simulationen \textbf{in Python} berechnen.
     \end{itemize}
 }
 
@@ -58,7 +58,7 @@
     \end{enumerate}
 \end{frame}
 
-\begin{frame}{Anwendungen von Markov-Ketten}{Google PageRank-Algorithmus}
+\begin{frame}{Anwendungen von Markov-Ketten}
     \begin{figure}[H]
         \begin{tikzpicture}[transform shape, ->, >=stealth', node distance=4cm, thick,
                 website/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
@@ -67,7 +67,6 @@
             \node[website] (intranet) [right of=moodle] {\texttt{intranet.kzn.ch}};
             \node[website] (yt) [below of=intranet] {\texttt{youtube.com}};
             \node[website] (20min) [below of=moodle] {\texttt{20minuten.ch}};
-
 
             \only<2->{
                 \path[->]
@@ -103,37 +102,45 @@
 \end{frame}
 
 \begin{frame}{Zustände}
-    \begin{figure}[H]
-        \begin{tikzpicture}[scale=.7, transform shape, ->, >=stealth', node distance=4cm, thick,
-                website/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}[H]
+            \begin{tikzpicture}[scale=.7, transform shape, ->, >=stealth', node distance=4cm, thick,
+                    website/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
 
-                            \node[website] (moodle) {\texttt{moodle.ch}};
-                            \node[website] (intranet) [right of=moodle] {\texttt{intranet.kzn.ch}};
-                            \node[website] (yt) [below of=intranet] {\texttt{youtube.com}};
-                            \node[website] (20min) [below of=moodle] {\texttt{20minuten.ch}};
+                \node[website] (moodle) {\texttt{moodle.ch}};
+                \node[website] (intranet) [right of=moodle] {\texttt{intranet.kzn.ch}};
+                \node[website] (yt) [below of=intranet] {\texttt{youtube.com}};
+                \node[website] (20min) [below of=moodle] {\texttt{20minuten.ch}};
 
-                            \path[->]
-                                (moodle) edge[bend left] node[above] {0.9} (intranet)
-                                (moodle) edge[bend right=15] node[left] {0.1} (yt)
-                                (intranet) edge[bend left] node[below] {0.8} (moodle)
-                                (intranet) edge node[right] {0.2} (yt)
-                                (yt.west) edge[bend left] node[below] {1} (20min.east)
-                                (20min.east) edge[bend left] node[above] {0.6} (yt.west)
-                                (20min) edge node[left] {0.4} (moodle);
+                \path[->]
+                (moodle) edge[bend left] node[above] {0.9} (intranet)
+                (moodle) edge[bend right=15] node[left] {0.1} (yt)
+                (intranet) edge[bend left] node[below] {0.8} (moodle)
+                (intranet) edge node[right] {0.2} (yt)
+                (yt.west) edge[bend left] node[below] {1} (20min.east)
+                (20min.east) edge[bend left] node[above] {0.6} (yt.west)
+                (20min) edge node[left] {0.4} (moodle);
 
-        \end{tikzpicture}
-    \end{figure}
-    \textbf{Zustand}
-    \begin{itemize}[<+->]
-        \item Auf welcher Webseite befinde ich mich gerade?
-        \item Andere Beispiele:
-              \begin{itemize}
-                  \item Wetterzustand (sonnig, regnerisch, bewölkt)
-                  \item Spielfigur auf einem Spielbrett (Feld 1, Feld 2, Feld 3)
-                  \item Aufenthaltsort eines Schülers (in der Klasse, in der Pause, zu Hause)
-              \end{itemize}
-        \item Allgemein: Zustand = \textbf{eine Situation oder ein Status, in dem sich etwas befindet}
-    \end{itemize}
+            \end{tikzpicture}
+        \end{figure}
+        \column{0.5\textwidth}
+        \textbf{Zustand}: Beispiele
+        \begin{itemize}[<+->]
+            \item Auf welcher Webseite befinde ich mich gerade?
+            \item Andere Beispiele:
+                  \begin{itemize}
+                      \item Wetter (sonnig, regnerisch)
+                      \item Spielfigur auf einem Spielbrett (Feld 1, 2, 3...)
+                      \item Aufenthaltsort eines Schülers (in der Klasse, in der Pause, zu Hause)
+                  \end{itemize}
+        \end{itemize}
+        \only<6->{
+            \begin{mydefinition}[Zustand]
+            Zustand = \textbf{eine Situation oder ein Status, in dem sich etwas befindet}
+            \end{mydefinition}
+        }
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Was sind Markov-Ketten?}
@@ -143,12 +150,26 @@
         \item \textbf{Markov-Eigenschaft}: Der nächste Zustand hängt \textbf{nur vom vorherigen Zustand} ab
     \end{itemize}
     \end{mydefinition}
+    \only<3->{
+        \begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, boxrule=0.8pt, enhanced, left=2mm, right=2mm, top=1mm, bottom=1mm, box align=base, title=Andrej A. Markov]
+            \begin{minipage}{0.25\textwidth}
+                \includegraphics[width=\linewidth]{GrundlagenInfo/10_AusDatenLernen/Figures/AAMarkov.png}
+            \end{minipage}
+            \hfill
+            \begin{minipage}{0.7\textwidth}
+                \begin{itemize}[<+->]
+                    \item Die Markov-Kette ist benannt nach dem russischen Mathematiker \textbf{Andrej Andrejewitsch Markov} (1856–1922).
+                    \item Markov entdeckte die Markov-Ketten bei der Analyse von Buchstabenfolgen in literarischen Texten (Textanalyse).
+                \end{itemize}
+            \end{minipage}
+        \end{tcolorbox}
+    }
 \end{frame}
 
-\begin{frame}{Markov-Eigenschaft}
+\begin{frame}
     \begin{myexercise}[Markov-Eigenschaft erfüllt?]
         \begin{enumerate}
-            \item Das Wetter morgen kann gut vorhergesagt werden anhand des heutigen Wetters.
+            \item Das Wetter morgen kann gut vorhergesagt werden basierend auf dem heutigen Wetter.
             \item Die Wahrscheinlichkeit, dass ein Schüler heute seine Hausaufgaben macht, hängt davon ab, ob er sie gestern und vorgestern gemacht hat.
             \item Die Wahrscheinlichkeit, dass ein Programm abstürzt, hängt davon ab, wie viele andere Programme bereits abgestürzt sind.
             \item Die Wahrscheinlichkeit, dass eine Person Kleider einer bestimmten Marke kauft, hängt nur davon ab, ob das zuletzt gekaufte Kleidungsstück von dieser Marke war.
@@ -188,77 +209,17 @@
             \end{tikzpicture}
             \caption*{\only<8->{Gerichteter Graph}}
         \end{figure}
+        \begin{itemize}
+            \item[{\faCircle[regular]}]<9->  \textbf{Knoten} = Zustände
+            \item[\faArrowRight]<10-> \textbf{Kanten} = Übergänge mit Wahrscheinlichkeiten
+        \end{itemize}
+        \only<11->{
+            Summe der ausgehenden Kanten = 1!
+        }
     }
 \end{frame}
 
-\begin{frame}{Visualisierung von Markov-Ketten}
-    Markov-Ketten können als \textbf{gerichtete Graphen} dargestellt werden:
 
-    \begin{columns}
-
-        % \begin{table}[H]
-        %     \centering
-        %     \begin{tabular}{c c|c|c}
-        %                                                       &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
-        %                                                       &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
-        %         \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0.8                               & 0.2              \\\cmidrule{2-4}
-        %                                                       & \emoji{umbrella} & 0.4                               & 0.6              \\
-        %     \end{tabular}
-        %     \caption*{Übergangsmatrix}
-        % \end{table}
-        % \column{.05\textwidth}
-        % \only<2->{
-        %     $\Rightarrow$
-        % }
-        \column{.45\textwidth}
-        \begin{figure}[H]
-            \centering
-            \begin{tikzpicture}[node distance=3cm, auto, thick]
-                \node[state] (S) {\emoji{sun}};
-                \node[state] (R) [right of=S] {\emoji{umbrella}};
-
-                \path[->]
-                (S) edge[bend left] node {0.2} (R)
-                (R) edge[bend left] node {0.4} (S)
-                (S) edge[loop above] node {0.8} (S)
-                (R) edge[loop above] node {0.6} (R);
-            \end{tikzpicture}
-            % \caption*{Gerichteter Graph}
-        \end{figure}
-        \begin{itemize}
-            \item[{\faCircle[regular]}]<2->  \textbf{Knoten} = Zustände
-            \item[\faArrowRight]<3-> \textbf{Kanten} = Übergänge mit Wahrscheinlichkeiten
-        \end{itemize}
-        \only<4->{
-            Summe der ausgehenden Kanten = 1!
-        }
-
-        \column{.6\textwidth}
-        \only<5->{
-            \begin{myexercise}
-                \small
-                Jedes Mal, wenn Sie Instagram (\textbf{I}) benutzen, benutzen Sie als nächste App zu \textbf{60\%} nochmals Instagram, und auf TikTok (\textbf{T}) mit \textbf{40\%}. Wenn Sie zuerst TikTok benutzen, wechseln Sie zu \textbf{10\%} zu Instagram und bleiben zu \textbf{90\%} auf TikTok. Erstellen Sie den \textbf{gerichteten Graphen} für die Zustände \textbf{I} und \textbf{T}.
-            \end{myexercise}
-        }
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Gerichteter Graph: Social-Media-App-Nutzung}
-    \begin{figure}[H]
-        \centering
-        \begin{tikzpicture}[node distance=4cm, auto, thick]
-            \node[state] (I) {I};
-            \node[state] (T) [right of=I] {T};
-
-            \path[->]
-            (I) edge[bend left] node[above] {0.4} (T)
-            (I) edge[loop above] node {0.6} (I)
-            (T) edge[bend left] node[below] {0.1} (I)
-            (T) edge[loop above] node {0.9} (T);
-        \end{tikzpicture}
-        \caption*{Gerichteter Graph für \textbf{Instagram (I)} und \textbf{TikTok (T)}}
-    \end{figure}
-\end{frame}
 
 \begin{frame}{Übung: Thailändischer Tourist}
     \begin{myexercise}
@@ -382,30 +343,27 @@
                     \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0.8                               & 0.2              \\\cmidrule{2-4}
                                                                   & \emoji{umbrella} & 0.4                               & 0.6              \\
                 \end{tabular}
-                \caption*{\textbf{Übergangsmatrix}}
+                \caption*{\textbf{Übergangsmatrix (als Tabelle)}}
+            \end{table}
+        }
+        \only<4->{
+            \begin{center}
+                $\Downarrow$
+            \end{center}
+            \begin{table}[H]
+                \[
+                    P =
+                    \begin{pmatrix}
+                        0.8 & 0.2 \\
+                        0.4 & 0.6 \\
+                    \end{pmatrix}
+                \]
+                \caption*{\textbf{Übergangsmatrix (als Matrix)}}
             \end{table}
         }
     \end{columns}
 \end{frame}
 
-
-\begin{frame}{Die Übergangsmatrix}
-    Die Übergangsmatrix fasst alle Übergangswahrscheinlichkeiten zusammen:
-
-    \[
-        P =
-        \begin{pmatrix}
-            0.8 & 0.2 \\
-            0.4 & 0.6 \\
-        \end{pmatrix}
-    \]
-
-    \begin{itemize}[<+->]
-        \item Zeilen: Ausgangszustände (von welchem Zustand starten wir?)
-        \item Spalten: Zielzustände (zu welchem Zustand wechseln wir?)
-        \item Jede Zeile summiert sich zu 1 (Wahrscheinlichkeiten!)
-    \end{itemize}
-\end{frame}
 
 \begin{frame}
     \vspace{-.2cm}
@@ -449,24 +407,6 @@
             0.4 & 0.3 & 0.3 \\
         \end{pmatrix}
     \]
-\end{frame}
-
-\begin{frame}[fragile]{Lernziele}
-    \begin{itemize}[<+->]
-        \item Heute:
-        \lernzielePtOne{\faCheckSquare}
-        \item Nächstes Mal:
-        \lernzielePtTwo{\faSquare}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Lernziele}
-    \begin{itemize}[<+->]
-        \item Letztes Mal:
-        \lernzielePtOne{\faCheckSquare}
-        \item Heute:
-        \lernzielePtTwo{\faSquare}
-    \end{itemize}
 \end{frame}
 
 \begin{frame}{Startvektor und Entwicklung}
@@ -640,7 +580,7 @@
                       0.1 & 0.9 \\
                   \end{pmatrix}
               \]
-        \item Startvektor: $\pi_0 = (0, 1)$ (Start bei TikTok)
+        \item Startvektor: $\pi_0 = \begin{pmatrix}0 & 1\end{pmatrix}$ (Start bei TikTok)
         \item Nach einem Schritt:
               \[
                   \pi_1 = \pi_0 \cdot P = \begin{pmatrix} 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 0.6 & 0.4 \\ 0.1 & 0.9 \end{pmatrix} = \begin{pmatrix} 0.1 & 0.9 \end{pmatrix}
@@ -653,6 +593,21 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}
+    \aufgabebox{Lernkontrolle auf Moodle}
+\end{frame}
+
+\begin{frame}[fragile]{Lernziele}
+    \begin{itemize}[<+->]
+        \item Lektion 1:
+              \lernzielePtOne{\faCheckSquare}
+        \item Lektion 2:
+              \lernzielePtTwo{\faSquare}
+    \end{itemize}
+\end{frame}
+
+
+
 
 \begin{frame}{Auftrag: Jupyter Notebooks}
     Skript ``Aus Daten lernen''
@@ -662,19 +617,74 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Grenzen von Markov-Ketten}
+\begin{frame}{Stationäre Verteilung}
+    \begin{mydefinition}[Stationäre Verteilung]
+    Eine Wahrscheinlichkeitsverteilung $\pi = (\pi_1, \pi_2, \ldots)$ heisst \textbf{stationäre Verteilung} einer Markov-Kette mit Übergangsmatrix $P$, wenn gilt:
+    \[
+        \pi = \pi \cdot P
+    \]
+    \end{mydefinition}
+
     \begin{itemize}[<+->]
-        \item \textbf{Markov-Eigenschaft:} Nicht immer realistisch, manchmal hängt die Zukunft von mehr als nur dem aktuellen Zustand ab
-        \item \textbf{Feste Übergangswahrscheinlichkeiten:} In der Realität können sich Wahrscheinlichkeiten ändern
-        \item \textbf{Komplexe Abhängigkeiten:} Können nicht abgebildet werden
-        \item \textbf{Zustandsraum:} Bei vielen Zuständen wird die Berechnung aufwändig
-        \item \textbf{Keine Kausalität:} Beschreiben nur Wahrscheinlichkeiten, keine Ursachen
+        \item[$\Rightarrow$] Langfristige, stabile Verteilung der Wahrscheinlichkeiten
+        \item[$\Rightarrow$] Bleibt nach Multiplikation mit $P$ unverändert
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Berechnung der stationären Verteilung (Wetter-Beispiel)}
+    \begin{columns}
+        \column{0.6\textwidth}
+        \begin{enumerate}[<+->]
+            \item $\pi = \pi \cdot P$ aufstellen: \[(\pi_{\text{\emoji{sun}}}, \pi_{\text{\emoji{umbrella}}}) = (\pi_{\text{\emoji{sun}}}, \pi_{\text{\emoji{umbrella}}}) \cdot \begin{pmatrix} 0.8 & 0.2 \\ 0.4 & 0.6 \end{pmatrix}\]
+            \item Gleichungen aufstellen:
+                  \[
+                      \begin{aligned}
+                          \pi_{\text{\emoji{sun}}}      & = \pi_{\text{\emoji{sun}}} \cdot 0.8 + \pi_{\text{\emoji{umbrella}}} \cdot 0.4 \\
+                          \pi_{\text{\emoji{umbrella}}} & = \pi_{\text{\emoji{sun}}} \cdot 0.2 + \pi_{\text{\emoji{umbrella}}} \cdot 0.6
+                      \end{aligned}
+                  \]
+            \item Umformen:
+                  \[
+                      \begin{aligned}
+                          \pi_{\text{\emoji{sun}}} \cdot 0.2   & = \pi_{\text{\emoji{umbrella}}} \cdot 0.4 \\
+                          \Rightarrow \pi_{\text{\emoji{sun}}} & = 2 \cdot \pi_{\text{\emoji{umbrella}}}
+                      \end{aligned}
+                  \]
+        \end{enumerate}
+        \column{.01\textwidth}
+        \begin{center}
+            \vrule width 1pt height 6cm
+        \end{center}
+        \column{0.5\textwidth}
+        \begin{enumerate}[<+->]
+            \setcounter{enumi}{3}
+            \item Normierung:
+                  \[
+                      \begin{aligned}
+                          \pi_{\text{\emoji{sun}}} + \pi_{\text{\emoji{umbrella}}}              & = 1           \\
+                          2 \cdot \pi_{\text{\emoji{umbrella}}} + \pi_{\text{\emoji{umbrella}}} & = 1           \\
+                          3 \cdot \pi_{\text{\emoji{umbrella}}}                                 & = 1           \\
+                          \pi_{\text{\emoji{umbrella}}}                                         & = \frac{1}{3}
+                      \end{aligned}
+                  \]
+            \item Ergebnis:
+                  \[
+                      \begin{aligned}
+                          \pi_{\text{\emoji{sun}}}      & = \frac{2}{3} \\
+                          \pi_{\text{\emoji{umbrella}}} & = \frac{1}{3}
+                      \end{aligned}
+                  \]
+            \item[$\Rightarrow$] \textbf{Langfristig ist es an 2/3 der Tage sonnig und an 1/3 der Tage regnerisch.}
+        \end{enumerate}
+
+    \end{columns}
+\end{frame}
+
 \begin{frame}[fragile]{Lernziele}
-    Lektion 1:
-    \lernzielePtOne{\faCheckSquare} 
-    Lektion 2:
-    \lernzielePtTwo{\faSquare}
+    \begin{itemize}[<+->]
+        \item Lektion 1:
+              \lernzielePtOne{\faCheckSquare}
+        \item Lektion 2:
+              \lernzielePtTwo{\faSquare}
+    \end{itemize}
 \end{frame}
