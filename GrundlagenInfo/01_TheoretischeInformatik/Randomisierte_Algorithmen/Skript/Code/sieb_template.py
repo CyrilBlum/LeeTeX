@@ -12,14 +12,14 @@ def sieb(n):
 
     i = 2
     # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
-    while i <= n:
+    while ...:
         if nicht_gestrichen[i]:
-            primzahlen.append(i)
+            ...
 
             # streiche alle Vielfachen von i
             j = 2 * i
-            while j <= n:
-                nicht_gestrichen[j] = False
-                j += i
+            while ...:
+                ...
+                ...
         i += 1
     return primzahlen

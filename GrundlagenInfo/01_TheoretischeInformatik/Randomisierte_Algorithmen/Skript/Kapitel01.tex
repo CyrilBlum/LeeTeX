@@ -72,16 +72,17 @@ wobei $p_1<p_2<\ldots <p_k$ Primzahlen und $i_1, i_2, \ldots , i_k$ positive gan
 \end{myexercise}
 
 \subsection{Division mit Rest}
-Zu zwei ganzen Zahlen $a$ und $b$, mit $b\neq 0$, existieren eindeutige ganze Zahlen $q$ und $r$, sodass
-\begin{align}
+
+Es seien $a$ und $b$ positive ganze Zahlen, dann existieren eindeutige ganze Zahlen $q$ (Quotient) und $r$ (Rest), sodass
+\begin{align}\label{eq:division_mit_rest}
 	a = bq + r
 \end{align}
-und $0\leq r < |b|$.
+und $0\leq r < b$.
 
-Dabei ist $q$ das Resultat der ganzzahligen Division von $a/b$ und $r$ ist der Rest der Division.
+Dabei ist $q$ das Resultat der ganzzahligen Division von $a / b$ und $r$ ist der Rest der Division.
 
 \begin{myexample}
-Seien $a = 17$ und $b=5$. Dann ist die ganzzahlige Division von $q=a/b=17/5=3$ mit einem Rest $r=a-bq=2$.
+Seien $a = 17$ und $b = 5$. Dann ist die ganzzahlige Division von $ q = a / b = 17 / 5 = 3$ mit einem Rest $r = a - bq=2$.
 \end{myexample}
 Daraus folgt direkt, dass wenn
 \begin{align}
@@ -91,16 +92,16 @@ dann existiert eine ganze Zahl $q$, sodass
 \begin{align}
 	a = bq + r.
 \end{align}
-Dabei kann $q$ durch die Berechnung $q = (a-r)/b$ ermittelt werden.
+Dabei kann $q$ durch die Berechnung $q = (a - r) / b$ ermittelt werden.
 
 \begin{myexample}
-Seien $a=79$ und $b=100$. Dann ist  $r = a\; \text{mod}\; b = 79\; \text{mod}\; 100 = 79$ und $q = (a-r)/b = (79-79)/100 = 0$.
+Seien $a = 79$ und $b = 100$. Dann ist  $r = a\; \text{mod}\; b = 79\; \text{mod}\; 100 = 79$ und $q = (a-r) / b = (79 - 79) / 100 = 0$.
 \end{myexample}
 
 \begin{myexercise}
 	\begin{aenum}
 		\item Bestimme die oben beschriebene Darstellung $a = bq + r$ für $a = 121$ und $b = 9$.
-		\item Schreibe eine Python-Funktion \pythoninline{def division_mit_rest(a, b)}, welche für gegebene ganze Zahlen $a$ und $b$ mit $b \neq 0$ die Zahlen $q$ und $r$ berechnet und in einer Liste der Form \pythoninline{[q, r]} zurückgibt.
+		\item Schreibe eine Python-Funktion \pythoninline{def division_mit_rest(a, b)}, welche für gegebene positive ganze Zahlen $a$ und $b$, die Zahlen $q$ und $r$ berechnet und in einer Liste der Form \pythoninline{[q, r]} zurückgibt.
 	\end{aenum}
 	\begin{myanswer}
 		\begin{aenum}
@@ -120,7 +121,7 @@ def division_mit_rest(a, b):
 \end{myexercise}
 
 \subsection{Nummer}
-Sei $x=x_1x_2\ldots x_n$, $x_i\in\lrc{0,1}$ für $i=1,2,\ldots, n$ eine endliche Folge von binären Ziffern (ein binäres Wort). Dann bezeichnet
+Sei $x=x_1x_2\ldots x_n$, $x_i\in\lrc{0,1}$ für $i = 1,2,\ldots, n$ eine endliche Folge von binären Ziffern (ein binäres Wort). Dann bezeichnet
 \begin{align}
 	\text{Nummer}(x)=\displaystyle\sum_{i=1}^n x_i\cdot 2^{n-i}
 \end{align}
@@ -232,6 +233,13 @@ Der Satz sagt aber nichts über den Grenzwert der Differenz der beiden Funktion 
 		\lim_{n\to\infty} \abs{f(n) - g(n)} = 0
 	\end{align*}
 	impliziert? Begründen Sie die Behauptung oder finden Sie ein Gegenbeispiel.
+	\begin{myanswer}
+		Wir definieren $f(n) := n$ und $g(n) := n + 2025$. Dan gilt zwar
+		\begin{align*}
+			\lim_{n\to\infty}\frac{f(n)}{g(n)} = \lim_{n\to\infty}\frac{n}{n + 2025} = 1
+		\end{align*}
+		aber $\lim_{n\to\infty} \abs{f(n) - g(n)} = 2025 \neq 0$.
+	\end{myanswer}
 \end{myexercise}
 
 Daraus folgt offensichtlich sofort, dass
@@ -239,6 +247,14 @@ Daraus folgt offensichtlich sofort, dass
 	\lim_{n\to\infty} \frac{\text{Prim}(n^2)}{n^2/\ln (n^2)} = 1.
 \end{align}
 In der Form \ref{eq:quadrat} werden wir den Primzahlsatz später verwenden.
+
+\begin{myexcursion}\label{myexcursion:finite_n}
+	Der Primzahlsatz in \cref{mytheorem:primzahlsatz} macht eine Aussage über einen Grenzwert, sagt jedoch nichts für endliches $n$ aus. Wir wollen aber die Zahl $n/\ln(n)$ als Approximation für $\text{Prim}(n)$ für endliches $n$ verwenden. Es gibt verschiedene mathematische Resultate, welche dieses Vorgehen rechtfertigen. So bewies im Februar 2010\cite{EstimatePrimes} Pierre Dusart das folgende präzisere Resultat zu $\text{Prim}(n)$:
+	\begin{align}
+		\text{Prim}(n) & \geq \frac{n}{\ln(n) - 1}, \quad\text{für } n\geq 5393,    \\
+		\text{Prim}(n) & \leq \frac{n}{\ln(n) - 1.1}, \quad\text{für } n\geq 60184.
+	\end{align}
+\end{myexcursion}
 
 % \begin{myexercise}
 % 	\begin{aenum}
@@ -464,7 +480,7 @@ def sieb_verbesserungen_1_und_2(n):
 
 \begin{myexercise}
 	\begin{aenum}
-		\item Bestimme $\text{Prim}(n)$ für $n = 10000000$ (zehn Millionen) mithilfe der Funktion \pythoninline{prim} (aus \cref{myexercise:implementVerbesserung1} oder \cref{myexercise:implementVerbesserung2}) und vergleiche den Wert mit der Schätzung $n/\ln{n}$.
+		\item Bestimme $\text{Prim}(n)$ für $n = 10'000'000$ (zehn Millionen) mithilfe der Funktion \pythoninline{prim} (aus \cref{myexercise:implementVerbesserung1} oder \cref{myexercise:implementVerbesserung2}) und vergleiche den Wert mit der Schätzung $n/\ln{n}$.
 		Wie gross ist der relative Fehler der Schätzung?
 
 		\item Lade das Python-Programm {\tt prim\_plots.py} von Moodle herunter und führe es aus. Betrachte den generierten Plot. Was sagt der Plot aus? Wie sind die Achsen skaliert?
@@ -475,7 +491,7 @@ def sieb_verbesserungen_1_und_2(n):
 	\end{aenum}
 	\begin{myanswer}
 		\begin{aenum}
-			\item Das Python-Programm liefert $\text{Prim}(10000000) = 664579$. Die Schätzung liefert $10^7/\ln{(10^7)}\approx 620421$. Der relative Fehler ist etwa $6.645$ Prozent.
+			\item Das Python-Programm liefert $\text{Prim}(10000000) = 664'579$. Die Schätzung liefert $10^7/\ln{(10^7)}\approx 62'0421$. Der relative Fehler ist etwa $6.645$ Prozent.
 
 			\item Beide Achsen sind logarithmiert. Der Plot zeigt, wie stark $f(n) = \text{Prim}(n)$ verglichen mit der linearen Funktion $g(n) = n$ wächst.
 
@@ -529,7 +545,7 @@ Dies ist das letzte mathematische Werkzeug, das wir benötigen.
 
 Sei $n\geq 1$ eine natürliche Zahl. Wir bezeichnen mit $\text{Bin}(n)$ die kürzeste binäre Darstellung von $n$, also $\text{Nummer}(\text{Bin}(n)) = n$.
 Die binäre Darstellung ist offenbar genau dann am kürzesten, wenn die erste Ziffer der Darstellung eine $1$ und keine $0$ ist.
-Beispielsweise sind sowohl $100$ als auch $00100$ binäre Darstellungen der Zahl $4$, doch die erste ist die kürzeste.
+Beispielsweise sind sowohl $100$ als auch $00100$ binäre Darstellungen der Zahl $4$, doch nur die erste ist die kürzeste.
 
 \begin{myexercise}
 	Bestimme $\text{Bin}(11)$ und $\text{Bin}(52)$.
@@ -549,38 +565,58 @@ def Bin(n):
     while n > 0:
         binary_str = str(n % 2) + binary_str
         n = n // 2
-    return binary_str
+        return binary_str
 \end{lstlisting}
 	\end{myanswer}
 \end{mychallenge}
 
+Um die Länge der binären Darstellung einer Zahl zu bestimmen, haben wir immer zuerst die binäre Darstellung der Zahl berechnet und anschliessend die Anzahl Stellen der Darstellung durch Zählen bestimmt. Im Folgenden wollen wir eine sehr wichtige Formel finden, welche uns die Darstellungslänge einer Zahl in einer beliebigen Basis $b$ sofort gibt.
 
-\begin{myexercise}
-	Sei $n \neq 0$ eine natürliche Zahl. Beweise, dass die Länge $|\text{Bin}(n)|$ von $\text{Bin}(n)$ durch $\ceil{\log_2(n+1)}$ gegeben ist.
-	\begin{myanswer}
-		Sei $k := \abs{\text{Bin}(n)}$. Wir wollen $k$ ermitteln. Die grösste Zahl, die sich in binär mit $k$-Stellen Darstellen lässt, ist
+\begin{mytheorem}[Anzahl Ziffern in Zahlendarstellung]\label{mytheorem:AnzahlZiffern}
+	Es seien $n>0$ und $b>1$ natürliche Zahlen. Die kürzeste $b$-adische Darstellung von $n$ (Darstellung ohne führende Nullen) hat genau $\ceil{\log_b(n + 1)}$ Stellen.
+	\begin{myproof}
+		Es sei $s$ die Anzahl der Stellen der kürzesten $b$-adischen Darstellung von $n$. Die grösste $s$-stellige Zahl in Basis $b$ (kürzeste Darstellung) ist
 		\begin{align*}
-			\underbrace{111\ldots 1}_{k-\text{Stellen}}\; = \sum_{i = 0}^{k-1} 2^i =
-			2^k - 1.
+			 & \sum_{k = 0}^{s-1} (b-1)b^{k} = (b-1)\sum_{k = 0}^{s-1} b^{k} \stackrel{\cref{mytheorem:verallgemeinertegeometrischeSumme}}{=} (b-1)\frac{b^s - 1}{b - 1} = b^s - 1,
 		\end{align*}
-		Die kleinste Zahl (ohne führende Nullen), die sich in binär mit $k$-Stellen Darstellen lässt, ist
+		wobei wir \cref{mytheorem:geometrischeSumme} verwendet haben. Die kleinste $s$-stellige Zahl Basis $b$ (kürzeste Darstellung) ist $b^{s-1}$. Somit gilt
 		\begin{align*}
-			\underbrace{100\ldots 0}_{k-\text{Stellen}}\; = 2^{k-1}.
+			b^{s-1} - 1 < n \leq b^s - 1 \iff \\
+			b^{s-1} < n + 1 \leq b^s \iff     \\
+			s-1 < \log_b(n+1) \leq s,
 		\end{align*}
+		wobei wir verwendet haben, dass $\log_b$ eine streng monoton wachsende Funktion ist.
+		Dann folgt aber $\ceil{\log_b(n + 1)} = s$.
+	\end{myproof}
+\end{mytheorem}
 
-		Offensichtlich gilt für $n$ nun also die \enquote{Sandwich-Beziehung}:
-		\begin{align*}
-			 & 2^k-1 \geq n > 2^{k-1} - 1 \iff                              \\
-			 & 2^k \geq n+1 > 2^{k-1} \iff                                  \\
-			 & \log_2\lr{2^k} \geq \log_2\lr{n+1} > \log_2\lr{2^{k-1}} \iff \\
-			 & k \geq \log_2(n+1) > k-1.
-		\end{align*}
-		Die Beziehung $k \geq \log_2(m+1) > k-1$ sagt aus, dass $\log_2(m+1)\in (k-1,k]$ und damit folgt:
-		\begin{align*}
-			k = \abs{\text{Bin}(n)} = \ceil{\log_2(n+1)}.
-		\end{align*}
-	\end{myanswer}
-\end{myexercise}
+% \begin{myexercise}
+% 	Sei $n \neq 0$ eine natürliche Zahl. Beweise, dass die Länge $|\text{Bin}(n)|$ von $\text{Bin}(n)$ durch $\ceil{\log_2(n+1)}$ gegeben ist.
+% 	\begin{myanswer}
+% 		Sei $k := \abs{\text{Bin}(n)}$. Wir wollen $k$ ermitteln. Die grösste Zahl, die sich in binär mit $k$-Stellen Darstellen lässt, ist
+% 		\begin{align*}
+% 			\underbrace{111\ldots 1}_{k-\text{Stellen}}\; = \sum_{i = 0}^{k-1} 2^i =
+% 			2^k - 1.
+% 		\end{align*}
+% 		Die kleinste Zahl (ohne führende Nullen), die sich in binär mit $k$-Stellen Darstellen lässt, ist
+% 		\begin{align*}
+% 			\underbrace{100\ldots 0}_{k-\text{Stellen}}\; = 2^{k-1}.
+% 		\end{align*}
+%
+% 		Offensichtlich gilt für $n$ nun also die \enquote{Sandwich-Beziehung}:
+% 		\begin{align*}
+% 			 & 2^k-1 \geq n > 2^{k-1} - 1 \iff                              \\
+% 			 & 2^k \geq n+1 > 2^{k-1} \iff                                  \\
+% 			 & \log_2\lr{2^k} \geq \log_2\lr{n+1} > \log_2\lr{2^{k-1}} \iff \\
+% 			 & k \geq \log_2(n+1) > k-1,
+% 		\end{align*}
+% 		wobei wir verwendet haben, dass $\log_b$ eine streng monoton wachsende Funktion ist.
+% 		Die Beziehung $k \geq \log_2(m+1) > k-1$ sagt aus, dass $\log_2(m+1)\in (k-1,k]$ und damit folgt:
+% 		\begin{align*}
+% 			k = \abs{\text{Bin}(n)} = \ceil{\log_2(n+1)}.
+% 		\end{align*}
+% 	\end{myanswer}
+% \end{myexercise}
 
 
 \clearpage
@@ -598,23 +634,28 @@ Das Protokoll $R = (R_1,R_2)$ für die beiden Rechner arbeitet wie folgt.
 
 	$R_1$ hat $n$ Bits $x=x_1\ldots x_n$, $R_2$ hat $n$ Bits $y = y_1\ldots y_n$.
 
-	\textbf{Phase 1}:
+	\textbf{Phase 1 (Zürich)}:
 
 	$R_1$ wählt zufällig mit einer uniformen Wahrscheinlichkeitsverteilung (alle gleiche Wahrscheinlichkeit gewählt zu werden) eine Primzahl $p \leq n^2$ aus.
 
 
-	\textbf{Phase 2}:
+	\textbf{Phase 2 (Zürich)}:
 
 	$R_1$ berechnet die Zahl $s = \text{Nummer}(x)\; \text{mod} \; p$ und schickt die binären Darstellungen von $s$ und $p$ an $R_2$
 
 
-	\textbf{Phase 3}:
+	\textbf{Phase 3 (Boston)}:
 
 	Nach Empfang von $s$ und $p$ berechnet $R_2$ die Zahl $q = \text{Nummer}(y)\; \text{\text{mod}} \; p$.
 	\begin{itemize}
 		\item Falls $q\neq s$, dann gibt $R_2$ die Ausgabe \enquote{ungleich} aus.
 		\item Falls $q = s$, dann gibt $R_2$ die Ausgabe \enquote{gleich} aus.
 	\end{itemize}
+
+
+	\textbf{Phase 4 (optional)}:
+
+	Sende ein einziges Bit von Boston nach Zürich, wobei $0 := \text{\enquote{ungleich}}$ und $1 := \text{\enquote{gleich}}$. Damit ist das Resultat des Vergleichs auch in Zürich bekannt.
 	% \end{mdframed}
 \end{myprocedure}
 
@@ -629,16 +670,20 @@ Das Protokoll $R = (R_1,R_2)$ für die beiden Rechner arbeitet wie folgt.
 \subsection{Analyse des Kommunikationsprotokolls}
 Jetzt analysieren wir die Arbeit von $R = (R_1,R_2)$. Zuerst bestimmen wir die Komplexität gemessen als die Anzahl der Kommunikationsbits. Anschliessend analysieren wir die Zuverlässigkeit (Fehlerwahrscheinlichkeit) von $R = (R_1, R_2)$.
 \subsubsection{Kommunikationsaufwand}
-Die einzige Kommunikation besteht darin, dass $R_1$ die binären Darstellungen der Zahlen $s$ und $p$ an $R_2$ schickt.
+Die einzige Kommunikation (ohne die optionale Phase 4, sonst kommt noch 1 Bit hinzu) besteht darin, dass $R_1$ die binären Darstellungen der Zahlen $s$ und $p$ an $R_2$ schickt.
 
-Die Primzahl $p$ wurde definitionsgemäss als $p \leq n^2$ gewählt. Da $n^2$ natürlich keine Primzahl ist, gilt also $p < n^2$. Die Zahl $s$ erfüllt als Rest bei der Division durch $p$ die Ungleichung $s < p$. Der gesamte Kommunikationsaufwand, wir nennen ihn $A$, ist die Summe
+Die Primzahl $p$ wurde definitionsgemäss als $p \leq n^2$ gewählt und da $n^2$ keine Primzahl ist, gilt $p < n^2$. Die Zahl $s$ erfüllt als Rest bei der Division durch $p$ die Ungleichung $s < p$. Damit gilt also $s < p < n^2$. Der gesamte Kommunikationsaufwand, wir nennen ihn $A$, ist die Summe der Längen der kürzesten binären Darstellungen von $p$ und $s$:
 \begin{align*}
-	A = \ceil{\log_2\lr{p + 1}} + \ceil{\log_2\lr{s + 1}} & \leq                        \\
-	\ceil{\log_2\lr{n^2 + 1}} + \ceil{\log_2\lr{n^2 + 1}} & =                           \\
-	2\ceil{\log_2\lr{n^2 + 1}}                            & \leq                        \\
-	2\ceil{\log_2\lr{n^2}} + 2                            & = 4\ceil{\log_2\lr{n}} + 2,
+	A := \ceil{\log_2\lr{p + 1}} + \ceil{\log_2\lr{s + 1}} & \leq                                       \\
+	\ceil{\log_2\lr{n^2 + 1}} + \ceil{\log_2\lr{n^2 + 1}}  & =                                          \\
+	2\ceil{\log_2\lr{n^2 + 1}}                             & \stackrel{\cref{mytheorem:Estimate}}{\leq} \\
+	2\ceil{\log_2\lr{n^2}} + 2                             & = 4\ceil{\log_2\lr{n}} + 2,
 \end{align*}
-wobei wir \cref{mytheorem:Estimate} verwendet haben.
+wobei wir \cref{mytheorem:Estimate} verwendet haben. Insgesamt haben wir also
+\begin{align}\label{eq:A}
+	A \leq 4\ceil{\log_2\lr{n}} + 2
+\end{align}
+gefunden.
 
 \begin{mytheorem}\label{mytheorem:Estimate}
 	Für jede natürliche Zahl $n>0$ gilt
@@ -658,7 +703,6 @@ wobei wir \cref{mytheorem:Estimate} verwendet haben.
 			1 \leq n,
 		\end{align*}
 		wobei wir verwendet haben, dass $\log2$ (streng) monoton wachsend ist. Die Ungleichung ist offensichtlich für alle natürlichen Zahlen $n>0$ korrekt.
-
 		Wir berechnen nun
 		\begin{align*}
 			\log_2(n+1) \leq \log_2(n) + 1               & \Rightarrow             \\
@@ -669,166 +713,84 @@ wobei wir \cref{mytheorem:Estimate} verwendet haben.
 
 \begin{myexercise}
 	Bestimmen Sie eine möglichst gute obere Schranke für den Kommunikationsaufwand $A$, falls $n:=10^{16}$.
+	\begin{myanswer}
+		Mit \cref{eq:A} finden wir
+		\begin{align*}
+			A \leq                                 &                               \\
+			4\ceil{\log_2\lr{n}} + 2               & =                             \\
+			4\ceil{\log_2\lr{10^{16}}} + 2         & =                             \\
+			4\cdot 16\cdot\ceil{\log_2\lr{10}} + 2 & = 4\cdot 16\cdot 4 + 2 = 258.
+		\end{align*}
+	\end{myanswer}
 \end{myexercise}
-
-% Da $s\leq p < n^2$ ($p$ ist strikt kleiner als $n^2$, da $n^2$ offensichtlich keine Primzahl sein kann) gilt, ist die Länge der binären Nachricht $2\cdot \ceil{\log_2(n^2)}\leq 4\cdot \ceil{\log_2(n)}$.
-% Für $n = 10^{16}$ sind dies höchstens $4\cdot 16\cdot \ceil{\log_2(10)}=256$ Bits. Es ist also eine sehr kurze Nachricht, die man in problemlos zuverlässig übertragen kann.
 
 \subsubsection{Fehlerwahrscheinlichkeit}
 Bei der Analyse der Fehlerwahrscheinlichkeit unterscheiden wir zwei Möglichkeiten bezüglich der tatsächlichen Relation zwischen den Datensätzen $x$ und $y$.
 \begin{aenum}
 	\item Sei $x = y$. Dann gilt
 	\begin{align*}
-		\text{Nummer}(x)\; \text{mod} \; p = \text{Nummer}(y)\; \text{mod} \; p
+		s = \text{Nummer}(x)\; \text{mod} \; p = \text{Nummer}(y)\; \text{mod} \; p = q
 	\end{align*}
-	für alle Primzahlen $p$. Also gibt $R_2$ die Antwort \enquote{gleich} mit Sicherheit. In diesem Fall ist die Fehlerwahrscheinlichkeit $0$.
-	\item Sei $x\neq y$. Wir bekommen eine falsche Antwort \enquote{gleich} nur dann, wenn $R_2$ eine zufällige Primzahl $p$ gewählt hat, die die Eigenschaft hat, dass
+	für alle Primzahlen $p$. Also gibt $R_2$ die korrekte Antwort \enquote{gleich}. In diesem Fall ist die Fehlerwahrscheinlichkeit $0$.
+	\item Sei $x\neq y$. Wir bekommen die falsche Antwort \enquote{gleich} genau dann, wenn $\text{Nummer}(x)$ und $\text{Nummer}(y)$ denselben Rest $z$ beim Teilen durch $p$ haben:
 	\begin{align*}
-		z = \text{Nummer}(x)\; \text{mod} \; p = \text{Nummer}(y)\; \text{mod} \; p
+		z := \text{Nummer}(x)\; \text{mod} \; p = \text{Nummer}(y)\; \text{mod} \; p.
 	\end{align*}
-	gilt. In anderer Form geschrieben:
+	Mithilfe von \cref{eq:division_mit_rest} (Division mit Rest), können wir auf eindeutige Weise schreiben:
 	\begin{align*}
-		\text{Nummer}(x) = x'\cdot p + z
+		\text{Nummer}(x) & = x'\cdot p + z, \\
+		\text{Nummer}(y) & = y'\cdot p + z,
 	\end{align*}
-	und
+	für eindeutige natürlichen Zahlen $x'$ und $y'$. Kombinieren dieser beiden Gleichungen gibt uns
 	\begin{align*}
-		\text{Nummer}(y) = y'\cdot p + z
+		\text{Nummer}(x)-\text{Nummer}(y) = x'\cdot p -  y'\cdot p = (x'-y')\cdot p.
 	\end{align*}
-	für irgendwelche natürlichen Zahlen $x'$ und $y'$.
-
-	Daraus folgt, dass
+	Das Protokoll entscheidet also genau dann falsch, wenn die Primzahl $p$ die Zahl
 	\begin{align*}
-		\text{Nummer}(x)-\text{Nummer}(y) = x'\cdot p -  y'\cdot p = (x'-y')\cdot p,
+		\abs{\text{Nummer}(x)-\text{Nummer}(y)}
 	\end{align*}
-	also dass $p$ die Zahl $|\text{Nummer}(x)-\text{Nummer}(y)|$ teilt.
+	teilt. Wir wollen uns nun überlegen, mit welcher Wahrscheinlichkeit eine solche \enquote{schlechte} Wahl von $p$ ist.
 
-	Also gibt unser Protokoll eine falsche Antwort nur, wenn die gewählte Primzahl $p$ die Zahl $|\text{Nummer}(x)-\text{Nummer}(y)|$ teilt. Wir wollen uns nun überlegen, wie wahrscheinlich dieser Fall ist.
+	\bigskip
+	\textbf{Fehlerwahrscheinlichkeit bei $x\neq y$}
 
-	Wir wissen, dass $p$ aus $\text{Prim}(n^2)$ Primzahlen aus $\lrc{2,3,\ldots, n^2}$ mit uniformer Wahrscheinlichkeitsverteilung gewählt wurde. Es ist also hilfreich festzustellen, wie viele dieser $\text{Prim}(n^2)\approx n^2/\ln(n^2)$ Primzahlen die Zahl $\abs{\text{Nummer}(x)-\text{Nummer}(y)}$ teilen können.
+	Wir wissen, dass $p$ mit uniformer Wahrscheinlichkeitsverteilung als eine von $\text{Prim}(n^2)$ vielen Primzahlen gewählt wurde. Es ist also hilfreich festzustellen, wie viele der $\text{Prim}(n^2)$ vielen Primzahlen die Zahl $\abs{\text{Nummer}(x)-\text{Nummer}(y)}$ teilen. Da die Länge von $x$ und $y$ gleich $n$ sind, gilt
+	\begin{align}\label{eq:diffw}
+		w := \abs{\text{Nummer}(x)-\text{Nummer}(y)} < 2^n.
+	\end{align}
+	Gemäss dem Fundamentalsatz der Arithmetik (Primfaktorzerlegung), können wir $w$ auf eindeutige Weise\footnote{In \cref{myexercise:wgreater1} erklären Sie, warum $w\geq 2$ gilt.} als $w = p_1^{i_1}p_2^{i_2}\ldots p_k^{i_k}$ darstellen, wobei $p_1<p_2<\ldots<p_k$ Primzahlen  und $i_1, i_2,\ldots ,i_k$ positive ganze Zahlen sind. Unser Ziel ist zu beweisen, dass $k\leq n-1$ ist. Dass $w$ also höchstens $n-1$ verschiedene Primfaktoren besitzt.
+	\begin{myproof}
+		Wir beweisen diese Aussage indirekt (durch Widerspruch).
 
-	Da die Länge von $x$ und $y$ gleich $n$ ist, gilt
+		Angenommen die Aussage wäre falsch, also $k\geq n$. Dann ist für genügend grosse $n$
+		\begin{align*}
+			w = p_1^{i_1}p_2^{i_2}\ldots p_k^{i_k} \geq p_1p_2\ldots p_n > 1\cdot 2\cdot 3\cdot \ldots \cdot n = n! > 2^n.
+		\end{align*}
+		Dies ist aber ein Widerspruch zur Tatsache, dass $w < 2^n$. Damit ist unsere Annahme falsch und $w$ kann nicht mehr als $n-1$ unterschiedliche Primfaktoren haben.
+	\end{myproof}
+	Da jede Primzahl aus $\lrc{2,3,\ldots ,n^2}$ die gleiche Wahrscheinlichkeit hat, (zufällig) gewählt zu werden, ist die Wahrscheinlichkeit, ein $p$ zu wählen, das $w$ teilt, (für genügend grosses $n$) höchstens
 	\begin{align*}
-		w = \abs{\text{Nummer}(x)-\text{Nummer}(y)} < 2^n.
+		\frac{n-1}{\text{Prim}(n^2)}\approx \frac{n-1}{n^2/\ln(n^2)} < \frac{\ln(n^2)}{n},
 	\end{align*}
-	Sei $w = p_1^{i_1}p_2^{i_2}\ldots p_k^{i_k}$, wobei $p_1<p_2<\ldots<p_k$ Primzahlen  und $i_1, i_2,\ldots ,i_k$ positive ganze Zahlen sind. Wir wissen, dass jede Zahl eine solche eindeutige Faktorisierung besitzt. Unser Ziel ist zu beweisen, dass $k\leq n-1$ ist.
-
-	Wir beweisen diese Aussage indirekt (durch Widerspruch).
-
-	Angenommen die Aussage wäre falsch, also $k\geq n$. Dann ist für genügend grosse $n$
-	\begin{align*}
-		w = w = p_1^{i_1}p_2^{i_2}\ldots p_k^{i_k} \geq p_1p_2\ldots p_n > 1\cdot 2\cdot 3\cdot \ldots \cdot n = n! > 2^n.
-	\end{align*}
-	Dies ist aber ein Widerspruch zur Tatsache, dass $w < 2^n$. Damit ist unsere Annahme falsch und $w$ kann höchstens $n-1$ unterschiedliche Primfaktoren haben. Weil jede Primzahl aus $\lrc{2,3,\ldots ,n^2}$ die gleiche Wahrscheinlichkeit hat, (zufällig) gewählt zu werden, ist die Wahrscheinlichkeit, ein $p$ zu wählen, das $w$ teilt, höchstens
-	\begin{align*}
-		\frac{n-1}{\text{Prim}(n^2)}\leq \frac{n-1}{n^2/\ln(n^2)}\leq\frac{\ln(n^2)}{n}
-	\end{align*}
-	für genügend grosse $n$.
-
-	Also ist die Fehlerwahrscheinlichkeit des Kommunikationsprotokolls höchstens $\ln(n^2)/n$, was für $n=10^{16}$ höchstens $0.736827\cdot 10^{-14}$ ist.
+	wobei wir die Approximation $\text{Prim}(n)\approx n/\ln(n)$ verwendet haben\footnote{siehe \cref{mytheorem:primzahlsatz}, \cref{myexcursion:finite_n}}. Die Fehlerwahrscheinlichkeit des Kommunikationsprotokolls ist also höchstens $\ln(n^2)/n$, was für $n=10^{16}$ höchstens $0.736827\cdot 10^{-14}$ ist.
 \end{aenum}
-Sollte uns diese Fehlerwahrscheinlichkeit noch zu hoch sein, kann das Protokoll zum Beispiel 10-mal wiederholt werden (mit 10 zufälligen Primzahlen) und man erhält dann eine Fehlerwahrscheinlichkeit von höchstens
-\begin{align*}
-	\lr{\frac{n-1}{\text{Prim}(n^2)}}^{10}\leq \lr{\frac{\ln(n^2)}{n}}^{10} = \frac{2^{10}\cdot \lr{\ln(n)}^{10}}{n^{10}}
-\end{align*}
-für genügend grösse $n$. Für $n = 10^{16}$ ist dies höchstens $0.472\cdot 10^{-141}$. Eine Fehlerwahrscheinlichkeit, die man gerne in Kauf nimmt.
-
-\subsection{Praktische Durchführung}
-\begin{myexercise}\label{myexercise:protokoll}
-	Verwende Deine Python-Funktionen \pythoninline{sieb}, \pythoninline{Bin} und \pythoninline{Nummer} um das Kommunikationsprotokoll in Python zu implementieren.
+\begin{myexercise}\label{myexercise:wgreater1}
+	Erklären Sie, warum die Zahl $w$ in \cref{eq:diffw} grösser als $1$ ist.
+	\begin{myanswer}
+		Die Zahl $w$ ist definiert unter der Annahme $x\neq y$ und der Annahme, dass $\text{Nummer}(x)$ und $\text{Nummer}(y)$ denselben Rest $z$ beim Teilen durch eine Primzahl haben. Damit muss die Differenz $w$ aber ein Vielfaches einer Primzahl sein. Da 2 die kleinste Primzahl ist, folgt $w\geq 2$.
+	\end{myanswer}
 \end{myexercise}
 
+\subsection{Praktische Durchführung}
+Sollte uns eine Fehlerwahrscheinlichkeit von $0.736827\cdot 10^{-14}$ noch zu hoch sein, kann das Protokoll zum Beispiel 10-mal wiederholt werden (mit 10 zufälligen Primzahlen) und man erhält dann eine Fehlerwahrscheinlichkeit von höchstens
+\begin{align*}
+	\lr{\frac{n-1}{\text{Prim}(n^2)}}^{10}\approx \lr{\frac{\ln(n^2)}{n}}^{10} = \frac{2^{10}\cdot \lr{\ln(n)}^{10}}{n^{10}}
+\end{align*}
+für genügend grösse $n$. Für $n = 10^{16}$ ist dies höchstens $0.472\cdot 10^{-141}$. Eine Fehlerwahrscheinlichkeit, die man gerne in Kauf nimmt.
+\begin{myexercise}\label{myexercise:protokoll}
+	Verwende Deine Python-Funktionen \pythoninline{sieb}, \pythoninline{Bin} und \pythoninline{Nummer} um das Kommunikationsprotokoll in Python zu implementieren.
+	\begin{myanswer}
+		siehe \cref{sec:protokoll}
+	\end{myanswer}
+\end{myexercise}
 
-\begin{myanswer}
-	Die Funktionen \pythoninline{sieb}, \pythoninline{Nummer} und \pythoninline{Bin} haben wir schon geschrieben.
-	Diese können wir nun hier verwenden.
-	Die Funktion \pythoninline{is_equal} wird nicht benötigt, kann aber verwendet werden um (deterministisch) zu prüfen, ob zwei Datensätze identisch sind oder nicht.
-	% \begin{lstlisting}[language=Python,numbers=none]
-	% 	import numpy as np
-	%
-	% 	def sieb(n):
-	% 	primzahlen = []
-	% 	nicht_gestrichen = (n + 1) * [True]
-	%
-	% 	i = 2
-	% 	while i * i <= n:
-	% 	if nicht_gestrichen[i]:
-	% 	j = i * i
-	% 	while j <= n:
-	% 	nicht_gestrichen[j] = False
-	% 	j += i
-	% 	i += 1
-	%
-	% 	# sammle alle nicht gestrichenen Zahlen
-	% 	# dies sind genau die Primzahlen <= n
-	% 	i = 2
-	% 	while i <= n:
-	% 	if nicht_gestrichen[i]:
-	% 	primzahlen.append(i)
-	% 	i += 1
-	%
-	% 	return primzahlen
-	%
-	%
-	% 	def Nummer(x):
-	% 	dec = 0
-	% 	power = len(x) - 1
-	%
-	% 	for ziffer in x:
-	% 	dec += int(ziffer) * 2**power
-	% 	power -= 1
-	%
-	% 	return dec
-	%
-	%
-	% 	def Bin(n):
-	% 	if n == 0:
-	% 	return "0"
-	% 	binary_str = ""
-	% 	while n > 0:
-	% 	binary_str = str(n % 2) + binary_str
-	% 	n = n // 2
-	% 	return binary_str
-	%
-	%
-	% 	def is_equal(x, y):
-	% 	nx = len(x)
-	% 	ny = len(y)
-	%
-	% 	if nx != ny:
-	% 	return False
-	% 	for i in range(nx):
-	% 	if x[i] != y[i]:
-	% 	return False
-	% 	return True
-	% \end{lstlisting}
-	%
-	% Das Protokoll lässt sich nun recht einfach wie folgt umsetzen:
-	% \begin{lstlisting}[language=Python,numbers=none]
-	% 	def random_primzahl(n):
-	% 	primes = sieb(n)
-	% 	p = np.random.choice(primes, 1)[0]
-	% 	return p
-	%
-	%
-	% 	def R1(x):
-	% 	n = len(str(x))
-	% 	p = random_primzahl(n**2)
-	% 	s = Nummer(x) % p
-	% 	return [s, p]
-	%
-	%
-	% 	def protokoll(x, y):
-	% 	sp = R1(x)
-	% 	q = Nummer(y) % sp[1]
-	% 	if sp[0] == q:
-	% 	return True
-	% 	else:
-	% 	return False
-	%
-	%
-	% 	x = "100110101"
-	% 	y = "100110101"
-	%
-	% 	print(protokoll(x, y))
-	% \end{lstlisting}
-\end{myanswer}
