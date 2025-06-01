@@ -47,43 +47,43 @@ def generiere_korrelationsdaten(szenario: str, n: int = 100, seed: int = 42) -> 
         x = np.random.poisson(5, n)  # Beiträge pro Tag
         y = np.clip(8 - 0.5 * x + np.random.normal(0, 1, n), 0, 10)  # mehr Beiträge → weniger Zufriedenheit
         return pd.DataFrame({"Beiträge pro Tag": x, "Zufriedenheit (0–10)": y})
-    elif szenario == "haarlaenge_vs_notenschnitt":
+    elif szenario == "haarlaenge_vs_note":
         x = np.random.normal(30, 10, n)  # Haarlänge in cm
-        y = np.clip(3 + 0.05 * x + np.random.normal(0, 0.5, n), 1, 6)  # längere Haare → schlechterer Notenschnitt
+        y = np.clip(3 + 0.05 * x + np.random.normal(0, 0.5, n), 1, 6)  # längere Haare → schlechtere Note
         
         # Füge Ausreißer hinzu
         num_outliers = max(1, n // 20)  # 1 oder 2 Ausreißer pro 20
         outlier_indices = np.random.choice(n, num_outliers, replace=False)
-        y[outlier_indices] = np.random.uniform(1, 6, num_outliers)  # zufällige Werte innerhalb des Notenschnittbereichs
+        y[outlier_indices] = np.random.uniform(1, 6, num_outliers)  # zufällige Werte innerhalb des Notenbereichs
         
-        return pd.DataFrame({"Haarlänge (cm)": x, "Notenschnitt": y})
+        return pd.DataFrame({"Haarlänge (cm)": x, "Note": y})
 
-    elif szenario == "schlafdauer_vs_notenschnitt":
+    elif szenario == "schlafdauer_vs_note":
         x = np.random.normal(7, 1.5, n)  # Schlafdauer in Stunden
-        y = np.clip(6 - 0.5 * (8 - x) + np.random.normal(0, 0.3, n), 1, 6)  # mehr Schlaf → besserer Notenschnitt
-        return pd.DataFrame({"Schlafdauer": x, "Notenschnitt": y})
+        y = np.clip(6 - 0.5 * (8 - x) + np.random.normal(0, 0.3, n), 1, 6)  # mehr Schlaf → bessere Note
+        return pd.DataFrame({"Schlafdauer (h)": x, "Note": y})
 
     elif szenario == "schuhgroesse_vs_buecher":
         x = np.random.uniform(0, 100, n)  # Zufällige Werte für X
         y = np.random.uniform(0, 100, n)  # Unabhängige zufällige Werte für Y
         return pd.DataFrame({"Bücher gelesen": x, "Schuhgrösse": y})
 
-    
-# Generate and save each plot as a separate PDF file
-correlations = [1, 0.8, 0.4, 0, -0.4, -0.8, -1]
-for r in correlations:
-    x, y = generate_correlated_data(r=r)
-    plt.figure(figsize=(3, 3))
-    plt.scatter(x, y, s=3, color=(0, 0, 139/255))  # Set color to dark blue
-    plt.axis('off')
-    plt.gca().set_position([0, 0, 1, 1])  # Remove margins
-    plt.savefig(f"GrundlagenInfo/10_AusDatenLernen/Figures/correlation_{r}.pdf", 
-                bbox_inches='tight', pad_inches=0, transparent=True)  # Set transparent background
-    plt.close()
+if __name__ == "__main__":
+    # Generate and save each plot as a separate PDF file
+    correlations = [1, 0.8, 0.4, 0, -0.4, -0.8, -1]
+    for r in correlations:
+        x, y = generate_correlated_data(r=r)
+        plt.figure(figsize=(3, 3))
+        plt.scatter(x, y, s=3, color=(0, 0, 139/255))  # Set color to dark blue
+        plt.axis('off')
+        plt.gca().set_position([0, 0, 1, 1])  # Remove margins
+        plt.savefig(f"GrundlagenInfo/10_AusDatenLernen/Figures/correlation_{r}.pdf", 
+                    bbox_inches='tight', pad_inches=0, transparent=True)  # Set transparent background
+        plt.close()
 
-# Generate and save correlation data
-generiere_korrelationsdaten("berufserfahrung_vs_einladung", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Data/berufserfahrung_vs_einladung.csv", index=False)
-generiere_korrelationsdaten("socialmedia_vs_zufriedenheit", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Data/socialmedia_vs_zufriedenheit.csv", index=False)
-generiere_korrelationsdaten("haarlaenge_vs_notenschnitt", n=14, seed=1).to_csv("GrundlagenInfo/10_AusDatenLernen/Data/haarlaenge_vs_notenschnitt.csv", index=False)
-generiere_korrelationsdaten("schlafdauer_vs_notenschnitt", n=25, seed=1).to_csv("GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_notenschnitt.csv", index=False)
+    # Generate and save correlation data
+    generiere_korrelationsdaten("berufserfahrung_vs_einladung", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Data/berufserfahrung_vs_einladung.csv", index=False)
+    generiere_korrelationsdaten("socialmedia_vs_zufriedenheit", n=20).to_csv("GrundlagenInfo/10_AusDatenLernen/Data/socialmedia_vs_zufriedenheit.csv", index=False)
+    generiere_korrelationsdaten("haarlaenge_vs_note", n=14, seed=1).to_csv("GrundlagenInfo/10_AusDatenLernen/Data/haarlaenge_vs_note.csv", index=False)
+    generiere_korrelationsdaten("schlafdauer_vs_note", n=25, seed=1).to_csv("GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv", index=False)
 

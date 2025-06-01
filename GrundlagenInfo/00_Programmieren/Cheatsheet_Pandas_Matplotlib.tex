@@ -35,7 +35,7 @@
   \begin{multicols*}{3}
     \textcolor{\cheatSheetColor}{
       \begin{centering}
-        \section*{Data Science Cheatsheet}
+        \section*{Data Science Cheatsheets}
       \end{centering}
       \hrule
       Das folgende Cheatsheet enthält die wichtigsten Befehle für den Umgang mit den Libraries \texttt{pandas}, \texttt{matplotlib} und \texttt{statsmodels}.
@@ -180,8 +180,7 @@ P = np.array([
     [0.9, 0.1],
     [0.2, 0.8]
 ])
-
-P\end{lstlisting}
+\end{lstlisting}
     \end{cheatSheetBox}
     \begin{cheatSheetBox}[title=Markov-Ketten: Vorhersage (Matrixmultiplikation)]
       \begin{lstlisting}
@@ -195,18 +194,25 @@ print("Nach 1 Tag:", pi1)
 # Nach zwei Tagen
 pi2 = pi1 @ P
 print("Nach 2 Tagen:", pi2)
-      \end{lstlisting}
+\end{lstlisting}
     \end{cheatSheetBox}
     \begin{cheatSheetBox}[title=Markov-Ketten: Vorhersage (Zufallsimulation)]
-      \begin{lstlisting}
-# Vorhersage für 10 Schritte
-steps = 10
-initial_state = np.array([1, 0]) # Startzustand: Sonne
-state = initial_state
-for i in range(steps):
-    state = np.dot(state, P)
-    print(f'Schritt {i+1}: {state}')
-      \end{lstlisting}
+      \begin{lstlisting}[numbers=left]
+zustand = "Sonne"    # Anfangszustand
+history = [zustand]  # Liste simulierter Zustände
+schritte = 20        # Anzahl Simulationsschritte
+
+for i in range(schritte):
+    if zustand == "Sonne":
+        wahrscheinlichkeit = P[0]
+    else:
+        wahrscheinlichkeit = P[1]
+
+    zustand = random.choices(["Sonne", "Regen"], weights=wahrscheinlichkeit).pop()
+    history.append(zustand)
+
+print(history)
+\end{lstlisting}
     \end{cheatSheetBox}
   \end{multicols*}
 \end{landscape}

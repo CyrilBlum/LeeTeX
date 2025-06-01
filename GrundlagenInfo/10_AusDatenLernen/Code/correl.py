@@ -74,26 +74,30 @@ def visualize_normalized_data(df_correl, normalize=True, save=True, add_mean=Tru
     else:
         plt.show()
 
-df_pol = generiere_korrelationsdaten("polizei_vs_kriminalitaet", n=20)
-df_pol.to_csv("GrundlagenInfo/10_AusDatenLernen/Code/polizei_vs_kriminalitaet.csv", index=False)
-visualize_normalized_data(df_pol, normalize=False, save=True, add_mean=False)
-visualize_normalized_data(df_pol, normalize=False, save=True, add_mean=True)
-visualize_normalized_data(df_pol, normalize=True, save=True, add_mean=False)
+
+if __name__ == "__main__":
+    df_pol = generiere_korrelationsdaten("polizei_vs_kriminalitaet", n=20)
+    df_pol.to_csv("GrundlagenInfo/10_AusDatenLernen/Code/polizei_vs_kriminalitaet.csv", index=False)
+
+    # visualize steps of adding mean and normalization
+    visualize_normalized_data(df_pol, normalize=False, save=True, add_mean=False)
+    visualize_normalized_data(df_pol, normalize=False, save=True, add_mean=True)
+    visualize_normalized_data(df_pol, normalize=True, save=True, add_mean=False)
 
 
-# Korrelationskoeffizient manuell berechnen
+    # Korrelationskoeffizient manuell berechnen
 
-# Berechnung der Mittelwerte
-mean_x = df_pol["Polizeistreifen"].mean()
-mean_y = df_pol["Straftaten"].mean()
+    # Berechnung der Mittelwerte
+    mean_x = df_pol["Polizeistreifen"].mean()
+    mean_y = df_pol["Straftaten"].mean()
 
-# Berechnung des Korrelationskoeffizienten
-x_neu = (df_pol["Polizeistreifen"] - mean_x)
-y_neu = (df_pol["Straftaten"] - mean_y)
-zaehler = sum(x_neu * y_neu)
+    # Berechnung des Korrelationskoeffizienten
+    x_neu = (df_pol["Polizeistreifen"] - mean_x)
+    y_neu = (df_pol["Straftaten"] - mean_y)
+    zaehler = sum(x_neu * y_neu)
 
 
-teiler = ((sum((df_pol["Polizeistreifen"] - mean_x)**2) * sum((df_pol["Straftaten"] - mean_y)**2))**0.5)
+    teiler = ((sum((df_pol["Polizeistreifen"] - mean_x)**2) * sum((df_pol["Straftaten"] - mean_y)**2))**0.5)
 
-correlation_coefficient = zaehler / teiler
-print(f"Correlation Coefficient (calculated manually): {correlation_coefficient:.2f}, numerator: {zaehler:.2f}, denominator: {teiler:.2f}")
+    correlation_coefficient = zaehler / teiler
+    print(f"Correlation Coefficient (calculated manually): {correlation_coefficient:.2f}, numerator: {zaehler:.2f}, denominator: {teiler:.2f}")

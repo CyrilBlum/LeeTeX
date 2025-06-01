@@ -4,26 +4,23 @@
 
 Viele Vorgänge in unserem Alltag lassen sich als Abfolge von Zuständen beschreiben: Das Wetter ändert sich von Tag zu Tag, Menschen wechseln zwischen verschiedenen Apps auf ihrem Smartphone oder ein Zug ist mal pünktlich, mal verspätet. Dabei interessiert uns oft, wie wahrscheinlich der nächste Zustand ist. Hier setzen \textbf{Markov-Ketten} an. Diese können genutzt werden, um Zustände (z.B. Wetterzustände, App-Nutzung) in einem zeitlichen Verlauf zu modellieren und Vorhersagen zu treffen.
 
-Eine Markov-Kette ist ein mathematisches Modell zur Beschreibung solcher Prozesse. Ihr zentrales Merkmal ist die sogenannte \emph{Markov-Eigenschaft}: Der nächste Zustand hängt nur vom aktuellen Zustand ab – nicht davon, wie man in diesen Zustand gekommen ist. Das macht Markov-Ketten zu einem besonders einfachen und sehr verbreiteten Werkzeug. Die formelle Definition von Markov-Ketten ist in \cref{ch:markov-formal} zu finden.
+Eine Markov-Kette ist ein mathematisches Modell zur Beschreibung solcher Prozesse. Ihr zentrales Merkmal ist die sogenannte \emph{Markov-Eigenschaft}: Der nächste Zustand hängt nur vom aktuellen Zustand ab – nicht davon, wie man in diesen Zustand gekommen ist. Das macht Markov-Ketten zu einem besonders einfachen und sehr verbreiteten Werkzeug.
 
-Das Prinzip von Markov-Ketten lässt sich gut am Beispiel des Wetters illustrieren. Wenn es heute sonnig ist, so können Sie mit einer gewissen Wahrscheinlichkeit abschätzen, wie das Wetter morgen sein wird – zum Beispiel wieder sonnig, wolkig oder regnerisch. Die genaue Wahrscheinlichkeit hängt nur vom heutigen Wetter ab, nicht von den Wetterverhältnissen der letzten Tage.
+Das Prinzip von Markov-Ketten lässt sich gut am Beispiel des Wetters illustrieren. Wenn es heute sonnig ist, so können Sie mit einer gewissen Wahrscheinlichkeit abschätzen, wie das Wetter morgen sein wird – zum Beispiel wieder sonnig oder regnerisch. Die genaue Wahrscheinlichkeit hängt nur vom heutigen Wetter ab, nicht von den Wetterverhältnissen der letzten Tage.
 
 
 \begin{myexercise}
     Entscheiden Sie für jede der folgenden Situationen, ob die Markov-Eigenschaft erfüllt ist. Begründen Sie Ihre Antwort jeweils kurz.
-
     \begin{enumerate}
-        \item Das Wetter morgen kann gut vorhergesagt werden anhand des heutigen Wetters.
+        \item Das Wetter morgen kann gut vorhergesagt werden basierend auf dem heutigen Wetter.
         \item Die Wahrscheinlichkeit, dass ein Schüler heute seine Hausaufgaben macht, hängt davon ab, ob er sie gestern und vorgestern gemacht hat.
-        \item Die Position einer Spielfigur auf einem Spielbrett hängt nur vom aktuellen Feld und dem nächsten Würfelergebnis ab.
-        \item Die Wahrscheinlichkeit, dass ein Computer abstürzt, hängt davon ab, was bereits alles auf dem Computer gemacht wurde.
+        \item Die Wahrscheinlichkeit, dass ein Programm abstürzt, hängt davon ab, wie viele andere Programme bereits abgestürzt sind.
         \item Die Wahrscheinlichkeit, dass eine Person Kleider einer bestimmten Marke kauft, hängt nur davon ab, ob das zuletzt gekaufte Kleidungsstück von dieser Marke war.
     \end{enumerate}
     \begin{myanswer}
         \begin{enumerate}
             \item \textbf{Markov-Eigenschaft erfüllt}, da das Wetter morgen nur vom heutigen Wetter abhängt.
             \item \textbf{Nicht erfüllt}, da die Entscheidung vom Zustand der letzten zwei Tage abhängt.
-            \item \textbf{Erfüllt}, da nur das aktuelle Feld und das nächste Würfelergebnis relevant sind.
             \item \textbf{Nicht erfüllt}, da die Absturz-Wahrscheinlichkeit von der gesamten Laufzeit abhängt, nicht nur vom aktuellen Zustand.
             \item \textbf{Erfüllt}, da die Kaufentscheidung nur vom zuletzt gekauften Kleidungsstück abhängt.
         \end{enumerate}
@@ -32,26 +29,128 @@ Das Prinzip von Markov-Ketten lässt sich gut am Beispiel des Wetters illustrier
 
 In diesem Kapitel werden Sie anhand lebensnaher Beispiele wie Wettermodellen, App-Nutzung oder Pendlerverhalten schrittweise verstehen, wie Markov-Ketten funktionieren, wie man sie mathematisch beschreibt und wie Sie sie nutzen können, um Prognosen zu erstellen.
 
-\begin{myexample}[Wettervorhersage mit einer Markov-Kette]
+Als erstes müssen wir eine geeignete Weise finden, um Übergangswahrscheinlichkeiten darzustellen. Eine erste Möglichkeit wäre, diese als \textbf{gerichteten Graphen} darzustellen.
+
+\section{Darstellung von Übergangswahrscheinlichkeiten als gerichteter Graph}
+
+Markov-Ketten lassen sich gut als gerichtete Graphen visualisieren, wobei die Zustände als Knoten und die Übergangswahrscheinlichkeiten als beschriftete Kanten dargestellt werden.
+
+\begin{myexample}[Darstellung einer Markov-Kette als \textbf{gerichteter Graph}]\label{example:graph}
 Stellen Sie sich vor, das Wetter kann nur zwei Zustände annehmen: \emph{sonnig} oder \emph{regnerisch}. Die Übergangswahrscheinlichkeiten sind wie folgt:
 \begin{itemize}
     \item Ist es heute sonnig, so ist die Wahrscheinlichkeit, dass es morgen wieder sonnig ist, $0.8$; die Wahrscheinlichkeit für Regen beträgt $0.2$.
     \item Ist es heute regnerisch, so ist die Wahrscheinlichkeit, dass es morgen wieder regnet, $0.6$; die Wahrscheinlichkeit für Sonne beträgt $0.4$.
 \end{itemize}
-Diese Wahrscheinlichkeiten lassen sich in einer sogenannten \emph{Übergangsmatrix} darstellen (mit Emojis, \emoji{sun} = sonnig, \emoji{umbrella} = regnerisch):
-
-
-\begin{table}[H]
+Diese Übergangswahrscheinlichkeiten können gut als gerichteter Graph dargestellt werden:
+\begin{figure}[H]
     \centering
-    \begin{tabular}{c c||c|c}
-                                                      &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
-                                                      &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
-        \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0.8                             & 0.2            \\\cmidrule{2-4}
-                                                      & \emoji{umbrella} & 0.4                             & 0.6            \\
-    \end{tabular}
-\end{table}
+    \begin{tikzpicture}[node distance=3cm, auto, thick]
+        \node[state] (S) {\emoji{sun}};
+        \node[state] (R) [right of=S] {\emoji{umbrella}};
 
-Die Zeilen entsprechen dem heutigen Zustand (\emoji{sun}, \emoji{umbrella}), die Spalten dem morgigen Zustand. Häufig wird die Übergangsmatrix ohne Zeilen- und Spaltenbeschriftung dargestellt:
+        \path[->]
+        (S) edge[bend left] node {0.2} (R)
+        (R) edge[bend left] node {0.4} (S)
+        (S) edge[loop above] node {0.8} (S)
+        (R) edge[loop above] node {0.6} (R);
+    \end{tikzpicture}
+    \caption{Visualisierung des Wetter-Beispiels als gerichteter Graph}
+    \label{fig:markov-weather}
+\end{figure}
+
+Dabei bezeichnen:
+\begin{itemize}
+    \item[{\faCircle[regular]}] \textbf{Knoten} = Zustände
+    \item[\faArrowRight] \textbf{Kanten} = Übergänge mit Wahrscheinlichkeiten
+\end{itemize}
+\end{myexample}
+
+Bei dieser Darstellung wird besonders deutlich, wie die Übergänge zwischen den Zuständen erfolgen. Die Kantenbeschriftungen geben die Übergangswahrscheinlichkeiten an, wobei die ausgehenden Kanten eines Knotens in der Summe immer 1 ergeben müssen.
+
+\begin{myexercise}[Visualisierung der Thailand-Markov-Kette]\label{ex:tourist-graph}
+    Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden geniessen (Samui und Phangan), sowie das Festland besichtigen.
+
+    Laut einer Umfrage gilt:
+    \begin{itemize}
+        \item Ist der Tourist auf dem Festland, so fährt er am nächsten Tag mit Wahrscheinlichkeit $70\%$ nach Samui, mit $20\%$ nach Phangan und bleibt mit $10\%$ auf dem Festland.
+        \item Ist er auf Samui, bleibt er mit $40\%$ dort, fährt mit $50\%$ nach Phangan und kehrt mit $10\%$ aufs Festland zurück.
+        \item Ist er auf Phangan, bleibt er mit $30\%$ dort, fährt mit $30\%$ nach Samui und kehrt mit $40\%$ aufs Festland zurück.
+    \end{itemize}
+
+    Zeichnen Sie die Markov-Kette als gerichteten Graphen. Die Zustände sind \textbf{F} (= Festland), \textbf{S} (= Samui) und \textbf{P} (= Phangan).
+
+    \begin{myanswer}
+        Die Visualisierung als gerichteter Graph sieht wie folgt aus:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=2.5cm, auto, thick]
+                \node[state] (F) {F};
+                \node[state] (S) [right of=F] {S};
+                \node[state] (P) [right of=S] {P};
+
+                \path[->]
+                (F) edge[bend left=5] node {0.7} (S)
+                (S) edge[bend left=5] node {0.1} (F)
+                (F) edge[bend left=70] node {0.2} (P)
+                (P) edge[bend left=40] node {0.4} (F)
+                (S) edge[bend left=5] node {0.5} (P)
+                (P) edge[bend left=5] node {0.3} (S)
+                (F) edge[loop left] node {0.1} (F)
+                (S) edge[loop above, min distance=10mm, in=60, out=120] node {0.4} (S)
+                (P) edge[loop right] node {0.3} (P);
+            \end{tikzpicture}
+            \caption{Visualisierung des Thailand-Beispiels}
+            \label{fig:markov-thailand}
+        \end{figure}
+    \end{myanswer}
+\end{myexercise}
+
+Wie \cref{ex:tourist-graph} zeigt, können gerichtete Graphen schnell unübersichtlich werden. Zudem stellt sich die Frage, wie sich gerichtete Graphen so umsetzen lassen, dass ein Computer diese interpretieren kann. Aus diesen Gründen werden die Übergangswahrscheinlichkeiten von Markov-Ketten häufig als Übergangsmatrizen dargestellt.
+
+\section{Darstellung von Übergangswahrscheinlichkeiten als Matrix}
+\begin{myexample}[Übergangsmatrix]\label{example:matrix}
+
+Die Übergangswahrscheinlichkeiten aus \cref{example:graph} lassen sich in einer sogenannten \emph{Übergangsmatrix} darstellen (mit Emojis, \emoji{sun} = sonnig, \emoji{umbrella} = regnerisch):
+
+\begin{center}
+    \begin{minipage}{0.25\textwidth}
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, auto, thick]
+                \node[state] (S) {\emoji{sun}};
+                \node[state] (R) [right of=S] {\emoji{umbrella}};
+
+                \path[->]
+                (S) edge[bend left] node {0.2} (R)
+                (R) edge[bend left] node {0.4} (S)
+                (S) edge[loop above] node {0.8} (S)
+                (R) edge[loop above] node {0.6} (R);
+            \end{tikzpicture}
+            \caption*{\textbf{Gerichteter Graph}}
+        \end{figure}
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}{0.05\textwidth}
+        \centering
+        $\Rightarrow$
+    \end{minipage}
+    \hspace{0.05\textwidth}
+    \begin{minipage}{0.25\textwidth}
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{c c|c|c}
+                                                              &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
+                                                              &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
+                \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0.8                               & 0.2              \\\cmidrule{2-4}
+                                                              & \emoji{umbrella} & 0.4                               & 0.6              \\
+            \end{tabular}
+            \caption*{\textbf{Übergangs-Tabelle}}
+        \end{table}
+    \end{minipage}
+\end{center}
+
+Die Zeilen entsprechen dem aktuellen Zustand (\emoji{sun}, \emoji{umbrella}), die Spalten dem nächsten (in diesem Fall morgigen) Zustand. Häufig wird die Übergangs-Tabelle als \textbf{Übergangsmatrix $P$} ohne Zeilen- und Spaltenbeschriftung dargestellt:
 
 \[
     P =
@@ -60,8 +159,49 @@ Die Zeilen entsprechen dem heutigen Zustand (\emoji{sun}, \emoji{umbrella}), die
         0.4 & 0.6 \\
     \end{pmatrix}
 \]
+\end{myexample}
 
-Um zu berechnen, wie wahrscheinlich es ist, dass es in zwei Tagen sonnig ist, wenn es heute regnerisch ist, erstellen wir zunächst einen \textbf{Startvektor} $\pi_0$, der den heutigen Zustand (also den Zustand $\pi$ am Tag 0) beschreibt. In diesem Fall ist der Startvektor (mit Emojis):
+\begin{myexercise}[Übergangsmatrix für thailändischen Tourist]\label{ex:tourist}
+    Erstellen Sie die \textbf{Übergangsmatrix} für die Thailand-Aufgabe (\cref{ex:tourist-graph}). Verwenden Sie folgende Vorlage:
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c c||c|c|c}
+                                                          &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
+                                                          &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
+            \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} &                                   &            &            \\\cmidrule{2-5}
+                                                          & \textbf{S} &                                   &            &            \\\cmidrule{2-5}
+                                                          & \textbf{P} &                                   &            &            \\
+        \end{tabular}
+    \end{table}
+    \begin{myanswer}
+
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{c c||c|c|c}
+                                                              &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
+                                                              &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
+                \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} & 0.1                               & 0.7        & 0.2        \\\cmidrule{2-5}
+                                                              & \textbf{S} & 0.1                               & 0.4        & 0.5        \\\cmidrule{2-5}
+                                                              & \textbf{P} & 0.4                               & 0.3        & 0.3        \\
+            \end{tabular}
+            \caption*{\textbf{Übergangs-Tabelle für F (Festland), S (Samui), P (Phangan)}}
+        \end{table}
+        Als Matrix und ohne Labels geschrieben:
+        \[
+            P = \begin{pmatrix}
+                0.1 & 0.7 & 0.2 \\
+                0.1 & 0.4 & 0.5 \\
+                0.4 & 0.3 & 0.3 \\
+            \end{pmatrix}
+        \]
+    \end{myanswer}
+\end{myexercise}
+
+\section{Vorhersage zukünftiger Zustände}
+
+
+\begin{myexample}[Vorhersage zukünftiger Zustände, basierend auf \cref{example:matrix}]
+Um zu berechnen, wie wahrscheinlich es ist, dass es in zwei Tagen sonnig ist, wenn es heute regnerisch ist, erstellen wir zunächst einen \textbf{Startvektor} $\pi_0$, der den heutigen Zustand (also den Zustand $\pi$ am Tag 0) beschreibt. In diesem Fall ist der Startvektor:
 
 \[
     \begin{aligned}
@@ -86,34 +226,14 @@ Nun multiplizieren wir den Startvektor $\pi_0$ mit der Übergangsmatrix $P$, um 
     \end{pmatrix}
     \cdot
     \begin{pmatrix}
-        \textcolor{teal}{e} & \textcolor{violet}{f} \\
-        \textcolor{orange}{g} & \textcolor{brown}{h} \\
+        \textcolor{teal}{e}   & \textcolor{violet}{f} \\
+        \textcolor{orange}{g} & \textcolor{brown}{h}  \\
     \end{pmatrix}
     =
     \begin{pmatrix}
         \textcolor{red}{a} \cdot \textcolor{teal}{e} + \textcolor{blue}{b} \cdot \textcolor{orange}{g} & \textcolor{red}{a} \cdot \textcolor{violet}{f} + \textcolor{blue}{b} \cdot \textcolor{brown}{h} \\
     \end{pmatrix}
 \]
-
-% \vspace{1em}
-% Beispiel mit einem $1 \times 3$-Vektor und einer $3 \times 3$-Matrix:
-% \[
-%     \begin{pmatrix}
-%         \textcolor{red}{a} & \textcolor{blue}{b} & \textcolor{green}{c}
-%     \end{pmatrix}
-%     \cdot
-%     \begin{pmatrix}
-%         \textcolor{teal}{e} & \textcolor{violet}{f} & \textcolor{orange}{g} \\
-%         \textcolor{brown}{h} & \textcolor{magenta}{i} & \textcolor{cyan}{j} \\
-%         \textcolor{olive}{k} & \textcolor{purple}{l} & \textcolor{gray}{m} \\
-%     \end{pmatrix}
-%     =
-%     \begin{pmatrix}
-%         \textcolor{red}{a}\cdot\textcolor{teal}{e} + \textcolor{blue}{b}\cdot\textcolor{brown}{h} + \textcolor{green}{c}\cdot\textcolor{olive}{k} &
-%         \textcolor{red}{a}\cdot\textcolor{violet}{f} + \textcolor{blue}{b}\cdot\textcolor{magenta}{i} + \textcolor{green}{c}\cdot\textcolor{purple}{l} &
-%         \textcolor{red}{a}\cdot\textcolor{orange}{g} + \textcolor{blue}{b}\cdot\textcolor{cyan}{j} + \textcolor{green}{c}\cdot\textcolor{gray}{m}
-%     \end{pmatrix}
-% \]
 
 Wir berechnen nun also $\pi_1$:
 \[
@@ -152,19 +272,19 @@ Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zust
 \end{myexample}
 
 \begin{myexercise}[App-Nutzung]
-    Ein Schüler nutzt auf seinem Smartphone entweder Instagram (I) oder TikTok (T). Nach jeder Nutzung entscheidet er sich mit einer Wahrscheinlichkeit von $0.6$ wieder für Instagram und mit $0.4$ für TikTok, wenn er gerade Instagram genutzt hat. Nach einer TikTok-Nutzung entscheidet er sich mit $0.1$ für Instagram und mit $0.9$ für TikTok. Die Übergangsmatrix lautet:
+    Ein Schüler nutzt auf seinem Smartphone entweder Instagram (I) oder TikTok (T). Wenn er zuerst Instagram nutzt, so nutzt er mit einer Wahrscheinlichkeit von $0.6$ wieder Instagram und mit $0.4$ TikTok. Nach einer TikTok-Nutzung entscheidet er sich mit $0.1$ für Instagram und mit $0.9$ für TikTok. Die Übergangsmatrix lautet:
 
     \begin{table}[H]
         \centering
         \begin{tabular}{c c||c|c}
-                                                      &   & \multicolumn{2}{c}{\textbf{Nach}}         \\
-                                                      &   & I                                 & T     \\\midrule\midrule
-            \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & I & 0.6                             & 0.4 \\\cmidrule{2-4}
-                                                      & T & 0.1                             & 0.9 \\
+                                                          &   & \multicolumn{2}{c}{\textbf{Nach}}       \\
+                                                          &   & I                                 & T   \\\midrule\midrule
+            \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & I & 0.6                               & 0.4 \\\cmidrule{2-4}
+                                                          & T & 0.1                               & 0.9 \\
         \end{tabular}
     \end{table}
 
-    Wie gross ist die Wahrscheinlichkeit, dass der Schüler nach zwei Nutzungen bei Instagram landet, wenn er mit TikTok startet? Berechnen Sie die Lösung, indem Sie den Startvektor erstellen und diesen mehrfach mit der Übergangsmatrize mutliplizieren..
+    Wie gross ist die Wahrscheinlichkeit, dass der Schüler nach zwei Nutzungen bei Instagram landet, wenn er mit TikTok startet? Berechnen Sie die Lösung, indem Sie den Startvektor erstellen und diesen mehrfach mit der Übergangsmatrix multiplizieren.
 
     \begin{myanswer}
         Wir definieren den Startvektor $\pi_0$:
@@ -213,7 +333,7 @@ Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zust
     \end{myanswer}
 \end{myexercise}
 
-\begin{mychallenge}[Pendlerverhalten]
+\begin{myexercise}[Pendlerverhalten]
     Eine Pendlerin fährt jeden Morgen entweder mit dem Fahrrad oder mit dem Bus zur Arbeit. Die Übergangswahrscheinlichkeiten sind:
     \begin{itemize}
         \item Nach einer Fahrt mit dem Fahrrad nimmt sie am nächsten Tag mit Wahrscheinlichkeit $0.9$ wieder das Fahrrad und mit $0.1$ den Bus.
@@ -225,11 +345,11 @@ Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zust
         \[
             P =
             \begin{tabular}{c||c|c}
-                        & Fahrrad & Bus   \\
+                        & Fahrrad & Bus \\
                 \midrule\midrule
-                Fahrrad & 0.9   & 0.1 \\
+                Fahrrad & 0.9     & 0.1 \\
                 \midrule
-                Bus     & 0.4   & 0.6 \\
+                Bus     & 0.4     & 0.6 \\
             \end{tabular}
         \]
 
@@ -275,250 +395,104 @@ Die Einträge in der Matrix $\pi_2$ geben die Wahrscheinlichkeiten für die Zust
         \]
         Die Wahrscheinlichkeit, dass die Pendlerin nach zwei Tagen mit dem Bus fährt, wenn sie heute mit dem Fahrrad fährt, beträgt also $0.15$.
     \end{myanswer}
-\end{mychallenge}
+\end{myexercise}
 
-\begin{mychallenge}[Tourist in Thailand]\label{ex:tourist}
-    Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden geniessen(Samui und Phangan), sowie das Festland besichtigen.
+\begin{mychallenge}[Tourist in Thailand]
 
-    Laut einer Umfrage gilt:
-    \begin{itemize}
-        \item Ist der Tourist auf dem Festland, so fährt er am nächsten Tag mit Wahrscheinlichkeit $70\%$ nach Samui, mit $20\%$ nach Phangan und bleibt mit $10\%$ auf dem Festland.
-        \item Ist er auf Samui, bleibt er mit $40\%$ dort, fährt mit $50\%$ nach Phangan und kehrt mit $10\%$ aufs Festland zurück.
-        \item Ist er auf Phangan, bleibt er mit $30\%$ dort, fährt mit $30\%$ nach Samui und kehrt mit $40\%$ aufs Festland zurück.
-    \end{itemize}
-
-    Die Übergangsmatrix lautet:
-    \[
-        P =
+    Die Übergangsmatrix für \cref{ex:tourist} lautet:
+        \[
+            P =
             \begin{pmatrix}
                 0.1 & 0.7 & 0.2 \\
                 0.1 & 0.4 & 0.5 \\
                 0.4 & 0.3 & 0.3 \\
             \end{pmatrix}
-    \]
-    Die Reihenfolge der Zustände ist: Festland, Samui, Phangan.
-
-    Wie gross ist die Wahrscheinlichkeit (in Prozent), dass der Tourist nach 3 Tagen wieder auf dem Festland ist, wenn er am ersten Tag auf dem Festland startet?
-
-    \begin{myanswer}
-        Wir berechnen die Verteilung nach 3 Tagen. Startvektor: $\pi_0 = (1, 0, 0)$.
-
-        Berechne $\pi_3 = \pi_0 \cdot P^3$.
-
-        Zuerst $P^2$:
-        \[
-            P^2 =
-                \begin{pmatrix}
-                    0.1 & 0.7 & 0.2 \\
-                    0.1 & 0.4 & 0.5 \\
-                    0.4 & 0.3 & 0.3 \\
-                \end{pmatrix}
-                \cdot
-                \begin{pmatrix}
-                    0.1 & 0.7 & 0.2 \\
-                    0.1 & 0.4 & 0.5 \\
-                    0.4 & 0.3 & 0.3 \\
-                \end{pmatrix}
-                =
-                \begin{pmatrix}
-                    0.17 & 0.37 & 0.46 \\
-                    0.27 & 0.31 & 0.42 \\
-                    0.25 & 0.43 & 0.32 \\
-                \end{pmatrix}
         \]
+        Die Reihenfolge der Zustände ist: \textbf{F}estland, \textbf{S}amui, \textbf{P}hangan.
 
-        Dann $P^3 = P^2 \cdot P$:
+        Wie gross ist die Wahrscheinlichkeit (in Prozent), dass der Tourist nach 3 Tagen wieder auf dem Festland ist, wenn er am ersten Tag auf dem Festland startet?
+
+        Die Matrixmultiplikation mit 3 Zuständen lautet:
+
         \[
-            P^3 =
             \begin{pmatrix}
-                0.17 & 0.37 & 0.46 \\
-                0.27 & 0.31 & 0.42 \\
-                0.25 & 0.43 & 0.32 \\
+                \textcolor{red}{a} & \textcolor{blue}{b} & \textcolor{green}{c}
             \end{pmatrix}
             \cdot
             \begin{pmatrix}
-                0.10 & 0.70 & 0.20 \\
-                0.10 & 0.40 & 0.50 \\
-                0.40 & 0.30 & 0.30 \\
+                \textcolor{teal}{e}  & \textcolor{violet}{f}  & \textcolor{orange}{g} \\
+                \textcolor{brown}{h} & \textcolor{magenta}{i} & \textcolor{cyan}{j}   \\
+                \textcolor{olive}{k} & \textcolor{purple}{l}  & \textcolor{gray}{m}   \\
             \end{pmatrix}
             =
             \begin{pmatrix}
-                0.29 & 0.37 & 0.34 \\
-                0.23 & 0.39 & 0.38 \\
-                0.23 & 0.43 & 0.34 \\
+                \textcolor{red}{a}\cdot\textcolor{teal}{e} + \textcolor{blue}{b}\cdot\textcolor{brown}{h} + \textcolor{green}{c}\cdot\textcolor{olive}{k}      &
+                \textcolor{red}{a}\cdot\textcolor{violet}{f} + \textcolor{blue}{b}\cdot\textcolor{magenta}{i} + \textcolor{green}{c}\cdot\textcolor{purple}{l} &
+                \textcolor{red}{a}\cdot\textcolor{orange}{g} + \textcolor{blue}{b}\cdot\textcolor{cyan}{j} + \textcolor{green}{c}\cdot\textcolor{gray}{m}
             \end{pmatrix}
         \]
 
-        Der Startvektor ist $(1, 0, 0)$, also ist die Wahrscheinlichkeit, nach 3 Tagen auf dem Festland zu sein, $0.29$.
+        \begin{myanswer}
+        Wir berechnen die Verteilung nach 3 Tagen. Startvektor: $\pi_0 = \begin{pmatrix} 1 & 0 & 0 \end{pmatrix}$.
 
-        \textbf{Antwort:} Die Wahrscheinlichkeit beträgt $29\%$.
-    \end{myanswer}
+        Berechne $\pi_1 = \pi_0 \cdot P$:
+        \[
+            \pi_1 = \begin{pmatrix} 1 & 0 & 0 \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0.1 & 0.7 & 0.2 \\
+                0.1 & 0.4 & 0.5 \\
+                0.4 & 0.3 & 0.3 \\
+            \end{pmatrix}
+            = \begin{pmatrix} 0.1 & 0.7 & 0.2 \end{pmatrix}
+        \]
+
+        Berechne $\pi_2 = \pi_1 \cdot P$:
+        \[
+            \pi_2 = \begin{pmatrix} 0.1 & 0.7 & 0.2 \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0.1 & 0.7 & 0.2 \\
+                0.1 & 0.4 & 0.5 \\
+                0.4 & 0.3 & 0.3 \\
+            \end{pmatrix}
+        \]
+        Berechne jede Komponente:
+        \begin{align*}
+            \text{Festland:} &\quad 0.1 \cdot 0.1 + 0.7 \cdot 0.1 + 0.2 \cdot 0.4 = 0.01 + 0.07 + 0.08 = 0.16 \\
+            \text{Samui:}    &\quad 0.1 \cdot 0.7 + 0.7 \cdot 0.4 + 0.2 \cdot 0.3 = 0.07 + 0.28 + 0.06 = 0.41 \\
+            \text{Phangan:}  &\quad 0.1 \cdot 0.2 + 0.7 \cdot 0.5 + 0.2 \cdot 0.3 = 0.02 + 0.35 + 0.06 = 0.43 \\
+        \end{align*}
+        Also:
+        \[
+            \pi_2 = \begin{pmatrix} 0.16 & 0.41 & 0.43 \end{pmatrix}
+        \]
+
+        Berechne $\pi_3 = \pi_2 \cdot P$:
+        \[
+            \pi_3 = \begin{pmatrix} 0.16 & 0.41 & 0.43 \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0.1 & 0.7 & 0.2 \\
+                0.1 & 0.4 & 0.5 \\
+                0.4 & 0.3 & 0.3 \\
+            \end{pmatrix}
+        \]
+        Berechne jede Komponente:
+        \begin{align*}
+            \text{Festland:} &\quad 0.16 \cdot 0.1 + 0.41 \cdot 0.1 + 0.43 \cdot 0.4 = 0.016 + 0.041 + 0.172 = 0.229 \\
+            \text{Samui:}    &\quad 0.16 \cdot 0.7 + 0.41 \cdot 0.4 + 0.43 \cdot 0.3 = 0.112 + 0.164 + 0.129 = 0.405 \\
+            \text{Phangan:}  &\quad 0.16 \cdot 0.2 + 0.41 \cdot 0.5 + 0.43 \cdot 0.3 = 0.032 + 0.205 + 0.129 = 0.366 \\
+        \end{align*}
+        Also:
+        \[
+            \pi_3 = \begin{pmatrix} 0.229 & 0.405 & 0.366 \end{pmatrix}
+        \]
+
+        Die Wahrscheinlichkeit, nach 3 Tagen auf dem Festland zu sein, beträgt $0.229$, also etwa $23\%$.
+        \end{myanswer}
 \end{mychallenge}
 
-\section{Visualisierung von Markov-Ketten}
-
-Markov-Ketten lassen sich gut als gerichtete Graphen visualisieren, wobei die Zustände als Knoten und die Übergangswahrscheinlichkeiten als beschriftete Kanten dargestellt werden.
-
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}[node distance=3cm, auto, thick]
-        \node[state] (S) {\emoji{sun}};
-        \node[state] (R) [right of=S] {\emoji{umbrella}};
-
-        \path[->]
-        (S) edge[bend left] node {0.2} (R)
-        (R) edge[bend left] node {0.4} (S)
-        (S) edge[loop above] node {0.8} (S)
-        (R) edge[loop above] node {0.6} (R);
-    \end{tikzpicture}
-    \caption{Visualisierung des Wetter-Beispiels als gerichteter Graph}
-    \label{fig:markov-weather}
-\end{figure}
-
-Bei dieser Darstellung wird besonders deutlich, wie die Übergänge zwischen den Zuständen erfolgen. Die Kantenbeschriftungen geben die Übergangswahrscheinlichkeiten an, wobei die ausgehenden Kanten eines Knotens in der Summe immer 1 ergeben müssen.
-
-\begin{myexercise}[Visualisierung der Thailand-Markov-Kette]
-    Zeichnen Sie die Markov-Kette für das Thailand-Beispiel aus \cref{ex:tourist} als gerichteten Graphen. Die Zustände sind \emph{Festland}, \emph{Samui} und \emph{Phangan}.
-
-    \begin{myanswer}
-        Die Visualisierung als gerichteter Graph sieht wie folgt aus:
-
-        \begin{figure}[H]
-            \centering
-            \begin{tikzpicture}[node distance=2.5cm, auto, thick]
-                \node[state] (F) {F};
-                \node[state] (S) [right of=F] {S};
-                \node[state] (P) [right of=S] {P};
-
-                \path[->]
-                (F) edge[bend left=5] node {0.7} (S)
-                (S) edge[bend left=5] node {0.1} (F)
-                (F) edge[bend left=70] node {0.2} (P)
-                (P) edge[bend left=40] node {0.4} (F)
-                (S) edge[bend left=5] node {0.5} (P)
-                (P) edge[bend left=5] node {0.3} (S)
-                (F) edge[loop left] node {0.1} (F)
-                (S) edge[loop above, min distance=10mm, in=60, out=120] node {0.4} (S)
-                (P) edge[loop right] node {0.3} (P);
-            \end{tikzpicture}
-            \caption{Visualisierung des Thailand-Beispiels}
-            \label{fig:markov-thailand}
-        \end{figure}
-    \end{myanswer}
-\end{myexercise}
-
-Für komplexere Markov-Ketten mit vielen Zuständen kann die graphische Darstellung schnell unübersichtlich werden. In solchen Fällen ist die Matrixdarstellung oft praktikabler.
-
-\section{Stationäre Verteilung}
-
-Bei vielen Markov-Ketten interessiert uns besonders das Langzeitverhalten: Gibt es eine stabile Wahrscheinlichkeitsverteilung, die sich nach vielen Schritten einstellt?
-
-\begin{mydefinition}[Stationäre Verteilung]
-Eine Wahrscheinlichkeitsverteilung $\pi = (\pi_1, \pi_2, \ldots)$ heisst \textbf{stationäre Verteilung} einer Markov-Kette mit Übergangsmatrix $P$, wenn gilt:
-\[
-    \pi = \pi \cdot P
-\]
-Das bedeutet: Wenn die Kette die Verteilung $\pi$ erreicht hat, bleibt diese Verteilung bei jedem weiteren Schritt unverändert.
-\end{mydefinition}
-
-Die stationäre Verteilung kann durch Lösen des linearen Gleichungssystems $\pi = \pi \cdot P$ zusammen mit der Normierungsbedingung $\sum_i \pi_i = 1$ bestimmt werden.
-
-Für endliche, irreduzible und aperiodische Markov-Ketten (s. \cref{app:markov-properties}) gilt der \textbf{Ergodensatz}: Es existiert genau eine stationäre Verteilung, und die Verteilung nach $n$ Schritten konvergiert gegen diese stationäre Verteilung, unabhängig vom Anfangszustand:
-\[
-    \lim_{n\to\infty} \pi^{(0)} \cdot P^n = \pi
-\]
-
-\begin{myexample}[Stationäre Verteilung beim Wetterbeispiel]
-Betrachten wir nochmals die Übergangsmatrix aus dem Wetterbeispiel:
-\[
-    P =
-    \begin{pmatrix}
-        0.8 & 0.2 \\
-        0.4 & 0.6 \\
-    \end{pmatrix}
-\]
-Um die stationäre Verteilung $\pi = (\pi_1, \pi_2)$ zu finden, müssen wir das Gleichungssystem $\pi = \pi \cdot P$ lösen:
-\[
-    \begin{aligned}
-        (\pi_1, \pi_2) & = (\pi_1, \pi_2) \cdot
-        \begin{pmatrix}
-            0.8 & 0.2 \\
-            0.4 & 0.6 \\
-        \end{pmatrix}                                                        \\
-                       & = (0.8\pi_1 + 0.4\pi_2, 0.2\pi_1 + 0.6\pi_2)
-    \end{aligned}
-\]
-
-Dies führt zu den Gleichungen:
-\begin{align}
-    \pi_1 & = 0.8\pi_1 + 0.4\pi_2 \\
-    \pi_2 & = 0.2\pi_1 + 0.6\pi_2
-\end{align}
-
-Aus der ersten Gleichung erhalten wir:
-\begin{align}
-    \pi_1 - 0.8\pi_1 & = 0.4\pi_2 \\
-    0.2\pi_1         & = 0.4\pi_2 \\
-    \pi_1              & = 2\pi_2
-\end{align}
-
-Mit der Normierungsbedingung $\pi_1 + \pi_2 = 1$ ergibt sich:
-\begin{align}
-    2\pi_2 + \pi_2 & = 1           \\
-    3\pi_2         & = 1           \\
-    \pi_2          & = \frac{1}{3}
-\end{align}
-
-Damit ist $\pi_1 = \frac{2}{3}$. Die stationäre Verteilung ist also $\pi = (\frac{2}{3}, \frac{1}{3})$.
-
-Das bedeutet: Langfristig ist es an zwei von drei Tagen sonnig und an einem von drei Tagen regnerisch, unabhängig davon, mit welchem Wetter wir starten.
-\end{myexample}
-
-\begin{myexercise}
-    Bestimmen Sie die stationäre Verteilung für die Markov-Kette mit der Übergangsmatrix
-    \[
-        P = \begin{pmatrix}
-            0.6 & 0.4 \\
-            0.1 & 0.9 \\
-        \end{pmatrix}
-    \]
-    aus dem App-Nutzungs-Beispiel.
-
-    \begin{myanswer}
-        Wir lösen das Gleichungssystem $\pi = \pi \cdot P$:
-        \begin{align}
-            (\pi_1, \pi_2) & = (\pi_1, \pi_2) \cdot
-            \begin{pmatrix}
-                0.6 & 0.4 \\
-                0.1 & 0.9 \\
-            \end{pmatrix}
-        \end{align}
-
-        Dies führt zu:
-        \begin{align}
-            \pi_1 & = 0.6\pi_1 + 0.1\pi_2 \\
-            \pi_2 & = 0.4\pi_1 + 0.9\pi_2
-        \end{align}
-
-        Aus der ersten Gleichung:
-        \begin{align}
-            \pi_1 - 0.6\pi_1 & = 0.1\pi_2 \\
-            0.4\pi_1         & = 0.1\pi_2 \\
-            4\pi_1          & = \pi_2
-        \end{align}
-
-        Mit $\pi_1 + \pi_2 = 1$ ergibt sich:
-        \begin{align}
-            4\pi_1 + \pi_1 & = 1     \\
-            5\pi_1        & = 1     \\
-            \pi_1         & = 0.2
-        \end{align}
-
-        Also ist $\pi_2 = 0.8$ und die stationäre Verteilung ist $\pi = (0.2, 0.8)$.
-
-        Das bedeutet, dass der Schüler langfristig zu 80\% TikTok und zu 20\% Instagram nutzt, unabhängig davon, mit welcher App er startet.
-    \end{myanswer}
-\end{myexercise}
 
 \section{Zufallssimulation einer Markov-Kette}
 
@@ -530,13 +504,12 @@ Um eine Markov-Kette zu simulieren, gehen Sie wie folgt vor:
 \begin{enumerate}
     \item Wählen Sie einen beliebigen Startzustand und erstellen Sie den dazugehörigen Startvektor.
     \item Erzeugen Sie für jeden Zeitschritt eine Zufallszahl zwischen 0 und 1.
-    \item Wechseln Sie gemäss der Übergangswahrscheinlichkeiten in den nächsten Zustand.
+    \item Wechseln Sie gemäss der Übergangswahrscheinlichkeiten in den nächsten Zustand (s. Beispiel untenan).
     \item Wiederholen Sie die Schritte, um einen Pfad der Kette zu erzeugen.
 \end{enumerate}
 
-\subsection{Beispiel: Wettermodell}
-
-Angenommen, wir simulieren das Wettermodell aus dem Kapitelanfang mit den Zuständen \emph{sonnig} und \emph{regnerisch} und folgender Übergangsmatrix:
+\begin{myexample}[Simulation eines Wettermodells]
+    Angenommen, wir simulieren das Wettermodell aus dem Kapitelanfang mit den Zuständen \emph{sonnig} und \emph{regnerisch} und folgender Übergangsmatrix:
 \[
     P =
     \begin{pmatrix}
@@ -550,6 +523,9 @@ Wir starten z.\,B. mit \emph{regnerisch}. Für jeden Tag ziehen wir eine Zufalls
     \item Ist es heute sonnig: $z < 0.8$ $\rightarrow$ morgen sonnig, sonst regnerisch.
 \end{itemize}
 
+\end{myexample}
+
+
 \subsection{Python-Code zur Simulation}
 
 Mit Python lässt sich eine solche Simulation einfach umsetzen:
@@ -557,65 +533,48 @@ Mit Python lässt sich eine solche Simulation einfach umsetzen:
 \begin{lstlisting}[language=Python, caption={Simulation einer Markov-Kette (Wettermodell)}]
 import random
 
-states = ["Sonne", "Regen"]
-P_dict = {
-    "Sonne": [0.8, 0.2],
-    "Regen": [0.4, 0.6]
-}
+# Anfangszustand
+zustand = "Sonne"
 
-current_state = "Sonne"
-history = [current_state]
+# Liste der simulierten Zustände (wird in der Schleife fortlaufend erweitert)
+history = [zustand]
 
-for _ in range(20):
-    # Zufälligen Zustand wählen, gewichtet mit den aktuellen Wahrscheinlichkeiten
-    next_state = random.choices(states, weights=P_dict[current_state])[0]
-    history.append(next_state)
-    current_state = next_state
+# Anzahl Simulationsschritte
+schritte = 20
+
+for i in range(schritte):
+    # Zufällig nächsten Zustand bestimmen (mit Übergangswahrscheinlichkeiten)
+    if zustand == "Sonne":
+        # Übergangswahrscheinlichkeiten vom Zustand "Sonne"
+        wahrscheinlichkeit = P[0]
+    else:
+        # Übergangswahrscheinlichkeiten vom Zustand "Regen"
+        wahrscheinlichkeit = P[1]
+    
+    # generiere nächsten simulierten Zustand mit Übergangswahrscheinlichkeiten
+    zustand = random.choices(["Sonne", "Regen"], weights=wahrscheinlichkeit).pop()
+    
+    # Füge simulierten Zustand zur Liste hinzu
+    history.append(zustand)
 
 print(history)
 \end{lstlisting}
 
-\subsection{Auswertung}
-
-Durch mehrfache Simulation kann man empirisch die Häufigkeiten der Zustände bestimmen und mit der theoretischen stationären Verteilung vergleichen. So lässt sich das Langzeitverhalten der Markov-Kette anschaulich nachvollziehen.
-
 \begin{myexercise}
-    Simulieren Sie das Wettermodell 1000 Schritte lang und bestimmen Sie den Anteil der sonnigen Tage. Vergleichen Sie das Ergebnis mit der stationären Verteilung.
+    Simulieren Sie das Wettermodell 1000 Schritte lang und bestimmen Sie den Anteil der sonnigen Tage.
 \end{myexercise}
 
 
-\section{Grenzen von Markov-Ketten}
-
-Markov-Ketten sind ein mächtiges Werkzeug zur Modellierung stochastischer Prozesse, aber sie haben auch klare Grenzen:
-
-\begin{itemize}
-    \item \textbf{Markov-Eigenschaft:} Die Annahme, dass der nächste Zustand nur vom aktuellen Zustand abhängt, ist in vielen realen Prozessen nicht erfüllt. Oft spielen weiter zurückliegende Zustände oder externe Einflüsse eine Rolle.
-    \item \textbf{Feste Übergangswahrscheinlichkeiten:} In klassischen Markov-Ketten sind die Übergangswahrscheinlichkeiten konstant. In der Realität können sie sich jedoch im Zeitverlauf ändern (z.\,B. saisonale Effekte, Lernprozesse).
-    \item \textbf{Begrenzte Modellierung komplexer Abhängigkeiten:} Markov-Ketten können keine komplexen, langfristigen Abhängigkeiten oder Rückkopplungen abbilden.
-    \item \textbf{Zustandsraum:} Bei sehr vielen oder kontinuierlichen Zuständen wird die Modellierung und Berechnung schnell unübersichtlich oder unmöglich.
-    \item \textbf{Keine Kausalität:} Markov-Ketten beschreiben nur Wahrscheinlichkeiten für Übergänge, aber keine Ursachen für Zustandsänderungen.
-\end{itemize}
-
-In solchen Fällen sind erweiterte Modelle wie \emph{höherer Ordnung} Markov-Ketten, \emph{Hidden Markov Models} oder andere stochastische Prozesse notwendig.
-
+\clearpage
 \section{Lernziele}
 \begin{todolist}
+    \item Ich kann \textbf{Anwendungen} von Markov-Ketten in der Informatik beschreiben.
+    \item Ich kann erklären, was eine \textbf{Markov-Kette} ist und wie die \textbf{Markov-Eigenschaft} funktioniert.
+    \item Ich kann aus einer realen Problemstellung eine Abbildung in Form eines \textbf{gerichteten Graphen} erstellen.
+    \item Ich kann aus einer realen Problemstellung eine \textbf{Übergangsmatrix} erstellen.
+    \item Ich kann einen Zustand einer Markov-Kette mithilfe einer \textbf{Matrixmultiplikation} vorhersagen.
 
-    \item Ich kann erklären, was eine Markov-Kette ist und wie die Markov-Eigenschaft funktioniert.
-
-    \item Ich kann aus einer realen Problemstellung (z.\,B. Wetter, App-Nutzung) eine Übergangsmatrix erstellen.
-
-    \item Ich kann mithilfe von Matrizen berechnen, wie sich eine Markov-Kette über mehrere Schritte entwickelt.
-
-    \item Ich kann ein einfaches Python-Programm schreiben, das eine Markov-Kette simuliert und die Wahrscheinlichkeiten ausgibt.
-
-    \item Ich kann Anwendungen von Markov-Ketten in der Informatik (z.\,B. KI, Sprache, Webnavigation) beschreiben.
-
-    \item Ich kann mit anderen zusammenarbeiten, um Übergangsmatrizen zu entwickeln und zu analysieren.
-
-    \item Ich kann Python nutzen, um Zustandsübergänge zu modellieren.
-
-    \item Ich kann die Aussagekraft und Grenzen von stochastischen Modellen in einem konkreten Kontext reflektieren.
-
-
+    \item Ich kann Markov-Ketten \textbf{in Python} implementieren
+    \item Ich kann mithilfe einer Simulation berechnen, wie sich eine Markov-Kette \textbf{über mehrere Schritte entwickelt}.
+    \item Ich kann die langfristige Verteilung von Markov-Ketten mit Simulationen \textbf{in Python} berechnen.
 \end{todolist}
