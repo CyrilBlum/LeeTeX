@@ -57,6 +57,13 @@ if [ -d "$latex_dir" ]; then
   cd "$root_dir"
 fi
 
+# Detect OS for sed in-place flag
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  SED_INPLACE=(-i '')
+else
+  SED_INPLACE=(-i)
+fi
+
 # Loop over each document class
 for i in "${!classes[@]}"; do
   class="${classes[$i]}"
@@ -84,13 +91,13 @@ for i in "${!classes[@]}"; do
     cp "${root_dir}/main.tex" "$output_file"
 
     # Replace the document class line
-    sed -i '' "s/\\\\\documentclass.*{.*}/$class_command/" "$output_file"
+    sed "${SED_INPLACE[@]}" "s/\\\\\documentclass.*{.*}/$class_command/" "$output_file"
     # Replace the document class toggle line
-    sed -i '' "s/\\\\\def\\\\\documentToggle{[0-9]}/\\\\def\\\\documentToggle{$toggle}/" "$output_file"
+    sed "${SED_INPLACE[@]}" "s/\\\\\def\\\\\documentToggle{[0-9]}/\\\\def\\\\documentToggle{$toggle}/" "$output_file"
     # Replace the topic line (if present)
-    sed -i '' "s/\\\\newcommand{\\\\thetopic}{.*}/\\\\newcommand{\\\\thetopic}{$topic}/" "$output_file"
+    sed "${SED_INPLACE[@]}" "s/\\\\newcommand{\\\\thetopic}{.*}/\\\\newcommand{\\\\thetopic}{$topic}/" "$output_file"
     # Uncomment the necessary input line
-    sed -i '' "s|[[:space:]]*%[[:space:]]*\\\\input{$input_path}|\\\\input{$input_path}|" "$output_file"
+    sed "${SED_INPLACE[@]}" "s|[[:space:]]*%[[:space:]]*\\\\input{$input_path}|\\\\input{$input_path}|" "$output_file"
 
     # Copy cyril.tex and set topic/subject
     cyril_src="${root_dir}/Setups/cyril.tex"
