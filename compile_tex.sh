@@ -26,7 +26,7 @@ book_topics=(
     "Randomisierte_Algorithmen:GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
     "Kryptologie:GrundlagenInfo/03_Kryptologie/Skript/Skript.tex"
     "Kompression:GrundlagenInfo/04_Kompression/Skript.tex"
-    "Datenintegritaet:GrundlagenInfo/05_DatenIntegritaet/Skript/Skript"
+    "Datenintegrität:GrundlagenInfo/05_DatenIntegritaet/Skript/Skript"
     "Datenbanken:GrundlagenInfo/06_Datenbanken/Skript/Skript.tex"
     "Datenbanken_Ag:GrundlagenInfo/06_Datenbanken/skript_DB_Ag.tex"
     "Netzwerke:GrundlagenInfo/07_Netzwerke/Skript.tex"
@@ -111,7 +111,6 @@ beamer_topics=(
 
 root_dir=$(pwd)
 latex_dir="${root_dir}/PDFs/"
-server_dir="/var/www/in-form-atik.ch/public_html/pdfs/"
 
 # Remove all formerly compiled files
 if [ -d "$latex_dir" ]; then
@@ -218,20 +217,20 @@ for i in "${!classes[@]}"; do
             sed "${SED_INPLACE[@]}" "s|\\input{Setups/cyril.tex}|\\input{Setups/cyril_${class}_${topic// /_}.tex}|" "$output_file"
         fi
 
-        # if [ "$class" = "book" ]; then
-        #     # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
-        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-        #     biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
-        #     makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
-        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-        # else
-        #     # Double pass for other classes, show only warnings/errors
-        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-        # fi
+        if [ "$class" = "book" ]; then
+            # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|error|Error" || true
+            biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
+            makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+        else
+            # Double pass for other classes, show only warnings/errors
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+        fi
 
-        # # Clean up intermediate .tex file
+        # Clean up intermediate .tex file
         rm "$output_file"
         rm "$cyril_out"
 
@@ -244,10 +243,9 @@ for i in "${!classes[@]}"; do
     done
 done
 
-# Copy all files and folders from PDFs to server_dir
-if [ -d "$latex_dir" ]; then
+# Copy all files and folders from PDFs to Cyril's Synology NAS
+if [ "$OSTYPE" != "darwin"* ]; then
     # Use sshpass to provide the password non-interactively (not recommended for security reasons)
-    # Replace 'your_password' with the actual password
     sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
 fi
 
