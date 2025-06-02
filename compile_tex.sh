@@ -17,24 +17,42 @@ declare -a class_commands=(
 )
 
 # Declare associative arrays for book topics and their inputs
+# Use updated paths matching the current repo structure
+
 declare -A book_topics=(
-    [Environments]="LaTeX_related/example_file"
-    [Zahlendarstellungen und Kodierungen]="GrundlagenInfo/01_TheoretischeInformatik/kapitel01.tex"
-    [Induktion und Rekursion]="EF/InduktionUndRekursion/kapitel00.tex EF/InduktionUndRekursion/kapitel01.tex EF/InduktionUndRekursion/kapitel02.tex EF/InduktionUndRekursion/kapitel02.tex EF/InduktionUndRekursion/kapitel03.tex EF/InduktionUndRekursion/kapitel04.tex"
-    [Netzwerke]="GrundlagenInfo/07_Netzwerke/kapitel01"
-    [Kryptologie]="GrundlagenInfo/07_Netzwerke/Skript_Kryptologie"
-    [Datenbanken]="GrundlagenInfo/06_Daten/Kapitel1 GrundlagenInfo/06_Daten/Kapitel2 GrundlagenInfo/06_Daten/Kapitel3 GrundlagenInfo/06_Daten/Kapitel4 GrundlagenInfo/06_Daten/Cheatsheet"
+    [Programmieren]="GrundlagenInfo/00_Programmieren/Skript/Skript.tex"
+    [Zahlendarstellungen_und_Kodierungen]="GrundlagenInfo/01_TheoretischeInformatik/Skript/Skript.tex"
+    [Randomisierte_Algorithmen]="GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
+    [Kryptologie]="GrundlagenInfo/03_Kryptologie/Skript/Skript.tex"
+    [Kompression]="GrundlagenInfo/04_Kompression/Skript.tex"
+    [Datenintegritaet]="GrundlagenInfo/05_DatenIntegritaet/Skript/Skript"
+    [Datenbanken]="GrundlagenInfo/06_Datenbanken/Skript/Skript.tex"
+    [Datenbanken_Ag]="GrundlagenInfo/06_Datenbanken/skript_DB_Ag.tex"
+    [Netzwerke]="GrundlagenInfo/07_Netzwerke/Skript.tex"
+    [Tabellenkalkulation]="GrundlagenInfo/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
+    [Aus_Daten_lernen]="GrundlagenInfo/10_AusDatenLernen/Skript/Skript.tex"
+    [Endliche_Automaten]="EF/EndlicheAutomaten/skript_EA.tex"
+    [Induktion_und_Rekursion]="EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
+    [Kolmogorov-Komplexitaet]="EF/Kolmogorov/skript_kolmogorov.tex"
+    [Stadtgeografie]="Geografie/Stadtgeografie/Skript/Skript.tex"
+    [Geomorphologie]="Geografie/Geomorphologie/Skript/Skript.tex"
 )
 
-# Other document class arrays (for example purposes, actual data needed)
-declare -A article_topics=()
-declare -A exam_topics=()
+# ARTICLE: e.g. Unterrichtsvorbereitung, Handouts, etc.
+declare -A article_topics=(
+    [Unterrichtsvorbereitung]="Private/PHBern/3 BPA/Unterrichtsvorbereitung.tex"
+)
+
+# EXAM: add real exam files if needed
+declare -A exam_topics=(
+    [Stadtgeografie_NHP]="Geografie/Stadtgeografie/Prüfungen/Stadtgeografie_NHP.tex"
+)
+
+# BEAMER: Slides for each topic
 declare -A beamer_topics=(
-    [Programmieren Prüfung]="GrundlagenInfo/00_Programmieren/Examples_Exam"
-    [Programmieren Kapitel 01 Einführung]="GrundlagenInfo/00_Programmieren/Kapitel01Intro"
-    [Programmieren Kapitel 02a Definitionen]="GrundlagenInfo/00_Programmieren/Kapitel02aDefinitionen"
-    [Programmieren Kapitel 02b Animationen]="GrundlagenInfo/00_Programmieren/Kapitel02bAnimationen"
-    [Programmieren Kapitel 02c Animationen]="GrundlagenInfo/00_Programmieren/Kapitel02bAnimationen"
+    [Markov_Ketten]="GrundlagenInfo/10_AusDatenLernen/Slides/markov_chains.tex"
+    [Lineare_Regression]="GrundlagenInfo/10_AusDatenLernen/Slides/linear_regression.tex"
+    [Correlation_Causation]="GrundlagenInfo/10_AusDatenLernen/Slides/correlation_causation.tex"
 )
 
 # Directory where your LaTeX files are stored
