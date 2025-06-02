@@ -98,35 +98,39 @@ for i in "${!classes[@]}"; do
     cp "$cyril_src" "$cyril_out"
 
     # Uncomment the correct \thetopic line (matching the topic)
-    sed -i '' "/^% \\\\newcommand{\\\\thetopic}{.*$topic.*}/s/^% //" "$cyril_out"
-    # Comment out all other \thetopic lines
-    sed -i '' "/^\\\\newcommand{\\\\thetopic}{.*}/{
-      /$topic/!s/^/% /
-    }" "$cyril_out"
+    sed -i '' "/^% \\newcommand{\\thetopic}{.*$topic.*}/s/^% //" "$cyril_out"
+    # Comment out all other \thetopic lines (portable, no sed block)
+    grep -n "^\\newcommand{\\thetopic}{.*}" "$cyril_out" | grep -v "$topic" | cut -d: -f1 | while read -r line; do
+      sed -i '' "${line}s/^/% /" "$cyril_out"
+    done
 
-    # Uncomment and set the correct \thesubject line
+    # Uncomment and set the correct \thesubject line (portable)
     if echo "$topic" | grep -Eq "Stadtgeografie|Geomorphologie|Globalisierung|Geografie"; then
-      sed -i '' "/^% \\\\newcommand{\\\\thesubject}{Geografie}/s/^% //" "$cyril_out"
-      sed -i '' "/^\\\\newcommand{\\\\thesubject}{Informatik}/s/^/% /" "$cyril_out"
+      sed -i '' "/^% \\newcommand{\\thesubject}{Geografie}/s/^% //" "$cyril_out"
+      grep -n "^\\newcommand{\\thesubject}{Informatik}" "$cyril_out" | cut -d: -f1 | while read -r line; do
+        sed -i '' "${line}s/^/% /" "$cyril_out"
+      done
     else
-      sed -i '' "/^% \\\\newcommand{\\\\thesubject}{Informatik}/s/^% //" "$cyril_out"
-      sed -i '' "/^\\\\newcommand{\\\\thesubject}{Geografie}/s/^/% /" "$cyril_out"
+      sed -i '' "/^% \\newcommand{\\thesubject}{Informatik}/s/^% //" "$cyril_out"
+      grep -n "^\\newcommand{\\thesubject}{Geografie}" "$cyril_out" | cut -d: -f1 | while read -r line; do
+        sed -i '' "${line}s/^/% /" "$cyril_out"
+      done
     fi
 
     # Use the custom cyril.tex in the main file copy
-    sed -i '' "s|\\\\input{Setups/cyril.tex}|\\\\input{Setups/cyril_${class}_${topic// /_}.tex}|" "$output_file"
+    sed -i '' "s|\\input{Setups/cyril.tex}|\\input{Setups/cyril_${class}_${topic// /_}.tex}|" "$output_file"
 
-    # if [ "$class" = "book" ]; then
-    #   # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
-    #   lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file"
-    #   biber "${latex_dir}/$(basename "$output_file" .tex)"
-    #   makeglossaries "$(basename "$output_file" .tex)"
-    #   lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file"
-    #   lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file"
-    # else
-    #   # Single pass for other classes
-    #   lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file"
-    # fi
+    if [ "$class" = "book" ]; then
+      # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
+      lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file"
+      biber "${latex_dir}/$(basename "$output_file" .tex)"
+      makeglossaries "$(basename "$output_file" .tex)"
+      lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file"
+      lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file"
+    else
+      # Single pass for other classes
+      lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file"
+    fi
 
     # Clean up intermediate .tex file
     rm "$output_file"
