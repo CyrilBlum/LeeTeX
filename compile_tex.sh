@@ -244,7 +244,7 @@ done
 if [ -d "$latex_dir" ]; then
     # Use sshpass to provide the password non-interactively (not recommended for security reasons)
     # Replace 'your_password' with the actual password
-    sshpass -p "${{ secrets.LEE_TEX_SSH_PASSWORD }}" rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
+    sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
 fi
 
 echo "Compilation of all document types complete."
