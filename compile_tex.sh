@@ -214,18 +214,18 @@ for i in "${!classes[@]}"; do
             sed "${SED_INPLACE[@]}" "s|\\input{Setups/cyril.tex}|\\input{Setups/cyril_${class}_${topic// /_}.tex}|" "$output_file"
         fi
 
-        if [ "$class" = "book" ]; then
-            # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-            biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
-            makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-        else
-            # Double pass for other classes, show only warnings/errors
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-        fi
+        # if [ "$class" = "book" ]; then
+        #     # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
+        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+        #     biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
+        #     makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
+        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+        # else
+        #     # Double pass for other classes, show only warnings/errors
+        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+        #     lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+        # fi
 
         # # Clean up intermediate .tex file
         rm "$output_file"
@@ -242,12 +242,10 @@ done
 
 # Copy all files and folders from PDFs to server_dir
 if [ -d "$latex_dir" ]; then
-    rm -rf $server_dir* # remove all files in server_dir
-    cp -a "${root_dir}/PDFs/." "$server_dir"
-    cd $server_dir
-    git add -A
-    git commit -m "Update PDFs from compile_tex.sh"
-    git push origin main
+    # Use sshpass to provide the password non-interactively (not recommended for security reasons)
+    # Replace 'your_password' with the actual password
+    sshpass -p "$LEE_TEX_SSH_PASSWORD" rsync -av -e ssh "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
+
 fi
 
 echo "Compilation of all document types complete."
