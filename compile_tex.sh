@@ -24,17 +24,17 @@ book_topics=(
     "Randomisierte_Algorithmen:GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
     "Kryptologie:GrundlagenInfo/03_Kryptologie/Skript/Skript.tex"
     "Kompression:GrundlagenInfo/04_Kompression/Skript.tex"
-    "Datenintegritaet:GrundlagenInfo/05_DatenIntegritaet/Skript/Skript"
-    "Datenbanken:GrundlagenInfo/06_Datenbanken/Skript/Skript.tex"
-    "Datenbanken_Ag:GrundlagenInfo/06_Datenbanken/skript_DB_Ag.tex"
-    "Netzwerke:GrundlagenInfo/07_Netzwerke/Skript.tex"
-    "Tabellenkalkulation:GrundlagenInfo/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
-    "Aus_Daten_Lernen:GrundlagenInfo/10_AusDatenLernen/Skript/Skript.tex"
-    "Endliche_Automaten:EF/EndlicheAutomaten/skript_EA.tex"
-    "Induktion_und_Rekursion:EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
-    "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
-    "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
-    "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
+    # "Datenintegritaet:GrundlagenInfo/05_DatenIntegritaet/Skript/Skript"
+    # "Datenbanken:GrundlagenInfo/06_Datenbanken/Skript/Skript.tex"
+    # "Datenbanken_Ag:GrundlagenInfo/06_Datenbanken/skript_DB_Ag.tex"
+    # "Netzwerke:GrundlagenInfo/07_Netzwerke/Skript.tex"
+    # "Tabellenkalkulation:GrundlagenInfo/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
+    # "Aus_Daten_Lernen:GrundlagenInfo/10_AusDatenLernen/Skript/Skript.tex"
+    # "Endliche_Automaten:EF/EndlicheAutomaten/skript_EA.tex"
+    # "Induktion_und_Rekursion:EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
+    # "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
+    # "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
+    # "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
 )
 
 article_topics=(
@@ -241,5 +241,14 @@ for i in "${!classes[@]}"; do
         fi
     done
 done
+
+# Copy all files and folders from PDFs to server_dir
+if [ -d "$latex_dir" ]; then
+    rsync -av --delete "${root_dir}/PDFs/" "$server_dir"
+    cd $server_dir
+    git add -A
+    git commit -m "Update PDFs from compile_tex.sh"
+    git push origin main
+fi
 
 echo "Compilation of all document types complete."
