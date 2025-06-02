@@ -2,7 +2,7 @@
 
 # This script is POSIX-compatible and works on macOS (Bash 3.x), Ubuntu, and Zsh.
 
-# Define array of document classes and their toggle positions
+# Define array of document classes and their toggle positionst
 classes=("book" "book" "article" "exam" "beamer")
 toggles=("0" "0" "1" "2" "3") # documentclass toggles
 
@@ -242,7 +242,8 @@ done
 
 # Copy all files and folders from PDFs to server_dir
 if [ -d "$latex_dir" ]; then
-    rsync -av --delete "${root_dir}/PDFs/" "$server_dir"
+    rm -rf $server_dir* # remove all files in server_dir
+    cp -a "${root_dir}/PDFs/." "$server_dir"
     cd $server_dir
     git add -A
     git commit -m "Update PDFs from compile_tex.sh"
