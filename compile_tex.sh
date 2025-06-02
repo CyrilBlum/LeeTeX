@@ -2,7 +2,7 @@
 # At the top of compile_tex.sh
 LEE_TEX_SSH_PASSWORD="$1"
 
-echo "Length: ${#LEE_TEX_SSH_PASSWORD}
+echo "Length: ${#LEE_TEX_SSH_PASSWORD}"
 
 # This script is POSIX-compatible and works on macOS (Bash 3.x), Ubuntu, and Zsh.
 
