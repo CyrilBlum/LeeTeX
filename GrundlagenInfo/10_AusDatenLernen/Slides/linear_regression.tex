@@ -1,3 +1,16 @@
+% Lernziele für Lineare Regression
+\newcommand{\lernzieleRegression}[1]{
+    \begin{itemize}[<+->]
+        \item[#1] Ich kann erklären, was eine \textbf{lineare Regression} ist und wofür sie verwendet wird.
+        \item[#1] Ich kann den Unterschied zwischen \textbf{unabhängiger} und \textbf{abhängiger} Variable erläutern.
+        \item[#1] Ich kann eine \textbf{lineare Funktion} aus zwei Punkten bestimmen.
+        \item[#1] Ich kann das Prinzip der \textbf{Kleinste-Quadrate-Methode (OLS)} erklären und anwenden.
+        \item[#1] Ich kann eine Regressionsgerade zeichnen und interpretieren.
+        \item[#1] Ich kann die \textbf{Qualität einer Regression} anhand von Fehlermaßen beurteilen.
+        \item[#1] Ich kann eine lineare Regression in \textbf{Python} durchführen.
+    \end{itemize}
+}
+
 % command to make sure colorboxes don't create whitespace between code lines
 % Reduce the space inside colorboxes to avoid extra whitespace between lines
 \fboxsep=.6pt
@@ -14,13 +27,13 @@
 
 \institute[KZN] % (optional)
 {
-  \inst{1}%
-  Fachschaft Informatik\\
-  Kantonsschule Zürich-Nord
-  \and
-  \inst{2}%
-  Fachschaft Informatik\\
-  Kantonsschule im Lee
+    \inst{1}%
+    Fachschaft Informatik\\
+    Kantonsschule Zürich-Nord
+    \and
+    \inst{2}%
+    Fachschaft Informatik\\
+    Kantonsschule im Lee
 }
 \date[\today] % (optional)
 
@@ -48,6 +61,10 @@
     \end{figure}
 \end{frame}
 
+\begin{frame}[fragile]{Lernziele}
+    \lernzieleRegression{\faSquare}
+\end{frame}
+
 \begin{frame}{Zahlen vorhersagen mit Regression}{Unabhängige und abhängige Variablen}
     \begin{table}
         \centering
@@ -73,45 +90,30 @@
 \end{frame}
 
 \begin{frame}{Zahlen vorhersagen mit Regression}{Unabhängige und abhängige Variablen}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.5\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note.pdf"}
-    \end{figure}
-    \begin{itemize}[<+->]
-        \item Unabhängige Variable: Schlafdauer
-        \item Abhängige Variable: Note
-        \item Ziel: Vorhersage der Note anhand der Schlafdauer
-        \item Beispiel: 7.3 Stunden Schlaf $\rightarrow$ Note 5.2
-    \end{itemize}
+    \begin{columns}
+        \column{0.7\textwidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note.pdf"}
+        \end{figure}
+        \column{0.3\textwidth}
+        \begin{itemize}[<+->]
+            \item \textbf{Unabhängige Variable}: Schlafdauer
+            \item \textbf{Abhängige Variable}: Note
+            \item \textbf{Ziel}: Vorhersage der Note anhand der Schlafdauer
+            \item \textbf{Beispiel}: 7.9 Stunden Schlaf $\rightarrow$ Note 5.5?
+        \end{itemize}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Lineare Funktion}
     \begin{columns}
-        \column{0.4\textwidth}
-        Einfache Idee: zwei Datenpunkte verbinden, um eine Gerade zu berechnen:
-
-        \begin{table}
-            \centering
-            \begin{tabular}{p{1.5cm}p{1.5cm}}
-                \toprule
-                \textbf{Schlafdauer\newline(=x)} & \textbf{Note \newline(=y)} \\
-                \midrule
-                3.54                                       & 3.57                                        \\
-                9.617                                      & 6.0                                         \\
-                \bottomrule
-            \end{tabular}
-        \end{table}
-
-        \[m = \frac{y_2 - y_1}{x_2 - x_1}\]
-
-        \[q = y_1 - m \cdot x_1\]
-
         \column{0.7\textwidth}
         \only<1>{
             \begin{figure}[H]
-            \centering
-            \includegraphics[width=\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note.pdf"}
-        \end{figure}
+                \centering
+                \includegraphics[width=\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note.pdf"}
+            \end{figure}
         }
         \only<2>{
             \begin{figure}[H]
@@ -119,30 +121,56 @@
                 \includegraphics[width=\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_2p_reg.pdf"}
             \end{figure}
         }
+        \column{0.3\textwidth}
+        Einfache Idee: zwei Datenpunkte verbinden, um eine Gerade zu berechnen:
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{p{1.2cm}p{1cm}}
+                \toprule
+                \textbf{Schlafdauer\newline(=x)} & \textbf{Note \newline(=y)} \\
+                \midrule
+                3.54                             & 3.57                       \\
+                9.617                            & 6.0                        \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+        \begin{equation*}
+            \begin{aligned}
+                m & = \frac{y_2 - y_1}{x_2 - x_1} \\
+                q & = y_1 - m \cdot x_1
+            \end{aligned}
+        \end{equation*}
     \end{columns}
 \end{frame}
 
-\begin{frame}
-    \begin{table}
-        \footnotesize
-        \centering
-        \begin{tabular}{rrrrr}
-            \toprule
-            Punkt   & Schlafdauer & Note & Vorhersage & Unterschied \\
-            \midrule
-            Punkt 1 & 5.39        & 4.61         & 4.61       & 0.00        \\
-            Punkt 2 & 7.06        & 6.00         & 5.52       & -0.48        \\
-            Punkt 3 & 7.87        & 5.95         & 5.95       & 0.00        \\
-            \bottomrule
-        \end{tabular}
-    \end{table}
-
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.6\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_2p_reg_pred.pdf"}
-    \end{figure}
-    Fehler:
-    $$0^2+(-0.484)^2+0^2= 0.235$$
+\begin{frame}{Qualität der Gerade}
+    \begin{columns}
+        \column{0.7\textwidth}
+           \begin{figure}[H]
+              \centering
+              \includegraphics[width=\textwidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_2p_reg_pred.pdf"}
+           \end{figure}
+           \column{0.3\textwidth}
+           \begin{table}
+              \scriptsize
+              \setlength{\tabcolsep}{2pt}
+              \centering
+              \begin{tabular}{c|ccc}
+                 \toprule
+                 & $P_1$ & $P_2$ & $P_3$ \\
+                 \midrule
+                 Schlaf & 3.5 & 7.9 & 9.6 \\
+                 Note & 3.6 & 6.0 & 6.0 \\
+                 Vorh. & 3.6 & 5.3 & 6.0 \\
+                 Diff. & 0.0 & -0.7 & 0.0 \\
+                 \bottomrule
+              \end{tabular}
+           \end{table}
+           \small
+           \textbf{Fehler}: 
+           $$0^2+(-0.7)^2+0^2= \underline{0.5}$$
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Lineare Regression mit \textbf{OLS} - Ordinary Least Squares (Kleinste Quadrate)}
@@ -151,7 +179,7 @@
     $$q = \frac{\sum y_i - m\sum x_i}{n}$$
 \end{frame}
 
-\begin{frame}
+\begin{frame}{OLS-Regressionslinie}
     \begin{figure}[H]
         \centering
         \includegraphics[width=.8\pagewidth]{"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_ols.pdf"}
@@ -191,4 +219,11 @@
         \item Aufgabenblatt 3a durchlesen und vervollständigen
         \item Aufgabenblatt 3b lösen
     \end{itemize}
+\end{frame}
+
+
+
+% Lernziele-Frame
+\begin{frame}[fragile]{Lernziele}
+    \lernzieleRegression{\faCheckSquare}
 \end{frame}

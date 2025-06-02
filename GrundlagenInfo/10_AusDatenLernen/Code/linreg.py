@@ -25,7 +25,7 @@ def exercises_jupyter_nb_polizei_krim():
     m = lm.params["Straftaten"]
     q = lm.params["Intercept"]
 
-    print("Steigung:", m, "Achsenabschnitt:", q)
+    # print("Steigung:", m, "Achsenabschnitt:", q)
 
     # Vorhersage für 8 Polizeistreifen
     df.plot.scatter(x="Polizeistreifen", y="Straftaten")
@@ -39,7 +39,6 @@ def exercises_jupyter_nb_polizei_krim():
     polizeikontrollen = 6
     vorhergesagte_straftaten = m * polizeikontrollen + q
     print(f"Vorhergesagte Straftaten bei {polizeikontrollen} Polizeikontrollen: {vorhergesagte_straftaten}")
-
 
 def exercises_jupyter_nb_cars_co2():
     df_cars = pd.read_csv("GrundlagenInfo/10_AusDatenLernen/Data/cars-co2.csv")
@@ -69,31 +68,30 @@ def exercises_jupyter_nb_cars_co2():
 
 def exercises_jupyter_notebook(df):
     # Datei einlesen
-    x1 = df["Schlafdauer (h)"].min()
-    x2 = df["Schlafdauer (h)"].max()
-    y1 = df[df["Schlafdauer (h)"] == x1]["Note"].values[0]
-    y2 = df[df["Schlafdauer (h)"] == x2]["Note"].values[0]
+    x1 = df["Schlafdauer"].min()
+    x2 = df["Schlafdauer"].max()
+    y1 = df[df["Schlafdauer"] == x1]["Note"].values[0]
+    y2 = df[df["Schlafdauer"] == x2]["Note"].values[0]
     m = (y2 - y1) / (x2 - x1)
     q = y1 - m * x1
 
     m = (y2 - y1) / (x2 - x1)
     q = y1 - m * x1
-
 
 def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
     # Datei einlesen
     df = pd.read_csv(
         "GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
     # Scatter plot zeichnen und Regressionslinie basierend auf m und q einzeichnen
-    plt.scatter(df["Schlafdauer (h)"], df["Note"], label="Datenpunkte")
+    plt.scatter(df["Schlafdauer"], df["Note"], label="Datenpunkte")
 
     if draw_2p_reg_line:
-        x1 = df["Schlafdauer (h)"].min()
-        x2 = df["Schlafdauer (h)"].max()
-        y1 = df[df["Schlafdauer (h)"] == x1]["Note"].values[0]
-        y2 = df[df["Schlafdauer (h)"] == x2]["Note"].values[0]
-        print(f"x1 = {x1:.2f}, x2 = {x2:.2f}")
-        print(f"y1 = {y1:.2f}, y2 = {y2:.2f}")
+        x1 = df["Schlafdauer"].min()
+        x2 = df["Schlafdauer"].max()
+        y1 = df[df["Schlafdauer"] == x1]["Note"].values[0]
+        y2 = df[df["Schlafdauer"] == x2]["Note"].values[0]
+        # print(f"x1 = {x1:.2f}, x2 = {x2:.2f}")
+        # print(f"y1 = {y1:.2f}, y2 = {y2:.2f}")
 
         m = (y2 - y1) / (x2 - x1)
         q = y1 - m * x1
@@ -101,23 +99,41 @@ def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
         print(f"y = {m:.2f}x + {q:.2f}")
 
         # Linie zeichnen basierend auf m und q
-        x_values = [df["Schlafdauer (h)"].min(), df["Schlafdauer (h)"].max()]
+        x_values = [df["Schlafdauer"].min(), df["Schlafdauer"].max()]
         y_values = [m * x + q for x in x_values]
         
+        plt.plot(x_values, y_values, color="blue", label="Gerade")
 
-        plt.plot(x_values, y_values, color="red", label="Regressionslinie")
+        # Vorhersage für ca. 8 Stunden Schlaf
+        # Suche einen Datenpunkt mit Schlafdauer nahe 8 Stunden
+        closest_idx = (df["Schlafdauer"] - 8).abs().idxmin()
+        x = df.loc[closest_idx, "Schlafdauer"]
+        y = df.loc[closest_idx, "Note"]
+        y_pred = m * x + q
 
         if add_pred:
-            # Vorhersage für 8 Stunden Schlaf
-            y_pred = m*8+q
-            print(f"Vorhersage für 8 Stunden Schlaf: {y_pred:.2f}")
+            print(f"Vorhersage für {x:.2f} Stunden Schlaf: {y_pred:.2f}, Datenpunkt bei x={x:.2f}, y={y:.2f}")
 
             # Punkt bei x=8, y=y_pred einzeichnen
-            plt.scatter(8, y_pred, color="green", label="Vorhersage (8h Schlaf)", zorder=5)
+            plt.scatter(x, y_pred, color="green", label=f"Vorhersage ({x:.1f}h Schlaf)", zorder=5)
 
             # Horizontale Linie von Marker zur y-Achse
-            plt.hlines(y=y_pred, xmin=df["Schlafdauer (h)"].min(), xmax=8, colors="green", linestyles="dashed")
-            plt.vlines(x=8, ymax=y_pred, ymin=df["Note"].min(), colors="green", linestyles="dashed")
+            plt.hlines(y=y_pred, xmin=df["Schlafdauer"].min(), xmax=x, colors="green", linestyles="dashed")
+            plt.vlines(x=x, ymax=y_pred, ymin=df["Note"].min(), colors="green", linestyles="dashed")
+            # Print the three data points as a pandas DataFrame
+            plt.plot([x, x], [y, y_pred], color="red", linestyle="dotted", label="Abweichung")
+
+            # Prepare DataFrame with prediction and actual data
+            df_pred = pd.DataFrame({
+                "x (Schlafdauer Datenpunkt)": [x_values[0], x, x_values[1]],
+                "y (Note Datenpunkt)": [y_values[0], y, y_values[1]],
+            })
+            df_pred["y (Note Vorhersage)"] = df_pred["x (Schlafdauer Datenpunkt)"].apply(lambda x: m * x + q)
+            df_pred["Differenz"] = df_pred["y (Note Vorhersage)"] - df_pred["y (Note Datenpunkt)"]
+            # Format DataFrame to two decimals before printing
+            print(df_pred.round(1).T)
+
+
 
 
 
@@ -125,27 +141,22 @@ def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
     plt.xlabel("Schlafdauer (Stunden)")
     plt.ylabel("Note")
     plt.legend()
-    plt.tight_layout()
-    for format in ["pdf"]:
-        # Save the plot to a PDF file with no white margins
-        plt.savefig(
-            f"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note{('_2p_reg' if draw_2p_reg_line else '')}{('_pred' if add_pred else '')}.{format}", bbox_inches='tight')
+    # Save the plot to a PDF file with no white margins
+    plt.savefig(
+        f"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note{('_2p_reg' if draw_2p_reg_line else '')}{('_pred' if add_pred else '')}.pdf", bbox_inches='tight')
     plt.close()
 
-
-def plot_3points_res():
+def plot_schlafdauer_vs_note_3points_res():
     df = pd.read_csv(
         "GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
     # Drei beliebige Zeilen auswählen und in einem neuen DataFrame speichern
     df_sample = df.iloc[[3, 18, 19]]
-    print(df_sample) # Ausgabe der drei Zeilen
 
     # Streudiagramm für df_sample erstellen
-    df_sample.plot.scatter(x="Schlafdauer (h)", y="Note",
-                        color="blue", label="Datenpunkte")
+    df_sample.plot.scatter(x="Schlafdauer", y="Note", label="Datenpunkte")
 
     # Regressionslinie zwischen minimaler und maximaler Schlafdauer zeichnen
-    x_min_max = [df_sample["Schlafdauer (h)"].iloc[0], df_sample["Schlafdauer (h)"].iloc[-1]]
+    x_min_max = [df_sample["Schlafdauer"].iloc[0], df_sample["Schlafdauer"].iloc[-1]]
     y_min_max = [df_sample["Note"].iloc[0], df_sample["Note"].iloc[-1]]
 
     # berechne Regressionsparameter m und q
@@ -155,15 +166,15 @@ def plot_3points_res():
     # Linie zeichnen basierend auf m und q
     x_values = [x_min_max[0], x_min_max[1]]
     y_values = [m * x + q for x in x_values]
-    plt.plot(x_values, y_values, color="red", label="Regressionslinie")
+    plt.plot(x_values, y_values, label="Gerade", color="blue")
 
     # Punkte beschriften
-    for i, (x, y) in enumerate(zip(df_sample["Schlafdauer (h)"], df_sample["Note"])):
+    for i, (x, y) in enumerate(zip(df_sample["Schlafdauer"], df_sample["Note"])):
         plt.annotate(f"Punkt {i+1}", (x, y), textcoords="offset points", xytext=(5, 5), ha="center")
 
     # Mittlerer Punkt
     middle_point = df_sample.iloc[1]
-    middle_x = middle_point["Schlafdauer (h)"]
+    middle_x = middle_point["Schlafdauer"]
     middle_y = middle_point["Note"]
 
     # Vorhergesagter y-Wert auf der Regressionslinie für den mittleren Punkt
@@ -178,10 +189,33 @@ def plot_3points_res():
     plt.xlabel("Schlafdauer (Stunden)")
     plt.ylabel("Note")
     plt.legend()
-    plt.title("Streudiagramm mit Regressionslinie und Unterschied")
-    plt.savefig("GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_res.pdf")
+    plt.savefig("GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_res.pdf", bbox_inches='tight')
     plt.close()
 
+
+
+def plot_schlafdauer_vs_note_ols():
+    df = pd.read_csv(
+        "GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
+    
+    # Datenpunkte zeichnen
+    plt.scatter(df["Schlafdauer"], df["Note"], label="Datenpunkte")
+
+    lm = smf.ols(formula="Note ~ Schlafdauer", data=df).fit() # Regressionsmodell erstellen
+    m = lm.params["Schlafdauer"]
+    q = lm.params["Intercept"]
+
+    # Regressionsgerade berechnen und zeichnen
+    x_values = [df["Schlafdauer"].min(), df["Schlafdauer"].max()]
+    y_values = [m * x + q for x in x_values]
+    plt.plot(x_values, y_values, color="blue", label="Regressionslinie")
+
+    # Achsenbeschriftungen und Legende hinzufügen
+    plt.xlabel("Schlafdauer (Stunden)")
+    plt.ylabel("Note")
+    plt.legend()
+    plt.savefig("GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_ols.pdf", bbox_inches='tight')
+    plt.close()
 
 def plot_3d_plane_with_points():
     # Reset matplotlib style to default
@@ -246,35 +280,11 @@ def plot_3d_plane_with_points():
                     "GrundlagenInfo/10_AusDatenLernen/Figures/linreg_3d.pdf",
                     "GrundlagenInfo/10_AusDatenLernen/Figures/linreg_3d.pdf"], check=True)
 
-
-def plot_ols():
-    df = pd.read_csv(
-        "GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
-    # Datenpunkte zeichnen
-    plt.scatter(df["Schlafdauer (h)"], df["Note"], label="Datenpunkte", color="blue")
-
-    lm = smf.ols(formula="Note ~ Schlafdauer (h)", data=df).fit() # Regressionsmodell erstellen
-    m = lm.params["Schlafdauer (h)"]
-    q = lm.params["Intercept"]
-
-    # Regressionsgerade berechnen und zeichnen
-    x_values = [df["Schlafdauer (h)"].min(), df["Schlafdauer (h)"].max()]
-    y_values = [m * x + q for x in x_values]
-    plt.plot(x_values, y_values, color="red", label="Regressionsgerade")
-
-    # Achsenbeschriftungen und Legende hinzufügen
-    plt.xlabel("Schlafdauer (Stunden)")
-    plt.ylabel("Note")
-    plt.legend()
-    plt.title("Datenpunkte und Regressionsgerade")
-    plt.savefig("GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_old.pdf")
-    plt.show()
-
 if __name__ == "__main__":
     # Call the function to plot the 3D plane with points
     # plot_3d_plane_with_points()
-    #plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False)
-    #plot_schlafdauer_vs_note(draw_2p_reg_line=True, add_pred=False)
-    #plot_schlafdauer_vs_note(draw_2p_reg_line=True, add_pred=True)
-    #plot_3points_res()
-    plot_ols()
+    plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False)
+    plot_schlafdauer_vs_note(draw_2p_reg_line=True, add_pred=False)
+    plot_schlafdauer_vs_note(draw_2p_reg_line=True, add_pred=True)
+    plot_schlafdauer_vs_note_3points_res()
+    plot_schlafdauer_vs_note_ols()

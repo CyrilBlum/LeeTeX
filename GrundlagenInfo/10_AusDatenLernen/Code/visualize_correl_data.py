@@ -35,4 +35,4 @@ if __name__ == "__main__":
 
     # Visualize Schlafdauer vs. Note
     df = generiere_korrelationsdaten("schlafdauer_vs_note", n=25)
-    vis_correl_data(df, "Schlafdauer (h)", "Note", "schlafdauer_vs_note")
+    vis_correl_data(df, "Schlafdauer", "Note", "schlafdauer_vs_note")

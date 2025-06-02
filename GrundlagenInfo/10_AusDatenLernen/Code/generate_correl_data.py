@@ -61,7 +61,7 @@ def generiere_korrelationsdaten(szenario: str, n: int = 100, seed: int = 42) -> 
     elif szenario == "schlafdauer_vs_note":
         x = np.random.normal(7, 1.5, n)  # Schlafdauer in Stunden
         y = np.clip(6 - 0.5 * (8 - x) + np.random.normal(0, 0.3, n), 1, 6)  # mehr Schlaf → bessere Note
-        return pd.DataFrame({"Schlafdauer (h)": x, "Note": y})
+        return pd.DataFrame({"Schlafdauer": x, "Note": y})
 
     elif szenario == "schuhgroesse_vs_buecher":
         x = np.random.uniform(0, 100, n)  # Zufällige Werte für X
