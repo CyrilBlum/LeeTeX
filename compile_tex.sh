@@ -10,7 +10,6 @@ echo "Length: ${#LEE_TEX_SSH_PASSWORD}"
 classes=("book" "book" "article" "exam" "beamer")
 toggles=("0" "0" "1" "2" "3") # documentclass toggles
 
-
 class_commands=(
     "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
     "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
@@ -142,7 +141,7 @@ for i in "${!classes[@]}"; do
     for entry in "${topics[@]}"; do
         topic="${entry%%:*}"
         input_path="${entry#*:}"
-        
+
         # Determine output directory and file names, distinguishing between book variants
         if [ "$class" = "book" ]; then
             # Check if this is the exerciseonly variant
@@ -198,7 +197,6 @@ for i in "${!classes[@]}"; do
         # Uncomment the selected topic line
         sed "${SED_INPLACE[@]}" "/\\\\newcommand{\\\\thetopic}{${topic//_/ }}/s/^%*[[:space:]]*//" "$cyril_out"
 
-
         # Comment out all "thesubject" lines
         sed "${SED_INPLACE[@]}" "/\\\\newcommand{\\\\thesubject}/s/^/%/" "$cyril_out"
         # Set the correct \thesubject line: uncomment Geografie if topic matches, else Informatik
@@ -219,15 +217,31 @@ for i in "${!classes[@]}"; do
 
         if [ "$class" = "book" ]; then
             # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|error|Error" || true
+            echo "  step 1: lualatex"
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
+            
+            echo "  step 2: biber"
             biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
+            
+            echo "  step 3: makeglossaries"
             makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+            
+            echo "  step 4: lualatex"
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
+            
+            echo "  step 5: lualatex"
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
+            log_file="${latex_dir}$(basename "$output_file" .tex).log"
+            if grep -q '^!' "$log_file"; then
+                echo "LaTeX error detected in step 5. Aborting."
+                exit 1
+            fi
         else
             # Double pass for other classes, show only warnings/errors
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning|error|Error" || true
+            echo "  step 1: lualatex"
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
+            echo "  step 2: lualatex"
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
         fi
 
         # Clean up intermediate .tex file
