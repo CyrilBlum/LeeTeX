@@ -6,22 +6,25 @@ echo "Length: ${#LEE_TEX_SSH_PASSWORD}"
 
 # This script is POSIX-compatible and works on macOS (Bash 3.x), Ubuntu, and Zsh.
 
-# Define array of document classes and their toggle positionst
-classes=("book" "book" "article" "exam" "beamer")
-toggles=("0" "0" "1" "2" "3") # documentclass toggles
+# Define array of document classes and their toggle positions
+
+classes=("book" "book" "article" "exam")
+toggles=("0" "0" "1" "2") # documentclass toggles
+
+# classes=("book" "book" "article" "exam" "beamer")
+# toggles=("0" "0" "1" "2" "3") # documentclass toggles
 
 class_commands=(
     "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
     "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
     "\\\\documentclass[svgnames,hyphens]{article}"
     "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
-    "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
+    # "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
 )
 
 # Topics and their input files for each document class (as flat arrays: topic:path)
 book_topics=(
-    "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
-    "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
+    # OInf topics
     "Programmieren:GrundlagenInfo/00_Programmieren/Skript/Skript.tex"
     "Zahlendarstellungen_und_Kodierungen:GrundlagenInfo/01_TheoretischeInformatik/Skript/Skript.tex"
     "Randomisierte_Algorithmen:GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
@@ -32,6 +35,10 @@ book_topics=(
     "Netzwerke:GrundlagenInfo/07_Netzwerke/Skript.tex"
     "Tabellenkalkulation:GrundlagenInfo/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
     "Aus_Daten_Lernen:GrundlagenInfo/10_AusDatenLernen/Skript/Skript.tex"
+    # Cyril Geography topics
+    "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
+    "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
+    # Thomas EF topics
     # "Endliche_Automaten:EF/EndlicheAutomaten/skript_EA.tex"
     # "Induktion_und_Rekursion:EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
     # "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
@@ -153,7 +160,7 @@ for i in "${!classes[@]}"; do
                 latex_dir="${root_dir}/PDFs/${topic}/${class}_${book_variant}/"
                 output_file="${root_dir}/output_${class}_${book_variant}_${topic// /_}.tex"
             fi
-        elif [ "$class" = "beamer" ]; then
+        elif [ "$class" != "book" ]; then
             # put files in slides folder (not structured by topic)
             latex_dir="${root_dir}/PDFs/${class}/${topic}/"
             output_file="${root_dir}/output_${class}_${topic// /_}.tex"
@@ -218,29 +225,30 @@ for i in "${!classes[@]}"; do
             # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
             echo "  step 1: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
-            
+
             echo "  step 2: biber"
             biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
-            
+
             echo "  step 3: makeglossaries"
             makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
-            
+
             echo "  step 4: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
-            
+
             echo "  step 5: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
-            log_file="${latex_dir}$(basename "$output_file" .tex).log"
-            if grep -q '^!' "$log_file"; then
-                echo "LaTeX error detected in step 5. Aborting."
-                exit 1
-            fi
         else
             # Double pass for other classes, show only warnings/errors
             echo "  step 1: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
             echo "  step 2: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
+        fi
+
+        log_file="${latex_dir}$(basename "$output_file" .tex).log"
+        if grep -q '^!' "$log_file"; then
+            echo "LaTeX error detected. Aborting."
+            exit 1
         fi
 
         # Clean up intermediate .tex file
