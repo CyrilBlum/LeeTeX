@@ -233,14 +233,14 @@ for i in "${!classes[@]}"; do
             makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
 
             echo "  step 4: lualatex"
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
 
             echo "  step 5: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
         else
             # Double pass for other classes, show only warnings/errors
             echo "  step 1: lualatex"
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
+            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
             echo "  step 2: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
         fi
