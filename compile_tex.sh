@@ -20,6 +20,8 @@ class_commands=(
 
 # Topics and their input files for each document class (as flat arrays: topic:path)
 book_topics=(
+    "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
+    "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
     "Programmieren:GrundlagenInfo/00_Programmieren/Skript/Skript.tex"
     "Zahlendarstellungen_und_Kodierungen:GrundlagenInfo/01_TheoretischeInformatik/Skript/Skript.tex"
     "Randomisierte_Algorithmen:GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
@@ -27,15 +29,12 @@ book_topics=(
     "Kompression:GrundlagenInfo/04_Kompression/Skript.tex"
     "Datenintegrität:GrundlagenInfo/05_DatenIntegritaet/Skript/Skript"
     "Datenbanken:GrundlagenInfo/06_Datenbanken/Skript/Skript.tex"
-    "Datenbanken_Ag:GrundlagenInfo/06_Datenbanken/skript_DB_Ag.tex"
     "Netzwerke:GrundlagenInfo/07_Netzwerke/Skript.tex"
     "Tabellenkalkulation:GrundlagenInfo/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
     "Aus_Daten_Lernen:GrundlagenInfo/10_AusDatenLernen/Skript/Skript.tex"
-    "Endliche_Automaten:EF/EndlicheAutomaten/skript_EA.tex"
-    "Induktion_und_Rekursion:EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
-    "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
-    "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
-    "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
+    # "Endliche_Automaten:EF/EndlicheAutomaten/skript_EA.tex"
+    # "Induktion_und_Rekursion:EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
+    # "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
 )
 
 article_topics=(
