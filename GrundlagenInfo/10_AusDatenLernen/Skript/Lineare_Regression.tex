@@ -181,6 +181,139 @@ Schlafdauer    0.45
 dtype: float64
 \end{lstlisting}
 
+\section{Multiple lineare Regression}
+
+Die einfache lineare Regression betrachtet den Zusammenhang zwischen einer abhängigen Variable $y$ und einer unabhängigen Variable $x$. In vielen realen Situationen hängt das Ergebnis jedoch von mehreren Faktoren ab. Die \textbf{multiple lineare Regression} erweitert das Konzept der einfachen linearen Regression auf mehrere unabhängige Variablen.
+
+Manchmal hängt die Vorhersage nicht nur von einer Variable ab. Betrachten wir einige Beispiele:
+
+\begin{itemize}
+    \item \textbf{Schulnoten}: Eine gute Note könnte sowohl vom Lernaufwand als auch von der Schlafqualität abhängen
+    \item \textbf{Autokauf}: Der Preis eines Autos hängt von verschiedenen Faktoren ab wie Marke, Baujahr, Kilometerstand
+    \item \textbf{CO₂-Emissionen}: Der CO₂-Ausstoss eines Autos könnte sowohl vom Gewicht als auch vom Hubraum abhängen
+\end{itemize}
+
+Während die einfache lineare Regression die Form hat:
+\[y = a_0 + a_1 x_1\]
+
+erweitert die multiple lineare Regression diese auf mehrere unabhängige Variablen:
+\[y = a_0 + a_1 x_1 + a_2 x_2 + a_3 x_3 + \cdots + a_n x_n\]
+
+Hierbei ist:
+\begin{itemize}
+    \item $y$ die abhängige Variable (was wir vorhersagen möchten)
+    \item $x_1, x_2, \ldots, x_n$ die unabhängigen Variablen (Eingabefaktoren)
+    \item $a_0$ der y-Achsenabschnitt (Intercept)
+    \item $a_1, a_2, \ldots, a_n$ die Koeffizienten für die jeweiligen Variablen
+\end{itemize}
+
+\subsection{Geometrische Interpretation}
+
+Während eine einfache lineare Regression eine Gerade in einem 2D-Koordinatensystem darstellt, repräsentiert eine multiple lineare Regression:
+\begin{itemize}
+    \item Bei zwei unabhängigen Variablen: eine \textbf{Ebene} im 3D-Raum
+    \item Bei mehr als zwei Variablen: eine \textbf{Hyperebene} in einem mehrdimensionalen Raum
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{GrundlagenInfo/10_AusDatenLernen/Figures/linreg_3d.pdf}
+    \caption{3D-Visualisierung einer multiplen linearen Regression mit zwei unabhängigen Variablen}
+    \label{fig:linreg_3d}
+\end{figure}
+
+\subsection{Praktisches Beispiel: CO$_2$-Emissionen von Autos}
+
+Betrachten wir ein konkretes Beispiel: Wir möchten den CO$_2$-Ausstoss von Autos basierend auf ihrem Gewicht und Volumen vorhersagen.
+
+\textbf{Datenstruktur:}
+\begin{itemize}
+    \item Abhängige Variable: CO$_2$-Ausstoss (in g/km)
+    \item Unabhängige Variablen: Gewicht (kg) und Volumen (ccm)
+\end{itemize}
+
+\subsection{Implementierung in Python}
+
+Die Implementierung einer multiplen linearen Regression in Python erfolgt ähnlich wie bei der einfachen Regression, jedoch mit einer erweiterten Formel:
+
+\begin{lstlisting}[language=Python]
+import pandas as pd
+import statsmodels.formula.api as smf
+
+# Daten laden (Beispiel: Auto-Datensatz)
+cars_df = pd.read_csv("cars-co2.csv")
+
+# Multiple lineare Regression durchführen
+# Formel: CO2 ~ Weight + Volume
+model = smf.ols(formula="CO2 ~ Weight + Volume", data=cars_df).fit()
+
+# Modell-Parameter anzeigen
+print(model.params)
+
+# Beispiel-Ausgabe:
+# Intercept    79.694776
+# Weight        0.007906
+# Volume        0.007850
+
+# Vorhersage für neuen Datenpunkt
+# z.B. Gewicht = 2000 kg, Volumen = 1000 ccm
+prediction = model.predict({'Weight': [2000], 'Volume': [1000]})
+print(f"Vorhergesagter CO2-Ausstoss: {prediction[0]:.1f} g/km")
+\end{lstlisting}
+
+\subsection{Interpretation der Ergebnisse}
+
+Die Koeffizienten in einer multiplen linearen Regression haben eine spezielle Bedeutung:
+
+\begin{itemize}
+    \item \textbf{Intercept ($a_0$)}: Der erwartete y-Wert, wenn alle unabhängigen Variablen null sind
+    \item \textbf{Koeffizient für Weight ($a_1$)}: Die erwartete Änderung in CO₂ pro zusätzliches kg Gewicht, \textit{unter Kontrolle aller anderen Variablen}
+    \item \textbf{Koeffizient für Volume ($a_2$)}: Die erwartete Änderung in CO₂ pro zusätzliches ccm Volumen, \textit{unter Kontrolle aller anderen Variablen}
+\end{itemize}
+
+\subsection{Voraussetzungen und Überprüfungen}
+
+Bevor eine multiple lineare Regression angewendet wird, sollten folgende Voraussetzungen überprüft werden:
+
+\begin{enumerate}
+    \item \textbf{Linearität}: Jede unabhängige Variable sollte in einem linearen Zusammenhang zur abhängigen Variable stehen
+    \item \textbf{Unabhängigkeit}: Die unabhängigen Variablen sollten nicht zu stark korreliert sein (Multikollinearität vermeiden)
+    \item \textbf{Normalverteilung der Residuen}: Die Fehler sollten normalverteilt sein
+\end{enumerate}
+
+Die Linearität kann durch Streudiagramme für jede Variable separat überprüft werden:
+
+\begin{lstlisting}[language=Python]
+import matplotlib.pyplot as plt
+
+# Separate Streudiagramme für jede unabhängige Variable
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.scatter(cars_df['Weight'], cars_df['CO2'])
+plt.xlabel('Gewicht (kg)')
+plt.ylabel('CO2 (g/km)')
+plt.title('CO2 vs. Gewicht')
+
+plt.subplot(1, 2, 2)
+plt.scatter(cars_df['Volume'], cars_df['CO2'])
+plt.xlabel('Volumen (ccm)')
+plt.ylabel('CO2 (g/km)')
+plt.title('CO2 vs. Volumen')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\subsection{Vorteile der multiplen linearen Regression}
+
+\begin{itemize}
+    \item \textbf{Realistischere Modelle}: Berücksichtigung mehrerer Einflussfaktoren
+    \item \textbf{Bessere Vorhersagegenauigkeit}: Durch Einbeziehung relevanter Variablen
+    \item \textbf{Kontrolle von Störfaktoren}: Isolierung des Effekts einzelner Variablen
+    \item \textbf{Einfache Interpretation}: Lineare Beziehungen bleiben verständlich
+\end{itemize}
+
 \section{Qualität einer Regression}
 
 Wie gut passt eine Regressionsgerade zu den Daten? Um diese Frage zu beantworten, betrachten wir insbesondere die Residuen und die Summe der quadrierten Residuen
@@ -207,12 +340,17 @@ Die lineare Regression hat vielfältige Anwendungen in verschiedenen Bereichen, 
 \end{itemize}
 
 \clearpage
+
+
 \section{Lernziele}
 \begin{todolist}
-    \item Ich kann erklären, was lineare Regression ist und wofür sie verwendet wird.
-    \item Ich kann zwischen unabhängigen und abhängigen Variablen unterscheiden.
-    \item Ich kann die Regressionsgerade für einen Datensatz manuell berechnen.
-    \item Ich kann die Qualität einer Regression beurteilen.
-    \item Ich kann eine lineare Regression mit Python implementieren.
-    \item Ich kenne die Anwendungen und Grenzen der linearen Regression.
+    \item Ich kann eine Gerade zwischen zwei Punkten \textbf{manuell berechnen}.
+    \item Ich kann erklären, was man unter der \textbf{abhängigen Variable} versteht: Die abhängige Variable ist die Zielvariable, deren Wert durch die unabhängigen Variablen vorhergesagt werden soll.
+    \item Ich kann erklären, was man unter \textbf{unabhängigen Variablen} versteht: Unabhängige Variablen sind die Einflussgrössen, mit deren Hilfe die abhängige Variable modelliert wird.
+    \item Ich kenne den Unterschied zwischen \textbf{einfacher} und \textbf{multipler} linearer Regression: Bei der einfachen linearen Regression gibt es nur eine unabhängige Variable, bei der multiplen linearen Regression mehrere.
+    \item Ich weiss, weshalb man die \textbf{Linearität der unabhängigen Variablen} überprüfen muss: Die Beziehung zwischen den unabhängigen Variablen und der abhängigen Variable sollte linear sein, da sonst die Ergebnisse der Regression nicht zuverlässig sind. Die Überprüfung erfolgt z.B. durch Streudiagramme oder Korrelationsanalysen.
+    \item Ich kann die Qualität einer Regression mit der Summe der \textbf{Residuen} und der \textbf{Summe der quadrierten Residuen} beurteilen: Die Residuen sind die Abweichungen zwischen den tatsächlichen Werten und den vorhergesagten Werten. Die Summe der quadrierten Residuen (RSS) gibt an, wie gut die Regressionsgerade zu den Daten passt; je kleiner die RSS, desto besser die Anpassung.
+    \item Ich weiss, wozu man die Programmbibliothek \texttt{pandas} verwendet: \texttt{pandas} dient zur effizienten Datenverwaltung, -analyse und -vorverarbeitung in Python.
+    \item Ich weiss, wozu man die Programmbibliothek \texttt{statsmodels} verwendet: \texttt{statsmodels} wird zur Durchführung statistischer Analysen und zur Erstellung von Regressionsmodellen in Python genutzt.
+    \item Ich kann erklären, was ein \textbf{statistisches Modell} ist: Ein statistisches Modell ist eine mathematische Beschreibung, die die Beziehung zwischen Variablen in einem Datensatz abbildet und Vorhersagen ermöglicht.
 \end{todolist}
