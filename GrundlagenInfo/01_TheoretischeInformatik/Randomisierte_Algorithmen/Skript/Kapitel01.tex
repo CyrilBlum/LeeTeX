@@ -345,31 +345,7 @@ def sieb(n):
     print(primzahlen)
 \end{lstlisting}
 	\begin{myanswer}
-		\begin{lstlisting}[language=Python,caption=Sieb des Eratosthenes,numbers=none]
-def sieb(n):
-    # starte mit einer leeren Liste von
-    # Primzahlen (wir haben noch keine gefunden)
-    primzahlen = []
-
-    # starte mit einer Liste der Länge n + 1
-    # nicht_gestrichen[i] ist genau dann True, wenn
-    # die Zahl i (i = 0, 1, ..., n) noch
-    # nicht gestrichen wurde
-    # zu Beginn ist noch keine Zahl durchgestrichen
-    nicht_gestrichen = (n + 1) * [True]
-
-    i = 2
-    # prüfe, ob die Zahl i (i = 2, ..., n) schon gestrichen ist
-    while i <= n:
-        if nicht_gestrichen[i]:
-            primzahlen.append(i)
-            j = 2 * i
-            while j <= n:
-                nicht_gestrichen[j] = False
-                j += i
-        i += 1
-    print(primzahlen)
-\end{lstlisting}
+		\lstinputlisting[language=Python,caption=\texttt{sieb.py},label=listing:sieb]{GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Code/sieb.py}
 	\end{myanswer}
 \end{myexercise}
 
@@ -410,30 +386,7 @@ Die Laufzeit des \textit{Siebs des Eratosthenes} kann an zwei Stellen deutlich v
 \begin{myexercise}[Implementation von Verbesserung 1]\label{myexercise:implementVerbesserung1}
 	Implementieren Sie Verbesserung 1 aus \cref{myexercise:verbesserung1} in Python.
 	\begin{myanswer}
-		\begin{lstlisting}[language=Python,caption=Verbesserung 1,numbers=none]
-def sieb_verbesserung1(n):
-    primzahlen = []
-    nicht_gestrichen = (n + 1) * [True]
-
-    i = 2
-    while i * i <= n:
-        if nicht_gestrichen[i]:
-            j = 2 * i
-            while j <= n:
-                nicht_gestrichen[j] = False
-                j += i
-        i += 1
-
-    # sammle alle nicht gestrichenen Zahlen
-    # dies sind genau die Primzahlen <= n
-    i = 2
-    while i <= n:
-        if nicht_gestrichen[i]:
-            primzahlen.append(i)
-        i += 1
-
-    print(primzahlen)
-\end{lstlisting}
+		\lstinputlisting[language=Python,caption=\texttt{sieb\_verbesserung\_1.py},label=listing:sieb_verbesserung_1]{GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Code/sieb_verbesserung_1.py}
 	\end{myanswer}
 \end{myexercise}
 
@@ -450,30 +403,7 @@ def sieb_verbesserung1(n):
 \begin{mychallenge}[Implementation von Verbesserung 2]\label{myexercise:implementVerbesserung2}
 	Ergänzen Sie Ihr Programm aus \cref{myexercise:implementVerbesserung1} um Verbesserung 2.
 	\begin{myanswer}
-		\begin{lstlisting}[language=Python,caption=Verbesserung 2,numbers=none]
-def sieb_verbesserungen_1_und_2(n):
-    primzahlen = []
-    nicht_gestrichen = (n + 1) * [True]
-
-    i = 2
-    while i * i <= n:
-        if nicht_gestrichen[i]:
-            j = i * i
-            while j <= n:
-                nicht_gestrichen[j] = False
-                j += i
-        i += 1
-
-    # sammle alle nicht gestrichenen Zahlen
-    # dies sind genau die Primzahlen <= n
-    i = 2
-    while i <= n:
-        if nicht_gestrichen[i]:
-            primzahlen.append(i)
-        i += 1
-
-    print(primzahlen)
-\end{lstlisting}
+		\lstinputlisting[language=Python,caption=\texttt{sieb\_verbesserungen\_1\_und\_2.py},label=listing:sieb_verbesserungen_1_und_2]{GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Code/sieb_verbesserungen_1_und_2.py}
 	\end{myanswer}
 \end{mychallenge}
 
@@ -559,8 +489,7 @@ Beispielsweise sind sowohl $100$ als auch $00100$ binäre Darstellungen der Zahl
 	\begin{myanswer}
 		\begin{lstlisting}[language=Python,numbers=none]
 def Bin(n):
-    if n == 0:
-        return "0"
+    if n == 0: return "0"
     binary_str = ""
     while n > 0:
         binary_str = str(n % 2) + binary_str
@@ -674,52 +603,30 @@ Die einzige Kommunikation (ohne die optionale Phase 4, sonst kommt noch 1 Bit hi
 
 Die Primzahl $p$ wurde definitionsgemäss als $p \leq n^2$ gewählt und da $n^2$ keine Primzahl ist, gilt $p < n^2$. Die Zahl $s$ erfüllt als Rest bei der Division durch $p$ die Ungleichung $s < p$. Damit gilt also $s < p < n^2$. Der gesamte Kommunikationsaufwand, wir nennen ihn $A$, ist die Summe der Längen der kürzesten binären Darstellungen von $p$ und $s$:
 \begin{align*}
-	A := \ceil{\log_2\lr{p + 1}} + \ceil{\log_2\lr{s + 1}} & \leq                                       \\
-	\ceil{\log_2\lr{n^2 + 1}} + \ceil{\log_2\lr{n^2 + 1}}  & =                                          \\
-	2\ceil{\log_2\lr{n^2 + 1}}                             & \stackrel{\cref{mytheorem:Estimate}}{\leq} \\
-	2\ceil{\log_2\lr{n^2}} + 2                             & = 4\ceil{\log_2\lr{n}} + 2,
+	A := \ceil{\log_2\lr{p + 1}} + \ceil{\log_2\lr{s + 1}}.
 \end{align*}
-wobei wir \cref{mytheorem:Estimate} verwendet haben. Insgesamt haben wir also
-\begin{align}\label{eq:A}
-	A \leq 4\ceil{\log_2\lr{n}} + 2
-\end{align}
-gefunden.
-
-\begin{mytheorem}\label{mytheorem:Estimate}
-	Für jede natürliche Zahl $n>0$ gilt
-	\begin{align*}
-		\ceil{\log_2(n+1)}\leq \ceil{\log_2(n)} + 1.
-	\end{align*}
-	\begin{myproof}
-		Wir beweisen zunächst die Ungleichung $\log_2(n+1) \leq \log_2(n) + 1$. Dazu berechnen wir zunächst
-		\begin{align*}
-			\log_2(n) + 1 = \log_2(n) + \log_2(2) = \log_2(2n).
-		\end{align*}
-		Damit gilt also
-		\begin{align*}
-			\log_2(n+1) \leq \log_2(n) + 1 & \iff \\
-			\log_2(n+1) \leq \log_2(2n)    & \iff \\
-			n + 1\leq 2n                   & \iff \\
-			1 \leq n,
-		\end{align*}
-		wobei wir verwendet haben, dass $\log_2$ (streng) monoton wachsend ist. Die Ungleichung ist offensichtlich für alle natürlichen Zahlen $n>0$ korrekt.
-		Wir berechnen nun
-		\begin{align*}
-			\log_2(n+1) \leq \log_2(n) + 1               & \Rightarrow             \\
-			\ceil{\log_2(n+1)} \leq \ceil{\log_2(n) + 1} & = \ceil{\log_2(n)} + 1.
-		\end{align*}
-	\end{myproof}
-\end{mytheorem}
+Nun gilt aber
+\begin{align*}
+	\lr{s < p < n^2} \Rightarrow \lr{s + 1 < p + 1 \leq n^2} \Rightarrow \lr{\ceil{\log_2\lr{s + 1}} \leq \ceil{\log_2\lr{p + 1}} \leq \ceil{\log_2\lr{n^2}}},
+\end{align*}
+wobei wir verwendet haben, dass $\log$ und die Aufrundeklammer monoton wachsende Funktionen sind. Somit gilt nun für den Kommunikationsaufwand $A$:
+\begin{align*}
+	A = \ceil{\log_2\lr{p + 1}} + \ceil{\log_2\lr{s + 1}} \leq \ceil{\log_2\lr{n^2}} + \ceil{\log_2\lr{n^2}} = \\
+	= 2\ceil{\log_2\lr{n^2}} = 2\ceil{2\log_2\lr{n}} = 4\ceil{\log_2\lr{n}},
+\end{align*}
+und zusammengefasst:
+\begin{align*}
+	A \leq 4\ceil{\log_2\lr{n}}.
+\end{align*}
 
 \begin{myexercise}
 	Bestimmen Sie eine möglichst gute obere Schranke für den Kommunikationsaufwand $A$, falls $n:=10^{16}$.
 	\begin{myanswer}
-		Mit \cref{eq:A} finden wir
 		\begin{align*}
-			A \leq                                 &                               \\
-			4\ceil{\log_2\lr{n}} + 2               & =                             \\
-			4\ceil{\log_2\lr{10^{16}}} + 2         & =                             \\
-			4\cdot 16\cdot\ceil{\log_2\lr{10}} + 2 & = 4\cdot 16\cdot 4 + 2 = 258.
+			A \leq                             &                           \\
+			4\ceil{\log_2\lr{n}}               & =                         \\
+			4\ceil{\log_2\lr{10^{16}}}         & =                         \\
+			4\cdot 16\cdot\ceil{\log_2\lr{10}} & = 4\cdot 16\cdot 4 = 256.
 		\end{align*}
 	\end{myanswer}
 \end{myexercise}
@@ -770,7 +677,7 @@ Bei der Analyse der Fehlerwahrscheinlichkeit unterscheiden wir zwei Möglichkeit
 	\end{myproof}
 	Da jede Primzahl aus $\lrc{2,3,\ldots ,n^2}$ die gleiche Wahrscheinlichkeit hat, (zufällig) gewählt zu werden, ist die Wahrscheinlichkeit, ein $p$ zu wählen, das $w$ teilt, (für genügend grosses $n$) höchstens
 	\begin{align*}
-		\frac{n-1}{\text{Prim}(n^2)}\approx \frac{n-1}{n^2/\ln(n^2)} < \frac{\ln(n^2)}{n},
+		\frac{n-1}{\text{Prim}(n^2)}\approx \frac{n-1}{n^2/\ln(n^2)} < \frac{n}{n^2/\ln(n^2)} = \frac{\ln(n^2)}{n},
 	\end{align*}
 	wobei wir die Approximation $\text{Prim}(n)\approx n/\ln(n)$ verwendet haben\footnote{siehe \cref{mytheorem:primzahlsatz}, \cref{myexcursion:finite_n}}. Die Fehlerwahrscheinlichkeit des Kommunikationsprotokolls ist also höchstens $\ln(n^2)/n$, was für $n=10^{16}$ höchstens $0.736827\cdot 10^{-14}$ ist.
 \end{aenum}

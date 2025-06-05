@@ -1,7 +1,7 @@
 import math
 
 
-def sieb_verbesserung_1_und_2(n):
+def sieb_verbesserungen_1_und_2(n):
     primzahlen = []
     nicht_gestrichen = (n + 1) * [True]
 
