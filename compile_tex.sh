@@ -25,7 +25,7 @@ book_topics=(
     "Programmieren:GrundlagenInfo/00_Programmieren/Skript/Skript.tex"
     "Zahlendarstellungen_und_Kodierungen:GrundlagenInfo/01_TheoretischeInformatik/Skript/Skript.tex"
     "Randomisierte_Algorithmen:GrundlagenInfo/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
-    # "Kryptologie:GrundlagenInfo/03_Kryptologie/Skript/Skript.tex"
+    "Kryptologie:GrundlagenInfo/03_Kryptologie/Skript/Skript.tex"
     "Kompression:GrundlagenInfo/04_Kompression/Skript.tex"
     "Datenintegrität:GrundlagenInfo/05_DatenIntegritaet/Skript/Skript"
     "Datenbanken:GrundlagenInfo/06_Datenbanken/Skript/Skript.tex"
