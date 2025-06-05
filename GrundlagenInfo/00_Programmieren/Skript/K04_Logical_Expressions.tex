@@ -1,4 +1,5 @@
-\chapter{Verzweigungen und Bedingte Schleifen}\label{ch:K03_logical}
+
+\chapter{Verzweigungen und Bedingte Schleifen}\label{ch:K03Logical}
 
 \section{Verzweigungen mit \texorpdfstring{\lstinline|if|}{if}, \texorpdfstring{\lstinline|elif|}{elif} und \texorpdfstring{\lstinline|else|}{else}}
 In vielen Fällen möchten wir Code nur Ausführen, \textit{falls} eine gewisse Bedingung wahr ist: beispielsweise möchte ein Arzt nur dann eine Warnung erhalten, wenn der Blutdruck eines Patienten zu hoch ist, oder ein selbstfahrendes Auto sollte nur dann piepsen, wenn der Fahrer nicht aufmerksam auf die Strasse schaut. Um solche \textit{konditionale} (bedingte) Logik zu programmieren, können wir die Begriffe \lstinline|if| (\enquote{falls}), \lstinline|elif| (\enquote{sonst falls}) und \lstinline|else| (\enquote{in allen anderen Fällen}) verwenden.
@@ -595,22 +596,16 @@ Den Wert \lstinline|True| könnten wir beispielsweise verwenden, um eine Endloss
 \end{myexercise}
 
 \begin{mychallenge}
-	Welche Folge hat es, wenn die \texttt{if}-Bedingung im Körper einer \texttt{for \_ in range(...)}-Schleife nur Variablen verwendet, deren Werte sich im Schleifenrumpf nie ändern?
+	Was gibt folgender Code aus und wann endet er?
+	\begin{lstlisting}
+		i = 2
+		while True:
+			if i>5:
+			break
+	\end{lstlisting}
 
 	\begin{myanswer}
-		Die Bedingung bleibt während der gesamten Schleife gleich. Das hat folgende Konsequenzen:
-
-		\begin{itemize}
-			\item Falls die Bedingung zu Beginn \texttt{True} ist, wird sie in jedem Durchlauf erfüllt – der zugehörige Code wird immer ausgeführt.
-			\item Falls die Bedingung zu Beginn \texttt{False} ist, wird sie nie erfüllt – der zugehörige Code wird nie ausgeführt.
-		\end{itemize}
-
-		Dies kann zu unerwartetem Verhalten führen, zum Beispiel:
-		\begin{itemize}
-			\item unnötige Wiederholungen desselben Codes,
-			\item nicht eintretende Aktionen, obwohl sie vorgesehen sind,
-			\item oder ineffizienter Programmablauf.
-		\end{itemize}
+		Der Code gibt nichts aus und endet nie (läuft unendlich weiter). Grund: Die Bedingung \lstinline|if i>5:| wird nie erfüllt, da der Wert von \lstinline|i| innerhalb der Schleife nicht verändert wird. Die Schleife ist somit eine Endlosschleife.
 	\end{myanswer}
 \end{mychallenge}
 
@@ -694,7 +689,12 @@ Folgendes Beispiel zeigt, wie ein \lstinline|while True:| mit einem \lstinline|b
 \end{myexercise}
 
 \begin{myexercise}
-	Verwenden Sie eine \lstinline|while|-Schleife, um für eine natürliche Zahl \lstinline|x > 1| den kleinsten echten Teiler \lstinline|min_teiler| und den grössten echten Teiler \lstinline|max_teiler < x| zu finden. Wenn \lstinline|min_teiler = x| und \lstinline|max_teiler = 1|, soll das Programm schreiben, dass \lstinline|x| eine Primzahl ist.
+	Gegeben ist eine natürliche Zahl \lstinline|x > 1|. Ein echter Teiler einer Zahl ist eine Zahl, die grösser als 1 und kleiner als \lstinline|x| ist und \lstinline|x| ohne Rest teilt. 10 hat beispielsweise die Teiler 1, 2, 5 und 10, wovon nur 2 und 5 \textit{echte} Teiler sind.
+
+	Schreiben Sie ein Programm, das für eine vom Benutzer eingegebene Zahl \lstinline|x| mit einer \lstinline|while|-Schleife den kleinsten und den grössten echten Teiler von \lstinline|x| bestimmt.
+
+	Gibt es keine echten Teiler (d.h. \lstinline|x| ist eine Primzahl), soll das Programm ausgeben \lstinline|"x ist eine Primzahl."|. Andernfalls sollen der kleinste und der grösste echte Teiler ausgegeben werden.
+
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{teiler\_prim.py},label=listing:teiler_prim]{GrundlagenInfo/00_Programmieren/Skript/Code/K04_Logic/teiler_prim.py}
 	\end{myanswer}

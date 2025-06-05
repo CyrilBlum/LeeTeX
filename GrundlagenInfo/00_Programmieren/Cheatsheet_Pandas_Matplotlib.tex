@@ -76,8 +76,8 @@ df.dtypes # Daten-Typen aller Spalten
 
     \begin{cheatSheetBox}[title=Spalten auswählen]
       \begin{lstlisting}
-df['Spalte']   # einzelne Spalte
-df[['A', 'B']] # mehrere Spalten
+spalte = df['Spalte']     # eine Spalte auswählen
+df_teil = df[['A', 'B']]  # mehrere Spalten auswählen
 \end{lstlisting}
     \end{cheatSheetBox}
 
@@ -98,7 +98,7 @@ df['Spalte'].shape # Anzahl Zeilen und Spalten
 
     \begin{cheatSheetBox}[title=Zeilen filtern]
       \begin{lstlisting}
-df[df['Alter'] > 18] # Filter 
+df_erwachsen = df[df['Alter'] > 18] # Filter 
 \end{lstlisting}
     \end{cheatSheetBox}
 
@@ -137,8 +137,7 @@ df.groupby('spalte_gruppe')["spalte_statistik"].mean()
       Formel einer linearen Funktion:
       \[y = m \cdot x + q\]
       Wobei m die Steigung und q den y-Achsenabschnitt darstellt.
-      \[m=\frac{y_2 - y_1}{x_2 - x_1}\]
-      \[q = y_1 - m \cdot x_1\]
+      \[m=\frac{y_2 - y_1}{x_2 - x_1},\quad\quad q = y_1 - m \cdot x_1\]
     \end{cheatSheetBox}
     \begin{cheatSheetBox}[title=Lineare Regression]
       \begin{itemize}
@@ -148,12 +147,35 @@ df.groupby('spalte_gruppe')["spalte_statistik"].mean()
       \begin{lstlisting}
 model = smf.ols(formula='Note ~ Schlaf', data=df).fit()
 print(model.params) # Koeffizienten
-
-# Vorhersage
-df['Note_pred'] = model.predict(df['Schlaf'])
+df['Note_pred'] = model.predict(df['Schlaf']) # Vorhersage
 \end{lstlisting}
     \end{cheatSheetBox}
-    % \columnbreak
+
+    \begin{cheatSheetBox}[title=Multiple lineare Regression]
+      Beispiel: Note als Funktion von Lernaufwand und Schlaf (sowie möglicherweise weiteren Variablen).
+      \textbf{Formel:}
+      \[
+        y = a_0 + a_1 x_1 + a_2 x_2 + \ldots + a_n x_n
+      \]
+      \begin{itemize}
+        \item $y$: Zielvariable (z.B. Note)
+        \item $x_1, x_2, \ldots, x_n$: unabhängige Variablen (z.B. Lernaufwand, Schlaf, etc.)
+        \item $a_0$: Achsenabschnitt (Intercept)
+        \item $a_1, a_2, \ldots, a_n$: Regressionskoeffizienten
+      \end{itemize}
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Multiple lineare Regression (in Python)]
+      \begin{lstlisting}
+model = smf.ols('CO2 ~ Weight + Volume', data=df).fit()
+print(model.params)
+# Vorhersage für CO2-Emissionen
+pred = model.predict({'Weight': [2000], 'Volume': [1000]})
+print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
+\end{lstlisting}
+
+    \end{cheatSheetBox}
+    \columnbreak
     \cheatSheetSubtitle{Markov-Ketten}{Die folgenden Boxen enthalten die wichtigsten Formeln und Befehle für Markov-Ketten, von Hand und in Python.}
     \begin{cheatSheetBox}[title=Markov-Ketten: Matrix-Multiplikation]
       \[
@@ -172,8 +194,114 @@ df['Note_pred'] = model.predict(df['Schlaf'])
       \]
 
     \end{cheatSheetBox}
+    \begin{cheatSheetBox}[title=Markov-Ketten über mehrere Zustände berechnen]
+      Um die Wahrscheinlichkeit zu berechnen, nach mehreren Schritten in einem bestimmten Zustand zu sein, erstellen wir zuerst die Übergangsmatrix \(P\) sowie den Startvektor \(\pi_0\).
 
-    \begin{cheatSheetBox}[title=Markov-Ketten: Übergangsmatrix erstellen]
+      \[
+        P =
+        \begin{pmatrix}
+          p_{11} & p_{12} \\
+          p_{21} & p_{22}
+        \end{pmatrix}
+      \]
+
+      Wobei \(p_{ij}\) die Wahrscheinlichkeit ist, von Zustand \(i\) zu Zustand \(j\) zu wechseln.
+
+      Der Startvektor \(\pi_0\) beschreibt die Anfangswahrscheinlichkeiten für jeden Zustand, zum Zeitpunkt \(t=0\):
+
+      \[
+        \pi_0 =
+        \begin{pmatrix}
+          \pi_{0,1} & \pi_{0,2}
+        \end{pmatrix}
+      \]
+
+      Wobei \(\pi_{0,1}\) die Wahrscheinlichkeit für Zustand 1 und \(\pi_{0,2}\) für Zustand 2 ist.
+
+      \[
+        \text{Nach einem Schritt: } \pi_1 = \pi_0 \cdot P
+      \]
+      \[
+        \text{Nach zwei Schritten: } \pi_2 = \pi_1 \cdot P = \pi_0 \cdot P^2
+      \]
+      \[
+        \text{Allgemein nach } n \text{ Schritten: } \pi_n = \pi_{n-1} \cdot P
+      \]
+
+
+
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Markov-Ketten: Beispiel]
+      Angenommen, wir haben zwei Zustände: Sonne (0) und Regen (1). Die Übergangswahrscheinlichkeiten sind wie folgt:
+      \begin{itemize}
+        \item Von Sonne zu Sonne: 90\% (0.9)
+        \item Von Sonne zu Regen: 10\% (0.1)
+        \item Von Regen zu Sonne: 20\% (0.2)
+        \item Von Regen zu Regen: 80\% (0.8)
+      \end{itemize}
+      Die Übergangsmatrix \(P\) sieht dann so aus:
+
+      \[
+        P =
+        \begin{pmatrix}
+          0.9 & 0.1 \\
+          0.2 & 0.8 \\
+        \end{pmatrix}
+      \]
+      Der Startzustand ist 100\% Sonne, also \(\pi_0 = \begin{pmatrix} 1 & 0 \end{pmatrix}\).
+
+      \[
+        \begin{aligned}
+          \pi_0 =
+           & \begin{pmatrix}
+               1 & 0
+             \end{pmatrix}                                                   \\
+           & \begin{matrix}
+               \;\; \Uparrow & \Uparrow
+             \end{matrix}                                         \\
+           & \begin{matrix}
+               \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
+             \end{matrix}
+        \end{aligned}
+      \]
+
+      Wir berechnen den Zustand nach einem Tag:
+      \[
+        \pi_1 = \pi_0 \cdot P =
+        \begin{pmatrix}
+          1 & 0 \\
+        \end{pmatrix}
+        \cdot
+        \begin{pmatrix}
+          0.9 & 0.1 \\
+          0.2 & 0.8 \\
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+          0.9 & 0.1 \\
+        \end{pmatrix}
+      \]
+      Dann berechnen wir den Zustand nach zwei Tagen:
+      \[
+        \pi_2 = \pi_1 \cdot P =
+        \begin{pmatrix}
+          0.9 & 0.1 \\
+        \end{pmatrix}
+        \cdot
+        \begin{pmatrix}
+          0.9 & 0.1 \\
+          0.2 & 0.8 \\
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+          0.83 & 0.17 \\
+        \end{pmatrix}
+      \]
+      Die Wahrscheinlichkeit, nach zwei Tagen Sonne zu haben, beträgt 83\%, und Regen 17\%.
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Python: Erstellung der Übergangsmatrix]
       \begin{lstlisting}
 # Zustände: 0 = Sonne, 1 = Regen
 P = np.array([
@@ -182,7 +310,7 @@ P = np.array([
 ])
 \end{lstlisting}
     \end{cheatSheetBox}
-    \begin{cheatSheetBox}[title=Markov-Ketten: Vorhersage (Matrixmultiplikation)]
+    \begin{cheatSheetBox}[title=Python: Matrixmultiplikation / Vorhersage]
       \begin{lstlisting}
 # Startzustand: 100% Sonne
 pi0 = np.array([1, 0])
@@ -196,7 +324,7 @@ pi2 = pi1 @ P
 print("Nach 2 Tagen:", pi2)
 \end{lstlisting}
     \end{cheatSheetBox}
-    \begin{cheatSheetBox}[title=Markov-Ketten: Vorhersage (Zufallsimulation)]
+    \begin{cheatSheetBox}[title=Python: Vorhersage (Zufallsimulation)]
       \begin{lstlisting}[numbers=left]
 zustand = "Sonne"    # Anfangszustand
 history = [zustand]  # Liste simulierter Zustände
