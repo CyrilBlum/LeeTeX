@@ -258,13 +258,13 @@ for i in "${!classes[@]}"; do
             rm -f *.bcf *.ist *.aux *.xml *.idx *.glo *.toc *.gz *.nav *.snm *vrb *.bbl *.blg *.lot *.lof *.gls *glg
             cd "$root_dir"
         fi
+
+        # Copy all files and folders from PDFs to Cyril's Synology NAS
+        if [ "$OSTYPE" != "darwin"* ]; then
+            # Use sshpass to provide the password non-interactively (not recommended for security reasons)
+            sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
+        fi
     done
 done
-
-# Copy all files and folders from PDFs to Cyril's Synology NAS
-if [ "$OSTYPE" != "darwin"* ]; then
-    # Use sshpass to provide the password non-interactively (not recommended for security reasons)
-    sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
-fi
 
 echo "Compilation of all document types complete."

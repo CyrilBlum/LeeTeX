@@ -59,8 +59,23 @@ def berechne_summe(liste):
         zahl = liste[i]
         summe += zahl
         i += i
-    return summe
+    print(summe)
 
+# Beispielaufruf der Funktion
+liste = [5, 2, 3, 4]
+summe = berechne_summe(liste)
+print("Die Summe der Liste ist:", summe) # gibt 14 aus
+\end{lstlisting}
+\end{myexample}
+
+\begin{myexample}[Schleifen ohne Index]
+Etwas effizienter kann auf jedes Element der Liste mit dem Befehl \lstinline|for zahl in liste| zugegriffen werden. Dabei wird die Variable \lstinline|zahl| nacheinander auf jedes Element der Liste gesetzt.
+\begin{lstlisting}
+def berechne_summe(liste):
+    summe = 0
+    for zahl in liste:
+        summe += zahl
+    print(summe)
 # Beispielaufruf der Funktion
 liste = [1, 2, 3, 4, 5]
 summe = berechne_summe(liste)
@@ -68,50 +83,37 @@ print("Die Summe der Liste ist:", summe) # gibt 15 aus
 \end{lstlisting}
 \end{myexample}
 
-Etwas effizienter kann auf jedes Element der Liste mit dem Befehl \lstinline|for zahl in liste| zugegriffen werden. Dabei wird die Variable \lstinline|zahl| nacheinander auf jedes Element der Liste gesetzt.
-\begin{lstlisting}
-def berechne_summe(liste):
-    summe = 0
-    for zahl in liste:
-        summe += zahl
-    return summe
-# Beispielaufruf der Funktion
-liste = [1, 2, 3, 4, 5]
-summe = berechne_summe(liste)
-print("Die Summe der Liste ist:", summe) # gibt 15 aus
-\end{lstlisting}
-
 \begin{myexercise}
-    Erstellen Sie ein Programm, das mithilfe einer Schleife jeden Wert in der Liste \lstinline|daten = [1, 2, 3, 4, 5, 6]| um 5 erhöht. Die Anzahl der Wiederholungen der Schleife soll dabei mit \lstinline|len()| bestimmt werden. Kontrollieren Sie Ihr Programm mit \lstinline|print(daten)|.
+    Erstellen Sie eine Funktion \lstinline|def vergroessere_um_fuenf(liste):|, die mithilfe einer Schleife jeden Wert in der Liste \lstinline|daten = [1, 2, 3, 4, 5, 6]| um 5 erhöht. Die Anzahl der Wiederholungen der Schleife soll dabei mit \lstinline|len()| bestimmt werden. Kontrollieren Sie Ihr Programm mit \lstinline|print(daten)|.
 
     \begin{myanswer}
         \begin{lstlisting}
+def vergroessere_um_fuenf(liste):
+    for i in range(len(liste)):
+        liste[i] += 5
+
 daten = [1, 2, 3, 4, 5, 6]
-
-for i in range(len(daten)):
-    daten[i] += 5
-
+vergroessere_um_fuenf(daten)
 print(daten) # gibt [6, 7, 8, 9, 10, 11] aus
 \end{lstlisting}
     \end{myanswer}
 \end{myexercise}
 
-
-
 \begin{myexercise}
-    Entwickeln Sie ein Programm, das für die Liste \lstinline|[5, 0, -2, 3, 51, 8, 13, -100, -10, -1]| den Durchschnittswert der Beträge aller Elemente berechnet und mit \lstinline|print()| ausgibt.
+    Entwickeln Sie eine Funktion \lstinline|def berechne_durchschnitt(liste):|, die für die Liste (z.B. \lstinline|[5, 0, -2, 3, 51, 8, 13, -100, -10, -1]|) den Durchschnittswert der Beträge aller Elemente berechnet und mit \lstinline|print()| ausgibt.
 
+    Der Durchschnitt einer Liste von Zahlen ist die Summe aller Zahlen geteilt durch die Anzahl der Zahlen.
     \begin{myanswer}
         \begin{lstlisting}
+def berechne_durchschnitt(liste):
+    summe = 0
+    for zahl in liste:
+        summe += abs(zahl)
+    durchschnitt = summe / len(liste)
+    print("Der Durchschnittswert der Beträge ist:", durchschnitt)
+
 liste = [5, 0, -2, 3, 51, 8, 13, -100, -10, -1]
-
-# Berechnung des Durchschnittswerts der Beträge
-summe = 0
-for zahl in liste:
-    summe += abs(zahl)
-
-durchschnitt = summe / len(liste)
-print("Der Durchschnittswert der Beträge ist:", durchschnitt)
+berechne_durchschnitt(liste)
 \end{lstlisting}
     \end{myanswer}
 \end{myexercise}
@@ -151,10 +153,10 @@ print(daten)  # gibt [3, 8, 5, 12, 7] aus
     \begin{myanswer}
         \begin{lstlisting}
 def skalarprodukt(m, p):
-    summe = 0
+    sp = 0
     for i in range(len(m)):
-        summe += m[i] * p[i]
-    return summe
+        sp += m[i] * p[i]
+    print(sp)
 
 # Beispiel
 m = [0.8, 1.2, 2.3]  # Mengen in kg
@@ -192,7 +194,7 @@ Mit folgendem Code können wir die kleinste Zahl in einer Liste finden. Wir verw
     \end{myanswer}
 \end{myexercise}
 
-\begin{mysubmission}
+\begin{mychallenge}
     Schreiben Sie eine Funktion, die überprüft, ob eine Liste von Zahlen sortiert ist oder nicht. Falls die Liste sortiert ist, soll die Definition den Wert \lstinline|True| zurückgeben, ansonsten den Wert \lstinline|False|.
 
     Tipps:
@@ -212,7 +214,7 @@ def ist_sortiert(liste):
     return True
 \end{lstlisting}
     \end{myanswer}
-\end{mysubmission}
+\end{mychallenge}
 
 \begin{myexercise}
     Eine Supermarkt-Kette bittet Sie, die Rabatte auf ausgewählte Produkte zu berechnen. Sie gibt Ihnen hierzu zwei Listen: die erste Liste enthaltet die Preise der Produkte \textit{ohne Rabatt} und die zweite Liste enthaltet die Rabatte in Prozent.
@@ -230,7 +232,7 @@ liste_rabatte = [30, 40, 30, 35, 20, 15, 35]
     \begin{lstlisting}
 preis_rabattiert = preis_normal * (1 - rabatt_in_prozent / 100)
 \end{lstlisting}
-    Schreiben Sie eine Definition, die die rabattierten Preise für alle Produkte berechnet und als Liste zurückgibt. Sie müssen die Preise nicht runden.
+    Schreiben Sie eine Definition, die die rabattierten Preise für alle Produkte berechnet und als Liste auf der Konsole ausgibt. Sie müssen die Preise nicht runden.
 
     \begin{myanswer}
         \begin{lstlisting}
@@ -243,7 +245,7 @@ def berechne_rabatte(liste_preise, liste_rabatte):
         liste_rabattiert.append(preis_rabattiert)
         i += 1
         
-    return liste_rabattiert
+    print(liste_rabattiert)
 
 # berechne Rabatte
 liste_preise = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95]
@@ -414,44 +416,44 @@ print(erstes)           # 1
 \end{myexample}
 
 \begin{myexercise}
-Fügen Sie der Liste \lstinline|fruechte = ["Apfel", "Banane"]| zuerst \lstinline|"Orange"| am Ende hinzu, dann \lstinline|"Kiwi"| an Position 1. Entfernen Sie danach das erste Element und geben Sie die Liste aus.
+    Fügen Sie der Liste \lstinline|fruechte = ["Apfel", "Banane"]| zuerst \lstinline|"Orange"| am Ende hinzu, dann \lstinline|"Kiwi"| an Position 1. Entfernen Sie danach das erste Element und geben Sie die Liste aus.
 
-\begin{myanswer}
-\begin{lstlisting}
+    \begin{myanswer}
+        \begin{lstlisting}
 fruechte = ["Apfel", "Banane"]
 fruechte.append("Orange")      # ["Apfel", "Banane", "Orange"]
 fruechte.insert(1, "Kiwi")    # ["Apfel", "Kiwi", "Banane", "Orange"]
 fruechte.pop(0)               # entfernt "Apfel"
 print(fruechte)               # ["Kiwi", "Banane", "Orange"]
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Erstellen Sie eine leere Liste \lstinline|zahlen|. Fügen Sie mit einer Schleife die Zahlen 1 bis 5 mit \lstinline|append| hinzu. Entfernen Sie dann das Element an Position 2 mit \lstinline|pop| und geben Sie die Liste aus.
+    Erstellen Sie eine leere Liste \lstinline|zahlen|. Fügen Sie mit einer Schleife die Zahlen 1 bis 5 mit \lstinline|append| hinzu. Entfernen Sie dann das Element an Position 2 mit \lstinline|pop| und geben Sie die Liste aus.
 
-\begin{myanswer}
-\begin{lstlisting}
+    \begin{myanswer}
+        \begin{lstlisting}
 zahlen = []
 for i in range(1, 6):
     zahlen.append(i)
 zahlen.pop(2)  # entfernt die 3
 print(zahlen)  # [1, 2, 4, 5]
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Gegeben ist die Liste \lstinline|farben = ["rot", "blau", "grün"]|. Fügen Sie \lstinline|"gelb"| an zweiter Stelle ein und entfernen Sie das letzte Element. Geben Sie die veränderte Liste aus.
+    Gegeben ist die Liste \lstinline|farben = ["rot", "blau", "grün"]|. Fügen Sie \lstinline|"gelb"| an zweiter Stelle ein und entfernen Sie das letzte Element. Geben Sie die veränderte Liste aus.
 
-\begin{myanswer}
-\begin{lstlisting}
+    \begin{myanswer}
+        \begin{lstlisting}
 farben = ["rot", "blau", "grün"]
 farben.insert(1, "gelb")  # ["rot", "gelb", "blau", "grün"]
 farben.pop()              # entfernt "grün"
 print(farben)             # ["rot", "gelb", "blau"]
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \section{Dictionaries}
@@ -504,45 +506,45 @@ for produkt in preise:
 \end{myexample}
 
 \begin{myexercise}
-Erstellen Sie ein Dictionary \lstinline|noten|, das die Noten von drei Schülern speichert: "Lea" (5.5), "Tim" (4.0), "Sara" (6.0). Geben Sie die Note von "Sara" aus.
+    Erstellen Sie ein Dictionary \lstinline|noten|, das die Noten von drei Schülern speichert: "Lea" (5.5), "Tim" (4.0), "Sara" (6.0). Geben Sie die Note von "Sara" aus.
 
-\begin{myanswer}
-\begin{lstlisting}
+    \begin{myanswer}
+        \begin{lstlisting}
 noten = {"Lea": 5.5, "Tim": 4.0, "Sara": 6.0}
 print(noten["Sara"])  # gibt 6.0 aus
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Fügen Sie dem Dictionary \lstinline|noten| aus der vorherigen Aufgabe einen neuen Schüler \enquote{Alex} mit der Note 5.0 hinzu. Ändern Sie Tims Note auf 4.5 und geben Sie das gesamte Dictionary aus.
+    Fügen Sie dem Dictionary \lstinline|noten| aus der vorherigen Aufgabe einen neuen Schüler \enquote{Alex} mit der Note 5.0 hinzu. Ändern Sie Tims Note auf 4.5 und geben Sie das gesamte Dictionary aus.
 
-\begin{myanswer}
-\begin{lstlisting}
+    \begin{myanswer}
+        \begin{lstlisting}
 noten["Alex"] = 5.0
 noten["Tim"] = 4.5
 print(noten)
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Sie verwalten die Lagerbestände eines kleinen Geschäfts. Erstellen Sie ein Dictionary \lstinline|lager| mit den Produkten "Cola" (10 Stück), "Fanta" (5 Stück) und "Wasser" (20 Stück). Schreiben Sie ein Programm, das die Anzahl der Flaschen "Fanta" um 2 reduziert (z.B. durch Verkauf) und das Ergebnis ausgibt.
+    Sie verwalten die Lagerbestände eines kleinen Geschäfts. Erstellen Sie ein Dictionary \lstinline|lager| mit den Produkten "Cola" (10 Stück), "Fanta" (5 Stück) und "Wasser" (20 Stück). Schreiben Sie ein Programm, das die Anzahl der Flaschen "Fanta" um 2 reduziert (z.B. durch Verkauf) und das Ergebnis ausgibt.
 
-\begin{myanswer}
-\begin{lstlisting}
+    \begin{myanswer}
+        \begin{lstlisting}
 lager = {"Cola": 10, "Fanta": 5, "Wasser": 20}
 lager["Fanta"] -= 2
 print(lager)
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-Erstellen Sie ein Dictionary, das für verschiedene Länder die jeweilige Hauptstadt speichert (z.B. "Schweiz": "Bern", "Deutschland": "Berlin", "Frankreich": "Paris"). Lassen Sie den Benutzer mit \lstinline|input()| nach einer Hauptstadt fragen und geben Sie diese aus.
+    Erstellen Sie ein Dictionary, das für verschiedene Länder die jeweilige Hauptstadt speichert (z.B. "Schweiz": "Bern", "Deutschland": "Berlin", "Frankreich": "Paris"). Lassen Sie den Benutzer mit \lstinline|input()| nach einer Hauptstadt fragen und geben Sie diese aus.
 
-\begin{myanswer}
-\begin{lstlisting}
+    \begin{myanswer}
+        \begin{lstlisting}
 hauptstaedte = {
     "Schweiz": "Bern",
     "Deutschland": "Berlin",
@@ -554,7 +556,7 @@ if land in hauptstaedte:
 else:
     print("Land nicht gefunden.")
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 Dictionaries sind besonders nützlich, wenn Sie Daten eindeutig zuordnen und schnell darauf zugreifen möchten, z.B. für Benutzerprofile, Konfigurationen, Übersetzungen oder Lagerbestände.
