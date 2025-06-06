@@ -44,10 +44,10 @@
     \cheatSheetSubtitle{Daten analysieren und visualisieren}{Die Libraries \texttt{pandas} und \texttt{matplotlib} sind die wichtigsten Werkzeuge für die Datenanalyse und -visualisierung in Python. \texttt{statsmodels} wird für statistische Modelle verwendet.}
     \begin{cheatSheetBox}[title=Libraries Importieren]
       \begin{lstlisting}
-import pandas as pd # für Datenanalyse, Tabellen
-import matplotlib.pyplot as plt # für Grafiken
-import statsmodels.formula.api as smf # für statistische Modelle
-import numpy as np # für numerische Berechnungen
+import pandas as pd # Datenanalyse, Tabellen
+import matplotlib.pyplot as plt # Grafiken
+import statsmodels.formula.api as smf # statistische Modelle
+import numpy as np # numerische Berechnungen
 \end{lstlisting}
     \end{cheatSheetBox}
 
@@ -115,12 +115,16 @@ df["Spalte"].value_counts().plot.bar() # Balkendiagramm
 df.plot.line(x='x_spalte', y='y_spalte') # Liniendiagramm
 df.plot.scatter(x='x_spalte', y='y_spalte') # Streudiagramm
 
-# scatter plots nach Kategorien einfärben
+# Streudiagramm nach Kategorien einfärben
 df['kategorie_spalte'] = df['kategorie_spalte'].astype('category') 
 df.plot.scatter(x='x_spalte', y='y_spalte', c='category_spalte', colormap='viridis')
 
 # Histogramm mit 10 Grössenklassen
 df['Spalte'].plot.hist(bins=10)
+
+# Zusammengesetzte Grafik (z.B. Streudiagramm und Linie)
+ax = df.plot.scatter(x='x_spalte', y='y_spalte1', label='Punkte')
+df.plot.line(x='x_spalte', y='y_spalte2', ax=ax, label='Linie')
 \end{lstlisting}
     \end{cheatSheetBox}
 
@@ -147,7 +151,10 @@ df.groupby('spalte_gruppe')["spalte_statistik"].mean()
       \begin{lstlisting}
 model = smf.ols(formula='Note ~ Schlaf', data=df).fit()
 print(model.params) # Koeffizienten
-df['Note_pred'] = model.predict(df['Schlaf']) # Vorhersage
+# Vorhersage (für alle Daten)
+df['Note_pred'] = model.predict(df['Schlaf']) 
+# Vorhersage (für einen bestimmten Wert)
+pred = model.predict({'Schlaf': [6]})
 \end{lstlisting}
     \end{cheatSheetBox}
 
