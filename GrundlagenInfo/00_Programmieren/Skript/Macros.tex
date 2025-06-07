@@ -1,55 +1,55 @@
 % command to draw a cube, used as illustration in chapter on functions
 \newcommand{\drawCube}[4]{
-% first argument: ll position
-% second argument: x shift
-% 3rd argument: # of arguments
-% 4th argument: size (default = 1)
-% Define cube coordinates
-\coordinate (A#1) at (#2,    0,     0);
-\coordinate (B#1) at ({#2+#4},0,     0);
-\coordinate (C#1) at ({#2+#4},#4,0);
-\coordinate (D#1) at (#2,    #4,0);
-\coordinate (E#1) at (#2,     0,#4);
-\coordinate (F#1) at ({#2+#4}, 0,#4);
-\coordinate (G#1) at ({#2+#4},#4,#4);
-\coordinate (H#1) at (#2,    #4,#4);
+	% first argument: ll position
+	% second argument: x shift
+	% 3rd argument: # of arguments
+	% 4th argument: size (default = 1)
+	% define cube coordinates
+	\coordinate (A#1) at (#2,    0,     0);
+	\coordinate (B#1) at ({#2+#4},0,     0);
+	\coordinate (C#1) at ({#2+#4},#4,0);
+	\coordinate (D#1) at (#2,    #4,0);
+	\coordinate (E#1) at (#2,     0,#4);
+	\coordinate (F#1) at ({#2+#4}, 0,#4);
+	\coordinate (G#1) at ({#2+#4},#4,#4);
+	\coordinate (H#1) at (#2,    #4,#4);
 
+	% draw cube
+	\draw[thick] (A#1) -- (B#1) -- (C#1) -- (D#1) -- cycle;
+	\draw[thick] (E#1) -- (F#1) -- (G#1) -- (H#1) -- cycle;
+	\draw[thick] (A#1) -- (E#1);
+	\draw[thick] (B#1) -- (F#1);
+	\draw[thick] (C#1) -- (G#1);
+	\draw[thick] (D#1) -- (H#1);
 
-% Draw cube
-\draw[thick] (A#1) -- (B#1) -- (C#1) -- (D#1) -- cycle;
-\draw[thick] (E#1) -- (F#1) -- (G#1) -- (H#1) -- cycle;
-\draw[thick] (A#1) -- (E#1);
-\draw[thick] (B#1) -- (F#1);
-\draw[thick] (C#1) -- (G#1);
-\draw[thick] (D#1) -- (H#1);
-% define lower left corner of doors
-% door with is defined to always be 0.2*size wide and 0.5*size high. We also define that the space between each door is the remaining width,
-% i.e., if we have three doors, then the remaining space is (size-0.2*size*3)/(3+1)
+	% define lower left corner of doors
+	% door with is defined to always be 0.2*size wide and 0.5*size high. We also define that the space between each door is the remaining width,
+	% i.e., if we have three doors, then the remaining space is (size-0.2*size*3)/(3+1)
 
-% calculate how much empty space to leae between each door
-\pgfmathsetmacro\emptyspace{(#4-0.2*#4*#3)/(#3+1)}
+	% calculate how much empty space to leave between each door
+	\pgfmathsetmacro\emptyspace{(#4-0.2*#4*#3)/(#3+1)}
 
-% define amount of space per door
-\pgfmathsetmacro\doorsspace{0.2*#4}
+	% define amount of space per door
+	\pgfmathsetmacro\doorsspace{0.2*#4}
 
-\foreach \x in {1,...,#3} {	
-	\pgfmathsetmacro\llCord{\emptyspace*\x+\doorsspace*(\x-1)}
-	% lower door coordinate
-	\coordinate (llD\x#1) at ({\llCord+#2},0,#4);
-	
-	% Draw doors
-	\fill[blue!50, rounded corners] (llD\x#1) -- ++(0,{#4/2},0) -- ++({0.2*#4},0,0)node[pos=.5, below](in#1\x){\textcolor{blue}{\texttt{x\x}}} -- ++(0,{-#4/2},0);
-	
-	% lower door coordinate for value (for later annotation)
-	\coordinate (llD\x#1val) at ({\llCord-.1*#4+#2},{-.2*#4},#4); % the coordinate is simple .1*size to the left of the ll corner and .2*size below.
-}
+	\foreach \x in {1,...,#3} {
+			\pgfmathsetmacro\llCord{\emptyspace*\x+\doorsspace*(\x-1)}
+			% lower door coordinate
+			\coordinate (llD\x#1) at ({\llCord+#2},0,#4);
 
-% coordinate for result door
-\coordinate (llDOut#1) at ({#2+#4},0,{#4*.2});
-\fill[green!50, rounded corners] (llDOut#1) -- ++(0,{#4/2},0) -- ++(0,0,{#4/2})node[pos=0.8,rotate=45, below, align=center](out#1){\textcolor{black}{\tiny\texttt{out#1}\normalsize}} -- ++(0,{-#4/2},0);
+			% draw doors
+			\fill[blue!50, rounded corners] (llD\x#1) -- ++(0,{#4/2},0) -- ++({0.2*#4},0,0)node[pos=.5, below](in#1\x){\textcolor{blue}{\texttt{x\x}}} -- ++(0,{-#4/2},0);
 
-% Draw a 2D rectangle around the cube
-\node[fit=(E#1) (C#1), inner sep=4pt, red, dotted, draw, line width=1pt,rounded corners](dottedRect#1) {};
-% annotate the two-d rect
-\node[above=5pt of dottedRect#1.north west, anchor=west, align=left]{\textcolor{red}{\texttt{def a#1(\textcolor{blue}{\foreach\x in {1,...,#3}{x\x, }...})}\normalsize}};
+			% lower door coordinate for value (for later annotation)
+			\coordinate (llD\x#1val) at ({\llCord-.1*#4+#2},{-.2*#4},#4); % the coordinate is simple .1*size to the left of the ll corner and .2*size below.
+		}
+
+	% coordinate for result door
+	\coordinate (llDOut#1) at ({#2+#4},0,{#4*.2});
+	\fill[green!50, rounded corners] (llDOut#1) -- ++(0,{#4/2},0) -- ++(0,0,{#4/2})node[pos=0.8,rotate=45, below, align=center](out#1){\textcolor{black}{\tiny\texttt{out#1}\normalsize}} -- ++(0,{-#4/2},0);
+
+	% draw a 2D rectangle around the cube
+	\node[fit=(E#1) (C#1), inner sep=4pt, red, dotted, draw, line width=1pt,rounded corners](dottedRect#1) {};
+	% annotate the two-d rect
+	\node[above=5pt of dottedRect#1.north west, anchor=west, align=left]{\textcolor{red}{\texttt{def a#1(\textcolor{blue}{\foreach\x in {1,...,#3}{x\x, }...})}\normalsize}};
 }

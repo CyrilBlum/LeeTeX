@@ -20,7 +20,7 @@ print(5 + 7 * 3)  # äquivalent zu 5 + (7 * 3) = 26
 """
 die Quadratwurzel (English: square root, kurz: sqrt)
 ist nicht direkt Teil von Python, sondern muss durch 
-Importieren der library math hinzugefügt werden.
+Importieren der Library 'math' hinzugefügt werden.
 """
 import math
 
