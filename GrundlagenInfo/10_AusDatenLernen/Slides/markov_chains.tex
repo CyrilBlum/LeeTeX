@@ -10,7 +10,7 @@
 
 \newcommand{\lernzielePtTwo}[1]{
     \begin{itemize}[<+->]
-        \item[#1] Ich kann Markov-Ketten \textbf{in Python} implementieren
+        \item[#1] Ich kann Markov-Ketten \textbf{in Python} implementieren.
         \item[#1] Ich kann mithilfe einer Simulation berechnen, wie sich eine Markov-Kette \textbf{über mehrere Schritte entwickelt}.
         \item[#1] Ich kann die langfristige Verteilung von Markov-Ketten mit Simulationen \textbf{in Python} berechnen.
     \end{itemize}
@@ -164,11 +164,11 @@
     \end{tcolorbox}
     \only<3->{
         \begin{mydefinition}
-    \begin{itemize}[<+->]
-        \item Mathematisches Modell für \textbf{Abfolgen von Zuständen}
-        \item \textbf{Markov-Eigenschaft}: Der nächste Zustand hängt \textbf{nur vom vorherigen Zustand} ab
-    \end{itemize}
-    \end{mydefinition}
+        \begin{itemize}[<+->]
+            \item Mathematisches Modell für \textbf{Abfolgen von Zuständen}
+            \item \textbf{Markov-Eigenschaft}: Der nächste Zustand hängt \textbf{nur vom vorherigen Zustand} ab
+        \end{itemize}
+        \end{mydefinition}
     }
 \end{frame}
 
@@ -339,6 +339,7 @@
             $\Rightarrow$
         }
         \column{.45\textwidth}
+        \vfill
         \only<3->{
             \begin{table}[H]
                 \centering
@@ -352,9 +353,11 @@
             \end{table}
         }
         \only<4->{
+            \vspace{-1.5em}
             \begin{center}
                 $\Downarrow$
             \end{center}
+            \vspace{-2.5em}
             \begin{table}[H]
                 \[
                     P =
@@ -366,6 +369,7 @@
                 \caption*{\textbf{Übergangsmatrix}}
             \end{table}
         }
+        \vfill
     \end{columns}
 \end{frame}
 
@@ -415,44 +419,60 @@
 \end{frame}
 
 \begin{frame}{Startvektor und Vorhersage zukünftiger Zustände}
-    \begin{itemize}[<+->]
-        \item Startvektor $\pi_0$ gibt den Anfangszustand (=Wahrscheinlichkeit, in einem Zustand zu sein) an
-        \item Beispiel: Heute ist es regnerisch
-              \[
-                  \begin{aligned}
-                      \pi_0 =
-                       & \begin{pmatrix}
-                             0 & 1
-                         \end{pmatrix}                                                     \\
-                       & \begin{matrix}
-                             \;\; \Uparrow & \Uparrow
-                         \end{matrix}                                           \\
-                       & \begin{matrix}
-                             \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
-                         \end{matrix}
-                  \end{aligned}
-              \]
-              Wie hoch ist die Wahrscheinlichkeit, dass es morgen sonnig wird?
-        \item Die Entwicklung nach einem Schritt: $\pi_1 = \pi_0 \cdot P$
+    \begin{itemize}
+        \item<1-> Startvektor $\pi_0$ gibt den Anfangszustand (=Wahrscheinlichkeit, in einem Zustand zu sein) an
+        \item<2-> Beispiel: Heute ist es regnerisch
+              \begin{columns}
+                  \column{.45\textwidth}
+                  \[
+                      \begin{aligned}
+                          \pi_0 =
+                           & \begin{pmatrix}
+                                 0 & 1
+                             \end{pmatrix}                                                     \\
+                           & \begin{matrix}
+                                 \;\; \Uparrow & \Uparrow
+                             \end{matrix}                                           \\
+                           & \begin{matrix}
+                                 \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
+                             \end{matrix}
+                      \end{aligned}
+                  \]
+                  \column{.45\textwidth}
+                  \onslide<3->{
+                      Gleiche Reihenfolge wie in der Übergangsmatrix:
+                      \begin{table}[H]
+                          \footnotesize
+                          \centering
+                          \begin{tabular}{c c|c|c}
+                                                                            &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
+                                                                            &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
+                              \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0.8                               & 0.2              \\\cmidrule{2-4}
+                                                                            & \emoji{umbrella} & 0.4                               & 0.6              \\
+                          \end{tabular}
+                      \end{table}
+                  }
+              \end{columns}
     \end{itemize}
-
-    \only<4->{
-        \begin{align*}
-            \pi_1 = \pi_0 \cdot P & =
+    \onslide<4->{\textbf{Wie hoch ist die Wahrscheinlichkeit, dass es morgen \emoji{sun} wird?}}
+    \onslide<5->{\begin{align*}
+    \pi_1 & = \pi_0 \cdot P \\
+          & \onslide<6->{= 
             \begin{pmatrix}
-                0 & 1 \\
+                0 & 1
             \end{pmatrix}
             \cdot
             \begin{pmatrix}
                 0.8 & 0.2 \\
-                0.4 & 0.6 \\
-            \end{pmatrix}            \\
-                                  & =
+                0.4 & 0.6
+            \end{pmatrix}} \\
+          & \onslide<7->{= 
             \begin{pmatrix}
-                0.4 & 0.6 \\
-            \end{pmatrix}
-        \end{align*}
+                \only<7>{0.4}\only<8->{\underline{\underline{0.4}}} & 0.6
+            \end{pmatrix}}
+\end{align*}
     }
+
 \end{frame}
 
 \begin{frame}{Matrixmultiplikation}
@@ -568,7 +588,7 @@
 
     \only<5->{
         \begin{tcolorbox}[colback=teal!10, colframe=teal, boxrule=0.8pt, enhanced, left=2mm, right=2mm, top=1mm, bottom=1mm, box align=base]
-            \textbf{Auftrag}: 
+            \textbf{Auftrag}:
             \begin{enumerate}
                 \item Skript: \aufgabebox{3.4} $\Rightarrow$ Resultat auf Tablet notieren!
                 \item \aufgabebox{Lernkontrolle auf Moodle}
