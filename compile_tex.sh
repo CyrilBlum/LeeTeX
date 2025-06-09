@@ -5,8 +5,8 @@ LEE_TEX_SSH_PASSWORD="$1"
 # This script is POSIX-compatible and works on macOS (Bash 3.x), Ubuntu, and Zsh.
 
 # Define array of document classes and their toggle positions
-classes=("book" "book" "article" "exam")  # document classes
-toggles=("0" "0" "1" "2") # documentclass toggles
+classes=("book" "book" "article" "exam") # document classes
+toggles=("0" "0" "1" "2")                # documentclass toggles
 
 # classes=("book" "book" "article" "exam" "beamer")
 # toggles=("0" "0" "1" "2" "3") # documentclass toggles
@@ -264,10 +264,9 @@ for i in "${!classes[@]}"; do
             # Use sshpass to provide the password non-interactively (not recommended for security reasons)
             sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e "ssh -p 50037" "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
             if [ $? -ne 0 ]; then
-            echo "rsync failed. Aborting."
-            exit 1
+                echo "rsync failed. Aborting."
+                exit 1
             fi
-        fi
         fi
     done
 done
