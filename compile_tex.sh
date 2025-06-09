@@ -262,7 +262,12 @@ for i in "${!classes[@]}"; do
         # Copy all files and folders from PDFs to Cyril's Synology NAS
         if [ "$OSTYPE" != "darwin"* ]; then
             # Use sshpass to provide the password non-interactively (not recommended for security reasons)
-            sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
+            sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e "ssh -p 50037" "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
+            if [ $? -ne 0 ]; then
+            echo "rsync failed. Aborting."
+            exit 1
+            fi
+        fi
         fi
     done
 done
