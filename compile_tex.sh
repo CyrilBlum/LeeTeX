@@ -37,7 +37,7 @@ book_topics=(
     # Thomas EF topics
     "Endliche_Automaten:EF/EndlicheAutomaten/skript_EA.tex"
     "Induktion_und_Rekursion:EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
-    "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
+    # "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
 )
 
 article_topics=(
