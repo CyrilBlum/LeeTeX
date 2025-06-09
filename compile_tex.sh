@@ -5,18 +5,17 @@ LEE_TEX_SSH_PASSWORD="$1"
 # This script is POSIX-compatible and works on macOS (Bash 3.x), Ubuntu, and Zsh.
 
 # Define array of document classes and their toggle positions
-classes=("book" "book" "article" "exam")  # document classes
-toggles=("0" "0" "1" "2") # documentclass toggles
-
-# classes=("book" "book" "article" "exam" "beamer")
-# toggles=("0" "0" "1" "2" "3") # documentclass toggles
+# classes=("book" "book" "article" "exam", "beamer") # document classes
+# toggles=("0" "0" "1" "3")                # documentclass toggles
+classes=("book" "book" "article" "beamer") # document classes
+toggles=("0" "0" "1" "3")                # documentclass toggles
 
 class_commands=(
     "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
     "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
     "\\\\documentclass[svgnames,hyphens]{article}"
-    "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
-    # "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
+    # "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
+    "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
 )
 
 # Topics and their input files for each document class (as flat arrays: topic:path)
@@ -36,21 +35,38 @@ book_topics=(
     "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
     "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
     # Thomas EF topics
-    # "Endliche_Automaten:EF/EndlicheAutomaten/skript_EA.tex"
-    # "Induktion_und_Rekursion:EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
+    "Endliche_Automaten:EF/EndlicheAutomaten/skript_EA.tex"
+    "Induktion_und_Rekursion:EF/InduktionUndRekursion/skript_induktion_rekursion.tex"
     # "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
 )
 
 article_topics=(
+    # "mwe:LaTeX_related/mwe.tex"
+    # "ausschreibungstext:EF/Ausschreibung/ausschreibungstext.tex"
+    # "Eingabe_Projektidee:Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee"
+    # "Auftrag:Interessenwochen/Wn_Gf_Sommer_2024/Auftrag"
+    # "Semesterplanung:GrundlagenInfo/Various/Semesterplanung"
+    # "Benotung:GrundlagenInfo/Various/Benotung"
+    # "Excel-Projekte:GrundlagenInfo/06_Datenbanken/Excel-Projekte"
+    # "HannahFry:GrundlagenInfo/08_Gesellschaft/HannahFry"
+    # "Feedback:GrundlagenInfo/08_Gesellschaft/Feedback"
+    # "Vertiefungsthema:GrundlagenInfo/08_Gesellschaft/Vertiefungsthema"
+    # "Lernziele:GrundlagenInfo/10_AusDatenLernen/Lernziele"
+    # "Klassentag2024_1c:Various/Klassenstunde/Klassentag2024_1c.tex"
+    # "Packliste_Lager:Various/Klassenstunde/Packliste_Lager.tex"
+    # "MA_Thesis_Guidelines:Various/MA Thesis/MA Thesis Guidelines.tex"
+    # "Filme:Various/Filme.tex"
+    # "Keyboard_Shortcuts:Various/Keyboard Shortcuts.tex"
+    # "Tabu:Various/Tabu.tex"
+    # "Namensschilder:Various/Namensschilder"
+    # "Provokante_Aussagen:Various/Provokante_Aussagen"
+    # "Fun_Quotes:Various/Fun_Quotes"
     "Unterrichtsvorbereitung:Private/PHBern/3 BPA/Unterrichtsvorbereitung.tex"
 )
 
-exam_topics=(
-    "Stadtgeografie_NHP:Geografie/Stadtgeografie/Prüfungen/Stadtgeografie_NHP.tex"
-)
-
 beamer_topics=(
-    "K01Intro:GrundlagenInfo/00_Programmieren/Slides/K01Intro"
+    # # Topics marked with # # currently have issues compiling and need to be reviewed.
+    # "K01Intro:GrundlagenInfo/00_Programmieren/Slides/K01Intro"
     "K01aZeichenketten:GrundlagenInfo/00_Programmieren/Slides/K01aZeichenketten"
     "K02aDefinitionen:GrundlagenInfo/00_Programmieren/Slides/K02aDefinitionen"
     "K02bAnimationen:GrundlagenInfo/00_Programmieren/Slides/K02bAnimationen"
@@ -64,11 +80,11 @@ beamer_topics=(
     "K04dBreakWhile:GrundlagenInfo/00_Programmieren/Slides/K04dBreakWhile"
     "K04zModulo:GrundlagenInfo/00_Programmieren/Slides/K04zModulo"
     "K05aListen:GrundlagenInfo/00_Programmieren/Slides/K05aListen"
-    "K05bBubbleSort:GrundlagenInfo/00_Programmieren/Slides/K05bBubbleSort"
-    "K05cBinarySearch:GrundlagenInfo/00_Programmieren/Slides/K05cBinarySearch"
+    # "K05bBubbleSort:GrundlagenInfo/00_Programmieren/Slides/K05bBubbleSort"
+    # "K05cBinarySearch:GrundlagenInfo/00_Programmieren/Slides/K05cBinarySearch"
     "K05dListenTeil2:GrundlagenInfo/00_Programmieren/Slides/K05dListenTeil2"
-    "K07aFunktionenEinzelne:GrundlagenInfo/00_Programmieren/Slides/K07aFunktionenEinzelne"
-    "K07bFunktionenMehrere:GrundlagenInfo/00_Programmieren/Slides/K07bFunktionenMehrere"
+    # "K07aFunktionenEinzelne:GrundlagenInfo/00_Programmieren/Slides/K07aFunktionenEinzelne"
+    # "K07bFunktionenMehrere:GrundlagenInfo/00_Programmieren/Slides/K07bFunktionenMehrere"
     "TurtleGrafik:GrundlagenInfo/00_Programmieren/TurtleGrafik"
     "Zahlensysteme_L01:GrundlagenInfo/01_TheoretischeInformatik/Slides/Zahlensysteme_L01"
     "Zahlensysteme_L02:GrundlagenInfo/01_TheoretischeInformatik/Slides/Zahlensysteme_L02"
@@ -80,29 +96,31 @@ beamer_topics=(
     "Graphen_L03:GrundlagenInfo/02_Graphen/Graphen_L03"
     "AbstraktionDurchGraphen_Kapitel01:GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01"
     "AbstraktionDurchGraphen_Kapitel02:GrundlagenInfo/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel02"
-    "Kryptologie_L01:GrundlagenInfo/03_Kryptologie/Slides/Kryptologie_L01"
-    "Kryptologie_L01prog:GrundlagenInfo/03_Kryptologie/Slides/Kryptologie_L01prog"
-    "L02a_Kryptoanalyse_Caesar:GrundlagenInfo/03_Kryptologie/Slides/L02a_Kryptoanalyse_Caesar"
-    "L02b_Kryptoanalyse_Monoalph:GrundlagenInfo/03_Kryptologie/Slides/L02b_Kryptoanalyse_Monoalph"
-    "L02c_Kryptoanalyse_Vigenere:GrundlagenInfo/03_Kryptologie/Slides/L02c_Kryptoanalyse_Vigenere"
-    "L02d_Kryptoanalyse_Vigenere_Friedman:GrundlagenInfo/03_Kryptologie/Slides/L02d_Kryptoanalyse_Vigenere_Friedman"
+    # "Kryptologie_L01:GrundlagenInfo/03_Kryptologie/Slides/Kryptologie_L01"
+    # "Kryptologie_L01prog:GrundlagenInfo/03_Kryptologie/Slides/Kryptologie_L01prog"
+    # "L02a_Kryptoanalyse_Caesar:GrundlagenInfo/03_Kryptologie/Slides/L02a_Kryptoanalyse_Caesar"
+    # "L02b_Kryptoanalyse_Monoalph:GrundlagenInfo/03_Kryptologie/Slides/L02b_Kryptoanalyse_Monoalph"
+    # "L02c_Kryptoanalyse_Vigenere:GrundlagenInfo/03_Kryptologie/Slides/L02c_Kryptoanalyse_Vigenere"
+    # "L02d_Kryptoanalyse_Vigenere_Friedman:GrundlagenInfo/03_Kryptologie/Slides/L02d_Kryptoanalyse_Vigenere_Friedman"
     "L02e_Kryptoanalyse_Vigenere_Kasiski:GrundlagenInfo/03_Kryptologie/Slides/L02e_Kryptoanalyse_Vigenere_Kasiski"
     "Kryptologie_L02:GrundlagenInfo/03_Kryptologie/Slides/Kryptologie_L02"
-    "Appendix:GrundlagenInfo/03_Kryptologie/Slides/Appendix"
-    "Kompression_L01:GrundlagenInfo/04_Kompression/Kompression_L01"
-    "Kompression_L02:GrundlagenInfo/04_Kompression/Kompression_L02"
+    # "Appendix:GrundlagenInfo/03_Kryptologie/Slides/Appendix"
+    "Kompression_L01_Intro:GrundlagenInfo/04_Kompression/Slides/Kompression_L01_Intro"
+    "Kompression_L02_MaxBal:GrundlagenInfo/04_Kompression/Slides/Kompression_L02_MaxBal"
+    "Kompression_L03_Huffman:GrundlagenInfo/04_Kompression/Slides/Kompression_L03_Huffman"
+    "Kompression_L04_Arithm:GrundlagenInfo/04_Kompression/Slides/Kompression_L04_Arithm"
     "01_Intro:GrundlagenInfo/05_DatenIntegritaet/Slides/01_Intro"
     "02_Fehlererkennung:GrundlagenInfo/05_DatenIntegritaet/Slides/02_Fehlererkennung"
     "03_Fehlerkorrektur:GrundlagenInfo/05_DatenIntegritaet/Slides/03_Fehlerkorrektur"
     "04_Kartentrick:GrundlagenInfo/05_DatenIntegritaet/Slides/04_Kartentrick"
     "05_RAID:GrundlagenInfo/05_DatenIntegritaet/Slides/05_RAID"
-    "01_Slides_Intro:GrundlagenInfo/05_DatenIntegritaet/Slides/01_Slides_Intro"
+    "01_Slides_Intro:GrundlagenInfo/06_Datenbanken/Slides/01_Slides_Intro"
     "02_Slides_SELECT:GrundlagenInfo/06_Datenbanken/Slides/02_Slides_SELECT"
     "02b_Slides_Subqueries:GrundlagenInfo/06_Datenbanken/Slides/02b_Slides_Subqueries"
     "03_Slides_JOIN:GrundlagenInfo/06_Datenbanken/Slides/03_Slides_JOIN"
     "04_Slides_DML:GrundlagenInfo/06_Datenbanken/Slides/04_Slides_DML"
     "05_Slides_Game:GrundlagenInfo/06_Datenbanken/Slides/05_Slides_Game"
-    "Netzwerke_L01:GrundlagenInfo/07_Netzwerke/Netzwerke_L01"
+    # "Netzwerke_L01:GrundlagenInfo/07_Netzwerke/Netzwerke_L01"
     "correlation_causation:GrundlagenInfo/10_AusDatenLernen/Slides/correlation_causation.tex"
     "linear_regression:GrundlagenInfo/10_AusDatenLernen/Slides/linear_regression.tex"
     "markov_chains:GrundlagenInfo/10_AusDatenLernen/Slides/markov_chains.tex"
@@ -158,8 +176,18 @@ for i in "${!classes[@]}"; do
                 output_file="${root_dir}/output_${class}_${book_variant}_${topic// /_}.tex"
             fi
         elif [ "$class" != "book" ]; then
-            # put files in slides folder (not structured by topic)
-            latex_dir="${root_dir}/PDFs/${class}/${topic}/"
+            # Group by main topic after GrundlagenInfo/ for beamer
+            if [ "$class" = "beamer" ]; then
+                # Extract main topic (e.g. Programmieren, Theoretische Informatik, etc.)
+                main_topic=$(echo "$input_path" | sed -E 's|GrundlagenInfo/([^/]+)/.*|\1|' | sed -E 's/^[0-9_]+//')
+                # Convert CamelCase to "Camel Case"
+                main_topic=$(echo "$main_topic" | sed -E 's/([a-z])([A-Z])/\1 \2/g')
+                # Convert ASCII umlauts to actual umlauts
+                main_topic=$(echo "$main_topic" | sed -e 's/ae/ä/g' -e 's/oe/ö/g' -e 's/ue/ü/g' -e 's/Ae/Ä/g' -e 's/Oe/Ö/g' -e 's/Ue/Ü/g')
+                latex_dir="${root_dir}/PDFs/${main_topic}/beamer/${topic}/"
+            else
+                latex_dir="${root_dir}/PDFs/${class}/${topic}/"
+            fi
             output_file="${root_dir}/output_${class}_${topic// /_}.tex"
         else
             latex_dir="${root_dir}/PDFs/${topic}/${class}/"
@@ -259,10 +287,17 @@ for i in "${!classes[@]}"; do
             cd "$root_dir"
         fi
 
+        # Remove any folders in the root directory starting with luatex*
+        find "$root_dir" -maxdepth 1 -type d -name 'luatex*' -exec rm -rf {} +
+
         # Copy all files and folders from PDFs to Cyril's Synology NAS
-        if [ "$OSTYPE" != "darwin"* ]; then
+        if [[ "$OSTYPE" != *darwin* ]]; then
             # Use sshpass to provide the password non-interactively (not recommended for security reasons)
-            sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
+            sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e "ssh -p 50037" "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
+            if [ $? -ne 0 ]; then
+                echo "rsync failed. Aborting."
+                exit 1
+            fi
         fi
     done
 done

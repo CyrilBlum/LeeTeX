@@ -183,8 +183,70 @@ print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
 
     \end{cheatSheetBox}
     \columnbreak
-    \cheatSheetSubtitle{Markov-Ketten}{Die folgenden Boxen enthalten die wichtigsten Formeln und Befehle für Markov-Ketten, von Hand und in Python.}
-    \begin{cheatSheetBox}[title=Markov-Ketten: Matrix-Multiplikation]
+    \cheatSheetSubtitle{Markov-Ketten}{
+      Die folgenden Boxen enthalten die wichtigsten Formeln und Befehle für Markov-Ketten, von Hand und in Python. Die folgenden Boxen beziehen sich auf das Wetter-Beispiel, bei dem es zwei Zustände gibt: Sonne und Regen. Die Übergangswahrscheinlichkeiten sind:
+      \begin{itemize}
+        \item Wenn heute \emoji{sun}: Morgen zu 80\% \emoji{sun}, zu 20\% \emoji{umbrella}
+        \item Wenn heute \emoji{umbrella}: Morgen zu 40\% \emoji{sun}, zu 60\% \emoji{umbrella}
+      \end{itemize}
+    }
+
+    \begin{cheatSheetBox}[title=Gerichteter Graph]
+      Das Wetter-Beispiel kann als gerichteter Graph dargestellt werden:
+
+      \begin{center}
+        \begin{tikzpicture}[node distance=3cm, auto, thick]
+          \node[state] (S) {\emoji{sun}};
+          \node[state] (R) [right of=S] {\emoji{umbrella}};
+
+          \path[->]
+          (S) edge[bend left] node {0.2} (R)
+          (S) edge[loop above] node {0.8} (S);
+
+          \path[->]
+          (R) edge[bend left] node {0.4} (S)
+          (R) edge[loop above] node {0.6} (R);
+        \end{tikzpicture}
+      \end{center}
+
+
+      \begin{itemize}[leftmargin=*,labelsep=0.5em]
+        \item[{\faCircle[regular]}]  \textbf{Knoten}: Zustände
+        \item[\faArrowRight] \textbf{Kanten}: Übergänge mit Wahrscheinlichkeiten
+      \end{itemize}
+
+
+    \end{cheatSheetBox}
+
+    \begin{cheatSheetBox}[title=Übergangsmatrix]
+      Das Wetter-Beispiel kann auch als Übergangsmatrix dargestellt werden. Die Matrix zeigt die Wahrscheinlichkeiten, von einem Zustand in einen anderen zu wechseln. Die Zeilen repräsentieren den aktuellen Zustand, die Spalten den zukünftigen Zustand. Normalerweise wird die Matrix wie rechts (ohne Labels \enquote{Von} und \enquote{Nach}) dargestellt.
+      \begin{center}
+        \begin{tabular}{cc}
+          % Erste Subtabelle: Übergangstabelle mit Labels
+          \begin{tabular}{c c|c|c}
+                                                          &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
+                                                          &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
+            \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0.8                               & 0.2              \\\cmidrule{2-4}
+                                                          & \emoji{umbrella} & 0.4                               & 0.6              \\
+          \end{tabular}
+           &
+          % Zweite Subtabelle: Matrixdarstellung ohne Labels
+          \(
+          P = \begin{pmatrix}
+                0.8 & 0.2 \\
+                0.4 & 0.6 \\
+              \end{pmatrix}
+          \)
+        \end{tabular}
+      \end{center}
+      \begin{itemize}[leftmargin=*,labelsep=0.5em]
+        \item \textbf{Links}: Übergangstabelle mit Labels
+        \item \textbf{Rechts}: Matrixdarstellung ohne Labels
+      \end{itemize}
+    \end{cheatSheetBox}
+    
+    \columnbreak
+    \begin{cheatSheetBox}[title=Matrix-Multiplikation]
       \[
         \begin{pmatrix}
           \textcolor{red}{a} & \textcolor{blue}{b} \\
@@ -199,67 +261,12 @@ print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
           \textcolor{red}{a} \cdot \textcolor{teal}{e} + \textcolor{blue}{b} \cdot \textcolor{orange}{g} & \textcolor{red}{a} \cdot \textcolor{violet}{f} + \textcolor{blue}{b} \cdot \textcolor{brown}{h} \\
         \end{pmatrix}
       \]
-
-    \end{cheatSheetBox}
-    \begin{cheatSheetBox}[title=Markov-Ketten über mehrere Zustände berechnen]
-      Um die Wahrscheinlichkeit zu berechnen, nach mehreren Schritten in einem bestimmten Zustand zu sein, erstellen wir zuerst die Übergangsmatrix \(P\) sowie den Startvektor \(\pi_0\).
-
-      \[
-        P =
-        \begin{pmatrix}
-          p_{11} & p_{12} \\
-          p_{21} & p_{22}
-        \end{pmatrix}
-      \]
-
-      Wobei \(p_{ij}\) die Wahrscheinlichkeit ist, von Zustand \(i\) zu Zustand \(j\) zu wechseln.
-
-      Der Startvektor \(\pi_0\) beschreibt die Anfangswahrscheinlichkeiten für jeden Zustand, zum Zeitpunkt \(t=0\):
-
-      \[
-        \pi_0 =
-        \begin{pmatrix}
-          \pi_{0,1} & \pi_{0,2}
-        \end{pmatrix}
-      \]
-
-      Wobei \(\pi_{0,1}\) die Wahrscheinlichkeit für Zustand 1 und \(\pi_{0,2}\) für Zustand 2 ist.
-
-      \[
-        \text{Nach einem Schritt: } \pi_1 = \pi_0 \cdot P
-      \]
-      \[
-        \text{Nach zwei Schritten: } \pi_2 = \pi_1 \cdot P = \pi_0 \cdot P^2
-      \]
-      \[
-        \text{Allgemein nach } n \text{ Schritten: } \pi_n = \pi_{n-1} \cdot P
-      \]
-
-
-
     \end{cheatSheetBox}
 
-    \begin{cheatSheetBox}[title=Markov-Ketten: Beispiel]
-      Angenommen, wir haben zwei Zustände: Sonne (0) und Regen (1). Die Übergangswahrscheinlichkeiten sind wie folgt:
-      \begin{itemize}
-        \item Von Sonne zu Sonne: 90\% (0.9)
-        \item Von Sonne zu Regen: 10\% (0.1)
-        \item Von Regen zu Sonne: 20\% (0.2)
-        \item Von Regen zu Regen: 80\% (0.8)
-      \end{itemize}
-      Die Übergangsmatrix \(P\) sieht dann so aus:
+    \begin{cheatSheetBox}[title=Vorhersage von Zuständen]
 
-      \[
-        P =
-        \begin{pmatrix}
-          0.9 & 0.1 \\
-          0.2 & 0.8 \\
-        \end{pmatrix}
-      \]
-      Der Startzustand ist 100\% Sonne, also \(\pi_0 = \begin{pmatrix} 1 & 0 \end{pmatrix}\).
-
-      \[
-        \begin{aligned}
+      Angenommen, heute ist es sonnig. Wir wissen also, dass es zu 100\% sonnig und zu 0\% regnerisch ist. Der Zustandsvektor ist also 100\% (=1) Sonne und 0\% (=0) Regen:
+      \[\begin{aligned}
           \pi_0 =
            & \begin{pmatrix}
                1 & 0
@@ -270,50 +277,84 @@ print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
            & \begin{matrix}
                \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
              \end{matrix}
+        \end{aligned}\]
+      Wir berechnen zuerst $\pi_1$, den Zustand nach einem Tag (mit den Wahrscheinlichkeiten aus der Übergangsmatrix $P$):
+      \[
+        P = \begin{pmatrix}
+          0.8 & 0.2 \\
+          0.4 & 0.6 \\
+        \end{pmatrix}
+      \]
+
+      \[\begin{aligned}
+          \pi_1 & = \pi_0 \cdot P                               \\
+          \pi_1 & =
+          \begin{pmatrix}
+            1 & 0 \\
+          \end{pmatrix}
+          \cdot
+          \begin{pmatrix}
+            0.8 & 0.2 \\
+            0.4 & 0.6 \\
+          \end{pmatrix}                                        \\
+          \pi_1 & =
+          \begin{pmatrix}
+            1 \cdot 0.8 + 0 \cdot 0.4 & 1 \cdot 0.2 + 0 \cdot 0.6 \\
+          \end{pmatrix} \\
+          \pi_1 & =
+          \begin{pmatrix}
+            0.8 + 0 & 0.2 + 0 \\
+          \end{pmatrix}                                     \\
+          \pi_1 & =
+          \underline{
+              \begin{pmatrix}
+                0.8 & 0.2 \\
+              \end{pmatrix}
+            }
+        \end{aligned}\]
+
+      Dabei bezeichnet \underline{0.8} die Wahrscheinlichkeit, dass es morgen sonnig ist, und \underline{0.2} die Wahrscheinlichkeit, dass es morgen regnet.
+
+      Dann berechnen wir den Zustand nach zwei Tagen:
+
+      \[
+        \begin{aligned}
+          \pi_2 & = \pi_1 \cdot P                                       \\
+          \pi_2 & =
+          \begin{pmatrix}
+            0.8 & 0.2 \\
+          \end{pmatrix}
+          \cdot
+          \begin{pmatrix}
+            0.8 & 0.2 \\
+            0.4 & 0.6 \\
+          \end{pmatrix}                                                \\
+          \pi_2 & =
+          \begin{pmatrix}
+            0.8 \cdot 0.8 + 0.2 \cdot 0.4 & 0.8 \cdot 0.2 + 0.2 \cdot 0.6 \\
+          \end{pmatrix} \\
+          \pi_2 & =
+          \begin{pmatrix}
+            0.64 + 0.08 & 0.16 + 0.12 \\
+          \end{pmatrix}                                     \\
+          \pi_2 & =
+          \underline{\underline{
+              \begin{pmatrix}
+                0.72 & 0.28 \\
+              \end{pmatrix}
+            }}
         \end{aligned}
       \]
 
-      Wir berechnen den Zustand nach einem Tag:
-      \[
-        \pi_1 = \pi_0 \cdot P =
-        \begin{pmatrix}
-          1 & 0 \\
-        \end{pmatrix}
-        \cdot
-        \begin{pmatrix}
-          0.9 & 0.1 \\
-          0.2 & 0.8 \\
-        \end{pmatrix}
-        =
-        \begin{pmatrix}
-          0.9 & 0.1 \\
-        \end{pmatrix}
-      \]
-      Dann berechnen wir den Zustand nach zwei Tagen:
-      \[
-        \pi_2 = \pi_1 \cdot P =
-        \begin{pmatrix}
-          0.9 & 0.1 \\
-        \end{pmatrix}
-        \cdot
-        \begin{pmatrix}
-          0.9 & 0.1 \\
-          0.2 & 0.8 \\
-        \end{pmatrix}
-        =
-        \begin{pmatrix}
-          0.83 & 0.17 \\
-        \end{pmatrix}
-      \]
-      Die Wahrscheinlichkeit, nach zwei Tagen Sonne zu haben, beträgt 83\%, und Regen 17\%.
+      Die Wahrscheinlichkeit, nach zwei Tagen Sonne zu haben, beträgt \underline{\underline{72\%}}. Die Wahrscheinlichkeit, nach zwei Tagen Regen zu haben, beträgt \underline{\underline{28\%}}.
     \end{cheatSheetBox}
 
     \begin{cheatSheetBox}[title=Python: Erstellung der Übergangsmatrix]
       \begin{lstlisting}
 # Zustände: 0 = Sonne, 1 = Regen
 P = np.array([
-    [0.9, 0.1],
-    [0.2, 0.8]
+    [0.8, 0.2],
+    [0.4, 0.6]
 ])
 \end{lstlisting}
     \end{cheatSheetBox}
