@@ -10,7 +10,6 @@ def sieb_verbesserung_1(n):
     wurzel_n = int(math.sqrt(n))
     while i <= wurzel_n:
         if nicht_gestrichen[i]:
-            primzahlen.append(i)
             j = 2 * i
             while j <= n:
                 nicht_gestrichen[j] = False
