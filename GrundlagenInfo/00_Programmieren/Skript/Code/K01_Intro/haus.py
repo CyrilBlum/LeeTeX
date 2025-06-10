@@ -1,5 +1,5 @@
-import turtle as t
 import math
+import turtle as t
 
 # Tempo der Turtle festlegen
 t.speed(1)
