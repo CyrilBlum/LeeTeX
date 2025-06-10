@@ -46,8 +46,9 @@
       \begin{lstlisting}
 import pandas as pd # Datenanalyse, Tabellen
 import matplotlib.pyplot as plt # Grafiken
-import statsmodels.formula.api as smf # statistische Modelle
+import statsmodels.formula.api as smf # Regression
 import numpy as np # numerische Berechnungen
+import random # Zufallszahlen
 \end{lstlisting}
     \end{cheatSheetBox}
 
@@ -219,7 +220,7 @@ print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
     \end{cheatSheetBox}
 
     \begin{cheatSheetBox}[title=Übergangsmatrix]
-      Das Wetter-Beispiel kann auch als Übergangsmatrix dargestellt werden. Die Matrix zeigt die Wahrscheinlichkeiten, von einem Zustand in einen anderen zu wechseln. Die Zeilen repräsentieren den aktuellen Zustand, die Spalten den zukünftigen Zustand. Normalerweise wird die Matrix wie rechts (ohne Labels \enquote{Von} und \enquote{Nach}) dargestellt.
+      Das Wetter-Beispiel kann auch als Übergangsmatrix dargestellt werden. Die Matrix zeigt die Wahrscheinlichkeiten, von einem Zustand in einen anderen zu wechseln. Die Zeilen repräsentieren den aktuellen Zustand, die Spalten den nächsten Zustand. Normalerweise wird die Matrix wie rechts (ohne Labels und ohne \enquote{Von} / \enquote{Nach}) dargestellt.
       \begin{center}
         \begin{tabular}{cc}
           % Erste Subtabelle: Übergangstabelle mit Labels
@@ -265,7 +266,7 @@ print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
 
     \begin{cheatSheetBox}[title=Vorhersage von Zuständen]
 
-      Angenommen, heute ist es sonnig. Wir wissen also, dass es zu 100\% sonnig und zu 0\% regnerisch ist. Der Zustandsvektor ist also 100\% (=1) Sonne und 0\% (=0) Regen:
+      Angenommen, heute ist es sonnig: Wir wissen also, dass es zu 100\% (=1) sonnig und zu 0\% (=0) regnerisch ist. Der Zustandsvektor $\pi_0$ ist somit:
       \[\begin{aligned}
           \pi_0 =
            & \begin{pmatrix}
@@ -278,13 +279,11 @@ print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
                \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
              \end{matrix}
         \end{aligned}\]
-      Wir berechnen zuerst $\pi_1$, den Zustand nach einem Tag (mit den Wahrscheinlichkeiten aus der Übergangsmatrix $P$):
-      \[
-        P = \begin{pmatrix}
+      Wir berechnen zuerst $\pi_1$, den Zustandsvektor nach einem Tag (mit den Wahrscheinlichkeiten aus der Übergangsmatrix $P$):
+      \[P = \begin{pmatrix}
           0.8 & 0.2 \\
           0.4 & 0.6 \\
-        \end{pmatrix}
-      \]
+        \end{pmatrix}\]
 
       \[\begin{aligned}
           \pi_1 & = \pi_0 \cdot P                               \\
@@ -315,10 +314,8 @@ print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
 
       Dabei bezeichnet \underline{0.8} die Wahrscheinlichkeit, dass es morgen sonnig ist, und \underline{0.2} die Wahrscheinlichkeit, dass es morgen regnet.
 
-      Dann berechnen wir den Zustand nach zwei Tagen:
-
-      \[
-        \begin{aligned}
+      Nun berechnen wir den Zustandsvektor nach zwei Tagen:
+      \[\begin{aligned}
           \pi_2 & = \pi_1 \cdot P                                       \\
           \pi_2 & =
           \begin{pmatrix}
@@ -343,14 +340,15 @@ print("Vorhergesagter CO2-Ausstoss:"+ str(pred[0]))
                 0.72 & 0.28 \\
               \end{pmatrix}
             }}
-        \end{aligned}
-      \]
+        \end{aligned}\]
 
-      Die Wahrscheinlichkeit, nach zwei Tagen Sonne zu haben, beträgt \underline{\underline{72\%}}. Die Wahrscheinlichkeit, nach zwei Tagen Regen zu haben, beträgt \underline{\underline{28\%}}.
+      Die Wahrscheinlichkeit, nach zwei Tagen Sonne zu haben, beträgt also \underline{\underline{72\%}} und die Wahrscheinlichkeit, nach zwei Tagen Regen zu haben, beträgt \underline{\underline{28\%}}.
     \end{cheatSheetBox}
 
     \begin{cheatSheetBox}[title=Python: Erstellung der Übergangsmatrix]
       \begin{lstlisting}
+import numpy as np
+
 # Zustände: 0 = Sonne, 1 = Regen
 P = np.array([
     [0.8, 0.2],
@@ -358,7 +356,7 @@ P = np.array([
 ])
 \end{lstlisting}
     \end{cheatSheetBox}
-    \begin{cheatSheetBox}[title=Python: Matrixmultiplikation / Vorhersage]
+    \begin{cheatSheetBox}[title=Python: Vorhersage von Zuständen]
       \begin{lstlisting}
 # Startzustand: 100% Sonne
 pi0 = np.array([1, 0])
@@ -370,10 +368,16 @@ print("Nach 1 Tag:", pi1)
 # Nach zwei Tagen
 pi2 = pi1 @ P
 print("Nach 2 Tagen:", pi2)
+
+print("Wahrscheinlichkeit, dass es nach 2 Tagen sonnig wird:", pi2[0]) # das erste Element mit Index 0 ist die Wahrscheinlichkeit für Sonne
+
+print("Wahrscheinlichkeit, dass es nach 2 Tagen regnerisch wird:", pi2[1]) # das zweite Element mit Index 1 ist die Wahrscheinlichkeit für Regen
 \end{lstlisting}
     \end{cheatSheetBox}
-    \begin{cheatSheetBox}[title=Python: Vorhersage (Zufallsimulation)]
+    \begin{cheatSheetBox}[title=Python: Vorhersage mit Zufallsimulation]
       \begin{lstlisting}[numbers=left]
+import random
+
 zustand = "Sonne"    # Anfangszustand
 history = [zustand]  # Liste simulierter Zustände
 schritte = 20        # Anzahl Simulationsschritte
