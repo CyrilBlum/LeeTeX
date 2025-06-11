@@ -1,0 +1,146 @@
+\lstset{style=sql, basicstyle=\ttfamily\scriptsize}
+
+\title[Datenbanken] {Datenbanken}
+
+\subtitle{\emoji{woman-technologist} Datenbank-Applikationen}
+
+\author[Wendl, Cyril] % (optional)
+{Naoki Peter\inst{1} \and Cyril Wendl \inst{2}}
+
+\institute[KZN] % (optional)
+{
+  \inst{1}%
+  Fachschaft Informatik\\
+  Kantonsschule Zürich-Nord
+  \and
+  \inst{2}%
+  Fachschaft Informatik\\
+  Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=.8cm]{\thelogo}}
+
+\titlegraphic{\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}{Datenbanken}{Übersicht}
+	\begin{enumerate}
+		\item \faCheckSquare{} Tabellen erstellen, verändern, löschen: \lstinline|CREATE table|, \lstinline|UPDATE table|, \lstinline|INSERT INTO table|, \lstinline|DROP table|, $\ldots$
+		\item \faCheckSquare{} Tabellen abfragen: \lstinline|SELECT|, \lstinline|WHERE|, \lstinline|GROUP BY|, $\cdots$
+		\item \faCheckSquare{} Mehrere Tabellen verbinden: \lstinline|JOIN|, Unterabfragen, etc. ...
+		\item \faSquare{} Tabellen an Datenbanken anschliessen!
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Datenbanken}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \tikzstyle{c} = [draw, shape=circle, draw=black!20, fill=black!10]
+      \Large
+      %\draw[step=1cm,gray,very thin] (-4,-4) grid (4,4);
+      \node [circle, draw=black!20, fill=black!10, minimum size=.5cm](db) at (0,0) {\faTable};
+      
+      \node [circle, draw=black!20, minimum size=2cm, path picture={
+          \node at (path picture bounding box.center) {
+              \includegraphics[width=2.3cm,height=2.3cm,clip,trim=0 0 0 0]{"Grundlagen_Info/06_Datenbanken/Figures/murdermysterypic"}};
+      }] (l1) at (-3,0) {};
+      
+      \node [circle, draw=black!20, minimum size=2cm, path picture={
+                \node at (path picture bounding box.center) {
+                    \includegraphics[width=2.2cm,clip,trim=0 5cm 0 0]{"Grundlagen_Info/06_Datenbanken/Figures/db-ex1"}};
+            }](l2) at (-2,-2) {};
+            
+ 	   \node [circle, draw=black!20, minimum size=2cm, path picture={
+                    \node at (path picture bounding box.center) {
+                        \includegraphics[height=2.2cm,clip,trim=0 0cm 6cm 0]{"Grundlagen_Info/06_Datenbanken/Figures/db-ex3"}};
+                }](l3) at (0,-3) {};
+                
+      \node [circle, draw=black!20, minimum size=2cm, path picture={
+                      \node at (path picture bounding box.center) {
+                          \includegraphics[width=2.2cm,clip,trim=0 3cm 0cm 0]{"Grundlagen_Info/06_Datenbanken/Figures/db-ex4"}};
+                  }](l4) at (2,-2) {};
+      \node [circle, draw=red, minimum size=2cm, path picture={
+                      \node at (path picture bounding box.center) {
+                          \includegraphics[height=2cm,clip,trim=0 0cm 0cm 0]{"Grundlagen_Info/06_Datenbanken/Figures/game"}};
+                  }](l5) at (3,0) {};
+               
+      \node [c,minimum size=2cm](l6) at (2,2) {...};
+      \node [c,minimum size=2cm](mp1) at (0,3) {\huge\emoji{laptop}};
+      \node [c,minimum size=2cm](mp2) at (-2,2) {\huge\emoji{mobile-phone}};
+
+
+      \foreach \nodeN in {l1,l2,l3,l4,l5,l6,mp1,mp2}{
+          \path[->, red] (db) edge[bend right=10] node [left] {} (\nodeN);
+          \path[->, blue] (\nodeN) edge[bend right=10] node [left] {} (db);
+        }
+
+    \end{tikzpicture}
+  \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Demo: Datenbank}
+\begin{center}
+Datenbanken in TigerJython erstellen und verändern
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Tabellen ausgeben}
+Einzelne Werte ausgeben:
+\begin{lstlisting}[style=Python]
+cursor.execute("SELECT * FROM games")
+resultset = cursor.fetchall()
+# gib die dritte Spalte (2) der ersten Zeile (0) aus
+print(resultset[0][2]) 
+\end{lstlisting}
+
+Ganze Tabelle (schön darstellen):
+\begin{lstlisting}[style=Python]
+from prettytable import *
+
+# ... 
+
+tab = cursor.execute("SELECT * FROM games")
+printTable(tab)
+\end{lstlisting}
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag: Skript (Moodle)}
+In Gruppen: Eigenes Game mit Datenbank verbinden!
+\begin{itemize}
+\item Highscore
+\item Login-Seite (mit Passwort)
+\item Weitere Ideen möglich!
+\end{itemize}
+\begin{myattention}
+\faWindows{} \textbf{Windows}: TigerJython im Admin-Modus ausführen!
+\end{myattention}
+ \aufgabebox{Skript mit Anleitungen auf Moodle!}
+\end{frame}
+
+\begin{frame}{Datenbanken}{Übersicht}
+	\begin{enumerate}
+		\item \faCheckSquare{} Tabellen erstellen, verändern, löschen: \lstinline|CREATE table|, \lstinline|UPDATE table|, \lstinline|INSERT INTO table|, \lstinline|DROP table|, $\ldots$
+		\item \faCheckSquare{} Tabellen abfragen: \lstinline|SELECT|, \lstinline|WHERE|, \lstinline|GROUP BY|, $\cdots$
+		\item \faCheckSquare{} Mehrere Tabellen verbinden: \lstinline|JOIN|, Unterabfragen, etc. ...
+		\item \faCheckSquare{} Tabellen an Datenbanken anschliessen!
+		\item \faSquare{} Generelle Wiederholung und Auffrischung von SQL \emoji{tennis}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Auftrag}{Moodle}
+\begin{itemize}
+\item \aufgabebox{A.1 - Wiederholung (Einfache Abfragen)}
+\item \aufgabebox{A.2 - Wiederholung (Aggregation)}
+\item \aufgabebox{A.3 - Wiederholung (Subselects)}
+\item \aufgabebox{A.4 - Wiederholung (JOIN)}
+\item \challengebox{A.5 - Wiederholung}
+\item \aufgabebox{A.6 - Lernkontrolle}
+\end{itemize}
+$\rightarrow$ Blaue Aufgaben: Prüfungsrelevant
+\end{frame}

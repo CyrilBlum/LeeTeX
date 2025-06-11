@@ -1,0 +1,140 @@
+\lstset{style=Python,escapeinside={(*@}{@*)}}
+\input{Grundlagen_Info/00_Programmieren/Skript/Macros}
+
+\begin{frame}
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{\thelogo}
+    \end{figure}
+    Informatik: Programmieren\\
+    \emoji{cook} Kapitel 7: \textbf{Funktionen mit \lstinline|return|}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=.6\linewidth]{Grundlagen_Info/00_Programmieren/Figures/cook}
+    \end{figure}
+    \begin{center}
+    Woran erinnert Sie dieses Bild?
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Funktionen}
+\begin{centering}
+\only<1->{Womit können Funktionen verglichen werden?}\only<2->{ Weshalb?}
+\end{centering}
+\only<3->{
+\begin{columns}
+\begin{column}{.5\linewidth}
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{"Grundlagen_Info/00_Programmieren/Figures/Fine Dining 1"}\\[.6cm]
+\includegraphics[width=\columnwidth]{"Grundlagen_Info/00_Programmieren/Figures/Fine Dining 2"}
+\end{figure}
+
+\end{column}
+
+\begin{column}{.5\linewidth}
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{"Grundlagen_Info/00_Programmieren/Figures/Fine Dining 3"}\\[.6cm]
+\includegraphics[width=\columnwidth]{"Grundlagen_Info/00_Programmieren/Figures/Fine Dining 4"}
+\end{figure}
+\end{column}
+\end{columns}
+}
+\end{frame}
+
+\begin{frame}[fragile]{Funktionierende Funktion? \emoji{bug}}
+\begin{lstlisting}
+def summiere(x1, x2):
+    summe = x1 + x2
+    
+summiere(3, 5)
+print(summe)
+\end{lstlisting}
+\begin{center}
+Funktioniert dieser Code? 
+
+Wenn ja, was gibt er aus? Wenn nein, weshalb nicht?
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Funktionen}{Grundidee}
+\begin{figure}[H]
+% Use the \drawCube macro to draw various cubes
+\centering
+\resizebox{.7\linewidth}{!}{
+\begin{tikzpicture}
+\drawCube{1}{0}{2}{3}
+\node[fill=blue!50, rounded corners] (input1) at (llD11val){3};
+\node[fill=blue!50, rounded corners] (input2) at (llD21val){12};
+\draw[thick,->] (input1) -- (in11);
+\draw[thick,->] (input2) -- (in12);
+\node[fill=green!50, rounded corners](outVal1) at (5,-.6,3){36};
+\draw[thick,->] (out1) -- (outVal1);
+
+\node[fill=red!50, rounded corners](outVal1) at (1.5,1.5,1.5){\emoji{cook}};
+\end{tikzpicture}
+}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Funktionen: Mit \lstinline|return|}
+\begin{lstlisting}
+def summiere(x1, x2):
+    summe = x1 + x2
+    return (*@\only<1>{summe}\only<2->{\colorbox{RoyalBlue!50}{sum\tikzmark{arrowFromEx01}me}}@*)
+    
+
+
+(*@\only<1-2>{res}\only<3->{\colorbox{ForestGreen!50}{re\tikzmark{arrowToEx02}s}}@*) = (*@\only<1>{summiere(3, 5)}\only<2->{\colorbox{RoyalBlue!50}{summie\tikzmark{arrowToEx01}re(3, 5)}}@*)
+
+print(res)
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+   % Wert zurückgeben
+\only<2>{
+	\draw[RoyalBlue,-stealth, thick] (arrowFromEx01.south) to[bend left] node[right, xshift=.1cm, pos=.4, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners]{8}(arrowToEx01.north);}
+\only<3->{
+	\draw[RoyalBlue,-stealth, thick] (arrowFromEx01.south) to[bend left] node[align=left, pos=.18, right, xshift=.1cm, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert (8) an das Hauptprogramm zurückgeben...} (arrowToEx01.north);}
+	
+	\only<3->{
+	\draw[ForestGreen,-stealth, thick] (arrowToEx01.south) to[bend left] node[align=left, pos=0, below right, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners, yshift=-.1cm] {...\textit{und} Wert in Variable speichern, z.B. \lstinline|res|} (arrowToEx02.south);
+	}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{Aufträge}
+Im \textbf{Skript}:
+\begin{itemize}
+\item \abgabebox{Aufgaben 1.4 - 1.7 (Abgabe auf Moodle)}
+\item \aufgabebox{Aufgabe 1.8}
+\end{itemize}
+\begin{mycaution}
+\begin{itemize}
+\item \faFilePdf{} Bitte Skript zuerst von Moodle herunterladen (Programmierkurs, Kapitel 7, ``Unterlagen'')
+\item Codes \textbf{immer} zuerst in TigerJython ausprobieren, erst dann auf Moodle!
+\end{itemize}
+\end{mycaution}
+\end{frame}
+
+\begin{frame}{Fazit}
+\begin{itemize}[<+->]
+	\item \emoji{thumbs-up} Vorteil von \lstinline|return|-Werten: man kann nun das Resultat einer Funktion in einer Variable speichern und \textbf{weiterverwenden}
+	\item \emoji{thumbs-up} Vorteil von Funktionen: Code wird \textbf{modular}
+	\item Funktionen sind Definitionen...
+	\item \emoji{clipboard} ...die wie ein \textbf{Kochrezept} funktionieren:
+	\begin{itemize}
+		\item \emoji{bread} \emoji{cheese} \emoji{poultry-leg} Gewisse Inputs, bzw. \textbf{Parameter} können akzeptiert werden (müssen aber nicht)
+		\item \emoji{hamburger} Gewisse Outputs, bzw. \textbf{Return-Werte }können zurückgeben werden (müssen aber nicht)
+	\end{itemize}
+	\item \emoji{cook} ...die wie ein \textbf{Koch} funktionieren (\textbf{Modularität}):
+	\begin{itemize}
+		\item Ein Koch schneidet alle Gemüse, ...
+		\item ... ein Koch grilliert die Gemüse, ...
+		\item ... ein Koch bereitet die Teller schön zu, ...
+		\item etc. (jeder Koch ist eine \lstinline|def|)
+	\end{itemize}
+\end{itemize}
+\end{frame}

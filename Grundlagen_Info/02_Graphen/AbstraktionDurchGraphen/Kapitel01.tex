@@ -1,0 +1,480 @@
+\chapter{Modellierung}\label{ch:Lektion1}
+
+\section{Abstraktion und Modellierung durch Graphen}
+Der berühmte Schweizer Mathematiker Leonhard Euler soll im Jahre 1736 die Stadt Königsberg besucht haben. Königsberg war damals die Hauptstadt der deutschen Provinz Ostpreussen. Seit dem Jahre 1946 gehört die Stadt zu Russland und wurde in \textit{Kaliningrad} unbenannt. In \cref{fig:stadtplanCrop} sehen Sie den für uns relevanten Ausschnitt eines Stadtplans des damaligen Königsbergs.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Figures/StadplanCrop.pdf}
+    \caption{Ausschnitt aus einem Stadtplan des damaligen Königsbergs}
+    \label{fig:stadtplanCrop}
+\end{figure}
+\noindent
+In \cref{fig:stadtplanCropMitBuchstaben} haben wir die vier verschiedenen Stadtteile Kneiphof ($A$), Vorstadt ($B$), Alt-Stadt ($C$) und Lomse ($D$) sowie die sieben Brücken zwischen ihnen hervorgehoben. Die Stadtteile werden von dem Fluss \textit{Pregel} von einander getrennt.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Figures/StadplanCropMitBuchstaben.pdf}
+    \caption{die vier Stadtteile $A, B, C$ und $D$ von Königsberg verbunden durch sieben Brücken}
+    \label{fig:stadtplanCropMitBuchstaben}
+\end{figure}
+\noindent
+Der Legende nach kursierte unter den Spaziergängerinnen und Spaziergängern von Königsberg damals die folgende Frage, welche heute als \tib{Königsberger Brückenproblem} bekannt ist:
+\begin{myexercise}[Königsberger Brückenproblem]{myexercise:Problem}
+Gibt es einen Weg durch Königsberg, bei dem man alle sieben Brücken \textbf{genau einmal} überquert, und wenn ja, ist auch ein Rundweg möglich, bei dem man wieder zum Ausgangspunkt gelangt?    
+\end{myexercise}
+\noindent
+Euler realisierte vermutlich, dass es keine Rolle spielt, wie sich eine Spaziergängerin innerhalb eines Stadtteils bewegt. Relevant sind lediglich die Übergänge zwischen den Stadtteilen über die Brücken. Vermutlich abstrahierte er das Problem durch eine Skizze wie in \cref{fig:skizze}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Figures/vonHandCrop.pdf}
+    \caption{abstrakte Skizze von Königsberg}
+    \label{fig:skizze}
+\end{figure}
+\noindent
+Selbst diese Skizze kann noch weiter abstrahiert werden, ohne dass wir relevante Informationen für das Königsberger Brückenproblem verlieren. Beispielsweise brauchen wir den Fluss nicht darzustellen. Dabei könnte man zur Abstraktion in \cref{subfig:graph} gelangen.
+
+%% Aufgabenblatt %%
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}[b]{0.4\textwidth}
+\centering
+\includegraphics[width=0.9\textwidth]{Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Figures/GraphAufStadtplan.pdf}
+\caption{Stadtplan}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.4\textwidth}
+\centering
+\resizebox{0.7\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.25]
+  \node[state] (A)              {$A$};
+  \node[state] (B) [below of=A] {$B$};
+  \node[state] (C) [above of=A] {$C$};
+  \node[state] (D) [right of=A] {$D$};
+
+  \path (A) edge [bend right] node {} (B)
+        (A) edge [bend left] node {} (B)
+        (A) edge [bend right] node {} (C)
+        (A) edge [bend left] node {} (C)
+        (A) edge node {} (D)
+        (B) edge node {} (D)
+        (C) edge node {} (D);
+\end{tikzpicture}
+}%
+\caption{Darstellung als Graph}
+\label{subfig:graph}
+\end{subfigure}
+\caption{Modellierung des Königsberger Brückenproblems durch einen Graphen mit vier Knoten und sieben Kanten}
+\label{fig:EulerGraph}
+\end{figure}
+
+\noindent
+Die schematische Darstellung in \cref{subfig:graph} ist lediglich ein Modell der eigentlichen Situation in Königsberg. Allerdings enthält dieses Modell sämtliche für das Problem relevanten Teile und lässt alle nicht relevanten Teile geschickt weg. Das Modell stellt also eine hervorragende Abstraktion des Problems dar. Eine solche Art der Abstraktion wie in \cref{subfig:graph}  wird \tib{Graph} genannt.
+
+\begin{figure}[H]
+\centering
+\resizebox{0.2\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \tikzstyle{every state}=[fill=Red!10,draw=Red,text=black]
+  \node[state] (A)              {$\textcolor{Red}{A}$};
+  \node[state] (B) [below of=A] {$\textcolor{Red}{B}$};
+  \node[state] (C) [above of=A] {$\textcolor{Red}{C}$};
+  \node[state] (D) [right of=A] {$\textcolor{Red}{D}$};
+
+  \path (A) edge [bend right,color=Blue] node[left] {$b_5$} (B)
+        (A) edge [bend left,color=Blue] node[left] {$b_6$} (B)
+        (A) edge [bend right,color=Blue] node {$b_2$} (C)
+        (A) edge [bend left,color=Blue] node {$b_1$} (C)
+        (A) edge [color=Blue] node {$b_4$} (D)
+        (B) edge [color=Blue] node[below=5pt] {$b_7$} (D)
+        (C) edge [color=Blue] node {$b_3$} (D);
+\end{tikzpicture}
+}
+\caption{Knoten und Kanten}
+\label{fig:kanten}
+\end{figure}
+
+\noindent
+Die \enquote{runden Blasen} werden \tib{\textcolor{Red}{Knoten}} genannt. Dieser Graph hat die vier Knoten $A, B, C$ und $D$ (Stadtteile). Die \enquote{Verbindungslinien} werden \tib{\textcolor{Blue}{Kanten}} genannt. Dieser Graph hat die sieben Kanten $b_1,b_2, \ldots, b_7$ (Brücken). In einem Graphen werden zwei Knoten genau dann durch eine Kante verbunden, wenn eine bestimmte Beziehung zwischen diesen beiden Knoten besteht. In diesem Beispiel besteht die Beziehung darin, direkt durch eine Brücke verbunden zu sein. Der Graph für das Brückenproblem enthält somit genau sieben Kanten (eine für jede der sieben Brücken).
+
+Für einen gegeben Knoten wird die Anzahl der Kanten, welche an diesen Knoten angrenzen, als der \tib{Grad} dieses Knoten bezeichnet. Der Grad von $A$ in unserem Beispiel ist $5$. Die Grade der Knoten $B, C$ und $D$ sind jeweils $3$.
+
+\begin{myexercise}\label{aufgabe:01}
+Beschreiben Sie zwei weitere Situation, die sich elegant durch Graphen modellieren / abstrahieren lassen.
+Welche Bedeutung haben jeweils die Knoten und Kanten in Ihren Beispielen?
+\begin{myanswer}\label{aufgabe:01-sol}
+\begin{enumerate}
+    \item In einem sozialen Netzwerk können die User als Knoten angesehen werden. Dabei sind zwei Knoten genau dann miteinander verbunden, wenn die entsprechenden User miteinander befreundet sind.
+    \item In einem Modell zur Simulation von Pandemien können die Menschen als Knoten aufgefasst werden. Dabei sind zwei Knoten genau dann miteinander verbunden, wenn die beiden entsprechenden Menschen in den letzten drei Tagen persönlichen Kontakt zu einander hatten.
+\end{enumerate}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{aufgabe:02}
+\begin{aenum}
+    \item In der Klasse G2B haben Lea, Alain und Eldin jeweils eine eigene Webseite erstellt. Leas Webseite enthält zwei Links. Einer davon verlinkt auf Alains Webseite und der andere auf Eldins Seite. Eldins Webseite hat nur einen Link und zwar auf Alains Webseite. Die Webseite von Alain enthält gar keine Links. Modellieren Sie diese Situation durch einen Graphen. Welches Konzept ist in dieser Situation neu dazugekommen?
+    \item Die Zugverbindung von Hendschiken nach Wohlen dauert 5 Minuten, die Verbindung von Wohlen nach Hendschiken dauert 6 Minuten. Von Effretikon benötigt man mit dem Zug 56 Minuten nach Hendschiken und 61 Minuten nach Wohlen. Zur Zeit sind alle Verbindungen in die Richtung von Henschiken nach Effretikon und von Wohlen nach Effretikon unterbrochen. Modellieren Sie diese Situation durch einen Graphen. Welches Konzept ist in dieser Situation neu dazugekommen?
+\end{aenum}
+\begin{myanswer}\label{aufgabe:02-sol}
+\begin{aenum}
+\item Der entsprechende Graph ist in \cref{fig:webseiten} gegeben.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (L) [state,align=center]        {Lea};
+\node (A) [state, above right=of L,align=center]   {Alain};
+\node (E) [state, below right=of L,align=center]   {Eldin};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (L) edge            (A)
+        (L) edge            (E)
+        (E) edge             (A);
+\end{tikzpicture}
+    \caption{Verlinkung von Webseiten in der Klasse G2B}
+    \label{fig:webseiten}
+\end{figure}
+\noindent
+Das neue Konzept hier ist, dass Kanten eine Richtung besitzen und dadurch nicht mehr in beide Richtungen passierbar sind.
+\item Der entsprechende Graph ist in \cref{fig:hendschiken} gegeben.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+node distance = 22mm and 24mm,
+every state/.append style = {inner sep=0pt, fill=gray!10,
+                             minimum size=11mm},
+every edge/.style = {draw, -Triangle, bend angle=15},
+                auto=right,
+                        ]
+\node (H) [state,align=center]        {Hendschiken};
+\node (W) [state, above right=of L,align=center]   {Wohlen};
+\node (E) [state, below right=of L,align=center]   {Effretikon};
+% %
+% \draw[gray!30, line width=5pt]
+%         (s1) to                     (s2)
+%         (s1) to [bend right=15]     (s6);
+% %
+\draw   (H) edge [bend right,"5"]           (W)
+        (W) edge [bend right,"6"]           (H)
+        (E) edge ["56"]            (H)
+        (E) edge ["61"]            (W);
+\end{tikzpicture}
+    \caption{Zugverbindungen}
+    \label{fig:hendschiken}
+\end{figure}
+\noindent
+Das neue Konzept hier ist, dass Kanten ein \textit{Gewicht} (Fahrzeit) haben.
+\end{aenum}
+\end{myanswer}
+\end{myexercise}
+
+\clearpage
+\begin{myexercise}\label{aufgabe:03}
+Durch Kriegseinwirkung und Umbauten nach 1945 ist die ursprüngliche Situation des damaligen Königsbergs im heutigen Kaliningrad nicht mehr gegeben. Zwei der ursprünglich sieben Brücken existieren nicht mehr. Die Stadtteile sind nur noch durch die fünf (rot markierten) Brücken in \cref{fig:heutigeSituation} verbunden.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Figures/heuteMarkiert.jpeg}
+    \caption{heutige Situation in Kaliningrad}
+    \label{fig:heutigeSituation}
+\end{figure}
+\begin{aenum}
+    \item Zeichnen Sie den Graphen, welcher die heutige Situation modelliert. Beschriften Sie die Knoten. Wählen Sie auch eine Beschriftung der Kanten.
+    \item Notieren Sie für jeden Knoten seinen Grad.
+    \item Finden Sie einen Weg (keinen Rundweg) durch den Graphen, welcher jede Kante genau einmal enthält. (Die Knoten dürfen durchaus mehrmals passiert werden.)
+\end{aenum}
+\begin{myanswer}\label{aufgabe:03-sol}
+\begin{aenum}
+    \item Die heutige Situation kann durch den Graphen in \cref{fig:graphheute} modelliert werden.
+\begin{figure}[H]
+\centering
+\resizebox{0.3\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.25]
+  \node[state] (A)              {$A$};
+  \node[state] (B) [below of=A] {$B$};
+  \node[state] (C) [above of=A] {$C$};
+  \node[state] (D) [right of=A] {$D$};
+
+  \path (A) edge node {$k_1$} (B)
+        (A) edge node {$k_2$} (C)
+        (A) edge node {$k_3$} (D)
+        (B) edge node {$k_4$} (D)
+        (C) edge node {$k_5$} (D);
+\end{tikzpicture}
+}%
+    \caption{heutige Situation}
+    \label{fig:graphheute}
+\end{figure}
+    \item Der Grad von $A$ ist 3 und der von $D$ ist 4. Die Grade von $C$ und $B$ sind jeweils 2.
+    \item Ein solcher Weg ist
+    \begin{align*}
+        A \stackrel{k_3}{\longrightarrow} D \stackrel{k_5}{\longrightarrow} C \stackrel{k_2}{\longrightarrow} A \stackrel{k_1}{\longrightarrow} B \stackrel{k_4}{\longrightarrow} D.
+    \end{align*}
+\end{aenum}
+\end{myanswer}
+\end{myexercise}
+
+\begin{mydefinition}[Eulerweg und Eulerkreis]{myDefinition:eulerkreis}
+Zu Ehren Leonhard Eulers erhielten die oben angesprochenen Wege durch Graphen spezielle Namen.
+\begin{itemize}
+    \item Ein Weg in einem Graphen der jede Kante genau einmal verwendet, wird \tib{Eulerweg} genannt.
+    \item Ein Eulerweg dessen Anfangs- und Endpunkte identisch sind (geschlossener Weg, Rundweg) wird \tib{Eulerkreis} genannt.
+\end{itemize}
+\end{mydefinition}
+
+\clearpage
+\begin{myexercise}\label{aufgabe:04}
+\begin{figure}[H]
+     \centering
+\begin{subfigure}[b]{0.4\textwidth}
+\centering
+\resizebox{0.4\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \node[state] (A)              {$A$};
+  \node[state] (B) [below of=A] {$B$};
+
+  \path (A) edge [bend right] node[left=-4pt] {{\tiny $b_1$}} (B)
+        (A) edge [bend left] node[left=-4pt] {{\tiny $b_2$}} (B);
+\end{tikzpicture}
+}%
+\caption*{$G_1$}
+\end{subfigure}
+     \hfill
+\begin{subfigure}[b]{0.4\textwidth}
+\centering
+\resizebox{0.4\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \node[state] (A)              {$A$};
+  \node[state] (B) [below of=A] {$B$};
+
+  \path (A) edge [bend right] node[left=-4pt] {{\tiny $b_1$}} (B)
+        (A) edge node[left=-4pt] {{\tiny $b_2$}} (B)
+        (A) edge [bend left] node[left=-4pt] {{\tiny $b_3$}} (B);
+\end{tikzpicture}
+}%
+\caption*{$G_2$}
+\end{subfigure}
+\end{figure}
+\begin{aenum}
+    \item Notieren Sie für jeden Knoten in den obigen Graphen den jeweiligen Grad.
+    \item Entscheiden Sie für jeden der obigen Graphen ob in ihnen ein Eulerkreis existiert.
+    \item Falls nein, existiert zumindeset ein Eulerweg?
+\end{aenum}
+\begin{myanswer}\label{aufgabe:04-sol}
+\begin{aenum}
+    \item Im Graphen $G_1$ haben beide Knoten den Grad 2 und im Graphen $G_2$ haben beide Knoten den Grad 3.
+    \item Ein Eulerkreis in Graph $G_1$ ist zum Beispiel gegeben durch
+    \begin{align*}
+        A \stackrel{b_1}{\longrightarrow} B \stackrel{b_2}{\longrightarrow} A.
+    \end{align*}
+    Durch ausprobieren sehen wir, dass der Graph $G_2$ keinen Eulerkreis besitzen kann.
+    \item Ja, denn beispielsweise ist
+    \begin{align*}
+        A \stackrel{b_1}{\longrightarrow} B \stackrel{b_2}{\longrightarrow} A \stackrel{b_3}{\longrightarrow} B
+    \end{align*}
+    ein solcher Eulerweg.
+\end{aenum}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{aufgabe:05}
+\begin{figure}[H]
+     \centering
+\resizebox{0.5\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \node[state] (A)              {$A$};
+  \node[state] (E) [above right of=A] {$E$};
+  \node[state] (B) [below right of=E] {$B$};
+  \node[state] (C) [below of=A] {$C$};
+  \node[state] (D) [below of=B] {$D$};
+
+  \path (A) edge node {{\tiny $b_1$}} (E)
+        (E) edge node {{\tiny $b_2$}} (B)
+        (A) edge node {{\tiny $b_3$}} (B)
+        (A) edge node {{\tiny $b_4$}} (C)
+        (A) edge node[near start, above] {{\tiny $b_5$}} (D)
+        (B) edge node[near start, above] {{\tiny $b_6$}} (C)
+        (B) edge node {{\tiny $b_7$}} (D);
+\end{tikzpicture}
+}%
+\end{figure}
+\noindent
+\begin{aenum}
+    \item Finden Sie in dem obigen Graphen einen Eulerkreis.
+    \item Notieren Sie die Grade aller Knoten in dem Graphen.
+\end{aenum}
+\begin{myanswer}\label{aufgabe:05-sol}
+\begin{figure}[H]
+     \centering
+\resizebox{0.5\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \node[state] (A)              {$A$};
+  \node[state] (E) [above right of=A] {$E$};
+  \node[state] (B) [below right of=E] {$B$};
+  \node[state] (C) [below of=A] {$C$};
+  \node[state] (D) [below of=B] {$D$};
+
+  \path (A) edge node {{\tiny $b_1$}} (E)
+        (E) edge node {{\tiny $b_2$}} (B)
+        (A) edge node {{\tiny $b_3$}} (B)
+        (A) edge node {{\tiny $b_4$}} (C)
+        (A) edge node[near start, above] {{\tiny $b_5$}} (D)
+        (B) edge node[near start, above] {{\tiny $b_6$}} (C)
+        (B) edge node {{\tiny $b_7$}} (D);
+\end{tikzpicture}
+}%
+\end{figure}
+\noindent
+\begin{aenum}
+    \item Ein Eulerkreis ist beispielsweise gegeben durch die Folge
+    \begin{align*}
+        A \stackrel{b_3}{\longrightarrow} B \stackrel{b_2}{\longrightarrow} E 
+        \stackrel{b_1}{\longrightarrow} A \stackrel{b_4}{\longrightarrow}  C \stackrel{b_6}{\longrightarrow} B
+        \stackrel{b_7}{\longrightarrow} D \stackrel{b_5}{\longrightarrow} A.
+    \end{align*}
+    \item Die Knoten $C, D$ und $E$ haben je den Grad 2. Die Knoten $A$ und $B$ haben je den Grad 4.
+\end{aenum}
+\end{myanswer}
+\end{myexercise}
+
+\clearpage
+\begin{myremark}\label{bemerkung:deg}
+Vielleicht ist Ihnen in den bisherigen Beispielen aufgefallen, dass alle Graphen mit Eulerkreisen ausschliesslich Knoten mit geraden Graden besitzen. Dies ist kein Zufall. Die folgende Überlegung begründet, warum ein Graph höchstens dann einen Eulerkreis besitzen kann, wenn der Grad jedes seiner Knoten eine gerade Zahl ist.
+\begin{itemize}
+    \item Stellen wir uns vor, dass in einem Graphen ein Eulerkreis existiert und dass wir diesen Eulerkreis zu zeichnen beginnen. Mit dem Zeichnen werden wir bei einem Knoten $s$ beginnen und schliesslich den Kreis in diesem Knoten beenden.
+    \item Betrachten wir zuerst einen beliebigen Knoten $v$, der nicht unser Startknoten $s$ ist.
+    \item Da wir den Kreis nicht in $v$ (sondern $s$) beenden, kann $v$ keine Sackgasse sein. Somit müssen wir jedes Mal, wenn wir in $v$ hinein gehen, $v$ auch wieder verlassen.
+    \item Wenn wir $v$ also insgesamt $k$-mal besuchen, dann müssen wir $v$ insgesamt auch $k$-mal wieder verlassen.
+    \item Da wir keine Kante mehrmals verwenden dürfen, verwenden wir dabei jedes mal eine neue Kante.
+    \item Es grenzen somit also genau $2k$-Kanten an $v$ an und somit ist der Grad von $v$ insbesondere eine gerade Zahl.
+    \item Wie steht es um den Startknoten $s$? Wir verlassen $s$ zu Beginn über eine Kante. Danach kann $s$ mehrmals besucht werden, bevor wir den Kreis abschliessen. Doch jeder dieser zwischenzeitlichen Besuche von $s$ verwendet genau 2 Kanten (eine hin zu $s$ und eine weg von $s$).
+    \item  Am Ende wird $s$ ein letztes Mal besucht und der Eulerkreis endet bei $s$. Zusammen mit der Kante für das anfängliche Verlassen (hinaus) und den finalen Besuch (hinein), grenzt also auch eine gerade Zahl von Kanten an $s$ an.
+\end{itemize}
+Die nachfolgende Darstellung eines Eulerkreises illustriert das oben gesagte:
+\begin{align*}
+    \textcolor{Blue}{s} \elem{\textcolor{Red}{s\text{ raus}}} v_1 \longrightarrow v_2 \elem{\textcolor{Green}{v_3\text{ rein}}} v_3 \elem{\textcolor{Red}{v_3\text{ raus}}} v_4\longrightarrow v_5\longrightarrow \ldots \longrightarrow v_n \elem{\textcolor{Green}{s\text{ rein}}} \textcolor{Blue}{s}
+\end{align*}
+Dabei sind $s$ sowie $v_1,\ldots,v_n$ Knoten und die Pfeile stellen (lauter verschiedene) Kanten dar. Es kann sehr gut sein, dass Knoten (aber nicht Kanten) mehrmals besucht werden. Beispielsweise könnte $v_3 = v_5 = v_{10}$ gelten oder $s = v_4$. Entscheidend ist, dass jeder Knoten genau so oft besucht wird (rein) wie verlassen wird (raus) und somit die an den Knoten angrenzende Anzahl der Kanten gerade sein muss.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Figures/grossBW.pdf}
+    \caption{Die Kantenfolge $a, b, c, \ldots, n, o$ (alphabetisch aufsteigend) ist ein Eulerkreis in diesem Graphen.}
+    \label{fig:gross}
+\end{figure}
+\noindent
+Versuchen Sie die oben genannte Schritte an dem Beispiel in \cref{fig:gross} nachvollziehen.
+\end{myremark}
+
+\clearpage
+\begin{myexercise}\label{aufgabe:06}
+\begin{figure}[H]
+     \centering
+\resizebox{0.5\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \node[state] (A)              {$A$};
+  \node[state] (E) [above right of=A] {$E$};
+  \node[state] (B) [below right of=E] {$B$};
+  \node[state] (C) [below of=A] {$C$};
+  \node[state] (D) [below of=B] {$D$};
+
+  \path (A) edge node {{\tiny $b_1$}} (E)
+        (E) edge node {{\tiny $b_2$}} (B)
+        (A) edge node {{\tiny $b_3$}} (B)
+        (A) edge node {{\tiny $b_4$}} (C)
+        (A) edge node[near start, above] {{\tiny $b_5$}} (D)
+        (B) edge node[near start, above] {{\tiny $b_6$}} (C)
+        (B) edge node {{\tiny $b_7$}} (D)
+        (C) edge node {{\tiny $b_8$}} (D);
+\end{tikzpicture}
+}%
+\end{figure}
+\begin{aenum}
+\item Bestimmen Sie den Grad jedes Knoten in dem Graphen.
+\item Begründen Sie, warum in diesem Graphen kein Eulerkreis exisitert.
+\item Bestimmen Sie einen Eulerweg.
+\item Begründen Sie, warum jeder Eulerweg in dem Graphen entweder beim Knoten $C$ beginnen und beim Knoten $D$ enden muss oder umgekehrt (bei $D$ beginnen und bei $C$ enden).
+\end{aenum}
+\begin{myanswer}\label{aufgabe:06-sol}
+\begin{aenum}
+    \item Die Knoten $A$ und $B$ haben jeweils den Grad 4, $C$ und $D$ den Grad 3 und Knoten $E$ hat den Grad 2.
+    \item Wir haben in \cref{bemerkung:deg} begründet, dass ein Graph, der Knoten mit ungeradem Grad enthält, keinen Eulerkreis enthalten kann. Doch in diesem Graphen haben $C$ und $D$ den Grad 3 (ungerade).
+    \item Ein Beispiel eines Eulerwegs durch diesen Graphen ist gegeben durch
+    \begin{align*}
+        C \stackrel{b_8}{\longrightarrow} D \stackrel{b_7}{\longrightarrow} B \stackrel{b_3}{\longrightarrow} A \stackrel{b_1}{\longrightarrow} E \stackrel{b_2}{\longrightarrow} B \stackrel{b_6}{\longrightarrow} C
+        \stackrel{b_4}{\longrightarrow} A \stackrel{b_5}{\longrightarrow} D.
+    \end{align*}
+    \item Ein Knoten mit ungeradem Grad muss entweder Anfangspunkt oder Endpunkt eines Eulerweges sein. Der ungerade Grad bedeutet nämlich, dass entweder eine Kante des Weges mehr von dem Knoten wegführt als zu ihm hin (Anfangsknoten) oder umgekehrt (Endknoten). Das $C$ und $D$ ungerade Grade haben, müssen sie zwingend jeweils als Anfangs beziehungsweise Endpunkt verwendet werden.
+\end{aenum}
+\end{myanswer}
+\end{myexercise}
+
+
+\begin{myexercise}\label{aufgabe:07}
+Erklären Sie, warum ein Graph mit einem Eulerweg maximal zwei Knoten mit ungeradem Grad haben kann. Begründen Sie nun abschliessend, warum es durch Königsberg weder einen Eulerkreis noch einen Eulerweg geben kann!
+\begin{myanswer}\label{aufgabe:07-sol}
+\begin{itemize}
+    \item Wir haben bereits in der Musterlösung zu \cref{aufgabe:06} begründet, dass ein Knoten mit ungeradem Grad entweder Anfangspunkt oder Endpunkt eines Eulerwegs sein muss. Offensichtlich kann ein Weg maximal einen Anfangspunkt und einen Endpunkt haben. Somit kann es in einem Eulerweg höchstens zwei Knoten mit ungeradem Grad geben.
+    \item Der Graph des Brückenproblems enthält Knoten mit ungeradem Grad. Damit kann er gemäss \cref{bemerkung:deg} keinen Eulerkreis enthalten. Da der Graph vier Knoten (also mehr als zwei) mit ungeradem Grad hat, kann es gemäss \cref{aufgabe:07} auch keinen Eulerweg durch Königsberg geben.
+\end{itemize}
+\end{myanswer}
+\end{myexercise}
+
+\clearpage
+\section{Weitere interessante Aufgaben}
+\begin{myexercise}\label{aufgabe:08}
+Zeichnen Sie einen Graphen mit fünf Knoten und sechs Kanten, der ein Eulerkreis enthält.
+\begin{myanswer}\label{aufgabe:08-sol}
+Ein solcher Graph ist beispielsweise:
+\begin{figure}[H]
+     \centering
+\resizebox{0.5\textwidth}{!}{%
+\begin{tikzpicture}[shorten >=1pt,auto,node distance=3cm, semithick, scale=0.1]
+  \node[state] (A)              {$A$};
+  \node[state] (B) [above right of=A] {$B$};
+  \node[state] (C) [below right of=B] {$C$};
+  \node[state] (D) [above right of=C] {$D$};
+  \node[state] (E) [below right of=D] {$E$};
+
+\path
+(A) edge (B)
+(A) edge (C)
+(B) edge (C)
+(C) edge (D)
+(C) edge (E)
+(D) edge (E);    
+\end{tikzpicture}
+}%
+\end{figure}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{aufgabe:09}
+Finden Sie ein konkretes Beispiel eines Graphen, der genau einen Knoten mit ungeradem Grad besitzt oder begründen Sie, warum es keinen solchen Graphen geben kann.
+\begin{myanswer}\label{aufgabe:09-sol}
+Einen solchen Graphen gibt es nicht! Wir beweisen dies in zwei Schritten.
+\begin{itemize}
+    \item Wir überlegen uns zunächst einmal wie gross die Summe der Grade aller Knoten in einem Graphen ist. Nehmen wir einen beliebigen Graphen und entfernen mental alle Kanten aus dem Graphen. Nun fügen wir Kante für Kante wieder zum Graphen hinzu. Jede Kante grenzt an genau zwei Knoten an. Das Hinzufügen einer Kante erhöht somit die Summe der Grade um genau zwei. Hat ein Graph also $n$-Kanten, dann ist die Summe aller Grade der Knoten dieses Graphen gegeben durch $2n$. Entscheidend für uns ist, dass dies eine gerade Zahl ist.
+    \item Jeder Knoten mit geradem Grad fügt eine gerade Zahl zur Gesamtsumme hinzu. Doch eine Summe gerader Zahlen ist noch immer gerade. Somit muss auch die Summe aller ungeraden Grade eine gerade Zahl sein. Dies ist aber offensichtlich genau dann der Fall, wenn es eine gerade Anzahl von Knoten mit ungeradem Grad im Graphen gibt.
+\end{itemize}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{aufgabe:10}
+(Für die besonders Schnellen)
+
+\noindent
+Ein Graph, indem jeder Knoten mit allen anderen Knoten verbunden ist, wird vollständiger Graph genannt. Finden Sie (ohne Beweis) eine einfache Formel für die Anzahl der Kanten, welche ein vollständiger Graph mit $n$ Knoten besitzt.
+\begin{myanswer}\label{aufgabe:10-sol}
+(ohne Beweis) Ein vollständiger Graph mit $n$ Knoten besitzt genau $n(n-1)/2$ Kanten.
+\end{myanswer}
+\end{myexercise}
+\newpage
+\section{Lösungsvorschläge zu den Übungen}
+\shipoutanswers

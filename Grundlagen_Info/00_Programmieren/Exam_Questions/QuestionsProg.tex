@@ -1,0 +1,671 @@
+\newtoggle{withbonus} \toggletrue{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Grundlagenfach Informatik}
+% name of the class
+\newcommand{\myclass}{2. Klassen}
+% set date
+\newcommand{\mydate}{09. November 2023}
+
+% default settings for listings
+\lstset{style=python, basicstyle=\scriptsize\ttfamily,escapechar=!,xleftmargin=1.5em,
+  frame=single,
+  framexleftmargin=1.5em}
+
+\clearpage
+\begin{questions}
+\section*{Listen}
+\question{\emoji{nerd-face} \textbf{Programmier-Aufgaben optimal lösen}}
+
+Ihr Lehrer hat ein eigenes Programmier-Buch entwickelt. Die darin enthaltenen Aufgaben enthalten jeweils eine Zeitangabe (benötigte Zeit um die Aufgabe zu lösen). Ihr Lehrer lässt Sie aus dem Buch die Aufgaben A.1 (5'), A.2 (15'), A.3 (15') und A.4 (10') lösen. Die Lektion dauert 60 Minuten.
+
+Aus eigener Erfahrung wissen Sie, dass Sie, wenn Sie nicht ausgeschlafen sind, genau doppelt so lange brauchen wie im Buch angegeben. Ebenso wissen Sie, dass Sie doppelt so lange brauchen, wenn Sie die Aufgabe nicht genau lesen. 
+
+Sie sind zwar ausgeschlafen, haben aber nur die ersten beiden Fragen genau durchgelesen, die letzten beiden haben Sie nur überflogen und haben somit doppelt so lange gebraucht, um sie zu lösen. 
+
+\begin{parts}
+	\part[2] Haben Sie es geschafft, alle Aufgaben zu lösen? Berechnen Sie die Antwort in Python, indem Sie eine \lstinline|repeat|-Schleife verwenden und reichen Sie Ihren Code ein.
+	\begin{solution}
+		Nein, um alle Aufgaben zu lösen, benötigen Sie 70 Minuten.
+\begin{lstlisting}
+zeit_aufgaben = [5, 15, 15, 10]
+ausgeschlafen = True
+genau_gelesen=[True, True, False, False]
+zeit = 0
+i=0
+repeat len(zeit_aufgaben):
+	zeit_aufgabe=zeit_aufgaben[i]
+	if not ausgeschlafen:
+		zeit_aufgabe*=2
+	
+	if not genau_gelesen[i]:
+		zeit_aufgabe*=2
+	
+	zeit+=zeit_aufgabe
+	i+=1
+
+print(zeit)
+\end{lstlisting}
+	\end{solution}
+	\part[2] Welche Aufgaben können Sie lediglich überfliegen, um alle Aufgaben noch in 60 Minuten zu lösen? Reichen Sie Ihren Code ein.
+	\begin{solution}
+		Um alle Aufgaben optimal zu lösen reichen 45 Minuten. Daher könnte man entweder Aufgabe 2 oder 3, oder Aufgaben 1 sowie 4 ungenau lesen und alle Aufgaben noch in der vorgegebenen Zeit abschliessen.		
+	\end{solution}
+\end{parts}
+\droptotalpoints
+
+\clearpage
+\question{\emoji{deciduous-tree} \textbf{Den Amazonas-Regenwald retten}}
+
+Sie haben durch einen Zufall eine Million Dollar gewonnen. Da Sie etwas Gutes für die Umwelt tun möchten, entscheiden Sie sich, ein Stück Regenwald im Amazonas unter Schutz zu stellen, um es vor Abholzung zu schützen. Da gewisse Hölzer teurer sind als andere, müssen Sie für gewisse Baumarten mehr zahlen als für andere, um sie unter Schutz zu stellen. Innerhalb des Gebiets, das Sie schützen möchten, gibt es folgende Baumarten:
+\begin{itemize}
+	\item Teure Bäume: 230\$ pro Baum, bei insgesamt 1'140 Bäumen 
+	\item Mittel-teure Bäume: 39\$ pro Baum, bei insgesamt 23'345 Bäumen
+	\item Preiswerte Bäume: 10\$ pro Baum, bei insgesamt 334 Bäumen
+	\item Günstige Bäume: 2\$ pro Baum, bei insgesamt 21'042 Bäumen
+\end{itemize}
+
+\begin{parts}
+	\part[2] Berechnen Sie mit einer \lstinline|repeat|-Schleife, wie viel Geld insgesamt benötigt würde, um alle Bäume unter Schutz zu stellen. Reicht das Geld, um alle Bäume unter Schutz zu stellen?
+	\begin{solution}
+		Es würden 1'218'079\$ benötigt, um alle Bäume unter Schutz zu stellen. Da wir nun eine Million Dollar besitzen, reicht das Geld also nicht, um alle Bäume zu schützen (s. Python-Lösung von Teil 2).
+	\end{solution}
+	\part[2] Welchen Prozentsatz vom Regenwald-Gebiet können Sie maximal mit Ihrem Geld unter Schutz stellen, wenn Sie zuerst die günstigeren und dann die teureren Bäume unter Schutz stellen? Jeder Baum bedeckt dieselbe Fläche (5 $m^2$).
+	\begin{solution}
+		Man kann 97.9\% des Waldes unter Schutz stellen, indem man die günstigeren Bäume zuerst ``kauft''.
+		\begin{lstlisting}
+# Kosten und Anzahl Bäume pro Kategorie (billig, preiswert, mittel-teuer, teuer)
+baeume_kosten = [2, 10, 39, 230]
+baeume_anzahl = [21042, 334, 23345, 1140]
+
+gesamtkosten = 0  # Kosten, um alle Bäume im Urwald zu retten
+geld = 1000000  # Gesamtes Geld, das investiert werden kann
+gesamtflaeche = 0  # Gesamte Urwaldfläche
+flaeche_gerettet = 0  # Fläche, die gerettet wird
+geld_aufgebraucht = False
+i = 0  # Index
+
+repeat len(baeume_kosten):
+    kosten_art = baeume_kosten[i]  # kosten für einen Baum der ART i
+    anzahl_art = baeume_anzahl[i]  # Anzahl Bäume der ART i
+
+    gesamtflaeche += 5*anzahl_art  # Fläche, die durch ALLE Bäume der ART i besetzt ist
+    # Kosten, um ALLE Bäume der ART i zu retten
+    gesamtkosten += anzahl_art*kosten_art
+
+    # berechne, wie viele Bäume der ART i gerettet werden können
+    anzahl_baeume_art_gerettet = 0
+    repeat:
+        if anzahl_baeume_art_gerettet == anzahl_art:
+            break
+        if geld < kosten_art:
+            break
+        flaeche_gerettet += 5
+        geld -= kosten_art
+        anzahl_baeume_art_gerettet += 1
+    i += 1
+
+
+print(gesamtflaeche)
+print(flaeche_gerettet)
+print(flaeche_gerettet/gesamtflaeche*100)
+print(gesamtkosten)
+\end{lstlisting}
+	\end{solution}
+\end{parts}
+\droptotalpoints
+
+\clearpage
+\question{\emoji{heart-with-arrow} \textbf{Unromantische Dating-App}}
+
+Sie entwickeln eine Dating-App, die sich an wissenschaftlichen Prinzipien orientiert. Sie funktioniert folgendermassen: Statt wie bei Tinder zu swipen, geben Sie jedem Kandidaten eine Note zwischen 1 und 10. Die Person gibt Ihnen ebenfalls eine Note zwischen 1 und 10. Sobald 10 Personen sich bewertet haben, werden Sie mit der passendsten Person ``gematched'' und Sie können sich schreiben. Um die passendste Person zu finden, wird Folgendes betrachtet:
+\begin{itemize}
+	\item Die 10 Noten, die Sie abgegeben haben (\lstinline|noten_von_mir = [...]|)
+	\item Die 10 Noten, die andere Personen für Sie abgegeben haben (\lstinline|noten_von_anderen=[...]|)
+	\item Der Score, um zu bestimmen, ob eine Person ein Match sein könnte:\\
+	 \lstinline|match=note_von_mir + note_von_person - abs(note_von_mir - note_von_person)|
+\end{itemize}
+
+\begin{parts}
+	\part[2] Berechnen Sie den Match für jede Person und bestimmen Sie, wer den höchsten Match hat, für folgende Noten:
+	
+\begin{lstlisting}
+dating_mann = ["James", "Johannes", "Adam", "Ian",
+               "Wilson", "Karl", "Bob", "Chris", "Charles"]
+noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
+noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
+\end{lstlisting}
+		Diese Daten bedeuten beispielsweise, dass Johannes Ihnen eine 2 gegeben hat, währenddem Sie ihm eine 3 gegeben haben. Der Matching-Score für Johannes wäre also $3+2-\underbrace{\abs{3-2}}_{1}=4$. Verwenden Sie in Ihrem Code eine \lstinline|repeat|-Schleife und eine Index-Variable. Reichen Sie Ihren Code ein.
+	\begin{solution}
+		Wilson ist der beste Match, mit einem Score von 14. 
+\begin{lstlisting}
+# Unromantische Dating-App
+dating_mann = ["James", "Johannes", "Adam", "Ian",
+               "Wilson", "Karl", "Bob", "Chris", "Charles"]
+noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
+noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
+
+bester_match = 0
+person_am_besten = ""
+
+i = 0
+
+repeat len(noten_von_mir):
+    ich = noten_von_mir[i]
+    er = noten_von_anderen[i]
+    match = (ich+er)-abs(ich-er)
+    if match > bester_match:
+        bester_match = match
+        person_am_besten = dating_mann[i]
+
+    i += 1
+
+print(person_am_besten, "score", bester_match)
+\end{lstlisting}
+	\end{solution}
+	\part[2] Wie Sie vermutlich wissen, sind Frauen selektiver auf Dating-Plattformen als Männer. Diesen Effekt wollen wir korrigieren, indem wir zuerst die Mittelwerte aller erhaltenen Noten sowie aller gegebenen Noten berechnen. Danach berechnen wir die Differenz beider Mittelwerte als \lstinline|differenz = schnitt_von_anderen - schnitt_von_mir|. Danach addieren wir diese Differenz zu jeder abgegeben Note, so dass am Ende der Durchschnitt der gegebenen und erhaltenen Noten derselbe ist. Wer ist nun der beste Match?
+	\begin{solution}
+		Der beste Match ist nun Charles mit einer Note von 20.
+\begin{lstlisting}
+# Unromantische Dating-App
+dating_mann = ["James", "Johannes", "Adam", "Ian",
+               "Wilson", "Karl", "Bob", "Chris", "Charles"]
+noten_von_mir = [2, 3, 2, 4, 7, 3, 3, 2, 7]
+noten_von_anderen = [5, 2, 4, 8, 9, 1, 6, 7, 10]
+
+bester_match = 0
+person_am_besten = ""
+
+durchschnitt_ajustieren = True
+if durchschnitt_ajustieren:
+    # Durchschnitt berechnen
+    i = 0
+    summe_er = 0
+    summe_ich = 0
+    repeat len(noten_von_mir):
+        summe_er += noten_von_anderen[i]
+        summe_ich += noten_von_mir[i]
+
+    schnitt_von_mir = summe_ich/len(noten_von_mir)
+    schnitt_von_anderen = summe_er/len(noten_von_anderen)
+    print(schnitt_von_mir, schnitt_von_anderen)
+    differenz = schnitt_von_anderen-schnitt_von_mir
+
+    # Daten ajustieren
+    i = 0
+    repeat len(noten_von_mir):
+        noten_von_mir[i] += differenz
+        i += 1
+
+# Match berechnen
+i = 0
+repeat len(noten_von_mir):
+    ich = noten_von_mir[i]
+    er = noten_von_anderen[i]
+    match = (ich+er)-abs(ich-er)
+    if match > bester_match:
+        bester_match = match
+        person_am_besten = dating_mann[i]
+
+    i += 1
+
+print(person_am_besten, "score", bester_match)
+\end{lstlisting}
+	\end{solution}
+\end{parts}
+\droptotalpoints
+
+\clearpage
+\question[2]{\emoji{money-bag} \textbf{Taschengeld}}
+
+Ihre Eltern geben Ihnen jeden Monat ein Taschengeld. Einen Teil dieses Gelds geben Sie jeweils für Essen, Schulbücher und weitere notwendige Gegenstände aus. Am Ende jedes Monats können Sie sich vom übriggebliebenen Geld einen (nicht dringend benötigten) Wunschgegenstand kaufen.
+
+Sie haben folgende priorisierte Wunschliste: 
+\begin{itemize}
+	\item Ein Buch (20.-)
+	\item Marken-Kleider (50.-)
+	\item Lese-Lampe (11.-)
+	\item Licht-Wecker (25.-)
+	\item Ein Game (32.-)
+	\item Mini-Roboter (35.-)
+	\item Comics (10.-)
+\end{itemize}
+
+Im letzten Jahr blieben Ihnen am Ende jedes Monats folgende Beträge übrig: 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+	Jan & Feb & Mar & Apr & Mai & Jun & Jul & Aug & Sep & Okt & Nov & Dez \\\hline
+	20.- & 50.- & 33.- & 0.- & 7.- & 6.- & 10.- & 13.- & 20.- & 4.- & 8.- & 5.-
+	\end{tabular}
+\end{table}
+
+Ihre Strategie ist folgende: Sie schauen sich jeden Monat Ihre gewünschten Gegenstände an. Falls Sie genügend Geld haben, kaufen Sie den am höchsten priorisierten Gegenstand und fügen ihn Ihrem Inventar hinzu. Sie dürfen maximal einen Gegenstand pro Monat kaufen. Ebenfalls entfernen Sie den Gegenstand von Ihrer Wunschliste mit dem Befehl \lstinline|liste.remove(gegenstand)|. Der Rest des Geldes, den Sie nicht verwendet haben, geht am Monatsende jeweils unwiederbringlich in Ihr Sparschwein.
+
+Wie sieht Ihr Inventar am Ende des Jahres aus? Verwenden Sie eine Schleife, um an jedem Monatsende Gegenstände zu kaufen, sowie den Befehl \lstinline|.append|, um Gegenstände, die Sie sich leisten können, Ihrem Inventar hinzuzufügen. Können Sie sich innerhalb eines Jahres alle Gegenstände kaufen?
+	\begin{solution}
+		Es reicht für das Buch, Kleider, die Lese-Lampe und die Comics.
+		
+    \begin{lstlisting}
+    wunsch_objekte = ["Buch", "Kleider", "Lese-Lampe",
+                      "Wecker", "Game", "Roboter", "Comics"]
+    wunsch_kosten = [20, 50, 11, 25, 32, 35, 10]
+    geld_monat = [20, 50, 33, 0, 7, 6, 10, 13, 20, 4, 8, 5]
+    meine_objekte = []
+
+    for geld in geld_monat:
+        kann_kaufen = True
+        while kann_kaufen and len(wunsch_objekte) > 0:
+            kann_kaufen = False
+            i = 0
+            repeat len(wunsch_objekte):
+                if wunsch_kosten[i] <= geld:
+                    meine_objekte.append(wunsch_objekte[i])
+                    geld -= wunsch_kosten[i]
+                    wunsch_objekte.remove(wunsch_objekte[i])
+                    wunsch_kosten.remove(wunsch_kosten[i])
+                    kann_kaufen = True
+                    break
+                i += 1
+
+    print(meine_objekte)
+    \end{lstlisting}
+
+  \end{solution}
+
+\clearpage
+\question[2]{\emoji{pirate-flag} \textbf{Black Friday Shopping}}
+
+Sie waren am Black Friday im Supermarkt shoppen. Als Sie an der Kasse ankommen, gibt es leider ein Problem: weil im Python-Code für die Manor-Kassen ein Stück Code fehlt, werden die Rabatte nicht angewandt. Statt dem reduzierten Preis sollten Sie angeblich den richtigen Preis zahlen! Zum Glück sind Sie ein(e) professionelle(r) Programmierer(in) und können das Problem schnell lösen: die Preis- und Rabattliste existieren im System bereits, nur sind die richtigen Preise nicht berechnet, weil ein Stück Code verloren gegangen ist:
+\begin{lstlisting}
+preise_normal = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95]
+rabatte_blackfriday_prozent = [30, 40, 30, 35, 20, 15, 35]
+preise_blackfriday = [] # hier sollte der rabattierte Preis berechnet werden!
+\end{lstlisting}
+Berechnen Sie die Black-Friday-Preise für alle Elemente im Laden. Der rabattierte Preis wird folgendermassen berechnet:\\
+	\lstinline|preis_blackfriday = preis_normal * (1 - rabatt_prozent / 100)|
+	\begin{solution}
+    \begin{lstlisting}
+    preise_normal = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95]
+    rabatte_blackfriday_prozent = [30, 40, 30, 35, 20, 15, 35]
+    preise_blackfriday = []
+
+    i = 0
+    repeat len(preise_normal):
+        preise_blackfriday.append(
+            preise_normal[i]*(1-rabatte_blackfriday_prozent[i]/100))
+        i += 1
+
+    print(preise_blackfriday)
+    \end{lstlisting}
+	\end{solution}
+
+\clearpage
+\question[2]{\emoji{desert-island} \textbf{Schatzsuche auf einer einsamen Insel}}
+
+Sie sind auf einer einsamen Insel gestrandet und suchen verzweifelt nach Nahrung. Nachdem Sie herumgelaufen sind, haben Sie bemerkt, dass Ihr Strandungsort nicht aus einer Insel, sondern aus drei über einen engen Landkanal miteinander verbundenen Inseln besteht:
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\path[mindmap,concept color=black,text=white]
+		node[concept] {Insel 1}
+		[clockwise from=0]
+		child[concept color=red] { node[concept] {Insel 2} }
+		child[concept color=orange] { node[concept] {Insel 3} };
+	\end{tikzpicture}
+\end{figure}
+Auf Inseln 2 und 3 sind jeweils 10 Schatzkisten, die sich mit einem Zahlencode öffnen lassen. Auf Insel 1 finden Sie 10 Zettel mit jeweils einer Zahl. Als Sie diese Zahlen bei den Schatzkisten auf Insel 2 ausprobieren, merken Sie erfreut, dass sich die Schatztruhen mit diesen Zahlen öffnen lassen. Allerdings finden Sie dort wieder nur weitere Zettel mit jeweils einer Zahl. In einer der Schatzkisten auf Insel 2 finden Sie zudem einen weiteren Zettel, auf dem Folgendes steht:\\
+
+``\textit{Die Schatzkisten auf Insel 3 lassen sich öffnen mit dem Produkt zweier Zettel: Ein Zettel muss von Insel 1 kommen und einer von Insel 2. Bilden Sie die Produkte von jedem Zettel aus Insel 1 mit jedem Zettel von Insel 2. Von allen möglichen Produkten sind diejenigen Zahlen, die sich durch 7 teilen lassen, mögliche Schlüssel für die Schatzkisten auf Insel 3. Hier einige Beispiele:\\
+Zettel 1: 14, Zettel 2: 3 $\rightarrow$ Produkt = 42, ist durch 7 teilbar und somit ein Schlüssel.\\
+Zettel 1: 11, Zettel 2: 2 $\rightarrow$ Produkt = 22, ist nicht durch 7 teilbar und somit kein Schlüssel.}''\\
+
+Da Sie glücklicherweise auch noch Ihren Computer auf der Insel haben, berechnen Sie in Python alle möglichen Produkte zweier Zettel und geben die Summen aus, die durch 7 teilbar sind. Sie haben auf Inseln 1 und 2 folgende Zettel gefunden:
+\begin{lstlisting}
+schluessel_i1 = [99, 5, 23, 5, 66, 88, 133, 344, 345, 354, 33]
+schluessel_i2 = [44, 33, 526, 131, 30, 103, 44, 97, 193, 10]
+\end{lstlisting}
+Finden Sie alle 10 Schlüssel, die durch 7 teilbar sind.
+
+\begin{solution}
+\begin{lstlisting}
+schluessel_i3 = [99, 5, 23, 5, 66, 88, 133, 344, 345, 354, 33]
+schluessel_i2 = [44, 33, 526, 131, 30, 103, 44, 97, 193, 10]
+summen = []
+for s_i3 in schluessel_i3:
+    for s_i2 in schluessel_i2:
+        summen.append(s_i3*s_i2)
+
+print(summen)
+
+summen_teilbar_durch_sieben = []
+for s in summen:
+    if s % 7 == 0:
+        summen_teilbar_durch_sieben.append(s)
+
+print(summen_teilbar_durch_sieben)
+\end{lstlisting}
+\end{solution}
+
+\clearpage
+\question[2]{\emoji{robot} \textbf{R2-D2}}
+
+Der Mikrocontroller einer R2-D2 Roboter-Einheit wurde beschädigt. Der Roboter kann deshalb nur noch einzelne, geradlinige \enquote{Schritte} nach links (l), rechts (r), oben (o) oder unten (u) (um jeweils eine Längeneinheit) durchführen. Die Bewegungsanweisung erhält der Roboter in Form des Strings \lstinline|bewegung|. Der String \lstinline|bewegung = 'lollru'| würde zum Beispiel dem Bewegungsablauf links, oben, links, links, rechts und unten (um jeweils eine Längeneinheit) entsprechen. Die R2-D2-Einheit bewegt sich auf dem zweidimensionalen Koordinatensystem und startet im Ursprung $(0,0)$.
+
+\noindent
+Schreiben Sie eine Python-Funktion \lstinline|def r2d2(bewegung)|, welche für eine gegebene beliebige Be\-we\-gungs\-an\-wei\-sung \lstinline|bewegung| entscheidet, ob sich der Roboter nach den Bewegungen wieder im Ursprung befindet (\lstinline|return True|) oder nicht (\lstinline|return False|). Hinweis: Auf die einzelnen Buchstaben eines Strings kann ebenso zugegriffen werden wie auf Listenelemente. Falls zum Beispiel \lstinline|wort = "Hallo"|, dann ist \lstinline|wort[0] == "H", wort[1], == "a"| und so weiter. Wie auch bei Listen, kann mit dem Befehl \lstinline|len(wort)| die Länge (Anzahl Buchstaben) eines Worts bestimmt werden.
+
+\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
+Beispiel 1:
+Input: bewegung = 'uurol'
+Output: False
+
+Beispiel 2:
+Input: bewegung = 'rloulr'
+Output: True
+\end{lstlisting}
+
+\begin{solution}
+\begin{lstlisting}
+def count_symbol(symbol, word):
+    count = 0
+    for buchstabe in word:
+        if buchstabe == symbol:
+            count += 1
+    return(count)
+
+
+def r2d2(move):
+    l = count_symbol('l', move)
+    r = count_symbol('r', move)
+    o = count_symbol('o', move)
+    u = count_symbol('u', move)
+    if (l-r == 0 and o-u == 0):
+        return True
+    else:
+        return False
+\end{lstlisting}
+\end{solution}
+
+\clearpage
+\question[2]{\emoji{plus} \textbf{Summanden}}
+
+Gegeben sei eine Liste \lstinline|A| von ganzen Zahlen der Länge $n$ und eine angestrebte Zahl \mbox{\lstinline|target|.} Schreiben Sie eine Python-Funktion \lstinline|target_sum(A,target)|, die zwei Zahlen \lstinline|a| und \lstinline|b| in \lstinline|A| ermittelt, welche sich zu \lstinline|target| addieren. Die Python-Funktion soll die Indizes von \lstinline|a| und \lstinline|b| zurück geben. Es kann davon ausgegangen werden, dass jede Eingabe genau eine solche Lösung zulässt (es existiert eine Lösung und sie ist eindeutig). Jedes Element der Liste darf nur einmal in der Summe verwendet werden: Das heisst \lstinline|[i,j]| mit \lstinline|target == A[i] + A[j]| für \lstinline|i| $\neq$ \lstinline|j| wäre eine gültige Lösung des Problems, aber \lstinline|[i,i]| mit \lstinline|target == A[i] + A[i]| nicht.
+\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
+Beispiel 1
+Input: A = [8,3,5,9,11,-2], target = 1
+
+Output: [1,5], da die Summe von A[1] = 3 und
+        A[5] = -2 gleich 1 (target) ist
+
+
+Beispiel 2
+Input: A = [2,8,5,3,2], target = 4
+
+Output: [0,4], da die Summe von A[0] = 2 und
+        A[4] = 2 gleich 4 (target) ist
+\end{lstlisting}
+
+
+\begin{solution}
+Wir betrachten jedes Element in der Liste und schauen, ob es ein weiteres Element gibt, sodass die Summe der Zwei Elemente dem \lstinline|target| entspricht.
+\begin{lstlisting}
+def target_sum(A, target):
+    n = len(A)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if (A[i] + A[j] == target):
+                return([i, j])
+\end{lstlisting}
+\end{solution}
+
+\clearpage
+\question[2]{\textbf{\emoji{turtle} Gesamtlänge der Spirale}\\}
+Wir wollen mit \lstinline|gturtle| eine Vieleck-Spirale zeichnen, die sich \textit{n} Umdrehungen macht. Die Anzahl Ecken (\lstinline|n_ecken|) , die Länge des ersten Strichs (\lstinline|laenge|) , die Vergrösserung (\lstinline|vergroesserung|) sowie die Anzahl Umdrehungen (\lstinline|n_spiralen|) sollen frei wählbar sein. Für \lstinline|ecken=5| und \lstinline|n_spiralen=3| soll folgendes Bild entstehen:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.3\textwidth]{Grundlagen_Info/00_Programmieren/Exam_Questions/Figures/spirale53}
+\end{figure}
+
+Die Gesamtdistanz, welche durch die Turtle insgesamt zurückgelegt wurde, soll dabei berechnet, zurückgegeben und in einer Variable gespeichert werden. Der Wert der Variable soll nach dem Aufruf der Funktion gedruckt werden.
+
+\emoji{trophy} \textbf{Challenge}:
+\begin{itemize}
+	\item Falls \lstinline|n_ecken| 1 oder 2 ist, soll eine Fehlermeldung ausgegeben werden und nichts gezeichnet werden.
+	\item Vergrössern Sie jede Linie um einen unterschiedlichen Faktor. Falls Sie z.B. eine Dreieck-Spirale haben, soll sich Linie 1 um 1.2, Linie 2 um 1.5 und Linie 3 um 1.1 vergrössern. Dieses Muster soll sich bei jeder Umdrehung wiederholen.
+\end{itemize}
+\begin{solution}
+Folgende Lösung enthält alle Bonus-Elemente:
+\begin{lstlisting}[escapechar=@]
+from gturtle import *
+makeTurtle()
+hideTurtle()
+
+
+def vieleck_spirale(n_ecken, laenge, vergroesserung, n_spiralen, inc_liste=None):
+    if n_ecken == 1 or n_ecken == 2:
+        return "n_ecken muss grösser als 2 sein"
+    gesamtdistanz = 0
+
+    repeat n_spiralen:
+        i = 0
+        repeat n_ecken:
+            fd(laenge)
+            gesamtdistanz += laenge
+            rt(360/n_ecken)
+            if inc_liste is not None:
+                if len(inc_liste) != n_ecken:
+                    return "Liste muss so lange wie n_ecken sein"
+                laenge *= inc_liste[i]
+                i += 1
+            else:
+                laenge += vergroesserung
+
+    return(gesamtdistanz)
+
+
+#gesamtdistanz = vieleck_spirale(5,10,10,3, [1,1.2,1.1,2.1,1.2])
+gesamtdistanz = vieleck_spirale(5, 10, 10, 3)
+print(gesamtdistanz)
+\end{lstlisting}
+\end{solution}
+
+\clearpage
+\question[2]{\emoji{window} \textbf{Dreierfenster}}
+
+Gegeben sei eine Liste \lstinline|A| von ganzen Zahlen mit mindestens drei Elementen. Schreiben Sie eine
+TigerJython-Funktion \lstinline|def dreierfenster(A)|, die stets jeweils Gruppen (\enquote{Dreierfenster}) von drei
+benachbarten Elementen von \lstinline|A| summiert und diese Summen in einer Liste \lstinline|dreiersummen| abspeichert.
+Diese Liste \lstinline|dreiersummen| soll schliesslich durch einen \lstinline|print| ausgegeben werden. Für die gegebene
+Liste \lstinline|A = [3, 4, 1, 6, -2]| zum Beispiel, existieren genau die folgenden drei Dreierfenster:
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (leftb) at (-3,1);
+      \coordinate (n0) at (-2,1);
+      \coordinate (n1) at (-1,1);
+      \coordinate (n2) at (0,1);
+      \coordinate (n3) at (1,1);
+      \coordinate (n4) at (2,1);
+      \coordinate (rightb) at (3,1);
+
+      \node at (leftb) {\verb|[|};
+      \node at (n0) {$3$,};
+      \node at (n1) {$4$,};
+      \node at (n2) {$1$,};
+      \node at (n3) {$6$,};
+      \node at (n4) {$-2$};
+      \node at (rightb) {\verb|]|};
+
+      \node[fit=(n0)(n2), draw=Blue, inner sep=10pt, label={below:$= \blue{8}$}] {};
+    \end{tikzpicture}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (leftb) at (-3,1);
+      \coordinate (n0) at (-2,1);
+      \coordinate (n1) at (-1,1);
+      \coordinate (n2) at (0,1);
+      \coordinate (n3) at (1,1);
+      \coordinate (n4) at (2,1);
+      \coordinate (rightb) at (3,1);
+
+      \node at (leftb) {\verb|[|};
+      \node at (n0) {$3$,};
+      \node at (n1) {$4$,};
+      \node at (n2) {$1$,};
+      \node at (n3) {$6$,};
+      \node at (n4) {$-2$};
+      \node at (rightb) {\verb|]|};
+
+      \node[fit=(n1)(n3), draw=Blue, inner sep=10pt, label={below:$= \blue{11}$}] {};
+    \end{tikzpicture}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (leftb) at (-3,1);
+      \coordinate (n0) at (-2,1);
+      \coordinate (n1) at (-1,1);
+      \coordinate (n2) at (0,1);
+      \coordinate (n3) at (1,1);
+      \coordinate (n4) at (2,1);
+      \coordinate (rightb) at (3,1);
+
+      \node at (leftb) {\verb|[|};
+      \node at (n0) {$3$,};
+      \node at (n1) {$4$,};
+      \node at (n2) {$1$,};
+      \node at (n3) {$6$,};
+      \node at (n4) {$-2$};
+      \node at (rightb) {\verb|]|};
+
+      \node[fit=(n2)(n4), draw=Blue, inner sep=10pt, label={below:$= \blue{5}$}] {};
+    \end{tikzpicture}
+\end{figure}
+
+\begin{lstlisting}[numbers=none,framexleftmargin=0em,xleftmargin=0em]
+Beispiel 1
+Input: A = [3, 4, 1, 6, -2]
+Output: [8, 11, 5]
+
+Beispiel 2
+Input: A = [4, 1, 9]
+Output: [14]
+
+Beispiel 3
+Input: A = [7, 6, 5, 4, 3, 2, 1, 0]
+Output: [18, 15, 12, 9, 6, 3]
+\end{lstlisting}
+
+\begin{solution}
+\begin{lstlisting}
+def dreierfenster(A):
+    dreiersummen = []
+    i = 0
+    while i < len(A)-2:
+        wert = A[i] + A[i+1] + A[i+2]
+        dreiersummen.append(wert)
+        i += 1
+    dreiersummen.sort()
+    print(dreiersummen)
+\end{lstlisting}
+\end{solution}
+
+\clearpage
+\question[2]{\textbf{\emoji{tram} Tram-Fahrplan}\\}
+Sie leiten die Entwicklung des Tram-Fahrplans in der Stadt Zürich. Die aktuelle Glatttalbahn (Tram 12) fährt von Stettbach, bzw. Oerlikon, bis zum Flughafen (s. folgende Abbildungen). Ignorieren Sie die blaue Linie, die bei ``Glattpark'' nach rechts abbiegt.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.6\linewidth]{Grundlagen_Info/00_Programmieren/Figures/Glattalbahn_vbg}
+\end{figure}
+
+Sie haben sich folgende Stationen und die Fahrzeit vom Anfangsort (Sternen Oerlikon) zu jeder folgenden Station bis und mit ``Zürich Flughafen Fracht'' in Sekunden notiert:
+
+\begin{lstlisting}
+stationen = ["Sternen", "Messe", "Leutschenbach", "Oerlikerhus", "Glattpark", "Lindbergh", "Glattbrugg", "Bäuler", "Unterriet", "Kloten", "Flughafen", "Flughafen Fracht"]
+dauer = [0, 60, 122, 185, 241, 363, 543, 603, 666, 729, 786, 845]
+\end{lstlisting}
+
+Nehmen Sie einfachheitshalber an, dass alle Strecken immer in der Richtung Oerlikon $\rightarrow$ Flughafen zurückgelegt zurücklegt (Berechnungen müssen Sie nur in dieser Richtung machen).
+
+(1 Punkt) Schreiben Sie eine Definition, um die Fahrtzeit von einer beliebigen Station zu einer anderen zu berechnen. 
+
+(1 Punkt) Die Definition soll die Reisezeit in Minuten (ohne Dezimalstellen) von einer beliebigen Station zu einer anderen an das Hauptprogramm zurückgeben. Geben Sie das Resultat \textit{im Hauptprogramm} ()und nicht in der Definition) aus!
+
+(1 Punkt) Die Glattal-Tramlinie soll erweitert werden um die folgenden Stationen:
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{Grundlagen_Info/00_Programmieren/Figures/GTB_Karte_mit_Legende_Web_v02}
+\end{figure}
+
+Entfernen Sie die Station ``Flughafen Fracht'' aus der Liste \lstinline|stationen| und fügen Sie die neuen Stationen (Obstgartenstrasse) sowie die Reisezeiten (erfundene Werte) in Ihren Listen \lstinline|stationen| und \lstinline|dauer| ein.
+
+
+
+
+\begin{solution}
+\begin{lstlisting}
+def berechne_dauer(station_start, station_ende, stationen, l_dauer):
+    # berechne Indizes der Start- und Endstationen
+    i_start = l_stationen.index(station_start, 0, len(l_stationen))
+    i_end = l_stationen.index(station_ende, 0, len(l_stationen))
+    
+    # berechne Dauer zwischen Start und Ende
+    dauer_gesamt = l_dauer[i_end] - l_dauer[i_start]
+    # konvertiere Resultat in Minuten (Ganzzahl)
+    dauer_gesamt_min = dauer_gesamt//60
+    
+    return(dauer_gesamt_min)
+
+l_stationen = ["Sternen", "Messe", "Leutschenbach", "Oerlikerhus", "Glattpark", "Lindbergh", "Glattbrugg", "Bäuler", "Unterriet", "Kloten", "Flughafen", "Flughafen Fracht"]
+l_dauer = [0, 60, 122, 185, 241, 363, 543, 603, 666, 729, 786, 845]
+
+# Aufgabe a und b
+dauer_reise_min = berechne_dauer("Glattpark", "Lindbergh", l_stationen, l_dauer)
+print(dauer_reise_min)
+
+# Aufgabe c
+l_stationen.pop()
+l_stationen += ["Obstgarten","Stadthaus","Mühle", "Steinacker", "Oberfeld"]
+l_dauer += [919,1011,1102,1209,1308,1400]
+\end{lstlisting}
+\end{solution}
+
+\question[2]{\emoji{train} Zugreise}
+Schreiben Sie eine Definition \lstinline|reise_zu_bahnhof(start_bahnhof, stationen, anzahl_stopps)|, welche einen Startbahnhof (Text), eine Liste von Bahnhöfen und die Anzahl Stopps als Parameter nimmt und den neuen Bahnhof zurückgibt.
+\begin{itemize}
+\item Falls der Startbahnhof nicht Teil der Liste von Bahnhöfen (\lstinline|stationen|) ist, soll zurückgegeben werden ``Kann Start-Bahnhof nicht in Stationen finden''.
+\item Falls der Zielbahnhof weiter ist als möglich soll ebenfalls eine Fehlermeldung ausgegeben werden
+\item Andernfalls soll die Definition den neuen Bahnhof ausgeben wo man ankommt nach \lstinline|anzahl_stopps|.
+\end{itemize}
+\begin{solution}
+\begin{lstlisting}
+def reise_zu_bahnhof(start_bahnhof, stationen, anzahl_stopps):
+    if start_bahnhof not in stationen:
+        return "Kann Start-Bahnhof nicht in Stationen finden"
+    
+    # teste, ob man überhaupt noch anzahl_stopps vorwärts fahren kann
+    position_start = stationen.index(start_bahnhof, 0, len(stationen))
+    if (position_start + anzahl_stopps) > len(stationen) - 1:
+        return "Kann nicht so weit (vorwärts) reisen"
+
+    # teste, ob man überhaupt noch anzahl_stopps vorwärts fahren kann
+    if (position_start + anzahl_stopps) < 0:
+        return "Kann nicht so weit (rückwärts) reisen"
+
+    return stationen[position_start+anzahl_stopps]
+
+
+stationen = ["Bern", "Zürich", "Zürich Oerlikon", "Zürich Flughafen", "Winterthur", "St. Gallen"]
+neue_station = reise_zu_bahnhof("Zürich", stationen, -1)
+print(neue_station)
+\end{lstlisting}
+content
+\end{solution}
+
+\end{questions}

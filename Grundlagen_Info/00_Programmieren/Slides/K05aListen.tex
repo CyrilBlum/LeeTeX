@@ -1,0 +1,217 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Programmieren]{Programmieren: Datenstrukturen}
+
+\subtitle{Listen}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl}
+
+\institute[KLW] % (optional)
+{
+	Fachschaft Informatik\\
+	Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{\thelogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}{Umgang mit grossen Datenmengen}
+	Wo überall werden grosse Datenmengen gespeichert?
+	\begin{itemize}[<+->]
+		\item[\emoji{bar-chart}] \textbf{Notenübersicht einer Klasse}: Alle Prüfungsnoten der SchülerInnen speichern, sortieren oder den Durchschnitt berechnen.
+		\item[\emoji{musical-notes}] \textbf{Playlist auf dem Handy}: Viele Songs verwalten, nach Titel suchen oder nach Interpret sortieren.
+		\item[\emoji{trophy}] \textbf{Ergebnisse eines Sportturniers}: Punkte aller Teams speichern und die Rangliste erstellen.
+		\item[\emoji{shopping-cart}] \textbf{Einkaufsliste}: Mehrere Produkte speichern, abhaken oder nach Preis sortieren.
+		\item[\emoji{bar-chart}] \textbf{Umfrageergebnisse}: Antworten vieler Personen auswerten, z.B. Häufigkeiten zählen.
+	\end{itemize}
+\end{frame}
+\begin{frame}{Umgang mit grossen Datenmengen}
+	\begin{itemize}
+		\item<1-> \textbf{Big Data}-Analysen erfordern die Verarbeitung von sehr vielen Zahlen.
+		\item<2-> Bisher kennen wir nur Variablen, die \emph{einen} Wert speichern können.
+		\item<3-> Welche Variablen-Typen kennen Sie?
+		      \only<4->{
+			      \begin{table}[H]
+				      \centering
+				      \begin{tabular}{r|l}
+					      \textbf{Typ}            & \textbf{Beispiel}             \\\midrule\midrule
+					      Zahl                    & \lstinline|x = 3|             \\\midrule
+					      Text                    & \lstinline|name = "Hallo"|    \\\midrule
+					      Wahrheitswert (Boolean) & \lstinline|ist_fertig = True| \\
+				      \end{tabular}
+			      \end{table}
+		      }
+		\item<5-> Aber: Wie speichert man viele Werte gleichzeitig?
+		\item<6-> Lösung: \textbf{Listen}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Beispiel}{Viele Zahlen summieren}
+	\begin{columns}
+		\begin{column}{.5\textwidth}
+			\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+# zwei Zahlen summieren
+def summiere(x1, x2):
+	summe = x1 + x2
+	print(summe)
+	
+summiere(5, 16)
+\end{lstlisting}
+		\end{column}
+
+		\begin{column}{.5\textwidth}
+			\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+# viele Zahlen summieren
+def summiere(x1, x2, x3, x4, ...):
+	summe = x1 + x2 + x3 + x4 + ...
+	print(summe)
+	
+summiere(3, 18, 2, 4, ...)?
+\end{lstlisting}
+		\end{column}
+	\end{columns}
+	\begin{itemize}[<+->]
+		\item Wie kann man \lstinline|summiere(x1, x2, …, x100)| umsetzen? $\rightarrow$ umständlich!
+		\item \lstinline|summiere(...)| für eine beliebige Anzahl von Zahlen? $\rightarrow$ unmöglich mit aktuellem Wissen!
+		\item Lösung: \textbf{Listen}
+	\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Listen}{Listen erstellen und abfragen}
+	\begin{lstlisting}
+# Neue Variable des Typs Liste erstellen
+daten = [4, 2, -6] 
+print(daten[0])   # 4
+print(daten[1])   # 2
+...               # usw.
+\end{lstlisting}
+
+	\begin{itemize}[<+->]
+		\item Wie viele Werte enthält eine Liste?
+		      \begin{itemize}
+			      \item Automatisch berechnet mit: \lstinline|len(daten) # 3|
+			      \item Erstes Element der Liste: \lstinline|daten[0]|
+			      \item Letztes Element der Liste: \lstinline|daten[len(daten)-1]|
+			      \item Weshalb nicht \lstinline|daten[len(daten)]|?
+		      \end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Listen}{Listen verändern}
+	\begin{lstlisting}
+# Neue Variable des Typs Liste erstellen
+daten = [4, 2, -6, 17, 5, 12] 
+print(daten)   # 4, 2, -6, 17, 5, 12
+daten[3] = 20  # Ein Element der Liste wird verändert
+print(daten)   # ?
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Listen}{Listen verändern}
+	\begin{lstlisting}
+# Neue Variable des Typs Liste erstellen
+daten = [4, 2, -6, 17, 5, 12] 
+print(daten)   # 4, 2, -6, 17, 5, 12
+daten[3] = 20  # Ein Element der Liste wird verändert
+print(daten)   # 4, 2, -6, 20, 5, 12
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Listen}{Index}
+	\begin{lstlisting}
+# Neue Variable des Typs Liste erstellen
+daten = [4, 2, -6, 17, 5, 12] 
+index = 0
+for _ in range(6):
+	print("Das Elöement an der Stelle", index, "ist:", daten[index])   # 4
+	# index wird um 1 erhöht
+	index += 1
+
+print(daten)
+\end{lstlisting}
+
+
+	\begin{itemize}[<+->]
+		\item Wozu könnte die Variable \lstinline|index| dienen?
+		\item Index ist eine Hilfsvariable (\enquote{\textbf{Diener}}) und hat \textbf{keine Bedeutung}!
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Durch jedes Element in einer Liste durchgehen}{Flexibler Summen-Befehl (Möglichkeit 1/2, mit Kommentar)}
+	\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/summe.py}
+\end{frame}
+
+
+\begin{frame}[fragile]{Auftrag}
+	\begin{itemize}
+		\item \readbox{das Kapitel 6 (Datenstrukturen)}
+		\item \readbox{Beispiel 6.1}
+		\item \aufgabebox{Aufgaben 6.1 - 6.8}
+	\end{itemize}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c||c|c}
+			                 & [               & ]               \\\midrule\midrule
+			\textbf{Windows} & \keys{\AltGr+ü} & \keys{\AltGr+!} \\\midrule
+			\textbf{MacOS}   & \keys{\Alt+5}   & \keys{\Alt+6}   \\
+		\end{tabular}
+		\caption*{Tastatur: Eckige Klammern}
+	\end{table}
+\end{frame}
+
+\begin{frame}{Appendix}
+	
+\end{frame}
+\begin{frame}[fragile]{4 Fehler}
+	Wir wollen jedes Element von \lstinline|daten| um 2 vergrössern
+	\begin{lstlisting}
+daten = [4, 2, -6, 17, 5, 12] 
+index = 1
+for _ in range(6):
+	index += 1
+	
+print(daten)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{4 Fehler}{Korrigiert}
+	Wir wollen jedes Element von \lstinline|daten| um 2 vergrössern
+	\begin{lstlisting}
+daten = [4, 2, -6, 17, 5, 12] 
+index = 0
+for _ in range(len(daten)):
+	daten[index] += 2
+	index += 1
+	
+print(daten)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Skalarprodukt}
+	Wo wird das Skalarprodukt verwendet?
+	\begin{table}[H]
+		\begin{tabular}{c||c|c}
+			\textbf{Produkt} & \textbf{Menge} \only<2->{\lstinline|m|} & \textbf{Preis} \only<2->{\lstinline|p|} \\\midrule\midrule
+			\emoji{banana}   & 800 g                                   & 2.- / Kg                                \\\midrule
+			\emoji{apple}    & 1200 g                                  & 2.50 / Kg                               \\\midrule
+			\emoji{peach}    & 2300 g                                  & 5.- / Kg                                \\
+		\end{tabular}
+	\end{table}
+	\only<1>{Wie berechnen wir den \textbf{Gesamtpreis?}}
+	\only<2>{\textbf{Skalarprodukt}: \lstinline|m[0]*p[0] + m[1]*p[1] + ... + m[-1]*p[-1]|}
+\end{frame}

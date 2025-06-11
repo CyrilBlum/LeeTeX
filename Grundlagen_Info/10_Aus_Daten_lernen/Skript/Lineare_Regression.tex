@@ -1,0 +1,355 @@
+\chapter{Lineare Regression}
+
+Eine häufige Aufgabe im Bereich der künstlichen Intelligenz besteht darin, für unbekannte Datenpunkte Vorhersagen zu treffen. In diesem Kapitel beschäftigen wir uns mit der linearen Regression, einer der grundlegendsten und am häufigsten verwendeten Methoden zur Vorhersage von Werten.
+
+\section{Grundlagen der linearen Regression}
+
+\begin{mydefinition}[Lineare Regression]
+\textbf{Lineare Regression} ist ein Verfahren zur Vorhersage einer abhängigen Variablen auf Basis einer unabhängigen Variablen. Dabei wird eine Gerade (lineare Funktion) durch die Datenpunkte gelegt, die den besten Fit (die beste \enquote{Passung}) zu den Datenpunkten hat. Diese Gerade wird als Regressionsgerade bezeichnet.
+
+Die Regressionsgerade hat die Form: $y = mx + q$, wobei:
+\begin{itemize}
+	\item $y$ die abhängige Variable ist (die Variable, die wir vorhersagen wollen)
+	\item $x$ die unabhängige Variable ist (die Variable, die wir zur Vorhersage verwenden)
+	\item $m$ die Steigung der Geraden ist
+	\item $q$ der y-Achsenabschnitt ist (der Wert von $y$, wenn $x = 0$)
+\end{itemize}
+
+Der Begriff \textit{Regression} wurde erstmals vom britischen Statistiker Francis Galton verwendet, der die \enquote{Rückkehr zum Mittelwert} (engl. \enquote{regression toward the mean}) beschrieb. In der modernen Statistik bezieht sich der Begriff auf verschiedene Methoden zur Modellierung von Beziehungen zwischen Variablen.
+\end{mydefinition}
+
+\cref{fig:schlafdauerNote} zeigt ein Beispiel für ein Streudiagramm, das den Zusammenhang zwischen Schlafdauer und Note darstellt. Wir können beobachten, dass es einen positiven Zusammenhang zwischen diesen beiden Variablen gibt: Je mehr Schlaf, desto besser die Note. Aber wie können wir diesen Zusammenhang nutzen, um Vorhersagen zu treffen?
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Grundlagen_Info/10_Aus_Daten_lernen/Figures/schlafdauer_vs_note.pdf}
+	\caption{Schlafdauer und Note}
+	\label{fig:schlafdauerNote}
+\end{figure}
+
+Beispielsweise könnten wir versuchen, folgende Frage zu beantworten: \textbf{Welche Note werde ich erreichen, wenn ich im Schnitt 8 Stunden pro Nacht schlafe?}
+
+Bevor wir mit der linearen Regression beginnen, sollten jedoch noch die Begriffe \textbf{unabhängige} und \textbf{abhängige Variable} geklärt werden.
+
+\begin{mydefinition}[Unabhängige und abhängige Variable]\leavevmode
+\begin{itemize}
+	\item Die \textbf{unabhängige Variable} (auch Prädiktor- oder Eingabevariable genannt) ist die Variable, die wir kontrollieren oder messen, um eine Vorhersage zu treffen. In unserem Beispiel ist die Schlafdauer die unabhängige Variable.
+	\item Die \textbf{abhängige Variable} (auch Zielvariable oder Ausgabevariable genannt) ist die Variable, die wir vorhersagen wollen. In unserem Beispiel ist die Note die abhängige Variable.
+\end{itemize}
+\end{mydefinition}
+
+In Streudiagrammen wird üblicherweise die unabhängige Variable auf der x-Achse und die abhängige Variable auf der y-Achse dargestellt.
+
+\section{Einfache lineare Regression}
+
+\subsection{Eine erste Näherung}
+
+Um einen ersten Eindruck zu bekommen, wie eine Regressionsgerade funktioniert, betrachten wir einen einfachen Ansatz: Wir verbinden den Datenpunkt mit der kleinsten x-Koordinate mit dem Datenpunkt mit der grössten x-Koordinate.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\textwidth]{Grundlagen_Info/10_Aus_Daten_lernen/Figures/schlafdauer_vs_note_2p_reg.pdf}
+	\caption{Einfache Regressionsgerade durch Verbinden des ersten und letzten Punktes}
+	\label{fig:simpleRegLine}
+\end{figure}
+
+Um diese Gerade zu bestimmen, benötigen wir ihre Steigung und ihren y-Achsenabschnitt:
+
+\begin{itemize}
+	\item Die Steigung $m$ berechnet sich aus: $m = \frac{y_2 - y_1}{x_2 - x_1}$, wobei $(x_1, y_1)$ und $(x_2, y_2)$ die beiden miteinander verbundenen Punkte sind.
+	\item Der y-Achsenabschnitt $q$ berechnet sich aus: $q = y_1 - m \cdot x_1$
+\end{itemize}
+
+Mit dieser Geraden können wir nun Vorhersagen treffen: Für einen gegebenen x-Wert (z.B. 8 Stunden Schlaf) berechnen wir den entsprechenden y-Wert (die vorhergesagte Note) mit der Formel $y = m \cdot x + q$.
+
+\begin{myexercise}
+	Gegeben seien die Punkte $(3.54, 3.57)$ und $(9.62, 6.0)$, die die Schlafdauer in Stunden und den Notenschnitt darstellen.
+	\begin{enumerate}
+		\item Berechnen Sie die Steigung $m$ und den y-Achsenabschnitt $q$ der Geraden durch diese Punkte.
+		\item Welchen Notenschnitt würde man bei 7 Stunden Schlaf erwarten?
+	\end{enumerate}
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Steigung: $m = \frac{6.0 - 3.57}{9.62 - 3.54} = \frac{2.43}{6.08} \approx 0.40$\\
+			      y-Achsenabschnitt: $q = 3.57 - 0.40 \cdot 3.54 = 3.57 - 1.416 \approx 2.15$\\
+			      Die Geradengleichung lautet also: $y = 0.40x + 2.15$
+			\item Bei 7 Stunden Schlaf: $y = 0.40 \cdot 7 + 2.15 = 2.80 + 2.15 = 4.95$\\
+			      Man würde einen Notenschnitt von 4.95 erwarten.
+		\end{enumerate}
+	\end{myanswer}
+\end{myexercise}
+
+Diese Methode ist einfach, hat aber einen grossen Nachteil: Sie berücksichtigt nur zwei Datenpunkte und ignoriert alle anderen Datenpunkte. Dadurch kann sie sehr anfällig für Ausreisser sein.
+
+\subsection{Methode der kleinsten Quadrate}
+
+Eine bessere Methode zur Bestimmung der Regressionsgerade ist die \textbf{Methode der kleinsten Quadrate} (engl. \textit{Ordinary Least Squares}, OLS). Diese Methode wählt die Gerade so, dass die Summe der quadrierten Abweichungen zwischen den tatsächlichen y-Werten und den vorhergesagten y-Werten minimal ist.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\pagewidth]{Grundlagen_Info/10_Aus_Daten_lernen/Figures/schlafdauer_vs_note_res.pdf}
+	\caption{Darstellung der Residuen (Abweichungen) bei der linearen Regression}
+	\label{fig:residuals}
+\end{figure}
+
+Diese Abweichungen werden als \textbf{Residuen} bezeichnet. Das Ziel der Methode der kleinsten Quadrate ist es, die Summe der quadrierten Residuen zu minimieren:
+
+\[S = \sum_{i=1}^{n} (y_i - (mx_i + q))^2\]
+
+wobei $(x_i, y_i)$ die Datenpunkte sind und $n$ die Gesamtzahl der Datenpunkte.
+
+Um die Werte für $m$ und $q$ zu finden, die $S$ minimieren, setzen wir die partiellen Ableitungen von $S$ nach $m$ und $q$ gleich Null und lösen das resultierende Gleichungssystem (s. \cref{sec:appendixKleinsteQuadrate}). Dies führt zu den folgenden Formeln:
+
+\[m = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2}\]
+
+\[q = \frac{\sum y_i - m\sum x_i}{n}\]
+
+\begin{mychallenge}
+	Betrachten Sie die folgenden Datenpunkte, die die Schlafdauer (in Stunden) und den Notenschnitt darstellen:
+	\begin{center}
+		\begin{tabular}{c||c|c|c|c|c}
+			Schlafdauer (x)  & 5   & 6   & 7   & 8   & 9   \\\midrule
+			Notenschnitt (y) & 3.8 & 4.2 & 4.8 & 5.1 & 5.6
+		\end{tabular}
+	\end{center}
+
+	\begin{enumerate}
+		\item Berechnen Sie die Steigung $m$ und den y-Achsenabschnitt $q$ mit der Methode der kleinsten Quadrate.
+		\item Welchen Notenschnitt würde man bei 7.5 Stunden Schlaf erwarten?
+	\end{enumerate}
+
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Um die Werte für $m$ und $q$ zu berechnen, bestimmen wir zuerst die Summen:
+
+			      $n = 5$
+
+			      $\sum x_i = 5 + 6 + 7 + 8 + 9 = 35$
+
+			      $\sum y_i = 3.8 + 4.2 + 4.8 + 5.1 + 5.6 = 23.5$
+
+			      $\sum x_i y_i = 5 \cdot 3.8 + 6 \cdot 4.2 + 7 \cdot 4.8 + 8 \cdot 5.1 + 9 \cdot 5.6 = 19 + 25.2 + 33.6 + 40.8 + 50.4 = 169$
+
+			      $\sum x_i^2 = 5^2 + 6^2 + 7^2 + 8^2 + 9^2 = 25 + 36 + 49 + 64 + 81 = 255$
+
+			      Nun können wir $m$ berechnen:
+			      $m = \frac{5 \cdot 169 - 35 \cdot 23.5}{5 \cdot 255 - 35^2} = \frac{845 - 822.5}{1275 - 1225} = \frac{22.5}{50} = 0.45$
+
+			      Und $q$:
+			      $q = \frac{23.5 - 0.45 \cdot 35}{5} = \frac{23.5 - 15.75}{5} = \frac{7.75}{5} = 1.55$
+
+			      Die Regressionsgleichung lautet also: $y = 0.45x + 1.55$
+
+			\item Bei 7.5 Stunden Schlaf: $y = 0.45 \cdot 7.5 + 1.55 = 3.375 + 1.55 = 4.925$
+
+			      Man würde einen Notenschnitt von 4.93 erwarten.
+		\end{enumerate}
+	\end{myanswer}
+\end{mychallenge}
+
+\section{Implementierung mit Python}
+
+In der Praxis wird die lineare Regression oft mit statistischen Softwarepaketen oder Programmiersprachen wie Python implementiert. In Python gibt es mehrere Bibliotheken, die lineare Regressionen unterstützen, darunter \texttt{statsmodels} und \texttt{scikit-learn}.
+
+Hier ist ein Beispiel für die Implementierung einer linearen Regression mit \texttt{statsmodels}:
+
+\begin{lstlisting}
+import pandas as pd
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+# Daten erstellen
+data = {
+    'Schlafdauer': [5, 6, 7, 8, 9],
+    'Notenschnitt': [3.8, 4.2, 4.8, 5.1, 5.6]
+}
+df = pd.DataFrame(data)
+
+# Lineare Regression durchführen
+model = smf.ols(formula="Notenschnitt ~ Schlafdauer", data=df).fit()
+
+# Ergebnisse ausgeben
+print(model.params)
+\end{lstlisting}
+
+Die Ergebnisse der Regression enthalten die Steigung (\texttt{Schlafdauer}) und den y-Achsenabschnitt (\texttt{Intercept}):
+
+\begin{lstlisting}[language=Python]
+Intercept      1.55
+Schlafdauer    0.45
+dtype: float64
+\end{lstlisting}
+
+\section{Multiple lineare Regression}
+
+Die einfache lineare Regression betrachtet den Zusammenhang zwischen einer abhängigen Variable $y$ und einer unabhängigen Variable $x$. In vielen realen Situationen hängt das Ergebnis jedoch von mehreren Faktoren ab. Die \textbf{multiple lineare Regression} erweitert das Konzept der einfachen linearen Regression auf mehrere unabhängige Variablen.
+
+Manchmal hängt die Vorhersage nicht nur von einer Variable ab. Betrachten wir einige Beispiele:
+
+\begin{itemize}
+	\item \textbf{Schulnoten}: Eine gute Note könnte sowohl vom Lernaufwand als auch von der Schlafqualität abhängen
+	\item \textbf{Autokauf}: Der Preis eines Autos hängt von verschiedenen Faktoren ab wie Marke, Baujahr, Kilometerstand
+	\item \textbf{CO₂-Emissionen}: Der CO₂-Ausstoss eines Autos könnte sowohl vom Gewicht als auch vom Hubraum abhängen
+\end{itemize}
+
+Während die einfache lineare Regression die Form hat:
+\[y = a_0 + a_1 x_1\]
+
+erweitert die multiple lineare Regression diese auf mehrere unabhängige Variablen:
+\[y = a_0 + a_1 x_1 + a_2 x_2 + a_3 x_3 + \cdots + a_n x_n\]
+
+Hierbei ist:
+\begin{itemize}
+	\item $y$ die abhängige Variable (was wir vorhersagen möchten)
+	\item $x_1, x_2, \ldots, x_n$ die unabhängigen Variablen (Eingabefaktoren)
+	\item $a_0$ der y-Achsenabschnitt (Intercept)
+	\item $a_1, a_2, \ldots, a_n$ die Koeffizienten für die jeweiligen Variablen
+\end{itemize}
+
+\subsection{Geometrische Interpretation}
+
+Während eine einfache lineare Regression eine Gerade in einem 2D-Koordinatensystem darstellt, repräsentiert eine multiple lineare Regression:
+\begin{itemize}
+	\item Bei zwei unabhängigen Variablen: eine \textbf{Ebene} im 3D-Raum
+	\item Bei mehr als zwei Variablen: eine \textbf{Hyperebene} in einem mehrdimensionalen Raum
+\end{itemize}
+
+% \begin{figure}[H]
+% 	\centering
+% 	\includegraphics[width=0.8\textwidth]{Grundlagen_Info/10_Aus_Daten_lernen/Figures/linreg_3d.pdf}
+% 	\caption{3D-Visualisierung einer multiplen linearen Regression mit zwei unabhängigen Variablen}
+% 	\label{fig:linreg3d}
+% \end{figure}
+
+\subsection{Praktisches Beispiel: CO$_2$-Emissionen von Autos}
+
+Betrachten wir ein konkretes Beispiel: Wir möchten den CO$_2$-Ausstoss von Autos basierend auf ihrem Gewicht und Volumen vorhersagen.
+
+\textbf{Datenstruktur:}
+\begin{itemize}
+	\item Abhängige Variable: CO$_2$-Ausstoss (in g/km)
+	\item Unabhängige Variablen: Gewicht (kg) und Volumen (ccm)
+\end{itemize}
+
+\subsection{Implementierung in Python}
+
+Die Implementierung einer multiplen linearen Regression in Python erfolgt ähnlich wie bei der einfachen Regression, jedoch mit einer erweiterten Formel:
+
+\begin{lstlisting}[language=Python]
+import pandas as pd
+import statsmodels.formula.api as smf
+
+# Daten laden (Beispiel: Auto-Datensatz)
+cars_df = pd.read_csv("cars-co2.csv")
+
+# Multiple lineare Regression durchführen
+# Formel: CO2 ~ Weight + Volume
+model = smf.ols(formula="CO2 ~ Weight + Volume", data=cars_df).fit()
+
+# Modell-Parameter anzeigen
+print(model.params)
+
+# Beispiel-Ausgabe:
+# Intercept    79.694776
+# Weight        0.007906
+# Volume        0.007850
+
+# Vorhersage für neuen Datenpunkt
+# z.B. Gewicht = 2000 kg, Volumen = 1000 ccm
+prediction = model.predict({'Weight': [2000], 'Volume': [1000]})
+print(f"Vorhergesagter CO2-Ausstoss: {prediction[0]:.1f} g/km")
+\end{lstlisting}
+
+\subsection{Interpretation der Ergebnisse}
+
+Die Koeffizienten in einer multiplen linearen Regression haben eine spezielle Bedeutung:
+
+\begin{itemize}
+	\item \textbf{Intercept ($a_0$)}: Der erwartete y-Wert, wenn alle unabhängigen Variablen null sind
+	\item \textbf{Koeffizient für Weight ($a_1$)}: Die erwartete Änderung in CO₂ pro zusätzliches kg Gewicht, \textit{unter Kontrolle aller anderen Variablen}
+	\item \textbf{Koeffizient für Volume ($a_2$)}: Die erwartete Änderung in CO₂ pro zusätzliches ccm Volumen, \textit{unter Kontrolle aller anderen Variablen}
+\end{itemize}
+
+\subsection{Voraussetzungen und Überprüfungen}
+
+Bevor eine multiple lineare Regression angewendet wird, sollten folgende Voraussetzungen überprüft werden:
+
+\begin{enumerate}
+	\item \textbf{Linearität}: Jede unabhängige Variable sollte in einem linearen Zusammenhang zur abhängigen Variable stehen
+	\item \textbf{Unabhängigkeit}: Die unabhängigen Variablen sollten nicht zu stark korreliert sein (Multikollinearität vermeiden)
+	\item \textbf{Normalverteilung der Residuen}: Die Fehler sollten normalverteilt sein
+\end{enumerate}
+
+Die Linearität kann durch Streudiagramme für jede Variable separat überprüft werden:
+
+\begin{lstlisting}[language=Python]
+import matplotlib.pyplot as plt
+
+# Separate Streudiagramme für jede unabhängige Variable
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.scatter(cars_df['Weight'], cars_df['CO2'])
+plt.xlabel('Gewicht (kg)')
+plt.ylabel('CO2 (g/km)')
+plt.title('CO2 vs. Gewicht')
+
+plt.subplot(1, 2, 2)
+plt.scatter(cars_df['Volume'], cars_df['CO2'])
+plt.xlabel('Volumen (ccm)')
+plt.ylabel('CO2 (g/km)')
+plt.title('CO2 vs. Volumen')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\subsection{Vorteile der multiplen linearen Regression}
+
+\begin{itemize}
+	\item \textbf{Realistischere Modelle}: Berücksichtigung mehrerer Einflussfaktoren
+	\item \textbf{Bessere Vorhersagegenauigkeit}: Durch Einbeziehung relevanter Variablen
+	\item \textbf{Kontrolle von Störfaktoren}: Isolierung des Effekts einzelner Variablen
+	\item \textbf{Einfache Interpretation}: Lineare Beziehungen bleiben verständlich
+\end{itemize}
+
+\section{Qualität einer Regression}
+
+Wie gut passt eine Regressionsgerade zu den Daten? Um diese Frage zu beantworten, betrachten wir insbesondere die Residuen und die Summe der quadrierten Residuen
+
+Wie bereits erwähnt, sind Residuen die Abweichungen zwischen den tatsächlichen y-Werten und den durch die Regressionsgerade vorhergesagten y-Werten. Die Summe der quadrierten Residuen (auch als Residuenquadratsumme oder RSS bezeichnet) ist ein Mass für die Gesamtabweichung:
+
+\[RSS = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2\]
+
+wobei $\hat{y}_i = mx_i + q$ der vorhergesagte Wert für den i-ten Datenpunkt ist.
+
+Je kleiner die RSS, desto besser passt die Regressionsgerade zu den Daten.
+
+\section{Anwendungen und Grenzen der linearen Regression}
+
+\subsection{Anwendungen}
+
+Die lineare Regression hat vielfältige Anwendungen in verschiedenen Bereichen, beispielsweise:
+
+\begin{itemize}
+	\item \textbf{Wirtschaft}: Vorhersage von Verkaufszahlen, Aktienkursen oder wirtschaftlichen Indikatoren
+	\item \textbf{Medizin}: Untersuchung des Zusammenhangs zwischen Risikofaktoren und Krankheiten
+	\item \textbf{Psychologie}: Analyse von Beziehungen zwischen psychologischen Variablen
+	\item \textbf{Maschinelles Lernen}: Grundlage für komplexere Vorhersagemodelle
+\end{itemize}
+
+\clearpage
+
+
+\section{Lernziele}
+\begin{todolist}
+	\item Ich kann eine Gerade zwischen zwei Punkten \textbf{manuell berechnen}.
+	\item Ich kann erklären, was man unter der \textbf{abhängigen Variable} versteht: Die abhängige Variable ist die Zielvariable, deren Wert durch die unabhängigen Variablen vorhergesagt werden soll.
+	\item Ich kann erklären, was man unter \textbf{unabhängigen Variablen} versteht: Unabhängige Variablen sind die Einflussgrössen, mit deren Hilfe die abhängige Variable modelliert wird.
+	\item Ich kenne den Unterschied zwischen \textbf{einfacher} und \textbf{multipler} linearer Regression: Bei der einfachen linearen Regression gibt es nur eine unabhängige Variable, bei der multiplen linearen Regression mehrere.
+	\item Ich weiss, weshalb man die \textbf{Linearität der unabhängigen Variablen} überprüfen muss: Die Beziehung zwischen den unabhängigen Variablen und der abhängigen Variable sollte linear sein, da sonst die Ergebnisse der Regression nicht zuverlässig sind. Die Überprüfung erfolgt z.B. durch Streudiagramme oder Korrelationsanalysen.
+	\item Ich kann die Qualität einer Regression mit der Summe der \textbf{Residuen} und der \textbf{Summe der quadrierten Residuen} beurteilen: Die Residuen sind die Abweichungen zwischen den tatsächlichen Werten und den vorhergesagten Werten. Die Summe der quadrierten Residuen (RSS) gibt an, wie gut die Regressionsgerade zu den Daten passt; je kleiner die RSS, desto besser die Anpassung.
+	\item Ich weiss, wozu man die Programmbibliothek \texttt{pandas} verwendet: \texttt{pandas} dient zur effizienten Datenverwaltung, -analyse und -vorverarbeitung in Python.
+	\item Ich weiss, wozu man die Programmbibliothek \texttt{statsmodels} verwendet: \texttt{statsmodels} wird zur Durchführung statistischer Analysen und zur Erstellung von Regressionsmodellen in Python genutzt.
+	\item Ich kann erklären, was ein \textbf{statistisches Modell} ist: Ein statistisches Modell ist eine mathematische Beschreibung, die die Beziehung zwischen Variablen in einem Datensatz abbildet und Vorhersagen ermöglicht.
+\end{todolist}
