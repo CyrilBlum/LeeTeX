@@ -106,17 +106,12 @@ jobs:
             Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
             First line of log: ${{ steps.culprit.outputs.culprit }}
           attachments: last_failed_file.txt
-  notify-success:
-    name: Send email on success
-    runs-on: self-hosted
-    needs: [test-runner, compile]
-    if: success()
-    steps:
       - name: Send email
         uses: dawidd6/action-send-mail@v5
         with:
           server_address: smtp.gmail.com
-          server_port: 465
+          server_port: 587
+          secure: true
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
           subject: "✅ GitHub CI Succeeded"
