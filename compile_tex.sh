@@ -18,8 +18,8 @@ remote_pdf_exists() {
     local abs_remote_path="/volume1/LeeTeX/$remote_pdf_path"
     echo "[DEBUG] remote_pdf_path: $remote_pdf_path"
     echo "[DEBUG] abs_remote_path: $abs_remote_path"
-    echo "[DEBUG] Running: ssh -p 50037 -i /root/.ssh/id_rsa_syno leetex@51.154.36.16 'ls -l $abs_remote_path'"
-    ssh_output=$(ssh -p 50037 -i /root/.ssh/id_rsa_syno -o StrictHostKeyChecking=no leetex@51.154.36.16 "ls -l '$abs_remote_path'")
+    echo "[DEBUG] Running: ssh -p 50037 -i /home/leetex/.ssh/id_rsa_syno leetex@51.154.36.16 'ls -l $abs_remote_path'"
+    ssh_output=$(ssh -p 50037 -i /home/leetex/.ssh/id_rsa_syno -o StrictHostKeyChecking=no leetex@51.154.36.16 "ls -l '$abs_remote_path'")
     ssh_exit=$?
     echo "[DEBUG] ssh exit code: $ssh_exit"
     echo "[DEBUG] ssh output:"
