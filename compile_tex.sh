@@ -5,15 +5,16 @@ LEE_TEX_SSH_PASSWORD="$1"
 # This script is POSIX-compatible and works on macOS (Bash 3.x), Ubuntu, and Zsh.
 
 # Define array of document classes and their toggle positions
-# classes=("book" "book" "article" "exam", "beamer") # document classes
+# uncomment the following two lines and comment the two lines after if you want to compile documents of a selected documentclass only
+classes=("beamer") # document classes
+toggles=("3")                # documentclass toggles
+# classes=("book" "book" "article" "beamer") # document classes
 # toggles=("0" "0" "1" "3")                # documentclass toggles
-classes=("book" "book" "article" "beamer") # document classes
-toggles=("0" "0" "1" "3")                # documentclass toggles
 
 class_commands=(
-    "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
-    "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
-    "\\\\documentclass[svgnames,hyphens]{article}"
+    # "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
+    # "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
+    # "\\\\documentclass[svgnames,hyphens]{article}"
     # "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
     "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
 )
@@ -74,17 +75,17 @@ beamer_topics=(
     "K03bVariablen:Grundlagen_Info/00_Programmieren/Slides/K03bVariablen"
     "K03cZeitTabellen:Grundlagen_Info/00_Programmieren/Slides/K03cZeitTabellen"
     "K03dInput:Grundlagen_Info/00_Programmieren/Slides/K03dInput"
+    "K04aFunktionenEinzelne:Grundlagen_Info/00_Programmieren/Slides/K04aFunktionenEinzelne"
+    "K04bFunktionenMehrere:Grundlagen_Info/00_Programmieren/Slides/K04bFunktionenMehrere"
+    "K04zModulo:Grundlagen_Info/00_Programmieren/Slides/K04zModulo"
     "K05aIfElifElse:Grundlagen_Info/00_Programmieren/Slides/K05aIfElifElse"
     "K05bLogischeOperatoren:Grundlagen_Info/00_Programmieren/Slides/K05bLogischeOperatoren"
     "K05cNegation:Grundlagen_Info/00_Programmieren/Slides/K05cNegation"
     "K05dBreakWhile:Grundlagen_Info/00_Programmieren/Slides/K05dBreakWhile"
-    "K04zModulo:Grundlagen_Info/00_Programmieren/Slides/K04zModulo"
     "K06aListen:Grundlagen_Info/00_Programmieren/Slides/K06aListen"
     "K06bBubbleSort:Grundlagen_Info/00_Programmieren/Slides/K06bBubbleSort"
     "K06cBinarySearch:Grundlagen_Info/00_Programmieren/Slides/K06cBinarySearch"
     "K06dListenTeil2:Grundlagen_Info/00_Programmieren/Slides/K06dListenTeil2"
-    "K04aFunktionenEinzelne:Grundlagen_Info/00_Programmieren/Slides/K04aFunktionenEinzelne"
-    "K04bFunktionenMehrere:Grundlagen_Info/00_Programmieren/Slides/K04bFunktionenMehrere"
     "TurtleGrafik:Grundlagen_Info/00_Programmieren/Slides/TurtleGrafik"
     "Zahlensysteme_L01:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L01"
     "Zahlensysteme_L02:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L02"
