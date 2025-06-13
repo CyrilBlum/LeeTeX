@@ -106,3 +106,26 @@ jobs:
             Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
             First line of log: ${{ steps.culprit.outputs.culprit }}
           attachments: last_failed_file.txt
+  notify-success:
+    name: Send email on success
+    runs-on: self-hosted
+    needs: [test-runner, compile]
+    if: success()
+    steps:
+      - name: Send email
+        uses: dawidd6/action-send-mail@v5
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "✅ GitHub CI Succeeded"
+          to: cyril@wendl.ch, thomas.graf.numerics@gmail.com
+          from: GitHub Actions <${{ secrets.GMAIL_USERNAME }}>
+          body: |
+            The GitHub Actions pipeline completed successfully.
+            Repo: ${{ github.repository }}
+            Workflow: ${{ github.workflow }}
+            Branch: ${{ github.ref }}
+            Commit: ${{ github.sha }}
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
