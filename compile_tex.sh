@@ -274,13 +274,24 @@ for i in "${!classes[@]}"; do
         log_file="${latex_dir}$(basename "$output_file" .tex).log"
         if grep -q '^!' "$log_file"; then
             echo "LaTeX error detected in $input_path. Aborting."
-            echo "LaTeX error detected in $input_path" >"$root_dir/last_failed_file.txt"
+            # Write error message and all lines starting with '!' from the log file to last_failed_file.txt
+            {
+                echo "LaTeX error detected in $input_path"
+                echo "----------------------------------------"
+                echo "Error Messages:"
+                grep '^!' "$log_file"
+            } >"$root_dir/last_failed_file.txt"
             exit 1
         fi
 
         ## TEST: PROVOKE FAILURE ON PURPOSE
         echo "LaTeX error detected in $input_path. Aborting."
-        echo "LaTeX error detected in $input_path" >"$root_dir/last_failed_file.txt"
+        # Write error message and all lines starting with '!' from the log file to last_failed_file.txt
+            {
+                echo "Error in file: $input_path"
+                echo "Error Messages:"
+                grep '^!' "$log_file"
+            } >"$root_dir/last_failed_file.txt"
         exit 1
 
         # Clean up intermediate .tex file
