@@ -6,15 +6,15 @@ LEE_TEX_SSH_PASSWORD="$1"
 
 # Define array of document classes and their toggle positions
 # uncomment the following two lines and comment the two lines after if you want to compile documents of a selected documentclass only
-classes=("beamer") # document classes
-toggles=("3")                # documentclass toggles
-# classes=("book" "book" "article" "beamer") # document classes
-# toggles=("0" "0" "1" "3")                # documentclass toggles
+# classes=("beamer") # document classes
+# toggles=("3")                # documentclass toggles
+classes=("book" "book" "article" "beamer") # document classes
+toggles=("0" "0" "1" "3")                # documentclass toggles
 
 class_commands=(
-    # "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
-    # "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
-    # "\\\\documentclass[svgnames,hyphens]{article}"
+    "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
+    "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
+    "\\\\documentclass[svgnames,hyphens]{article}"
     # "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
     "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
 )
