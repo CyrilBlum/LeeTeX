@@ -11,7 +11,13 @@ LeeTeX collects educational resources sharing a common typesetting setup.
 
 ## Compiling LeeTeX
 
-Compile using LuaLaTeX.
+To compile this project, navigate to `main.tex` and chose to run either a `book`, `article`, `exam`, `beamer` or `flashcard` documentclass, using the toggles. Uncomment a line to compile a certain project. 
+
+We recommend running the following **compilation sequences**
+- `book`: `lualatex -> biber -> makeglossaries -> lualatex -> lualatex` 
+- other document classes: `lualatex -> lualatex`
+
+We recommend using VS Code for modifying the code.
 
 ## Add git hash to documents
 
