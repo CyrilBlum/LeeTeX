@@ -1,0 +1,103 @@
+\input{Grundlagen_Info/05_Datenintegritaet/Skript/Macros}
+
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Datenintegrität]{Datenintegrität}
+
+\subtitle{RAID}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl}
+
+\institute[KLW] % (optional)
+{
+    Fachschaft Informatik\\
+    Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{\thelogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}{Problem: Bitrot}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Grundlagen_Info/05_Datenintegritaet/Figures/bitrot.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Mögliche Lösung: NAS mit RAID}
+    \begin{center}
+        \includegraphics[width=.9\textwidth]{Grundlagen_Info/05_Datenintegritaet/Figures/NAS.png}
+    \end{center}
+    \begin{itemize}
+        \item NAS = Network Attached Storage (Netzwerkgebundener Speicher)
+        \item RAID = Redundant Array of Independent Disks (Redundante Anordnung unabhängiger Festplatten)
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{RAID 0}
+    \begin{center}
+        \includegraphics[width=.25\textwidth]{Grundlagen_Info/05_Datenintegritaet/Figures/RAID_0.pdf}
+    \end{center}
+    \begin{itemize}
+        \item \textbf{Prinzip:} Striping (Daten werden in Blöcke aufgeteilt und auf die Festplatten verteilt)
+        \item \textbf{Vorteil:} Hohe Geschwindigkeit
+        \item \textbf{Nachteil:} Hohe Wahrscheinlichkeit für Datenverlust (kein Schutz)
+        \item \textbf{Anwendung:} Temporäre / grosse Daten, z.B. Spiele
+        \item \textbf{Kapazität:} $n$ Festplatten $\rightarrow$ $n$-fache Kapazität
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID 1}
+    \begin{center}
+        \includegraphics[width=.25\textwidth]{Grundlagen_Info/05_Datenintegritaet/Figures/RAID_1.pdf}
+    \end{center}
+    \begin{itemize}
+        \item \textbf{Prinzip:} Mirroring (Daten werden 1:1 auf alle Festplatten gespiegelt)
+        \item \textbf{Vorteil:} Hohe Ausfallsicherheit (eine Festplatte kann ausfallen)
+        \item \textbf{Nachteil:} Nur halbe nutzbare Kapazität
+        \item \textbf{Anwendung:} Wichtige Daten, z.B. Server
+        \item \textbf{Kapazität:} $n$ Festplatten $\rightarrow$ Kapazität einer Festplatte
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID 5}
+    \begin{center}
+        \includegraphics[width=.5\textwidth]{Grundlagen_Info/05_Datenintegritaet/Figures/RAID_5.pdf}
+    \end{center}
+    \begin{itemize}
+        \item \textbf{Prinzip:} Striping mit verteilter Parität (Paritätsinformationen werden auf alle Festplatten verteilt)
+        \item \textbf{Vorteil:} Gute Geschwindigkeit, Schutz bei Ausfall einer Festplatte
+        \item \textbf{Nachteil:} Wiederherstellung bei Ausfall dauert lange
+        \item \textbf{Anwendung:} Dateiserver, NAS
+        \item \textbf{Kapazität:} $n$ Festplatten $\rightarrow$ $(n-1)$-fache Kapazität
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID 6}
+    \begin{center}
+        \includegraphics[width=.5\textwidth]{Grundlagen_Info/05_Datenintegritaet/Figures/RAID_6.pdf}
+    \end{center}
+    \begin{itemize}
+        \item \textbf{Prinzip:} Striping mit doppelter Parität (zwei Paritätsblöcke pro Datenblock)
+        \item \textbf{Vorteil:} Schutz bei Ausfall von zwei Festplatten
+        \item \textbf{Nachteil:} Noch geringere nutzbare Kapazität, langsamere Schreibgeschwindigkeit
+        \item \textbf{Anwendung:} Grosse Speicherlösungen mit hoher Sicherheit
+        \item \textbf{Kapazität:} $n$ Festplatten $\rightarrow$ $(n-2)$-fache Kapazität
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Auftrag (Skript)}
+    \begin{itemize}        
+        \item \aufgabebox{1.24 - 1.29}
+    \end{itemize}
+\end{frame}

@@ -1,0 +1,158 @@
+\input{Grundlagen_Info/05_Datenintegritaet/Skript/Macros}
+
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Datenintegrität]{Datenintegrität}
+
+\subtitle{Fehler automatisch erkennen und korrigieren}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl}
+
+\institute[KLW] % (optional)
+{
+    Fachschaft Informatik\\
+    Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{\thelogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}{Rückblick: letztes Mal}
+    \begin{itemize}
+        \item Beim Übertragen von Daten können Fehler auftreten
+        \item Ziel: erkennen, wann eine Nachricht fehlerhaft ist
+        \item Idee: jede Bitfolge steht für eine Nachricht
+              \begin{table}[H]
+                  \centering
+                  \begin{tabular}{c|c}
+                      \textbf{Nachricht} & \textbf{Codewort} \\ \midrule\midrule
+                      \texttt{Rot}       & \texttt{000}      \\ \midrule
+
+                      \texttt{Blau}      & \texttt{011}      \\ \midrule
+                      \texttt{Grün}      & \texttt{101}      \\
+                  \end{tabular}
+              \end{table}
+              \only<1>{Wie viele Fehler erkennt diese Kodierung?}
+              \only<2>{\textbf{1 Bitfehler} (z.B. \texttt{000} $\to$ \texttt{00\red{1}}, \textbf{ungültig!})}
+              \only<3>{Was ist der \textbf{Abstand} dieser Kodierung?}
+              \only<4>{Der \textbf{Abstand einer Kodierung} ist die minimale Distanz zwischen zwei Codewörtern (in diesem Fall 2).}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Wichtige Erkenntnis}
+    \begin{center}
+        \textcolor{red}{\textbf{Eine Kodierung ist $k$-fehlererkennend, wenn die Kodierung den Mindest-Abstand $k+1$ hat.}}
+    \end{center}
+    \only<2>{Z.B.: Die Kodierung \texttt{000}, \texttt{011} und \texttt{101} hat den kleinsten Abstand 2, also ist die Kodierung 1-fehlererkennend.}
+\end{frame}
+
+
+\begin{frame}
+    \begin{myexercise}
+        Finden Sie für die drei Nachrichten \textbf{Rot}, \textbf{Blau} und \textbf{Grün} eine Kodierung aus Bitfolgen der Länge 5, die \textbf{1-fehlerkorrigierend} ist.
+
+        D.h., wenn ein Fehler vorkommt, weiss man nicht nur, dass die Nachricht fehlerhaft ist, sondern man kann das ursprüngliche Codewort aus der fehlerhaften Bitfolge eindeutig rekonstruieren.
+
+        Der Abstand zwischen \textit{allen} Codewörtern sollte möglichst gross sein!
+
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{>{\bfseries}l|l}
+                Information & \textbf{Code}  \\ \midrule\midrule
+                Rot         & 00000 \\ \midrule
+                Blau        & ??    \\ \midrule
+                Grün        & ??    \\
+            \end{tabular}
+        \end{table}
+    \end{myexercise}
+\end{frame}
+
+\begin{frame}[fragile]{Mögliche Lösung}
+    \begin{table}[H]
+            \centering
+            \begin{tabular}{>{\bfseries}l|l}
+                Information & \textbf{Code}  \\ \midrule\midrule
+                Rot         & 00000 \\ \midrule
+                Blau        & 01110  \\ \midrule
+                Grün        & 10101  \\
+            \end{tabular}
+        \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{1-fehlerkorrigierende Kodierungen}
+    \begin{itemize}
+        \item Ziel: Nicht nur Fehler erkennen, sondern auch \textbf{automatisch korrigieren}
+        \item Eine Kodierung ist \textbf{1-fehlerkorrigierend}, wenn sie jeden einzelnen Bitfehler beheben kann
+        \item \textbf{Voraussetzung:} Der Abstand der Kodierung ist mindestens 3
+    \end{itemize}
+    \begin{center}
+        \textcolor{red}{\textbf{Eine Kodierung ist $k$-fehlerkorrigierend, wenn der Mindestabstand mindestens $k+2$ beträgt.}}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Visualisierung}
+    \begin{center}
+        Gibt es auch eine 1-Fehlerkorrigierende Kodierung mit drei Code-Wörtern der Länge 4?
+    \end{center}
+    $\rightarrow$ \textbf{Visualisierung schafft Abhilfe}
+\end{frame}
+
+% Loop to generate 2D, 3D, 4D, 5D Hyperwürfel frames
+\foreach \d in {2,3,4} {
+        \begin{frame}{\d D-Hyperwürfel}
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}
+                    \HyperCube{\d}
+                \end{tikzpicture}
+                \caption{\d D-Hyperwürfel}
+                \label{fig:\d d}
+            \end{figure}
+        \end{frame}
+    }
+
+\begin{frame}{Schritt-für-Schritt-Suche nach 1-fehlerkorrigierender Kodierung (Länge 4)}
+    \begin{center}
+        Eine 1-fehlerkorrigierende Kodierung der Länge 4 muss Mindest-Abstand 3 haben.
+    \end{center}
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \HyperCube{4}
+            \only<2->{\CircleNodes{hg-0000}}
+            \only<3->{
+                \CrossOutNodes{hg-1000,hg-0100,hg-0010,hg-0001}
+                \CrossOutNodes{hg-0011,hg-0101,hg-0110,hg-1001,hg-1010,hg-1100}
+            }
+            \only<4->{
+                \CircleNodes[green]{hg-0111}
+            }
+            \only<5->{
+                \CrossOutNodes{hg-1111,hg-1011,hg-1101,hg-1110}
+            }
+        \end{tikzpicture}
+    \end{figure}
+    \only<5->{
+        \begin{center}
+        Maximal zwei gültige Codewörter!
+    \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Auftrag}{Skript}
+    \begin{itemize}
+        \item Definition 1.1 lesen
+        \item \aufgabebox{1.13-1.17} (Challenges erst nachher)
+    \end{itemize}
+\end{frame}

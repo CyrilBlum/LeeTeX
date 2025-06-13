@@ -1,0 +1,655 @@
+\newcommand{\lernzielePtOne}[1]{
+    \begin{itemize}[<+->]
+        \item[#1] Ich kann \textbf{Anwendungen} von Markov-Ketten in der Informatik beschreiben.
+        \item[#1] Ich kann erklären, was eine \textbf{Markov-Kette} ist und wie die \textbf{Markov-Eigenschaft} funktioniert.
+        \item[#1] Ich kann aus einer realen Problemstellung eine Abbildung in Form eines \textbf{gerichteten Graphen} erstellen.
+        \item[#1] Ich kann aus einer realen Problemstellung eine \textbf{Übergangsmatrix} erstellen.
+        \item[#1] Ich kann einen Zustand einer Markov-Kette mithilfe einer \textbf{Matrixmultiplikation} vorhersagen.
+    \end{itemize}
+}
+
+\newcommand{\lernzielePtTwo}[1]{
+    \begin{itemize}[<+->]
+        \item[#1] Ich kann Markov-Ketten \textbf{in Python} implementieren.
+        \item[#1] Ich kann mithilfe einer Simulation berechnen, wie sich eine Markov-Kette \textbf{über mehrere Schritte entwickelt}.
+        \item[#1] Ich kann die langfristige Verteilung von Markov-Ketten mit Simulationen \textbf{in Python} berechnen.
+    \end{itemize}
+}
+
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Daten Vorhersagen]{Daten Vorhersagen}
+
+\subtitle{Markov-Ketten}
+
+% \author[Wendl, Cyril]{Cyril Wendl}
+\author[Wendl, Cyril]{Cyril Wendl\inst{1} \and Naoki Peter \inst{2}}
+
+\institute[KZN] % (optional)
+{
+    \inst{1}%
+    Fachschaft Informatik\\
+    Kantonsschule im Lee
+    \and
+    \inst{2}%
+    Fachschaft Informatik\\
+    Kantonsschule Zürich-Nord
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=.7cm]{\thelogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\section{Markov}
+
+\begin{frame}{Themenübersicht}
+    \begin{enumerate}
+        \item[\faCheckSquare{}] Daten analysieren und visualisieren
+        \item[\faCheckSquare{}] Zahlen vorhersagen (lineare Regression)
+        \item[\faSquare] \textbf{Zustände vorhersagen (Markov-Ketten)}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Anwendungen von Markov-Ketten}
+    \begin{figure}[H]
+        \begin{tikzpicture}[transform shape, ->, >=stealth', node distance=4cm, thick,
+                website/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
+
+            \node[website] (moodle) {\texttt{moodle.ch}};
+            \node[website] (intranet) [right of=moodle] {\texttt{intranet.kzn.ch}};
+            \node[website] (yt) [below of=intranet] {\texttt{youtube.com}};
+            \node[website] (20min) [below of=moodle] {\texttt{20minuten.ch}};
+
+            \onslide<2>{
+                \path[->]
+                (moodle) edge[bend left] node[above] {0.9 (=90 \%)} (intranet)
+                (moodle) edge[bend right=15] node[left] {0.1  (=10 \%)} (yt);
+            }
+
+            \onslide<3->{
+                \path[->]
+                (moodle) edge[bend left] node[above] {0.9} (intranet)
+                (moodle) edge[bend right=15] node[left] {0.1} (yt);
+            }
+            \onslide<4->{
+                \path[->]
+                (intranet) edge[bend left] node[below] {0.8} (moodle)
+                (intranet) edge node[right] {0.2} (yt);
+            }
+            \onslide<5->{
+                \path[->] (yt.west) edge[bend left] node[below] {1} (20min.east);
+            }
+            \onslide<6->{
+                \path[->]
+                (20min.east) edge[bend left] node[above] {0.6} (yt.west)
+                (20min) edge node[left] {0.4} (moodle);
+            }
+
+        \end{tikzpicture}
+    \end{figure}
+    \onslide<6->{
+        Wenn Sie jetzt auf \texttt{moodle.ch} sind, welche Webseite möchten Sie am wahrscheinlichsten als nächstes besuchen?
+    }
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Lernziele}
+    \lernzielePtOne{\faSquare}
+\end{frame}
+
+\begin{frame}{Zustände}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}[H]
+            \begin{tikzpicture}[scale=.7, transform shape, ->, >=stealth', node distance=4cm, thick,
+                    website/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
+
+                \node[website] (moodle) {\texttt{moodle.ch}};
+                \node[website] (intranet) [right of=moodle] {\texttt{intranet.kzn.ch}};
+                \node[website] (yt) [below of=intranet] {\texttt{youtube.com}};
+                \node[website] (20min) [below of=moodle] {\texttt{20minuten.ch}};
+
+                \path[->]
+                (moodle) edge[bend left] node[above] {0.9} (intranet)
+                (moodle) edge[bend right=15] node[left] {0.1} (yt)
+                (intranet) edge[bend left] node[below] {0.8} (moodle)
+                (intranet) edge node[right] {0.2} (yt)
+                (yt.west) edge[bend left] node[below] {1} (20min.east)
+                (20min.east) edge[bend left] node[above] {0.6} (yt.west)
+                (20min) edge node[left] {0.4} (moodle);
+
+            \end{tikzpicture}
+        \end{figure}
+        \column{0.5\textwidth}
+        \textbf{Zustand}: Beispiele
+        \begin{itemize}[<+->]
+            \item Auf welcher Webseite befinde ich mich gerade?
+            \item Andere Beispiele:
+                  \begin{itemize}
+                      \item Wetter (sonnig, regnerisch)
+                      \item Spielfigur auf einem Spielbrett (Feld 1, 2, 3...)
+                      \item Aufenthaltsort eines Schülers (in der Klasse, in der Pause, zu Hause)
+                  \end{itemize}
+        \end{itemize}
+        \onslide<6->{
+            \begin{mydefinition}[Zustand]
+            Zustand = \textbf{eine Situation oder ein Status, in dem sich etwas befindet}
+            \end{mydefinition}
+        }
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Was sind Markov-Ketten?}
+    \begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, boxrule=0.8pt, enhanced, left=2mm, right=2mm, top=1mm, bottom=1mm, box align=base, title=Andrej A. Markov]
+        \begin{minipage}{0.25\textwidth}
+            \includegraphics[width=\linewidth]{Grundlagen_Info/10_Aus_Daten_Lernen/Figures/AAMarkov.png}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.7\textwidth}
+            \begin{itemize}[<+->]
+                \item Die Markov-Kette ist benannt nach dem russischen Mathematiker \textbf{Andrej Andrejewitsch Markov} (1856–1922).
+                \item Markov entdeckte die Markov-Ketten bei der Analyse von Buchstabenfolgen in literarischen Texten (Textanalyse).
+            \end{itemize}
+        \end{minipage}
+    \end{tcolorbox}
+    \onslide<3->{
+        \begin{mydefinition}
+        \begin{itemize}[<+->]
+            \item Mathematisches Modell für \textbf{Abfolgen von Zuständen}
+            \item \textbf{Markov-Eigenschaft}: Der nächste Zustand hängt \textbf{nur vom vorherigen Zustand} ab
+        \end{itemize}
+        \end{mydefinition}
+    }
+\end{frame}
+
+\begin{frame}
+    \begin{myexercise}[Markov-Eigenschaft erfüllt?]
+        \begin{enumerate}
+            \item Das Wetter morgen kann gut vorhergesagt werden basierend auf dem heutigen Wetter.
+            \item Die Wahrscheinlichkeit, dass ein Schüler heute seine Hausaufgaben macht, hängt davon ab, ob er sie gestern und vorgestern gemacht hat.
+            \item Die Wahrscheinlichkeit, dass ein Programm abstürzt, hängt davon ab, wie viele andere Programme bereits abgestürzt sind.
+            \item Die Wahrscheinlichkeit, dass eine Person Kleider einer bestimmten Marke kauft, hängt nur davon ab, ob das zuletzt gekaufte Kleidungsstück von dieser Marke war.
+        \end{enumerate}
+    \end{myexercise}
+\end{frame}
+
+\begin{frame}{Beispiel: Wettervorhersage}
+    \begin{itemize}[<+->]
+        \item Zwei mögliche Zustände: \emoji{sun} (sonnig) oder \emoji{umbrella} (regnerisch)
+        \item Übergangswahrscheinlichkeiten:
+              \begin{itemize}
+                  \item Wenn heute \emoji{sun}: Morgen zu 80\% \emoji{sun}, zu 20\% \emoji{umbrella}
+                  \item Wenn heute \emoji{umbrella}: Morgen zu 40\% \emoji{sun}, zu 60\% \emoji{umbrella}
+              \end{itemize}
+        \item Wie könnte man das darstellen?
+    \end{itemize}
+
+    \onslide<5->{
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, auto, thick]
+                \node[state] (S) {\emoji{sun}};
+                \node[state] (R) [right of=S] {\emoji{umbrella}};
+
+
+                \onslide<6->{
+                    \path[->]
+                    (S) edge[bend left] node {0.2} (R)
+                    (S) edge[loop above] node {0.8} (S);
+                }
+                \onslide<7->{
+                    \path[->]
+                    (R) edge[bend left] node {0.4} (S)
+                    (R) edge[loop above] node {0.6} (R);
+                }
+            \end{tikzpicture}
+            \caption*{\onslide<8->{Gerichteter Graph}}
+        \end{figure}
+        \begin{itemize}
+            \item[{\faCircle[regular]}]<9->  \textbf{Knoten} = Zustände
+            \item[\faArrowRight]<10-> \textbf{Kanten} = Übergänge mit Wahrscheinlichkeiten
+        \end{itemize}
+        \onslide<11->{
+            Summe der ausgehenden Kanten = 1!
+        }
+    }
+\end{frame}
+
+
+
+\begin{frame}{Übung: Thailändischer Tourist}
+    \begin{myexercise}
+        \small
+        Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden (Samui und Phangan) geniessen, sowie das Festland besichtigen.
+
+        Laut einer Umfrage gilt:
+        \begin{itemize}
+            \item Ist der Tourist auf dem Festland (\textbf{F}), so fährt er am nächsten Tag mit Wahrscheinlichkeit $70\%$ nach Samui (\textbf{S}), mit $20\%$ nach Phangan (\textbf{P}) und bleibt mit $10\%$ auf dem Festland.
+            \item Ist er auf Samui, bleibt er mit $40\%$ dort, fährt mit $50\%$ nach Phangan und kehrt mit $10\%$ aufs Festland zurück.
+            \item Ist er auf Phangan, bleibt er mit $30\%$ dort, fährt mit $30\%$ nach Samui und kehrt mit $40\%$ aufs Festland zurück.
+        \end{itemize}
+        Erstellen Sie den gerichteten Graphen für die Zustände \textbf{F}, \textbf{S} und \textbf{P}.
+    \end{myexercise}
+\end{frame}
+
+\begin{frame}{Gerichtete Graphen}{Übung: Thailändischer Tourist}
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[node distance=2.5cm, auto, thick]
+            \node[state] (F) {F};
+            \node[state] (S) [right of=F] {S};
+            \node[state] (P) [right of=S] {P};
+
+            \path[->]
+            (F) edge[bend left=5] node {0.7} (S)
+            (S) edge[bend left=5] node {0.1} (F)
+            (F) edge[bend left=70] node {0.2} (P)
+            (P) edge[bend left=40] node {0.4} (F)
+            (S) edge[bend left=5] node {0.5} (P)
+            (P) edge[bend left=5] node {0.3} (S)
+            (F) edge[loop left] node {0.1} (F)
+            (S) edge[loop above, min distance=10mm, in=60, out=120] node {0.4} (S)
+            (P) edge[loop right] node {0.3} (P);
+        \end{tikzpicture}
+    \end{figure}
+    \begin{center}
+        \onslide<2->{
+            $\Rightarrow$ Übersichtlichere Lösung? Besser für Computer?
+        }
+    \end{center}
+\end{frame}
+
+\begin{frame}{Die Übergangsmatrix: Thailand-Beispiel}
+    \begin{columns}
+        \column{.5\textwidth}
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[scale=.7, transform shape, node distance=2.5cm, auto, thick]
+                \node[state] (F) {F};
+                \node[state] (S) [right of=F] {S};
+                \node[state] (P) [right of=S] {P};
+
+                \path[->]
+                (F) edge[bend left=5] node {0.7} (S)
+                (S) edge[bend left=5] node {0.1} (F)
+                (F) edge[bend left=70] node {0.2} (P)
+                (P) edge[bend left=40] node {0.4} (F)
+                (S) edge[bend left=5] node {0.5} (P)
+                (P) edge[bend left=5] node {0.3} (S)
+                (F) edge[loop left] node {0.1} (F)
+                (S) edge[loop above, min distance=10mm, in=60, out=120] node {0.4} (S)
+                (P) edge[loop right] node {0.3} (P);
+            \end{tikzpicture}
+            \caption*{\textbf{Gerichteter Graph}}
+        \end{figure}
+
+        \column{.05\textwidth}
+        \onslide<2->{
+            $\Rightarrow$
+        }
+        \column{.35\textwidth}
+        \onslide<3->{
+            \begin{table}[H]
+                \centering
+                \begin{tabular}{c c||c|c|c}
+                                                                  &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
+                                                                  &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
+                    \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} & 0.1                               & 0.7        & 0.2        \\\cmidrule{2-5}
+                                                                  & \textbf{S} & 0.1                               & 0.4        & 0.5        \\\cmidrule{2-5}
+                                                                  & \textbf{P} & 0.4                               & 0.3        & 0.3        \\
+                \end{tabular}
+                \caption*{\textbf{Übergangstabelle}}
+            \end{table}
+        }
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Die Übergangsmatrix}
+    \begin{columns}
+        \column{.45\textwidth}
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[node distance=3cm, auto, thick]
+                \node[state] (S) {\emoji{sun}};
+                \node[state] (R) [right of=S] {\emoji{umbrella}};
+
+                \path[->]
+                (S) edge[bend left] node {0.2} (R)
+                (R) edge[bend left] node {0.4} (S)
+                (S) edge[loop above] node {0.8} (S)
+                (R) edge[loop above] node {0.6} (R);
+            \end{tikzpicture}
+            \caption*{\textbf{Gerichteter Graph}}
+        \end{figure}
+
+        \column{.05\textwidth}
+        \onslide<2->{
+            $\Rightarrow$
+        }
+        \column{.45\textwidth}
+        \vfill
+        \onslide<3->{
+            \begin{table}[H]
+                \centering
+                \begin{tabular}{c c|c|c}
+                                                                  &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
+                                                                  &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
+                    \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0.8                               & 0.2              \\\cmidrule{2-4}
+                                                                  & \emoji{umbrella} & 0.4                               & 0.6              \\
+                \end{tabular}
+                \caption*{\textbf{Übergangstabelle}}
+            \end{table}
+        }
+        \onslide<4->{
+            \vspace{-1.5em}
+            \begin{center}
+                $\Downarrow$
+            \end{center}
+            \vspace{-2.5em}
+            \begin{table}[H]
+                \[
+                    P =
+                    \begin{pmatrix}
+                        0.8 & 0.2 \\
+                        0.4 & 0.6 \\
+                    \end{pmatrix}
+                \]
+                \caption*{\textbf{Übergangsmatrix}}
+            \end{table}
+        }
+        \vfill
+    \end{columns}
+    \onslide<5->{\textbf{Matrix}: Von lat. \textit{mater} = Mutter, \enquote{strukturierende} Umgebung}
+\end{frame}
+
+
+\begin{frame}
+    \vspace{-.2cm}
+    \begin{myexercise}
+        \small
+        Ein Tourist kommt in Thailand an und möchte die Sonne und Strände auf zwei beliebten Inseln im Süden (Samui und Phangan) geniessen, sowie das Festland besichtigen. Laut einer Umfrage gilt:
+        \begin{itemize}
+            \item Ist der Tourist auf dem (\textbf{F}), so fährt er am nächsten Tag mit Wahrscheinlichkeit $70\%$ nach Samui (\textbf{S}), mit $20\%$ nach Phangan (\textbf{P}) und bleibt mit $10\%$ auf dem Festland.
+            \item Ist er auf Samui, bleibt er mit $40\%$ dort, fährt mit $50\%$ nach Phangan und kehrt mit $10\%$ aufs Festland zurück.
+            \item Ist er auf Phangan, bleibt er mit $30\%$ dort, fährt mit $30\%$ nach Samui und kehrt mit $40\%$ aufs Festland zurück.
+        \end{itemize}
+        Erstellen Sie die \textbf{Übergangstabelle}:
+        \small
+        \begin{tabular}{c c||c|c|c}
+                                                          &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
+                                                          &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
+            \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} &                                   &            &            \\\cmidrule{2-5}
+                                                          & \textbf{S} &                                   &            &            \\\cmidrule{2-5}
+                                                          & \textbf{P} &                                   &            &            \\
+        \end{tabular}
+    \end{myexercise}
+\end{frame}
+
+\begin{frame}{Lösung: Übergangstabelle für den thailändischen Tourist}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c c||c|c|c}
+                                                          &            & \multicolumn{3}{c}{\textbf{Nach}}                           \\
+                                                          &            & \textbf{F}                        & \textbf{S} & \textbf{P} \\\midrule\midrule
+            \multirow{3}{*}{\rotatebox{90}{\textbf{Von}}} & \textbf{F} & 0.1                               & 0.7        & 0.2        \\\cmidrule{2-5}
+                                                          & \textbf{S} & 0.1                               & 0.4        & 0.5        \\\cmidrule{2-5}
+                                                          & \textbf{P} & 0.4                               & 0.3        & 0.3        \\
+        \end{tabular}
+        \caption*{\textbf{Übergangstabelle}}
+    \end{table}
+
+    \begin{table}[H]
+        \centering
+        \[
+        P = \begin{pmatrix}
+            0.1 & 0.7 & 0.2 \\
+            0.1 & 0.4 & 0.5 \\
+            0.4 & 0.3 & 0.3 \\
+        \end{pmatrix}
+    \]
+        \caption*{\textbf{Übergangsmatrix}}
+    \end{table}
+    
+\end{frame}
+
+\begin{frame}{Startvektor und Vorhersage zukünftiger Zustände}
+    \begin{itemize}
+        \item<1-> Startvektor $\pi_0$ gibt den Anfangszustand (=Wahrscheinlichkeit, in einem Zustand zu sein) an
+        \item<2-> Beispiel: Heute ist es regnerisch
+              \begin{columns}
+                  \column{.45\textwidth}
+                  \[
+                      \begin{aligned}
+                          \pi_0 =
+                           & \begin{pmatrix}
+                                 0 & 1
+                             \end{pmatrix}                                                     \\
+                           & \begin{matrix}
+                                 \;\; \Uparrow & \Uparrow
+                             \end{matrix}                                           \\
+                           & \begin{matrix}
+                                 \; \text{\emoji{sun}} & \text{\emoji{umbrella}}
+                             \end{matrix}
+                      \end{aligned}
+                  \]
+                  \column{.45\textwidth}
+                  \onslide<3->{
+                      Gleiche Reihenfolge wie in der Übergangsmatrix:
+                      \begin{table}[H]
+                          \footnotesize
+                          \centering
+                          \begin{tabular}{c c|c|c}
+                                                                            &                  & \multicolumn{2}{c}{\textbf{Nach}}                    \\
+                                                                            &                  & \emoji{sun}                       & \emoji{umbrella} \\\midrule\midrule
+                              \multirow{2}{*}{\rotatebox{90}{\textbf{Von}}} & \emoji{sun}      & 0.8                               & 0.2              \\\cmidrule{2-4}
+                                                                            & \emoji{umbrella} & 0.4                               & 0.6              \\
+                          \end{tabular}
+                      \end{table}
+                  }
+              \end{columns}
+    \end{itemize}
+    \onslide<4->{\textbf{Wie hoch ist die Wahrscheinlichkeit, dass es morgen \emoji{sun} wird?}}
+    \onslide<5->{\begin{align*}
+    \pi_1 & = \pi_0 \cdot P \\
+          & \onslide<6->{= 
+            \begin{pmatrix}
+                0 & 1
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                0.8 & 0.2 \\
+                0.4 & 0.6
+            \end{pmatrix}} \\
+          & \onslide<7->{= 
+            \begin{pmatrix}
+                \only<7>{0.4}\only<8->{\underline{\underline{0.4}}} & 0.6
+            \end{pmatrix}}
+\end{align*}
+    }
+
+\end{frame}
+
+\begin{frame}{Matrixmultiplikation}
+    \only<1-3>{\begin{itemize}[<+->]
+            \item Um die Entwicklung einer Markov-Kette zu berechnen, multiplizieren wir einen Zeilenvektor mit einer Matrix.
+        \end{itemize}}
+
+    \only<1>{
+        \[
+            \begin{array}{c}
+                \Big(
+                \fcolorbox{red!10}{red!10}{$a \;\; b$}
+                \Big)
+                \cdot
+                \left(
+                \begin{array}{>{\columncolor{red!10}}c c}
+                        e & f \\
+                        g & h \\
+                    \end{array}
+                \right)
+                =
+                \Big(
+                \fcolorbox{red!10}{red!10}{$a \cdot e + b \cdot g$}\fcolorbox{white}{white}{$\;\; a \cdot f + b \cdot h$}
+                \Big)
+            \end{array}
+        \]}
+
+    \only<2>{
+        \[
+            \begin{array}{c}
+                \Big(
+                \fcolorbox{red!10}{red!10}{$a \;\; b$}
+                \Big)
+                \cdot
+                \left(
+                \begin{array}{c >{\columncolor{red!10}}c}
+                        e & f \\
+                        g & h \\
+                    \end{array}
+                \right)
+                =
+                \Big(
+                \fcolorbox{white}{white}{$a \cdot e + b \cdot g$}\fcolorbox{red!10}{red!10}{$\;\; a \cdot f + b \cdot h$}
+                \Big)
+            \end{array}
+        \]}
+    \only<3->{\vspace{-1em}
+        \[
+            \begin{pmatrix}
+                \textcolor{red}{a} & \textcolor{blue}{b} \\
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                \textcolor{teal}{e}   & \textcolor{violet}{f} \\
+                \textcolor{orange}{g} & \textcolor{brown}{h}  \\
+            \end{pmatrix}
+            =
+            \begin{pmatrix}
+                \textcolor{red}{a} \cdot \textcolor{teal}{e} + \textcolor{blue}{b} \cdot \textcolor{orange}{g} & \textcolor{red}{a} \cdot \textcolor{violet}{f} + \textcolor{blue}{b} \cdot \textcolor{brown}{h} \\
+            \end{pmatrix}
+        \]
+    }
+    \vspace{-1em}
+    \only<4->{
+        \begin{myexercise}[\faCalculator{} Matrix-Multiplikation]
+            Multiplizieren Sie $\begin{pmatrix} \textcolor{red}{0.4} & \textcolor{blue}{0.6} \end{pmatrix} \cdot \begin{pmatrix} \textcolor{teal}{0.8} & \textcolor{violet}{0.2} \\ \textcolor{orange}{0.4} & \textcolor{brown}{0.6} \end{pmatrix}$.
+            \only<5->{
+                \begin{myanswer}
+                    \[
+                        \begin{aligned}
+                            &
+                            \begin{pmatrix}
+                                \textcolor{red}{0.4} & \textcolor{blue}{0.6} \\
+                            \end{pmatrix}
+                            \cdot
+                            \begin{pmatrix}
+                                \textcolor{teal}{0.8}   & \textcolor{violet}{0.2} \\
+                                \textcolor{orange}{0.4} & \textcolor{brown}{0.6}  \\
+                            \end{pmatrix}
+                            \\&=
+                            \begin{pmatrix}
+                                \textcolor{red}{0.4} \cdot \textcolor{teal}{0.8} + \textcolor{blue}{0.6} \cdot \textcolor{orange}{0.4} & \textcolor{red}{0.4} \cdot \textcolor{violet}{0.2} + \textcolor{blue}{0.6} \cdot \textcolor{brown}{0.6} \\
+                            \end{pmatrix}
+                            \\&=
+                            \begin{pmatrix}
+                                0.32 + 0.24 & 0.08 + 0.36 \\
+                            \end{pmatrix}
+                            =
+                            \begin{pmatrix}
+                                0.56 & 0.44 \\
+                            \end{pmatrix}
+                        \end{aligned}
+                    \]
+                \end{myanswer}
+            }
+        \end{myexercise}
+    }
+\end{frame}
+
+\begin{frame}{Wettervorhersage für übermorgen}
+    \begin{itemize}[<+->]
+        \item Startvektor: \(\pi_0 = \begin{pmatrix} 0 & 1 \end{pmatrix}\) \hspace{0.5em} (heute regnerisch)
+        \item Nach einem Tag:
+              \[
+                  \pi_1 = \pi_0 \cdot P = \begin{pmatrix} 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 0.8 & 0.2 \\ 0.4 & 0.6 \end{pmatrix} = \begin{pmatrix} 0.4 & 0.6 \end{pmatrix}
+              \]
+        \item Nach zwei Tagen:
+              \[
+                  \pi_2 = \pi_1 \cdot P = \begin{pmatrix} 0.4 & 0.6 \end{pmatrix} \cdot \begin{pmatrix} 0.8 & 0.2 \\ 0.4 & 0.6 \end{pmatrix} = \begin{pmatrix} 0.56 & 0.44 \end{pmatrix}
+              \]
+    \end{itemize}
+    \onslide<4->{
+        Wahrscheinlichkeit, dass es in zwei Tagen sonnig ist: \textbf{56\%}.
+    }
+
+    \onslide<5->{
+        \begin{tcolorbox}[colback=teal!10, colframe=teal, boxrule=0.8pt, enhanced, left=2mm, right=2mm, top=1mm, bottom=1mm, box align=base]
+            \textbf{Auftrag}: Moodle
+            \begin{enumerate}
+                \item \aufgabebox{1 - Lernkontrolle Markov-Ketten}
+                \item Zusatzaufgaben: \aufgabebox{2 - Markov-Ketten}
+            \end{enumerate}
+        \end{tcolorbox}
+    }
+\end{frame}
+\begin{frame}{Übung: TikTok / Instagram nach 2 Schritten?}
+    \begin{itemize}
+        \item Übergangsmatrix:
+              \[
+                  P = \begin{pmatrix}
+                      0.6 & 0.4 \\
+                      0.1 & 0.9 \\
+                  \end{pmatrix}
+              \]
+        \item Startvektor: $\pi_0 = \begin{pmatrix}0 & 1\end{pmatrix}$ (Start bei TikTok)
+        \item Nach einem Schritt:
+              \[
+                  \pi_1 = \pi_0 \cdot P = \begin{pmatrix} 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 0.6 & 0.4 \\ 0.1 & 0.9 \end{pmatrix} = \begin{pmatrix} 0.1 & 0.9 \end{pmatrix}
+              \]
+        \item Nach zwei Schritten:
+              \[
+                  \pi_2 = \pi_1 \cdot P = \begin{pmatrix} 0.1 & 0.9 \end{pmatrix} \cdot \begin{pmatrix} 0.6 & 0.4 \\ 0.1 & 0.9 \end{pmatrix} = \begin{pmatrix} 0.15 & 0.85 \end{pmatrix}
+              \]
+        \item Die Wahrscheinlichkeit, nach zwei Nutzungen bei Instagram zu landen, beträgt \textbf{15\%}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Lernziele}
+    \begin{itemize}[<+->]
+        \item Lektion 1:
+              \lernzielePtOne{\faCheckSquare}
+        \item Lektion 2:
+              \lernzielePtTwo{\faSquare}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Auftrag: Jupyter Notebooks}
+    \begin{itemize}[<+->]
+        \item[\faLink{}] \enquote{Link auf Programmierumgebung} auf Moodle
+        \item[\faBook{}] Beispiele immer zuerst lesen
+        \item[\faPlay{}] \textit{Jeden} Code-Block ausführen: \keys{\shift  + \return}
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Lernziele}
+    \begin{itemize}[<+->]
+        \item Lektion 1:
+              \lernzielePtOne{\faCheckSquare}
+        \item Lektion 2:
+              \lernzielePtTwo{\faCheckSquare}
+    \end{itemize}
+\end{frame}
