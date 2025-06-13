@@ -33,7 +33,7 @@ ausgeschlafen = True
 genau_gelesen=[True, True, False, False]
 zeit = 0
 i=0
-repeat len(zeit_aufgaben):
+for _ in range(len(zeit_aufgaben)):
 	zeit_aufgabe=zeit_aufgaben[i]
 	if not ausgeschlafen:
 		zeit_aufgabe*=2
@@ -85,7 +85,7 @@ flaeche_gerettet = 0  # Fläche, die gerettet wird
 geld_aufgebraucht = False
 i = 0  # Index
 
-repeat len(baeume_kosten):
+for _ in range(len(baeume_kosten)):
     kosten_art = baeume_kosten[i]  # kosten für einen Baum der ART i
     anzahl_art = baeume_anzahl[i]  # Anzahl Bäume der ART i
 
@@ -150,7 +150,7 @@ person_am_besten = ""
 
 i = 0
 
-repeat len(noten_von_mir):
+for _ in range(len(noten_von_mir)):
     ich = noten_von_mir[i]
     er = noten_von_anderen[i]
     match = (ich+er)-abs(ich-er)
@@ -182,7 +182,7 @@ if durchschnitt_ajustieren:
     i = 0
     summe_er = 0
     summe_ich = 0
-    repeat len(noten_von_mir):
+for _ in range(len(noten_von_mir)):
         summe_er += noten_von_anderen[i]
         summe_ich += noten_von_mir[i]
 
@@ -193,13 +193,13 @@ if durchschnitt_ajustieren:
 
     # Daten ajustieren
     i = 0
-    repeat len(noten_von_mir):
+for _ in range(len(noten_von_mir)):
         noten_von_mir[i] += differenz
         i += 1
 
 # Match berechnen
 i = 0
-repeat len(noten_von_mir):
+for _ in range(len(noten_von_mir)):
     ich = noten_von_mir[i]
     er = noten_von_anderen[i]
     match = (ich+er)-abs(ich-er)
@@ -258,7 +258,7 @@ Wie sieht Ihr Inventar am Ende des Jahres aus? Verwenden Sie eine Schleife, um a
         while kann_kaufen and len(wunsch_objekte) > 0:
             kann_kaufen = False
             i = 0
-            repeat len(wunsch_objekte):
+for _ in range(len(wunsch_objekte)):
                 if wunsch_kosten[i] <= geld:
                     meine_objekte.append(wunsch_objekte[i])
                     geld -= wunsch_kosten[i]
@@ -291,7 +291,7 @@ Berechnen Sie die Black-Friday-Preise für alle Elemente im Laden. Der rabattier
     preise_blackfriday = []
 
     i = 0
-    repeat len(preise_normal):
+for _ in range(len(preise_normal)):
         preise_blackfriday.append(
             preise_normal[i]*(1-rabatte_blackfriday_prozent[i]/100))
         i += 1
@@ -421,7 +421,7 @@ def target_sum(A, target):
 
 \clearpage
 \question[2]{\textbf{\emoji{turtle} Gesamtlänge der Spirale}\\}
-Wir wollen mit \lstinline|gturtle| eine Vieleck-Spirale zeichnen, die sich \textit{n} Umdrehungen macht. Die Anzahl Ecken (\lstinline|n_ecken|) , die Länge des ersten Strichs (\lstinline|laenge|) , die Vergrösserung (\lstinline|vergroesserung|) sowie die Anzahl Umdrehungen (\lstinline|n_spiralen|) sollen frei wählbar sein. Für \lstinline|ecken=5| und \lstinline|n_spiralen=3| soll folgendes Bild entstehen:
+Wir wollen mit \lstinline|turtle| eine Vieleck-Spirale zeichnen, die sich \textit{n} Umdrehungen macht. Die Anzahl Ecken (\lstinline|n_ecken|) , die Länge des ersten Strichs (\lstinline|laenge|) , die Vergrösserung (\lstinline|vergroesserung|) sowie die Anzahl Umdrehungen (\lstinline|n_spiralen|) sollen frei wählbar sein. Für \lstinline|ecken=5| und \lstinline|n_spiralen=3| soll folgendes Bild entstehen:
 
 \begin{figure}[H]
 	\centering
@@ -438,9 +438,7 @@ Die Gesamtdistanz, welche durch die Turtle insgesamt zurückgelegt wurde, soll d
 \begin{solution}
 Folgende Lösung enthält alle Bonus-Elemente:
 \begin{lstlisting}[escapechar=@]
-from gturtle import *
-makeTurtle()
-hideTurtle()
+import turtle as t
 
 
 def vieleck_spirale(n_ecken, laenge, vergroesserung, n_spiralen, inc_liste=None):
@@ -448,12 +446,12 @@ def vieleck_spirale(n_ecken, laenge, vergroesserung, n_spiralen, inc_liste=None)
         return "n_ecken muss grösser als 2 sein"
     gesamtdistanz = 0
 
-    repeat n_spiralen:
+    for _ in range(n_spiralen):
         i = 0
-        repeat n_ecken:
-            fd(laenge)
+        for _ in range(n_ecken):
+            t.forward(laenge)
             gesamtdistanz += laenge
-            rt(360/n_ecken)
+            t.right(360/n_ecken)
             if inc_liste is not None:
                 if len(inc_liste) != n_ecken:
                     return "Liste muss so lange wie n_ecken sein"

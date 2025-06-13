@@ -10,7 +10,7 @@ def bubble_sort(liste):
                 liste[j+1] = temp
             j += 1
         i += 1
-    return liste
+    print(liste)
 
 # Example usage
 numbers = [64, 34, 25, 12, 22, 11, 90]

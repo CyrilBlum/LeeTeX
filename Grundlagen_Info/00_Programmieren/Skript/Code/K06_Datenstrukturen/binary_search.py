@@ -13,7 +13,7 @@ def binaere_suche(liste, ziel):
             print("Mitte gefunden an Position", mitte)
             break
 
-        # Wenn das Ziel größer ist als das mittlere Element,
+        # Wenn das Ziel grösser ist als das mittlere Element,
         # dann ist das Ziel im rechten Teil der Liste
         elif liste[mitte] < ziel:
             links = mitte + 1

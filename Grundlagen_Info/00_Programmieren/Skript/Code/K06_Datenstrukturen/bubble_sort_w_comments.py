@@ -16,8 +16,9 @@ def bubble_sort(liste):
                 liste[j+1] = temp  # Setze den gespeicherten Wert an die neue Position
             j += 1  # Erhöhe den inneren Schleifenzähler
         i += 1  # Erhöhe den äusseren Schleifenzähler
-    # Gib die sortierte Liste zurück
-    return liste
+        
+    # Gib die sortierte Liste aus
+    print(liste)
 
 # Beispielverwendung
 numbers = [64, 34, 25, 12, 22, 11, 90]

@@ -16,4 +16,4 @@ if min_teiler == x and max_teiler == 1:
     print(f"{x} ist eine Primzahl.")
 else:
     print(f"Der kleinste echte Teiler von {x} ist {min_teiler}.")
-    print(f"Der größte echte Teiler von {x} ist {max_teiler}.")
+    print(f"Der grösste echte Teiler von {x} ist {max_teiler}.")

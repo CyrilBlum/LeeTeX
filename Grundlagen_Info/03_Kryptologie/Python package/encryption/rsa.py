@@ -1,7 +1,7 @@
 def gcd(a, b):
     """
     Hilfsfunktion:
-    Berechnet den größten gemeinsamen Teiler (ggT) mit dem Euklidischen Algorithmus.
+    Berechnet den grössten gemeinsamen Teiler (ggT) mit dem Euklidischen Algorithmus.
     """
     while b:
         a, b = b, a % b

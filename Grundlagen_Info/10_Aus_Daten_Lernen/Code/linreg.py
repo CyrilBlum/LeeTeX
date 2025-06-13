@@ -10,7 +10,7 @@ plt.style.use('ggplot')
 
 def exercises_jupyter_nb_polizei_krim():
     """Regressionsanalyse für Polizei vs. Kriminalität in ipynb"""
-    df = pd.read_csv("Grundlagen_Info/10_Aus_Daten_Lernen/Data/polizei_vs_kriminalitaet.csv")
+    df = pd.read_csv("Grundlagen_Info/10_Aus_Daten_lernen/Data/polizei_vs_kriminalitaet.csv")
     df.head()
     plt.scatter(df["Polizeistreifen"], df["Straftaten"])
     plt.xlabel("Polizeistreifen (police)")
@@ -41,7 +41,7 @@ def exercises_jupyter_nb_polizei_krim():
     print(f"Vorhergesagte Straftaten bei {polizeikontrollen} Polizeikontrollen: {vorhergesagte_straftaten}")
 
 def exercises_jupyter_nb_cars_co2():
-    df_cars = pd.read_csv("Grundlagen_Info/10_Aus_Daten_Lernen/Data/cars-co2.csv")
+    df_cars = pd.read_csv("Grundlagen_Info/10_Aus_Daten_lernen/Data/cars-co2.csv")
     df_cars.head()
 
     # Streudiagramm für jede unabhängige Variable gegenüber CO2-Emissionen zeichnen
@@ -81,7 +81,7 @@ def exercises_jupyter_notebook(df):
 def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
     # Datei einlesen
     df = pd.read_csv(
-        "Grundlagen_Info/10_Aus_Daten_Lernen/Data/schlafdauer_vs_note.csv")
+        "Grundlagen_Info/10_Aus_Daten_lernen/Data/schlafdauer_vs_note.csv")
     # Scatter plot zeichnen und Regressionslinie basierend auf m und q einzeichnen
     plt.scatter(df["Schlafdauer"], df["Note"], label="Datenpunkte")
 
@@ -143,12 +143,12 @@ def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
     plt.legend()
     # Save the plot to a PDF file with no white margins
     plt.savefig(
-        f"Grundlagen_Info/10_Aus_Daten_Lernen/Figures/schlafdauer_vs_note{('_2p_reg' if draw_2p_reg_line else '')}{('_pred' if add_pred else '')}.pdf", bbox_inches='tight')
+        f"Grundlagen_Info/10_Aus_Daten_lernen/Figures/schlafdauer_vs_note{('_2p_reg' if draw_2p_reg_line else '')}{('_pred' if add_pred else '')}.pdf", bbox_inches='tight')
     plt.close()
 
 def plot_schlafdauer_vs_note_3points_res():
     df = pd.read_csv(
-        "Grundlagen_Info/10_Aus_Daten_Lernen/Data/schlafdauer_vs_note.csv")
+        "Grundlagen_Info/10_Aus_Daten_lernen/Data/schlafdauer_vs_note.csv")
     # Drei beliebige Zeilen auswählen und in einem neuen DataFrame speichern
     df_sample = df.iloc[[3, 18, 19]]
 
@@ -189,14 +189,14 @@ def plot_schlafdauer_vs_note_3points_res():
     plt.xlabel("Schlafdauer (Stunden)")
     plt.ylabel("Note")
     plt.legend()
-    plt.savefig("Grundlagen_Info/10_Aus_Daten_Lernen/Figures/schlafdauer_vs_note_res.pdf", bbox_inches='tight')
+    plt.savefig("Grundlagen_Info/10_Aus_Daten_lernen/Figures/schlafdauer_vs_note_res.pdf", bbox_inches='tight')
     plt.close()
 
 
 
 def plot_schlafdauer_vs_note_ols():
     df = pd.read_csv(
-        "Grundlagen_Info/10_Aus_Daten_Lernen/Data/schlafdauer_vs_note.csv")
+        "Grundlagen_Info/10_Aus_Daten_lernen/Data/schlafdauer_vs_note.csv")
     
     # Datenpunkte zeichnen
     plt.scatter(df["Schlafdauer"], df["Note"], label="Datenpunkte")
@@ -214,7 +214,7 @@ def plot_schlafdauer_vs_note_ols():
     plt.xlabel("Schlafdauer (Stunden)")
     plt.ylabel("Note")
     plt.legend()
-    plt.savefig("Grundlagen_Info/10_Aus_Daten_Lernen/Figures/schlafdauer_vs_note_ols.pdf", bbox_inches='tight')
+    plt.savefig("Grundlagen_Info/10_Aus_Daten_lernen/Figures/schlafdauer_vs_note_ols.pdf", bbox_inches='tight')
     plt.close()
 
 def plot_3d_plane_with_points():
@@ -273,12 +273,12 @@ def plot_3d_plane_with_points():
 
     # Show the updated plot
     # Save the plot to a PDF file with no white margins
-    plt.savefig("Grundlagen_Info/10_Aus_Daten_Lernen/Figures/linreg_3d.pdf")
+    plt.savefig("Grundlagen_Info/10_Aus_Daten_lernen/Figures/linreg_3d.pdf")
 
     # Automatically trim whitespace using pdfcrop
     subprocess.run(["pdfcrop", "--margins", "0 0 0 0",
-                    "Grundlagen_Info/10_Aus_Daten_Lernen/Figures/linreg_3d.pdf",
-                    "Grundlagen_Info/10_Aus_Daten_Lernen/Figures/linreg_3d.pdf"], check=True)
+                    "Grundlagen_Info/10_Aus_Daten_lernen/Figures/linreg_3d.pdf",
+                    "Grundlagen_Info/10_Aus_Daten_lernen/Figures/linreg_3d.pdf"], check=True)
 
 if __name__ == "__main__":
     # Call the function to plot the 3D plane with points
