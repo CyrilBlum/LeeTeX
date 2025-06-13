@@ -1,6 +1,6 @@
 def finde_kleinste_zahl(liste):
     kleinste_zahl = liste[0]
-    index = 0  # Index der kleinsten Zahl initialisieren
+    index = 0
     for _ in range(len(liste)):
         if liste[index] < kleinste_zahl:
             kleinste_zahl = liste[index]
