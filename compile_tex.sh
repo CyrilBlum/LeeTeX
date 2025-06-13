@@ -301,6 +301,19 @@ for i in "${!classes[@]}"; do
             sed "${SED_INPLACE[@]}" "s|\\input{Setups/cyril.tex}|\\input{Setups/cyril_${class}_${topic// /_}.tex}|" "$output_file"
         fi
 
+        # Determine expected PDF name and remote path for remote existence check
+        pdf_name="$(basename "$output_file" .tex).pdf"
+        if [ "$class" = "book" ]; then
+            remote_pdf_path="PDFs/${topic}/${class}_${book_variant}/$pdf_name"
+        elif [ "$class" = "beamer" ]; then
+            remote_pdf_path="PDFs/${main_topic}/beamer/${topic}/$pdf_name"
+        else
+            remote_pdf_path="PDFs/${class}/${topic}/$pdf_name"
+        fi
+
+        # Only build if the topic's input_path matches a changed file or PDF is missing on remote
+        should_build_topic "$input_path" "$remote_pdf_path" || continue
+
         if [ "$class" = "book" ]; then
             # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
             echo "  step 1: lualatex"
