@@ -6,7 +6,7 @@ CHANGED_FILES_CSV="$2"
 # Parse changed files into an array (if provided)
 IFS=',' read -r -a CHANGED_FILES <<< "$CHANGED_FILES_CSV"
 
-# Helper to check if PDF exists on remote server
+# Helper to check if PDF exists on remote server using rsync daemon
 remote_pdf_exists() {
     local remote_pdf_path="$1"
     # Only check on Linux (not macOS)
@@ -14,11 +14,15 @@ remote_pdf_exists() {
         echo "Skipping remote PDF check on macOS."
         return 1  # Always "not found" on macOS
     fi
-    if sshpass -p "$LEE_TEX_SSH_PASSWORD" ssh -p 50037 -o StrictHostKeyChecking=no leetex@51.154.36.16 "test -f '$remote_pdf_path'"; then
-        echo "File $remote_pdf_path exists on server."
+    # Remove leading PDFs/ for rsync module path
+    local rsync_path="${remote_pdf_path#PDFs/}"
+    echo "Checking remote existence via rsync: rsync://leetex@51.154.36.16:50037/LeeTeX/PDFs/$rsync_path"
+    # Try to list the file using rsync daemon
+    if rsync --list-only "rsync://leetex@51.154.36.16:50037/LeeTeX/PDFs/$rsync_path" 2>/dev/null | grep -q "$(basename \"$rsync_path\")"; then
+        echo "File $remote_pdf_path exists on server (rsync)."
         return 0
     else
-        echo "File $remote_pdf_path does not exist on server."
+        echo "File $remote_pdf_path does not exist on server (rsync)."
         return 1
     fi
 }
@@ -245,19 +249,6 @@ for i in "${!classes[@]}"; do
             output_file="${root_dir}/output_${class}_${topic// /_}.tex"
         fi
         mkdir -p "$latex_dir"
-
-        # Determine expected PDF name and remote path for remote existence check
-        pdf_name="$(basename "$output_file" .tex).pdf"
-        if [ "$class" = "book" ]; then
-            remote_pdf_path="PDFs/${topic}/${class}_${book_variant}/$pdf_name"
-        elif [ "$class" = "beamer" ]; then
-            remote_pdf_path="PDFs/${main_topic}/beamer/${topic}/$pdf_name"
-        else
-            remote_pdf_path="PDFs/${class}/${topic}/$pdf_name"
-        fi
-
-        # Only build if the topic's input_path matches a changed file or PDF is missing on remote
-        should_build_topic "$input_path" "$remote_pdf_path" || continue
 
         # Print current values for debugging
         echo "Processing entry: $entry"
