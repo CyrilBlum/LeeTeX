@@ -61,7 +61,12 @@ jobs:
         id: culprit
         run: |
           if [ -f last_failed_file.txt ]; then
-            echo "culprit=$(cat last_failed_file.txt)" >> $GITHUB_OUTPUT
+            culprit_content=$(cat last_failed_file.txt)
+            # Replace '%' with '%25', '\n' with '%0A', and '\r' with '%0D' for GitHub output
+            culprit_content="${culprit_content//'%'/'%25'}"
+            culprit_content="${culprit_content//$'\n'/'%0A'}"
+            culprit_content="${culprit_content//$'\r'/'%0D'}"
+            echo "culprit=$culprit_content" >> $GITHUB_OUTPUT
           else
             echo "culprit=Unknown" >> $GITHUB_OUTPUT
           fi
