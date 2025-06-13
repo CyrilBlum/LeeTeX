@@ -7,6 +7,12 @@ name: Compile TeX files
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      full_rebuild:
+        description: 'Rebuild all projects?'
+        required: false
+        default: 'false'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -35,11 +41,26 @@ jobs:
       run: |
         git fetch --all
         git reset --hard origin/main
+    # Get changed files in the commit range
+    - name: Get changed files
+      id: changed_files
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.full_rebuild }}" = "true" ]; then
+          echo "Forcing full rebuild"
+          echo "files=" >> $GITHUB_OUTPUT
+        else
+          if [ -n "${{ github.event.before }}" ]; then
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} | paste -sd, - > changed_files.txt
+          else
+            git diff --name-only HEAD^ HEAD | paste -sd, - > changed_files.txt
+          fi
+          echo "files=$(cat changed_files.txt)" >> $GITHUB_OUTPUT
+        fi
     # Runs the compile_tex.sh script
     - name: Run compile_tex.sh      
       run: |
         mkdir PDFs
-        ./compile_tex.sh "${{ secrets.LEE_TEX_SSH_PASSWORD }}"
+        ./compile_tex.sh "${{ secrets.LEE_TEX_SSH_PASSWORD }}" "${{ steps.changed_files.outputs.files }}"
     - name: Upload likely culprit file
       if: failure()
       uses: actions/upload-artifact@v4

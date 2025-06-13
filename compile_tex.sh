@@ -1,6 +1,58 @@
 #!/bin/bash
 # At the top of compile_tex.sh
 LEE_TEX_SSH_PASSWORD="$1"
+CHANGED_FILES_CSV="$2"
+
+# Parse changed files into an array (if provided)
+IFS=',' read -r -a CHANGED_FILES <<< "$CHANGED_FILES_CSV"
+
+# Helper to check if PDF exists on remote server
+remote_pdf_exists() {
+    local remote_pdf_path="$1"
+    # Only check on Linux (not macOS)
+    if [[ "$OSTYPE" == *darwin* ]]; then
+        echo "Skipping remote PDF check on macOS."
+        return 1  # Always "not found" on macOS
+    fi
+    if sshpass -p "$LEE_TEX_SSH_PASSWORD" ssh -p 50037 -o StrictHostKeyChecking=no leetex@51.154.36.16 "test -f '$remote_pdf_path'"; then
+        echo "File $remote_pdf_path exists on server."
+        return 0
+    else
+        echo "File $remote_pdf_path does not exist on server."
+        return 1
+    fi
+}
+
+# Function to determine if a topic should be built based on changed files in latest commit
+should_build_topic() {
+    local input_path="$1"
+    local remote_pdf_path="$2"
+    echo "should_build_topic called with:"
+    echo "  input_path: $input_path"
+    echo "  remote_pdf_path: $remote_pdf_path"
+    echo "  CHANGED_FILES_CSV: $CHANGED_FILES_CSV"
+    echo "  CHANGED_FILES array: ${CHANGED_FILES[*]}"
+    # If no changed files are specified, always build
+    if [ -z "$CHANGED_FILES_CSV" ]; then
+        echo "  No changed files specified, will build."
+        return 0
+    fi
+    for changed in "${CHANGED_FILES[@]}"; do
+        echo "    Checking changed file: $changed"
+        if [[ "$input_path" == *"$changed"* ]] || [[ "$changed" == *"$input_path"* ]]; then
+            echo "    Match found: $input_path <-> $changed"
+            return 0
+        fi
+    done
+    # If not in changed files, check if PDF exists on remote
+    if remote_pdf_exists "$remote_pdf_path"; then
+        echo "  PDF exists on remote, skipping build."
+        return 1
+    else
+        echo "  PDF does not exist on remote, will build."
+        return 0
+    fi
+}
 
 # This script is POSIX-compatible and works on macOS (Bash 3.x), Ubuntu, and Zsh.
 
@@ -162,7 +214,6 @@ for i in "${!classes[@]}"; do
     for entry in "${topics[@]}"; do
         topic="${entry%%:*}"
         input_path="${entry#*:}"
-
         # Determine output directory and file names, distinguishing between book variants
         if [ "$class" = "book" ]; then
             # Check if this is the exerciseonly variant
