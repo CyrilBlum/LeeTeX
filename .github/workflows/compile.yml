@@ -10,8 +10,17 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "compile"
+  # Tests if runner can be reached
+  test-runner:
+    name: Test if runner is reachable
+    runs-on: self-hosted
+    steps:
+      - name: Echo test
+        run: echo "Runner is alive!"
+
+  # This workflow contains a single job called "compile", which compiles all TeX files and sends them to a server folder via rsync
   compile:
+    name: Compile TeX files
     # The type of runner that the job will run on
     runs-on: self-hosted
 
@@ -26,9 +35,29 @@ jobs:
       run: |
         git fetch --all
         git reset --hard origin/main
-
     # Runs the compile_tex.sh script
     - name: Run compile_tex.sh      
       run: |
         mkdir PDFs
         ./compile_tex.sh "${{ secrets.LEE_TEX_SSH_PASSWORD }}"
+  notify:
+    name: Send email if anything fails
+    runs-on: ubuntu-latest
+    needs: [test-runner, compile]
+    if: failure()  # This means: run only if one of the jobs failed
+    steps:
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: 🚨 GitHub CI Failed
+          to: cyril@wendl.ch, thomas.graf.numerics@gmail.com
+          from: GitHub Actions <${{ secrets.GMAIL_USERNAME }}>
+          body: |
+            The GitHub Actions pipeline failed.
+            Repo: ${{ github.repository }}
+            Workflow: ${{ github.workflow }}
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
