@@ -4,31 +4,32 @@ LEE_TEX_SSH_PASSWORD="$1"
 CHANGED_FILES_CSV="$2"
 
 # Parse changed files into an array (if provided)
-IFS=',' read -r -a CHANGED_FILES <<< "$CHANGED_FILES_CSV"
+IFS=',' read -r -a CHANGED_FILES <<<"$CHANGED_FILES_CSV"
 
 # Helper to check if PDF exists on remote server using sshpass and ls -l
 remote_pdf_exists() {
     local remote_pdf_path="$1"
     # Only check on Linux (not macOS)
     if [[ "$OSTYPE" == *darwin* ]]; then
-        echo "Skipping remote PDF check on macOS."
-        return 1  # Always "not found" on macOS
+        echo "::notice::Skipping remote PDF check on macOS."
+        return 1 # Always "not found" on macOS
     fi
     # Convert remote_pdf_path (PDFs/...) to absolute path on server
     local abs_remote_path="/volume1/LeeTeX/$remote_pdf_path"
-    echo "[DEBUG] remote_pdf_path: $remote_pdf_path"
-    echo "[DEBUG] abs_remote_path: $abs_remote_path"
-    echo "[DEBUG] Running: sshpass -p \"$LEE_TEX_SSH_PASSWORD\" ssh -p 50037 -o StrictHostKeyChecking=no leetex@51.154.36.16 'ls -l $abs_remote_path'"
+    echo "::group::Checking remote PDF existence"
+    echo "::notice:: abs_remote_path: $abs_remote_path"
     ssh_output=$(sshpass -p "$LEE_TEX_SSH_PASSWORD" ssh -p 50037 -o StrictHostKeyChecking=no leetex@51.154.36.16 "ls -l '$abs_remote_path'")
     ssh_exit=$?
-    echo "[DEBUG] ssh exit code: $ssh_exit"
-    echo "[DEBUG] ssh output:"
+    echo "::notice:: ssh exit code: $ssh_exit"
+    echo "::notice:: ssh output:"
     echo "$ssh_output"
     if [ $ssh_exit -eq 0 ]; then
-        echo "File $remote_pdf_path exists on server (ssh)."
+        echo "::notice:: File $remote_pdf_path exists on server (ssh)."
+        echo "::endgroup::"
         return 0
     else
-        echo "File $remote_pdf_path does not exist on server (ssh)."
+        echo "::notice:: File $remote_pdf_path does not exist on server (ssh)."
+        echo "::endgroup::"
         return 1
     fi
 }
@@ -37,29 +38,34 @@ remote_pdf_exists() {
 should_build_topic() {
     local input_path="$1"
     local remote_pdf_path="$2"
-    echo "should_build_topic called with:"
-    echo "  input_path: $input_path"
-    echo "  remote_pdf_path: $remote_pdf_path"
-    echo "  CHANGED_FILES_CSV: $CHANGED_FILES_CSV"
-    echo "  CHANGED_FILES array: ${CHANGED_FILES[*]}"
+    echo "::group::Check if topic should be built (PDF does not exist or input changed)"
+    echo "::notice::should_build_topic called with:"
+    echo "::notice::  input_path: $input_path"
+    echo "::notice::  remote_pdf_path: $remote_pdf_path"
+    echo "::notice::  CHANGED_FILES_CSV: $CHANGED_FILES_CSV"
+    echo "::notice::  CHANGED_FILES array: ${CHANGED_FILES[*]}"
     # If no changed files are specified, always build
     if [ -z "$CHANGED_FILES_CSV" ]; then
-        echo "  No changed files specified, will build."
+        echo "::notice::  No changed files specified, will build."
+        echo "::endgroup::"
         return 0
     fi
     for changed in "${CHANGED_FILES[@]}"; do
-        echo "    Checking changed file: $changed"
+        echo "::notice::    Checking changed file: $changed"
         if [[ "$input_path" == *"$changed"* ]] || [[ "$changed" == *"$input_path"* ]]; then
-            echo "    Match found: $input_path <-> $changed"
+            echo "::notice::    Match found: $input_path <-> $changed"
+            echo "::endgroup::"
             return 0
         fi
     done
     # If not in changed files, check if PDF exists on remote
     if remote_pdf_exists "$remote_pdf_path"; then
-        echo "  PDF exists on remote, skipping build."
+        echo "::notice::  PDF exists on remote, skipping build."
+        echo "::endgroup::"
         return 1
     else
-        echo "  PDF does not exist on remote, will build."
+        echo "::notice::  PDF does not exist on remote, will build."
+        echo "::endgroup::"
         return 0
     fi
 }
@@ -217,7 +223,7 @@ for i in "${!classes[@]}"; do
     topics=("${!topics_var}")
 
     if [ ${#topics[@]} -eq 0 ]; then
-        echo "No topics defined for $class, skipping..."
+        echo "::warning:: No topics defined for $class, skipping..."
         continue
     fi
 
@@ -257,11 +263,12 @@ for i in "${!classes[@]}"; do
         mkdir -p "$latex_dir"
 
         # Print current values for debugging
-        echo "Processing entry: $entry"
-        echo "  topic: $topic"
-        echo "  input_path: $input_path"
-        echo "  output_file: $output_file"
-        echo "  output_dir: $latex_dir"
+        echo "::group::Processing entry $entry"
+        echo "::notice::Processing entry: $entry"
+        echo "::notice::  topic: $topic"
+        echo "::notice::  input_path: $input_path"
+        echo "::notice::  output_file: $output_file"
+        echo "::notice::  output_dir: $latex_dir"
 
         cp "${root_dir}/main.tex" "$output_file"
 
@@ -282,7 +289,7 @@ for i in "${!classes[@]}"; do
             cyril_out="${root_dir}/Setups/cyril_${class}_${topic// /_}.tex"
         fi
         cp "$cyril_src" "$cyril_out"
-        echo "  Using cyril.tex: $cyril_out"
+        echo "::notice:: Using cyril.tex: $cyril_out"
 
         # Comment out all "thetopic" lines
         sed "${SED_INPLACE[@]}" "/\\\\newcommand{\\\\thetopic}/s/^/%/" "$cyril_out"
@@ -322,32 +329,32 @@ for i in "${!classes[@]}"; do
 
         if [ "$class" = "book" ]; then
             # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
-            echo "  step 1: lualatex"
+            echo "::notice::  step 1: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
 
-            echo "  step 2: biber"
+            echo "::notice::  step 2: biber"
             biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
 
-            echo "  step 3: makeglossaries"
+            echo "::notice::  step 3: makeglossaries"
             makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
 
-            echo "  step 4: lualatex"
+            echo "::notice::  step 4: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
 
-            echo "  step 5: lualatex"
+            echo "::notice::  step 5: lualatex"
             lualatex -synctex=1 -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
         else
             # Double pass for other classes, show only warnings/errors
-            echo "  step 1: lualatex"
+            echo "::notice::  step 1: lualatex"
             lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
-            echo "  step 2: lualatex"
+            echo "::notice::  step 2: lualatex"
             lualatex -synctex=1 -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
         fi
 
         # Check for LaTeX errors in the log file
         log_file="${latex_dir}$(basename "$output_file" .tex).log"
         if grep -q '^!' "$log_file"; then
-            echo "LaTeX error detected in $input_path. Aborting."
+            echo "::error::LaTeX error detected in $input_path. Aborting."
             # Write error message and all lines starting with '!' from the log file to last_failed_file.txt
             {
                 echo "LaTeX error detected in $input_path"
@@ -377,11 +384,13 @@ for i in "${!classes[@]}"; do
             sshpass -p "$LEE_TEX_SSH_PASSWORD" rsync -av --chmod=ugo=rwX -e "ssh -p 50037 -o StrictHostKeyChecking=no" "${root_dir}/PDFs/" leetex@51.154.36.16:/volume1/LeeTeX/PDFs/
 
             if [ $? -ne 0 ]; then
-                echo "rsync failed. Aborting."
+                echo "::error::rsync failed. Aborting."
                 exit 1
             fi
         fi
+
+        echo "::endgroup::"
     done
 done
 
-echo "Compilation of all document types complete."
+echo "::notice::Compilation of all document types complete."

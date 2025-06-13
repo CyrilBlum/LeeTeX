@@ -8,7 +8,7 @@ def vis_correl_data(df, x, y, file_name):
     plt.xlabel(x)
     plt.ylabel(y)
     plt.grid(True)
-    plt.savefig("Grundlagen_Info/10_Aus_Daten_lernen/Figures/"+file_name+".pdf", bbox_inches='tight')  # Save the plot to a PDF file with no white margins
+    plt.savefig("Grundlagen_Info/10_Aus_Daten_Lernen/Figures/"+file_name+".pdf", bbox_inches='tight')  # Save the plot to a PDF file with no white margins
     plt.tight_layout()
     plt.close()
 

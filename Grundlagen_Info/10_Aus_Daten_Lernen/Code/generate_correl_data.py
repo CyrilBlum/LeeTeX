@@ -77,13 +77,13 @@ if __name__ == "__main__":
         plt.scatter(x, y, s=3, color=(0, 0, 139/255))  # Set color to dark blue
         plt.axis('off')
         plt.gca().set_position([0, 0, 1, 1])  # Remove margins
-        plt.savefig(f"Grundlagen_Info/10_Aus_Daten_lernen/Figures/correlation_{r}.pdf", 
+        plt.savefig(f"Grundlagen_Info/10_Aus_Daten_Lernen/Figures/correlation_{r}.pdf", 
                     bbox_inches='tight', pad_inches=0, transparent=True)  # Set transparent background
         plt.close()
 
     # Generate and save correlation data
-    generiere_korrelationsdaten("berufserfahrung_vs_einladung", n=20).to_csv("Grundlagen_Info/10_Aus_Daten_lernen/Data/berufserfahrung_vs_einladung.csv", index=False)
-    generiere_korrelationsdaten("socialmedia_vs_zufriedenheit", n=20).to_csv("Grundlagen_Info/10_Aus_Daten_lernen/Data/socialmedia_vs_zufriedenheit.csv", index=False)
-    generiere_korrelationsdaten("haarlaenge_vs_note", n=14, seed=1).to_csv("Grundlagen_Info/10_Aus_Daten_lernen/Data/haarlaenge_vs_note.csv", index=False)
-    generiere_korrelationsdaten("schlafdauer_vs_note", n=25, seed=1).to_csv("Grundlagen_Info/10_Aus_Daten_lernen/Data/schlafdauer_vs_note.csv", index=False)
+    generiere_korrelationsdaten("berufserfahrung_vs_einladung", n=20).to_csv("Grundlagen_Info/10_Aus_Daten_Lernen/Data/berufserfahrung_vs_einladung.csv", index=False)
+    generiere_korrelationsdaten("socialmedia_vs_zufriedenheit", n=20).to_csv("Grundlagen_Info/10_Aus_Daten_Lernen/Data/socialmedia_vs_zufriedenheit.csv", index=False)
+    generiere_korrelationsdaten("haarlaenge_vs_note", n=14, seed=1).to_csv("Grundlagen_Info/10_Aus_Daten_Lernen/Data/haarlaenge_vs_note.csv", index=False)
+    generiere_korrelationsdaten("schlafdauer_vs_note", n=25, seed=1).to_csv("Grundlagen_Info/10_Aus_Daten_Lernen/Data/schlafdauer_vs_note.csv", index=False)
 
