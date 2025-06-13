@@ -296,6 +296,11 @@ for i in "${!classes[@]}"; do
         # Only build if the topic's input_path matches a changed file or PDF is missing on remote
         should_build_topic "$input_path" "$remote_pdf_path" || continue
 
+        # Create a temporary directory for biber
+        mkdir -p ~/tmp_exec
+        export TMPDIR=~/tmp_exec
+
+
         if [ "$class" = "book" ]; then
             # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
             echo "::notice::  step 1: lualatex"
