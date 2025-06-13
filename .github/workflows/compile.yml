@@ -61,13 +61,9 @@ jobs:
         id: culprit
         run: |
           if [ -f last_failed_file.txt ]; then
-            culprit_content=$(cat last_failed_file.txt)
-            # Replace '%' with '%25', '\n' with '%0A', and '\r' with '%0D' for GitHub output
-            culprit_content="${culprit_content//'%'/'%25'}"
-            culprit_content="${culprit_content//$'\n'/'%0A'}"
-            culprit_content="${culprit_content//$'\r'/'%0D'}"
-            echo "culprit=$culprit_content" >> $GITHUB_OUTPUT
-          else
+            culprit_line=$(head -n 1 last_failed_file.txt | tr -d '\r\n')
+            echo "culprit=$culprit_line" >> $GITHUB_OUTPUT
+              else
             echo "culprit=Unknown" >> $GITHUB_OUTPUT
           fi
       - name: Send email
@@ -87,4 +83,5 @@ jobs:
             Branch: ${{ github.ref }}
             Commit: ${{ github.sha }}
             Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            ${{ steps.culprit.outputs.culprit }}
+            First line of log: ${{ steps.culprit.outputs.culprit }}
+              attachments: last_failed_file.txt
