@@ -15,7 +15,7 @@ class_commands=(
     "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
     "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
     "\\\\documentclass[svgnames,hyphens]{article}"
-    "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
+    # "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
     "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
 )
 
@@ -278,7 +278,7 @@ for i in "${!classes[@]}"; do
             {
                 echo "LaTeX error detected in $input_path"
                 echo "----------------------------------------"
-                # grep '^!' "$log_file"
+                cat "$log_file"
             } >"$root_dir/last_failed_file.txt"
             exit 1
         fi
