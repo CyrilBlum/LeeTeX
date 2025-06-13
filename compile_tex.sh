@@ -246,6 +246,17 @@ for i in "${!classes[@]}"; do
             sed "${SED_INPLACE[@]}" "s|\\input{Setups/cyril.tex}|\\input{Setups/cyril_${class}_${topic// /_}.tex}|" "$output_file"
         fi
 
+        ## TEST START: PROVOKE FAILURE ON PURPOSE
+        echo "LaTeX error detected in $input_path. Aborting."
+        # Write error message and all lines starting with '!' from the log file to last_failed_file.txt
+        {
+            echo "LaTeX error detected in $input_path"
+            echo "----------------------------------------"
+            grep '^!' "$log_file"
+        } >"$root_dir/last_failed_file.txt"
+        exit 1
+        ## TEST END
+
         if [ "$class" = "book" ]; then
             # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
             echo "  step 1: lualatex"
@@ -278,21 +289,10 @@ for i in "${!classes[@]}"; do
             {
                 echo "LaTeX error detected in $input_path"
                 echo "----------------------------------------"
-                echo "Error Messages:"
                 grep '^!' "$log_file"
             } >"$root_dir/last_failed_file.txt"
             exit 1
         fi
-
-        ## TEST: PROVOKE FAILURE ON PURPOSE
-        echo "LaTeX error detected in $input_path. Aborting."
-        # Write error message and all lines starting with '!' from the log file to last_failed_file.txt
-            {
-                echo "Error in file: $input_path"
-                echo "Error Messages:"
-                grep '^!' "$log_file"
-            } >"$root_dir/last_failed_file.txt"
-        exit 1
 
         # Clean up intermediate .tex file
         rm "$output_file"
