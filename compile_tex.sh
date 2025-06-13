@@ -9,13 +9,13 @@ LEE_TEX_SSH_PASSWORD="$1"
 # classes=("beamer") # document classes
 # toggles=("3")                # documentclass toggles
 classes=("book" "book" "article" "beamer") # document classes
-toggles=("0" "0" "1" "3")                # documentclass toggles
+toggles=("0" "0" "1" "3")                  # documentclass toggles
 
 class_commands=(
     "\\\\documentclass[a4paper,11pt,svgnames,oneside]{book}"
     "\\\\documentclass[a4paper,11pt,svgnames,exerciseonly,oneside]{book}"
     "\\\\documentclass[svgnames,hyphens]{article}"
-    # "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
+    "\\\\documentclass[11pt,addpoints,svgnames]{exam}"
     "\\\\documentclass[xcolor={table,dvipsnames,svgnames},hyphens]{beamer}"
 )
 
@@ -272,7 +272,8 @@ for i in "${!classes[@]}"; do
 
         log_file="${latex_dir}$(basename "$output_file" .tex).log"
         if grep -q '^!' "$log_file"; then
-            echo "LaTeX error detected. Aborting."
+            echo "LaTeX error detected in $input_path. Aborting."
+            echo "LaTeX error detected in $input_path" >"$root_dir/last_failed_file.txt"
             exit 1
         fi
 
