@@ -289,7 +289,7 @@ for i in "${!classes[@]}"; do
             {
                 echo "LaTeX error detected in $input_path"
                 echo "----------------------------------------"
-                grep '^!' "$log_file"
+                # grep '^!' "$log_file"
             } >"$root_dir/last_failed_file.txt"
             exit 1
         fi
