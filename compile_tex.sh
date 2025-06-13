@@ -16,9 +16,18 @@ remote_pdf_exists() {
     fi
     # Remove leading PDFs/ for rsync module path
     local rsync_path="${remote_pdf_path#PDFs/}"
-    echo "Checking remote existence via rsync: rsync://leetex@51.154.36.16:50037/LeeTeX/PDFs/$rsync_path"
-    # Try to list the file using rsync daemon
-    if rsync --list-only "rsync://leetex@51.154.36.16:50037/LeeTeX/PDFs/$rsync_path" 2>/dev/null | grep -q "$(basename \"$rsync_path\")"; then
+    echo "[DEBUG] remote_pdf_path: $remote_pdf_path"
+    echo "[DEBUG] rsync_path: $rsync_path"
+    echo "[DEBUG] Running: rsync --list-only rsync://leetex@51.154.36.16:50037/LeeTeX/PDFs/$rsync_path"
+    rsync_output=$(rsync --list-only "rsync://leetex@51.154.36.16:50037/LeeTeX/PDFs/$rsync_path" 2>&1)
+    rsync_exit=$?
+    echo "[DEBUG] rsync exit code: $rsync_exit"
+    echo "[DEBUG] rsync output:"
+    echo "$rsync_output"
+    grep_result=$(echo "$rsync_output" | grep "$(basename \"$rsync_path\")")
+    echo "[DEBUG] grep for $(basename "$rsync_path"):"
+    echo "$grep_result"
+    if echo "$grep_result" | grep -q "$(basename \"$rsync_path\")"; then
         echo "File $remote_pdf_path exists on server (rsync)."
         return 0
     else
