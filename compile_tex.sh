@@ -6,7 +6,7 @@ CHANGED_FILES_CSV="$2"
 # Parse changed files into an array (if provided)
 IFS=',' read -r -a CHANGED_FILES <<< "$CHANGED_FILES_CSV"
 
-# Helper to check if PDF exists on remote server using rsync daemon
+# Helper to check if PDF exists on remote server using ssh and ls -l
 remote_pdf_exists() {
     local remote_pdf_path="$1"
     # Only check on Linux (not macOS)
@@ -14,24 +14,21 @@ remote_pdf_exists() {
         echo "Skipping remote PDF check on macOS."
         return 1  # Always "not found" on macOS
     fi
-    # Remove leading PDFs/ for rsync module path
-    local rsync_path="${remote_pdf_path#PDFs/}"
+    # Convert remote_pdf_path (PDFs/...) to absolute path on server
+    local abs_remote_path="/volume1/LeeTeX/$remote_pdf_path"
     echo "[DEBUG] remote_pdf_path: $remote_pdf_path"
-    echo "[DEBUG] rsync_path: $rsync_path"
-    echo "[DEBUG] Running: rsync --list-only rsync://leetex@51.154.36.16:50037/LeeTeX/PDFs/$rsync_path"
-    rsync_output=$(rsync --list-only "rsync://leetex@51.154.36.16:50037/LeeTeX/PDFs/$rsync_path" 2>&1)
-    rsync_exit=$?
-    echo "[DEBUG] rsync exit code: $rsync_exit"
-    echo "[DEBUG] rsync output:"
-    echo "$rsync_output"
-    grep_result=$(echo "$rsync_output" | grep "$(basename \"$rsync_path\")")
-    echo "[DEBUG] grep for $(basename "$rsync_path"):"
-    echo "$grep_result"
-    if echo "$grep_result" | grep -q "$(basename \"$rsync_path\")"; then
-        echo "File $remote_pdf_path exists on server (rsync)."
+    echo "[DEBUG] abs_remote_path: $abs_remote_path"
+    echo "[DEBUG] Running: ssh -p 50037 -i /root/.ssh/id_rsa_syno cyrilwendl@51.154.36.16 'ls -l $abs_remote_path'"
+    ssh_output=$(ssh -p 50037 -i /root/.ssh/id_rsa_syno -o StrictHostKeyChecking=no cyrilwendl@51.154.36.16 "ls -l '$abs_remote_path'")
+    ssh_exit=$?
+    echo "[DEBUG] ssh exit code: $ssh_exit"
+    echo "[DEBUG] ssh output:"
+    echo "$ssh_output"
+    if [ $ssh_exit -eq 0 ]; then
+        echo "File $remote_pdf_path exists on server (ssh)."
         return 0
     else
-        echo "File $remote_pdf_path does not exist on server (rsync)."
+        echo "File $remote_pdf_path does not exist on server (ssh)."
         return 1
     fi
 }
@@ -377,7 +374,8 @@ for i in "${!classes[@]}"; do
         # Copy all files and folders from PDFs to Cyril's Synology NAS
         if [[ "$OSTYPE" != *darwin* ]]; then
             # Use sshpass to provide the password non-interactively (not recommended for security reasons)
-            sshpass -p "${LEE_TEX_SSH_PASSWORD}" rsync -av --chmod=ugo=rwX -e "ssh -p 50037" "${root_dir}/PDFs/" leetex@51.154.36.16::LeeTeX/PDFs
+            rsync -av --chmod=ugo=rwX -e "ssh -p 50037 -i /root/.ssh/id_rsa_syno" "${root_dir}/PDFs/" cyrilwendl@51.154.36.16:/volume1/LeeTeX/PDFs/
+
             if [ $? -ne 0 ]; then
                 echo "rsync failed. Aborting."
                 exit 1
