@@ -18,8 +18,8 @@ remote_pdf_exists() {
     local abs_remote_path="/volume1/LeeTeX/$remote_pdf_path"
     echo "[DEBUG] remote_pdf_path: $remote_pdf_path"
     echo "[DEBUG] abs_remote_path: $abs_remote_path"
-    echo "[DEBUG] Running: ssh -p 50037 -i /root/.ssh/id_rsa_syno cyrilwendl@51.154.36.16 'ls -l $abs_remote_path'"
-    ssh_output=$(ssh -p 50037 -i /root/.ssh/id_rsa_syno -o StrictHostKeyChecking=no cyrilwendl@51.154.36.16 "ls -l '$abs_remote_path'")
+    echo "[DEBUG] Running: ssh -p 50037 -i /root/.ssh/id_rsa_syno leetex@51.154.36.16 'ls -l $abs_remote_path'"
+    ssh_output=$(ssh -p 50037 -i /root/.ssh/id_rsa_syno -o StrictHostKeyChecking=no leetex@51.154.36.16 "ls -l '$abs_remote_path'")
     ssh_exit=$?
     echo "[DEBUG] ssh exit code: $ssh_exit"
     echo "[DEBUG] ssh output:"
@@ -374,7 +374,7 @@ for i in "${!classes[@]}"; do
         # Copy all files and folders from PDFs to Cyril's Synology NAS
         if [[ "$OSTYPE" != *darwin* ]]; then
             # Use sshpass to provide the password non-interactively (not recommended for security reasons)
-            rsync -av --chmod=ugo=rwX -e "ssh -p 50037 -i /root/.ssh/id_rsa_syno" "${root_dir}/PDFs/" cyrilwendl@51.154.36.16:/volume1/LeeTeX/PDFs/
+            rsync -av --chmod=ugo=rwX -e "ssh -p 50037 -i /home/leetex/.ssh/id_rsa_syno" "${root_dir}/PDFs/" leetex@51.154.36.16:/volume1/LeeTeX/PDFs/
 
             if [ $? -ne 0 ]; then
                 echo "rsync failed. Aborting."
