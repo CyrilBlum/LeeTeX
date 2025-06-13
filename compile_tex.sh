@@ -22,7 +22,7 @@ class_commands=(
 # Topics and their input files for each document class (as flat arrays: topic:path)
 book_topics=(
     # OInf topics
-    "Programmieren:Grundlagen_Info/00_Programmieren/Skript/Skript.tex"
+    "Programmieren:Grundlagen_Info/00_Programmieren/Skript/SkriptFAILUREONPURPOSE.tex"
     "Zahlendarstellungen_und_Kodierungen:Grundlagen_Info/01_TheoretischeInformatik/Skript/Skript.tex"
     "Randomisierte_Algorithmen:Grundlagen_Info/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
     "Kryptologie:Grundlagen_Info/03_Kryptologie/Skript/Skript.tex"
