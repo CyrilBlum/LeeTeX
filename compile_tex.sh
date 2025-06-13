@@ -281,39 +281,6 @@ for i in "${!classes[@]}"; do
         # Uncomment the necessary input line
         sed "${SED_INPLACE[@]}" "s|[[:space:]]*%*[[:space:]]*\\\\input{$input_path}|\\\\input{$input_path}|" "$output_file"
 
-        # Copy cyril.tex and set topic/subject
-        cyril_src="${root_dir}/Setups/cyril.tex"
-        if [ "$class" = "book" ]; then
-            cyril_out="${root_dir}/Setups/cyril_${class}_${book_variant}_${topic// /_}.tex"
-        else
-            cyril_out="${root_dir}/Setups/cyril_${class}_${topic// /_}.tex"
-        fi
-        cp "$cyril_src" "$cyril_out"
-        echo "::notice:: Using cyril.tex: $cyril_out"
-
-        # Comment out all "thetopic" lines
-        sed "${SED_INPLACE[@]}" "/\\\\newcommand{\\\\thetopic}/s/^/%/" "$cyril_out"
-        # Uncomment the selected topic line
-        sed "${SED_INPLACE[@]}" "/\\\\newcommand{\\\\thetopic}{${topic//_/ }}/s/^%*[[:space:]]*//" "$cyril_out"
-
-        # Comment out all "thesubject" lines
-        sed "${SED_INPLACE[@]}" "/\\\\newcommand{\\\\thesubject}/s/^/%/" "$cyril_out"
-        # Set the correct \thesubject line: uncomment Geografie if topic matches, else Informatik
-        if echo "$topic" | grep -Eq "Stadtgeografie|Geomorphologie|Globalisierung|Geografie"; then
-            # Uncomment Informatik line
-            sed "${SED_INPLACE[@]}" "/\\\\newcommand{\\\\thesubject}{Geografie}/s/^%*[[:space:]]*//" "$cyril_out"
-        else
-            # Uncomment Informatik line
-            sed "${SED_INPLACE[@]}" "/\\\\newcommand{\\\\thesubject}{Informatik}/s/^%*[[:space:]]*//" "$cyril_out"
-        fi
-
-        # Use the custom cyril.tex in the main file copy
-        if [ "$class" = "book" ]; then
-            sed "${SED_INPLACE[@]}" "s|\\input{Setups/cyril.tex}|\\input{Setups/cyril_${class}_${book_variant}_${topic// /_}.tex}|" "$output_file"
-        else
-            sed "${SED_INPLACE[@]}" "s|\\input{Setups/cyril.tex}|\\input{Setups/cyril_${class}_${topic// /_}.tex}|" "$output_file"
-        fi
-
         # Determine expected PDF name and remote path for remote existence check
         pdf_name="$(basename "$output_file" .tex).pdf"
         if [ "$class" = "book" ]; then
@@ -366,7 +333,6 @@ for i in "${!classes[@]}"; do
 
         # Clean up intermediate .tex file
         rm "$output_file"
-        rm "$cyril_out"
 
         # Remove all aux files (but keep log files and PDFs)
         if [ -d "$latex_dir" ]; then
