@@ -61,9 +61,9 @@ jobs:
         id: culprit
         run: |
           if [ -f last_failed_file.txt ]; then
-            echo "errormsg=$(cat last_failed_file.txt)" >> $GITHUB_OUTPUT
+            echo "culprit=$(cat last_failed_file.txt)" >> $GITHUB_OUTPUT
           else
-            echo "errormsg=Unknown" >> $GITHUB_OUTPUT
+            echo "culprit=Unknown" >> $GITHUB_OUTPUT
           fi
       - name: Send email
         uses: dawidd6/action-send-mail@v3
@@ -82,4 +82,4 @@ jobs:
             Branch: ${{ github.ref }}
             Commit: ${{ github.sha }}
             Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            ${{ steps.culprit.outputs.errormsg }}
+            ${{ steps.culprit.outputs.culprit }}
