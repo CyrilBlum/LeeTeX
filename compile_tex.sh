@@ -22,7 +22,7 @@ class_commands=(
 # Topics and their input files for each document class (as flat arrays: topic:path)
 book_topics=(
     # OInf topics
-    "Programmieren:Grundlagen_Info/00_Programmieren/Skript/SkriptFAILUREONPURPOSE.tex"
+    "Programmieren:Grundlagen_Info/00_Programmieren/Skript/Skript.tex"
     "Zahlendarstellungen_und_Kodierungen:Grundlagen_Info/01_TheoretischeInformatik/Skript/Skript.tex"
     "Randomisierte_Algorithmen:Grundlagen_Info/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
     "Kryptologie:Grundlagen_Info/03_Kryptologie/Skript/Skript.tex"
@@ -270,12 +270,18 @@ for i in "${!classes[@]}"; do
             lualatex -synctex=1 -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
         fi
 
+        # Check for LaTeX errors in the log file
         log_file="${latex_dir}$(basename "$output_file" .tex).log"
         if grep -q '^!' "$log_file"; then
             echo "LaTeX error detected in $input_path. Aborting."
             echo "LaTeX error detected in $input_path" >"$root_dir/last_failed_file.txt"
             exit 1
         fi
+
+        ## TEST: PROVOKE FAILURE ON PURPOSE
+        echo "LaTeX error detected in $input_path. Aborting."
+        echo "LaTeX error detected in $input_path" >"$root_dir/last_failed_file.txt"
+        exit 1
 
         # Clean up intermediate .tex file
         rm "$output_file"
