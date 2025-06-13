@@ -92,7 +92,6 @@ book_topics=(
     # OInf topics
     "Programmieren:Grundlagen_Info/00_Programmieren/Skript/Skript.tex"
     "Zahlendarstellungen_und_Kodierungen:Grundlagen_Info/01_TheoretischeInformatik/Skript/Skript.tex"
-    "Randomisierte_Algorithmen:Grundlagen_Info/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
     "Kryptologie:Grundlagen_Info/03_Kryptologie/Skript/Skript.tex"
     "Kompression:Grundlagen_Info/04_Kompression/Skript.tex"
     "Datenintegrität:Grundlagen_Info/05_Datenintegritaet/Skript/Skript"
@@ -106,7 +105,8 @@ book_topics=(
     # Thomas EF topics
     "Endliche_Automaten:EF/Endliche_Automaten/skript_EA.tex"
     "Induktion_und_Rekursion:EF/Induktion_und_Rekursion/skript_induktion_rekursion.tex"
-    # "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
+    "Randomisierte_Algorithmen:Grundlagen_Info/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
+    "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
 )
 
 article_topics=(
@@ -230,16 +230,18 @@ for i in "${!classes[@]}"; do
     for entry in "${topics[@]}"; do
         topic="${entry%%:*}"
         input_path="${entry#*:}"
+        # Extract LEVEL as the first directory in input_path
+        LEVEL=$(echo "$input_path" | cut -d'/' -f1)
         # Determine output directory and file names, distinguishing between book variants
         if [ "$class" = "book" ]; then
             # Check if this is the exerciseonly variant
             if echo "$class_command" | grep -q "exerciseonly"; then
                 book_variant="exerciseonly"
-                latex_dir="${root_dir}/PDFs/${topic}/${class}_${book_variant}/"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/${class}_${book_variant}/"
                 output_file="${root_dir}/output_${class}_${book_variant}_${topic// /_}.tex"
             else
                 book_variant="solutions"
-                latex_dir="${root_dir}/PDFs/${topic}/${class}_${book_variant}/"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/${class}_${book_variant}/"
                 output_file="${root_dir}/output_${class}_${book_variant}_${topic// /_}.tex"
             fi
         elif [ "$class" != "book" ]; then
@@ -251,13 +253,13 @@ for i in "${!classes[@]}"; do
                 main_topic=$(echo "$main_topic" | sed -E 's/([a-z])([A-Z])/\1 \2/g')
                 # Convert ASCII umlauts to actual umlauts
                 main_topic=$(echo "$main_topic" | sed -e 's/ae/ä/g' -e 's/oe/ö/g' -e 's/ue/ü/g' -e 's/Ae/Ä/g' -e 's/Oe/Ö/g' -e 's/Ue/Ü/g')
-                latex_dir="${root_dir}/PDFs/${main_topic}/beamer/${topic}/"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${main_topic}/beamer/${topic}/"
             else
-                latex_dir="${root_dir}/PDFs/${class}/${topic}/"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${class}/${topic}/"
             fi
             output_file="${root_dir}/output_${class}_${topic// /_}.tex"
         else
-            latex_dir="${root_dir}/PDFs/${topic}/${class}/"
+            latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/${class}/"
             output_file="${root_dir}/output_${class}_${topic// /_}.tex"
         fi
         mkdir -p "$latex_dir"
