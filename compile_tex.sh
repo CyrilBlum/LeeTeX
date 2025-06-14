@@ -89,7 +89,7 @@ class_commands=(
 
 # Topics and their input files for each document class (as flat arrays: topic:path)
 book_topics=(
-    # OInf topics
+    # Grundlagenfach Informatik
     "Programmieren:Grundlagen_Info/00_Programmieren/Skript/Skript.tex"
     "Zahlendarstellungen_und_Kodierungen:Grundlagen_Info/01_TheoretischeInformatik/Skript/Skript.tex"
     "Kryptologie:Grundlagen_Info/03_Kryptologie/Skript/Skript.tex"
@@ -99,23 +99,25 @@ book_topics=(
     "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript.tex"
     "Tabellenkalkulation:Grundlagen_Info/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
     "Aus_Daten_Lernen:Grundlagen_Info/10_Aus_Daten_Lernen/Skript/Skript.tex"
-    # Cyril Geography topics
-    "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
-    "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
-    # Thomas EF topics
+    
+    # Ergänzungsfach Informatik
     "Endliche_Automaten:EF/Endliche_Automaten/skript_EA.tex"
     "Induktion_und_Rekursion:EF/Induktion_und_Rekursion/skript_induktion_rekursion.tex"
     "Randomisierte_Algorithmen:Grundlagen_Info/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
     "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
+
+    # Geographie
+    "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
+    "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
 )
 
 article_topics=(
-    # Grundlagen Info
+    # Grundlagenfach Informatik
     "Excel-Projekte:Grundlagen_Info/06_Datenbanken/Excel-Projekte"
     "HannahFry:Grundlagen_Info/08_Gesellschaft/HannahFry"
     "Vertiefungsthema:Grundlagen_Info/08_Gesellschaft/Vertiefungsthema"
 
-    # Ergänzungsfach
+    # Ergänzungsfach Informatik
     "Ergaenzungsfach_Ausschreibungstext:EF/Ausschreibung/ausschreibungstext.tex"
 
     # Sonderwochen
@@ -141,13 +143,10 @@ article_topics=(
     "PHBern_PPL2_Digitalitaet:Private/PHBern/1 ESW/PPL2 Digitalität"
     "PHBern_Zusammenfassung_FDG:Private/PHBern/2 FD/Zusammenfassung FDG"
     "PHBern_Unterrichtsvorbereitung:Private/PHBern/3 BPA/Unterrichtsvorbereitung.tex"
-    "PHBern_Berufskonzept:Private/PHBern/4 I&E/Berufskonzept"
-    "PHBern_Hospitationen_BPA:Private/PHBern/4 I&E/Hospitationen BPA.tex"
-    "PHBern_LUBM_Einzelarbeit:Private/PHBern/4 I&E/LUBM Einzelarbeit"
 )
 
 beamer_topics=(
-    # # Topics marked with # # currently have issues compiling and need to be reviewed.
+    # Grundlagenfach Informatik
     "K01Intro:Grundlagen_Info/00_Programmieren/Slides/K01Intro"
     "K01aZeichenketten:Grundlagen_Info/00_Programmieren/Slides/K01aZeichenketten"
     "K02aDefinitionen:Grundlagen_Info/00_Programmieren/Slides/K02aDefinitionen"
@@ -206,7 +205,11 @@ beamer_topics=(
     "linear_regression:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/linear_regression.tex"
     "markov_chains:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_chains.tex"
     "markov_appendix:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_appendix.tex"
+
+    # Ergänzungsfach Informatik
     "complexity:EF/Complexity/complexity.tex"
+
+    # Various
     "Presentation_MINT_Tag:Various/MINT_Tag/Presentation_MINT_Tag.tex"
 )
 
