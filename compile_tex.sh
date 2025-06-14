@@ -110,27 +110,40 @@ book_topics=(
 )
 
 article_topics=(
-    # "mwe:LaTeX_related/mwe.tex"
-    # "ausschreibungstext:EF/Ausschreibung/ausschreibungstext.tex"
-    # "Eingabe_Projektidee:Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee"
-    # "Auftrag:Interessenwochen/Wn_Gf_Sommer_2024/Auftrag"
-    # "Semesterplanung:Grundlagen_Info/Various/Semesterplanung"
-    # "Benotung:Grundlagen_Info/Various/Benotung"
-    # "Excel-Projekte:Grundlagen_Info/06_Datenbanken/Excel-Projekte"
-    # "HannahFry:Grundlagen_Info/08_Gesellschaft/HannahFry"
-    # "Feedback:Grundlagen_Info/08_Gesellschaft/Feedback"
-    # "Vertiefungsthema:Grundlagen_Info/08_Gesellschaft/Vertiefungsthema"
-    # "Lernziele:Grundlagen_Info/10_Aus_Daten_Lernen/Lernziele"
-    # "Klassentag2024_1c:Various/Klassenstunde/Klassentag2024_1c.tex"
-    # "Packliste_Lager:Various/Klassenstunde/Packliste_Lager.tex"
-    # "MA_Thesis_Guidelines:Various/MA Thesis/MA Thesis Guidelines.tex"
-    # "Filme:Various/Filme.tex"
-    # "Keyboard_Shortcuts:Various/Keyboard Shortcuts.tex"
-    # "Tabu:Various/Tabu.tex"
-    # "Namensschilder:Various/Namensschilder"
-    # "Provokante_Aussagen:Various/Provokante_Aussagen"
-    # "Fun_Quotes:Various/Fun_Quotes"
-    "Unterrichtsvorbereitung:Private/PHBern/3 BPA/Unterrichtsvorbereitung.tex"
+    # Grundlagen Info
+    "Excel-Projekte:Grundlagen_Info/06_Datenbanken/Excel-Projekte"
+    "HannahFry:Grundlagen_Info/08_Gesellschaft/HannahFry"
+    "Vertiefungsthema:Grundlagen_Info/08_Gesellschaft/Vertiefungsthema"
+
+    # Ergänzungsfach
+    "Ergaenzungsfach_Ausschreibungstext:EF/Ausschreibung/ausschreibungstext.tex"
+
+    # Sonderwochen
+    "Eingabe_Projektidee:Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee"
+    "Auftrag:Interessenwochen/Wn_Gf_Sommer_2024/Auftrag"
+    "Klassentag2024_1c:Various/Klassenstunde/Klassentag2024_1c.tex". # Gf
+    "Packliste_Lager:Various/Klassenstunde/Packliste_Lager.tex" # Gf
+
+    # Various
+    "Semesterplanung:Grundlagen_Info/Various/Semesterplanung"
+    "Benotung:Grundlagen_Info/Various/Benotung"
+    "MA_Thesis_Guidelines:Various/MA Thesis/MA Thesis Guidelines.tex"
+    "Filme:Various/Filme.tex"
+    "Tabu:Various/Tabu.tex"
+    "Namensschilder:Various/Namensschilder"
+    "Provokante_Aussagen:Various/Provokante_Aussagen"
+    "Fun_Quotes:Various/Fun_Quotes"
+
+    # Private (wn)
+    "PHBern_Handout_GDI:Private/PHBern/1 ESW/Handout GDI"
+    "PHBern_Themenvertiefung_GDI:Private/PHBern/1 ESW/Themenvertiefung GDI"
+    "PHBern_PPL2_Harvard_Konzept:Private/PHBern/1 ESW/PPL2 Harvard-Konzept"
+    "PHBern_PPL2_Digitalitaet:Private/PHBern/1 ESW/PPL2 Digitalität"
+    "PHBern_Zusammenfassung_FDG:Private/PHBern/2 FD/Zusammenfassung FDG"
+    "PHBern_Unterrichtsvorbereitung:Private/PHBern/3 BPA/Unterrichtsvorbereitung.tex"
+    "PHBern_Berufskonzept:Private/PHBern/4 I&E/Berufskonzept"
+    "PHBern_Hospitationen_BPA:Private/PHBern/4 I&E/Hospitationen BPA.tex"
+    "PHBern_LUBM_Einzelarbeit:Private/PHBern/4 I&E/LUBM Einzelarbeit"
 )
 
 beamer_topics=(
@@ -300,30 +313,21 @@ for i in "${!classes[@]}"; do
         mkdir -p ~/tmp_exec
         export TMPDIR=~/tmp_exec
 
+        # Compile for all article classes: lualatex -> biber -> makeglossaries -> lualatex -> lualatex (even if no citations or glossaries are used)
+        echo "::notice::  step 1: lualatex"
+        lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
 
-        if [ "$class" = "book" ]; then
-            # Compile for 'book': lualatex -> biber -> makeglossaries -> lualatex -> lualatex
-            echo "::notice::  step 1: lualatex"
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
+        echo "::notice::  step 2: biber"
+        biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
 
-            echo "::notice::  step 2: biber"
-            biber --input-directory="$latex_dir" --output-directory="$latex_dir" "$(basename "$output_file" .tex)"
+        echo "::notice::  step 3: makeglossaries"
+        makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
 
-            echo "::notice::  step 3: makeglossaries"
-            makeglossaries -d "$latex_dir" "$(basename "$output_file" .tex)" || true
+        echo "::notice::  step 4: lualatex"
+        lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
 
-            echo "::notice::  step 4: lualatex"
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
-
-            echo "::notice::  step 5: lualatex"
-            lualatex -synctex=1 -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
-        else
-            # Double pass for other classes, show only warnings/errors
-            echo "::notice::  step 1: lualatex"
-            lualatex -synctex=1 -interaction=nonstopmode -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)" || true
-            echo "::notice::  step 2: lualatex"
-            lualatex -synctex=1 -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
-        fi
+        echo "::notice::  step 5: lualatex"
+        lualatex -synctex=1 -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
 
         # Check for LaTeX errors in the log file
         log_file="${latex_dir}$(basename "$output_file" .tex).log"
