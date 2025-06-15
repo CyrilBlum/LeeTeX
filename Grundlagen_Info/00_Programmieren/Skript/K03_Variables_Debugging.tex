@@ -218,39 +218,47 @@ Beispiele für Modulo-Berechnungen (Rest der ganzzahligen Division) in Python:
 \end{myexercise}
 
 
-\begin{myexercise}\label{ex:modulo-gerade}
-	Wie könnte berechnet werden, ob eine Zahl \texttt{z} gerade ist?
-	\begin{myanswer}
-		Wenn die Zahl \texttt{z} modulo 2 als Resultat 0 ergibt, ist die Zahl \texttt{z} gerade.
-	\end{myanswer}
-\end{myexercise}
+\begin{myexample}
+Offensichtlich ist eine natürliche Zahl $n$ genau dann gerade, wenn $n \% 2 = 0$ gilt, also $n$ beim Teilen durch 2 den Rest 0 hat.
+\end{myexample}
+
+%%% TODO: behandeln wir dann bei Verzweigungen
+% \begin{myexercise}\label{ex:modulo-gerade}
+% 	Wie kann mithilfe des Modulo-Operators feststellen berechnet werden, ob eine Zahl \texttt{z} gerade ist?
+% 	\begin{myanswer}
+% 		Wenn die Zahl \texttt{z} modulo 2 als Resultat 0 ergibt, ist die Zahl \texttt{z} gerade.
+% 	\end{myanswer}
+% \end{myexercise}
 
 \section{Zusammengesetzte Zuweisungsoperatoren}
-Um
-
-Betrachten Sie das folgende Programm:
+Wir haben bislang schon mehrfach Werte von Variablen verändert. In diesem Abschnitt führen wir einige gebräuchliche Python-Operatoren ein. Betrachten Sie das folgende Programm:
 \begin{lstlisting}
-    a = 10
-    print(a) # a hat den Wert 10
-    a + 5 # berechnet die Summe 10 + 5, Inhalt von a wird nicht geändert
-    print(a) # a hat immernoch den Wert 10
-
-    a += 7 # erhöhe den aktuellen Wert von a um 7, Inhalt von a wird geändert
-    print(a) # hat nun den Wert 17
+    alter = 11
+    print(alter) # alter hat den Wert 10
+    alter = alter + 1 # alter hat neu den Wert 11 
+    print(alter) # printet 11
+    alter + 5 # berechnet die Summe alter + 5, Inhalt von alter bleibt unverändert
+    print(alter) # printet 11
+    z = alter + 5 # Inhalt von alter bleibt unverändert 
+    print(alter) # printet 11
+    alter += 7 # alter hat neu den Wert 18
+    print(alter) # printet 18 
 \end{lstlisting}
-Es existiert also ein fundamentaler Unterschied zwischen den beiden Ausdrücken \pythoninline{x + 5} (Berechnung eines Wertes \textit{ohne} Speichern) und \pythoninline{x += 5} (Berechnung eines Wertes \textit{mit} Speichern).
+Es existiert ein fundamentaler Unterschied zwischen den beiden Ausdrücken \lstinline|x + 5| (Wert von \lstinline|x| bleibt unverändert) und \lstinline|x += 5| beziehungsweise \lstinline|x = x + 5| (Wert von \lstinline|x| wird überschrieben). Anstelle von \lstinline|x = x + y| werden wir häufig den zusammengesetzten Operator \lstinline|+=| in der Form \lstinline|x += y| verwenden. Analoge zusammengesetzte Operatoren für weitere mathematische Operatoren sind in \cref{tab:zusammengesetzte_operationen} aufgeführt.
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c|p{6cm}}
-		\textbf{Befehl}        & \textbf{Bedeutung}                                  \\\hline
-		\pythoninline{x += y}  & speichere \pythoninline{x + y} in \pythoninline{x}  \\\hline
-		\pythoninline{x -= y}  & speichere \pythoninline{x - y} in \pythoninline{x}  \\\hline
-		\pythoninline{x *= y}  & speichere \pythoninline{x * y} in \pythoninline{x}  \\\hline
-		\pythoninline{x /= y}  & speichere \pythoninline{x / y} in \pythoninline{x}  \\\hline
-		\pythoninline{x //= y} & speichere \pythoninline{x // y} in \pythoninline{x} \\\hline
-		\pythoninline{x \%= y} & speichere \pythoninline{x \% y} in \pythoninline{x}
+		\textbf{zusammengesetzte Zuweisungsoperation} & \textbf{Bedeutung}                                  \\\hline
+		\pythoninline{x += y}                         & speichere \pythoninline{x + y} in \pythoninline{x}  \\\hline
+		\pythoninline{x -= y}                         & speichere \pythoninline{x - y} in \pythoninline{x}  \\\hline
+		\pythoninline{x *= y}                         & speichere \pythoninline{x * y} in \pythoninline{x}  \\\hline
+		\pythoninline{x /= y}                         & speichere \pythoninline{x / y} in \pythoninline{x}  \\\hline
+		\pythoninline{x //= y}                        & speichere \pythoninline{x // y} in \pythoninline{x} \\\hline
+		\pythoninline{x \%= y}                        & speichere \pythoninline{x \% y} in \pythoninline{x}
 	\end{tabular}
+	\caption{häufig verwendete zusammengesetzte Operatoren}
+	\label{tab:zusammengesetzte_operationen}
 \end{table}
 
 \begin{myexercise}\label{ex:spirale-increment}
@@ -259,32 +267,34 @@ Es existiert also ein fundamentaler Unterschied zwischen den beiden Ausdrücken 
 		\centering
 		\includegraphics[width=0.3\linewidth]{Grundlagen_Info/00_Programmieren/Skript/Figures/spiral}
 	\end{figure}
-	Die Seitenlänge der Spirale soll nach jeder 90-Grad-Rotation um 10 länger werden.
+	Die kürzeste Seitenlänge der Spirale ist 10 und nach jeder 90-Grad-Rotation soll die Seitenlänge um 10 länger werden.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{spirale.py},label=listing:spirale]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/spirale.py}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{mysubmission}
-	Geben Sie die Kubikzahlen von $1, 2, 3, \ldots, 10$ aus. Die Kubikzahl einer Zahl \texttt{x} ist gleich der Zahl hoch 3, also $\text{\texttt{x}}^3$. Die Kubikzahl von 1 ist demnach $1^3 = 1$, die Kubikzahl von 2 ist $2^3 = 8$, etc.
-
-	Geben Sie also die Zahlen $1 \;(=1^3), 8 \;(=2^3), 27 \;(=3^3), \ldots, 1000 \;(=10^3)$ aus, indem Sie eine Variable \texttt{x} verwenden, die am Anfang den Wert 1 hat und bei jeder Schleife um 1 vergrössert wird.
+	Die Kubikzahl einer Zahl $x$ ist gleich der Zahl hoch 3, also $x^3$. Verwenden Sie eine Schleife um die 10 Kubikzahlen $1^3, 2^3, \ldots, 10^3$ auszugeben. Beginnen Sie mit einer Variablen \lstinline|x = 1| und erhöhen Sie den Wert von \lstinline|x| in jedem Durchgang der Schleife um 1.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{zahlen\_kubik.py},label=listing:kubik]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/zahlen_kubik.py}
 	\end{myanswer}
 \end{mysubmission}
 
 
-\section{Arbeiten mit Text}
 
-In Python kann man nicht nur Zahlen addieren, sondern auch mit Text arbeiten. In der Informatik verstehen wir unter einem \textit{Text} jede endliche Folge von Symbolen der Tastatur. Eine solche Folge von Symbolen bezeichnet man auch als \textit{Zeichenkette}\index{Zeichenkette} (Englisch: \textit{string}\index{string!Zeichenkette}). Ein einfaches Beispiel einer Zeichenkette haben wir bereits in \cref{myexample:prints} gesehen. Wir können Strings, ebenso wie Zahlen, in Variablen speichern.
+
+\section{Arbeiten mit Text}
+In Python kann man nicht arithmetische Operationen mit Zahlen durchführen, sondern auch mit Text arbeiten. In der Informatik verstehen wir unter einem \textit{Text} jede endliche Folge von Symbolen der Tastatur. Eine solche Folge von Symbolen bezeichnet man auch als \textit{Zeichenkette}\index{Zeichenkette} (Englisch: \textit{string}\index{string!Zeichenkette}). Beispiele von Strings haben wir bereits in \cref{myexample:prints} gesehen. Wir können Strings, ebenso wie Zahlen, in Variablen speichern.
 
 \begin{myexample}\label{ex:text-in-variables}
-Folgendes Beispiel speichert den Text \lstinline|"Hello, World!"| in der Variable \texttt{a}, der Wert der Variable wird danach auf der Konsole ausgegeben.
-
+Folgendes Beispiel speichert den Text \lstinline|"Hello, World!"| in der Variable \texttt{a}, der Wert der Variable wird danach auf der Konsole ausgegeben:
 \begin{lstlisting}
 a = "Hello, World!"
-print(a)  # druckt auf der Konsole den Text "Hello, World!"
+print(a)  # printet den Text "Hallo, World!" im Terminal 
+
+# anstelle von doppelten Anführungszeichen "..."
+# dürfen auch einfache Anführungszeichen '...' verwendet werden:
+b = 'Kantonsschule'
 \end{lstlisting}
 \end{myexample}
 
@@ -296,7 +306,7 @@ Zeichenketten können verkettet, also aneinandergehängt werden:
 \end{lstlisting}
 Die \enquote{Addition} von Strings wird \textit{Konkatenation}\index{Konkatenation} (Englisch: \textit{concatenation}) genannt.
 
-Strings können mithilfe des \pythoninline{*}-Operators vervielfacht werden:
+Strings können mithilfe des \lstinline{*}-Operators vervielfacht werden:
 \begin{lstlisting}
     wort = "abc"
     print(4 * wort) # abcabcabcabc
@@ -330,8 +340,100 @@ Falls Sie also Wiederholungen einer Zeichenkette wünschen, können Sie diese mi
 \end{mychallenge}
 
 
-\subsection{Textinput}
-Mithilfe der \pythoninline{input}-Funktion kann der User während der Programmausführung zu einer Eingabe aufgefordert werden.
+\section{Datentypen}
+Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text.
+
+\begin{lstlisting}
+x = 2 + 3 # x ist eine Variable vom Typ "ganze Zahl"
+y = "Hallo Welt!" # y ist eine Variable vom Typ "Text"
+z = 'Donald Knuth' # ebenfalls eine Variable vom Typ "Text"
+\end{lstlisting}
+
+Variablen vom Typ \enquote{Text} werden gut daran erkannt, dass der Wert der Variable (also der Text) in Anführungszeichen steht.
+
+Bei Zahlen gilt es in Python zwischen der Darstellung einer ganzen Zahl (Englisch: \textit{integer number} $\rightarrow$ \textit{int}\index{int}) und der Darstellung einer Dezimalzahl (Englisch: \textit{floating point number} $\rightarrow$ \textit{float}\index{float}) zu unterscheiden, siehe \cref{tab:datatypes}. Bitte beachten Sie, dass Dezimalzahlen immer mit Dezimalpunkt und nicht etwa mit einem Komma geschrieben werden, also \lstinline|2.75| und nicht etwa \lstinline|2,75|. Kommas werden in Python als Trennzeichen in Auflistungen verwendet.
+
+\begin{table}[H]
+	\footnotesize
+	\centering
+	\begin{tabular}{l|l|l}
+		\textbf{Beispiel}                     & \textbf{Datentyp (englische, Abk.)} & \textbf{Datentyp (Deutsch)} \\\midrule\midrule
+		\lstinline|"Hallo Welt", 'abc', "42"| & string (str)                        & Zeichenkette                \\\midrule
+		\lstinline|15, 45, -5, 0|             & integer (int)                       & ganze Zahl                  \\\midrule
+		\lstinline|12.23, -5.33, 23.0|        & float (float)                       & Kommazahl
+	\end{tabular}
+	\caption{Auswahl elementarer Datentypen in Python und Beispiele}
+	\label{tab:datatypes}
+\end{table}
+
+Folgendes Beispiel illustriert, wie wichtig es ist, sich des Datentyps einer Variable bewusst zu sein. Das Plus-Symbol kann für zwei unterschiedliche Dinge verwendet werden:
+\begin{enumerate}
+	\item Zahlen addieren: \lstinline|print(2 + 3) # gibt 5 aus|
+	\item Strings verketten: \lstinline|print("Hallo" + " " + "Welt") # gibt "Hallo Welt" aus|
+\end{enumerate}
+Wichtig dabei ist, dass auf beiden Seiten des Plus-Zeichens (\lstinline|+|) Werte desselben Datentyps stehen, da Python ansonsten nicht weiss, ob es addieren oder verketten soll. Daher ist es in gewissen Fällen nötig, eine Zahl in einen Text umzuwandeln, beispielsweise dann, wenn eine Zahl und ein Text im gleichen Print ausgegeben werden sollen. Hierzu verwenden wir den Befehl \lstinline|str()|. Beispielsweise gibt uns \lstinline|str(15)| die Zeichenkette \lstinline|"15"|.
+
+
+\begin{myexample} Führen Sie folgenden Code in VSCodium aus und beobachten Sie das Resultat in der Konsole:
+\begin{lstlisting}[numbers=none]
+n = 20
+m = 30
+prod = n * m
+print(str(n) + " mal " + str(m) + " ist " + str(prod))
+\end{lstlisting}
+\end{myexample}
+
+
+\begin{mysubmission}\label{ex:str}
+	Eine Lady verrät uns die dreistellige Vorwahl $079$ ihrer $10$-stelligen Mobiltelefonnummer. Zudem verrät sie uns auch, dass die letzten drei Ziffern eine gerade Zahl zwischen 0 und 200 darstellen (also eine der Zahlen $000, 002, 004, \ldots, 200$).
+
+	Schreiben Sie ein Python-Programm, welches alle möglichen Nummern auflistet.
+	Die erste Nummer sollte $0790000000$ sein, die letzte $0790000200$.
+	Das Programm soll die Telefonnummern als Zeichenkette (eine Nummer pro Zeile) ausgeben.
+
+	Tipps:
+	\begin{itemize}
+		\item Mit \pythoninline{str(num)}
+		      wird aus der Zahl \pythoninline{num} eine Zeichenkette.
+		\item Erinnern Sie sich, was die Operation \pythoninline{+} in dem Ausdruck \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"In" + "form" + "atik"! macht?
+	\end{itemize}
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{telefonnummer.py},label=listing:telefonnummer]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/telefonnummer.py}
+	\end{myanswer}
+\end{mysubmission}
+
+\begin{myattention}[Typumwandlung]
+	myattention
+\end{myattention}
+
+
+\begin{mychallenge}\label{ex:sToY}
+	Schreiben Sie ein Programm, welches 123456789 Sekunden in Jahre (à 365 Tage), Tage, Stunden, Minuten und Sekunden umrechnet.
+	Das Programm soll den folgenden Text ausgeben, wobei alle Zahlen (ausser 123456789) im Programm berechnet werden: \enquote{123456789 Sekunden sind 3 Jahre, 333 Tage, 21 Stunden, 33 Minuten, 9 Sekunden!}
+
+	\begin{myanswer}
+		\lstinputlisting[language=Python,caption=\texttt{s\_to\_y.py},label=listing:sToY]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/s_to_y.py}
+	\end{myanswer}
+\end{mychallenge}
+
+\begin{myexercise}\label{ex:datatypes}
+	Mit welchen Datentypen würden Sie folgende Informationen über sich selbst in Python speichern?
+	\begin{itemize}
+		\item Ihr Vorname
+		\item Ihr Alter in Jahren
+		\item Ihre Grösse in Metern
+	\end{itemize}
+	\begin{myanswer}
+		\begin{itemize}
+			\item Vorname \textit{string}
+			\item Alter in Jahren: \textit{integer}
+			\item Grösse in Metern: \textit{float}
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
+
+\section{Textinput}
+Mithilfe der \lstinline{input}-Funktion kann der User während der Programmausführung zu einer Eingabe aufgefordert werden.
 \begin{myexample}\label{ex:input}
 Mit der Funktion \lstinline|input("Hilfstext...")| können wir eine Variable \textit{während} der Programmausführung erstellen:
 
@@ -366,94 +468,7 @@ Führen Sie diesen Code in VSCodium aus und beobachten Sie das Resultat.
 \end{mysubmission}
 
 
-\section{Daten-Typen}
-Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text.
-
-\begin{lstlisting}
-x = 2 + 3 # x ist eine Variable vom Typ "ganze Zahl"
-y = "Hallo Welt!" # y ist eine Variable vom Typ "Text"
-\end{lstlisting}
-
-Variablen vom Typ Text werden einfach daran erkannt, dass der Wert der Variable (also der Text) in Anführungszeichen steht. Bei Zahlen gilt es zu unterscheiden zwischen ganzen Zahlen (en. \textit{integer}) und Kommazahlen (en. \textit{float}), siehe \cref{tab:datatypes}.
-
-\begin{table}[H]
-	\footnotesize
-	\centering
-	\begin{tabular}{l|l|l}
-		\textbf{Beispiel}                     & \textbf{Datentyp (englisch, Abk.)} & \textbf{Datentyp (Deutsch)} \\\midrule\midrule
-		\lstinline|"Hallo Welt", "abc", "42"| & string (str)                       & Zeichenkette                \\\midrule
-		\lstinline|15, 45, -5, 0|             & integer (int)                      & ganze Zahl                  \\\midrule
-		\lstinline|12.23, -5.33, 23.0|        & float (float)                      & Kommazahl
-	\end{tabular}
-	\caption{Auswahl elementarer Datentypen in Python und Beispiele}
-	\label{tab:datatypes}
-\end{table}
-
-
-Folgendes Beispiel illustriert, wie wichtig es ist, sich des Datentyps einer Variable bewusst zu sein. Das Plus-Zeichen kann für zwei unterschiedliche Dinge verwendet werden:
-\begin{enumerate}
-	\item Zahlen addieren: \lstinline|print(2+3) # gibt 5 aus|
-	\item Texte verketten: \lstinline|print("Hallo" + " " + "Welt") # gibt "Hallo Welt" aus|
-\end{enumerate}
-Wichtig dabei ist, dass auf beiden Seiten des Plus-Zeichens (+) Werte desselben Datentyps sind, da Python ansonsten nicht weiss, ob es addieren oder verketten soll. Daher ist es in gewissen Fällen nötig, eine Zahl in einen Text umzuwandeln, beispielsweise dann, wenn eine Zahl und ein Text im gleichen Print ausgegeben werden sollen. Hierzu verwenden wir den Befehl \lstinline|str()|. Beispielsweise gibt uns \lstinline|str(15)| die Zeichenkette \lstinline|"15"|.
-
-
-\begin{myexample} Führen Sie folgenden Code in VSCodium aus und beobachten Sie das Resultat in der Konsole:
-
-\begin{lstlisting}[numbers=none]
-n = 20
-m = 30
-prod = n * m
-print(str(n) + " mal " + str(m) + " gibt " + str(prod))
-\end{lstlisting}
-\end{myexample}
-
-\begin{mysubmission}\label{ex:str}
-	Eine Lady verrät uns die dreistellige Vorwahl $079$ ihrer $10$-stelligen Mobiltelefonnummer. Zudem verrät sie uns auch, dass die letzten drei Ziffern eine gerade Zahl zwischen 0 und 200 darstellen (also eine der Zahlen $000, 002, 004, \ldots, 200$).
-
-	Schreiben Sie ein Python-Programm, welches alle möglichen Nummern auflistet.
-	Die erste Nummer sollte $0790000000$ sein, die letzte $0790000200$.
-	Das Programm soll die Telefonnummern als Zeichenkette (eine Nummer pro Zeile) ausgeben.
-
-	Tipps:
-	\begin{itemize}
-		\item Mit \pythoninline{str(num)}
-		      wird aus der Zahl \pythoninline{num} eine Zeichenkette.
-		\item Erinnern Sie sich, was die Operation \pythoninline{+} in dem Ausdruck \lstinline[language=Python,basicstyle=\ttfamily\normalsize]!"In" + "form" + "atik"! macht?
-	\end{itemize}
-	\begin{myanswer}
-		\lstinputlisting[language=Python,caption=\texttt{telefonnummer.py},label=listing:telefonnummer]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/telefonnummer.py}
-	\end{myanswer}
-
-\end{mysubmission}
-
-\begin{mychallenge}\label{ex:sToY}
-	Schreiben Sie ein Programm, welches 123456789 Sekunden in Jahre (à 365 Tage), Tage, Stunden, Minuten und Sekunden umrechnet.
-	Das Programm soll den folgenden Text ausgeben, wobei alle Zahlen (ausser 123456789) im Programm berechnet werden: ``123456789 Sekunden sind 3 Jahre, 333 Tage, 21 Stunden, 33 Minuten, 9 Sekunden!''
-
-	\begin{myanswer}
-		\lstinputlisting[language=Python,caption=\texttt{s\_to\_y.py},label=listing:sToY]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/s_to_y.py}
-	\end{myanswer}
-\end{mychallenge}
-
-\begin{myexercise}\label{ex:datatypes}
-	Mit welchen Datentypen würden Sie folgende Informationen über Sie in Python speichern?
-	\begin{itemize}
-		\item Name
-		\item Alter in Jahren
-		\item Grösse in Metern
-	\end{itemize}
-	\begin{myanswer}
-		\begin{itemize}
-			\item Name: \textit{string}
-			\item Alter in Jahren: \textit{integer}
-			\item Grösse in Metern: \textit{float}
-		\end{itemize}
-	\end{myanswer}
-\end{myexercise}
-
 \section{Debugging}
-
 Häufig kommt es beim Schreiben von Code zu \enquote{unerklärlichen} Fehlern: Der Code macht nicht, was man will, stürzt ab oder liefert nicht das gewünschte Resultat. Wir sprechen dabei von \textit{bugs} (englisches Wort für \textit{Käfer}), womit allgemein \textit{Fehler} beziehungsweise unerwünschtes Verhalten oder unerwünschte Resultate gemeint sind. Daher ist es wichtig, zu lernen, wie man einem Problem auf die Schliche kommt. Darum handelt es sich beim sogenannten \textit{debugging} um das Beheben unterschiedlicher Fehlerarten, welche in den folgenden Abschnitten kurz erklärt werden.
 
 \subsection{Syntaxfehler}
@@ -480,7 +495,7 @@ print(Hello World) # Fehler (keine Anführungszeichen)!
 \end{lstlisting}
 
 \subsection{Laufzeitfehler}
-Laufzeitfehler (en. \textit{runtime error}) werden erst bei der Ausführung des Programms erkannt. Dabei stimmt die grammatikalische Struktur (Syntax) des Codes zwar, der Code ergibt aber keinen Sinn: Beispielsweise wird versucht, auf Variablen zuzugreifen, welche es gar nicht gibt. Fehler können beispielsweise aufgrund von Gross- und Kleinschreibung auftreten:
+Laufzeitfehler (Englisch: \textit{runtime error}) werden erst bei der Ausführung des Programms erkannt. Dabei stimmt die grammatikalische Struktur (Syntax) des Codes zwar, der Code ergibt aber keinen Sinn: Beispielsweise wird versucht, auf Variablen zuzugreifen, welche es gar nicht gibt. Fehler können beispielsweise aufgrund von Gross- und Kleinschreibung auftreten:
 
 \begin{lstlisting}
 X = 10 + 5
