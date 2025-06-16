@@ -109,7 +109,8 @@ Variablen sind kurz gesagt ein Wort, das einen veränderbaren ($=$ variablen) We
             # Tausche die werte, so dass danach
             # x den Wert 11 hat und y den Wert 5:
 
-            temp = x # Verwende Hilfsvariable, um anfänglichen Wert von x zu speichern:
+            # Verwende eine weitere Variable, um den anfänglichen Wert von x zu speichern:
+            temp = x 
             x = y
             y = temp
         \end{lstlisting}
@@ -219,7 +220,7 @@ Beispiele für Modulo-Berechnungen (Rest der ganzzahligen Division) in Python:
 
 
 \begin{myexample}
-Offensichtlich ist eine natürliche Zahl $n$ genau dann gerade, wenn $n \% 2 = 0$ gilt, also $n$ beim Teilen durch 2 den Rest 0 hat.
+Offensichtlich ist eine natürliche Zahl $n$ genau dann gerade, wenn die Gleichheit $n \;\%\; 2 = 0$ gilt, also $n$ beim Teilen durch 2 den Rest 0 hat.
 \end{myexample}
 
 %%% TODO: behandeln wir dann bei Verzweigungen
@@ -281,20 +282,21 @@ Es existiert ein fundamentaler Unterschied zwischen den beiden Ausdrücken \lsti
 \end{mysubmission}
 
 
-
-
-\section{Arbeiten mit Text}
+\section{Arbeiten mit Text (Strings)}
 In Python kann man nicht arithmetische Operationen mit Zahlen durchführen, sondern auch mit Text arbeiten. In der Informatik verstehen wir unter einem \textit{Text} jede endliche Folge von Symbolen der Tastatur. Eine solche Folge von Symbolen bezeichnet man auch als \textit{Zeichenkette}\index{Zeichenkette} (Englisch: \textit{string}\index{string!Zeichenkette}). Beispiele von Strings haben wir bereits in \cref{myexample:prints} gesehen. Wir können Strings, ebenso wie Zahlen, in Variablen speichern.
 
 \begin{myexample}\label{ex:text-in-variables}
 Folgendes Beispiel speichert den Text \lstinline|"Hello, World!"| in der Variable \texttt{a}, der Wert der Variable wird danach auf der Konsole ausgegeben:
 \begin{lstlisting}
 a = "Hello, World!"
-print(a)  # printet den Text "Hallo, World!" im Terminal 
+print(a)  # printet den String "Hallo, World!" in der Konsole 
 
 # anstelle von doppelten Anführungszeichen "..."
 # dürfen auch einfache Anführungszeichen '...' verwendet werden:
 b = 'Kantonsschule'
+
+# aber auch sowas ist ein String:
+c = "23adsf34#     2 @!!30y"
 \end{lstlisting}
 \end{myexample}
 
@@ -323,17 +325,20 @@ Falls Sie also Wiederholungen einer Zeichenkette wünschen, können Sie diese mi
     print(" " * 3 + "X" * 1)
     print(" " * 3 + "X" * 1)
   \end{lstlisting}
+	\begin{myanswer}
+		Das Programm zeichnet einen \enquote{Tannenbaum} \emoji{evergreen-tree}.
+	\end{myanswer}
 \end{myexercise}
 
 \begin{mysubmission}\label{ex:herz}
-	Erstellen Sie nun ein Programm, das ein Herz zeichnet, ähnlich zu \cref{ex:pfeil}, also lediglich mit Zeichenketten-Ausdrücken und dem Befehl \lstinline|print()|.
+	Erstellen Sie nun ein Programm, das (analog zu \cref{ex:pfeil}) lediglich mit \lstinline|prints| und Stringoperationen ein \enquote{Herz} \emoji{red-heart} zeichnet.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{herz.py},label=listing:herz,numbers=none]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/herz.py}
 	\end{myanswer}
 \end{mysubmission}
 
 \begin{mychallenge}
-	Schreiben Sie nun einen Code, der die Form einer Banane auf der Konsole ausgibt, indem Sie die Zeichenketten-Ausdrücke \lstinline|*| und \lstinline|+| verwenden.
+	Schreiben Sie ein Programm, welches die Form einer Banane auf der Konsole ausgibt, indem Sie die Stringoperationen \lstinline|*| und \lstinline|+| verwenden.
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{banana.py},label=listing:banane,numbers=none]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/banana.py}
 	\end{myanswer}
@@ -341,7 +346,7 @@ Falls Sie also Wiederholungen einer Zeichenkette wünschen, können Sie diese mi
 
 
 \section{Datentypen}
-Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text.
+Bisher haben wir zwei Arten, oder \textit{Typen} von Variablen gesehen: Zahlen und Text (Strings).
 
 \begin{lstlisting}
 x = 2 + 3 # x ist eine Variable vom Typ "ganze Zahl"
@@ -402,8 +407,31 @@ print(str(n) + " mal " + str(m) + " ist " + str(prod))
 	\end{myanswer}
 \end{mysubmission}
 
-\begin{myattention}[Typumwandlung]
-	myattention
+\begin{myattention}[Quotienten ganzer Zahlen sind in Python floats]\label{myattention:float_not_int}
+	Im Allgemeinen ist der Quotient $n / m$ von zwei ganzen Zahlen $n, m$ keine ganze Zahl. In Python wird deshalb das Resultat einer Division immer als Dezimalzahl (float) angeschaut, auch wenn $n$ durch $m$ ohne Rest teilbar ist\footnote{Das Konzept von \textit{Teilbarkeit} ergibt in den reellen oder rationalen Zahlen keinen Sinn.}:
+	\begin{lstlisting}
+        bruch = 6 / 2 # bruch ist ein float und kein int
+        print(bruch) # gibt 3.0 und nicht etwa 3 aus
+        bruch = int(bruch) # explizite Typenumwandlung von float zu int
+        print(bruch) # gibt 3 aus
+
+        x = 5.999999 
+        x = int(x) # Weglassen von Dezimalstellen
+        print(x) # gibt 5 aus
+    \end{lstlisting}
+	Die folgende Schleife erzeugt einen Fehler (\texttt{TypeError}):
+	\begin{lstlisting}
+        # das ist nicht ok:
+        for _ in range(6 / 2):
+            print("hallo")
+
+        TypeError: 'float' object cannot be interpreted as an integer
+        
+        # das ist ok:
+        for _ in range(int(6 / 2)):
+            print("hallo")
+    \end{lstlisting}
+	da eine Schleife nur \enquote{ganzzahlig-viele} Durchgänge durchführen kann, doch \texttt{6 / 3} ist \texttt{3.0}, also vom Typ float und nicht int.
 \end{myattention}
 
 
@@ -468,11 +496,25 @@ Führen Sie diesen Code in VSCodium aus und beobachten Sie das Resultat.
 \end{mysubmission}
 
 
+\begin{myremark}[Input erwartet immer einen String]\label{myremark:input_takes_string}
+	Bitte beachten Sie, dass die \lstinline{Input}-Funktion in Python den Tastaturinput immer als String auffasst. Falls Ihr Input als Zahl angesehen werden soll, dann müssen Sie den Input \pythoninline{x} mit \pythoninline{int(x)} beziehungsweise \pythoninline{float(x)} konvertieren:
+	\begin{lstlisting}
+        alter = input("Wie alt bist du?") # alter ist vom Typ 'String'
+        print("In einem Jahr wirst du", int(alter) + 1, "Jahre alt sein.")
+        
+
+        # dies würde einen Fehler geben, da wir hier die Summe eines Strings (alter)
+        # und einer ganzen Zahl zu berechnen versuchen:
+        print("In einem Jahr wirst du", alter + 1, "Jahre alt sein.")
+    \end{lstlisting}
+\end{myremark}
+
+
 \section{Debugging}
 Häufig kommt es beim Schreiben von Code zu \enquote{unerklärlichen} Fehlern: Der Code macht nicht, was man will, stürzt ab oder liefert nicht das gewünschte Resultat. Wir sprechen dabei von \textit{bugs} (englisches Wort für \textit{Käfer}), womit allgemein \textit{Fehler} beziehungsweise unerwünschtes Verhalten oder unerwünschte Resultate gemeint sind. Daher ist es wichtig, zu lernen, wie man einem Problem auf die Schliche kommt. Darum handelt es sich beim sogenannten \textit{debugging} um das Beheben unterschiedlicher Fehlerarten, welche in den folgenden Abschnitten kurz erklärt werden.
 
 \subsection{Syntaxfehler}
-Syntax-Fehler (engl. \textit{syntax error}) sind in Programmiersprache vergleichbar mit Rechtschreibfehlern in Aufsätzen: Es handelt sich um Schreibweisen, die nicht erlaubt sind. Beispielsweise würde folgender Code eine Fehlermeldung geben:
+Syntax-Fehler (Englisch: \textit{syntax error}) sind in Programmiersprache vergleichbar mit Rechtschreibfehlern in Aufsätzen: Es handelt sich um Schreibweisen, die nicht erlaubt sind. Beispielsweise würde folgender Code eine Fehlermeldung geben:
 
 \begin{lstlisting}
 print "Hello World" # Fehler!
@@ -512,6 +554,9 @@ In diesem Fall wollte der Autor des Codes den Text \lstinline|"Hello, World"| au
 
 \begin{myexercise}
 	Führen Sie alle obigen Beispiele in VSCodium aus und beobachten Sie die Fehlermeldungen. Verstehen Sie, was mit den Fehlermeldungen gemeint ist?
+	\begin{myanswer}
+		Keine Musterlösung notwendig.
+	\end{myanswer}
 \end{myexercise}
 
 
@@ -523,8 +568,7 @@ Semantische Fehler sind Logik-Fehler, also Fehler aufgrund der Tatsache, dass di
 mittelwert = 3 + 13 / 2
 print(mittelwert) # 9.5
 \end{lstlisting}
-Das Resultat sollte 8 sein, denn der Mittelwert von 3 und 13 ist 8 (=16 / 2). Der Fehler hat damit zu tun, dass der Programmierer vergessen hat, Klammern zu setzen. Korrekt wäre folgendes Beispiel:
-
+Das Resultat sollte 8 sein, denn der Mittelwert von 3 und 13 ist $(3 + 13) / 2 = 8$ und nicht etwa $3 + 13 / 2 = 9.5$. Der Fehler hat damit zu tun, dass der Programmierer vergessen hat, Klammern zu setzen. Korrekt wäre folgendes Beispiel:
 \begin{lstlisting}
 mittelwert = (3 + 13) / 2
 print(mittelwert) # 8
@@ -534,30 +578,43 @@ print(mittelwert) # 8
 Einige Strategien, um fehlerhaften Code zu beheben, sind:
 \begin{enumerate}
 	\item Lesen Sie Fehlermeldungen aufmerksam und versuchen sie zu verstehen, woher diese stammen könnten. Auch die Zeilenangaben sind dabei sehr hilfreich.
-	\item Brechen Sie ihren Code in einzelne Teile auf. Geben Sie Zwischenresultate auf der Konsole aus, indem Sie \lstinline|print|-Befehle verwenden -- dies kostet Sie nichts.
+	\item Brechen Sie ihren Code in einzelne Teile auf. Geben Sie Zwischenresultate auf der Konsole aus, indem Sie \lstinline|print|-Befehle verwenden --- dies kostet Sie nichts.
 	\item Rechnen Sie einige Beispiele von Hand aus, sofern der Code etwas Komplexeres berechnet.
 	\item Testen Sie Ihren Code mit (extremen oder besonderen) Testfällen, also anderen Werten für Ihre Variablen.
 \end{enumerate}
 
+
 \begin{myexercise}\label{myexercise:austausch-debug}
 	Um welche Art von Fehler handelt es sich im Code aus \cref{ex:austausch}?
+	\begin{myanswer}
+		Dies ist ein Beispiel für einen semantischen Fehler (fehler in der Logik).
+	\end{myanswer}
 \end{myexercise}
 
-\begin{mysubmission}
-	Testen Sie Ihr Debugging-Wissen mit der Fehler-Zuordnungs-Aufgabe auf Moodle.
-\end{mysubmission}
 
-\begin{mychallenge}
+%%% TODO: erstelle Zuordnungsaufgabe
+% \begin{mysubmission
+% 	Testen Sie Ihr Debugging-Wissen mit der Fehler-Zuordnungs-Aufgabe auf Moodle.
+% \end{mysubmission}
+
+\clearpage
+\section{Weitere Aufgaben}
+\subsection{Level 1}
+\subsection{Level 2}
+\subsection{Level 3}
+
+
+\begin{mychallenge}\label{mychallenge:fibonacci_spirale}
 	Berechnen Sie die ersten 8 Zahlen der Fibonacci-Zahlenserie, welche wie folgt aussieht:
 	\begin{align*}
 		0, 1, 1, 2, 3, 5, 8, 13, \ldots
 	\end{align*}
 
-	Dabei ist jede Zahl die Summe ihrer beiden Vorgänger in der Folge. Die ersten zwei Glieder 0 und 1 sind gegeben.
+	Dabei ist jede Zahl die Summe ihrer beiden Vorgänger in der Folge. Die ersten zwei Glieder 0 und 1 der Folge sind vorgegeben.
 
-	Verwenden Sie dazu eine \lstinline|for|-Schleife sowie drei Variablen.
+	Verwenden Sie dazu eine \pythoninline{for}-Schleife sowie drei Variablen.
 
-	Zeichnen Sie danach mit der Turtle eine Spirale, bestehend aus 8 Viertelkreisen, welche als Radius jeweils das \textbf{Zehnfache} der zuletzt berechneten Fibonacci-Zahl $1, 2, 3, 5, 8, 13, \ldots$ haben.
+	Zeichnen Sie danach mit der Turtle eine Spirale, bestehend aus 8 Viertelkreisen, welche als Radius\footnote{Natürlich zeichnen wir hier regelmässige Polygone und keine Kreise.} jeweils das \textbf{Zehnfache} der zuletzt berechneten Fibonacci-Zahl $1, 2, 3, 5, 8, 13, \ldots$ haben.
 
 	Die Spirale sollte folgendermassen aussehen:
 
@@ -567,8 +624,18 @@ Einige Strategien, um fehlerhaften Code zu beheben, sind:
 		\caption{Fibonacci-Spirale}
 		\label{fig:fibonacci}
 	\end{figure}
-
 	\begin{myanswer}
-		\lstinputlisting[language=Python,caption=\texttt{challenge\_fib.py},label=listing:challenge_fib]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/challenge_fib.py}
+		Diese Musterlösung finden Sie in \cref{sec:K03_sol}.
 	\end{myanswer}
 \end{mychallenge}
+
+
+\iftoggle{exerciseonly}{}{%
+
+	\section{Längere Lösungen}\label{sec:K03_sol}
+
+	\begin{myanswer}[mychallenge:fibonacci_spirale]
+		\lstinputlisting[language=Python,caption=\texttt{challenge\_fib.py},label=listing:challenge_fib]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/challenge_fib.py}
+	\end{myanswer}
+
+}
