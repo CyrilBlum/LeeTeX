@@ -114,7 +114,7 @@
 					\begin{center}
 						\ifblank{#2}{
 							% if no subtitle is given (#2 blank)
-							{\huge \textbf{#1}}\\[0.3cm]
+							{\huge \textbf{#1}}\\
 							\makeSpiral
 							{\large \textbf{Skript}}\\[0.2cm]
 						}{
@@ -128,11 +128,51 @@
 			\end{tcolorbox}
 
 
-			%			\HRule \\[0.5cm]
+			% Author block logic:
 			\iftoggle{oneauthor}{
-				\href{mailto:\mainauthormail}{\color{black}{\mainauthorA}}\\[0.5cm]
+				% Case 3: Only one main author (did 90%+)
+				% Case: Only one main author
+				\foreach \author/\mail in \mainauthors {
+					\href{mailto:\mail}{\color{black}{\author}}\\[0.5cm]
+				}
 			}{
-				\href{mailto:\mainauthormail}{\color{black}{\mainauthorA, \mainauthorB}}\\[0.5cm]
+				\iftoggle{twomainauthors}{
+					% Case 2: Two main authors (contribution ~50/50)
+					% Print authors separated by commas (works with pgffor v3.1+)
+					\newcounter{mainauthorcount}
+					\setcounter{mainauthorcount}{0}
+					\foreach \a/\m in \mainauthors {
+						\stepcounter{mainauthorcount}
+					}
+					\foreach [count=\i] \author/\mail in \mainauthors {
+						\href{mailto:\mail}{\color{black}{\author}}%
+						\ifnum\i<\value{mainauthorcount},\fi
+					}
+				}{
+					% Case 1: One main author + major contributors (main did >70%)
+					\begin{center}
+						\begin{tabular}{cc}
+							\textbf{Main Author} & \textbf{Major Contributors} \\
+							\foreach \author/\mail in \mainauthors {
+								\href{mailto:\mail}{\color{black}{\author}}
+							}                    &
+							\begin{tabular}[t]{@{}l@{}}
+								\newcount\majorcontribcount
+								\majorcontribcount=0
+								\foreach \contrib/\mail in \majorcontributors {
+									\advance\majorcontribcount by 1
+								}
+								\newcount\currentcontrib
+								\currentcontrib=0
+								\foreach \contrib/\mail in \majorcontributors {
+									\advance\currentcontrib by 1
+									\href{mailto:\mail}{\color{black}{\contrib}}%
+									\ifnum\currentcontrib<\majorcontribcount, \fi
+								}
+							\end{tabular}
+						\end{tabular}\\[0.5cm]
+					\end{center}
+				}
 			}
 
 			{\large \textcopyleft{} \theplace, \today}
