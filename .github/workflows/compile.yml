@@ -37,11 +37,34 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # Runs a single command using the runner's shell to make sure you have the latest version
+    # Ensure latest version
     - name: Ensure latest version
       run: |
         git fetch --all
         git reset --hard origin/main
+
+    # Set up git hooks for git2info
+    - name: Set up git2info hooks
+      run: |
+        cp -a Git_Internal_Files/. .git/hooks
+        cd .git/hooks/
+        chmod ug+x post-checkout post-commit post-merge
+
+    # Commit and push outstanding changes (if any)
+    - name: Commit and push outstanding changes
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add -A
+        if ! git diff --cached --quiet; then
+          git commit -m "Auto-commit outstanding changes for git2info"
+          git push
+        fi
+
+    # Ensure working tree is clean and up to date
+    - name: Checkout latest main
+      run: git checkout main
+      
     # Get changed files in the commit range
     - name: Get changed files
       id: changed_files

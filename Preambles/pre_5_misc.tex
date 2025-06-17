@@ -150,25 +150,21 @@
 					}
 				}{
 					% Case 1: One main author + major contributors (main did >70%)
+					\newcount\majorcontribcount
+					\majorcontribcount=0
+					\foreach \contrib/\mail in \majorcontributors {
+						\advance\majorcontribcount by 1
+					}
 					\begin{center}
 						\begin{tabular}{cc}
-							\textbf{Main Author} & \textbf{Major Contributors} \\
-							\foreach \author/\mail in \mainauthors {
-								\href{mailto:\mail}{\color{black}{\author}}
-							}                    &
-							\begin{tabular}[t]{@{}l@{}}
-								\newcount\majorcontribcount
-								\majorcontribcount=0
-								\foreach \contrib/\mail in \majorcontributors {
-									\advance\majorcontribcount by 1
-								}
+							\textbf{Hauptautor}                                                                  & \textbf{Ko-Autor} \\
+							\foreach \author/\mail in \mainauthors {\href{mailto:\mail}{\color{black}{\author}}} &
+							\begin{tabular}[t]{c}
 								\newcount\currentcontrib
 								\currentcontrib=0
-								\foreach \contrib/\mail in \majorcontributors {
-									\advance\currentcontrib by 1
+								\foreach \contrib/\mail in \majorcontributors {\advance\currentcontrib by 1
 									\href{mailto:\mail}{\color{black}{\contrib}}%
-									\ifnum\currentcontrib<\majorcontribcount, \fi
-								}
+									\ifnum\currentcontrib<\majorcontribcount,\fi}
 							\end{tabular}
 						\end{tabular}\\[0.5cm]
 					\end{center}
