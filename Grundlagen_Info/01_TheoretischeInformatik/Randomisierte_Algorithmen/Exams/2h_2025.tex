@@ -1,0 +1,188 @@
+
+\newtoggle{withbonus} \settoggle{withbonus}{false} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Informatik}
+% name of the class
+\newcommand{\myclass}{\emoji{handshake}~Klasse 2h~\emoji{handshake}}
+% set date
+\newcommand{\mydate}{Dienstag, 17. Juni 2025}
+
+\title{\textbf{Randomisierte Algorithmen, Kommunikationsprotokoll}}
+\author{Thomas Graf\\
+	\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $50$ Minuten
+				      %\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item erlaubte Hilfsmittel:
+				      \begin{itemize}
+					      \item Schreibzeug
+				      \end{itemize}
+			\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note:
+	\vspace{10mm}
+
+	\rule{8mm}{1.2pt}
+\end{center}
+%\thispagestyle{empty}
+\clearpage
+
+
+\begin{questions}
+	% 2g
+	\question
+	\begin{parts}
+		\part[1] Bestimmen Sie $\text{Nummer}(0101101)$.
+		\part[1] Bestimmen Sie binäre Wort $x$, sodass $\text{Nummer}(x) = 82$.
+		\part[1] Berechnen Sie $\abs{\text{Bin}(3099)}$.
+		\part
+		Sei $y$ die binäre Darstellung ($2$-adische Darstellung) der fünfgrössten Zahl, welche mit $10$ Bits dargestellt werden kann.
+		\begin{subparts}
+			\subpart[1] Wie sieht $y$ aus?
+			\subpart[1] Bestimmen Sie $\text{Nummer}\lr{y}$.
+		\end{subparts}
+		\part[1] Berechnen Sie (stellen Sie ohne Logarithmus dar) die Zahl $\ceil{\log_5\lr{89}}$.
+		\part[1] Ronald Rivest möchte unser randomisierte Kommunikationsprotokoll für die beiden Datensätze $x := 001110$ und $y := 1110$ durchführen.
+		Was ist hier das Problem? Welchen Rat würden Sie Donald geben? Argumentieren Sie präzise.
+		\part[1] Bestimmen Sie $\text{Prim(42)}$.
+		\part[1] Nennen Sie (konkrete) positive natürliche Zahlen $x, y$ und $z$, sodass zwar die Relation
+		\begin{align*}
+			x < y < z
+		\end{align*}
+		gilt, aber nicht die Relation
+		\begin{align*}
+			\abs{\text{Bin}(x)} < \abs{\text{Bin}(y)} < \abs{\text{Bin}(z)}.
+		\end{align*}
+	\end{parts}
+	\droptotalpoints
+
+	\question
+	\begin{parts}
+		\part[2]
+		Gegeben sind die beiden Datensätze
+		\begin{itemize}
+			\item $x := 001001$ in Zürich und
+			\item $y := 101010$ in Boston.
+		\end{itemize}
+		Für welche Primzahlen $p \leq n^2$ würde das Kommunikationsprotokoll für diese beiden Datensätze $x$ und $y$ falsch entscheiden? Begründen Sie Ihre Antwort.
+		\part[1] Es seien nun $x := 101110$ und $y := 101111$. Kann es sein, dass das Kommunikationsprotokoll für diese Datensätze eine falsche Entscheidung treffen wird? Begründen Sie Ihre Antwort.
+	\end{parts}
+	\droptotalpoints
+
+
+	\question Gegeben seien zwei Datensätze $x$ und $y$ mit einer jeweiligen Länge von $10^{22}$ Bits.
+	\begin{parts}
+		\part[2] Geben Sie eine vernünftige (möglichst kleine) obere Schranke für den Kommunikationsaufwand des Kommunikationsprotokolls zum Abgleich von $x$ und $y$ an.
+		\part[1] Wie viele Bits müsste ein deterministischer Algorithmus zur Beantwortung der Frage $x\stackrel{?}{=}y$ mindestens kommunizieren?
+	\end{parts}
+	\droptotalpoints
+
+	\clearpage
+	\question
+	Die Analyse der Fehlerwahrscheinlichkeit $r$ des Protokolls wird die Abschätzung
+	\begin{align*}
+		r \leq \frac{n-1}{\text{Prim}(n^2)}\approx\frac{n-1}{n^2/\ln(n^2)}\leq\frac{\ln(n^2)}{n}
+	\end{align*}
+	erfüllen. Dabei ist $n$ die Länge der jeweiligen Datensätze (in Bits).
+	\begin{parts}
+		\part[1]
+		Erklären Sie, warum wir im Protokoll eine Primzahl $p \leq n^2$ wählen und nicht lediglich eine Primzahl $p \leq n$. Zeigen Sie Ihre Schritte.
+
+		Tipp: Wie verhält sich die Fehlerwahrscheinlichkeit für wachsendes $n$?
+		\part[1] Wäre es auch sinnvoll $p \leq n^3$ zu wählen?
+	\end{parts}
+
+	\question[2]
+	Gegeben ist die (korrekte und vollständige) Ihnen vertraute Python-Funktion \pythoninline{sieb}:
+	\begin{lstlisting}[language=Python,caption=Sieb,numbers=none]
+import math
+
+def sieb(n):
+    primzahlen = []
+    nicht_gestrichen = (n + 1) * [True]
+
+    i = 2
+    # abgerundete Quadratwurzel von n
+    wurzel_n = int(math.sqrt(n))
+    while i <= wurzel_n:
+        if nicht_gestrichen[i]:
+            j = i * i
+            while j <= n:
+                nicht_gestrichen[j] = False
+                j += i
+        i += 1
+
+    # sammle alle nicht gestrichenen Zahlen
+    i = 2
+    while i <= n:
+        if nicht_gestrichen[i]:
+            primzahlen.append(i)
+        i += 1
+    return primzahlen
+\end{lstlisting}
+	Verwenden Sie die Funktion \pythoninline{sieb} als Hilfsfunktion um eine Python-Funktion \pythoninline{prime_gaps(n)} zu definieren, welche eine Liste der $(n - 1)$ Primzahllücken (prime gaps) zwischen den ersten $n$ Primzahlen printet. Vervollständigen Sie die gegebene \textbf{Vorlage}.
+
+	\begin{lstlisting}[language=Python,caption=Beispiele,numbers=none]
+prime_gaps(20) # printet die Liste: [1, 2, 2, 4, 2, 4, 2]
+prime_gaps(7)  # printet die Liste: [1, 2, 2]
+\end{lstlisting}
+
+	\clearpage
+
+	\begin{lstlisting}[language=Python,caption=prime gaps (noch zu vervollständigen),numbers=none]
+def prime_gaps(n):
+    # Get all primes up to n
+    primes = sieb(n)
+
+    # Calculate the gaps between consecutive primes
+    gaps = []
+
+    ..................................... 
+    
+
+    ..................................... 
+    
+
+    ..................................... 
+
+
+    ..................................... 
+    
+
+    ..................................... 
+    
+
+    print(gaps)
+\end{lstlisting}
+
+	% \bonusquestion[2]
+	% Es sei $n$ eine beliebige ganze Zahl. Betrachten Sie die endliche Folge ganzer Zahlen
+	% \begin{align*}
+	% 	(n+1)!+2,(n+1)!+3,\ldots, (n+1)!+(n+1)
+	% \end{align*}
+	% Erklären Sie, warum
+\end{questions}
+
