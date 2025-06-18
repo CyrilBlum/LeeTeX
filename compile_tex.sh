@@ -120,29 +120,13 @@ article_topics=(
     # Ergänzungsfach Informatik
     "Ergaenzungsfach_Ausschreibungstext:EF/Ausschreibung/ausschreibungstext.tex"
 
-    # Sonderwochen
-    "Eingabe_Projektidee:Interessenwochen/Wn_Gf_Sommer_2024/Eingabe_Projektidee"
-    "Auftrag:Interessenwochen/Wn_Gf_Sommer_2024/Auftrag"
-    "Klassentag2024_1c:Various/Klassenstunde/Klassentag2024_1c.tex". # Gf
-    "Packliste_Lager:Various/Klassenstunde/Packliste_Lager.tex" # Gf
-
     # Various
     "Semesterplanung:Grundlagen_Info/Various/Semesterplanung"
     "Benotung:Grundlagen_Info/Various/Benotung"
     "MA_Thesis_Guidelines:Various/MA Thesis/MA Thesis Guidelines.tex"
     "Filme:Various/Filme.tex"
     "Tabu:Various/Tabu.tex"
-    "Namensschilder:Various/Namensschilder"
-    "Provokante_Aussagen:Various/Provokante_Aussagen"
     "Fun_Quotes:Various/Fun_Quotes"
-
-    # Private (wn)
-    "PHBern_Handout_GDI:Private/PHBern/1 ESW/Handout GDI"
-    "PHBern_Themenvertiefung_GDI:Private/PHBern/1 ESW/Themenvertiefung GDI"
-    "PHBern_PPL2_Harvard_Konzept:Private/PHBern/1 ESW/PPL2 Harvard-Konzept"
-    "PHBern_PPL2_Digitalitaet:Private/PHBern/1 ESW/PPL2 Digitalität"
-    "PHBern_Zusammenfassung_FDG:Private/PHBern/2 FD/Zusammenfassung FDG"
-    "PHBern_Unterrichtsvorbereitung:Private/PHBern/3 BPA/Unterrichtsvorbereitung.tex"
 )
 
 beamer_topics=(
@@ -208,9 +192,6 @@ beamer_topics=(
 
     # Ergänzungsfach Informatik
     "complexity:EF/Complexity/complexity.tex"
-
-    # Various
-    "Presentation_MINT_Tag:Various/MINT_Tag/Presentation_MINT_Tag.tex"
 )
 
 root_dir=$(pwd)
