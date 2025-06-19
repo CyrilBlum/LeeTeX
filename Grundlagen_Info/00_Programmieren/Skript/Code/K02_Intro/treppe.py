@@ -1,12 +1,11 @@
 import turtle as t
 
-import numpy as np
-
-laenge = 5
+t.lt(90)
 for _ in range(6):
-    t.fd(laenge)
+    t.fd(15)
+    t.lt(90)
+    t.fd(25)
     t.rt(90)
-    laenge += 5
 
 t.hideturtle()
 t.done()

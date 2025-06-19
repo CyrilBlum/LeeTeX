@@ -12,7 +12,8 @@ Wir betrachten nochmals den Code aus \cref{myexercise:Blume}:
 Wir könnten den Code leserlicher machen, indem wir einen Befehl für eine Quadrat und einen Befehl für das gesamte Muster erstellen:
 
 \begin{minipage}{\linewidth}
-	\begin{lstlisting}[escapechar=!, numbers=left]
+	\begin{figure}[H] % not really a figure, just acts as non-floating container
+		\begin{lstlisting}[escapechar=!, numbers=left]
 import turtle as t
 
 def !\colorbox{HotPink}{viereck()}!: !\tikzmark{to2ex}!
@@ -29,11 +30,12 @@ def !\colorbox{CornflowerBlue}{viereck\_blume()}!:!\tikzmark{to1ex}!
 
 t.done()
 \end{lstlisting}
-	\begin{tikzpicture}[overlay,remember picture]
-		\draw[red,-stealth] (from1ex.north) to[bend right] node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to1ex);
-		\draw[red,-stealth] (from2ex.north) to[bend right]
-		node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to2ex);
-	\end{tikzpicture}
+		\begin{tikzpicture}[overlay,remember picture]
+			\draw[red,-stealth] (from1ex.north) to[bend right] node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to1ex);
+			\draw[red,-stealth] (from2ex.north) to[bend right]
+			node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to2ex);
+		\end{tikzpicture}
+	\end{figure}
 
 \end{minipage}
 
@@ -189,8 +191,8 @@ Das ging gerade noch! Was jedoch, wenn Sie 20 unterschiedlich grosse Quadrate ze
 
 \begin{myexample}\label{ex:params}
 Folgendes Beispiel verwendet einen \textit{Parameter} \texttt{laenge}, um die Länge des Quadrats jedes Mal anzupassen:
-
-\begin{lstlisting}[escapechar=!, numbers=left]
+\begin{figure}[H] % not really a figure, just acts as non-floating container
+	\begin{lstlisting}[escapechar=!, numbers=left]
 import turtle as t
 
 def quadrat(!\colorbox{DeepPink}{la\tikzmark{arrowTo1}enge}!):
@@ -202,12 +204,13 @@ quadrat(!\colorbox{DeepPink}{5\tikzmark{arrow1From}0}!)
 quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow2From}00}!)
 quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow3From}50}!)
 \end{lstlisting}
-\begin{tikzpicture}[overlay,remember picture]
-	\draw[red,-stealth] (arrow1From.north) to[bend right] node[right, yshift=-.8cm, fill=RoyalBlue,text=white,rounded corners] {\emoji{handshake} Übergabe} (arrowTo1);
-	\draw[red,-stealth] (arrowTo1.south) to[bend right] (arrowTo2);
-	\draw[red,-stealth] (arrow2From.south) to[bend right] (arrowTo1);
-	\draw[red,-stealth] (arrow3From.south) to[bend right] (arrowTo1);
-\end{tikzpicture}
+	\begin{tikzpicture}[overlay,remember picture]
+		\draw[red,-stealth] (arrow1From.north) to[bend right] node[right, yshift=-.8cm, fill=RoyalBlue,text=white,rounded corners] {\emoji{handshake} Übergabe} (arrowTo1);
+		\draw[red,-stealth] (arrowTo1.south) to[bend right] (arrowTo2);
+		\draw[red,-stealth] (arrow2From.south) to[bend right] (arrowTo1);
+		\draw[red,-stealth] (arrow3From.south) to[bend right] (arrowTo1);
+	\end{tikzpicture}
+\end{figure}
 \end{myexample}
 
 \subsection{Mehrere Parameter}
@@ -309,7 +312,8 @@ Eine Funktion kann man sich vorstellen wie ein Kochrezept, das einige Zutaten en
 Betrachten Sie nochmals den folgenden, leicht modifizierten Code aus \cref{ex:sum-noreturn}. Wenn wir den Wert mit \lstinline|return| an das Hauptprogramm zurückgeben und in einer Variable (im Hauptprogramm, auf Zeile 5) abspeichern, funktioniert der Code nun: Wir können auch ausserhalb der Funktion \lstinline|summiere()| auf einen Wert zugreifen, welcher innerhalb der Definition berechnet wurde, und diesen potentiell weiterverwenden.
 
 \begin{minipage}{\linewidth}
-	\begin{lstlisting}[numbers=left]
+	\begin{figure}[H] % not really a figure, just acts as non-floating container
+		\begin{lstlisting}[numbers=left]
 def summiere(x1, x2):
     summe = x1 + x2
     return (*@\colorbox{RoyalBlue!50}{sum\tikzmark{arrowFromEx01}me}@*)
@@ -319,12 +323,13 @@ def summiere(x1, x2):
 (*@\colorbox{ForestGreen!50}{re\tikzmark{arrowToEx02}s}@*)=(*@\colorbox{RoyalBlue!50}{summie\tikzmark{arrowToEx01}re(3, 5)}@*)
 print(res)
 \end{lstlisting}
-	\begin{tikzpicture}[overlay,remember picture]
-		% Wert zurückgeben
-		\draw[RoyalBlue,-stealth, thick] (arrowFromEx01.south) to[bend left] node[align=left, pos=.15, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert an das Hauptprogramm zurückgeben...} (arrowToEx01.north);
+		\begin{tikzpicture}[overlay,remember picture]
+			% Wert zurückgeben
+			\draw[RoyalBlue,-stealth, thick] (arrowFromEx01.south) to[bend left] node[align=left, pos=.15, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert an das Hauptprogramm zurückgeben...} (arrowToEx01.north);
 
-		\draw[ForestGreen,-stealth, thick] (arrowToEx01.north) to[bend right] node[align=left, pos=.7, above right, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners] {...\textit{und} Wert in Variable speichern, z.B. \lstinline|res|} (arrowToEx02.north);
-	\end{tikzpicture}
+			\draw[ForestGreen,-stealth, thick] (arrowToEx01.north) to[bend right] node[align=left, pos=.7, above right, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners] {...\textit{und} Wert in Variable speichern, z.B. \lstinline|res|} (arrowToEx02.north);
+		\end{tikzpicture}
+	\end{figure}
 \end{minipage}
 
 \begin{myattention}
@@ -402,7 +407,8 @@ Folgender Code berechnet den Endpreis, für den Sie ihre Waren verkaufen werden,
 \end{enumerate}
 
 \begin{minipage}{\linewidth}
-	\begin{lstlisting}
+	\begin{figure}[H] % not really a figure, just acts as non-floating container
+		\begin{lstlisting}
 def berechne_rabatt(preis, rabatt_prozent):
     rabatt = preis * (rabatt_prozent / 100)
     (*@\colorbox{CornflowerBlue}{return preis - \tikzmark{arrowFromEx11} rabatt}@*) # Gibt den Preis nach Abzug des Rabatts zurück
@@ -422,11 +428,12 @@ mwst_prozent = 7.7  # Mehrwertsteuer in %
 (*@\colorbox{CornflowerBlue}{endp\tikzmark{arrowToEx12}reis}@*) = berechne_gesamtpreis(preis, rabatt_prozent, mwst_prozent)
 print("Der Endpreis nach Rabatt und Mehrwertsteuer ist:", endpreis)
 \end{lstlisting}
-	\begin{tikzpicture}[overlay,remember picture]
-		% Wert zurückgeben
-		\draw[red,-stealth] (arrowFromEx11.north) to[bend left] node[pos=.3, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben (und speichern)} (arrowToEx11);
-		\draw[red,-stealth] (arrowFromEx12.north) to[bend left] node[pos=.2, right, fill=RoyalBlue, fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben  (und speichern)} (arrowToEx12);
-	\end{tikzpicture}
+		\begin{tikzpicture}[overlay,remember picture]
+			% Wert zurückgeben
+			\draw[red,-stealth] (arrowFromEx11.north) to[bend left] node[pos=.3, right, fill=RoyalBlue,fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben (und speichern)} (arrowToEx11);
+			\draw[red,-stealth] (arrowFromEx12.north) to[bend left] node[pos=.2, right, fill=RoyalBlue, fill opacity=.5, text opacity=1, text=black,rounded corners] {Wert zurückgeben  (und speichern)} (arrowToEx12);
+		\end{tikzpicture}
+	\end{figure}
 \end{minipage}
 \end{myexample}
 
