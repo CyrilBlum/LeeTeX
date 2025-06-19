@@ -70,7 +70,11 @@ Beim Erstellen eines Netzwerks stellt sich als Erstes die Frage, welche Computer
 			% Connect nodes (to border points)
 			\foreach \x in {1,2,3,4,5} {
 					\foreach \y in {\x,...,5} {
-							\draw[ForestGreen, thick] (node\x) -- (node\y);
+							\ifnum\x=\y\relax
+								% skip self-connection
+							\else
+								\draw[ForestGreen, thick] (node\x) -- (node\y);
+							\fi
 						}
 				}
 
@@ -189,19 +193,19 @@ Im Zusammenhang mit dem Internet werden häufig zwei Schichtenmodelle gegenüber
 
 \begin{table}[H]
 	\centering
-
+	\footnotesize
 	\begin{tabular}{c|m{2.6cm}||m{2cm}||m{4.6cm}|m{2.5cm}|m{2cm}}
-		\textbf{\#}              & \textbf{Schicht (OSI)}                     & \textbf{Schicht \newline (TCP / IP)}    & \textbf{Aufgabe}                                                                                                & \textbf{Informations-\newline form}       & \textbf{Gerät / \newline Protokoll}   \\ \midrule\midrule
-		\rowcolor{yellow!10}7    & Anwendung \newline \textit{Application}    &                                         & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                                 & Nachricht                                 & \textbf{HTTP(S)}, FTP, SMTP...        \\
-		\rowcolor{yellow!20}6    & Darstellung \newline \textit{Presentation} & Anwendung\newline\textit{Application}   & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                                 & JPEG, MPEG, GIF, \textbf{HTML}...     \\
-		\rowcolor{yellow!30}5    & Sitzung \newline \textit{Session}          &                                         & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.         & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ...           \\
-		\rowcolor{orange!20}4    & Transport\newline \textit{Transport}       & Transport\newline\textit{Transport}     & Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                    & Segment                                   & Firewall, \textbf{TCP}, UDP, Ports... \\
-		\rowcolor{RoyalBlue!20}3 & Vermittlung \newline \textit{Network}      & Internet\newline\textit{Internet}       & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet.       & Paket                                     & Router, \textbf{IPv4}, IPv6           \\
-		\rowcolor{Gray!15}2      & Sicherung \newline \textit{Data Link}      & \multirow{2}{*}{\shortstack{Netzzugriff                                                                                                                                                                                                       \\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}...                            \\
-		\rowcolor{Gray!25}1      & Bitübertragung \newline \textit{Physical}  &                                         & Herstellung physischer Verbindungen zwischen Geräten.                                                           & Bits                                      & Hub, Repeater, Modem, Kabel...        \\
+		\textbf{\#}              & \textbf{Schicht (OSI)}                     & \textbf{Schicht \newline (TCP / IP)}  & \textbf{Aufgabe}                                                                                                & \textbf{Informations\-form}       & \textbf{Gerät / \newline Protokoll}   \\ \midrule\midrule
+		\rowcolor{yellow!10}7    & Anwendung \newline \textit{Application}    & Anwendung\newline\textit{Application} & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                                 & Nachricht                                 & \textbf{HTTP(S)}, FTP, SMTP...        \\\midrule
+		\rowcolor{yellow!20}6    & Darstellung \newline \textit{Presentation} & Anwendung\newline\textit{Application} & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                                 & JPEG, MPEG, GIF, \textbf{HTML}...     \\\midrule
+		\rowcolor{yellow!30}5    & Sitzung \newline \textit{Session}          & Anwendung\newline\textit{Application} & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.         & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ...           \\\midrule
+		\rowcolor{orange!20}4    & Transport\newline \textit{Transport}       & Transport\newline\textit{Transport}   & Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                    & Segment                                   & Firewall, \textbf{TCP}, UDP, Ports... \\\midrule
+		\rowcolor{RoyalBlue!20}3 & Vermittlung \newline \textit{Network}      & Internet\newline\textit{Internet}     & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet.       & Paket                                     & Router, \textbf{IPv4}, IPv6           \\\midrule
+		\rowcolor{Gray!15}2      & Sicherung \newline \textit{Data Link}      & Netzzugriff\newline\textit{Data Link} & Übermittlung von Nachrichten von Knoten zu Knoten.                                                              & Frame                                     & Switch, Bridge, \textbf{MAC}...       \\\midrule
+		\rowcolor{Gray!25}1      & Bitübertragung \newline \textit{Physical}  & Netzzugriff\newline\textit{Data Link} & Herstellung physischer Verbindungen zwischen Geräten.                                                           & Bits                                      & Hub, Repeater, Modem, Kabel...        \\
 	\end{tabular}
 	\label{table:osi-layers}
-	\caption{Internet-Schichten-Modelle \acrfull{OSI} und \acrfull{TCP}-\acrfull{IP} sowie deren wichtigste Aufgaben, Informationsformen, Geräte und Protokolle}
+	\caption{Internet-Schichten-Modelle \gls{OSI} und \gls{TCP}-\gls{IP} sowie deren wichtigste Aufgaben, Informationsformen, Geräte und Protokolle}
 \end{table}
 
 Im Folgenden gehen verwenden wir hauptsächlich das etwas vereinfachte \acrfull{TCP}-\acrfull{IP}-Modelle und gehen kurz auf jede Schicht ein.
@@ -278,22 +282,22 @@ Einige der wichtigsten Metadaten sind:
 	\item \textbf{Der Port} (von engl. \textit{port} = Hafen): Dies ist eine Zahl, mit der der Computer weiss, welche Anwendung (z.B. Mail, Browser, Gaming-Programm etc.) Daten verschickt. Ein Computer kann, wie Sie vermutlich wissen, gleichzeitig über mehrere Programme Daten von anderen Computern empfangen und an sie schicken: sie können beispielsweise gleichzeitig eine Nachricht über WhatsApp schicken und ein Video schauen. Damit der Computer weiss, welche Anwendung die Daten verschickt, verseht er die Daten typischerweise mit einem Port. Obschon Ports für jedes Programm frei gewählt werden können, werden für bekannte Protokolle typischerweise Standard-Portnummern verwendet (s. \cref{tab:tcpPorts}).
 	      \begin{table}[H]
 		      \centering
-		      \begin{tabular}{ccc}
+		      \begin{tabular}{c||c|c}
 			      \toprule
-			      \textbf{Portnummer} & \textbf{Anwendung} & \textbf{Verwendung}                   \\
+			      \textbf{Port} & \textbf{Anwendung} & \textbf{Verwendung}                   \\
 			      \midrule
-			      20                  & \acrfull{FTP}      & Dateitransfer                         \\
-			      21                  & \acrfull{FTP}      & Befehlssteuerung                      \\
-			      22                  & \acrfull{SSH}      & Sichere Shell-Zugriffe                \\
-			      23                  & Telnet             & Unverschlüsselte Fernsteuerung        \\
-			      25                  & \acrfull{SMTP}     & E-Mail-Versand                        \\
-			      53                  & \acrfull{DNS}      & Namensauflösung                       \\
-			      80                  & \acrfull{HTTP}     & Webseiten-Abruf                       \\
-			      110                 & \acrfull{POP3}     & E-Mail-Abholung                       \\
-			      143                 & \acrfull{IMAP}     & E-Mail-Management                     \\
-			      443                 & \acrfull{HTTPS}    & Verschlüsselter Webseiten-Abruf       \\
-			      993                 & \acrfull{IMAP}     & E-Mail-Management über \acrshort{SSL} \\
-			      995                 & \acrfull{POP3}     & E-Mail-Abholung über \acrshort{SSL}   \\
+			      20            & \acrfull{FTP}      & Dateitransfer                         \\
+			      21            & \acrfull{FTP}      & Befehlssteuerung                      \\
+			      22            & \acrfull{SSH}      & Sichere Shell-Zugriffe                \\
+			      23            & Telnet             & Unverschlüsselte Fernsteuerung        \\
+			      25            & \acrfull{SMTP}     & E-Mail-Versand                        \\
+			      53            & \acrfull{DNS}      & Namensauflösung                       \\
+			      80            & \acrfull{HTTP}     & Webseiten-Abruf                       \\
+			      110           & \acrfull{POP3}     & E-Mail-Abholung                       \\
+			      143           & \acrfull{IMAP}     & E-Mail-Management                     \\
+			      443           & \acrfull{HTTPS}    & Verschlüsselter Webseiten-Abruf       \\
+			      993           & \acrfull{IMAP}     & E-Mail-Management über \acrshort{SSL} \\
+			      995           & \acrfull{POP3}     & E-Mail-Abholung über \acrshort{SSL}   \\
 			      \bottomrule
 		      \end{tabular}
 		      \caption{Gängige \gls{TCP}-Ports, Anwendungen und deren Verwendung}
@@ -315,13 +319,9 @@ Zusätzlich zur Steuerung der Datenübertragung können \gls{TCP}-Metadaten genu
 	\begin{tikzpicture}[>=Stealth, node distance=4cm and 8cm]
 		% Draw the entities
 		\tikzset{c/.append style={fill=RoyalBlue!30,rounded corners, align=center, text width=5cm}}
-		\tikzset{person/.append style={text width=2.2cm,fill=ForestGreen!30,rounded corners,align=center}}
+		\tikzset{person/.append style={text width=2.5cm,fill=ForestGreen!30,rounded corners,align=center}}
 		\node[person](Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
 		\node[person, right=of Bob] (Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
-
-
-
-
 		% Draw the arrows and labels
 		\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Ich möchte mit dir sprechen, Alice, auf Port 21. Bist du offen?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Alice.south);
 		\draw[->, thick, red, dashed] ([yshift=-3cm]Alice.south) -- node[c] { Ok, lass uns reden Bob! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Bob.south);
@@ -427,7 +427,7 @@ Gegeben sei folgende Subnetzmaske:
 	\caption{Beispiel einer Subnetzmaske mit zwei IP-Adressen}
 	\label{table:ex-subnet}
 \end{table}
-Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben Netzwerk gehören, muss überprüft werden, ob die binäre IP-Adresse an all denjenigen Stellen gleich ist, wo die Subnetzmaske = ``1'' ist (also an allen grün markierten Stellen in Tabelle \cref{table:ex-subnet}). In diesem Beispiel bedeutet dies, dass alle \gls{IP}-Adressen, welche mit \texttt{159.233.1.[...]} beginnen zum selben Netzwerk dazugehören.
+Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben Netzwerk gehören, muss überprüft werden, ob die binäre IP-Adresse an all denjenigen Stellen gleich ist, wo die Subnetzmaske = ``1'' ist (also an allen grün markierten Stellen in \cref{table:ex-subnet}). In diesem Beispiel bedeutet dies, dass alle \gls{IP}-Adressen, welche mit \texttt{159.233.1.[...]} beginnen zum selben Netzwerk dazugehören.
 \end{myexample}
 
 
@@ -458,15 +458,15 @@ Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben N
 
 		\begin{table}[H]
 			\centering
-			\begin{tabular}{l|l|l|p{2cm}}
+			\begin{tabular}{l|l|l|l}
 
-				\textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP}                 & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+				\textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP}                 & \textbf{Gleiches Subnetz?} \\\midrule\midrule
 
 				213.45.19.89       & 255.255.255.0      & 213.45.\textcolor{red}{17}.89    & Nein                                \\\midrule
 
-				213.45.19.89       & 255.255.0.0        & \textcolor{green}{213.45}.17.89  & Ja                                  \\\midrule
+				213.45.19.89       & 255.255.0.0        & \textcolor{ForestGreen}{213.45}.17.89  & Ja                                  \\\midrule
 
-				88.100.11.17       & 255.255.255.0      & \textcolor{green}{88.100}.11.254 & Ja                                  \\\midrule
+				88.100.11.17       & 255.255.255.0      & \textcolor{ForestGreen}{88.100}.11.254 & Ja                                  \\\midrule
 
 				88.100.11.17       & 0.0.0.0            & 213.45.19.89                     & Ja (alles \faCheck)                 \\\midrule
 
@@ -489,7 +489,8 @@ Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben N
 
 	\begin{table}[H]
 		\centering
-		\begin{tabular}{m{1.5cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}}
+		\small
+		\begin{tabular}{m{2cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}}
 			\textbf{Netzmaske Subnetz} & \multicolumn{2}{c|}{255.255.255.0} & \multicolumn{2}{c|}{255.255.0.0} & \multicolumn{2}{c}{255.255.255.240}                               \\
 			\midrule
 			IP                         & 3.4.5.6                            & 3.3.3.3                          & 3.4.5.6                             & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\
@@ -508,7 +509,8 @@ Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben N
 	\begin{myanswer}
 		\begin{table}[H]
 			\centering
-			\begin{tabular}{m{1.5cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.7cm}}
+			\small
+			\begin{tabular}{m{2cm}||m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.7cm}}
 				\textbf{Netzmaske Subnetz} & \multicolumn{2}{c|}{255.255.255.0} & \multicolumn{2}{c|}{255.255.0.0} & \multicolumn{2}{c}{255.255.255.240}                               \\
 				\midrule
 				IP                         & 3.4.5.6                            & 3.3.3.3                          & 3.4.5.6                             & 3.3.3.3 & 3.4.5.6 & 3.3.3.3 \\
@@ -705,8 +707,9 @@ Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer W
 Wenn eine Adresse wie \texttt{insta.org} im Browser eingetippt und angefordert wird, schickt der Client eine Anfrage an einen nahegelegenen \gls{DNS}-Server, der die IP-Adresse retourniert (ähnlich einem Telefonbuch). Ein \gls{DNS} ist also ein Server, welcher den Clients eines Netzwerks eine Tabelle von Servern und damit verbundenen Namen zur Verfügung stellt. Eine solche \gls{DNS}-Abfrage ist illustriert in \cref{fig:dns}.
 
 \begin{figure}[H]
+	\resizebox{\textwidth}{!}{
 	\begin{tikzpicture}[
-			base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.3cm, align=center,inner sep=8pt},
+			base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.4cm, align=center,inner sep=8pt},
 			server/.style={base, fill=RoyalBlue},
 			client/.style={base, fill=ForestGreen},
 			arrow/.style={-Stealth, thick, rounded corners,text width=4cm,align=center}
@@ -716,18 +719,18 @@ Wenn eine Adresse wie \texttt{insta.org} im Browser eingetippt und angefordert w
 		\node[client] (client) {Client\\\texttt{192.168.0.10}};
 		\node[server, right=4.2cm of client] (dns) {DNS-Server\\\texttt{192.168.2.1}};
 		\node[server, right=4.2cm of dns] (web) {Webserver\\\texttt{192.168.0.11}};
-		\node[text width=3cm, right=0cm of dns] (dnsTable) {\tiny \begin{tabular}{p{1.1cm}|p{1.2cm}}
-				\textbf{Domain\newline Name} & \textbf{IP-\newline Addresse} \\
+		\node[text width=3.5cm, right=0cm of dns] (dnsTable) {\tiny \begin{tabular}{p{1.1cm}|l}
+				\textbf{Domain\newline Name} & \textbf{IP-Addresse} \\
 				\midrule\midrule
-				\texttt{beispiel.ch}         & 192.168.0.11                  \\
+				\texttt{beispiel.ch}         & 192.168.0.11         \\
 				\midrule
-				\texttt{schule.ch}           & 192.168.0.12                  \\
+				\texttt{schule.ch}           & 192.168.0.12         \\
 				\midrule
-				\texttt{test.org}            & 192.168.0.13                  \\
+				\texttt{test.org}            & 192.168.0.13         \\
 				\midrule
-				\texttt{insta.com}           & 192.168.0.14                  \\
+				\texttt{insta.com}           & 192.168.0.14         \\
 				\midrule
-				\texttt{...}                 & ...                           \\
+				\texttt{...}                 & ...                  \\
 			\end{tabular}};
 
 		% draw box around DNS node and DNS table
@@ -739,7 +742,7 @@ Wenn eine Adresse wie \texttt{insta.org} im Browser eingetippt und angefordert w
 		\draw[arrow] (client) -- ++(0,2cm) -- node[above] {\textbf{3.} \gls{HTTP}-Anfrage\\\footnotesize (Webseite wird angefragt)} ++($(web)$) -- (web);
 		\draw[arrow] (web) -- ++(0,-2cm) -- node[below,midway] {\textbf{4.} \gls{HTTP}-Antwort\\\footnotesize (Webseite wird geliefert)} ++($(client)-(web)$) -- (client);
 
-	\end{tikzpicture}
+	\end{tikzpicture}}
 	\centering
 	\caption{Schematischer Ablauf einer DNS-Anfrage}
 	\label{fig:dns}
@@ -814,7 +817,7 @@ Falls Sie dazu aufgefordert werden, klicken Sie immer auf ``erlauben'', bzw. ``w
 \end{enumerate}
 \subsubsection{MacOS}
 \begin{mycaution}
-	Falls Probleme beim Ausführen der unten stehenden Schritte auftreten, schauen Sie sich die genauen Anleitungen mit Screenshots auf dieser Webseite an: \url{https://oinf.ch/wp-content/uploads/Anleitung_Filius_Mac-OS.pdf}. Sie können natürlich auch mich um Hilfe fragen \emoji{winking-face}.
+	Falls Probleme beim Ausführen der unten stehenden Schritte auftreten, schauen Sie sich die genauen Anleitungen mit Screenshots auf \href{https://oinf.ch/wp-content/uploads/Anleitung_Filius_Mac-OS.pdf}{dieser Webseite} an. Sie können natürlich auch mich um Hilfe fragen \emoji{winking-face}.
 \end{mycaution}
 \paragraph*{Installation Java SDK (Voraussetzung für Filius)}
 Damit Filius ausgeführt werden kann, muss zuerst Java SDK in der neusten Version installiert werden.
