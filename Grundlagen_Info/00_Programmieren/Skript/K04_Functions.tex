@@ -66,7 +66,8 @@ for _ in range(10):   !\tikzmark{repOuterStart}!
 t.done()
 \end{lstlisting}
 	\end{minipage}\hfill\begin{minipage}{.4\textwidth}
-		\begin{lstlisting}[escapechar=!]
+		\begin{figure}[H] % not really a figure, just acts as non-floating container
+			\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 !\tikzmark{repInnerStartTo}!def quadrat():
@@ -83,20 +84,22 @@ quadrat_blume()
 
 t.done()
 \end{lstlisting}
+			\begin{tikzpicture}[overlay, remember picture,
+					every edge/.append style = { ->, thick, >=stealth, red!70},
+					every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+				\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
+				\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
+				% arrow pointing from one code to other
+				\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
+				\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
+				\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
+				% arrow pointing from one code to other
+				\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
+			\end{tikzpicture}
+		\end{figure}
 	\end{minipage}
 \end{center}
-\begin{tikzpicture}[overlay, remember picture,
-		every edge/.append style = { ->, thick, >=stealth, red!70},
-		every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-	\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
-	\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
-	% arrow pointing from one code to other
-	\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
-	\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
-	\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
-	% arrow pointing from one code to other
-	\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
-\end{tikzpicture}
+
 
 Wichtig zu beachten für die Übersichtlichkeit des Codes sind folgende Aspekte:
 \begin{itemize}
@@ -136,6 +139,7 @@ for _ in range(4):    !\tikzmark{repOuterStart}!
     t.fd(100)         !\tikzmark{repOuterEnd}!
 \end{lstlisting}
 			\end{minipage}\hfill\begin{minipage}{.4\textwidth}
+				\begin{figure}[H] % not really a figure, just acts as non-floating container
 				\begin{lstlisting}[escapechar=!]
 import turtle as t
 
@@ -151,9 +155,7 @@ import turtle as t
 
 abgerundetes_quadrat()
 \end{lstlisting}
-			\end{minipage}
-		\end{center}
-		\begin{tikzpicture}[overlay, remember picture,
+\begin{tikzpicture}[overlay, remember picture,
 				every edge/.append style = { ->, thick, >=stealth, red!70},
 				every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
 			\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
@@ -165,6 +167,10 @@ abgerundetes_quadrat()
 			% arrow pointing from one code to other
 			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
 		\end{tikzpicture}
+				\end{figure}
+			\end{minipage}
+		\end{center}
+		
 	\end{myanswer}
 \end{myexercise}
 
@@ -338,7 +344,7 @@ print(res)
 \end{myexample}
 
 \begin{myexercise}\label{ex:dreieck-return}
-	Gegeben seien die Höhe \texttt{h} und die Grundseite \texttt{b} eines Dreiecks. Schreiben Sie eine Funktion \lstinline|def flaeche_dreieck(h, b)|, welche den Flächeninhalt dieses Dreiecks berechnet und mit \lstinline|return| zurückgibt.
+	Gegeben seien die Höhe \texttt{h} und die Grundseite \texttt{b} eines Dreiecks. Schreiben Sie eine Funktion \lstinline|flaeche_dreieck(h, b)|, welche den Flächeninhalt dieses Dreiecks berechnet und mit \lstinline|return| zurückgibt.
 
 	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
 	\begin{myanswer}
@@ -350,7 +356,7 @@ def flaeche_dreieck(h, b):
 \end{myexercise}
 
 \begin{myexercise}\label{ex:quadrat-return}
-	Geben sei eine ganze Zahl \texttt{n}. Schreiben Sie eine Funktion \lstinline|def square(n)|, welche das Quadrat von \lstinline|n| berechnet und mit \lstinline|return| zurückgibt.
+	Geben sei eine ganze Zahl \texttt{n}. Schreiben Sie eine Funktion \lstinline|square(n)|, welche das Quadrat von \lstinline|n| berechnet und mit \lstinline|return| zurückgibt.
 
 	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
 	\begin{myanswer}
@@ -491,7 +497,7 @@ def notenskala(maxPunkte, erreichtePunkte):
 
 
 \begin{myexercise}[Formel 1 \emoji{chequered-flag}]\label{ex:f1}
-	Ein Formel-1-Auto fährt eine bestimmte Strecke in einer bestimmten Zeit. Schreiben Sie eine Funktion \lstinline|def durchschnittsgeschwindigkeit(strecke_km, zeit_min)|, die Strecke in Kilometern und Zeit in Minuten als Eingabe erhält und die durchschnittliche Geschwindigkeit in km/h per \lstinline|return| zurückgibt.
+	Ein Formel-1-Auto fährt eine bestimmte Strecke in einer bestimmten Zeit. Schreiben Sie eine Funktion \lstinline|durchschnittsgeschwindigkeit(strecke_km, zeit_min)|, die Strecke in Kilometern und Zeit in Minuten als Eingabe erhält und die durchschnittliche Geschwindigkeit in km/h per \lstinline|return| zurückgibt.
 
 	Formel: Durchschnittsgeschwindigkeit = Strecke (km) / Zeit (h)
 
