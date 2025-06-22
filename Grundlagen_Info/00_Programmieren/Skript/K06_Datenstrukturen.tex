@@ -32,11 +32,12 @@ Wenn wir auf die einzelnen Werte in der Liste zugreifen möchten, können wir di
 \begin{lstlisting}
 # Liste l1 erstellen
 l1 = [1, 2, 3, 4, 5]
-# Zugriff auf den ersten Wert in der Liste
+# Zugriff auf das erste Element der Liste
 print(l1[0]) # gibt 1 aus
-# Zugriff auf den zweiten Wert in der Liste
+# Zugriff auf das zweite Element der Liste
 print(l1[1]) # gibt 2 aus
-# usw.
+# Zugriff auf das letzte Element der Liste
+print(l1[-1])
 \end{lstlisting}
 \end{myexample}
 \begin{myexample}[Listen-Werte verändern]
@@ -95,15 +96,15 @@ Etwas effizienter kann auf jedes Element der Liste mit dem Befehl \lstinline|for
 		\centering
 		\begin{tabular}{c||c|c}
 			\textbf{Produkt} & \textbf{Menge} \lstinline|m| & \textbf{Preis} \lstinline|p| \\\midrule\midrule
-			\emoji{banana}   & 800 g                        & 2.- / Kg                     \\\midrule
-			\emoji{apple}    & 1200 g                       & 2.50 / Kg                    \\\midrule
-			\emoji{peach}    & 2300 g                       & 5.- / Kg                     \\
+			\emoji{banana}   & 800 g                        & 2.- / kg                     \\\midrule
+			\emoji{apple}    & 1200 g                       & 2.50 / kg                    \\\midrule
+			\emoji{peach}    & 2300 g                       & 5.- / kg                     \\
 		\end{tabular}
 	\end{table}
 
 	Schreiben Sie eine Funktion, die das Skalarprodukt zweier Listen berechnet. Das Skalarprodukt ist die Summe der Produkte der jeweils entsprechenden Elemente beider Listen. Beispiel: Für die Listen \lstinline|m = [0.8, 1.2, 2.3]| (in kg) und \lstinline|p = [2.0, 2.5, 5.0]| (Preis pro kg) berechnet das Skalarprodukt den Gesamtpreis.
 
-	Wie berechnen wir den \textbf{Gesamtpreis?} Dies kann mit dem \textbf{Skalarprodukt} gemacht werden: \lstinline|m[0]*p[0] + m[1]*p[1] + ... + m[-1]*p[-1]|.
+	Wie berechnen wir den \textbf{Gesamtpreis?} Dies kann mit dem \textbf{Skalarprodukt} gemacht werden: \pythoninline{m[1] * p[0] + m[1] * p[1] + ... + m[-1] * p[-1]}. Zur Erinnerung: \pythoninline{m[-1]} gibt uns das letzte (hinterste) Element der Liste \pythoninline{m}.\footnote{Alternativ können wir anstelle von \pythoninline{m[-1]} auch \pythoninline{m[len(m) - 1]}}
 
 	\begin{myanswer}
 		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/skalarprodukt.py}
@@ -161,7 +162,7 @@ liste_preise = [39.95, 65.95, 66.95, 76.95, 9.95, 10.95, 13.95]
 liste_rabatte = [30, 40, 30, 35, 20, 15, 35] 
 \end{lstlisting}
 
-	Das Beispiel bedeutet, dass das erste Produkt nicht 39.95, sondern 30\% weniger als 39.95 kosten sollte, also 70\% von 39.95 = 27.965.
+	Das Beispiel bedeutet, dass das erste Produkt nicht 39.95, sondern 30 \% weniger als 39.95 kosten sollte, also 70 \% von 39.95 = 27.965.
 
 	Der rabattierte Preis eines einzelnen Produkts wird folgendermassen berechnet:
 	\begin{lstlisting}
@@ -177,8 +178,8 @@ preis_rabattiert = preis_normal * (1 - rabatt_in_prozent / 100)
 \begin{myexercise}
 	Sie hatten zum Mittagessen ein Sandwich sowie einen Energy-Drink. Sie möchten gerne wissen, wie viele Kalorien das gesamte Mittagessen hatte, die Nährwerte sind jedoch nur pro 100 Gramm oder 100 Milliliter (wobei 100 Gramm = 100 Milliliter sind) angegeben. Berechnen Sie die Gesamt-Kalorien, indem Sie folgende zwei Listen erstellen:
 	\begin{itemize}
-		\item \lstinline|l_kcal|: Liste der Kalorien pro 100 Gramm (bzw. 100 Militer) für das Sandwich und den Energy-Drink.
-		\item \lstinline|l_gram|: Liste der Mengen in Gramm, bzw. Mililiter für das Sandwich und den Energy Drink.
+		\item \lstinline|l_kcal|: Liste der Kalorien pro 100 Gramm (bzw. 100 Milliliter) für das Sandwich und den Energy-Drink.
+		\item \lstinline|l_gram|: Liste der Mengen in Gramm, bzw. Milliliter für das Sandwich und den Energy-Drink.
 	\end{itemize}
 	Die Nährwert-Informationen entnehmen Sie dem Bild \cref{fig:lunch-kcal}
 	\begin{figure}[H]
@@ -291,14 +292,14 @@ Bei solchen, etwas komplexeren Codes, kann es nützlich sein, sich die Entwicklu
 	\centering
 	\begin{tabular}{l|c|c|c}
 		\diagbox[innerwidth=2.5cm]{\textbf{Code}}{\textbf{Variable}}
-						& \texttt{links}
-						& \texttt{mitte}
-						& \texttt{rechts} \\
+		                              & \texttt{links}
+		                              & \texttt{mitte}
+		                              & \texttt{rechts}      \\
 		\midrule\midrule
-		\textbf{1. \lstinline|while|} &  &  &  \\\midrule
-		\textbf{2. \lstinline|while|} &  &  &  \\\midrule
-		\textbf{3. \lstinline|while|} &  &  &  \\\midrule
-		\textbf{\dots}                &  &  &  \\
+		\textbf{1. \lstinline|while|} &                 &  & \\\midrule
+		\textbf{2. \lstinline|while|} &                 &  & \\\midrule
+		\textbf{3. \lstinline|while|} &                 &  & \\\midrule
+		\textbf{\dots}                &                 &  & \\
 	\end{tabular}
 	\caption{Beispielhafte Zeit-Tabelle für die binäre Suche (zum Ausfüllen), jeweils nach Zeile 9}
 	\label{tab:binarySearch}
@@ -310,12 +311,12 @@ Wir können für folgende Liste \lstinline|[4, 8, 9, 11, 15, 23, 42]| die binär
 	\centering
 	\begin{tabular}{l|c|c|c}
 		\diagbox[innerwidth=2.5cm]{\textbf{Code}}{\textbf{Variable}}
-						& \texttt{links} & \texttt{mitte} & \texttt{rechts} \\
+		                              & \texttt{links} & \texttt{mitte} & \texttt{rechts} \\
 		\midrule\midrule
-		\textbf{1. \lstinline|while|} & 0 & 3 & 6 \\\midrule
-		\textbf{2. \lstinline|while|} & 0 &  1 &  2 \\\midrule
-		\textbf{3. \lstinline|while|} & 2 &  2 &  2 \\\midrule
-		\multicolumn{4}{c}{Gefunden!} \\
+		\textbf{1. \lstinline|while|} & 0              & 3              & 6               \\\midrule
+		\textbf{2. \lstinline|while|} & 0              & 1              & 2               \\\midrule
+		\textbf{3. \lstinline|while|} & 2              & 2              & 2               \\\midrule
+		\multicolumn{4}{c}{Gefunden!}                                                     \\
 	\end{tabular}
 	\caption{Beispielhafte Zeit-Tabelle für die binäre Suche, jeweils nach Zeile 9 evaluiert}
 	\label{tab:binarySearchEx}
