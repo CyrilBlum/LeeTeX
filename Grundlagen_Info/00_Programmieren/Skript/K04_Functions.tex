@@ -1,32 +1,33 @@
 \chapter{Funktionen}\label{ch:K04_Functions}
 
-\section{Eigene Funktionen  definieren}
+\section{Eigene Funktionen in Python definieren}
 
-In den vergangenen Lektionen haben Sie bereits viele Funktionen (=Befehle) verwendet, wie beispielsweise \lstinline|t.forward(100)| oder \lstinline|print()|. Im Allgemeinen erkennen Sie Befehle daran, dass Sie mit einem \textbf{Wort} beginnen, wie beispielsweise \lstinline|t.forward| oder \lstinline|print|, auf welches Klammern sowie ein oder mehrere Werte folgen. Diese Werte werden \textbf{Parameter} genannt und dienen dazu, das Verhalten einer Funktion leicht abzuändern, so dass beispielsweise in der Funktion \lstinline|t.fd()| 50 oder 100 Pixel gezeichnet werden. Um unseren Code leserlicher und kürzer zu machen, können wir auch eigene Definitionen schreiben!
+Sie kenne bereits die Funktionen \pythoninline{print} sowie \pythoninline{t.forward} und haben diese auch schon mehrmals selbst verwendet. In diesem Kapitel werden Sie lernen, wie Sie eigene Funktionen in Python definieren und schliesslich sinnvoll verwenden können. Funktionen helfen enorm dabei, Programme leserlicher, kürzer, effizienter und wartbarer zu machen. Funktionen sind deshalb aus modernen Programmen kaum wegzudenken sind.
 
 \begin{myexample}
 Wir betrachten nochmals den Code aus \cref{myexercise:Blume}:
 
 \lstinputlisting[language=Python,caption=\texttt{blume.py},label=listing:blume2]{Grundlagen_Info/00_Programmieren/Skript/Code/K02_Intro/blume.py}
 
-Wir könnten den Code leserlicher machen, indem wir einen Befehl für eine Quadrat und einen Befehl für das gesamte Muster erstellen:
+Die Blume entsteht durch das wiederholte Zeichnen eines Quadrats, wobei sich die Turtle nach jedem gezeichneten Quadrat um $36$ Grad rotiert.
+Wir könnten den Code leserlicher machen, indem wir zunächst eine Funktion \pythoninline{quadrat()} definieren, welche lediglich ein Quadrat zeichnet. Danach definieren wir eine weitere Funktion \pythoninline{quadrat_blume}, welche die Funktion \pythoninline{quadrat} insgesamt 10 Mal aufrufen wird:
 
 \begin{minipage}{\linewidth}
 	\begin{figure}[H] % not really a figure, just acts as non-floating container
 		\begin{lstlisting}[escapechar=!, numbers=left]
 import turtle as t
 
-def !\colorbox{HotPink}{viereck()}!: !\tikzmark{to2ex}!
+def !\colorbox{HotPink}{quadrat()}!: !\tikzmark{to2ex}!
     for _ in range(4):
         t.fd(100)
         t.rt(360/4)
 
-def !\colorbox{CornflowerBlue}{viereck\_blume()}!:!\tikzmark{to1ex}! 
+def !\colorbox{CornflowerBlue}{quadrat\_blume()}!:!\tikzmark{to1ex}! 
     for _ in range(10):
-        !\colorbox{HotPink}{viereck()}! !\tikzmark{from2ex}!
+        !\colorbox{HotPink}{quadrat()}! !\tikzmark{from2ex}!
         t.rt(360/10)
 
-!\colorbox{CornflowerBlue}{viereck\_blume()}! !\tikzmark{from1ex}!
+!\colorbox{CornflowerBlue}{quadrat\_blume()}! !\tikzmark{from1ex}!
 
 t.done()
 \end{lstlisting}
@@ -36,16 +37,17 @@ t.done()
 			node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to2ex);
 		\end{tikzpicture}
 	\end{figure}
-
 \end{minipage}
+\end{myexample}
 
+\begin{myexample}
 Eine Funktion beginnt immer mit dem Wort \lstinline|def|, gefolgt von einem Namen sowie Klammern. Innerhalb des eingerückten Bereichs wird eine Aktivität beschrieben. Die Aktivität wird aber erst ausgeführt, sobald der Code aufgerufen wird!
 
 Im übertragenen Sinne kann man sich Definitionen vorstellen wie Kochrezepte, die einen Ablauf beschreiben. Die Funktion beschreibt dabei einen Programmablauf, also ein \enquote{Rezept}, ausgeführt (\enquote{gekocht}) wird dieses jedoch erst, sobald das Programm abgerufen wird (auf Zeile 13 und 10 im obigen Beispiel).
 
 Das Schreiben von Definitionen hat mehrere Vorteile:
 \begin{itemize}
-	\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|viereck()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|viereck_blume()|. Auf diese Weise wird ein komplexer Code in einzelne, einfachere Teile (Module) unterteilt.
+	\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|quadrat()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|quadrat_blume()|. Auf diese Weise wird ein komplexer Code in einzelne, einfachere Teile (Module) unterteilt.
 	\item Der Code wird \textbf{übersichtlicher}: jede Teil-Aktivität ist eine Funktion
 	\item Falls das komplexere Programm nicht das gewünschte Resultat liefert, können wir es \textit{debuggen}, indem wir die einfacheren Funktionen zuerst aufrufen und sicherstellen, dass diese richtig funktionieren.
 \end{itemize}
@@ -140,7 +142,7 @@ for _ in range(4):    !\tikzmark{repOuterStart}!
 \end{lstlisting}
 			\end{minipage}\hfill\begin{minipage}{.4\textwidth}
 				\begin{figure}[H] % not really a figure, just acts as non-floating container
-				\begin{lstlisting}[escapechar=!]
+					\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 !\tikzmark{repInnerStartTo}!def viertelkreis():
@@ -155,22 +157,22 @@ import turtle as t
 
 abgerundetes_quadrat()
 \end{lstlisting}
-\begin{tikzpicture}[overlay, remember picture,
-				every edge/.append style = { ->, thick, >=stealth, red!70},
-				every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
-			\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
-			\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
-			% arrow pointing from one code to other
-			\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
-			\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
-			\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
-			% arrow pointing from one code to other
-			\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
-		\end{tikzpicture}
+					\begin{tikzpicture}[overlay, remember picture,
+							every edge/.append style = { ->, thick, >=stealth, red!70},
+							every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+						\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
+						\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
+						% arrow pointing from one code to other
+						\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
+						\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
+						\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
+						% arrow pointing from one code to other
+						\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
+					\end{tikzpicture}
 				\end{figure}
 			\end{minipage}
 		\end{center}
-		
+
 	\end{myanswer}
 \end{myexercise}
 
@@ -528,3 +530,13 @@ def notenskala(maxPunkte, erreichtePunkte):
 	\end{myanswer}
 \end{myexercise}
 
+\iftoggle{exerciseonly}{}{%
+	\clearpage
+
+	\section{Längere Lösungen}\label{sec:K04_sol}
+
+	% \begin{myanswer}[mychallenge:fibonacci_spirale]
+	% 	\lstinputlisting[language=Python,caption=\texttt{challenge\_fib.py},label=listing:challenge_fib]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/challenge_fib.py}
+	% \end{myanswer}
+
+}
