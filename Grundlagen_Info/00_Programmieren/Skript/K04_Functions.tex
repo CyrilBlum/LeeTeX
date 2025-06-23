@@ -4,7 +4,7 @@
 
 Sie kenne bereits die Funktionen \lstinline|print| sowie \lstinline|t.forward| und haben diese auch schon mehrmals selbst verwendet. In diesem Kapitel werden Sie lernen, wie Sie eigene Funktionen in Python definieren und schliesslich sinnvoll verwenden können. Funktionen helfen enorm dabei, Programme leserlicher, kürzer, effizienter und wartbarer zu machen. Funktionen sind deshalb aus modernen Programmen kaum wegzudenken sind.
 
-\begin{myexample}
+\begin{myexample}\label{myexample:flower}
 Wir betrachten nochmals den Code aus \cref{myexercise:Blume}:
 
 \lstinputlisting[language=Python,caption=\texttt{blume.py},label=listing:blume2]{Grundlagen_Info/00_Programmieren/Skript/Code/K02_Intro/blume.py}
@@ -32,31 +32,32 @@ def !\colorbox{CornflowerBlue}{quadrat\_blume()}!:!\tikzmark{to1ex}!
 t.done()
 \end{lstlisting}
 		\begin{tikzpicture}[overlay,remember picture]
-			\draw[red,-stealth] (from1ex.north) to[bend right] node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to1ex);
-			\draw[red,-stealth] (from2ex.north) to[bend right]
-			node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to2ex);
+			\draw[CornflowerBlue,-stealth] (from1ex.north) to[out=0, in=0, looseness=2.5] node[fill=CornflowerBlue,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to1ex);
+			\draw[HotPink,-stealth] (from2ex.north) to[out=0, in=0, looseness=2.5]
+			node[fill=HotPink,rounded corners,font=\sffamily\small,text=white] {\emoji{cook} Aufruf} (to2ex);
 		\end{tikzpicture}
 	\end{figure}
 \end{minipage}
+Die Erstellung der Definitionen einer Funktion ist vergleichbar mit dem Verfassen eines Kochrezepts (oder eines Bauplans). Die Funktion beschreibt dabei einen Programmablauf, also ein \enquote{Rezept}. Die alleinige Existenz eines Kochrezepts führt natürlich nicht zu einem fertigen Gericht. Dieses entsteht erst bei der Ausführung des Rezepts. Genauso hat in Python die Definition noch keinen Effekt. Der Effekt (die Wirkung der Funktion) erfolgt erst bei ihrem Aufruf (in dem obigen Beispiel erfolgen solche Funktionsaufrufe in den Zeile 10 und 13).
 \end{myexample}
 
-\begin{myexample}
-Eine Funktion beginnt immer mit dem Wort \lstinline|def|, gefolgt von einem Namen sowie Klammern. Innerhalb des eingerückten Bereichs wird eine Aktivität beschrieben. Die Aktivität wird aber erst ausgeführt, sobald der Code aufgerufen wird!
 
-Im übertragenen Sinne kann man sich Definitionen vorstellen wie Kochrezepte, die einen Ablauf beschreiben. Die Funktion beschreibt dabei einen Programmablauf, also ein \enquote{Rezept}, ausgeführt (\enquote{gekocht}) wird dieses jedoch erst, sobald das Programm abgerufen wird (auf Zeile 13 und 10 im obigen Beispiel).
+\begin{myoverview}
+	% Um eine eigene Funktion zu \lstinline|def|inieren, beginnen wir mit dem Python-Keyword \lstinline|def| gefolgt von einem selbst gewählten Namen (zum Beispiel \lstinline|quadrat| oder \lstinline|meine_funktion|) und Klammern\footnote{Häufig werden hier noch Parameter aufgelistet, siehe \cref{sec:Parameter}.}.
+	Innerhalb des eingerückten Bereichs unter \lstinline|def| wird eine Wirkung definiert. Diese Wirkung wird aber erst ausgelöst, wenn die Funktion aufgerufen (und somit der Code ausgeführt) wird!
 
-Das Schreiben von Definitionen hat mehrere Vorteile:
-\begin{itemize}
-	\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|quadrat()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|quadrat_blume()|. Auf diese Weise wird ein komplexer Code in einzelne, einfachere Teile (Module) unterteilt.
-	\item Der Code wird \textbf{übersichtlicher}: jede Teil-Aktivität ist eine Funktion
-	\item Falls das komplexere Programm nicht das gewünschte Resultat liefert, können wir es \textit{debuggen}, indem wir die einfacheren Funktionen zuerst aufrufen und sicherstellen, dass diese richtig funktionieren.
-\end{itemize}
+	Das Schreiben von Definitionen hat mehrere Vorteile:
+	\begin{itemize}
+		\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|quadrat()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|quadrat_blume()|. Auf diese Weise wird ein komplexer Code in einzelne, einfachere Teile (Module) unterteilt.
+		\item Der Code wird \textbf{übersichtlicher}: jede Teil-Aktivität ist eine Funktion
+		\item Falls das komplexere Programm nicht das gewünschte Resultat liefert, können wir es \textit{debuggen}, indem wir die einfacheren Funktionen zuerst aufrufen und sicherstellen, dass diese richtig funktionieren.
+	\end{itemize}
 
-Dass der ursprüngliche Code nun übersichtlicher ist, wird in den folgenden zwei Code-Varianten ersichtlich:
-
-\begin{center}
-	\begin{minipage}{.4\textwidth}
-		\begin{lstlisting}[escapechar=!]
+	Dass der ursprüngliche Code nun übersichtlicher ist, wird in den folgenden zwei Code-Varianten ersichtlich:
+	\begin{figure}[H] % This makes the whole thing float
+		\centering
+		\begin{minipage}{.4\textwidth}
+			\begin{lstlisting}[escapechar=!]
 import turtle as t
 
 for _ in range(10):   !\tikzmark{repOuterStart}!
@@ -64,11 +65,11 @@ for _ in range(10):   !\tikzmark{repOuterStart}!
         t.fd(100)
         t.rt(360 / 4) !\tikzmark{repInnerEnd}!
     t.fd(360 / 10)    !\tikzmark{repOuterEnd}!
-    
+
 t.done()
-\end{lstlisting}
-	\end{minipage}\hfill\begin{minipage}{.4\textwidth}
-		\begin{figure}[H] % not really a figure, just acts as non-floating container
+  \end{lstlisting}
+		\end{minipage}\hfill
+		\begin{minipage}{.4\textwidth}
 			\begin{lstlisting}[escapechar=!]
 import turtle as t
 
@@ -85,30 +86,29 @@ import turtle as t
 quadrat_blume()
 
 t.done()
-\end{lstlisting}
+  \end{lstlisting}
+
 			\begin{tikzpicture}[overlay, remember picture,
 					every edge/.append style = { ->, thick, >=stealth, red!70},
 					every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
 				\drawBrace{0em}{repInnerStart}{repInnerEnd}{}{.5}{};
 				\drawBrace{-.5em}{repInnerStartTo}{repInnerEndTo}{}{.5}{mirror};
-				% arrow pointing from one code to other
 				\draw[->, style={thick, >=stealth, red!70}] (repInnerStartrepInnerEnd-coord-arrow) to (repInnerStartTorepInnerEndTo-coord-arrow);
 				\drawBrace{1em}{repOuterStart}{repOuterEnd}{}{.75}{};
 				\drawBrace{-.5em}{repOuterStartTo}{repOuterEndTo}{}{.25}{mirror};
-				% arrow pointing from one code to other
 				\draw[->, style={thick, >=stealth, red!70}] (repOuterStartrepOuterEnd-coord-arrow) to (repOuterStartTorepOuterEndTo-coord-arrow);
 			\end{tikzpicture}
-		\end{figure}
-	\end{minipage}
-\end{center}
+		\end{minipage}
+		\caption{Vergleich von Schleifen mit Funktionsdefinitionen}
+		\label{fig:code-comparison}
+	\end{figure}
 
-
-Wichtig zu beachten für die Übersichtlichkeit des Codes sind folgende Aspekte:
-\begin{itemize}
-	\item Innere Schleifen sollten, wenn immer möglich, vermieden und durch Definitionen ersetzt werden.
-	\item Definitions-Namen sollten möglichst selbsterklärend und ``sprechend'' sein, sie sollten also klar beschreiben, was die Aktivität tut! %TODO Beispiel
-\end{itemize}
-\end{myexample}
+	Für die Übersichtlichkeit des Codes sind folgende Aspekte zu beachten:
+	\begin{itemize}
+		\item Innere Schleifen sollten, wenn immer möglich, vermieden und durch Definitionen ersetzt werden.
+		\item Der Name einer Funktion sollte selbsterklärend und beschreibend sein. Im Idealfall lässt der Name der Funktion schon viel über ihren Effekt erahnen.  %TODO Beispiel
+	\end{itemize}
+\end{myoverview}
 
 \begin{myexercise}
 	Führen Sie den folgenden Code zuerst aus und betrachten Sie das Resultat. Schreiben Sie den Code um, indem Sie zwei Funktionen schreiben:
@@ -129,7 +129,8 @@ for _ in range(4):
 \end{lstlisting}
 
 	\begin{myanswer}
-		\begin{center}
+		\begin{figure}[H]
+			\centering
 			\begin{minipage}{.4\textwidth}
 				\begin{lstlisting}[escapechar=!]
 import turtle as t
@@ -171,25 +172,23 @@ abgerundetes_quadrat()
 					\end{tikzpicture}
 				\end{figure}
 			\end{minipage}
-		\end{center}
-
+		\end{figure}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-	Packen Sie Ihre Lösung aus \cref{myexercise:Haus} in eine Funktion mit dem Namen \lstinline|def haus()|. Testen Sie zunächst, ob die  Funktion wirklich das gewünschte Resultat liefert (ein einzelnes Haus), indem Sie die Funktion aufrufen. Schreiben Sie dann eine zweite Funktion \lstinline|def haeuserreihe():|, welche eine Häuserreihe aus 5 Häusern zeichnet, indem \lstinline|haus()| fünfmal aufgerufen wird.
+	Packen Sie Ihre Lösung aus \cref{myexercise:Haus} in eine Funktion mit dem Namen \lstinline|haus|. Testen Sie zunächst, ob die  Funktion wirklich das gewünschte Resultat liefert (ein einzelnes Haus), indem Sie die Funktion aufrufen. Schreiben Sie dann eine zweite Funktion \lstinline|haeuserreihe|, welche eine Häuserreihe aus 5 Häusern zeichnet, indem \lstinline|haus| fünfmal aufgerufen wird.
 
 	Ihr Code sollte folgendes Bild ausgeben:
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.3\linewidth]{Grundlagen_Info/00_Programmieren/Skript/Figures/haeuserreihe}
 	\end{figure}
-
 \end{myexercise}
 
 
 % TODO weitere Übungen
-\section{Parameter}
+\section{Parameter}\label{sec:Parameter}
 
 Stellen Sie sich vor, sie wollen drei unterschiedlich grosse Quadrate zeichnen. Sie könnten folgendermassen vorgehen:
 
@@ -203,20 +202,21 @@ Folgendes Beispiel verwendet einen \textit{Parameter} \texttt{laenge}, um die L�
 	\begin{lstlisting}[escapechar=!, numbers=left]
 import turtle as t
 
-def quadrat(!\colorbox{DeepPink}{la\tikzmark{arrowTo1}enge}!):
+def quadrat(!\colorbox{HotPink}{la\tikzmark{arrowTo1}enge}!):
 	for _ in range(4):
-		t.fd(!\colorbox{DeepPink}{la\tikzmark{arrowTo2}enge}!) 
+		t.fd(!\colorbox{HotPink}{la\tikzmark{arrowTo2}enge}!) 
 		t.rt(90)
 
-quadrat(!\colorbox{DeepPink}{5\tikzmark{arrow1From}0}!)
-quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow2From}00}!)
-quadrat(!\colorbox{DeepPink}{1\tikzmark{arrow3From}50}!)
+quadrat(!\colorbox{HotPink}{5\tikzmark{arrow1From}0}!)
+quadrat(!\colorbox{HotPink}{1\tikzmark{arrow2From}00}!)
+quadrat(!\colorbox{HotPink}{1\tikzmark{arrow3From}50}!)
 \end{lstlisting}
 	\begin{tikzpicture}[overlay,remember picture]
-		\draw[red,-stealth] (arrow1From.north) to[bend right] node[right, yshift=-.8cm, fill=RoyalBlue,text=white,rounded corners] {\emoji{handshake} Übergabe} (arrowTo1);
-		\draw[red,-stealth] (arrowTo1.south) to[bend right] (arrowTo2);
-		\draw[red,-stealth] (arrow2From.south) to[bend right] (arrowTo1);
-		\draw[red,-stealth] (arrow3From.south) to[bend right] (arrowTo1);
+		\draw[CornflowerBlue,-stealth] (arrowTo1.south) to[bend right] (arrowTo2);
+
+		\draw[CornflowerBlue,-stealth] (arrow1From.south) to[out=0, in=10, looseness=2.5] node[right, yshift=-.8cm, fill=CornflowerBlue,text=white,rounded corners] {\emoji{handshake} Übergaben} (arrowTo1);
+		\draw[CornflowerBlue,-stealth] (arrow2From.south) to[out=-5, in=20, looseness=2.5] (arrowTo1);
+		\draw[CornflowerBlue,-stealth] (arrow3From.south) to[out=0, in=30, looseness=2.5] (arrowTo1);
 	\end{tikzpicture}
 \end{figure}
 \end{myexample}
@@ -232,6 +232,32 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
 	\includegraphics[width=0.2\linewidth]{Grundlagen_Info/00_Programmieren/Figures/mehrere-parameter}
 \end{figure}
 \end{myexample}
+
+\begin{myoverview}[Nomenklatur bei Python-Funktionen]\label{myoverview:NomenklaturFunktion}
+	Wir haben in diesem Kapitel mehrere wichtige Begriffe im Zusammenhang mit Funktionen in Python kennengelernt. Diese Begriffe wollen wir hier anhand eines Beispiels übersichtlich darstellen:
+	\begin{lstlisting}
+    def produkt(x, y):
+        return x * y
+
+
+    produkt(5, 3)
+    \end{lstlisting}
+	\bigskip
+	\begin{description}
+		\item[Name der Funktion]: \lstinline|produkt|\\
+		      Das ist der Name (Bezeichner) der Funktion, mit dem sie definiert und aufgerufen wird.
+		\item[Parameter der Funktion]: \lstinline|x|, \lstinline|y|\\
+		      Das sind die Platzhalter in der Funktionsdefinition, die beim Aufruf der Funktion mit Werten (Argumenten) belegt werden.
+		\item[Argumente der Funktion]: \lstinline|5|, \lstinline|3|\\
+		      Das sind die tatsächlichen Werte, die beim Aufruf an die Funktion übergeben werden.
+		\item[Funktionsaufruf]: \lstinline|produkt(5, 3)|\\
+		      Das ist der Ausdruck, mit dem die Funktion ausgeführt wird.
+		\item[Funktionssignatur]: \lstinline|produkt(x, y)|\\
+		      Das ist die Kombination aus dem Funktionsnamen und der Parameterliste, also wie die Funktion definiert ist und wie sie verwendet werden soll.
+		\item[Körper der Funktion]: \lstinline|return x * y|\\
+		      Der Anweisungsblock innerhalb der Funktion. Er definiert, was die Funktion macht.
+	\end{description}
+\end{myoverview}
 
 \begin{myexercise}
 	Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich zur Farbe und der Anzahl Ecken auch noch die \textbf{Stiftdicke} für jedes Vieleck verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie den Befehl \texttt{t.width(...)}.
@@ -259,9 +285,9 @@ Variablen, welche im Hauptprogramm (nicht eingerückt) erstellt werden, sind sog
 
 	\begin{myanswer}
 		\begin{enumerate}
-			\item \lstinline|laenge|: lokale Variable, Parameter der Funktion \lstinline|haus()|
+			\item \lstinline|laenge|: lokale Variable, Parameter der Funktion \lstinline|haus|
 			\item \lstinline|anzahl_mauern|: lokale Variable
-			\item \lstinline|laenge_pro_haus|: lokale Variable, Parameter der Funktion \lstinline|haeuserreihe()|
+			\item \lstinline|laenge_pro_haus|: lokale Variable, Parameter der Funktion \lstinline|haeuserreihe|
 			\item \lstinline|anzahl_haeuser|: lokale Variable
 			\item \lstinline|seitenlaenge|: globale Variable
 		\end{enumerate}
