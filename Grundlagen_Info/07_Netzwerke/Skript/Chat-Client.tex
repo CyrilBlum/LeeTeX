@@ -1,0 +1,191 @@
+\newcommand{\ipPlaceHolder}{
+    \foreach \i in {1,...,3}{\TextField[name=ip\i, width=1.5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}.}\TextField[name=ip4, width=1.5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}
+}
+
+\chapter{Chat-Client mit Python: Schritt-für-Schritt-Anleitung}
+
+In diesem Arbeitsblatt lernen Sie Schritt für Schritt, wie Sie mit Python einen einfachen Chat-Client programmieren, um mit MitschülerInnen Nachrichten über das Internet auszutauschen.
+
+\section{Überblick: Wie funktioniert ein Chat-Client?}
+
+Ein Chat-Client verbindet sich über das Internet mit einem Server, also einem Computer, der Nachrichten von Clients hin- und herschickt. Nachrichten werden als Text über ein das \gls{TCP}-Protokoll verschickt. Der Server kann die Nachricht an andere Clients weiterleiten oder – wie beim Echo-Server – einfach zurückschicken.
+
+\begin{figure}[H]
+    \begin{tikzpicture}[
+            base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.4cm, align=center,inner sep=8pt},
+            server/.style={base, fill=RoyalBlue},
+            client/.style={base, fill=ForestGreen},
+            arrow/.style={-Stealth, thick, rounded corners, text width=4cm, align=center}
+        ]
+
+        % Nodes
+        \node[client] (client1) {Client 1\\\texttt{192.168.0.20}};
+        \node[server, right=6cm of client1] (server) {Echo-Server\\\texttt{192.168.0.30}};
+
+        % Arrows
+        \draw[arrow] (client1) -- node[above, yshift=4pt] {\texttt{192.168.0.20:Hallo Max!}} (server);
+        \draw[arrow] (server) -- node[below, yshift=-4pt] {\texttt{192.168.0.20:Hallo Max!}} (client1);
+
+    \end{tikzpicture}
+    \centering
+    \caption{Ablauf einer Chat-Nachricht über den Echo-Server}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{tikzpicture}[
+            base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.4cm, align=center,inner sep=8pt},
+            server/.style={base, fill=RoyalBlue},
+            client/.style={base, fill=ForestGreen},
+            arrow/.style={-Stealth, thick, rounded corners, text width=4cm, align=center}
+            ]
+
+            % Nodes
+            \node[client] (client1) {Client 1\\\texttt{192.168.0.20}};
+            \node[server, below right=of client1] (relay) {Relay-Server\\\texttt{192.168.0.40}};
+            \node[client, above right=of relay] (client2) {Client 2\\\texttt{192.168.0.21}};
+
+            % Arrows
+            \draw[arrow] (client1) -- node[midway, left] {\texttt{192.168.0.21:Hallo!}} (relay);
+            \draw[arrow] (relay) -- node[midway, right] {\texttt{192.168.0.21:Hallo!}} (client2);
+
+    \end{tikzpicture}
+    \centering
+    \caption{Kommunikation über einen Relay-Server: Die Nachricht wird vom Client an den Relay-Server geschickt und von dort an den Ziel-Client weitergeleitet.}
+\end{figure}
+Im folgenden werden wir die Kommunikation über einen Relay-Server umsetzen. So können Sie Nachrichten an MitschülerInnen schicken, ohne deren \gls{IP}-Adresse zu kennen.
+
+\section{Aufgaben: Schritt für Schritt zum Chat-Client}
+
+\begin{myexercise}[Meine Öffentliche \gls{IP}-Adresse herausfinden]
+Finden Sie die öffentliche \gls{IP}-Adresse Ihres Laptops heraus. Öffnen Sie dazu die Webseite \url{https://whatismyipaddress.com/de/meine-ip} und notieren Sie die \gls{IP}v4-Adresse.
+
+    
+Meine öffentliche IP-Adresse ist: \ipPlaceHolder
+
+\end{myexercise}
+
+\begin{myexercise}[IP-Adresse eines Mitschülers/einer Mitschülerin herausfinden]
+Fragen Sie einen Mitschüler oder eine Mitschülerin nach seiner/ihrer öffentlichen IP-Adresse und notieren Sie diese.
+\begin{myanswer}
+Die öffentliche IP-Adresse von \rule{2.5cm}{0.15mm} ist: \ipPlaceHolder
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Nachricht zusammensetzen]
+Schreiben Sie ein Python-Programm, das folgende Variablen definiert:
+\begin{itemize}
+  \item \texttt{ip}: die IP-Adresse Ihres Mitschülers/Ihrer Mitschülerin als Text
+  \item \texttt{message}: die Nachricht, die Sie schicken möchten
+  \item \texttt{combined}: die kombinierte Chat-Nachricht im Format \texttt{ip:message}
+\end{itemize}
+Geben Sie den Wert von \texttt{combined} mit \texttt{print()} aus.
+\begin{myanswer}
+\begin{lstlisting}
+ip = "20.161.75.213"
+message = "Hallo Bob!"
+combined = ip + ":" + message
+print(combined)
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Benutzereingabe und Schleife]
+
+Erweitern Sie Ihr Programm so, dass die IP-Adresse und die Nachricht jeweils per \texttt{input()} eingegeben werden. Kombinieren Sie beide wie oben und geben Sie das Ergebnis aus. Bauen Sie eine Endlosschleife ein, damit Sie beliebig viele Nachrichten verschicken können.
+\begin{myanswer}
+\begin{lstlisting}[language=Python]
+while True:
+    ip = input("Empfänger-IP: ")
+    message = input("Nachricht: ")
+    combined = ip + ":" + message
+    print(combined)
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Server-IP und Port definieren]
+Definieren Sie die IP-Adresse und den Port des Chat-Servers als Variablen \lstinline|server_ip| und \lstinline|port| (siehe Tabelle unten).
+\begin{myanswer}
+\begin{lstlisting}
+server_ip = "88.198.193.239"
+port = 43223
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Verbindung zum Server herstellen]
+
+Das Paket \texttt{socket} ist in Python standardmässig bereits installiert und dient dazu, um Netzwerkverbindungen herzustellen. Importieren Sie das Paket und erstellen Sie eine Funktion \lstinline|sende|, die sich mit dem Server verbindet und eine Nachricht sendet. Die Funktion soll die IP-Adresse des Servers, den Port und die Nachricht als Parameter entgegennehmen. Die Antwort des Servers soll ausgegeben werden.
+
+Verwenden Sie folgende Code-Vorlage: Innerhalb Ihrer Definition:
+\begin{lstlisting}[language=Python]
+import socket
+
+# IHRE DEFINITION HIER
+     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: # Socket erstellen und verbinden
+        s.connect((server_ip, port)) # Mit Server verbinden
+        s.sendall(message.encode()) # Nachricht senden
+        data = s.recv(1024) # Antwort empfangen und ausgeben
+        print('Antwort vom Server:', data.decode())
+\end{lstlisting}
+
+\begin{myanswer}
+\begin{lstlisting}[language=Python]
+import socket
+
+def send_message(server_ip, port, message):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((server_ip, port))
+        s.sendall(message.encode())
+        data = s.recv(1024)
+        print('Antwort vom Server:', data.decode())
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Chat-Client zusammenbauen und testen]
+
+Kombinieren Sie alles zu einem vollständigen Chat-Client, so dass Sie in einer Endlosschleife Nachrichten eingeben und an den Server schicken können. Die Antwort des Servers wird ausgegeben.
+\begin{myanswer}
+\begin{lstlisting}[language=Python]
+import socket
+
+server_ip = "116.203.99.55"
+port = 43223
+
+while True:
+    ip = input("Empfänger-IP: ")
+    message = input("Nachricht: ")
+    combined = ip + ":" + message
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((server_ip, port))
+        s.sendall(combined.encode())
+        data = s.recv(1024)
+        print('Antwort vom Server:', data.decode())
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+
+\begin{figure}[H]
+    \begin{tikzpicture}[
+            base/.style={rectangle, draw, minimum width=2.2cm, minimum height=1.1cm, text=white, rounded corners, text width=2.5cm, align=center,inner sep=8pt},
+            server/.style={base, fill=RoyalBlue},
+            client/.style={base, fill=ForestGreen},
+            arrow/.style={-Stealth, thick, rounded corners, text width=4.2cm, align=center}
+        ]
+
+        % Nodes
+        \node[client] (client) {Client\\\texttt{192.168.0.20}};
+        \node[server, right=9cm of client] (server) {Echo-Server\\\texttt{192.168.0.30}};
+
+        % Arrows
+        \draw[arrow] (client) -- node[above, yshift=4pt] {\texttt{192.168.0.20:Hallo Max!}} (server);
+        \draw[arrow] (server) -- node[below, yshift=-4pt] {\texttt{192.168.0.20:Hallo Max!}} (client);
+
+    \end{tikzpicture}
+    \centering
+    \caption{Ablauf einer Chat-Nachricht über den Echo-Server}
+\end{figure}
+
+\noindent
+Der Client schickt eine Nachricht im Format \texttt{IP:Nachricht} an den Server. Der Echo-Server schickt exakt dieselbe Nachricht zurück. So können Sie testen, ob Ihr Client korrekt funktioniert.
