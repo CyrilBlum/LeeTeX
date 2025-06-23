@@ -55,11 +55,11 @@ Sei $S$ eine Menge, deren Elemente durch die Relation $\leq$ verglichen werden k
 \end{figure}
 
 \section{Sortieren mit dem \textit{merge sort} Algorithmus}
-Natürlich ist das Bedürfnis nach schnellen Algorithmen besonders gross, falls diese Probleme lösen, die zeitkritisch sind und häufig auftreten. Mittlerweile sind viele Sortieralgorithmen bekannt. Ein berühmter Vertreter dieser Algorithmen ist \textit{merge sort}. Der Algorithmus \textit{merge sort} arbeitet rekursiv. Dabei macht er insbesondere von der Tatsache Gebrauch, dass sich zwei sortierte Listen recht effizient zu einer ebenfalls sortierten Liste zusammenfügen lassen. Es seien also zwei jeweils \textbf{bereits sortierte} Listen \pythoninline{L} und \pythoninline{R} gegeben. Diese Listen besitzen die Längen (Anzahl von Elementen) \pythoninline{len(L)} und \pythoninline{len(R)}. Es ist nun nicht besonders aufwändig, die beiden Listen \pythoninline{L} und \pythoninline{R} zu einer neuen \textbf{sortierten} Liste \pythoninline{M} der Länge \pythoninline{len(L) + len(R)} zu vereinen (englisch: \textit{to merge}).
+Natürlich ist das Bedürfnis nach schnellen Algorithmen besonders gross, falls diese Probleme lösen, die zeitkritisch sind und häufig auftreten. Mittlerweile sind viele Sortieralgorithmen bekannt. Ein berühmter Vertreter dieser Algorithmen ist \textit{merge sort}. Der Algorithmus \textit{merge sort} arbeitet rekursiv. Dabei macht er insbesondere von der Tatsache Gebrauch, dass sich zwei sortierte Listen recht effizient zu einer ebenfalls sortierten Liste zusammenfügen lassen. Es seien also zwei jeweils \textbf{bereits sortierte} Listen \lstinline|L| und \lstinline|R| gegeben. Diese Listen besitzen die Längen (Anzahl von Elementen) \lstinline|len(L)| und \lstinline|len(R)|. Es ist nun nicht besonders aufwändig, die beiden Listen \lstinline|L| und \lstinline|R| zu einer neuen \textbf{sortierten} Liste \lstinline|M| der Länge \lstinline|len(L) + len(R)| zu vereinen (englisch: \textit{to merge}).
 
 \begin{myexercise}\label{myexercise:0501}
-	Angenommen wir haben zwei jeweils \textbf{bereits sortierte} Listen \pythoninline{L} und \pythoninline{R} gegeben. Schreiben Sie eine Python-Funktion \pythoninline{merge(L, R)}, welche \pythoninline{L} und \pythoninline{R} zu einer einzigen sortierten Liste vereint. Ihre Funktion soll unbedingt Gebrauch von der Tatsache machen, dass \pythoninline{L} und \pythoninline{R} bereits sortiert sind.
-	\begin{lstlisting}[language=Python,caption=Testfälle für die Funktion \pythoninline{merge},numbers=none]
+	Angenommen wir haben zwei jeweils \textbf{bereits sortierte} Listen \lstinline|L| und \lstinline|R| gegeben. Schreiben Sie eine Python-Funktion \lstinline|merge(L, R)|, welche \lstinline|L| und \lstinline|R| zu einer einzigen sortierten Liste vereint. Ihre Funktion soll unbedingt Gebrauch von der Tatsache machen, dass \lstinline|L| und \lstinline|R| bereits sortiert sind.
+	\begin{lstlisting}[language=Python,caption=Testfälle für die Funktion \lstinline|merge|,numbers=none]
 Testfall 0
 Eingabe: L = [8, 12, 17], R = []
 Ausgabe: [8, 12, 17]
@@ -72,14 +72,14 @@ Testfall 2
 Eingabe: L = [1, 10, 100, 1000], R = [0, 5, 50]
 Ausgabe: [0, 1, 5, 10, 50, 100, 1000]
 \end{lstlisting}
-	Ihre Funktion braucht nicht zu überprüfen, ob \pythoninline{L} und \pythoninline{R} tatsächlich sortiert sind.
+	Ihre Funktion braucht nicht zu überprüfen, ob \lstinline|L| und \lstinline|R| tatsächlich sortiert sind.
 \end{myexercise}
 
 \begin{myexercise}\label{myexercise:0502}
-	Analysieren Sie den Algorithmus, welchen Sie in \cref{myexercise:0501} geschrieben haben. Welche Laufzeit hat dieser Algorithmus in Abhängigkeit von \pythoninline{n = len(L) + len(R)}?
+	Analysieren Sie den Algorithmus, welchen Sie in \cref{myexercise:0501} geschrieben haben. Welche Laufzeit hat dieser Algorithmus in Abhängigkeit von \lstinline|n = len(L) + len(R)|?
 \end{myexercise}
 Der \textit{merge sort} Algorithmus teilt eine zu sortierende Liste rekursiv so lange in zwei Teile, bis nur noch Listen der Länge 1 vorliegen. Offensichtlich ist jede Liste der Länge 1 bereits sortiert. Schliesslich werden bereits sortierte Listen mithilfe des \textit{merge} Algorithmus zu der gesuchten sortierten Liste zusammengefügt. Mithilfe der bereits in \cref{myexercise:0501} erstellten Routine \textit{merge} lässt sich der berühmte \textit{merge sort} Algorithmus in nur wenigen Zeilen in Python beschreiben. Eine mögliche Implementation ist in \cref{listing:mergesort} gegeben.
-\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{merge_sort},label=listing:mergesort]
+\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|merge_sort|,label=listing:mergesort]
 def merge_sort(A):
     # sortiert die Liste A
     if len(A) == 1: # Rekursionsanfang
@@ -94,7 +94,7 @@ def merge_sort(A):
     R = merge_sort(A[middle:])
     return merge(L, R)
 \end{lstlisting}
-Den \textit{merge sort} Algorithmus zu verstehen ist nicht einfach! Erfahrungsgemäss ist es sehr hilfreich, die einzelnen Schritte dieses Sortieralgorithmus für ein kleines Beispiel durchzugehen. Dazu haben wir die Schritte von \textit{merge sort} (\verb|ms|) beim Sortieren der Liste \pythoninline{[3, 2, 1]} in \cref{fig:mergesort} schematisch dargestellt. Mit \verb|m| wird natürlich der Algorithmus \textit{merge} bezeichnet. Die schematische Darstellung ist analog zu den Ausführungen in \cref{technisch} zu verstehen.
+Den \textit{merge sort} Algorithmus zu verstehen ist nicht einfach! Erfahrungsgemäss ist es sehr hilfreich, die einzelnen Schritte dieses Sortieralgorithmus für ein kleines Beispiel durchzugehen. Dazu haben wir die Schritte von \textit{merge sort} (\verb|ms|) beim Sortieren der Liste \lstinline|[3, 2, 1]| in \cref{fig:mergesort} schematisch dargestellt. Mit \verb|m| wird natürlich der Algorithmus \textit{merge} bezeichnet. Die schematische Darstellung ist analog zu den Ausführungen in \cref{technisch} zu verstehen.
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7},
@@ -136,7 +136,7 @@ Die Laufzeit des \textit{merge sort} Algorithmus setzt sich aus drei einzelnen T
 \begin{description}
 	\item[Divide:] Dieser Teil berechnet lediglich die Mitte der zu sortierenden Liste. Dazu ist offensichtlich nur eine konstante Zeit $\Theta(1)$ notwendig.
 	\item[Conquer:] Beim Aufruf des \textit{merge sort} Algorithmus mit Problemgrösse $n$ werden rekursiv \textcolor{Blue}{zwei} Teilprobleme (derselben Art) mit jeweils halber Grösse $\textcolor{Green}{n/2}$ aufgerufen. Dies trägt $\textcolor{Blue}{2}T(\textcolor{Green}{n/2})$ zur Laufzeit bei.
-	\item[Combine:] Wie wir in \cref{myexercise:0502} bereits festgestellt haben, benötigt \textit{merge sort} die lineare Zeit $\Theta(n)$ für die Vereinigung zweier Listen mit summierter Länge \pythoninline{n = len(L) + len(R)}.
+	\item[Combine:] Wie wir in \cref{myexercise:0502} bereits festgestellt haben, benötigt \textit{merge sort} die lineare Zeit $\Theta(n)$ für die Vereinigung zweier Listen mit summierter Länge \lstinline|n = len(L) + len(R)|.
 \end{description}
 Zusammengefasst ist die Laufzeit $T(n)$ von \textit{merge sort} im schlimmsten Fall also gegeben durch
 
@@ -294,7 +294,7 @@ Wir können die Arbeit vergleichsbasierter Sortieralgorithmen durch binäre Ents
 \section{Lösungen der Aufgaben}
 
 \begin{myanswer}[myexercise:0501]
-	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{merge},label=listing:merge]
+	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|merge|,label=listing:merge]
 def merge(L, R):
     # L und R sind jeweils bereits sortierte Listen.
 
@@ -327,7 +327,7 @@ def merge(L, R):
 \begin{myanswer}[myexercise:0502]
 	Wir beziehen uns hier auf den Algorithmus in der Musterlösung zu \cref{myexercise:0501}. Der Algorithmus besteht im Wesentlichen in einer Schleife über die summierte Länge
 	\begin{center}
-		\pythoninline{n = len(L) + len(R)}
+		\lstinline|n = len(L) + len(R)|
 	\end{center}
 	der beiden gegebenen Listen. Somit ist die Laufzeit gegeben durch $\Theta(n)$.
 \end{myanswer}

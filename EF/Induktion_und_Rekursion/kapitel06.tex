@@ -290,7 +290,7 @@ mini_sudokuNo0 = [
 [0,0,3,0]
 ]
 \end{lstlisting}
-Um ein $n^2\times n^2$-Gitter ansehnlich in Python auszugeben (\enquote{pretty-print}), empfehlen wir, am Anfang des Programms die Bibliothek \pythoninline{numpy} durch den Befehl \pythoninline{import numpy as np} einzubinden. Danach kann das Gitter durch \pythoninline{print(np.array(gitter))} übersichtlich ausgegeben werden.
+Um ein $n^2\times n^2$-Gitter ansehnlich in Python auszugeben (\enquote{pretty-print}), empfehlen wir, am Anfang des Programms die Bibliothek \lstinline|numpy| durch den Befehl \lstinline|import numpy as np| einzubinden. Danach kann das Gitter durch \lstinline|print(np.array(gitter))| übersichtlich ausgegeben werden.
 
 \section{Erlaubte Felder}
 In \cref{fig:sudoku0again} ist nochmals das Sudoku vom Anfang des Kapitels gezeigt. Betrachten Sie das mit einem blauen Fragezeichen \textcolor{Blue}{?} markierte Feld. Wir wissen (aufgrund der Eindeutigkeit der Lösung dieses konkreten Sudokus), dass in das markierte Feld die Ziffer 8 gesetzt werden muss. Nach den Spielregeln von Sudoku würde jedoch im Moment nichts dagegen sprechen, eine \textcolor{Red}{1} in dieses Feld zu schreiben --- auch wenn sich diese Wahl im Verlauf des Spiels als falsch herausstellen wird. Wir sagen, dass die Wahl der Ziffer 1 für das blau markierte Feld (bei dem aktuellen Spielstand) \textit{erlaubt} ist. Die Wahl der Ziffer 6 ist beispielsweise nicht erlaubt, da diese Ziffer in der entsprechenden Zeile bereits vorkommt. Ebenso wäre die Wahl der Ziffer 5 nicht erlaubt, da diese Ziffer bereits im entsprechenden $3\times 3$-Block enthalten ist.
@@ -384,9 +384,9 @@ diese Ziffer $Z$ weder in der entsprechenden Zeile noch der Spalte noch dem ents
 \begin{myexercise}\label{myexercise:0688}
 	Wir befassen uns in dieser Aufgabe nur mit $4\times 4$-Gittern. Entwickeln Sie eine Python-Funktion
 	\begin{center}
-		\pythoninline{def erlaubt(zeile, spalte, ziffer, gitter)},
+		\lstinline|def erlaubt(zeile, spalte, ziffer, gitter)|,
 	\end{center}
-	welche für ein gegebenes noch \textbf{leeres} (markiert durch die Zahl 0) Feld mit Zeilenindex \pythoninline{zeile} (von 0 bis 3) und Spaltenindex \pythoninline{spalte} (von 0 bis 3) prüft, ob das Platzieren einer gegebenen Ziffer \pythoninline{ziffer} (von 1 bis 4) in einem gegebenen Gitter erlaubt ist. Hier sind einige Testfälle:
+	welche für ein gegebenes noch \textbf{leeres} (markiert durch die Zahl 0) Feld mit Zeilenindex \lstinline|zeile| (von 0 bis 3) und Spaltenindex \lstinline|spalte| (von 0 bis 3) prüft, ob das Platzieren einer gegebenen Ziffer \lstinline|ziffer| (von 1 bis 4) in einem gegebenen Gitter erlaubt ist. Hier sind einige Testfälle:
 	\begin{lstlisting}[language=Python,caption=erlaubt oder nicht,numbers=none]
 print(erlaubt(0, 3, 4, mini_sudokuNo0)) # True
 
@@ -402,7 +402,7 @@ print(erlaubt(1, 1, 3, mini_sudokuNo0)) # False
 \begin{myexercise}\label{myexercise:0689}
 	Verallgemeinern Sie die Funktion
 	\begin{center}
-		\pythoninline{def erlaubt(zeile, spalte, ziffer, gitter)}
+		\lstinline|def erlaubt(zeile, spalte, ziffer, gitter)|
 	\end{center}
 	auf $n^2\times n^2$-Gitter.
 \end{myexercise}
@@ -807,7 +807,7 @@ Der Vorgang des \enquote{Zurückgehens} entlang der gegangenen Wege wird \tib{Ba
 \clearpage
 
 \section{Lösungsalgorithmus für Sudoku}
-Unser Lösungsalgorithmus verwendet die Funktion \pythoninline{erlaubt} sowie Backtracking in Kombination mit Rekursion. Diese drei Komponenten sind Ihnen inzwischen bekannt. Der vollständige Algorithmus zum Lösen von Sudokus ist in \cref{listing:sudoku} gegeben. Mit der Definition
+Unser Lösungsalgorithmus verwendet die Funktion \lstinline|erlaubt| sowie Backtracking in Kombination mit Rekursion. Diese drei Komponenten sind Ihnen inzwischen bekannt. Der vollständige Algorithmus zum Lösen von Sudokus ist in \cref{listing:sudoku} gegeben. Mit der Definition
 \begin{lstlisting}[language=Python,caption=Abspeichern von Sudoku-Gittern in Python,numbers=none]
   sudokuNo0 = [
     [0,0,7,0,0,3,9,0,2],
@@ -821,10 +821,10 @@ Unser Lösungsalgorithmus verwendet die Funktion \pythoninline{erlaubt} sowie Ba
     [0,0,0,0,0,0,1,2,9]
     ]
 \end{lstlisting}
-wird Ihnen der Aufruf \pythoninline{sudoku(sudokuNo0)} alle (es gibt hier nur eine) Lösungen von Sudoku Nr. 0 ausgeben. Die Funktion in \cref{listing:sudoku} verwendet die Funktion \pythoninline{erlaubt}, welche Sie in \cref{myexercise:0689} geschrieben haben.
+wird Ihnen der Aufruf \lstinline|sudoku(sudokuNo0)| alle (es gibt hier nur eine) Lösungen von Sudoku Nr. 0 ausgeben. Die Funktion in \cref{listing:sudoku} verwendet die Funktion \lstinline|erlaubt|, welche Sie in \cref{myexercise:0689} geschrieben haben.
 
 \lstset{style=BaselineStyle}
-\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{sudoku},label=listing:sudoku]
+\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|sudoku|,label=listing:sudoku]
 def sudoku(gitter):
 	# Gehe durch alle Felder im Gitter.
 	for zeile in range(9):
@@ -859,11 +859,11 @@ def sudoku(gitter):
 \end{lstlisting}
 
 \begin{myexercise}\label{myexercise:0681}
-	Betrachten Sie die \pythoninline{sudoku}-Funktion in \cref{listing:sudoku}. Es gibt genau zwei verschiedene Möglichkeiten, die Zeile 24 in dieser Funktion zu erreichen. Nennen Sie diese beiden Möglichkeiten und erklären Sie jeweils die Bedeutung des Entfernens der gesetzten Ziffer in dem entsprechenden Fall.
+	Betrachten Sie die \lstinline|sudoku|-Funktion in \cref{listing:sudoku}. Es gibt genau zwei verschiedene Möglichkeiten, die Zeile 24 in dieser Funktion zu erreichen. Nennen Sie diese beiden Möglichkeiten und erklären Sie jeweils die Bedeutung des Entfernens der gesetzten Ziffer in dem entsprechenden Fall.
 \end{myexercise}
 
 \begin{myexercise}\label{myexercise:0603}
-	(!) Ändern Sie die \pythoninline{sudoku}-Funktion in \cref{listing:sudoku} dahingehend ab, dass genau eine Lösung ausgegeben wird, falls das Sudoku mindestens eine Lösung besitzt. Falls das Sudoku keine Lösung besitzt, so soll auch nichts ausgegeben werden.
+	(!) Ändern Sie die \lstinline|sudoku|-Funktion in \cref{listing:sudoku} dahingehend ab, dass genau eine Lösung ausgegeben wird, falls das Sudoku mindestens eine Lösung besitzt. Falls das Sudoku keine Lösung besitzt, so soll auch nichts ausgegeben werden.
 \end{myexercise}
 
 %\lstset{basicstyle=\ttfamily\tiny}
@@ -1008,7 +1008,7 @@ def sudoku(gitter):
 
 \begin{myanswer}[myexercise:0688]
 	\lstset{basicstyle=\ttfamily\footnotesize}
-	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{erlaubt}]
+	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|erlaubt|]
 def erlaubt(zeile, spalte, ziffer, gitter):
 	# Prüfe, ob 'ziffer' bereits in der gegeben Zeile vorkommt.
 	# (Fixiere die Zeile und gehe durch alle Spalten.)
@@ -1037,7 +1037,7 @@ def erlaubt(zeile, spalte, ziffer, gitter):
 
 \begin{myanswer}[myexercise:0689]
 	\lstset{basicstyle=\ttfamily\footnotesize}
-	\begin{lstlisting}[language=Python,caption=Funktion \pythoninline{erlaubt} für allgemeine Sudokus]
+	\begin{lstlisting}[language=Python,caption=Funktion \lstinline|erlaubt| für allgemeine Sudokus]
 def erlaubt(zeile, spalte, ziffer, gitter):
 	n = int(np.sqrt(len(gitter[0])))
 
@@ -1226,16 +1226,16 @@ def erlaubt(zeile, spalte, ziffer, gitter):
 \end{myanswer}
 
 \begin{myanswer}[myexercise:0681]
-	Zeile 24 wird genau dann erreicht, wenn der rekursive Aufruf auf Zeile 21 abgeschlossen werden konnte. Dies ist genau dann der Fall, wenn der rekursive Aufruf einen \pythoninline{return} lieferte. Dazu gibt es exakt zwei Möglichkeiten:
+	Zeile 24 wird genau dann erreicht, wenn der rekursive Aufruf auf Zeile 21 abgeschlossen werden konnte. Dies ist genau dann der Fall, wenn der rekursive Aufruf einen \lstinline|return| lieferte. Dazu gibt es exakt zwei Möglichkeiten:
 	\begin{description}
-		\item[return auf Zeile 28:] Der \pythoninline{return} auf Zeile 28 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in eine \enquote{Sackgasse} gelangt ist. Dies geschieht genau dann, wenn dieser Aufruf ein noch leeres Feld gefunden hat, in welches keine der 10 Ziffern gesetzt werden darf (Widerspruch). Die gesetzte Ziffer muss also wieder entfernt werden und wir versuchen es mit einer anderen Ziffer.
-		\item[return auf Zeile 31:] Der \pythoninline{return} auf Zeile 31 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in kein leeres Feld gefunden hat. Das bedeutet aber, dass dieser Aufruf eine gültige Lösung gefunden (und ausgegeben) hat. Durch das Entfernen der gesetzten Ziffer können rekursiv (falls vorhanden) weitere Lösungen gefunden werden (siehe auch \cref{myremark:Metapher2}).
+		\item[return auf Zeile 28:] Der \lstinline|return| auf Zeile 28 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in eine \enquote{Sackgasse} gelangt ist. Dies geschieht genau dann, wenn dieser Aufruf ein noch leeres Feld gefunden hat, in welches keine der 10 Ziffern gesetzt werden darf (Widerspruch). Die gesetzte Ziffer muss also wieder entfernt werden und wir versuchen es mit einer anderen Ziffer.
+		\item[return auf Zeile 31:] Der \lstinline|return| auf Zeile 31 wird genau dann ausgelöst, wenn der rekursive Aufruf auf Zeile 21 in kein leeres Feld gefunden hat. Das bedeutet aber, dass dieser Aufruf eine gültige Lösung gefunden (und ausgegeben) hat. Durch das Entfernen der gesetzten Ziffer können rekursiv (falls vorhanden) weitere Lösungen gefunden werden (siehe auch \cref{myremark:Metapher2}).
 	\end{description}
 \end{myanswer}
 
 \begin{myanswer}[myexercise:0603]
 	Diese Funktion bricht ihre Berechnung ab, sobald eine Lösung gefunden wurde.
-	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \pythoninline{sudoku},label=listing:sudokuUnique]
+	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|sudoku|,label=listing:sudokuUnique]
 def sudoku(gitter):
 	for zeile in range(9):
 		for spalte in range(9):
