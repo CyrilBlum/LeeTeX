@@ -1,0 +1,730 @@
+\begin{frame}
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{Logos/LeeLogo.pdf}
+    \end{figure}
+    Informatik: Data Science und Sicherheit\\
+    \emoji{globe-with-meridians} \textbf{Netzwerke}
+\end{frame}
+
+\begin{frame}[fragile]{Was sind Netzwerke?}
+    \begin{itemize}[<+->]
+        \item Graphen:
+              \begin{figure}[H]
+                  \centering
+                  \includegraphics[keepaspectratio, width=0.35 \paperwidth]{Grundlagen_Info/02_Graphen/Figures/4-graph-zusammenhaengend.png}
+              \end{figure}
+
+        \item Im Alltag:
+              \begin{itemize}
+                  \item Kommunikations-Netzwerke: Die Post, DHL, Planzer, ...
+                  \item Soziale Netzwerke: TikTok, Youtube, Instagram, ...
+                  \item Transport-Netzwerke: SBB, Flixbus, ...
+                  \item Shopping-Netzwerke: Aliexpress, Uber, ...
+                  \item Computer-Netzwerke: \textbf{Das Internet}
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Schichtenmodell}{Analogie}
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[
+                auto,
+                block/.style={
+                        minimum width=3cm,
+                        node distance=1.5cm,
+                        rectangle,
+                        fill=RoyalBlue!50,
+                        align=center,
+                        rounded corners
+                    }
+            ]
+
+
+            % Define the nodes with FontAwesome icons
+            \node[block] (chefs) {\faFemale\ Chef};
+            \node[block, below=of chefs] (secretariat) {\faPhone\ Sekretariat};
+            \node[block, below=of secretariat] (postman) {\faMale\ Post};
+
+
+            % Define the nodes with FontAwesome icons
+
+            \node[block, right=of postman] (postman2) {\faMale\ Post};
+            \node[block, above=of postman2] (secretariat2) {\faPhone\ Sekretariat};
+            \node[block, above=of secretariat2] (chefs2) {\faMale\ Chef};
+
+
+            % Draw the dashed arrows
+            \draw[<->, dashed, RoyalBlue!50, thick] (chefs) -- (chefs2);
+            \draw[<->, dashed, RoyalBlue!50, thick] (secretariat) -- (secretariat2);
+            \draw[<->, dashed, RoyalBlue!50, thick] (postman) -- (postman2);
+
+            \draw[->, line width=1mm,ForestGreen!50] (chefs) -- node[left]{\faComments} (secretariat) ;
+            \draw[->, line width=1mm,ForestGreen!50] (secretariat) -- node[left]{\faEnvelope} (postman) ;
+            \draw[->, line width=1mm,ForestGreen!50, bend right] (postman.south) to node[midway,below]{\faBicycle\ \faMotorcycle\ \faCar\ \faShip\ \faPlane} (postman2.south) ;
+            \draw[->, line width=1mm,ForestGreen!50] (postman2) -- node[right]{\faEnvelope} (secretariat2) ;
+            \draw[->, line width=1mm,ForestGreen!50] (secretariat2) -- node[right]{\faComments} (chefs2) ;
+
+            % fit rectangles around regions
+            \node[fit=(chefs) (postman), inner sep=8pt, red, dotted, draw, line width=1pt,rounded corners](region1) {};
+            \node[fit=(chefs2) (postman2), inner sep=8pt, red, dotted, draw, line width=1pt,rounded corners](region2) {};
+            % annotate both rectangles
+            \node[above=5pt of region1.north, anchor=center, align=center]{\textcolor{red}{Firma 1, Europa}};
+            \node[above=5pt of region2.north, anchor=center, align=center]{\textcolor{red}{Firma 2, Asien}};
+
+        \end{tikzpicture}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Schichten \& Protokolle}
+    \begin{columns}[t]
+        \begin{column}{.5\textwidth}
+            \textbf{Schichten}
+            \begin{itemize}[<+->]
+                \item Z.B. Anwendungs-, Transport-, Vermittlungs-, Netzzugangsschicht
+                \item Erlauben es, spezialisierte Aufgaben in einzelne Schichten aufzuteilen: Z.B. Übermittlung von Signalen, Sprache-Regeln etc.
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{.5\textwidth}
+            \textbf{Protokolle}
+            \begin{itemize}[<+->]
+                \item Z.B. TCP, IP, etc.
+                \item Definiert Ablauf einer Kommunikation
+                \item Definiert den Aufbau der Datenpakete
+                \item Wird von Computern / Prozessen verwendet
+                \item Gibt es auf jeder Ebene des Schichtenmodells
+                \item Im echten Leben: Begrüssung, \textit{small talk}, etc.
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Schichtenmodell}{Vorteile}
+    \begin{itemize}[<+->]
+        \item \textbf{Modularität}: Aufbau auf bestehenden Schichten
+        \item \textbf{Austauschbarkeit} / Flexibilität
+              \begin{itemize}
+                  \item Übertragung über Kabel, WLAN etc. kann ausgetauscht werden, ohne dass darüberliegende Schichten tangiert werden
+                  \item Analogie: Anstelle von Lastwagen kann Motorrad verwendet werden
+              \end{itemize}
+    \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Schichtenmodell: Übersicht}
+    \Wider[3em]{\begin{center}
+            \begin{table}[h]
+                \centering\tiny
+                \resizebox{\textwidth}{!}{
+                    \begin{tabular}{c|m{1.2cm}||m{1.2cm}||m{3.7cm}|m{1.3cm}|m{1.2cm}}
+                        \textbf{\#}              & \textbf{Schicht (OSI)}                     & \textbf{Schicht \newline (TCP / IP)}    & \textbf{Aufgabe}                                                                                                & \textbf{Informationsform}                 & \textbf{Gerät / \newline Protokoll}   \\ \midrule\midrule
+                        \rowcolor{yellow!10}7    & Anwendung \newline \textit{Application}    &                                         & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                                 & Nachricht                                 & \textbf{HTTP(S)}, FTP, SMTP...        \\
+                        \rowcolor{yellow!20}6    & Darstellung \newline \textit{Presentation} & Anwendung\newline\textit{Application}   & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                                 & JPEG, MPEG, GIF, \textbf{HTML}...     \\
+                        \rowcolor{yellow!30}5    & Sitzung \newline \textit{Session}          &                                         & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.         & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ...           \\
+                        \rowcolor{orange!20}4    & Transport\newline \textit{Transport}       & Transport\newline\textit{Transport}     & Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                    & Segment                                   & Firewall, \textbf{TCP}, UDP, Ports... \\
+                        \rowcolor{RoyalBlue!20}3 & Vermittlung \newline \textit{Network}      & Internet\newline\textit{Internet}       & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet.       & Paket                                     & Router, \textbf{IPv4}, IPv6           \\
+                        \rowcolor{Gray!15}2      & Sicherung \newline \textit{Data Link}      & \multirow{2}{*}{\shortstack{Netzzugriff                                                                                                                                                                                                       \\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}...                            \\
+                        \rowcolor{Gray!25}1      & Bitübertragung \newline \textit{Physical}  &                                         & Herstellung physischer Verbindungen zwischen Geräten.                                                           & Bits                                      & Hub, Repeater, Modem, Kabel...        \\
+                    \end{tabular}}
+                \caption*{Internet-Schichten (\gls{OSI} und \gls{TCP}-\gls{IP}) sowie deren Aufgaben und Protokolle}
+            \end{table}
+        \end{center}}
+
+\end{frame}
+
+\begin{frame}[fragile]{Schichtenmodell}{Video}
+    \begin{figure}[H]
+        \href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Youtube-Video (13')}
+    \end{figure}
+
+    \begin{myexercise}
+        Auftrag:
+        \begin{itemize}
+            \item Notieren Sie sich die genannten \textbf{Schichten}, \textbf{Geräte} und \textbf{Protokolle}
+                  \begin{itemize}
+                      \item Namen (Abkürzung und ganz)
+                      \item Wofür sind sie zuständig?
+                      \item Welche Protokolle gehören zu welchen Schichten?
+                      \item Welche Geräte gehören zu welchen Protokollen / Schichten?
+                  \end{itemize}
+            \item Notieren Sie Ihre \textbf{Fragen}: Welche anderen Begriffe verstehen Sie (noch) nicht?
+        \end{itemize}
+    \end{myexercise}
+\end{frame}
+
+\begin{frame}[fragile]{Gruppenauftrag}
+    \begin{myexercise}
+        \begin{itemize}
+            \item Was ist eine URL?
+            \item Was macht ``Mr. IP''?
+            \item Was macht der Router?
+            \item Was macht die Firewall?
+            \item Was macht der Proxy Server?
+            \item Was macht der ``Ping of Death''? \faSkull
+        \end{itemize}
+        $\rightarrow$ 3-4er-Gruppen, ca. 5'
+    \end{myexercise}
+\end{frame}
+
+
+\setbeamercolor{frametitle}{bg=yellow!20}
+\begin{frame}[fragile]{\faLaptop{} Client vs Server vs Host}{Anwendungsschicht}
+    Definitionen
+    \begin{itemize}[<+->]
+        \item \textbf{Client}
+              \begin{itemize}
+                  \item ``Kunde'' (von en. \textit{client})
+                  \item Computer-Programm, das etwas will
+              \end{itemize}
+        \item \textbf{Server}
+              \begin{itemize}
+                  \item ``Diener'' (von en. \textit{to serve} = bedienen, $\neq$ ``surf'')
+                  \item Computer-Programm, das etwas hat, das andere Computer brauchen
+                  \item Kann Verbindungsanfragen von anderen Computern akzeptieren / ablehnen
+              \end{itemize}
+        \item \textbf{Host}
+              \begin{itemize}
+                  \item = Computer in einem Netzwerk, allgemein für ``server'' oder ``client''
+                  \item \textit{Host name} = Name eines Computers
+              \end{itemize}
+
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\faSafari{} Browser}{Anwendungsschicht}
+    \begin{itemize}
+        \item Browser = Programm, kann eine Datei (meist \texttt{.html})...
+              \begin{itemize}
+                  \item ...über das Internet \textit{anfordern}
+                  \item ...nach dem Empfang \textit{darstellen}
+              \end{itemize}
+        \item Das Senden / Empfangen von Dateien übernimmt das Betriebssystem (z.B. Windows, MacOS)
+        \item Beispiele:
+              \begin{itemize}
+                  \item \faChrome{} Chrome
+                  \item \faFirefox{} Firefox
+                  \item \faSafari{} Safari
+                  \item \faEdge{} Edge
+                  \item  etc.
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{\faSitemap{} URL (Uniform Resource Locator)}{Präsentationsschicht: Webseiten}
+
+    URL = Web-Adresse
+
+    \[
+        \underbrace{\text{http://}}_{\text{Protokoll}}
+        \underbrace{\text{www.}}_{\text{Server}}
+        \underbrace{\text{beispiel.}}_{\text{Domain}}
+        \underbrace{\text{ch}}_{\text{TLD\tikzmark{tld}}}
+        \underbrace{\text{/dokumente/}}_{\text{Ordner}}
+        \underbrace{\text{reglemente.html}}_{\text{Dateiname}}
+    \]
+    \begin{tikzpicture}[overlay, remember picture]
+        \node[below=of tld] (tldFull) {Top Level Domain};
+        \draw[red,-stealth] (tld.north) to[bend right] (tldFull);
+    \end{tikzpicture}
+
+    \begin{itemize}[<+->]
+        \item Erster Teil bezeichnet einen \textit{Server}
+              \begin{itemize}
+                  \item z.B. 58.55.110.9 $\rightarrow$ \texttt{www.beispiel.ch}
+              \end{itemize}
+        \item Alles nach der TLD ist ein normaler Ordnerpfad auf dem Computer
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{\faServer{} HTTP(S)-Protokoll}
+    \begin{figure}[H]
+        \centering
+        \resizebox{\linewidth}{!}{
+            \begin{tikzpicture}[
+                    font=\sffamily,
+                    every node/.style={align=center},
+                    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 3.5cm},
+                    process/.style={-Stealth, thick, draw},
+                    arrowtext/.style={text width=2.5cm, align=center, text=black, font=\footnotesize}
+                ]
+
+                % Nodes for user
+                \node[entity] (userStart) {Eingabe der \acrshort{URL} am Bildschirm};
+                \node[entity, below=of userStart] (userEnd) {Webseite am Bildschirm};
+                % Draw a 2D rectangle around the users
+                \node[fit=(userStart) (userEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](user) {User \\ \faUser};
+
+                % nodes for 
+                \node[entity, right=of userStart] (browserStart) {Übersetzt die URL in einen HTTP-Request};
+                \node[entity, right=of userEnd] (browserEnd) {Sammelt Daten, setzt Website zusammen (rendern)};
+                % Draw a 2D rectangle around the users
+                \node[fit=(browserStart) (browserEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Browser\\ \faLaptop};
+
+                % nodes for server
+                \node[entity, right=of browserStart] (serverStart) {Interpretiert den Request und sucht die Dateien};
+                \node[entity, right=of browserEnd] (serverEnd) {Sendet den Status der Suche und die Daten zur Webseite};
+                % Draw a 2D rectangle around the users
+                \node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
+
+                % Connections
+                \draw[process, Crimson] (userStart.east) -- node[arrowtext, above] {1. URL \\ \texttt{http://\\www.beispiel.ch/\\index.html}} (browserStart.west);
+                \draw[process, Crimson] (browserStart.east) -- node[arrowtext, above] {2. HTTP Request \\ \texttt{GET /index.html}} (serverStart.west);
+                \draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {3. HTTP Response \\ Statuscode + Daten} (browserEnd.east);
+                \draw[process, ForestGreen] (browserEnd.west) -- node[arrowtext, below] {4. Webpage \\ Darstellung der Webseite \texttt{index.html}} (userEnd.east);
+
+            \end{tikzpicture}}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{\faLaptop{} Webseiten}{Präsentationsschicht}
+    Beispiel: HTML (\textit{Hypertext Markup Language})
+    \begin{itemize}[<+->]
+        \item Demo (\textit{Inspect Element} oder \textit{View Page Source})
+        \item Speichert die Struktur einer Webseite
+        \item Kann weitere Dateien enthalten, beispielsweise:
+              \begin{itemize}
+                  \item CSS (Cascading Style Sheet), für die Darstellung (Farbe, Grösse etc.)
+                  \item JavaScript, jQuery etc. für die Interaktivität (Ein- und Ausblenden von Objekten etc.)
+              \end{itemize}
+        \item Wie man eine Webseite baut ist hier nicht das Hauptthema, wird aber in der Interessenwoche vermittelt
+    \end{itemize}
+\end{frame}
+
+\setbeamercolor{frametitle}{bg=orange!20}
+\begin{frame}[fragile]{\faBoxOpen{} TCP (\textit{Transmission Control Protocol}) Header}{Transportschicht}
+    TCP = Übertragungssteuerungsprotokoll
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{>{\raggedright\arraybackslash}p{4cm}|>{\raggedright\arraybackslash}p{4cm}}
+
+            \rowcolor{orange!20}\multicolumn{2}{c}{\textbf{TCP Header}} \\ \midrule
+            Source Port & Destination Port                              \\ \midrule
+            \multicolumn{2}{c}{Sequence \# (SEQ)}                       \\ \midrule
+            \multicolumn{2}{c}{Acknoledgement \# (ACK)}                 \\ \midrule
+            \multicolumn{2}{c}{Weitere TCP-Header-Felder}               \\ \midrule
+            \rowcolor{orange!20}\multicolumn{2}{c}{\textbf{Nutzdaten}}  \\ \midrule
+            \multicolumn{2}{c}{Anwendungsdaten}                         \\
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{\faShip{} Ports}{Transportschicht}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{ccc}
+            \toprule
+            \textbf{Portnummer} & \textbf{Anwendung} & \textbf{Verwendung}             \\
+            \midrule
+            20                  & FTP                & Dateitransfer                   \\
+            21                  & FTP                & Befehlssteuerung                \\
+            22                  & SSH                & Sichere Shell-Zugriffe          \\
+            23                  & Telnet             & Unverschlüsselte Fernsteuerung  \\
+            25                  & SMTP               & E-Mail-Versand                  \\
+            53                  & DNS                & Namensauflösung                 \\
+            80                  & HTTP               & Webseiten-Abruf                 \\
+            110                 & POP3               & E-Mail-Abholung                 \\
+            143                 & IMAP               & E-Mail-Management               \\
+            443                 & HTTPS              & Verschlüsselter Webseiten-Abruf \\
+            993                 & IMAP               & E-Mail-Management über SSL      \\
+            995                 & POP3               & E-Mail-Abholung über SSL        \\
+            \bottomrule
+        \end{tabular}
+        \caption*{Gängige TCP-Ports, Anwendungen und deren Verwendung}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{\faHandshake{} TCP: 3-way handshake}
+    \begin{columns}[c]
+        \begin{column}{.6\textwidth}
+            \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[>=Stealth, font=\sffamily, node distance=2cm and 4cm]
+                    % Draw the entities
+                    \tikzset{c/.append style={fill=RoyalBlue!30,rounded corners,above, align=center, text width=3cm}}
+                    \tikzset{person/.append style={text width=1.2cm,fill=ForestGreen!30,rounded corners,align=center}}
+                    \node[person](Bob) {\tiny \faMale{} Bob\\\texttt{10.0.0.2:21}};
+                    \node[person, right=of Bob] (Alice) {\tiny \faFemale{} Alice\\\texttt{10.0.0.3:21}};
+
+
+
+
+                    % Draw the arrows and labels
+                    \draw[->, thick, red, dashed] (Bob.south) -- node[c] {\tiny Ich möchte mit dir sprechen, Alice, auf Port 21. Bist du offen?\\SYN=1, SEQ\# 10} ([yshift=-1.5cm]Alice.south);
+                    \draw[->, thick, red, dashed] ([yshift=-1.5cm]Alice.south) -- node[c] {\tiny Ok, lass uns reden Bob! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-3cm]Bob.south);
+                    \draw[->, thick, red, dashed] ([yshift=-3cm]Bob.south) -- node[c] {\tiny Ok, danke Alice.\\ACK=1, SEQ\#11} ([yshift=-4.5cm]Alice.south);
+
+                    \node[below of=Bob, yshift=-3.5cm] (BobZeit) {Zeit};
+                    \node[below of=Alice, yshift=-3.5cm] (AliceZeit) {Zeit};
+
+                    % Time line
+                    \draw[->, thick] (Bob.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
+                    \draw[->, thick] (Alice.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+                \end{tikzpicture}
+            \end{figure}
+        \end{column}\vrule{}
+        \begin{column}{.4\textwidth}
+            \footnotesize
+            \begin{enumerate}
+                \item Computer A (\textit{client}, \texttt{10.0.0.2}) erstellt eine Verbindungsanfrage zum Computer B (\textit{server}, \texttt{10.0.0.3}), mittels einem Paket, das nur das \texttt{SYN}-Flaggen gesetzt hat.
+                \item Der Server antwortet sowohl mit einem gesetzten \texttt{SYN} und einem \texttt{ACK}-Flaggen
+                \item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen\\
+                      $\rightarrow$ TCP-Verbindung ist nun erstellt!
+            \end{enumerate}
+
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\setbeamercolor{frametitle}{bg=RoyalBlue!20}
+
+\begin{frame}[fragile]{\faMapMarker{} IP-Adresse}{Vermittlungsschicht}
+
+    \begin{itemize}[<+->]
+        \item Netzwerk-Adresse eines Computers
+        \item Analogie: Wohnadresse einer Person (Strasse \& Stadt)
+        \item Häufig im IPv4-Format: 4 bytes, also 4 Zahlen von 0-255
+        \item Wird meist dezimal angegeben, z.B. 192.168.0.1
+        \item Übung: eigene IPv4-Adresse herausfinden
+              \begin{itemize}
+                  \item MacOS, Terminal (via Spotlight-Suche): \\
+                        \commandbox|ipconfig getifaddr en0|
+                  \item Windows, Programm ``cmd'': \\
+                        \commandbox|ipconfig|
+              \end{itemize}
+        \item Wie viele IPv4-Adressen gibt es?
+              \begin{itemize}
+                  \item $4\cdot 8 \text{ bits} = 32 \text{ bits}$
+                  \item $2^{32} \sim 4 \text{ Milliarden Adressen}$
+                  \item $\rightarrow \text{zu wenig!}$
+              \end{itemize}
+        \item IPv6: 128 bits, fast unendlich viele Adressen
+              \[2^{128} \sim 3.4\cdot 10^{38}\]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\faCompass{} \texttt{ping}}{Vermittlungsschicht}
+
+    \begin{itemize}[<+->]
+        \item Im Terminal / cmd: \commandbox|ping [ip address]|, z.B.:\\
+              \commandbox|ping 159.233.1.22|
+        \item Minimale Nachricht an andere IP schicken
+        \item Ziel: schauen ob eine IP existiert, bzw. erreichbar ist
+        \item \textcolor{red}{\faSkull{} Ping of Death}: Grösstenteils nicht mehr möglich
+              \begin{itemize}
+                  \item Ein zu grosses Datenpaket wurde versendet, das beim Empfang zum Absturz führte
+                  \item Behoben (für Computer ca. $>$ 1998), indem z.B. Paketgrösse vor Zusammensetzen überprüft wird
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{IP-Adressen}{Aufträge (Skript)}
+    \begin{itemize}
+        \item \abgabebox{Aufgabe 2.4}
+        \item \aufgabebox{Aufgaben 2.5, 2.6, 2.7}
+        \item \abgabebox{Aufgabe 2.8  (MyGymer 2.1-2.3)}
+        \item \challengebox{Aufgabe 2.9}
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/subnets}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+    \begin{center}
+        \textbf{Switch} oder \textbf{Router}?!?
+    \end{center}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.38\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/salt}
+        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/sunrise}
+        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/swisscom}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+    \begin{center}
+        \textbf{Switch} oder \textbf{Router}?!?
+    \end{center}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.38\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/salt-back}
+        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/sunrise-back}
+        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/swisscom-back}
+    \end{figure}
+    \only<2->{
+        \begin{center}
+            Beides!
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+    \textbf{Subnetzwerke}
+    \begin{itemize}[<+->]
+        \item Verschiedene Geräte gehören zum gleichen Subnetz, falls Sie
+              \begin{itemize}
+                  \item Physisch miteinander verbunden sind (WLAN, Kabel, etc.)
+                  \item Die gleiche Subnetzmaske teilen (später mehr dazu)
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\faGlobe{} Netzmasken}{Vermittlungsschicht}
+    \textbf{Netzmaske}
+    \begin{itemize}[<+->]
+        \item Sieht ähnlich aus wie eine IP-Adresse: \commandBluebox|xxx.xxx.xxx.xxx|
+        \item Fasst mehrere IPs zu einer Gruppe (= Subnetz) zusammen
+        \item Gibt an, wie viele Stellen einer IP-Adresse gleich sein müssen, damit mehrer Computer zum gleichen (Sub-)Netzwerk gehören.
+        \item \textbf{Beispiel}:
+              \begin{table}[H]
+                  \centering
+                  \tiny
+                  \begin{tabular}{r|l|l}
+                                   & Dezimal                        & Binär                                                                 \\\midrule\midrule
+                      IP 1         & \texttt{159.233.1.22}          & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00010110} \\\midrule
+                      IP 2         & \texttt{159.233.1.1}           & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00000001} \\\midrule
+                      Subnetzmaske & \commandBluebox|255.255.255.0| & \texttt{\textcolor{ForestGreen}{11111111.11111111.11111111}.00000000}
+                  \end{tabular}
+              \end{table}
+              Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, zum selben Netzwerk gehören
+        \item Wird manchmal ``informell'' auch so angegeben: \commandBluebox|159.233.1.x|
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Übung}
+    \begin{table}[H]
+        \centering
+        \footnotesize
+        \begin{tabular}{l|l|l|p{2cm}}
+
+            \textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+
+            213.45.19.89       & 255.255.255.0      & 213.45.17.89     &                                     \\\midrule
+
+            213.45.19.89       & 255.255.0.0        & 213.45.17.89     &                                     \\\midrule
+
+            88.100.11.17       & 255.255.255.0      & 88.100.11.254    &                                     \\\midrule
+
+            88.100.11.17       & 0.0.0.0            & 213.45.19.89     &                                     \\\midrule
+
+            10.0.0.0           & 255.255.255.252    & 10.0.0.1         &                                     \\\midrule
+            1.2.3.0            & 255.255.255.252    & 1.2.3.5          &
+        \end{tabular}
+    \end{table}
+    \begin{itemize}
+        \item $\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen.
+        \item Umrechner dezimal $\rightarrow$ binär: \qrcode[height=1cm]{https://oinf.ch/interactive/ips-und-netzmaske/}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Übung (Lösung)}
+    \begin{table}[H]
+        \centering
+        \footnotesize
+        \begin{tabular}{l|l|l|p{2cm}}
+
+            \textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP}                 & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+
+            213.45.19.89       & 255.255.255.0      & 213.45.\textcolor{red}{17}.89    & Nein                                \\\midrule
+
+            213.45.19.89       & 255.255.0.0        & \textcolor{green}{213.45}.17.89  & Ja                                  \\\midrule
+
+            88.100.11.17       & 255.255.255.0      & \textcolor{green}{88.100}.11.254 & Ja                                  \\\midrule
+
+            88.100.11.17       & 0.0.0.0            & 213.45.19.89                     & Ja (alles \faCheck)                 \\\midrule
+
+            10.0.0.0           & 255.255.255.252    & 10.0.0.1                         & Ja ($252_{10}=11111100_{2}$)        \\\midrule
+            1.2.3.0            & 255.255.255.252    & 1.2.3.5                          & Nein ($252_{10}=11111100_{2}$)
+        \end{tabular}
+    \end{table}
+    \begin{itemize}
+        \item $\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen.
+        \item Umrechner dezimal $\rightarrow$ binär: \qrcode[height=1cm]{https://oinf.ch/interactive/ips-und-netzmaske/}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Aufträge (Skript)}
+    \begin{itemize}
+        \item Subnetzmasken
+              \begin{itemize}
+                  \item \aufgabebox{Aufgaben 2.10 - 2.12}
+              \end{itemize}
+        \item Router
+              \begin{itemize}
+                  \item \abgabebox{Aufgabe 2.14  (MyGymer 2.4-2.6)}
+                  \item \challengebox{Aufgabe 2.13 (Link lesen)}
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Weitere Übungen (Lösung)}
+    \begin{table}[H]
+        \centering
+        \resizebox{\textwidth}{!}{
+            \begin{tabular}{p{1.2cm}||c|c||c|c||c|c|}
+                \textbf{Netzmaske Subnetz} & \multicolumn{2}{c||}{255.255.255.0} & \multicolumn{2}{c||}{255.255.0.0} & \multicolumn{2}{c|}{255.255.255.240}                                        \\
+                \cmidrule{2-7}
+                                           & IP 3.4.5.6                          & IP 3.3.3.3                        & IP 3.4.5.6                           & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 \\
+                \midrule\midrule
+                3.3.3.4                    & Nein                                & Ja                                & Nein                                 & Ja         & Nein       & Ja         \\\midrule
+                4.4.4.3                    & Nein                                & Nein                              & Nein                                 & Nein       & Nein       & Nein       \\\midrule
+                3.4.5.99                   & Ja                                  & Nein                              & Ja                                   & Nein       & Nein       & Nein       \\\midrule
+                3.3.4.4                    & Nein                                & Nein                              & Nein                                 & Ja         & Nein       & Nein       \\\midrule
+                3.4.7.7                    & Nein                                & Ja                                & Ja                                   & Nein       & Nein       & Nein       \\\midrule
+                3.3.3.17                   & Nein                                & Ja                                & Nein                                 & Ja         & Nein       & Nein       \\
+            \end{tabular}}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Webserver}
+    \begin{figure}[H]
+        \centering
+        \resizebox{\linewidth}{!}{
+            \begin{tikzpicture}[
+                    font=\sffamily,
+                    every node/.style={align=center},
+                    entity/.style={rectangle, draw, fill=RoyalBlue, text=white, minimum height=2.5cm, minimum width=3cm, rounded corners, text width=2.3cm, align=center, node distance=1.5cm and 6.5cm},
+                    process/.style={-Stealth, thick, draw},
+                    arrowtext/.style={text width=5.5cm, align=center, text=black, font=\footnotesize}
+                ]
+
+                % nodes for client
+                \node[entity] (clientStart) {Eingabe der \acrshort{URL} am Bildschirm};
+                \node[entity, below=of clientStart] (clientEnd) {Sammelt Daten, setzt Website zusammen (Darstellung)};
+                % Draw a 2D rectangle around the users
+                \node[fit=(clientStart) (clientEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](browser) {Client\\ \faLaptop};
+
+                % nodes for server
+                \node[entity, right=of clientStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
+                \node[entity, right=of clientEnd] (serverEnd) {Sendet den Status der Suche und die Dateien der Webseite};
+                % Draw a 2D rectangle around the users
+                \node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
+
+                % Connections
+                \draw[process, Crimson] (clientStart.east) -- node[arrowtext, above] {\texttt{http://192.168.10.2/index.html}\\(HTTP-Anfrage \texttt{GET /index.html})} (serverStart.west);
+                \draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {HTTP-Antwort \\(Statuscode + Daten)} (clientEnd.east);
+            \end{tikzpicture}
+        }
+        \caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
+        \label{fig:http-request-simple}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Webserver}{Aufträge (Skript)}
+    \begin{itemize}
+        \item \abgabebox{Aufgabe 2.15 (MyGymer 2.7-2.9)}
+        \item \challengebox{Aufgabe 2.16}
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{DNS}
+    DNS = \textit{Domain Name Server}
+    \begin{itemize}
+        \item Wenn Sie auf eine Webseite wie \url{https://sbb.ch} gehen, woher weiss der Client, von welchem Server er die Informationen anfragen soll?
+        \item DNS: URL $\rightleftarrows$ IP-Adresse!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{DNS}
+    \begin{figure}[H]
+        \resizebox{\linewidth}{!}{
+            \begin{tikzpicture}[
+                    base/.style={rectangle, draw, minimum width=2cm, minimum height=1cm, text=white, rounded corners, text width=2.3cm, align=center,inner sep=8pt},
+                    server/.style={base, fill=RoyalBlue},
+                    client/.style={base, fill=ForestGreen},
+                    arrow/.style={-Stealth, thick, rounded corners,text width=4cm,align=center}
+                ]
+
+                % Nodes
+                \node[client] (client) {Client\\\texttt{192.168.0.10}};
+                \node[server, right=4.2cm of client] (dns) {DNS-Server\\\texttt{192.168.2.1}};
+                \node[server, right=4.2cm of dns] (web) {Webserver\\\texttt{192.168.0.11}};
+                \node[text width=3cm, right=0cm of dns] (dnsTable) {\tiny \begin{tabular}{p{1.1cm}|p{1.2cm}}
+                        \textbf{Domain\newline Name} & \textbf{IP-\newline Addresse} \\
+                        \midrule\midrule
+                        \texttt{beispiel.ch}         & 192.168.0.11                  \\
+                        \midrule
+                        \texttt{schule.ch}           & 192.168.0.12                  \\
+                        \midrule
+                        \texttt{test.org}            & 192.168.0.13                  \\
+                        \midrule
+                        \texttt{insta.com}           & 192.168.0.14                  \\
+                        \midrule
+                        \texttt{...}                 & ...                           \\
+                    \end{tabular}};
+
+                % draw box around DNS node and DNS table
+                \node[fit=(dns) (dnsTable), inner sep=4pt, RoyalBlue, dotted, draw, line width=1pt,rounded corners](dnsArea) {};
+
+                % Arrows
+                \draw[arrow] ($(client.east)+(0,0.15)$) -- ($(dns.west)+(0,0.15)$) node[midway, above] {\textbf{1.} \gls{DNS}-Anfrage\\\footnotesize``Wer ist \texttt{beispiel.ch}?''};
+                \draw[arrow] ($(dns.west)-(0,0.15)$) -- ($(client.east)-(0,0.15)$) node[midway, below] {\textbf{2.} \gls{DNS}-Antwort\\\footnotesize``\texttt{192.168.0.11}''};
+                \draw[arrow] (client) -- ++(0,2cm) -- node[above] {\textbf{3.} \gls{HTTP}-Anfrage\\\footnotesize (Webseite wird angefragt)} ++($(web)$) -- (web);
+                \draw[arrow] (web) -- ++(0,-2cm) -- node[below,midway] {\textbf{4.} \gls{HTTP}-Antwort\\\footnotesize (Webseite wird geliefert)} ++($(client)-(web)$) -- (client);
+
+            \end{tikzpicture}}
+        \centering
+        \caption{Schematischer Ablauf einer DNS-Anfrage}
+        \label{fig:dns}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{DNS}{Aufträge (Skript)}
+    \begin{itemize}
+        \item \aufgabebox{Aufgaben 2.17, 2.18}
+        \item \abgabebox{Aufgabe 2.19 (MyGymer 2.10-2.12)}
+    \end{itemize}
+
+    Weitere Aufgaben
+    \begin{itemize}
+        \item \aufgabebox{Aufgabe 2.20}
+        \item \challengebox{Aufgabe 2.21 (MyGymer 2.13)}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Appendix}
+
+\end{frame}
+
+\setbeamercolor{frametitle}{bg=gray!20}
+\begin{frame}[fragile]{\faFingerprint{} MAC-Adresse}{Verbindungsschicht}
+    \begin{itemize}[<+->]
+        \item So etwas wie der ``Fingerabdruck'' eines Computers
+        \item Analogie: Übergabe Brief von einer Hand in die andere
+        \item 48 bit, die normalerweise in hexadezimaler Weise angegeben werden
+        \item Z.B. \commandbox{48-2C-6A-1E-59-3D}
+        \item Jede Netzwerkkarte hat eine MAC-Adresse
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{ARP(\textit{Adress Resolution Protocol})}{Verbindungsschicht}
+    \begin{itemize}[<+->]
+        \item Daten werden zwar mit Ziel-IP versehen, können jedoch nur von MAC zu MAC übergeben werden!
+        \item Muss verwendet werden, um herauszufinden, welche MAC-Adresse zu welcher IP-Adresse gehört.
+        \item Beispiel
+              \begin{itemize}
+                  \item Computer \commandbox|192.168.0.33| will Nachricht senden an \commandbox|192.168.0.34| im selben Subnetz (\commandBluebox|255.255.255.0|)
+                  \item \commandbox|192.168.0.33| sendet daher eine Nachricht an alle Computer in \commandbox|192.168.0.x|: ``Wer hat die IP \commandbox|192.168.0.34|''?
+                  \item Computer \commandbox|192.168.0.34| antwortet: ``Ich! Meine MAC ist \commandbox|60:4E:46:F5:08:09|.''
+                  \item Nun kann der Computer seine Nachricht direkt an den nächsten Empfänger (\textit{gateway}) übergeben.
+              \end{itemize}
+    \end{itemize}
+\end{frame}

@@ -58,7 +58,7 @@ def plot_internet_use_by_income_class():
     pivot = grouped.pivot(index='Year', columns='IncomeGroup', values='InternetUse')
 
     # Plot
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(7, 5))
     ax = plt.gca()
     pivot.plot(ax=ax, marker='o')  # Add dots on the line
 
@@ -66,9 +66,9 @@ def plot_internet_use_by_income_class():
     for income_class in pivot.columns:
         for x, y in zip(pivot.index, pivot[income_class]):
             if pd.notnull(y):
-                ax.annotate(f"{y:.1f}%", (x, y), textcoords="offset points", xytext=(0, 5), ha='center', fontsize=8)
+                ax.annotate(f"{y:.0f}%", (x, y), textcoords="offset points", xytext=(0, 5), ha='center', fontsize=8)
 
-    plt.ylabel('Personen, die das Internet nutzen (% der Bevölkerung)')
+    plt.ylabel('Personen, die das Internet nutzen\n (% der Bevölkerung)')
     plt.xlabel('Jahr')
     plt.grid(True)
     plt.legend(title='Einkommensklasse')
@@ -117,26 +117,31 @@ def plot_world_map_internet_use(year=None):
     merged['InternetUse_binned'] = pd.cut(merged['InternetUse'], bins=bins, include_lowest=True)
 
     # Use a discrete colormap with 10 classes
-    cmap = plt.get_cmap('YlGnBu', 10)
+    cmap = plt.get_cmap('RdYlGn', 10)
     norm = mcolors.BoundaryNorm(bins, ncolors=cmap.N)
-
-    fig, ax = plt.subplots(1, 1, figsize=(15, 8))
-    divider = make_axes_locatable(ax)
-    cax = divider.append_axes('right', size='5%', pad=0.1)
-    merged.plot(column='InternetUse', ax=ax, legend=True, cax=cax,
-                legend_kwds={
-                    'label': '% Zugang zum Internet',
-                    'orientation': 'vertical',
-                    'boundaries': bins,
-                    'ticks': bins,
-                    'fmt': '%.0f'
-                },
+    fig, ax = plt.subplots(1, 1, figsize=(7, 5))
+    # Plot the map
+    merged.plot(column='InternetUse', ax=ax,
+                legend=False,  # We'll add the colorbar below
                 missing_kwds={"color": "lightgrey", "label": "Keine Daten"},
                 cmap=cmap, norm=norm, edgecolor='black', linewidth=0.2)
+
+    # Remove axis and whitespace around the map
     ax.set_axis_off()
-    plt.tight_layout()
+    ax.margins(0)
+    plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+    fig.tight_layout(pad=0)
+    
+    # Create a colorbar axis below the map
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes('bottom', size='5%', pad=0.5)
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+    sm.set_array([])
+    cbar = plt.colorbar(sm, cax=cax, orientation='horizontal', boundaries=bins, ticks=bins, format='%.0f')
+    cbar.set_label('% Zugang zum Internet')
+    plt.tight_layout(pad=0)
     max_year = df_map["Year"].max()
-    plt.savefig(f"Grundlagen_Info/07_Netzwerke/Figures/internet_use_map_{max_year:.0f}.pdf", format='pdf', bbox_inches='tight')
+    plt.savefig(f"Grundlagen_Info/07_Netzwerke/Figures/internet_use_map_{max_year:.0f}.pdf", format='pdf', bbox_inches='tight', pad_inches=0)
 
 if __name__ == "__main__":
     plot_internet_use_by_income_class()
