@@ -187,13 +187,13 @@ beamer_topics=(
     "05_Slides_Game:Grundlagen_Info/06_Datenbanken/Slides/05_Slides_Game"
     "Netzwerke_L00:Grundlagen_Info/07_Netzwerke/Slides/00_Netzwerke_Geschichte"
     "Netzwerke_L01:Grundlagen_Info/07_Netzwerke/Slides/01_Netzwerke_Intro" 
-    "correlation_causation:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/correlation_causation.tex"
-    "linear_regression:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/linear_regression.tex"
-    "markov_chains:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_chains.tex"
-    "markov_appendix:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_appendix.tex"
+    "correlation_causation:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/correlation_causation"
+    "linear_regression:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/linear_regression"
+    "markov_chains:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_chains"
+    "markov_appendix:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_appendix"
 
     # Ergänzungsfach Informatik
-    "complexity:EF/Complexity/complexity.tex"
+    "complexity:EF/Complexity/complexity"
 )
 
 root_dir=$(pwd)
