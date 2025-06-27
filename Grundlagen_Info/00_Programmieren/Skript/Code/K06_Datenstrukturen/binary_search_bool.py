@@ -11,7 +11,7 @@ def binaere_suche(liste, ziel):
 
         if liste[mitte] == ziel:
             gefunden = True
-            print("Mitte gefunden an Position", mitte)
+            print("Ziel Gefunden an Position", mitte)
             break
         elif liste[mitte] < ziel:
             links = mitte + 1

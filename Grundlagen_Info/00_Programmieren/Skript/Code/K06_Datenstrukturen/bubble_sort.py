@@ -1,9 +1,8 @@
 def bubble_sort(liste):
-    n = len(liste)
     i = 0
-    while i < n:
+    for _ in range(len(liste)-1):
         j = 0
-        while j < n - i - 1:
+        for _ in range(len(liste)-1-i):
             if liste[j] > liste[j+1]:
                 temp = liste[j]
                 liste[j] = liste[j+1]
@@ -12,7 +11,5 @@ def bubble_sort(liste):
         i += 1
     print(liste)
 
-# Example usage
 numbers = [64, 34, 25, 12, 22, 11, 90]
-sorted_numbers = bubble_sort(numbers)
-print(sorted_numbers)
+bubble_sort(numbers)

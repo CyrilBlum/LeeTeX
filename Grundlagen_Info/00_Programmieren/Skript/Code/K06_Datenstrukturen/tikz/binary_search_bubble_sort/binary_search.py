@@ -10,7 +10,7 @@ def binaere_suche(liste, ziel):
 
         # Wenn das mittlere Element das gesuchte Ziel ist, gib den Index zurück
         if liste[mitte] == ziel:
-            print("Mitte gefunden an Position", mitte)
+            print("Ziel Gefunden an Position", mitte)
             break
 
         # Wenn das Ziel grösser ist als das mittlere Element,
