@@ -1,4 +1,5 @@
 from copy import deepcopy
+import os
 
 def generate_tikz_figure(data, idx1, idx2, step, exchanged, range=[]):
     tikz_code = "\\begin{tikzpicture}\n"
@@ -20,7 +21,7 @@ def generate_tikz_figure(data, idx1, idx2, step, exchanged, range=[]):
     tikz_code += f"\\end{{tikzpicture}}\\caption{{{caption}}}\n"
     
     #filename = f"step_{step}{'_exchanged' if exchanged else ''}.tex"
-    filename = f"step_{step+1}{'' if exchanged else ''}.tex"
+    filename = os.path.join("./Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/tikz/bubble_sort_steps/", f"step_{step+1}{'' if exchanged else ''}.tex")
     with open(filename, 'w') as f:
         f.write(tikz_code)
         
@@ -32,7 +33,7 @@ def bubble_sort_visualize(arr):
     filenames = []
     
     for i in range(n):
-        for j in range(0, n-1):
+        for j in range(0, n-1-i):
             filenames.append(generate_tikz_figure(arr, j, j+1, step, False, range=[0, n-i-1]))
             step += 1
             
@@ -73,6 +74,7 @@ def generate_tikz_binary_search_to_tex(array, target):
         tikz_code += f"\\node[above] at ({mid}, 0.5) {{\\lstinline|mitte|}};\n"
         tikz_code += f"\\node[above] at ({right}, 0.5) {{\\lstinline|rechts|}};\n"
         
+        filename = os.path.join("./Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/tikz/binary_search_steps/", f"binary_search_step_{step}.tex")
         # Binary search logic
         if array[mid] == target:
             # add checkmark to indicate that number has been found
@@ -80,7 +82,6 @@ def generate_tikz_binary_search_to_tex(array, target):
             tikz_code += "\\end{tikzpicture}\n"
         
             # Save to .tex file
-            filename = f"binary_search_step_{step}.tex"
             with open(f"{filename}", 'w') as file:
                 file.write(tikz_code)
             break
@@ -90,7 +91,6 @@ def generate_tikz_binary_search_to_tex(array, target):
             left_before = deepcopy(left)
             left = mid + 1
             # Save to .tex file
-            filename = f"binary_search_step_{step}.tex"
             with open(f"{filename}", 'w') as file:
                 file.write(tikz_code_before)
 
@@ -104,7 +104,6 @@ def generate_tikz_binary_search_to_tex(array, target):
             # save image before curly brace is added
             tikz_code_before = deepcopy(tikz_code) + "\\end{tikzpicture}\n"
             # Save to .tex file
-            filename = f"binary_search_step_{step}.tex"
             with open(f"{filename}", 'w') as file:
                 file.write(tikz_code_before)
 
@@ -122,7 +121,15 @@ def generate_tikz_binary_search_to_tex(array, target):
         
 
 # Example usage
-array = [1, 2, 3, 5, 7, 8, 9, 11, 15, 17, 20]
-target = 15
+if __name__ == "__main__":
+    # bubble sort example
+    arr = [5, 3, 8, 20, 2, 10]
+    filenames, sorted_arr = bubble_sort_visualize(arr)
+    print("Sorted array:", sorted_arr)    
 
-generate_tikz_binary_search_to_tex(array, target)
+    # binary search example
+    array = [1, 2, 3, 5, 7, 8, 9, 11, 15, 17, 20]
+    target = 15
+
+    generate_tikz_binary_search_to_tex(array, target)  
+
