@@ -2,11 +2,11 @@ def bubble_sort(liste):
     # Initialisiere den äusseren Schleifenzähler
     i = 0
     # Äussere Schleife: Wiederhole den Sortiervorgang n-mal
-    for i in range(len(liste) - 1):
+    for _ in range(len(liste) - 1):
         # Initialisiere den inneren Schleifenzähler
         j = 0
         # Innere Schleife: Vergleiche benachbarte Elemente
-        for j in range(len(liste) - 1 - i):
+        for _ in range(len(liste) - 1 - i):
             # Wenn das aktuelle Element grösser als das nächste ist, tausche sie
             if liste[j] > liste[j+1]:
                 temp = liste[j]  # Temporäre Variable zum Speichern des Werts
