@@ -1,7 +1,7 @@
 from copy import deepcopy
 import os
 
-def generate_tikz_figure(data, idx1, idx2, step, exchanged, range=[]):
+def generate_tikz_figure(data, idx1, idx2, step, step_prog, exchanged, range=[]):
     tikz_code = "\\begin{tikzpicture}\n"
     
     for i, val in enumerate(data):
@@ -17,8 +17,8 @@ def generate_tikz_figure(data, idx1, idx2, step, exchanged, range=[]):
     # add curly brace to highlight part which is not sorted yet
     tikz_code += f"\\draw[decorate,decoration={{brace,mirror,amplitude=10pt}}] ({range[0]-.5},-.5) -- ({range[1]+.5},-.5) node[midway, below=5pt] {{\emoji{{robot}}}};\n"
 
-    caption = f"Schritt {step+1}" if not exchanged else f"Schritt {step+1} (ausgetauscht!)"
-    tikz_code += f"\\end{{tikzpicture}}\\caption{{{caption}}}\n"
+    caption = f"Schritt {step_prog+1}" if not exchanged else f"Schritt {step_prog+1} (ausgetauscht!)"
+    tikz_code += f"\\end{{tikzpicture}}\\caption*{{{caption}}}\n"
     
     #filename = f"step_{step}{'_exchanged' if exchanged else ''}.tex"
     filename = os.path.join("./Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/tikz/bubble_sort_steps/", f"step_{step+1}{'' if exchanged else ''}.tex")
@@ -30,17 +30,21 @@ def generate_tikz_figure(data, idx1, idx2, step, exchanged, range=[]):
 def bubble_sort_visualize(arr):
     n = len(arr)
     step = 0
+    step_prog = 0
     filenames = []
     
     for i in range(n):
         for j in range(0, n-1-i):
-            filenames.append(generate_tikz_figure(arr, j, j+1, step, False, range=[0, n-i-1]))
+            filenames.append(generate_tikz_figure(arr, j, j+1, step, step_prog, False, range=[0, n-i-1]))
             step += 1
             
             if arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
-                filenames.append(generate_tikz_figure(arr, j, j+1, step, True, range=[0, n-i-1]))
+                filenames.append(generate_tikz_figure(arr, j, j+1, step, step_prog,True, range=[0, n-i-1]))
                 step += 1
+            
+            
+            step_prog += 1
                 
     return filenames, arr
 
