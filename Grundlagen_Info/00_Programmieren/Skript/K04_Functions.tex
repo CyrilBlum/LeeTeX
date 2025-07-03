@@ -49,11 +49,13 @@ Die Erstellung der Definitionen einer Funktion ist vergleichbar mit dem Verfasse
 	Das Schreiben von Definitionen hat mehrere Vorteile:
 	\begin{itemize}
 		\item Der Code wird \textbf{modular}: Man kann nun einfachere Funktionen schreiben, wie beispielsweise \lstinline|quadrat()|, und komplexere Funktionen, die Unter-Funktionen aufrufen, wie beispielsweise \lstinline|quadrat_blume()|. Auf diese Weise wird ein komplexer Code in einzelne, einfachere Teile (Module) unterteilt.
-		\item Der Code wird \textbf{übersichtlicher}: jede Teil-Aktivität ist eine Funktion
+		\item Der Code wird \textbf{übersichtlicher}: Jede Teil-Aktivität ist eine Funktion
 		\item Falls das komplexere Programm nicht das gewünschte Resultat liefert, können wir es \textit{debuggen}, indem wir die einfacheren Funktionen zuerst aufrufen und sicherstellen, dass diese richtig funktionieren.
 	\end{itemize}
+\end{myoverview}
 
-	Dass der ursprüngliche Code nun übersichtlicher ist, wird in den folgenden zwei Code-Varianten ersichtlich:
+\begin{myexample}
+		Die folgende Gegenüberstellung illustriert, wie Funktionen dabei helfen, Programme übersichtlicher zu machen und Struktur in den Code zu bringen:
 	\begin{figure}[H] % This makes the whole thing float
 		\centering
 		\begin{minipage}{.4\textwidth}
@@ -102,20 +104,20 @@ t.done()
 		\caption{Vergleich von Schleifen mit Funktionsdefinitionen}
 		\label{fig:code-comparison}
 	\end{figure}
-
-	Für die Übersichtlichkeit des Codes sind folgende Aspekte zu beachten:
+\end{myexample}
+	Tipps für das Schreiben von Funktionen:
 	\begin{itemize}
-		\item Innere Schleifen sollten, wenn immer möglich, vermieden und durch Definitionen ersetzt werden.
-		\item Der Name einer Funktion sollte selbsterklärend und beschreibend sein. Im Idealfall lässt der Name der Funktion schon viel über ihren Effekt erahnen.  %TODO Beispiel
+		\item Der Name einer Funktion sollte selbsterklärend und beschreibend sein. Im Idealfall lässt der Name der Funktion schon viel über ihren Effekt erahnen. Beispielsweise ist der Funktionsname \lstinline|quadrat| viel beschreibender als ein nichtssagender Name wie zum Beispiel \lstinline|f|.
+		\item 
+		Etwas komplexere Tätigkeiten sollten jeweils als eine Funktion definiert werden und damit einen Namen erhalten. So kann beispielsweise das Zeichnen eines Quadrats in einer Funktion \lstinline|quadrat| definiert werden, während das Zeichnen einer Blume in der Funktion \lstinline|quadrat_blume| definiert wird. Diese Funktion kann dann wiederum die Funktion \lstinline|quadrat| aufrufen.
 	\end{itemize}
-\end{myoverview}
 
 \begin{myexercise}
 	Führen Sie den folgenden Code zuerst aus und betrachten Sie das Resultat. Schreiben Sie den Code um, indem Sie zwei Funktionen schreiben:
 
 	\begin{enumerate}
-		\item \lstinline|def viertelkreis()|
-		\item \lstinline|def abgerundetes_quadrat()|
+		\item \lstinline|viertelkreis|
+		\item \lstinline|abgerundetes_quadrat|
 	\end{enumerate}
 
 	\begin{lstlisting}
@@ -222,7 +224,7 @@ quadrat(!\colorbox{HotPink}{1\tikzmark{arrow3From}50}!)
 \end{myexample}
 
 \subsection{Mehrere Parameter}
-Man kann beliebig viele Parameter verwenden in Funktionen. Wichtig dabei ist, diese je durch ein Komma zu trennen.
+Definitionen von Funktionen können auch mehrere (oder sogar gar keine) Parameter haben. Dies ist besonders nützlich, wenn Sie eine Funktion schreiben wollen, die mehrere Werte benötigt, um ihre Aufgabe zu erfüllen. Zum Beispiel könnte eine Funktion, die ein Vieleck zeichnet, sowohl die Anzahl der Ecken als auch die Farbe des Vielecks benötigen.
 
 \begin{myexample}\label{ex:multiple-params}
 In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe eines Vielecks übergeben werden.
@@ -257,17 +259,28 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
 		\item[Körper der Funktion]: \lstinline|print(x * y)|\\
 		      Der Anweisungsblock innerhalb der Funktion. Er definiert, was die Funktion macht.
 	\end{description}
+	Die allgemeine Form einer Funktion in Python sieht also so aus:
+	\begin{lstlisting}
+	# Definition einer Funktion
+	def funktionsname(parameter1, parameter2, ...):
+		# Körper der Funktion
+		...
+	
+
+	# Funktionsaufruf
+	funktionsname(argument1, argument2, ...)
+	\end{lstlisting}
 \end{myoverview}
 
 \begin{myexercise}
-	Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich zur Farbe und der Anzahl Ecken auch noch die \textbf{Stiftdicke} für jedes Vieleck verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie den Befehl \texttt{t.width(...)}.
+	Ändern Sie den Code aus \cref{ex:multiple-params} so ab, dass zusätzlich zur Farbe und der Anzahl Ecken auch noch die \textbf{Stiftdicke} für jedes Vieleck verändert werden kann. Verwenden Sie dazu einen weiteren Parameter sowie die Funktion \lstinline|t.width|.
 \end{myexercise}
 
 \begin{myexercise}
-	Erstellen Sie die folgenden Funktionen:
+	Erstellen Sie die Funktionen mit den folgenden Signaturen:
 	\begin{itemize}
-		\item \lstinline|def summiere(x1, x2)|: Berechnet die Summe zweier Parameter \lstinline|x1| und \lstinline|x2| und gibt das Resultat auf der Konsole aus (mit \lstinline|print|).
-		\item \lstinline|def summe_quadrate(x, y)|: Berechnet die Summe \texttt{x}$^2$ + \texttt{y}$^2$ und gibt diese Summe mit \lstinline{print} auf der Konsole aus.
+		\item \lstinline|def summiere(x1, x2)|: Berechnet die Summe der zwei Parameter \lstinline|x1| und \lstinline|x2| und gibt das Resultat mittels \lstinline|print| auf der Konsole aus.
+		\item \lstinline|def summe_quadrate(x, y)|: Berechnet die Summe \(x^2 + y^2\) und gibt diese mittels \lstinline{print} auf der Konsole aus.
 	\end{itemize}
 	% TODO implement on Moodle
 \end{myexercise}
@@ -275,7 +288,7 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
 \subsection{Lebensdauer (\textit{scope}) einer Variable}
 Im Code aus \cref{ex:params} wird bei \textit{jedem Aufruf} der Definition \lstinline|quadrat| eine neue Variable \texttt{laenge} erstellt, welche nur \textit{innerhalb} der Funktion existiert und welche jedes Mal einen anderen Wert hat. Den Wert erhält die Variable zum Zeitpunkt des \textit{Aufrufs} der Funktion, also auf den Zeilen 8, 9 und 10!
 
-Die Variable \texttt{laenge} existiert also nur innerhalb der Definition \lstinline|quadrat|. Wenn wir nach Zeile 6 im Hauptprogramm (nicht eingerückt) den Befehl \texttt{print(laenge)} eingeben würden, würden wir eine Fehlermeldung erhalten, da es die Variable nicht mehr gibt. Parameter sind also immer \textbf{\textit{lokale} Variablen}, ebenso wie Variablen, welche wir innerhalb von Funktion erstellen. Diese Variablen \enquote{sterben} nach Ausführung der Definition, daher spricht man auch von der Lebensdauer einer Variable, bzw. von deren Reichweite (en. \textit{scope})
+Die Variable \lstinline|laenge| existiert also nur innerhalb der Definition \lstinline|quadrat|. Wenn wir nach Zeile 6 im Hauptprogramm (nicht eingerückt) den Befehl \lstinline|print(laenge)| eingeben würden, würden wir eine Fehlermeldung erhalten, da es die Variable nicht mehr gibt. Parameter sind also immer \textbf{\textit{lokale} Variablen}, ebenso wie Variablen, welche wir innerhalb von Funktion erstellen. Diese Variablen \enquote{sterben} nach Ausführung der Definition, daher spricht man auch von der Lebensdauer einer Variable, bzw. von deren Reichweite (Englisch: \textit{scope})
 
 Variablen, welche im Hauptprogramm (nicht eingerückt) erstellt werden, sind sogenannte \textbf{\textit{globale} Variablen}.
 
@@ -384,13 +397,13 @@ def flaeche_dreieck(h, b):
 \end{myexercise}
 
 \begin{myexercise}\label{ex:quadrat-return}
-	Geben sei eine ganze Zahl \texttt{n}. Schreiben Sie eine Funktion \lstinline|square(n)|, welche das Quadrat von \lstinline|n| berechnet und mit \lstinline|return| zurückgibt.
+	Geben sei eine ganze Zahl \(n\). Schreiben Sie eine Funktion \lstinline|square(n)|, welche das Quadrat von \(n\) berechnet und mit \lstinline|return| zurückgibt.
 
 	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
 	\begin{myanswer}
 		\begin{lstlisting}
 def square(n):
-    return n*n
+    return n * n
 \end{lstlisting}
 	\end{myanswer}
 \end{myexercise}
@@ -401,7 +414,6 @@ def square(n):
 		\lstinline|return|-Ausdrücke ergeben vor allem dann sinn, wenn mit einem Wert, welcher in einer Funktion berechnet wurde, \textit{ausserhalb der Funktion weitergerechnet} werden soll. In allen anderen Fällen reicht ein \lstinline|print| meist aus. Auch bei \cref{ex:quadrat-return} und \cref{ex:dreieck-return} würde ein einfaches \lstinline|print| reichen.
 	\end{myanswer}
 \end{myexercise}
-
 
 
 \subsection{Mehrere Funktionen}
