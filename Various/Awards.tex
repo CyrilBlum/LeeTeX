@@ -1,26 +1,64 @@
+\lstset{style=Python,escapeinside={(*@}{@*)}}
+\fboxsep=.6pt
+
+% Define a toggle for exerciseonly mode (false by default)
+\newtoggle{exerciseonly}
+\settoggle{exerciseonly}{false}
+
+% Check for the class option 'exerciseonly'
+\makeatletter
+\@ifclasswith{book}{exerciseonly}{%
+	\settoggle{exerciseonly}{true}%
+}{}
+\makeatother
+
+% load package if document contains at least one citation
+\usepackage[maxbibnames=99,sorting=none,style=numeric,backend=biber]{biblatex}
+% enable option to print bibliography as a numbered subsection
+\defbibheading{bibsubsection}[\bibname]{%
+  \subsection{#1}%
+}
+\addbibresource{refs.bib}
+
+
+\begin{document}
+%% Project-specific Preambles 
+\settoggle{includelogo}{true}
+
+\newcommand{\thesubject}{Informatik}
+\newcommand{\thetopic}{Programmieren}
+\newcommand{\theplace}{Winterthur}
+\newcommand{\thelogo}{Logos/LeeLogo}
+\newcommand{\logosize}{.5\textwidth}
+
+\settoggle{oneauthor}{true}
+\settoggle{twomainauthors}{false}
+\def\mainauthors{
+	Thomas Graf und Cyril Wendl/cyril.wendl@edu.zh.ch
+}
+\def\majorcontributors{
+	Thomas Graf/thomas.graf@edu.zh.ch
+}
+\def\firstmainauthor{Cyril Wendl}
+\def\firstmainauthormail{cyril.wendl@edu.zh.ch}
+
+\lhead[ \leftmark ]{\thetopic}
+\rhead[\thesubject]{\textcopyleft{} \thesubject, \the\year}
+
+\clearpage
+\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+
 % special case to make "diplomas" using the title page template
 \foreach \person/\platz/\mention in {
 % Livio Adorni/Honorable Mention/,
 % Jonas Billeter/Honorable Mention/,
-Ihr Name/1. Platz/{herausragende },
-% Timo Bloch/1. Platz/{herausragende },
-% Joris Boogman/1. Platz/{herausragendes },
-% Tim Bretscher/Honorable Mention/,
-% Sophie Joy Haltinner/2. Platz/{herausragendes },
-% Julien Hirsiger/Honorable Mention/,
-% Clemens Holzschuster/Honorable Mention/,
-% Carpie Kasongo Basuiye/3. Platz/{herausragendes },
-% Iman Lee/3. Platz/{herausragendes },
-% Vincent Eric Leumann/Honorable Mention/,
-% Nour el Zahra Mostafa/3. Platz/{herausragendes },
-% Lenny Schnetzer/Honorable Mention/,
-% Tom Schnyder/Honorable Mention/,
-% Filippo Straumann/2. Platz/{herausragendes },
-% Yannick Widler/Honorable Mention/,
-Daniil Domashenko/Honorable Mention/}{
-% \def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+Lars Bärlocher/3. Platz/{herausragendes },
+Lars Konrad Gondorf/2. Platz/{herausragendes },
+Leon Kläui/3. Platz/{herausragendes },
+Yichen Liu/2. Platz/{herausragendes },
+Laurin Ott/2. Platz/{herausragendes },
+Dario Roni Parmaksiz/1. Platz/{herausragendes },
+Tiaan Penzhorn/1. Platz/{herausragendes }}{
 \maketitlepage{\textbf{\platz\\[.3cm]\person}}{Informatik-Interessenwoche zum Thema Web-Technologien\\[.3cm]Für ein \mention Projekt mit HTML, CSS und JS}
-% }
-\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
-\maketitlepage{\textbf{\platz\\[.3cm]\person}}{Diplom für eine \mention\\[.3cm] Präsentation zu Informatik \& Gesellschaft}
 }
+\end{document}
