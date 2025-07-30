@@ -15,4 +15,4 @@ p1 = Produkt("Laptop", 1200)
 p2 = Produkt("Smartphone", 800)
 p3 = Produkt("Maus", 30)
 
-print(f"Anzahl Produkte: {Produkt.get_anzahl_produkte()}")  # Anzahl Produkte: 3
+print("Anzahl Produkte:", Produkt.get_anzahl_produkte())  # Anzahl Produkte: 3
