@@ -11,7 +11,34 @@ Betrachte die wunderschöne Illustration eines Teils der Mandelbrotmenge in \cre
 	\caption{Mandelbrotmenge in 16k Auflösung}
 	\label{fig:mandelbrot_16k}
 \end{figure}
-Wird die Illustration in \cref{fig:mandelbrot_16k} Pixel für Pixel abgespeichert, benötigt die PNG-Kompression dieser Illustration rund $100$ Millionen Bits an Speicherplatz, um die Illustration zu beschreiben. Nun kann aber ein recht kurzes Computerprogramm (siehe \cref{listing:mandelbrot}) diese $100$ Millionen Bits reproduzieren, indem es von der Definition der Mandelbrotmenge gebrauch macht. Dieses (kurze) Computerprogramm ist also eine deutlich kürzere Beschreibung der Illustration als die Angabe jedes Pixels. Für die Reprodukton dieser $100$ Bits benötigt unser Computerprogramm zahlreiche Rechenoperationen und viel Rechenzeit. Dies ändert aber nichts daran, dass das Programm eine kurze Beschreibung dieser Illustration der Mandelbrotmenge ist.
+Wird die Illustration in \cref{fig:mandelbrot_16k} Pixel für Pixel abgespeichert, benötigt die PNG-Kompression dieser Illustration rund $100$ Millionen Bits an Speicherplatz, um die Illustration zu beschreiben. Nun kann aber ein recht kurzes Computerprogramm (siehe \cref{listing:mandelbrot}) diese $100$ Millionen Bits reproduzieren, indem es von der Definition der Mandelbrotmenge Gebrauch macht. Dieses (kurze) Computerprogramm ist also eine deutlich kürzere Beschreibung der Illustration als die Angabe jedes Pixels. Für die Reproduktion dieser $100$ Bits benötigt unser Computerprogramm zahlreiche Rechenoperationen und viel Rechenzeit. Dies ändert aber nichts daran, dass das Programm eine kurze Beschreibung dieser Illustration der Mandelbrotmenge ist.
+
+\begin{myexercise}
+		Betrachte die folgenden zwei Bilder. \cref{fig:fig1} zeigt ein Muster, erzeugt durch zahlreiche Kreise und \cref{fig:fig2} zeigt zufälliges Rauschen (white noise).
+
+	\begin{figure}[H]
+		\centering
+		\begin{minipage}[b]{0.45\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{EF/Kolmogorov/circles.pdf}
+			\caption{Kreise}
+			\label{fig:fig1}
+		\end{minipage}
+		\hspace{0.05\textwidth}
+		\begin{minipage}[b]{0.45\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{EF/Kolmogorov/white_noise.pdf}
+			\caption{Rauschen}
+			\label{fig:fig2}
+		\end{minipage}
+	\end{figure}
+
+	Welches dieser beiden Bilder hat vermutlich eine höhere Komplexität im Sinne von Kolmogorov? Begründe deine Antwort.
+\begin{myanswer}
+	Das Bild mit dem zufälligen Rauschen (\cref{fig:fig2}) hat eine deutlich höhere Kolmogorov-Komplexität als das Bild mit den Kreisen (\cref{fig:fig1}).
+	Das Muster der Kreise in \cref{fig:fig1} ist sehr regelmässig und kann durch ein kurzes Computerprogramm beschrieben werden, das in einer Schleife Kreise an bestimmten Positionen zeichnet (wir erinnern uns an die Python-Turtle). Das zufällige Rauschen in \cref{fig:fig2} hingegen weist keine erkennbare Struktur oder Regelmässigkeit auf. Das kürzeste Programm, das dieses spezifische Rauschbild erzeugt, muss wahrscheinlich die Farbinformation (weiss / schwarz) für jedes einzelne Pixel speichern. Die Beschreibung wäre also in etwa so gross wie das Bild selbst und damit viel länger als das Programm für das Kreismuster.
+\end{myanswer}
+\end{myexercise}
 
 \begin{myremark}
 	In diesem Kapitel fassen wir Wörter (Texte) als Träger von Information auf. Obwohl das Konzept der Kolmogorov-Komplexität auf beliebige Objekte anwendbar ist, werden wir uns hier der Einfachheit halber nur mit binären Wörtern befassen.
@@ -52,10 +79,22 @@ Komprimierung von $w$.
 		\item Mit welcher Wahrscheinlichkeit wirst Du das Wort $010010110$ ziehen?
 		\item Mit welcher Wahrscheinlichkeit wirst Du das Wort $111111111$ ziehen?
 	\end{enumerate}
+	\begin{myanswer}
+		Die Menge $S$ enthält genau $2^9 = 512$ verschiedene binäre Wörter der Länge $9$.
+		\begin{enumerate}
+			\item Die Wahrscheinlichkeit, das Wort $010010110$ zu ziehen, ist $\frac{1}{512}$.
+			\item Die Wahrscheinlichkeit, das Wort $111111111$ zu ziehen, ist ebenfalls $\frac{1}{512}$.
+		\end{enumerate}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
 	Intuitiv sollte \textit{zufällig} bedeuten: \enquote{nach keinem klaren Plan gebaut}. Ein zufälliges Objekt weist also eine chaotische (und keine regelmässige) Struktur auf. Vergleiche mit \cref{myexercise:wahrscheinlichkeit} und argumentiere, warum die klassische Wahrscheinlichkeitsrechnung diese Intuition nicht einfängt.
+\begin{myanswer}
+	Wie in \cref{myexercise:wahrscheinlichkeit} gesehen, ist aus Sicht der klassischen Wahrscheinlichkeitstheorie jedes binäre Wort der Länge $9$ gleich wahrscheinlich. Die klassische Wahrscheinlichkeitstheorie macht also keine Aussage über die Zufälligkeit eines einzelnen Wortes, sondern nur über die Wahrscheinlichkeit, mit der ein Wort aus einer Menge von Wörtern gezogen wird.
+	
+	Obwohl das Wort $111111111$ sehr regelmässig und das Wort $010010110$ sehr unregelmässig erscheint, sind beide aus Sicht der klassischen Wahrscheinlichkeitstheorie gleich wahrscheinlich. Die klassische Wahrscheinlichkeitstheorie kann also nicht zwischen der Zufälligkeit einzelner Objekte unterscheiden. Genau diese Lücke wird durch die Kolmogorov-Komplexität geschlossen.
+\end{myanswer}
 \end{myexercise}
 
 
@@ -178,7 +217,10 @@ Man könnte sich denken, dass die Wahl einer festen Programmiersprache wiederum 
 			\item Es sei $B_w$ ein Programm in Sprache $B$, welches $w$ generiert. Dann können wir $B_w$ dem Programm $T_{B\to A}$ als Parameter übergeben. Dann ist $T_{B\to A}\lr{B_w}$ ein Programm, in Sprache $A$, welches $w$ generiert.
 			      Wir bezeichnen die binäre Länge des Programms $T_{B\to A}$ mit $c_{B\to A}$. Somit gilt $K_A(w) \leq K_B(w) + c_{B\to A}$.
 			\item Analog (von $A$ zu $B$) finden wir $K_B(w) \leq K_A(w) + c_{A\to B}$.
-			\item Der Unterschied $\abs{K_A(w) - K_B(w)}$ ist also nicht grösser als $c_{A, B} := \max\lrc{c_{A\to B}, c_{B\to A}}$.
+			\item Der Unterschied $\abs{K_A(w) - K_B(w)}$ ist also nicht grösser als
+			\begin{align*}
+				c_{A, B} := \max\lrc{c_{A\to B}, c_{B\to A}}.	
+			\end{align*}
 		\end{itemize}
 	\end{myproof}
 \end{mytheorem}
@@ -350,7 +392,7 @@ void seeking_alpha_n() {
     x = leeres Wort;
     k = Q(x);
     while (k < ***n+++) {
-        x = Nachfolger von x in der kanonischen Ordnung über{0, 1}^*;
+        x = Nachfolger von x in der kanonischen Ordnung über {0, 1}^*;
     }
     std::cout << x << std::endl;
 }
