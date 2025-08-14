@@ -503,3 +503,99 @@ print(lager)
 		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/dict_hauptstaedte.py}
 	\end{myanswer}
 \end{myexercise}
+
+
+\clearpage
+\section{Weitere Aufgaben}
+\subsection{Level 1}
+\subsection{Level 2}
+\subsection{Level 3}
+\begin{myexercise}\label{myexercise:kaufpreis_haus}
+Sie wollen ein Haus in der Schweiz kaufen. Der Kaufpreis beträgt $k$ Franken. Sie kaufen das Haus mit $E$ Franken Ihres gesparten Geldes (Eigenkapital) und der Restbetrag wird durch die Aufnahme einer Hypothek von $h := k - E$ Franken gedeckt. Wir gehen im Folgenden davon aus, dass Ihr Eigenkapital kleiner ist als der Kaufpreis, also $E < k$.
+
+Die Tragbarkeitsrechnung in der Schweiz prüft, ob die Kosten einer Immobilie langfristig finaziell tragbar (bezahlbar) sind. Banken und andere Kreditinstitute verwenden diese Berechnung, um sicherzustellen, dass Sie Ihre Hypothek auch dann noch bezahlen können, wenn die Zinsen steigen. Als Faustregel gilt, dass die jährlichen (kalkulatorischen\footnote{Der Begriff \textit{Kalkulatorisch} bedeutet in diesem Zusammenhang, dass dieser Betrag nach bestimmten Vorgaben berechnet wird und überhaupt nicht den tatsächlichen Kosten entsprechen muss.}) Wohnkosten nicht mehr als $1 / 3$ Ihres \textcolor{ForestGreen}{Brutto-Jahreseinkommens} ($b$) ausmachen dürfen.
+
+Die kalkulatorischen jährlichen Wohnkosten setzten sich als die Summe der folgenden drei Positionen zusammen:
+\begin{itemize}
+	\item \textcolor{NavyBlue}{Kalkulatorischer Zins}: $5$ Prozent des Hypothekenbetrags $h$, also $5$ von $k - E$
+	\item \textcolor{Magenta}{Nebenkosten}: $1$ Prozent des Kaufpreises $k$
+	\item \textcolor{Red}{Amortisation}: Falls die aufgenommene Hypothek grösser als $2/3$ des Kaufpreises $k$ ist, muss der darüberliegende Betrag $h - (2 / 3) k$ nach $15$ Jahren zurückbezahlt sein. Die Bank rechnet also hierführ mit jährlichen Kosten $a$ für die Amortisation von
+	\begin{align*}
+		a := \frac{h - (2 / 3) k}{15} = \frac{(k - E) - (2 / 3) k}{15} 
+	\end{align*}
+	und mit $a := 0$, falls die Hypothek $2 / 3$ des Kaufpreises nicht übersteigt.
+\end{itemize}
+Zusammengefasst muss also die Ungleichung
+\begin{align*}
+	\frac{\text{\textcolor{ForestGreen}{Brutto-Jahreseinkommen}}}{3} \geq \text{\textcolor{NavyBlue}{Kalkulatorischer Zins}} + \text{\textcolor{Magenta}{Nebenkosten}} + \text{\textcolor{Red}{Amortisation}}
+\end{align*}
+oder anderst geschrieben
+\begin{align*}
+	b / 3 \geq 0.05(k - E) + 0.01k + \max\lrc{0, (k/3 - E) / 15}.
+\end{align*}
+Nun gibt es für den Kaufpreis $k$ noch eine weitere Zusatzbedingung: Der Kaufpreis darf nicht höher sein als das Fünffache des Eigenkapitals.
+
+Schreiben Sie eine Funktion \lstinline|max_kaufpreis(E, b)|, welche für gegebenes Eigenkapital $E$ und gegebenes Brutto-Jahreseinkommen $b$ den maximal tragbaren Kaufpreis $k$ errechnet. Die Funktion soll eine Liste \lstinline|[k, k - E]| mit \lstinline|return| zurück geben.
+
+\textbf{Zusatzaufgabe}: Geben Sie eine Formel für das maximal tragbare $k$ in Excel an, falls $E$ in \texttt{A1} gespeichert ist und $b$ in \texttt{A2}.
+\begin{myanswer}
+	Diese Musterlösung finden Sie in \cref{sec:K06_sol}.
+\end{myanswer}
+\end{myexercise}
+
+
+\iftoggle{exerciseonly}{}{%
+	\clearpage
+
+	\section{Längere Lösungen}\label{sec:K06_sol}
+
+	\begin{myanswer}[myexercise:kaufpreis_haus]
+		Wir ignorieren zunächst die Bedingung $k \leq 5E$ und betrachten die Ungleichung
+		\begin{align*}
+			b / 3 \geq 0.05(k - E) + 0.01k + \max\lrc{0, (k/3 - E) / 15}.
+		\end{align*}
+		Dabei unterscheiden wir zwei Fälle:
+		{\small
+		\begin{description}
+			\item[Fall $k \leq 3E$ (keine Amortisationspflicht):] In diesem Fall ist $\max\lrc{0, -E + k/3} = 0$. Die Ungleichung vereinfacht sich in diesem Fall zu
+\begin{align*}
+	b / 3 &\ge 0.05(k - E) + 0.01k \\
+    b &\ge 3 \cdot \lr{0.05k - 0.05E + 0.01k} \\
+    b &\ge 3 \cdot \lr{0.06k - 0.05E} \\
+    b &\ge 0.18k - 0.15E \\
+    b + 0.15E &\ge 0.18k \\
+    \frac{b + 0.15E}{0.18} &\ge k \\
+    k &\le \frac{b + 0.15E}{0.18} \\
+    k &\le \frac{100b + 15E}{18} =: k_0
+\end{align*}
+\item[Fall $k > 3E$ (Amortisationspflicht):] In diesem Fall ist $\max\lrc{0, -E + k/3} = -E + k/3$. Die Ungleichung vereinfacht sich in diesem Fall zu
+\begin{align*}
+	b / 3 &\ge 0.05(k - E) + 0.01k + (k/3 - E) / 15 \\
+    b &\ge 3 \cdot \lr{0.05(k - E) + 0.01k + \frac{-E + k/3}{15}} \\
+    b &\ge 3 \cdot \lr{0.05k - 0.05E + 0.01k - \frac{E}{15} + \frac{k}{45}} \\
+    b &\ge 3 \cdot \lr{k \cdot \lr{0.06 + \frac{1}{45}} - E \cdot \lr{0.05 + \frac{1}{15}}} \\
+    b &\ge 3 \cdot \lr{k \cdot \lr{\frac{3}{50} + \frac{1}{45}} - E \cdot \lr{\frac{1}{20} + \frac{1}{15}}} \\
+    b &\ge 3 \cdot \lr{k \cdot \lr{\frac{27+10}{450}} - E \cdot \lr{\frac{3+4}{60}}} \\
+    b &\ge 3 \cdot \lr{k \cdot \frac{37}{450} - E \cdot \frac{7}{60}} \\
+    b &\ge k \cdot \frac{111}{450} - E \cdot \frac{21}{60} \\
+    b &\ge k \cdot \frac{37}{150} - E \cdot \frac{7}{20} \\
+    b + \frac{7}{20}E &\ge k \cdot \frac{37}{150} \\
+    \frac{b + \frac{7}{20}E}{\frac{37}{150}} &\ge k \\
+    k &\le \frac{150}{37} \cdot \lr{b + \frac{7}{20}E} \\
+    k &\le \frac{150b}{37} + \frac{1050E}{740} \\
+    k &\le \frac{150b}{37} + \frac{105E}{74} =: k_1
+\end{align*}
+		\end{description}
+		}
+	Damit $k$ die ursprüngliche Ungleichung in \cref{myexercise:kaufpreis_haus} erfüllt, muss $k$ kleiner oder gleich dem kleineren der beiden Beträge $k_0$ oder $k_1$ sein. Also finden wir unter der Berücksichtigung der bislang ignorierten Bedingung $k \leq 5E$ insgesamt
+	\begin{align*}
+		k := \min\lrc{\min\lrc{k_0, k_1}, 5E}.
+	\end{align*}
+	Die Python-Funktion ist schliesslich gegeben durch
+	\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/max_kaufpreis.py}
+	
+	\textbf{Lösung der Zusatzaufgabe (Excel-Formel):}
+	
+	\lstinline{MIN(MIN((100 * A2 + 15 * A1) / 18, 150 * A2 / 37 + 105 * A1 / 74), 5 * A1)}
+	\end{myanswer}
+}
