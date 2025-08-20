@@ -104,8 +104,10 @@ book_topics=(
     "Endliche_Automaten:EF/Endliche_Automaten/skript_EA.tex"
     "Induktion_und_Rekursion:EF/Induktion_und_Rekursion/skript_induktion_rekursion.tex"
     "Randomisierte_Algorithmen:Grundlagen_Info/01_TheoretischeInformatik/Randomisierte_Algorithmen/Skript/Skript.tex"
-    "Kolmogorov-Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
-
+    "Kolmogorov_Komplexitaet:EF/Kolmogorov/skript_kolmogorov.tex"
+    "Physikalische_Simulation:EF/physikalische_simulation/skript_physikalische_simulation.tex"
+    "LaTeX:EF/LaTeX/skript_latex.tex"
+    
     # Geographie
     "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
     "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
