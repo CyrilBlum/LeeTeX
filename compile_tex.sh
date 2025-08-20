@@ -193,8 +193,10 @@ beamer_topics=(
     "markov_chains:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_chains"
     "markov_appendix:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_appendix"
 
-    # Ergänzungsfach Informatik
+    # Ergänzungsfach Informatik #
     "complexity:EF/Complexity/complexity"
+    # LaTeX
+    "LaTeX:EF/LaTeX/Slides/Slides_0"
 )
 
 root_dir=$(pwd)
