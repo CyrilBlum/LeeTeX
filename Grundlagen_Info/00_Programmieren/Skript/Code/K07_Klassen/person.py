@@ -3,12 +3,13 @@ class Person:
         self.name = name
         self.alter = alter
     
+    def vorstellen(self):
+        print(f"Hallo, ich bin {self.name} und {self.alter} Jahre alt.")
+        
     def geburtstag_feiern(self):
         self.alter += 1
         print(f"{self.name} ist jetzt {self.alter} Jahre alt.")
     
-    def vorstellen(self):
-        print(f"Hallo, ich bin {self.name} und {self.alter} Jahre alt.")
 
 # Objekte der Klasse Person erstellen
 anna = Person("Anna", 16)

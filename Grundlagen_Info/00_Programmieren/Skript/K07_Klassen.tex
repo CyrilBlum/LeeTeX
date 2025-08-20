@@ -14,6 +14,153 @@ Eine \textbf{Klasse} ist eine Vorlage für Objekte (Variablen), die Daten (Attri
 \end{enumerate}
 \end{mydefinition}
 
+Objekte werden in Games ständig verwendet, beispielsweise um Spieler, Gegner, Tiere, Wolken oder andere Elemente zu \enquote{spawnen}, also um diese mit zufälligen Variationen zu erzeugen. Die Grundidee von Klassen ist in \cref{fig:klassen-in-python} dargestellt. Eine Klasse ist wie ein Bauplan, der die Struktur und das Verhalten von Objekten definiert. Objekte sind konkrete Instanzen dieser Klasse, die auf Basis des Bauplans erstellt werden.
+
+\begin{figure}[H]
+	\begin{tikzpicture}[font=\sffamily]
+	% Styles
+	\tikzset{
+		title/.style={font=\large},
+		col/.style={align=left, text width=4.5cm, font=\small}
+	}
+
+	% --- Links: Klasse Hund (Bauplan) ---
+	\node[inner sep=0pt] (dogclass) at (1.8,2.6)
+	{\includegraphics[width=3.5cm]{Grundlagen_Info/00_Programmieren/Skript/Figures/dog-class.pdf}};
+	% --- Rechts: mehrere Instanzen gestapelt ---
+	% Basisinstanz
+	\node[inner sep=0pt] (dog1) at (10.0,2.6)
+	{\includegraphics[width=3.5cm]{Grundlagen_Info/00_Programmieren/Skript/Figures/dog-instance1.pdf}};
+	% Überlagerungen leicht verschoben
+	\node[inner sep=0pt, anchor=south west] at ($(dog1.south west)+(0.3,0.3)$)
+	{\includegraphics[width=3.5cm]{Grundlagen_Info/00_Programmieren/Skript/Figures/dog-instance2.pdf}};
+	\node[inner sep=0pt, anchor=south west] at ($(dog1.south west)+(0.6,0.6)$)
+	{\includegraphics[width=3.5cm]{Grundlagen_Info/00_Programmieren/Skript/Figures/dog-instance3.pdf}};
+
+	\node[title, above=0.5cm of dogclass] {Klasse};
+	\node[align=center,text width=4.5cm, font=\small, below=0.2cm of dogclass] {\lstinline|class Hund:|};
+	\node[title, above=0.5cm of dog1] {Objekte / Instanzen};
+	\node[align=center, text width=6.5cm, font=\small, below=0.2cm of dog1] {\begin{lstlisting}
+	hund1 = Hund("Thommy", 510, "Grün")
+	hund2 = Hund("Bello", 380, "Grün")
+	hund3 = Hund("Rocky", 315, "Rot")
+	# ...
+	\end{lstlisting}};
+
+	% Pfeil
+	\draw[-Latex, thick] (dogclass.east) -- node[above]{Instanz(en) erzeugen} (dog1.west);
+
+	% Linke Spalten
+	\node[anchor=west, col] at (-2.0,-3) {\textbf{Attribute}\\
+		\texttt{Name}\\
+		\texttt{Farbe}\\
+		\texttt{Augenfarbe}\\
+		\texttt{Größe}\\
+		\texttt{Länge}\\
+		...};
+
+	\node[anchor=west, col] at (2.4,-3) {\textbf{Methoden}\\
+		\texttt{machGassi()}\\
+		\texttt{belleLaut()}\\
+		\texttt{geheVorwaerts()}\\
+		\texttt{istKastriert()}\\
+		\texttt{kommHer()}\\
+		...};
+
+	% Rechte Spalten
+	\node[anchor=west, col] at (6.2,-3) {\textbf{Attribute}\\
+		\texttt{Name : Tommy}\\
+		\texttt{Farbe : Grün}\\
+		\texttt{Augenfarbe : Braun}\\
+		\texttt{Größe : 43cm}\\
+		\texttt{Länge : 89cm}\\
+		...};
+
+	\node[anchor=west, col] at (11.9,-3) {\textbf{Methoden}\\
+		\texttt{machGassi()}\\
+		\texttt{belleLaut()}\\
+		\texttt{geheVorwaert()}\\
+		\texttt{istKastriert()}\\
+		\texttt{kommHer()}\\
+		...};
+
+\end{tikzpicture}
+\caption{Illustration von Klassen und Instanzen in Python. Klassen (links) besitzen Eigenschaften und Methoden, welche für jede Instanz (rechts) aufgerufen werden können.}
+\label{fig:klassen-in-python}
+\end{figure}
+
+Im Grunde genommen kennen wir Klassen in Python bereits: so erstellen wir beispielsweise jedes Mal eine Instanz der Klasse \lstinline|list|, wenn wir eine Variable des Typs Liste erstellen (s. \cref{fig:listen-in-python}).
+\begin{figure}[H]
+	\begin{tikzpicture}[font=\sffamily]
+	% Styles
+	\tikzset{
+		title/.style={font=\large},
+		col/.style={align=left, text width=4.5cm, font=\small}
+	}
+
+	% --- Links: Klasse Liste (Bauplan) ---
+	% --- Links: Klasse Liste (Bauplan) ---
+	% Draw dashed circle
+	\draw[dashed, thick] (1.8,2.6) circle [radius=0.5cm];
+	% Icon node inside circle
+	\node[inner sep=0pt] (listclass) at (1.8,2.6)
+		{\faListUl}; % FontAwesome list icon for class
+
+	% --- Rechts: mehrere Instanzen als Icons ---
+	\node[inner sep=0pt] (list1) at (10.0,2.4)
+		{\textcolor{Crimson}{\faListUl}}; % FontAwesome square icon for instance
+	\node[inner sep=0pt] at (10.5,2.6)
+		{\textcolor{RoyalBlue}{\faListUl}};
+	\node[inner sep=0pt] at (11,2.8)
+		{\textcolor{ForestGreen}{\faListUl}};
+
+	\node[title, above=0.7cm of listclass] {Klasse};
+	\node[align=center,text width=4.5cm, font=\small, below=0.4cm of listclass] {\lstinline|class list:|};
+	\node[title, above=0.7cm of list1] {Objekte / Instanzen};
+	\node[align=center,text width=5.5cm, font=\small, below=0.4cm of list1] {\begin{lstlisting}
+	liste1 = [1,2,3]
+	liste2 = ["a","b"]
+	liste3 = [True, False]
+	# ...
+	\end{lstlisting}};
+
+	% Pfeil
+	\draw[-Latex, thick] (2.2,2.6) -- node[above]{Instanz(en) erzeugen} (9.6, 2.6);
+
+	% Linke Spalten
+	\node[anchor=west, col] at (-2.0,-2) {\textbf{Attribute}\\
+		\texttt{Elemente}\\
+		\texttt{Länge}\\
+		...};
+
+	\node[anchor=west, col] at (2.4,-2) {\textbf{Methoden}\\
+		\texttt{append()}\\
+		\texttt{remove()}\\
+		\texttt{sort()}\\
+		\texttt{pop()}\\
+		\texttt{count()}\\
+		...};
+
+	% Rechte Spalten
+	\node[anchor=west, col] at (6.2,-2) {\textbf{Attribute}\\
+		\texttt{Elemente : [1,2,3]}\\
+		\texttt{Länge : 3}\\
+		...};
+
+	\node[anchor=west, col] at (11.9,-2) {\textbf{Methoden}\\
+		\texttt{append()}\\
+		\texttt{remove()}\\
+		\texttt{sort()}\\
+		\texttt{pop()}\\
+		\texttt{count()}\\
+		...};
+
+\end{tikzpicture}
+\caption{Illustration von Klassen und Instanzen für Listen in Python. Die Klasse \texttt{list} definiert die Struktur und Methoden, während konkrete Listen-Objekte individuelle Inhalte besitzen.}
+\label{fig:listen-in-python}
+\end{figure}
+
+
 \begin{myexample}[Klassen definieren]
 Eine Klasse wird mit dem Schlüsselwort \lstinline|class| definiert. Im folgenden Beispiel erstellen wir eine Klasse \lstinline|Person| mit den Attributen \lstinline|name| und \lstinline|alter| sowie einer Methode \lstinline|geburtstag_feiern|.
 

@@ -151,6 +151,7 @@ beamer_topics=(
     "K06cBinarySearch:Grundlagen_Info/00_Programmieren/Slides/K06cBinarySearch"
     "K06dListenTeil2:Grundlagen_Info/00_Programmieren/Slides/K06dListenTeil2"
     "K06dListenTeil2:Grundlagen_Info/00_Programmieren/Slides/K06eDictionaries"
+    "K07Klassen:Grundlagen_Info/00_Programmieren/Slides/K07Klassen"
     "TurtleGrafik:Grundlagen_Info/00_Programmieren/Slides/TurtleGrafik"
     "Zahlensysteme_L01:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L01"
     "Zahlensysteme_L02:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L02"
