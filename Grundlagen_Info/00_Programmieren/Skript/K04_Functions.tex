@@ -576,11 +576,11 @@ def notenskala(maxPunkte, erreichtePunkte):
 \begin{myexercise}\label{myexercise:kaufpreis_haus}
 Sie wollen ein Haus in der Schweiz kaufen. Der Kaufpreis beträgt $k$ Franken. Sie kaufen das Haus mit $E$ Franken Ihres gesparten Geldes (Eigenkapital) und der Restbetrag wird durch die Aufnahme einer Hypothek von $h := k - E$ Franken gedeckt. 
 
-Die Tragbarkeitsrechnung in der Schweiz prüft, ob die Kosten einer Immobilie langfristig finaziell tragbar (bezahlbar) sind. Banken und andere Kreditinstitute verwenden diese Berechnung, um sicherzustellen, dass Sie Ihre Hypothek auch dann noch bezahlen können, wenn die Zinsen steigen. Als Faustregel gilt, dass die jährlichen (kalkulatorischen\footnote{Der Begriff \textit{Kalkulatorisch} bedeutet in diesem Zusammenhang, dass dieser Betrag nach bestimmten Vorgaben berechnet wird und überhaupt nicht den tatsächlichen Kosten entsprechen muss.}) Wohnkosten nicht mehr als $1 / 3$ Ihres \textcolor{ForestGreen}{Brutto-Jahreseinkommens} ($b$) ausmachen dürfen.
+Die Tragbarkeitsrechnung in der Schweiz prüft, ob die Kosten einer Immobilie langfristig finaziell tragbar (bezahlbar) sind. Banken und andere Kreditinstitute verwenden diese (sehr grobe) Berechnung, um sicherzustellen, dass Sie Ihre Hypothek auch dann noch bezahlen könnten, falls die Zinsen steigen würden. Als Faustregel gilt, dass die jährlichen (kalkulatorischen\footnote{Der Begriff \textit{Kalkulatorisch} bedeutet in diesem Zusammenhang, dass dieser Betrag nach bestimmten Vorgaben berechnet wird und überhaupt nicht den tatsächlichen Kosten entsprechen muss.}) Wohnkosten nicht mehr als $1 / 3$ Ihres \textcolor{ForestGreen}{Bruttojahreseinkommens} ($b$) ausmachen dürfen.
 
 Die kalkulatorischen jährlichen Wohnkosten setzten sich als die Summe der folgenden drei Positionen zusammen:
 \begin{itemize}
-	\item \textcolor{NavyBlue}{Kalkulatorischer Zins}: $5$ Prozent des Hypothekenbetrags $h$, also $5$ von $k - E$
+	\item \textcolor{NavyBlue}{Kalkulatorischer Zins}: $5$ Prozent des Hypothekenbetrags $h$, also $5$ Prozent von $k - E$
 	\item \textcolor{Magenta}{Nebenkosten}: $1$ Prozent des Kaufpreises $k$
 	\item \textcolor{Red}{Amortisation}: Falls die aufgenommene Hypothek grösser als $2/3$ des Kaufpreises $k$ ist, muss der darüberliegende Betrag $h - (2 / 3) k$ nach $15$ Jahren zurückbezahlt sein. Die Bank rechnet also hierführ mit jährlichen Kosten $a$ für die Amortisation von
 	\begin{align*}
@@ -594,13 +594,21 @@ Zusammengefasst muss also die Ungleichung
 \end{align*}
 oder anderst geschrieben
 \begin{align*}
-	b / 3 \geq 0.05(k - E) + 0.01k + \max\lrc{0, (k/3 - E) / 15}.
+	b / 3 \geq 0.05(k - E) + 0.01k + \max\lrc{0, (k/3 - E) / 15}
 \end{align*}
-Nun gibt es für den Kaufpreis $k$ noch eine weitere Zusatzbedingung: Der Kaufpreis darf nicht höher sein als das Fünffache des Eigenkapitals.
+erfüllt sein. Wir wollen unsere Berechnung möglichst allgemein halten und ersetzen die kalkulatorische Hypothekenrate von $0.05$ durch die positive Variable $\alpha$ und die kalkulatorische Nebenkostenrate $0.01$ durch die positive Variable $\beta$:
+\begin{align}\label{eq:Ungleichung_k}
+	b / 3 \geq \alpha (k - E) + \beta k + \max\lrc{0, (k/3 - E) / 15}.
+\end{align}
 
-Schreiben Sie eine Funktion \lstinline|max_kaufpreis(E, b)|, welche für gegebenes Eigenkapital $E$ und gegebenes Brutto-Jahreseinkommen $b$ den maximal tragbaren Kaufpreis berechnet und printet.
+Nun gibt es für den Kaufpreis $k$ noch eine weitere Zusatzbedingung: \textbf{Der Kaufpreis darf nicht höher sein als das Fünffache des Eigenkapitals}.
 
-\textbf{Zusatzaufgabe}: Geben Sie eine Formel für das maximal tragbare $k$ in Excel an, falls $E$ in \texttt{A1} gespeichert ist und $b$ in \texttt{A2}.
+\begin{enumerate}
+	\item Lösen Sie die Ungleichung nach $k$ auf. Natürlich wird $k$ abhängig sein von $E, b, \alpha$ und $\beta$.
+	\item Schreiben Sie eine Funktion \lstinline|max_kaufpreis(E, b, alpha, beta)|, welche für gegebene Werte von $E, b, \alpha$ und $\beta$ den maximal tragbaren Kaufpreis berechnet und mit \lstinline|return| zurück gibt.
+	\item Geben Sie eine Formel für das maximal tragbare $k$ in Excel an, falls $E$ in \texttt{A1}, $b$ in \texttt{A2}, $\alpha$ in \texttt{A3} und $\beta$ in \texttt{A4} gespeichert sind.
+\end{enumerate}
+
 \begin{myanswer}
 	Diese Musterlösung finden Sie in \cref{sec:K04_sol}.
 \end{myanswer}
@@ -611,66 +619,62 @@ Schreiben Sie eine Funktion \lstinline|max_kaufpreis(E, b)|, welche für gegeben
 
 	\section{Längere Lösungen}\label{sec:K04_sol}
 
-	% \begin{myanswer}[mychallenge:fibonacci_spirale]
-	% 	\lstinputlisting[language=Python,caption=\texttt{challenge\_fib.py},label=listing:challenge_fib]{Grundlagen_Info/00_Programmieren/Skript/Code/K03_Variables_Debugging/challenge_fib.py}
-	% \end{myanswer}
 		\begin{myanswer}[myexercise:kaufpreis_haus]
-		Wir ignorieren zunächst die Bedingung $k \leq 5E$ und betrachten die Ungleichung
-		\begin{align*}
-			b / 3 \geq 0.05(k - E) + 0.01k + \max\lrc{0, (k/3 - E) / 15}.
-		\end{align*}
-		Dabei unterscheiden wir zwei Fälle:
-		\clearpage
-		{\small
+			\begin{enumerate}
+				\item 
+
+		Wir ignorieren zunächst die Bedingung $k \leq 5E$ und betrachten die Ungleichung \ref{eq:Ungleichung_k}. Dabei unterscheiden wir zwei Fälle:
+
 		\begin{description}
-			\item[Fall $k \leq 3E$ (keine Amortisationspflicht):] In diesem Fall ist $\max\lrc{0, -E + k/3} = 0$. Die Ungleichung vereinfacht sich in diesem Fall zu
+			\item[Fall 0: $\max\lrc{0, -E + k/3} = 0$, also $k \leq 3E$ (keine Amortisationspflicht):] Die Ungleichung \ref{eq:Ungleichung_k} vereinfacht sich in diesem Fall zu
 \begin{align*}
-	b / 3 &\ge 0.05(k - E) + 0.01k \\
-    b &\ge 3 \cdot \lr{0.05k - 0.05E + 0.01k} \\
-    b &\ge 3 \cdot \lr{0.06k - 0.05E} \\
-    b &\ge 0.18k - 0.15E \\
-    b + 0.15E &\ge 0.18k \\
-    \frac{b + 0.15E}{0.18} &\ge k \\
-    k &\le \frac{b + 0.15E}{0.18} \\
-    k &\le \frac{100b + 15E}{18} =: k_0
+\frac{b}{3} &\geq \alpha(k - E) + \beta k \\
+\frac{b}{3} &\geq \alpha k - \alpha E + \beta k \\
+\frac{b}{3} + \alpha E &\geq k(\alpha + \beta) \\
+k &\leq \frac{b/3 + \alpha E}{\alpha + \beta} := \textcolor{Salmon}{k_0}
 \end{align*}
-Beachten Sie, dass Fall $k \leq 2E$ die Beziehung $k < E$ nicht ausschliesst. Das Auflösen der Ungleichung
+\item[Fall 1:$\max\lrc{0, -E + k/3} = -E + k/3$, also $k > 3E$ (Amortisationspflicht):] In diesem Fall ist $\max\lrc{0, -E + k/3} = -E + k/3$. Die Ungleichung vereinfacht sich in diesem Fall zu
 \begin{align*}
-	k \le \frac{100b + 15E}{18} \stackrel{!}{=} E
+\frac{b}{3} &\geq \alpha\lr{k - E} + \beta k + \frac{k/3 - E}{15} \\
+\frac{b}{3} &\geq \alpha k - \alpha E + \beta k + \frac{k}{45} - \frac{E}{15} \\
+\frac{b}{3} + \alpha E + \frac{E}{15} &\geq k\lr{\alpha + \beta + \frac{1}{45}} \\
+\frac{15b + 45\alpha E + 3E}{45} &\geq k\lr{\frac{45\alpha + 45\beta + 1}{45}} \\
+15b + 45\alpha E + 3E &\geq k\lr{45\alpha + 45\beta + 1} \\
+k &\leq \frac{15b + 45\alpha E + 3E}{45\alpha + 45\beta + 1} := \textcolor{Goldenrod}{k_1}
 \end{align*}
-zeigt, dass dies genau dann auftritt, wenn $b < 0.003E$ ist. In diesem Fall wäre aber $h = k - E < 0$ und die Hypothek wäre somit negativ. Eine negative Hypothek wäre dann eher als Guthaben zu verstehen und natürlich macht die Tragbarkeitssberechnung für ein Guthaben keinen Sinn. In diesem Fall ist der maximale Kaufpreis $E$ (wir bezhalen einfach alles einzig mit Eigenkapital und nehmen gar keine Hypothek auf). Die direkte Konsequenz davon ist, dass sich der maximal tragbare Kaufpreis mit steigendem Lohn $b$ nicht erhöht, solange noch $b \leq 0.003E$ ist.
-\item[Fall $k > 3E$ (Amortisationspflicht):] In diesem Fall ist $\max\lrc{0, -E + k/3} = -E + k/3$. Die Ungleichung vereinfacht sich in diesem Fall zu
-\begin{align*}
-	b / 3 &\ge 0.05(k - E) + 0.01k + (k/3 - E) / 15 \\
-    b &\ge 3 \cdot \lr{0.05(k - E) + 0.01k + \frac{-E + k/3}{15}} \\
-    b &\ge 3 \cdot \lr{0.05k - 0.05E + 0.01k - \frac{E}{15} + \frac{k}{45}} \\
-    b &\ge 3 \cdot \lr{k \cdot \lr{0.06 + \frac{1}{45}} - E \cdot \lr{0.05 + \frac{1}{15}}} \\
-    b &\ge 3 \cdot \lr{k \cdot \lr{\frac{3}{50} + \frac{1}{45}} - E \cdot \lr{\frac{1}{20} + \frac{1}{15}}} \\
-    b &\ge 3 \cdot \lr{k \cdot \lr{\frac{27+10}{450}} - E \cdot \lr{\frac{3+4}{60}}} \\
-    b &\ge 3 \cdot \lr{k \cdot \frac{37}{450} - E \cdot \frac{7}{60}} \\
-    b &\ge k \cdot \frac{111}{450} - E \cdot \frac{21}{60} \\
-    b &\ge k \cdot \frac{37}{150} - E \cdot \frac{7}{20} \\
-    b + \frac{7}{20}E &\ge k \cdot \frac{37}{150} \\
-    \frac{b + \frac{7}{20}E}{\frac{37}{150}} &\ge k \\
-    k &\le \frac{150}{37} \cdot \lr{b + \frac{7}{20}E} \\
-    k &\le \frac{150b}{37} + \frac{1050E}{740} \\
-    k &\le \frac{150b}{37} + \frac{105E}{74} =: k_1
-\end{align*}
-		\end{description}
-		}
-	Damit $k$ die ursprüngliche Ungleichung in \cref{myexercise:kaufpreis_haus} erfüllt, muss $k$ kleiner oder gleich dem kleineren der beiden Beträge $k_0$ oder $k_1$ sein. Also finden wir unter der Berücksichtigung der bislang ignorierten Bedingung $k \leq 5E$ insgesamt
+\end{description}
+Damit $k$ die ursprüngliche Ungleichung \ref{eq:Ungleichung_k} erfüllt, muss $k$ kleiner oder gleich dem kleineren der beiden Beträge $\textcolor{Salmon}{k_0}$ und $\textcolor{Goldenrod}{\textcolor{Goldenrod}{k_1}}$ sein. Also finden wir unter der Berücksichtigung der bislang ignorierten Bedingung $k \leq 5E$:
 	\begin{align*}
-		k := \min\lrc{\min\lrc{k_0, k_1}, 5E}.
+		k := \min\lrc{\min\lrc{\textcolor{Salmon}{k_0}, \textcolor{Goldenrod}{k_1}}, 5E}.
 	\end{align*}
 
-	Um dem Spezialfall $k - E < 0$ (negative Hypothek) auszuschliessen, müssen wir noch das Maximum zwischen $k$ und $E$ nehmen.
+Beachten Sie, dass Fall 0 die Beziehung $k < E$ nicht ausschliesst. In diesem Fall wäre aber $k - E < 0$ und die Hypothek wäre somit negativ. Eine negative Hypothek wäre dann eher als Guthaben zu verstehen und natürlich macht die Tragbarkeitssberechnung für ein Guthaben keinen Sinn. In diesem Fall ist der maximale Kaufpreis $E$ (wir bezhalen einfach alles mit Eigenkapital und nehmen gar keine Hypothek auf). Die Gleichung $\frac{b/3 + \alpha E}{\alpha + \beta} \stackrel{!}{=} E$ (aufgelöst nach $b$) zeigt, dass sich der maximal tragbare Kaufpreis mit steigendem Lohn $b$ nicht erhöht, solange noch $b \leq 3\alpha$ ist.
 
-	Die finale Python-Funktion ist schliesslich gegeben durch
+	Um den Spezialfall $k - E < 0$ (negative Hypothek) auszuschliessen, müssen wir noch das Maximum zwischen $k$ und $E$ nehmen, also
+	\begin{mysummary}
+		{\scriptsize
+		\begin{align*}
+			k_{\text{max}} = \max\lrc{\min\lrc{\min\lrc{\textcolor{Salmon}{k_0}, \textcolor{Goldenrod}{k_1}}, 5E}, E} = \max\lrc{\min\lrc{\min\lrc{\frac{b/3 + \alpha E}{\alpha + \beta}, \frac{15b + 45\alpha E + 3E}{45\alpha + 45\beta + 1}}, 5E}, E}
+		\end{align*}
+		}
+	\end{mysummary}
+
+	\item 
+	Die entsprechende Python-Funktion ist gegeben durch:
 	\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K04_Functions/max_kaufpreis.py}
 	
-	\textbf{Lösung der Zusatzaufgabe (Excel-Formel):}
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.9\textwidth]{Grundlagen_Info/00_Programmieren/Skript/Code/K04_Functions/max_kaufpreis_3d_plot.pdf}
+		\caption{3D-Plot des maximalen Kaufpreises abhängig vom Jahresbruttolohn und dem Eigenkapital für $\alpha = 0.05, \beta = 0.01$.}
+	\end{figure}
 	
-	\lstinline{MAX(MIN(MIN((100 * A2 + 15 * A1) / 18, 150 * A2 / 37 + 105 * A1 / 74), 5 * A1), A1)}
+	\item Und schliesslich die Formel in Excel:
+	
+	\lstinline[basicstyle=\ttfamily\scriptsize]{MAX(MIN(MIN((A2/3 + A3 * A1) / (A3 + A4), (15 * A2 + 45 * A3 * A1 + 3 * A1) / (45 * A3 + 45 * A4 + 1)), 5 * A1), A1)}
+	\end{enumerate}
+
+
 	\end{myanswer}
 
-}
+} %

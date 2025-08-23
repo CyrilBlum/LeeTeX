@@ -1,5 +1,15 @@
-def max_kaufpreis(E, b):
-    k0 = (100 * b + 15 * E) / 18
-    k1 = 150 * b / 37 + 105 * E / 74
-    k = min(min(k0, k1), 5 * E)
-    print(max(k, E))
+import numpy as np
+
+def max_kaufpreis(E, b, alpha, beta):
+
+    return np.maximum(
+        np.minimum(
+            np.minimum(
+                (b / 3 + alpha * E) / (alpha + beta),
+                (15 * b + 45 * alpha * E + 3 * E)
+                / (45 * alpha + 45 * beta + 1),
+            ),
+            5 * E,
+        ),
+        E,
+    )

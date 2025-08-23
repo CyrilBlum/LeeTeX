@@ -2,17 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def max_kaufpreis(E, b):
-    """
-    Berechnet den maximalen Kaufpreis k basierend auf Eigenkapital E
-    und Bruttolohn b.
-    """
-    k0 = (100 * b + 15 * E) / 18
-    k1 = 150 * b / 37 + 105 * E / 74
-    k = np.minimum(np.minimum(k0, k1), 5 * E)
-    return np.maximum(k, E)
+from max_kaufpreis import max_kaufpreis
 
-def plot_2d_max_kaufpreis():
+
+def plot_2d_max_kaufpreis(alpha, beta):
     """
     Erstellt einen 2D-Plot des maximalen Kaufpreises vs. Eigenkapital
     für verschiedene Bruttolöhne.
@@ -31,7 +24,7 @@ def plot_2d_max_kaufpreis():
 
     # Iterieren Sie durch die b-Werte und plotten Sie eine Linie für jeden
     for i, b_value in enumerate(b_values_to_plot):
-        k_values = max_kaufpreis(E_values, b_value)
+        k_values = max_kaufpreis(E_values, b_value, alpha, beta)
         plt.plot(E_values, k_values, label=f'Bruttolohn = {b_value} (in 1000 CHF)', color=colors[i], linewidth=1.5)
 
     plt.xlabel('Eigenkapital (in 1000 CHF)', fontsize=12, fontweight='bold')
@@ -42,9 +35,13 @@ def plot_2d_max_kaufpreis():
     plt.grid(True, linestyle='--', alpha=0.6)
     plt.legend(title="Legende", loc='upper left')
     plt.tight_layout()  # Verbessert die Platzierung der Elemente
+
+    # Speichert den Plot als Datei im aktuellen Verzeichnis
+    plt.savefig('Grundlagen_Info/00_Programmieren/Skript/Code/K04_Functions/max_kaufpreis_2d_plot.pdf')
+
     plt.show()
 
-def plot_3d_max_kaufpreis():
+def plot_3d_max_kaufpreis(alpha, beta):
     """
     Erstellt einen 3D-Plot des maximalen Kaufpreises in Abhängigkeit von
     Eigenkapital und Bruttolohn.
@@ -57,7 +54,7 @@ def plot_3d_max_kaufpreis():
         0, 2000, 100), np.linspace(0, 350, 100))
 
     # Berechnung der k-Werte für jedes (E, b) Paar
-    k_mesh = max_kaufpreis(E_mesh, b_mesh)
+    k_mesh = max_kaufpreis(E_mesh, b_mesh, alpha, beta)
 
     # Erstellen der 3D-Oberfläche mit ansprechenderen Einstellungen
     surf = ax.plot_surface(E_mesh, b_mesh, k_mesh, cmap='viridis', rstride=1, cstride=1, alpha=0.9, edgecolor='none')
@@ -76,8 +73,11 @@ def plot_3d_max_kaufpreis():
     # Blickwinkel anpassen, um die Oberfläche besser zu sehen
     ax.view_init(elev=30, azim=135) # elev=Höhe, azim=Winkel
     
+    # Speichert den Plot als Datei im aktuellen Verzeichnis
+    plt.savefig('Grundlagen_Info/00_Programmieren/Skript/Code/K04_Functions/max_kaufpreis_3d_plot.pdf')
+
     plt.show()
 
 # Rufen Sie die Funktionen auf, um die Plots zu erstellen
-plot_2d_max_kaufpreis()
-plot_3d_max_kaufpreis()
+plot_2d_max_kaufpreis(0.05, 0.01)
+plot_3d_max_kaufpreis(0.05, 0.01)
