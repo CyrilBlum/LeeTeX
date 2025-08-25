@@ -3,41 +3,7 @@
 \lstset{style=Python}
 
 \section{Einführung}\label{sec:intro}
-% \iftoggle{teacherToggle}{
-% 	\begin{myExBox}[title=Einführung]
-% 		\tcbsubtitle{Thema}
-% 		Die ersten drei Lektionenen (Ganz-Klassenlektion und Programmier-Lektion) machen den Einstieg in die Welt der Verschlüsselung. Dabei werden zuerst das Thema \enquote{Verschlüsselung} im Allgemeinen und danach die antiken Kryptosysteme \textit{Skytale} und \textit{Caesar} vorgestellt.
 
-% 		\tcbsubtitle{Operationalisierte Lernziele}
-% 		\begin{todolist}
-% 			\item Die SuS können Beispiele aus ihrem eigenen Alltag nennen, wo Verschlüsselung relevant ist.
-% 			\item Die SuS können Lebensbereiche identifizieren, in denen sie sensible Daten übermitteln.
-% 			\item Die SuS können einen Text mittels einer Zweier- oder Dreiertausch-Verschlüsslungsmethoden ver- und entschlüsseln.
-% 			\item Die SuS können Zweier- und Dreiertausch-Methoden in Python implementieren.
-% 			\item Die SuS können Texte verschlüsseln, indem sie die antiken, symmetrischen Verschlüsselungstechnologien Skytale und Caesar verwenden.
-% 			\item Die SuS können Verschlüsselungs-Funktionen zu Skytale und Casear in Python implementieren
-% 		\end{todolist}
-
-% 		\tcbsubtitle{Grober Lektionsablauf}
-% 		Die SuS sollen die Relevanz des Themas anhand einiger alltagsnaher Beispiele kennenlernen. Z.B. Können folgende Fragen gestellt werden:
-% 		\begin{tcolorbox}
-% 			\begin{itemize}
-% 				\item \textbf{Sie} wollen Ihrer Freundin / Ihrem Freund eine geheime Nachricht senden, die nicht das ganze Internet mitlesen kann. Wie könnten Sie den Klartext so verschlüsseln, dass nur Alice bzw. Bob diese lesen kann?
-% 				\item Bei welchen Alltagsdaten würde es sie besonders stören, wenn diese durch unbefugte Personen gelesen werden könnten?
-% 				\item Wenn Sie eine Firma hätten und gehackt würden, würden Sie die Erpressungsgebühr zahlen?
-% 			\end{itemize}
-% 		\end{tcolorbox}
-% 		Vermutlich wird es einfach sein, aufzuzeigen, dass die intuitiven Verschlüsselungs-Ideen der SuS nicht funktionieren. Daher werden die SuS sich in der kommenden DL mit einigen antiken Verschlüsselungstechnologien auseinandersetzen, namentlich Skytale und Caesar. Diese sind einfach verständlich, gelten jedoch als unsicher. Die Lektion schliesst mit einigen Bemerkungen zu Sicherheit und Buchstabenhäufigkeit, die bereits die Grundlage für die nächste DL legen.
-
-% 		\begin{myExBox}[title=Mögliche Schwierigkeiten \& geeignete Massnahmen]
-% 			\begin{enumerate}
-% 				\item Bei den Python-Codes sind bereits fortgeschrittene Programmierkenntnisse erforderlich. Allenfalls zuerst Tutorial zu Zeichenketten-Manipulation machen (oder parallel in HK durchführen)?
-% 				\item Was, wenn die SuS die Verschlüsslungs-Technologien bereits kennen? Lösungsvorschlag: Genügend Challenge-Aufgaben zur Verfügung haben.
-% 			\end{enumerate}
-% 		\end{myExBox}
-% 	\end{myExBox}
-% 	\newpage\stepcounter{dlcounter}
-% }{}
 Alice möchte Bob eine wichtige Nachricht zukommen lassen, beispielsweise zu einem gesundheitlichen Problem oder um ihre Bankkontoverbindung mit Bob zu teilen. Da das Internet jedoch eine \textit{offene} und somit (grundsätzlich) unsichere Technologie ist, kann jedermann jede Nachricht mitlesen. Somit könnte eine bösartige Person, wie beispielsweise Eve, die Nachricht abhören, um sich Zugriff auf die Gesundheitsdaten oder das Bankkonto von Alice zu verschaffen.
 
 Damit dies nicht passieren kann, muss Alice ihre Nachricht so verschlüsseln, dass nur Bob sie lesen kann. Dieses Problem hat sich bereits in der Antike (und vermutlich noch vorher gestellt) und entspricht einem grundsätzlichen, menschlichen Bedürfnis: Wie kann ein Feldherr seinen Soldaten Anweisungen geben, ohne dass der Gegner mithört? Oder, um eine andere Situation aufzugreifen: Wie können Sie sich mit Ihren Geschwistern austauschen, ohne dass Ihre Eltern verstehen, worum es geht?
@@ -802,12 +768,157 @@ Der Schlüssel muss demnach ``ICH'' sein und wir können den Text somit entschl�
 	\end{myanswer}
 \end{myexercise}
 
+\begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]\label{ex:vigHaufigkeitGruppen}
+Finden Sie für folgenden Vigenère-Text den Klartext heraus, wenn Sie wissen, dass der Schlüssel Länge 3 hat:
+
+\colorstring[ForestGreen,RoyalBlue,Crimson]{IBUIXJLMLJHYWVOIKPRXYVXPGAAMAYISPIELRBLNXKILYILBPMHXBZXYBIKZMXUYKLMGZGAYMMADNTAXPXXUXYLVGAIGGMXSEFOSKPDHUX}
+
+\begin{enumerate}
+\item Finden Sie zuerst die häufigsten Buchstaben pro Gruppe heraus. Seien Sie genau, ansonsten müssen Sie später wieder von vorne beginnen!
+\notiz{4}
+\item Finden Sie danach den Schlüssel heraus, indem Sie annehmen, dass der häufigste Buchstabe im Geheimtext den Buchstaben \enquote{\texttt{E}} im Klartext repräsentiert. Für Gruppe 3 ist die Lösung bereits vorgegeben.
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+&\textbf{Häufigster Buchstabe} & $\rightarrow$ & \textbf{Schlüssel}\\\midrule\midrule
+\textbf{\textcolor{ForestGreen}{Gruppe 1}}&&$\rightarrow$&\\\midrule
+\textbf{\textcolor{RoyalBlue}{Gruppe 2}}&&$\rightarrow$&\\\midrule
+\textbf{\textcolor{Crimson}{Gruppe 3}}&\texttt{L}&$\rightarrow$&7 (=\texttt{H})\\\midrule
+\end{tabular}
+\end{table}
+\item Enschlüsseln Sie nun den Geheimtext, indem Sie die \href{https://naokipeter.gitlab.io/caesar/}{Caesar-Drehscheibe} verwenden.
+\end{enumerate}
+
+\colorstringunderline[ForestGreen,RoyalBlue,Crimson]{EINEECHTEFORSCHERINERREICHTIHREZIELENIEJEDESRESULTATISTFUERSIENUREINSCHRITTZUMWEITENTFERNTENZIELAMHORIZONT}
+\begin{myanswer}
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+&\textbf{Häufigster Buchstabe} & $\rightarrow$ & \textbf{Schlüssel}\\\midrule\midrule
+\textbf{\textcolor{ForestGreen}{Gruppe 1}}&\texttt{I}&$\rightarrow$&\texttt{E}\\\midrule
+\textbf{\textcolor{RoyalBlue}{Gruppe 2}}&\texttt{X}&$\rightarrow$&\texttt{T}\\\midrule
+\textbf{\textcolor{Crimson}{Gruppe 3}}&\texttt{L}&$\rightarrow$&\texttt{H}\\\midrule
+\end{tabular}
+\end{table}
+
+\colorstring[ForestGreen,RoyalBlue,Crimson]{EINEECHTEFORSCHERINERREICHTIHREZIELENIEJEDESRESULTATISTFUERSIENUREINSCHRITTZUMWEITENTFERNTENZIELAMHORIZONT}
+\end{myanswer}
+\end{myexercise}
+
+\subsubsection{Bestimmung der Schlüssellänge mit dem Kasiski-Test}
+Wie Sie gesehen haben, kann man Vigenère \textit{gruppenweise} mit denselben Methoden knacken, die wir benutzt haben, um Caesar zu knacken. Falls die Schlüssellänge unbekannt ist, können sowohl der Kasiski-Test wie auch die Friedman'sche Charakteristik verwendet werden, um diese zu erraten. In diesem Unterabschnitt schauen wir uns zunächst den Kasiski-Test an.
+
+Die Grundidee hinter dem Kasiski-Test ist, dass wenn ein Wort im Klartext mehrmals vorkommt, es auch im Kryptotext mehrmals vorkommen wird. Wenn das Wort beispielsweise \enquote{\texttt{DIE}} ist und der Schlüssel \enquote{\texttt{KEY}}, dann wird \enquote{\texttt{DIE}} im Kryptotext als \enquote{\texttt{LIV}} verschlüsselt. Wenn das Wort \enquote{\texttt{DIE}} also zweimal im Klartext vorkommt \textbf{und} auf denselben Schlüsselteil fällt, wird \enquote{\texttt{LIV}} auch zweimal im Kryptotext gleich verschlüsselt sein:
+
+Wenn wir also im Kryptotext nach wiederholten Sequenzen suchen, können wir daraus die Schlüssellänge ableiten.
+
+\begin{myexample}
+In folgendem Beispiel ist der Klartext auf der ersten Zeile. Der Schlüssel ``\text{CODE}'' wird verwendet, um den Gemeimtext (auf der dritten Zeile) zu erzeugen:
+
+\texttt{M\gold{EIN}KL\red{EIN}ERREIMSCH\red{EIN}TK\green{EIN}ERZUS\green{EIN}}
+
+\texttt{C\gold{ODE}CO\red{DEC}ODECODECO\red{DEC}OD\green{ECO}DECOD\green{ECO}}
+
+\texttt{O\annotKasiski{Gold}{S}{LR}{2}MZ\annotKasiski{red}{H}{MP}{7}SUVGWPWEV\annotKasiski{red}{H}{MP}{19}HN\annotKasiski{ForestGreen}{I}{KB}{24}HVBIV\annotKasiski{ForestGreen}{I}{KB}{32}\\[.5cm]}
+
+Der Kasiski-Test erlaubt uns, Hinweise auf die Schlüssellänge zu erhalten, ohne den Schlüssel zu kennen:
+\begin{itemize}
+	\item Die Sequenzen \enquote{\texttt{HMP}} und \enquote{\texttt{IKB}} erscheinen jeweils zweimal im Geheimtext.
+	\item Die Sequenz \texttt{HMP} befindet sich an den Positionen 7 und 19. Die Differenz zwischen diesen Positionen beträgt 12, was sich als $2\times2\times3$ in Primfaktoren zerlegen lässt.
+	      \begin{tcolorbox}
+		      $\mathbf{\underset{\text{Position 1 \texttt{HMP}}}{7}+\underset{\text{Codewort-Länge!}}{\blue{4}}\times \underset{\text{Anzahl Codewörter}}{3} = \underset{\text{Position 2 \texttt{HMP}}}{19}}$
+	      \end{tcolorbox}
+	\item Die Sequenz \texttt{IKB} befindet sich an den Positionen 24 und 32. Die Differenz zwischen diesen Positionen beträgt 8, was sich als $2\times2\times2$ faktorisieren lässt.
+	      \begin{tcolorbox}
+		      $\mathbf{\underset{\text{Position 1 \texttt{IKB}}}{24}+\underset{\text{Codewort-Länge!}}{\blue{4}}\times \underset{\text{Anzahl Codewörter}}{2} = \underset{\text{Position 2 \texttt{IKB}}}{32}}$
+	      \end{tcolorbox}
+	\item Die Schlüssellänge könnte, sofern man nur den Abstand zwischen den beiden \texttt{HMP} betrachtet, theoretisch auch 12 sein. Dann würden allerdings die beiden \texttt{IKB} nicht auf denselben Schlüsselteil fallen. Daher ist dies nicht möglich.
+	\item Den Primfaktoren $2\times2\times3$ und $2\times2\times2$ ist der Teil $2\times2$ gemeinsam, was darauf hindeutet, dass die \textbf{Schlüssellänge 4} sein könnte.
+\end{itemize}
+\end{myexample}
+
+
+\begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]
+	Finden Sie den Klartext für folgende Nachricht heraus, wenn Sie wissen, dass der Text mit Vigenère verschlüsselt worden ist. Wenden Sie den Kasiski-Test an!
+
+	%\begin{table}[H]
+	%\small
+	%\begin{tabular}{c||c}
+	%Position & \\\midrule
+	%Geheimtext & \texttt{UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOO}\\ \midrule
+	%Schlüssel & \\ \midrule
+	%Klartext &  \\ 
+	%\end{tabular}\vspace{1cm}
+	%\begin{tabular}{c||c}
+	%Position & \\\midrule
+	%Geheimtext & \texttt{CEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOO}\\ \midrule
+	%Schlüssel & \\ \midrule
+	%Klartext &  \\ 
+	%\end{tabular}\vspace{1cm}
+	%\begin{tabular}{c||c}
+	%Position & \\\midrule
+	%Geheimtext & \texttt{WAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ}\\ \midrule
+	%Schlüssel & \\ \midrule
+	%Klartext &  \\ 
+	%\end{tabular}
+	%\end{table}
+
+	\Large
+	\begin{alltt}
+UEU\underline{I}\underline{O}\underline{O}CEU\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{10}}}}{\texttt{\red{D}}}\)IW\underline{I}\underline{O}\underline{O}WRRC\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{20}}}}{\texttt{\red{L}}}\)WVUQURRCL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{30}}}}{\texttt{\red{W}}}\)VNDTHXETH\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{40}}}}{\texttt{\red{E}}}\)RRCFKRTWV\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{50}}}}{\texttt{\red{S}}}\)FYOQRNJJT\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{60}}}}{\texttt{\red{G}}}\)\\[1cm]\rule{\linewidth}{1pt}
+RSVUAV\underline{I}\underline{O}\underline{O}\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{70}}}}{\texttt{\red{C}}}\)EQEIHRUIY\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{80}}}}{\texttt{\red{O}}}\)HITQLNJZN\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{90}}}}{\texttt{\red{J}}}\)VSEVRJRUI\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{100}}}}{\texttt{\red{L}}}\)NGUEU\underline{I}\underline{O}\underline{O}C\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{110}}}}{\texttt{\red{E}}}\)UDIW\underline{I}\underline{O}\underline{O}WH\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{120}}}}{\texttt{\red{R}}}\)\\[1cm]\rule{\linewidth}{1pt}
+VRWVAXWZX\underline{\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{130}}}}{\texttt{\red{I}}}\)}\underline{O}\underline{O}CEQ\underline{I}\underline{O}\underline{O}W\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{140}}}}{\texttt{\red{A}}}\)WDEWVAXWU\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{150}}}}{\texttt{\red{Q}}}\)UWRCLWVDL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{160}}}}{\texttt{\red{V}}}\)NDVCKJTHE\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{170}}}}{\texttt{\red{T}}}\)DXEYFMUFL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{180}}}}{\texttt{\red{O}}}\)\\[1cm]\rule{\linewidth}{1pt}
+VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{190}}}}{\texttt{\red{V}}}\)HUYOHIEQ\\[1cm]\rule{\linewidth}{1pt}
+	\end{alltt}
+	\normalsize
+
+	\textbf{Tipps:}
+	\begin{itemize}
+		\item Die Position an allen 10, 20, 30 etc. Buchstaben sind oben bereits markiert, ebenso wie Vorkommnisse des Trigramms \underline{\texttt{IOO}}.
+		\item Auf separatem Blatt:
+		      \begin{enumerate}
+			      \item Notieren Sie sich die \textbf{Anfangspositionen} aller Trigramme \underline{\texttt{IOO}}.
+			      \item Berechnen Sie die \textbf{Abstände} zwischen den Anfangspositionen. Es reicht, wenn Sie nur die Abstände aller Anfangspositionen von \underline{IOO} zum ersten Trigramm \underline{IOO} an Position 4 berechnen.
+			      \item Zerlegen Sie die Abstände zwischen den Trigrammen in \textbf{Primfaktoren}.
+			      \item Finden Sie den \textbf{grössten gemeinsamen Teiler} dieser Primfaktoren, um die Schlüssellänge zu erraten.
+		      \end{enumerate}
+		\item Wenn Sie die Schlüssellänge haben, färben Sie den Text abwechslungsweise ein, wie in \cref{ex:vigHaufigkeitGruppen}. Teilen Sie sich zu dritt auf, so dass jede Person eine Gruppe von Buchstaben entschlüsselt (gleich wie in \cref{ex:vigHaufigkeitGruppen}).
+		\item Der letzte Teil des Schlüssels ist ``\texttt{D}''. Der Schlüssel ergibt ein Wort. Entschlüsseln Sie den Text nun mit der \href{https://naokipeter.gitlab.io/caesar/}{Caesar-Drehscheibe}! Entschlüsseln Sie zuerst nur die erste Zeile, um zu überprüfen, ob ihr Schlüssel stimmt und zu einem sinnvollen Text führt.
+	\end{itemize}
+	\begin{myanswer}
+		Positionen der Anfangs-Trigramme: 4, 13, 67, 106, 115, 130, 136.
+
+		Abstände und Primfaktoren sind beispielsweise:
+
+		\begin{align*}
+			13-4  & = & 9   & = & 3\times3                \\
+			67-4  & = & 63  & = & 3\times3\times7         \\
+			106-4 & = & 102 & = & 2\times3\times17        \\
+			115-4 & = & 111 & = & 3\times37               \\
+			130-4 & = & 126 & = & 2\times3\times3\times7  \\
+			136-4 & = & 132 & = & 2\times2\times3\times11 \\
+		\end{align*}
+
+		Man erkennt, dass die Primzahl 3 bei jeder Differenz vorkommt, also ist der Schlüssel vermutlich 3. Wir können nun wie in \cref{ex:vigHaufigkeitGruppen} verfahren, um den Text zu knacken.
+
+		Mittels Häufigkeitsanalyse (und etwas Ausprobieren mit dem häufigsten, zweithäufigsten Buchstaben etc.) finden wir folgenden Schlüssel heraus: \texttt{RAD}.
+
+		Somit kann der Klartext nun entziffert werden:
+
+		%\colorstring[ForestGreen,RoyalBlue,Crimson]{UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ}
+		\colorstring[ForestGreen,RoyalBlue,Crimson]{DERROLLERMITROLFROLLTEUNDROLLTENACHUNTENROLFHATTESCHONANGSTDASSDASROLLENNIEAUFHOERTNUNGINGESBERGAUFUNDDERROLLERMITROLFHOERTEAUFZUROLLENROLFATMETEAUFUNDWOLLTEDIENAECHSTENTAGEVOMROLLERNICHTSMEHRHOEREN}
+	\end{myanswer}
+
+\end{myexercise}
+
+\begin{mychallenge}
+	Lösen Sie den Kasiski-Test online:
+	\qrcode[height=2cm]{https://www.dominikus-gymnasium.de/kasiski-test-spiel.html}
+\end{mychallenge}
 
 \subsubsection{Bestimmung der Schlüssellänge: Friedman'sche Charakteristik}
 
-Wie Sie gesehen haben, kann man Vigenère \textit{gruppenweise} mit denselben Methoden knacken, die wir benutzt haben, um Caesar zu knacken. Falls die Schlüssellänge unbekannt ist, kann die Friedman'sche Charakteristik verwendet werden, um diese zu erraten.
-
-Die Friedman'sche Charakteristik macht sich zunutze, dass Buchstaben im Klartext ungleich verteilt sind. Falls jeder Buchstabe gleich häufig vorkommen würde, wäre die erwartete Häufigkeit jedes Buchstabens genau $1/26$. In keiner natürlichen Sprache besitzen alle Buchstaben dieselbe relative Häufigkeit. Die Häufigkeitsverteilung der Buchstaben in deutschen Texten haben wir bereits in \cref{tab:alle-haeufigkeiten} gesehen. Die relative Häufigkeit des Buchstabens \enquote{E} in deutschen Texten ist beispielsweise ca. 17.4\%. Die relative Häufigkeit eines Buchstabens $\square$ in einem Text $T$ bezeichnen wir mit $h_\square(T)$.
+Eine weitere Möglichkeit, die Schlüssellänge zu erraten, besteht in der Verwendung der sogenannten Friedman'schen Charakteristik. Die Friedman'sche Charakteristik macht sich zunutze, dass Buchstaben im Klartext ungleich verteilt sind. Falls jeder Buchstabe gleich häufig vorkommen würde, wäre die erwartete Häufigkeit jedes Buchstabens genau $1/26$. In keiner natürlichen Sprache besitzen alle Buchstaben dieselbe relative Häufigkeit. Die Häufigkeitsverteilung der Buchstaben in deutschen Texten haben wir bereits in \cref{tab:alle-haeufigkeiten} gesehen. Die relative Häufigkeit des Buchstabens \enquote{E} in deutschen Texten ist beispielsweise ca. 17.4\%. Die relative Häufigkeit eines Buchstabens $\square$ in einem Text $T$ bezeichnen wir mit $h_\square(T)$.
 
 Die Friedman'sche Charakteristik berechnet, wie ungleich alle Buchstaben in einem Text verteilt sind, indem sie die quadrierte Differenz der relativen Häufigkeit jedes Buchstabens zu $1/26$ berechnet. Diese quadrierten Abweichungen werden danach alle aufsummiert (siehe. \cref{eq:fc}).
 
