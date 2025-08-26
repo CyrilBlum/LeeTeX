@@ -281,7 +281,7 @@ Praktisch umgesetzt werden kann dieser Algorithmus mit einem Stab und einem Band
 	\end{center}
 	Dabei konnten mit dem Klartext \textbf{alle Zeilen der Tabelle vollständig aufgefüllt} werden.
 	\begin{enumerate}
-		\item Welches ist hier der Schlüssel, d.h. die Anzahl Zeichen auf einer Windung (bzw. Anzahl Zeilen der Tabelle)? Tipp: Probieren Sie die Schlüssel 3 und 5 aus. Sie können \href{https://legacy.cryptool.org/de/cto/scytale}{diesen Link} dazu verwenden.
+		\item Welches ist hier der Schlüssel, d.h. die Anzahl Zeichen auf einer Windung (bzw. Anzahl Zeilen der Tabelle)? Tipp: Probieren Sie die Schlüssel 3 und 5 aus. Sie können \href{https://cryptbreaker.marcwidmer.xyz/solve}{diesen Link}, Entschlüsselungswerkzeug \enquote{Tabelle} dazu verwenden.
 		\item Wie lautet der Klartext?
 		\item Wie viele Schlüssel müssen im schlimmsten Fall ausprobiert werden, bis der korrekte Schlüssel gefunden wurde? Das heisst, wie viele potentielle Schlüssel gibt es? Es gilt immer noch, dass alle Zeilen der Tabelle vollständig befüllt waren.
 	\end{enumerate}
@@ -767,43 +767,52 @@ Der Schlüssel muss demnach ``ICH'' sein und wir können den Text somit entschl�
 		\texttt{\colorstring[black]{IHRNAHTEUCHWIEDERSCHWANKENDEGESTALTENDIEFRUEHSICHEINSTDEMTRUEBENBLICKGEZEIGTVERSUCHICHWOHLEUCHDIESMALFESTZUHALTENFUEHLICHMEINHERZNOCHJENEMWAHNGENEIGTIHRDRAENGTEUCHZUNUNGUTSOMOEGTIHRWALTENWIEIHRAUSDUNSTUNDNEBELUMMICHSTEIGTMEINBUS}}
 	\end{myanswer}
 \end{myexercise}
-
+\begin{minipage}{\textwidth} % wrapping this exercise in a minipage to enable printing it out on one page
 \begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]\label{ex:vigHaufigkeitGruppen}
-Finden Sie für folgenden Vigenère-Text den Klartext heraus, wenn Sie wissen, dass der Schlüssel Länge 3 hat:
+	
+		Finden Sie für folgenden Vigenère-Text den Klartext heraus, wenn Sie wissen, dass der Schlüssel Länge 3 hat:
 
-\colorstring[ForestGreen,RoyalBlue,Crimson]{IBUIXJLMLJHYWVOIKPRXYVXPGAAMAYISPIELRBLNXKILYILBPMHXBZXYBIKZMXUYKLMGZGAYMMADNTAXPXXUXYLVGAIGGMXSEFOSKPDHUX}
+		\colorstring[ForestGreen,RoyalBlue,Crimson]{WKJLMUAKJWZJWQVWVVKBGZBGJAVOMPFRGVMTWZMWVPLEKWMNWUGFBCJMKFMXWZNSMUKTKUPGNMTKKJDCGKAGDCPYNWWZWFAGJMHJMKZMKLQUL}
 
-\begin{enumerate}
-\item Finden Sie zuerst die häufigsten Buchstaben pro Gruppe heraus. Seien Sie genau, ansonsten müssen Sie später wieder von vorne beginnen!
-\notiz{4}
-\item Finden Sie danach den Schlüssel heraus, indem Sie annehmen, dass der häufigste Buchstabe im Geheimtext den Buchstaben \enquote{\texttt{E}} im Klartext repräsentiert. Für Gruppe 3 ist die Lösung bereits vorgegeben.
-\begin{table}[H]
-\centering
-\begin{tabular}{cccc}
-&\textbf{Häufigster Buchstabe} & $\rightarrow$ & \textbf{Schlüssel}\\\midrule\midrule
-\textbf{\textcolor{ForestGreen}{Gruppe 1}}&&$\rightarrow$&\\\midrule
-\textbf{\textcolor{RoyalBlue}{Gruppe 2}}&&$\rightarrow$&\\\midrule
-\textbf{\textcolor{Crimson}{Gruppe 3}}&\texttt{L}&$\rightarrow$&7 (=\texttt{H})\\\midrule
-\end{tabular}
-\end{table}
-\item Enschlüsseln Sie nun den Geheimtext, indem Sie die \href{https://naokipeter.gitlab.io/caesar/}{Caesar-Drehscheibe} verwenden.
-\end{enumerate}
+		\begin{enumerate}
+			\item Finden Sie zuerst die häufigsten Buchstaben pro Gruppe heraus. Seien Sie genau, ansonsten müssen Sie später wieder von vorne beginnen!
+			      \notiz{4}
+			\item Finden Sie danach den Schlüssel heraus, indem Sie annehmen, dass der häufigste Buchstabe im Geheimtext den Buchstaben \enquote{\texttt{E}} im Klartext repräsentiert. Für Gruppe 3 ist die Lösung bereits vorgegeben.
+			      \begin{table}[H]
+				      \centering
+				      \begin{tabular}{cccc}
+					                                                 & \textbf{Häufigster Buchstabe} & $\rightarrow$ & \textbf{Schlüssel} \\\midrule\midrule
+					      \textbf{\textcolor{ForestGreen}{Gruppe 1}} &                               & $\rightarrow$ &                    \\\midrule
+					      \textbf{\textcolor{RoyalBlue}{Gruppe 2}}   &                               & $\rightarrow$ &                    \\\midrule
+					      \textbf{\textcolor{Crimson}{Gruppe 3}}     & \texttt{G}                    & $\rightarrow$ & \texttt{C} (=2)    \\\midrule
+				      \end{tabular}
+			      \end{table}
+			\item Enschlüsseln Sie nun den Geheimtext, indem Sie die \href{https://inventwithpython.com/cipherwheel/}{Caesar-Drehscheibe} verwenden.
+		\end{enumerate}
 
-\colorstringunderline[ForestGreen,RoyalBlue,Crimson]{EINEECHTEFORSCHERINERREICHTIHREZIELENIEJEDESRESULTATISTFUERSIENUREINSCHRITTZUMWEITENTFERNTENZIELAMHORIZONT}
-\begin{myanswer}
-\begin{table}[H]
-\centering
-\begin{tabular}{cccc}
-&\textbf{Häufigster Buchstabe} & $\rightarrow$ & \textbf{Schlüssel}\\\midrule\midrule
-\textbf{\textcolor{ForestGreen}{Gruppe 1}}&\texttt{I}&$\rightarrow$&\texttt{E}\\\midrule
-\textbf{\textcolor{RoyalBlue}{Gruppe 2}}&\texttt{X}&$\rightarrow$&\texttt{T}\\\midrule
-\textbf{\textcolor{Crimson}{Gruppe 3}}&\texttt{L}&$\rightarrow$&\texttt{H}\\\midrule
-\end{tabular}
-\end{table}
+		\colorstringunderline[ForestGreen,RoyalBlue,Crimson]{ECHTESICHERHEITENTSTEHTERSTWENNJEDERERKENNTWIEELEMENTAREINEVERLAESSLICHEVERSCHLUESSELUNGFUERUNSEREFREIHEITIST}
+	
 
-\colorstring[ForestGreen,RoyalBlue,Crimson]{EINEECHTEFORSCHERINERREICHTIHREZIELENIEJEDESRESULTATISTFUERSIENUREINSCHRITTZUMWEITENTFERNTENZIELAMHORIZONT}
-\end{myanswer}
+	\begin{myanswer}
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{cccc}
+				                                           & \textbf{Häufigster Buchstabe} & $\rightarrow$ & \textbf{Schlüssel} \\\midrule\midrule
+				\textbf{\textcolor{ForestGreen}{Gruppe 1}} & \texttt{W}                    & $\rightarrow$ & \texttt{S} (=18)         \\\midrule
+				\textbf{\textcolor{RoyalBlue}{Gruppe 2}}   & \texttt{M}                    & $\rightarrow$ & \texttt{I} (=8)      \\\midrule
+				\textbf{\textcolor{Crimson}{Gruppe 3}}     & \texttt{G}                    & $\rightarrow$ & \texttt{C} (=2)       \\\midrule
+			\end{tabular}
+		\end{table}
+
+		\colorstring[ForestGreen,RoyalBlue,Crimson]{ECHTESICHERHEITENTSTEHTERSTWENNJEDERERKENNTWIEELEMENTAREINEVERLAESSLICHEVERSCHLUESSELUNGFUERUNSEREFREIHEITIST}
+	\end{myanswer}
 \end{myexercise}
+\end{minipage}
+\begin{mychallenge}
+	Versuchen Sie, auf diesem Link eine weitere Challenge-Aufgabe zu lösen, indem Sie die Werkzeuge \enquote{Frequency} (Häufigkeit) und \enquote{Vigenère} verwenden:
+
+	\qrcode[height=2cm]{https://cryptbreaker.marcwidmer.xyz/problems/vigenere}
+\end{mychallenge}
 
 \subsubsection{Bestimmung der Schlüssellänge mit dem Kasiski-Test}
 Wie Sie gesehen haben, kann man Vigenère \textit{gruppenweise} mit denselben Methoden knacken, die wir benutzt haben, um Caesar zu knacken. Falls die Schlüssellänge unbekannt ist, können sowohl der Kasiski-Test wie auch die Friedman'sche Charakteristik verwendet werden, um diese zu erraten. In diesem Unterabschnitt schauen wir uns zunächst den Kasiski-Test an.
@@ -837,38 +846,15 @@ Der Kasiski-Test erlaubt uns, Hinweise auf die Schlüssellänge zu erhalten, ohn
 \end{itemize}
 \end{myexample}
 
-
-\begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]
+\clearpage  % using clearpage to enable printing out the exercise on just one page
+\begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]\label{ex:vigKasiski}
 	Finden Sie den Klartext für folgende Nachricht heraus, wenn Sie wissen, dass der Text mit Vigenère verschlüsselt worden ist. Wenden Sie den Kasiski-Test an!
 
-	%\begin{table}[H]
-	%\small
-	%\begin{tabular}{c||c}
-	%Position & \\\midrule
-	%Geheimtext & \texttt{UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOO}\\ \midrule
-	%Schlüssel & \\ \midrule
-	%Klartext &  \\ 
-	%\end{tabular}\vspace{1cm}
-	%\begin{tabular}{c||c}
-	%Position & \\\midrule
-	%Geheimtext & \texttt{CEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOO}\\ \midrule
-	%Schlüssel & \\ \midrule
-	%Klartext &  \\ 
-	%\end{tabular}\vspace{1cm}
-	%\begin{tabular}{c||c}
-	%Position & \\\midrule
-	%Geheimtext & \texttt{WAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ}\\ \midrule
-	%Schlüssel & \\ \midrule
-	%Klartext &  \\ 
-	%\end{tabular}
-	%\end{table}
-
-	\Large
 	\begin{alltt}
-UEU\underline{I}\underline{O}\underline{O}CEU\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{10}}}}{\texttt{\red{D}}}\)IW\underline{I}\underline{O}\underline{O}WRRC\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{20}}}}{\texttt{\red{L}}}\)WVUQURRCL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{30}}}}{\texttt{\red{W}}}\)VNDTHXETH\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{40}}}}{\texttt{\red{E}}}\)RRCFKRTWV\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{50}}}}{\texttt{\red{S}}}\)FYOQRNJJT\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{60}}}}{\texttt{\red{G}}}\)\\[1cm]\rule{\linewidth}{1pt}
-RSVUAV\underline{I}\underline{O}\underline{O}\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{70}}}}{\texttt{\red{C}}}\)EQEIHRUIY\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{80}}}}{\texttt{\red{O}}}\)HITQLNJZN\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{90}}}}{\texttt{\red{J}}}\)VSEVRJRUI\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{100}}}}{\texttt{\red{L}}}\)NGUEU\underline{I}\underline{O}\underline{O}C\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{110}}}}{\texttt{\red{E}}}\)UDIW\underline{I}\underline{O}\underline{O}WH\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{120}}}}{\texttt{\red{R}}}\)\\[1cm]\rule{\linewidth}{1pt}
-VRWVAXWZX\underline{\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{130}}}}{\texttt{\red{I}}}\)}\underline{O}\underline{O}CEQ\underline{I}\underline{O}\underline{O}W\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{140}}}}{\texttt{\red{A}}}\)WDEWVAXWU\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{150}}}}{\texttt{\red{Q}}}\)UWRCLWVDL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{160}}}}{\texttt{\red{V}}}\)NDVCKJTHE\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{170}}}}{\texttt{\red{T}}}\)DXEYFMUFL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{180}}}}{\texttt{\red{O}}}\)\\[1cm]\rule{\linewidth}{1pt}
-VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{190}}}}{\texttt{\red{V}}}\)HUYOHIEQ\\[1cm]\rule{\linewidth}{1pt}
+UEU\underline{I}\underline{O}\underline{O}CEU\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{10}}}}{\texttt{\red{D}}}\)IW\underline{I}\underline{O}\underline{O}WRRC\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{20}}}}{\texttt{\red{L}}}\)WVUQURRCL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{30}}}}{\texttt{\red{W}}}\)VNDTHXETH\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{40}}}}{\texttt{\red{E}}}\)RRCFKRTWV\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{50}}}}{\texttt{\red{S}}}\)FYOQRNJJT\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{60}}}}{\texttt{\red{G}}}\)\\[.5cm]\rule{\linewidth}{1pt}
+RSVUAV\underline{I}\underline{O}\underline{O}\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{70}}}}{\texttt{\red{C}}}\)EQEIHRUIY\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{80}}}}{\texttt{\red{O}}}\)HITQLNJZN\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{90}}}}{\texttt{\red{J}}}\)VSEVRJRUI\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{100}}}}{\texttt{\red{L}}}\)NGUEU\underline{I}\underline{O}\underline{O}C\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{110}}}}{\texttt{\red{E}}}\)UDIW\underline{I}\underline{O}\underline{O}WH\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{120}}}}{\texttt{\red{R}}}\)\\[.5cm]\rule{\linewidth}{1pt}
+VRWVAXWZX\underline{\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{130}}}}{\texttt{\red{I}}}\)}\underline{O}\underline{O}CEQ\underline{I}\underline{O}\underline{O}W\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{140}}}}{\texttt{\red{A}}}\)WDEWVAXWU\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{150}}}}{\texttt{\red{Q}}}\)UWRCLWVDL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{160}}}}{\texttt{\red{V}}}\)NDVCKJTHE\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{170}}}}{\texttt{\red{T}}}\)DXEYFMUFL\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{180}}}}{\texttt{\red{O}}}\)\\[.5cm]\rule{\linewidth}{1pt}
+VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red{190}}}}{\texttt{\red{V}}}\)HUYOHIEQ\\[.5cm]\rule{\linewidth}{1pt}
 	\end{alltt}
 	\normalsize
 
@@ -883,13 +869,10 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 			      \item Finden Sie den \textbf{grössten gemeinsamen Teiler} dieser Primfaktoren, um die Schlüssellänge zu erraten.
 		      \end{enumerate}
 		\item Wenn Sie die Schlüssellänge haben, färben Sie den Text abwechslungsweise ein, wie in \cref{ex:vigHaufigkeitGruppen}. Teilen Sie sich zu dritt auf, so dass jede Person eine Gruppe von Buchstaben entschlüsselt (gleich wie in \cref{ex:vigHaufigkeitGruppen}).
-		\item Der letzte Teil des Schlüssels ist ``\texttt{D}''. Der Schlüssel ergibt ein Wort. Entschlüsseln Sie den Text nun mit der \href{https://naokipeter.gitlab.io/caesar/}{Caesar-Drehscheibe}! Entschlüsseln Sie zuerst nur die erste Zeile, um zu überprüfen, ob ihr Schlüssel stimmt und zu einem sinnvollen Text führt.
+		\item Der letzte Teil des Schlüssels ist ``\texttt{D}''. Der Schlüssel ergibt ein Wort. Entschlüsseln Sie den Text nun mit der \href{https://inventwithpython.com/cipherwheel/}{Caesar-Drehscheibe}! Entschlüsseln Sie zuerst nur die erste Zeile, um zu überprüfen, ob ihr Schlüssel stimmt und zu einem sinnvollen Text führt.
 	\end{itemize}
 	\begin{myanswer}
-		Positionen der Anfangs-Trigramme: 4, 13, 67, 106, 115, 130, 136.
-
-		Abstände und Primfaktoren sind beispielsweise:
-
+		Positionen der Anfangs-Trigramme: 4, 13, 67, 106, 115, 130, 136. Abstände und Primfaktoren sind beispielsweise:
 		\begin{align*}
 			13-4  & = & 9   & = & 3\times3                \\
 			67-4  & = & 63  & = & 3\times3\times7         \\
@@ -899,16 +882,10 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 			136-4 & = & 132 & = & 2\times2\times3\times11 \\
 		\end{align*}
 
-		Man erkennt, dass die Primzahl 3 bei jeder Differenz vorkommt, also ist der Schlüssel vermutlich 3. Wir können nun wie in \cref{ex:vigHaufigkeitGruppen} verfahren, um den Text zu knacken.
-
-		Mittels Häufigkeitsanalyse (und etwas Ausprobieren mit dem häufigsten, zweithäufigsten Buchstaben etc.) finden wir folgenden Schlüssel heraus: \texttt{RAD}.
-
-		Somit kann der Klartext nun entziffert werden:
-
-		%\colorstring[ForestGreen,RoyalBlue,Crimson]{UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ}
+		Man erkennt, dass die Primzahl 3 bei jeder Differenz vorkommt, also ist der Schlüssel vermutlich 3. Wir können nun wie in \cref{ex:vigHaufigkeitGruppen} verfahren, um den Text zu knacken. Mittels Häufigkeitsanalyse (und etwas Ausprobieren mit dem häufigsten, zweithäufigsten Buchstaben etc.) finden wir folgenden Schlüssel heraus: \texttt{RAD}. Somit kann der Klartext nun entziffert werden:
+		
 		\colorstring[ForestGreen,RoyalBlue,Crimson]{DERROLLERMITROLFROLLTEUNDROLLTENACHUNTENROLFHATTESCHONANGSTDASSDASROLLENNIEAUFHOERTNUNGINGESBERGAUFUNDDERROLLERMITROLFHOERTEAUFZUROLLENROLFATMETEAUFUNDWOLLTEDIENAECHSTENTAGEVOMROLLERNICHTSMEHRHOEREN}
 	\end{myanswer}
-
 \end{myexercise}
 
 \begin{mychallenge}
