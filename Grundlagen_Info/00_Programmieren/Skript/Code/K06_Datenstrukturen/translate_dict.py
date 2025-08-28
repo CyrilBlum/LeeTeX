@@ -15,7 +15,7 @@ deutsch_zu_englisch = {
 
 
 def uebersetzen(satz):
-    ueberstetzter_satz = []
+    uebersetzter_satz = []
     for wort in satz:
-        ueberstetzter_satz.append(deutsch_zu_englisch[wort])
-    print(ueberstetzter_satz)
+        uebersetzter_satz.append(deutsch_zu_englisch[wort])
+    print(uebersetzter_satz)
