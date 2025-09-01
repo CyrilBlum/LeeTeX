@@ -637,3 +637,109 @@ wettervorhersage = {
 		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/dicts_fahrrad_bus.py}
 	\end{myanswer}
 \end{myexercise}
+
+\clearpage
+\section{Mengen (sets)}
+In Python stehen die Mengenoperationen, welche Ihnen aus dem Mathematikunterricht wohlvertraut sind, zur Verfügung. Wir werden die drei mengentheoretischen Operationen \textit{Vereinigung}, \textit{Durchschnitt} und \textit{Differenz} einführen und mittels \tib{Venndiagrammen}\footnote{Benannt nach dem englischen Mathematik \textit{John Venn Junior}.} illustrieren.
+
+\begin{itemize}
+    \item $\mathbf{A \cup B}$, in Python: \lstinline/A | B/\\
+    $A \cup B := \setcm{x\in M}{(x\in A) \lor (x\in B)}$\\
+    Die \tib{Vereinigung} von $A$ und $B$. Die Vereinigung von $A$ und $B$ enthält genau alle Elemente, die in $A$ \textbf{oder} $B$ liegen.
+% Set A or B
+\begin{center}
+\begin{tikzpicture}
+    \draw[filled] \firstcircle node {$A$}
+                  \secondcircle node {$B$};
+    \node[anchor=south] at (current bounding box.north) {$A \cup B$};
+\end{tikzpicture}
+\end{center}
+\item $\mathbf{A \cap B}$, in Python: \lstinline|A & B|\\
+$A \cap B := \setcm{x\in M}{(x\in A) \land (x\in B)}$\\
+Der \tib{Durchschnitt} von $A$ und $B$. Der Durchschnitt von $A$ und $B$ enthält genau alle Elemente, die in $A$ \textbf{und} in $B$ liegen.
+% Set A and B
+\begin{center}
+\begin{tikzpicture}
+    \begin{scope}
+        \clip \firstcircle;
+        \fill[filled] \secondcircle;
+    \end{scope}
+    \draw[outline] \firstcircle node {$A$};
+    \draw[outline] \secondcircle node {$B$};
+    \node[anchor=south] at (current bounding box.north) {$A \cap B$};
+\end{tikzpicture}
+\end{center}
+\item $\mathbf{A\setminus B}$, in Python: \lstinline|A - B|\\
+$A\setminus B := \setcm{x\in M}{(x\in A) \land (x\notin B)}$\\
+Die \tib{Differenz} von $A$ und $B$. Die Differenz von von $A$ und $B$ enthält genau alle Elemente, die in $A$ aber \textbf{nicht} in $B$ liegen.
+% Set A but not B
+\begin{center}
+\begin{tikzpicture}
+    \begin{scope}
+        \clip \firstcircle;
+        \draw[filled, even odd rule] \firstcircle node {$A$}
+                                     \secondcircle;
+    \end{scope}
+    \draw[outline] \firstcircle
+                   \secondcircle node {$B$};
+    \node[anchor=south] at (current bounding box.north) {$A - B$};
+\end{tikzpicture}
+\end{center}
+% \item $\mathbf{\Bar{A}_M}$\\
+% $\Bar{A}_M:= \setcm{x\in M}{x\notin A}$\\
+% Das \tib{Komplement} von $A$ in $M$ enthält alle Elemente der Grundmenge $M$, die nicht in $A$ sind. Falls aus dem Zusammenhang klar ist, welche Grundmenge gemeint ist, dann kann man das Schreiben der tiefgestellten Grundmenge weglassen: es genügt dann nur $\Bar{A}$ anstelle von $0\Bar{A}_M$ zu schreiben.
+% % A complement
+% \begin{center}
+% \begin{tikzpicture}
+% \scope
+%     \clip \firstcircle \bigrectangle;
+%     \fill[filled] \bigrectangle;
+% \endscope
+% \draw[outline] \firstcircle node {$A$};
+% \draw[outline] \secondcircle node {$B$};
+% \node[anchor=south] at (current bounding box.north) {$\Bar{A}_M$};
+% \node[anchor=south] at (current bounding box.south) {$M$};
+% \end{tikzpicture}
+% \end{center}
+\end{itemize}
+
+Falls $M$ eine endliche Menge ist (nicht unendlich viele Elemente enthält), dann bezeichnet $\abs{M}$ die Anzahl der Elemente in $M$. In Python finden wir die Anzahl der Element in der Menge $M$ mit dem Befehl \lstinline|len(M)|.
+
+\begin{myexample}
+\leavevmode
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/example_sets_fruit.py}
+\end{myexample}
+
+\begin{myexercise}
+	An einer Schule können Schüler mehrere Kurse wählen. Manche Kurse überschneiden sich, andere sind Pflicht.
+\begin{lstlisting}
+# Gegeben:
+schueler_a = ["Mathe", "Englisch", "Informatik", "Biologie"]
+schueler_b = ["Mathe", "Englisch", "Kunst", "Musik"]
+schueler_c = ["Informatik", "Englisch", "Sport", "Geschichte"]
+
+pflichtkurse = ["Mathe", "Englisch"]
+wahlkurse   = ["Informatik", "Biologie", "Kunst", "Musik", "Sport", "Geschichte"]
+\end{lstlisting}
+
+\begin{enumerate}
+    \item Finde alle \textbf{Kurse}, die mindestens einer der Schüler belegt.
+    \item Finde alle \textbf{Kurse}, die von allen drei Schülern gemeinsam belegt werden.
+    \item Bestimme alle \textbf{Kurse}, die exklusiv nur Schüler A hat.
+    \item Ermittle die \textbf{Pflichtkurse}, die zwar existieren, aber von mindestens einem Schüler \textbf{nicht gewählt} wurden. 
+    \item Stelle eine Liste aller \textbf{Wahlkurse} zusammen, die \textbf{alle drei Schüler gemeinsam} gewählt haben.
+\end{enumerate}
+
+\begin{lstlisting}
+# Beispiel-Ausgabe:
+Alle belegten Kurse: {'Kunst', 'Biologie', 'Englisch', 'Mathe', 'Informatik', 'Musik', 'Sport', 'Geschichte'}
+Gemeinsame Kurse aller: {'Englisch'}
+Exklusiv nur Schüler A: {'Biologie'}
+Pflichtkurse, die fehlen: {'Mathe'}
+Gemeinsame Wahlkurse: set()
+\end{lstlisting}
+\begin{myanswer}
+\leavevmode
+	\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/sol_auswahl_kurse.py}
+\end{myanswer}
+\end{myexercise}
