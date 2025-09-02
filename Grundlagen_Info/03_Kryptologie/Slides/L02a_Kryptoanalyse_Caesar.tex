@@ -1,29 +1,122 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python, basicstyle=\scriptsize\ttfamily}
 \input{Grundlagen_Info/03_Kryptologie/Makros}
-\begin{frame}[label=caesarex, fragile]{Wiederholung letztes Mal: Angriff auf Caesar}
+
+\title[Kryptologie]{Kryptologie}
+
+\subtitle{Caesar-Verschlüsselung}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl}
+
+\institute[KLW] % (optional)
+{
+	Fachschaft Informatik\\
+	Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{Logos/LeeLogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+
+\begin{frame}[fragile,label=caesar]{Caesar-Kryptosystem \emoji{amphora}}
+	\begin{minipage}[c]{.45\linewidth}
+		\begin{itemize}[<+->]
+			\item Zwei Drehscheiben: Klartext aussen, Geheimtext innen
+			\item Schlüssel = Verschiebung der inneren gegenüber der ausseren Scheibe
+			\item Z.B.: HALLO = KDOOR
+			\item Extrem unsichere Verschlüsselung: Nur 26 mögliche Schlüssel
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}[c]{.45\linewidth}
+		\begin{figure}[H]
+			\centering
+			\resizebox{\linewidth}{!}{\caesar[3]}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Auftrag}
+	Skript (auf Moodle)
+	\begin{itemize}
+		\item \aufgabebox{Aufgaben 1.5, 1.6}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[label=caesarex, fragile]{Angriff auf Caesar}
 	\centering
 	Wie würden Sie folgenden Text knacken?\\[.5cm]
-\small\begin{verbatim}
+	\defverbatim{\verbOne}{
+		\small\begin{verbatim}
+Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+\end{verbatim}
+	}
+	\defverbatim{\verbTwo}{
+		\small\begin{verbatim}
+  Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
+ Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
+Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+	      \end{verbatim}
+	}
+	\only<1-5>{\verbOne}
+	\only<2-4>{
+		Häufigster Buchstabe im obigen Geheimtext: \texttt{K}\\
+		Häufigster Buchstabe im deutschen Alphabet: \texttt{E}
+	}
+
+	\only<3-5>{
+		\begin{itemize}
+			\item<3-5> \texttt{E}: Buchstabe mit Ordnung 4
+			\item<4-5> \texttt{K}: Buchstabe mit Ordnung 10
+			\item<5> Schlüssel $=$ Verschiebung von $10-4= 6 =$ Buchstabe \texttt{G}
+		\end{itemize}
+	}
+	\only<5-6>{
+		\centering\scalebox{.6}{\caesar[6]}
+	}
+
+	\only<6>{\verbTwo}
+\end{frame}
+
+
+\begin{frame}[label=caesarex, fragile]{Angriff auf Caesar}
+	\centering
+	Wie würden Sie folgenden Text knacken?\\[.5cm]
+	\small\begin{verbatim}
 NGKALOMYZKXHAINYZGHKOTJKAZYINKTZKDZKTOYZSKOYZKTYK...
 \end{verbatim}
-	    
-	 \begin{itemize}[<+->]
-	   \item Häufigster Buchstabe \textcolor{ForestGreen}{im deutschen Alphabet}: \texttt{E} (= Buchstabe 5)
-	   \item Häufigster Buchstabe im obigen \textcolor{RoyalBlue}{im obigen Geheimtext}: \texttt{K} (= Buchstabe 11)
-	   \item Verschiebung von $11-5 = 6$ 
-	   \item Schlüssel = 6 (= Buchstabe \texttt{G})
-	 \end{itemize}	 
-	
+
+	\begin{itemize}[<+->]
+		\item Häufigster Buchstabe \textcolor{ForestGreen}{im deutschen Alphabet}: \texttt{E} (= Buchstabe 5)
+		\item Häufigster Buchstabe im obigen \textcolor{RoyalBlue}{Geheimtext}: \texttt{K} (= Buchstabe 11)
+		\item Verschiebung von $11-5 = 6$
+		\item Schlüssel = 6 (= Buchstabe \texttt{G})
+	\end{itemize}
+
 	\begin{columns}\begin{column}{.27\textwidth}\foreach \i in {1,...,7} {
-\pgfmathtruncatemacro{\j}{\i + 3}
-\pgfmathtruncatemacro{\shiftCaesar}{\i - 1}
-\only<\j>{\centering\scalebox{.7}{\caesarreverse[\shiftCaesar]}}
-}\end{column}
-	\begin{column}{.7\textwidth}
-\only<10->{	Auftrag:
-		\begin{itemize}
-		\item \aufgabebox{Erste 10 Zeichen des Texts knacken}
-		\item \challengebox{Alles knacken (Schnelle)}
-		\end{itemize}}
+					\pgfmathtruncatemacro{\j}{\i + 3}
+					\pgfmathtruncatemacro{\shiftCaesar}{\i - 1}
+					\only<\j>{\centering\scalebox{.7}{\caesarreverse[\shiftCaesar]}}
+				}\end{column}
+		\begin{column}{.7\textwidth}
+			\only<10->{	Auftrag:
+				\begin{itemize}
+					\item \aufgabebox{Erste 10 Zeichen des Texts knacken}
+					\item \challengebox{Alles knacken (Schnelle)}
+				\end{itemize}}
 		\end{column}
 	\end{columns}
+	\only<11->{
+	\begin{center}
+	Wie könnte dieser Code trotzdem geknackt werden, wenn \enquote{E} im Klartext selten oder gar nicht vorkommt?
+	\end{center}}
 \end{frame}

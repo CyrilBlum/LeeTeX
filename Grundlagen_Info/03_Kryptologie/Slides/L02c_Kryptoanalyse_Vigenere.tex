@@ -7,15 +7,15 @@
 
 \title[Kryptologie]{Kryptologie}
 
-\subtitle{Vigenère-Verschlüsselung}
+\subtitle{Vigenère-Chiffre}
 
 \author[Wendl, Cyril] % (optional)
 {Cyril Wendl}
 
 \institute[KLW] % (optional)
 {
-    Fachschaft Informatik\\
-    Kantonsschule im Lee
+	Fachschaft Informatik\\
+	Kantonsschule im Lee
 }
 
 \date[\today] % (optional)
@@ -27,162 +27,216 @@
 \frame{\titlepage}
 
 \begin{frame}[label=vigenere, fragile]{Vigenère \emoji{fleur-de-lis}}
-\defverbatim{\verbOne}{
-Von Caesar...
-\begin{verbatim}
+	\defverbatim{\verbOne}{
+		Von Caesar...
+		\begin{verbatim}
   Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
  Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
 Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 \end{verbatim}
-}
-    
-\only<1>{\verbOne}
-\defverbatim{\verbTwo}{
-\begin{verbatim}
+	}
+
+	\only<1>{\verbOne}
+	\defverbatim{\verbTwo}{
+		\begin{verbatim}
   Klartext: JEM|AND|MUS|STE|JOS|EFK|VER|LE...
  Schlüssel: KEY|KEY|KEY|KEY|KEY|KEY|KEY|KE...
 Geheimtext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 \end{verbatim}
-    }
-
-    \only<2>{...zu Vigenère}
-    \only<2->{\verbTwo}
-	
-\only<3->{
-	\begin{itemize}
-	    \item B=Verschiebung um 1 Position, C=Verschiebung um 2 Positionen, usw.
-	    \item Galt über 300 Jahre lang als sicher!
-	\end{itemize}
 	}
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}{.35\textwidth}
-	\centering
-	\only<4>{\resizebox{\textwidth}{!}{
-		\vigenereFigFrom
-		}}
-	\end{subfigure}
-	\begin{subfigure}{.35\textwidth}
-	\centering
-	\only<5->{\resizebox{\textwidth}{!}{
-		\vigenereFigTo
-		}}
-	\end{subfigure}
+
+	\only<2>{...zu Vigenère}
+	\only<2->{\verbTwo}
+
+	\only<3->{
+		\begin{itemize}
+			\item B=Verschiebung um 1 Position, C=Verschiebung um 2 Positionen, usw.
+			\item Galt über 300 Jahre lang als sicher!
+		\end{itemize}
+	}
+	\begin{figure}[H]
+		\centering
+		\begin{subfigure}{.35\textwidth}
+			\centering
+			\only<4>{\resizebox{\textwidth}{!}{
+					\vigenereFigFrom
+				}}
+		\end{subfigure}
+		\begin{subfigure}{.35\textwidth}
+			\centering
+			\only<5->{\resizebox{\textwidth}{!}{
+					\vigenereFigTo
+				}}
+		\end{subfigure}
 	\end{figure}
 \end{frame}
 
-%\begin{frame}{Vigenère-Tabelle}
-%\begin{figure}[H]
-%\centering
-%\resizebox{.75\linewidth}{!}{\begin{tikzpicture}
-%\foreach \i in {0,...,25} {
-%    \node at (-0.5,-\i*0.5) {\textcolor{Blue}{\strut\symbol{\numexpr`A+\i\relax}}};
-%    \node at (\i*0.5,0.5) {\textcolor{Red}{\strut\symbol{\numexpr`A+\i\relax}}};
-%  \foreach \j in {0,...,25} {
-%    \edef\k{\ifnum\numexpr\i+\j\relax>25
-%        \the\numexpr\i+\j-26\relax
-%      \else
-%        \the\numexpr\i+\j\relax
-%      \fi}
-%  \node[draw,minimum size=0.5cm,inner sep=0pt]
-%    at (\i*0.5,-\j*0.5) {\strut\symbol{\numexpr`A+\k\relax}};
-%  }
-%}
-%\node[draw,minimum size=0.5cm,inner sep=0pt,fill=Green!20] at (5.0,-2.0) {\textcolor{Green}{O}};
-%\node at (6.5,1.2) {\textcolor{Red}{Schlüsselbuchstabe}};
-%\node[rotate = 90] at (-1.2,-6.5)  {\textcolor{Blue}{Klartextbuchstabe}};
-%\end{tikzpicture}}
-%\end{figure}
-%\end{frame}
+\begin{frame}{Blaise de Vigenère}
+	\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, boxrule=0.8pt, enhanced, left=2mm, right=2mm, top=1mm, bottom=1mm, box align=base, title=Blaise de Vigenère,text width=.8\textwidth]
+		\begin{minipage}{0.4\textwidth}
+			\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/blaise-de-vigenere.jpg}
+			\footnotesize \href{https://de.wikipedia.org/wiki/Blaise_de_Vigenère}{Quelle}
 
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.56\textwidth}
+			\begin{itemize}[<+->]
+				\item Vigenère-Verschlüsselung nach dem französischen Diplomat und Kryptograf Blaise de Vigenère (1523–1596).
+				\item Galt über 300 Jahre lang (bis ca. 1863) als unbrechbar!
+			\end{itemize}
+		\end{minipage}
+	\end{tcolorbox}
+\end{frame}
 
 \begin{frame}[label=vigenere2]{Vigenère \emoji{fleur-de-lis}}
 	\begin{figure}[H]
-	\resizebox{.5\textwidth}{!}{
+		\resizebox{.5\textwidth}{!}{
 			\vigenereFigTo
-			}
+		}
 	\end{figure}
 	\only<2->{
-	\begin{align*}
-		    h_{Geheimtext}(O) &= \frac{h_{Klartext}(E)+h_{Klartext}(K)+h_{Klartext}(Q)}{3} \\
-		    \uncover<3->{&= \frac{17.7\%+1.4\%+0.01\%}{3}=6.4\%}
+		\begin{align*}
+			h_{Geheimtext}(O) & = \frac{h_{Klartext}(E)+h_{Klartext}(K)+h_{Klartext}(Q)}{3} \\
+			\uncover<3->{     & = \frac{17.7\%+1.4\%+0.01\%}{3}=6.4\%}
 		\end{align*}}
 	\only<4->{$\rightarrow$ Die Häufigkeiten der Buchstaben entsprechen nun nicht mehr direkt einer Häufigkeit eines anderen Buchstabens im Originaltext!}
+\end{frame}
+
+\begin{frame}[fragile]{Verschlüsselungs- / Entschlüsselungs-Methode}
+	Wie kann man diesen Text verschlüsseln?
+	\begin{center}
+		\textcolor{blue}{\texttt{NIEMANDKANNDASLESEN}}\\
+		\textcolor{red}{\texttt{REDREDREDREDREDREDR}}\\
+	\end{center}
+
+	\pause
+	Mit 3 Caesar-Scheiben:
+	\begin{figure}[H]
+		\resizebox{\textwidth}{!}{\caesar[17]\caesar[4]\caesar[3]}
+	\end{figure}
+	\begin{center}
+		\texttt{EMHDEQUODERGRWOVWHE}\\[.5cm]
+	\end{center}
+	\pause oder...
+\end{frame}
+
+\begin{frame}[fragile, plain]
+	\newgeometry{left=0mm,right=5mm,top=5mm,bottom=5mm}
+	\begin{columns}
+		\column{.7\textwidth}
+		\begin{table}[H]
+			\centering
+			\resizebox{\linewidth}{!}{
+				\begin{tikzpicture}
+					\foreach \i in {0,...,25} {
+							\node at (-0.5,-\i*0.5) {\textcolor{Blue}{\strut\symbol{\numexpr`A+\i\relax}}};
+							\node at (\i*0.5,0.5) {\textcolor{Red}{\strut\symbol{\numexpr`A+\i\relax}}};
+							\foreach \j in {0,...,25} {
+									\edef\k{\ifnum\numexpr\i+\j\relax>25
+											\the\numexpr\i+\j-26\relax
+										\else
+											\the\numexpr\i+\j\relax
+										\fi}
+									\node[draw,minimum size=0.5cm,inner sep=0pt]
+									at (\i*0.5,-\j*0.5) {\strut\symbol{\numexpr`A+\k\relax}};
+								}
+						}
+					% \only<2->{
+					% 	\node[draw,minimum size=0.5cm,inner sep=0pt,fill=Green!20] at (5.0,-2.0) {\textcolor{Green}{O}};
+					% }
+					\only<2>{
+						% Highlight row with 'N' (row index 13)
+						\foreach \i in {0,...,25} {
+								\node[draw,minimum size=0.5cm,inner sep=0pt,fill=yellow!40]
+								at (\i*0.5,-13*0.5) {\strut\symbol{\numexpr`A+\ifnum\numexpr\i+13\relax>25 \numexpr\i+13-26\relax \else \numexpr\i+13\relax \fi\relax}};
+							}
+						% Highlight column with 'R' (column index 17)
+						\foreach \j in {0,...,25} {
+								\node[draw,minimum size=0.5cm,inner sep=0pt,fill=yellow!40]
+								at (17*0.5,-\j*0.5) {\strut\symbol{\numexpr`A+\ifnum\numexpr17+\j\relax>25 \numexpr17+\j-26\relax \else \numexpr17+\j\relax \fi\relax}};
+							}
+					}
+					\only<3>{
+						% Highlight intersection cell (row 'N', column 'R')
+						\node[draw,minimum size=0.5cm,inner sep=0pt,fill=yellow!80]
+						at (17*0.5,-13*0.5) {\strut\symbol{\numexpr`A+\ifnum\numexpr17+13\relax>25 \numexpr17+13-26\relax \else \numexpr17+13\relax \fi\relax}};
+					}
+					\node at (6.5,1.2) {\textcolor{Red}{Schlüsselbuchstabe}};
+					\node[rotate = 90] at (-1.2,-6.5)  {\textcolor{Blue}{Klartextbuchstabe}};
+				\end{tikzpicture}}
+			\caption*{Vigenère-Tabelle}
+		\end{table}
+
+		\column{.4\textwidth}
+		\small
+		\textcolor{blue}{\texttt{NIEMANDKANNDASLESEN}}
+		\textcolor{red}{\texttt{REDREDREDREDREDREDR}}
+		\texttt{EMHDEQUODERGRWOVWHE}
+	\end{columns}
+	\restoregeometry
 \end{frame}
 
 \begin{frame}{Auftrag}{Skript}
 	\begin{itemize}
 		\item \aufgabebox{1.12}
+		\item \aufgabebox{1.13}
+		\item Schnelle: Lernkontrolle auf Moodle (erste Aufgabe)
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Angriff auf Vigenère: Bekannte Schlüssellänge}
 	\begin{figure}[H]
-	\centering
-	\begin{subfigure}{.49\linewidth}
-	\centering
-	\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/caesar-freq}
-	\caption{Caesar}
-	\end{subfigure}
-	\begin{subfigure}{.49\linewidth}
-	\centering
-	\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/vigenere-freq}
-	\caption{Vigenère}
-	
-	\end{subfigure}
-%	\caption{Buchstabenhäufigkeit in einem langen Text, welcher mit unterschiedlichen Verfahren verschlüsselt wurde}
-%	\label{fig:langer-text-vig-caesar}
+		\centering
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/caesar-freq}
+			\caption{Caesar}
+		\end{subfigure}
+		\begin{subfigure}{.49\linewidth}
+			\centering
+			\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/vigenere-freq}
+			\caption{Vigenère}
+
+		\end{subfigure}
+		%	\caption{Buchstabenhäufigkeit in einem langen Text, welcher mit unterschiedlichen Verfahren verschlüsselt wurde}
+		%	\label{fig:langer-text-vig-caesar}
 	\end{figure}
 	\only<2>{
-	\textbf{Frage:} Weshalb sehen die beiden Diagramme so unterschiedlich aus?}
+		\textbf{Frage:} Weshalb sehen die beiden Diagramme so unterschiedlich aus?}
 	\only<3>{
-	\begin{figure}[H]
-	\centering
-		\resizebox{.3\textwidth}{!}{
-					\vigenereFigTo
-					}
-					\end{figure}}
+		\begin{figure}[H]
+			\centering
+			\resizebox{.3\textwidth}{!}{
+				\vigenereFigTo
+			}
+		\end{figure}}
 	\only<4>{
 		\textbf{Frage:} Würde die Buchstabenverteilung auch so aussehen, wenn man in der rechten Grafik statt allen Buchstaben nur jeder dritte Buchstabe (z.B. alle \textcolor{ForestGreen}{grünen Buchstaben}) betrachten würde?
-			
-			\texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{RGTIPKUWZAVLRQZMHRDGYTGBUFLBJHJGULGUVQOVGKIUZMTLBYHADAAGZOGAIPOJVAMYBZFLMTLQPLAOVZILVUCMTOIHAMVZEKLMKUPWULWJACNBGLZGZEC...}}}
+
+		\texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{RGTIPKUWZAVLRQZMHRDGYTGBUFLBJHJGULGUVQOVGKIUZMTLBYHADAAGZOGAIPOJVAMYBZFLMTLQPLAOVZILVUCMTOIHAMVZEKLMKUPWULWJACNBGLZGZEC...}}}
 \end{frame}
 
 \begin{frame}{Angriff auf Vigenère: Bekannte Schlüssellänge}
 	\texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{RGTIPKUWZAVLRQZMHRDGYTGBUFLBJHJGULGUVQOVGKIUZMTLBYHADAAGZOGAIPOJVAMYBZFLMTLQPLAOVZILVUCMTOIHAMVZEKLMKUPWULWJACNBGLZGZEC...}}
-			
-\foreach \cae/\fignum/\i/\colorgroup/\lettergroup in {8/0/1/ForestGreen/M,2/1/2/RoyalBlue/G,7/2/3/Crimson/L} {
-	\only<\i>{
-	$\rightarrow$ Häufigster Buchstaben in Gruppe \i: \textcolor{\colorgroup}{\lettergroup} (\emoji{key} Schlüssel?)
-	\begin{figure}[H]
-		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=.75\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/letterfreq_end_dec\fignum}}
-		\raisebox{-0.5\height}{\resizebox{.23\textwidth}{!}{\caesarreverse[\cae]}}
-	\end{figure}
-	}
-}
+
+	\foreach \cae/\fignum/\i/\colorgroup/\lettergroup in {8/0/1/ForestGreen/M,2/1/2/RoyalBlue/G,7/2/3/Crimson/L} {
+			\only<\i>{
+				$\rightarrow$ Häufigster Buchstaben in Gruppe \i: \textcolor{\colorgroup}{\lettergroup} (\emoji{key} Schlüssel?)
+				\begin{figure}[H]
+					\centering
+					\raisebox{-0.5\height}{\includegraphics[width=.75\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/letterfreq_end_dec\fignum}}
+					\raisebox{-0.5\height}{\resizebox{.23\textwidth}{!}{\caesarreverse[\cae]}}
+				\end{figure}
+			}
+		}
 \end{frame}
 
 
 
-\begin{frame}{Auftrag}{Arbeitsblatt}
+\begin{frame}{Auftrag}{Skript}
 	\begin{itemize}
-	\item Arbeitsblatt
-	\begin{itemize}
-		\item \aufgabebox{Aufgabe 1.1}
-		\item \challengebox{Aufgabe 1.2}
-	\end{itemize}
-	\item \emoji{trophy} Für Schnelle (im Skript):
-	\begin{itemize}
-		\item \aufgabebox{Aufgaben 1.12 - 1.14}
-	\end{itemize}
+		\item \aufgabebox{Aufgaben 1.14}
+		\item \aufgabebox{Aufgabe 1.15}
+		\item \challengebox{Aufgabe 1.16}
 	\end{itemize}
 \end{frame}
-
-%\begin{frame}[label=auftrag]{Auftrag}
-%	\begin{itemize}
-%		\item \aufgabebox{1.12}
-%		\item \aufgabebox{1.13}
-%		\item \aufgabebox{1.14}
-%	\end{itemize}
-%\end{frame}
