@@ -193,7 +193,7 @@ preis_rabattiert = preis_normal * (1 - rabatt_in_prozent / 100)
 	\end{figure}
 
 	\begin{myanswer}
-		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/bmr_functions/kcal_info.py}
+		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/kcal_info.py}
 	\end{myanswer}
 \end{myexercise}
 
@@ -207,7 +207,7 @@ preis_rabattiert = preis_normal * (1 - rabatt_in_prozent / 100)
 
 	Schritt 1-2 sollen so lange wiederholt werden, bis in Schritt 3  \lstinline|False| eingegeben wird.
 	\begin{myanswer}
-		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/bmr_functions/kcal_input.py}
+		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/kcal_input.py}
 	\end{myanswer}
 
 \end{mychallenge}
@@ -742,4 +742,126 @@ Gemeinsame Wahlkurse: set()
 		\leavevmode
 		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/sol_auswahl_kurse.py}
 	\end{myanswer}
+\end{myexercise}
+
+\section{Weitere Aufgaben}
+\begin{myexercise}[Notenspiegel für mehrere Personen]
+
+	Sie möchten ein Programm schreiben, das für mehrere Personen in Ihrer Klasse den Notenschnitt berechnet und prüft, ob jede Person ihr Ziel erreicht hat.
+
+	\begin{itemize}
+		\item \textbf{Teilaufgabe 1:} Schreiben Sie die Funktion \lstinline{schnitt(punkte_dict)}.
+		      \begin{itemize}
+			      \item Der Parameter \lstinline{punkte_dict} ist ein Dictionary, in dem jeder Schlüssel ein Name ist und jeder Wert eine Liste von Noten für die jeweilige Person (oder Punkten).
+			      \item Die Funktion berechnet für jede Person den Durchschnitt und gibt ein Dictionary zurück, in dem die Namen den berechneten Schnitten zugeordnet sind.
+			      \item Beispiel: \lstinline|schnitt({"Anna":[5.0,5.5,4.5,6.0],"Ben":[4.0,3.5,4.5]})|
+			            \newline Rückgabe: \lstinline|{"Anna":5.25,"Ben":4.0}|
+		      \end{itemize}
+
+		\item \textbf{Teilaufgabe 2:} Schreiben Sie die Funktion \lstinline{ziel_erreicht(schnitte, zielnote)}.
+		      \begin{itemize}
+			      \item Der Parameter \lstinline{schnitte} ist ein Dictionary mit Namen und Schnittwerten (Rückgabe von \lstinline{schnitt}).
+			      \item Der Parameter \lstinline{zielnote} ist eine Zahl, z.\,B. 4.0, die angibt, ab welchem Schnitt eine Person ihr Ziel erreicht hat.
+			      \item Die Funktion gibt ein Dictionary zurück, das für jede Person angibt, ob das Ziel erreicht wurde (\lstinline{True} oder \lstinline{False}).
+			      \item Beispiel: \lstinline|ziel_erreicht({"Anna":5.25,"Ben":4.0}, 4.5)|
+			            \newline Rückgabe: \lstinline|{"Anna":True,"Ben":False}|
+		      \end{itemize}
+	\end{itemize}
+
+	\begin{myanswer}
+		\begin{lstlisting}[language=Python]
+def schnitt(punkte_dict):
+    result = {}
+    for name in punkte_dict:
+        punkte = punkte_dict[name]
+        summe = 0
+        for p in punkte:
+            summe = summe + p
+        durchschnitt = summe / len(punkte)
+        result[name] = round(durchschnitt, 2)
+    return result
+
+def ziel_erreicht(schnitte, ziel):
+    result = {}
+    for name in schnitte:
+        wert = schnitte[name]
+        erreicht = False
+        if wert >= ziel:
+            erreicht = True
+        result[name] = erreicht
+    return result
+
+# Beispielaufruf
+noten = {"Anna":[5.0,5.5,4.5,6.0], "Ben":[4.0,3.5,4.5], "Clara":[5.0,4.5,5.0]}
+schnitte = schnitt(noten)
+print(schnitte)  # {"Anna": 5.25, "Ben": 4.0, "Clara": 4.83}
+ziele = ziel_erreicht(schnitte, 4.5)
+print(ziele)     # {"Anna": True, "Ben": False, "Clara": True}
+\end{lstlisting}
+	\end{myanswer}
+
+\end{myexercise}
+
+\begin{myexercise}
+	\begin{myexercise}[Mensa-Auswahl und Budgetprüfung]
+
+	Sie möchten ein Programm schreiben, das Ihnen hilft, passende Gerichte aus der Mensa auszuwählen und zu prüfen, ob diese Auswahl in Ihr Budget passt.
+
+	\begin{itemize}
+		\item \textbf{Teilaufgabe 1:} Schreiben Sie die Funktion \lstinline{filter_menue(menue, max_preis, nur_vegi)}.
+		      \begin{itemize}
+			      \item Der Parameter \lstinline{menue} ist eine Liste von Dictionaries, die jeweils ein Gericht mit Name, Preis und einem Wahrheitswert \lstinline{vegi} enthalten.
+			      \item Der Parameter \lstinline{max_preis} gibt den maximal erlaubten Preis pro Gericht an.
+			      \item Der Parameter \lstinline{nur_vegi} gibt an, ob nur vegetarische Gerichte erlaubt sind (mögliche Werte: \lstinline{True} oder \lstinline{False}).
+			      \item Die Funktion gibt eine Liste mit den Gerichten (als Dictionaries) zurück, welche die Bedingungen erfüllen.
+			      \item Beispiel: \lstinline|filter_menue([{"name":"Pasta","preis":9.5,"vegi":True},{"name":"Schnitzel","preis":12.0,"vegi":False}], 10.0, True)|
+			            \newline Rückgabe: \lstinline|[{"name":"Pasta","preis":9.5,"vegi":True}]|
+		      \end{itemize}
+
+		\item \textbf{Teilaufgabe 2:} Schreiben Sie die Funktion \lstinline{budget_check(gerichte, budget, tage)}.
+		      \begin{itemize}
+			      \item Der Parameter \lstinline{gerichte} ist eine Liste der gewählten Gerichte (z.\,B. Rückgabe von \lstinline{filter_menue}).
+			      \item Der Parameter \lstinline{budget} ist das verfügbare Budget für die Woche.
+			      \item Der Parameter \lstinline{tage} ist die Anzahl der Tage, an denen in der Mensa gegessen wird.
+			      \item Die Funktion berechnet die Gesamtkosten und prüft, ob das Budget ausreicht. Sie gibt ein Dictionary zurück mit den Schlüsseln \lstinline{"summe"} und \lstinline{"ok"}.
+			      \item Beispiel: \lstinline|budget_check([{"preis":9.5},{"preis":9.5},{"preis":9.5}], 30.0, 5)|
+			            \newline Rückgabe: \lstinline|{"summe":28.5,"ok":True}|
+		      \end{itemize}
+	\end{itemize}
+
+	\begin{myanswer}
+		\begin{lstlisting}[language=Python]
+def filter_menue(menue, max_preis, nur_vegi):
+    result = []
+    for gericht in menue:
+        preis = gericht["preis"]
+        vegi = gericht["vegi"]
+        if preis <= max_preis:
+            if nur_vegi == False or vegi == True:
+                result.append(gericht)
+    return result
+
+def budget_check(gerichte, budget, tage):
+    summe = 0
+    for gericht in gerichte:
+        summe = summe + gericht["preis"]
+    gesamt = summe
+    ok = False
+    if gesamt <= budget:
+        ok = True
+    result = {"summe": round(gesamt, 2), "ok": ok}
+    return result
+
+# Beispielaufruf
+menue = [{"name":"Pasta","preis":9.5,"vegi":True},
+         {"name":"Schnitzel","preis":12.0,"vegi":False}]
+auswahl = filter_menue(menue, 10.0, True)
+print(auswahl)   # [{"name":"Pasta","preis":9.5,"vegi":True}]
+check = budget_check(auswahl*3, 30.0, 5)
+print(check)     # {"summe": 28.5, "ok": True}
+\end{lstlisting}
+	\end{myanswer}
+
+\end{myexercise}
+
 \end{myexercise}
