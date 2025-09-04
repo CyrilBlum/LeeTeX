@@ -10,7 +10,7 @@ Folgende Beispiele sollen die meisten der bisher gelernten Programmier-Konzepte 
 Beide Komponenten sind schwierig abzuschätzen. Sie möchten jedoch eine erste Einschätzung Ihrer \gls{BMR} haben, indem sie einige bekannte Formeln auf sich selber anwenden und diese vergleichen.
 
 \begin{myexercise}\label{ex:bmr-simple}
-	Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel berechnen und geben Sie das Resultat auf der Konsole aus.
+	Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel zu berechnen und geben Sie das Resultat auf der Konsole aus.
 	\begin{enumerate}
 		\item Für Männer:
 		      \begin{align*}
@@ -32,7 +32,7 @@ Beide Komponenten sind schwierig abzuschätzen. Sie möchten jedoch eine erste E
 	\end{myanswer}
 \end{myexercise}
 
-Nun möchten wir zum Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zum Grundumsatz auch noch unsere Aktivitäten hinzufügen, allerdings können wir nun nicht mehr auf die Variable \texttt{bmr} zurückgreifen. Wie können wir das ändern? Indem wir sie an das Programm zurückgeben und speichern. Wichtige Änderungen gegebüber den Lösungs-Code aus \cref{ex:bmr-simple} sind in \colorbox{CornflowerBlue}{blau} umrandet.
+Nun möchten wir im Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zum Grundumsatz \textit{zusätzlich} auch noch unsere Aktivitäten hinzufügen. Allerdings können wir nun nicht mehr auf die Variable \texttt{bmr} zurückgreifen, da diese nur eine \textit{lokale} Variable ist. Wie können wir das ändern? Indem wir den Wert der Variable \texttt{bmr} per \lstinline|return| an das Hauptprogramm zurückgeben und als \textit{globale} Variable speichern (s. \cref{ex:bmr-simple}).
 
 \begin{minipage}{\linewidth}
 	\begin{figure}[H] % not really a figure, just acts as non-floating container
@@ -64,7 +64,7 @@ Nun möchten wir zum Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zu
 		\end{tikzpicture}
 	\end{figure}
 \end{minipage}
-Nun haben wir eine erste Einschätzung des \gls{BMR}. Allerdings gibt es auch noch weitere Formeln, die wir gerne berechnen möchten, um einen Vergleich der verschiedenen Methoden zu erhalten.
+Nun haben wir eine erste, grobe Einschätzung des \gls{BMR}. Allerdings gibt es auch noch weitere mögliche Formeln, mithilfe denen der \gls{BMR} berechnet werden kann. Diese möchten wir nun ebenfalls berechnen, um die unterschiedlichen Schätzungen des \gls{BMR} anhand der verschiedenen Methoden zu vergleichen.
 
 \begin{myexercise}\label{ex:bmr}
 	Schreiben Sie eine weitere Funktionen, um den \gls{BMR} anhand der Mifflin-St-Jeor-Gleichung und der Katch-McArdle-Formel zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
@@ -109,14 +109,10 @@ Nun haben wir eine erste Einschätzung des \gls{BMR}. Allerdings gibt es auch no
 	\end{myanswer}
 \end{myexercise}
 
-Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundbedarfs. Zu diesem können wir nun auch noch die Leistungsenergie hinzufügen, um den gesamten Energiebedarf zu berechnen.
+Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundumsatzes. Zum Grundumsatz können wir nun auch noch den Leistungsumsatz hinzufügen, um den gesamten theoretischen täglichen Energieumsatz in Kalorien zu berechnen.
 
 \begin{myexercise}\label{ex:leistungsumsatz}
-	Berechnen Sie Ihre Leistungsenergie anhand der Tabelle \ref{tab:kcal}, indem Sie zwei Listen erstellen:
-	\begin{enumerate}
-		\item Eine Liste für die Zeit, während der Sie täglich einer Aktivität nachgehen
-		\item Eine Liste mit dem Kalorienverbrauch pro Minute für jede dieser Aktivitäten
-	\end{enumerate}
+	Berechnen Sie Ihren Leistungsumsatz (durch Leistung benötigte Energie) anhand der Tabelle \ref{tab:kcal}.
 
 	\begin{table}[H]
 		\centering
@@ -139,7 +135,7 @@ Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundbedarfs. Zu 
 			\midrule
 			\textbf{Sprint}          & 19.0 & 21.5 & 24.0 & 26.0 & 28.0 & 30.0 & 32.5 & 34.7 & 35.6 & 39.0 \\
 		\end{tabular}
-		\caption{Kalorienverbrauch für unterschiedliche Aktivitäten, pro Minute}
+		\caption{Kalorienverbrauch für unterschiedliche Aktivitäten, pro Minute, in Abhängigkeit des Körpergewichts}
 		\label{tab:kcal}
 	\end{table}
 	Wenn z.B. eine 80 kg schwere Person 1 Stunde lang rudert und 20 Minuten spaziert wären die Listen wie folgt:
@@ -147,6 +143,12 @@ Nun haben wir eine etwas verlässlichere Einschätzung unseres Grundbedarfs. Zu 
 		l_zeit = [60, 20] # Zeit in Minuten
 		l_kcal = [16.5, 6] # Kalorien pro Aktivität
 	\end{lstlisting}
+	Erstellen Sie zwei Listen:
+	\begin{enumerate}
+		\item Eine Liste für die Zeit, während der Sie täglich einer Aktivität nachgehen
+		\item Eine Liste mit dem Kalorienverbrauch pro Minute für jede dieser Aktivitäten
+	\end{enumerate}
+
 	Schreiben Sie eine Python-Funktion \lstinline|berechne_leistungsumsatz|, um Ihren Leistungsumsatz zu berechnen. Das erwartete Resultat für das Beispiel hier wäre: \lstinline|1110| (= Summe von \lstinline|[990, 120]|). Das Resultat soll an das Hauptprogramm zurückgegeben und in einer Variable \texttt{kalorienverbrauch} gespeichert werden.
 	\begin{myanswer}
 		\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K08_Anwendungen/bmr_functions/leistungsumsatz.py}
