@@ -17,13 +17,8 @@ def grundumsatz(gewicht, groesse, alter, geschlecht):
     elif geschlecht == 'frau':
         bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
 
-    print("Der Grundumsatz beträgt:", round(bmr, 2), "Kalorien")
-
-# Beispiel:
-gewicht = 75  # kg
-groesse = 180  # cm
-alter = 30  # jahre
-geschlecht = 'mann'
+    return bmr
 
 # berechne grundumsatz
-grundumsatz(gewicht, groesse, alter, geschlecht)
+bmr = grundumsatz(75, 180, 30, "mann")
+print("Der Grundumsatz beträgt:", round(bmr, 2), "Kalorien")

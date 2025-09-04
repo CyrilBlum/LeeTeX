@@ -7,7 +7,7 @@ def berechne_leistungsumsatz(l_zeit, l_kcal):
     - l_kcal: Liste des Kalorienverbrauchs pro Minute für jede Aktivität
 
     Rückgabe:
-    - Liste mit dem Kalorienverbrauch pro Aktivität
+    - Gesamter Leistungsumsatz (also die Summe des gesamten Kalorienverbrauchs über alle Aktivitäten)
     """
     kalorienverbrauch = 0
     i = 0
@@ -20,8 +20,8 @@ def berechne_leistungsumsatz(l_zeit, l_kcal):
 
 
 # Beispiel
-#l_zeit = [60, 20]  # Zeit in Minuten
-#l_kcal = [16.5, 6]  # Kalorien pro Minute
+l_zeit = [60, 20]  # Zeit in Minuten
+l_kcal = [16.5, 6]  # Kalorien pro Minute
 
-#kalorienverbrauch = berechne_leistungsumsatz(l_zeit, l_kcal)
-#print(kalorienverbrauch)  # Erwartetes Ergebnis: 1110
+kalorienverbrauch = berechne_leistungsumsatz(l_zeit, l_kcal)
+print(kalorienverbrauch)  # Erwartetes Ergebnis: 1110

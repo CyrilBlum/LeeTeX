@@ -10,7 +10,7 @@ Folgende Beispiele sollen die meisten der bisher gelernten Programmier-Konzepte 
 Beide Komponenten sind schwierig abzuschätzen. Sie möchten jedoch eine erste Einschätzung Ihrer \gls{BMR} haben, indem sie einige bekannte Formeln auf sich selber anwenden und diese vergleichen.
 
 \begin{myexercise}\label{ex:bmr-simple}
-	Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der Harris-Benedict-Formel zu berechnen und geben Sie das Resultat auf der Konsole aus.
+	Schreiben Sie eine Python-Funktion, um den Grundumsatz anhand der \textbf{Harris-Benedict-Formel} zu berechnen und geben Sie das Resultat per \lstinline|return| zurück.
 	\begin{enumerate}
 		\item Für Männer:
 		      \begin{align*}
@@ -32,44 +32,12 @@ Beide Komponenten sind schwierig abzuschätzen. Sie möchten jedoch eine erste E
 	\end{myanswer}
 \end{myexercise}
 
-Nun möchten wir im Code, den Sie in \cref{ex:bmr-simple} geschrieben haben, zum Grundumsatz \textit{zusätzlich} auch noch unsere Aktivitäten hinzufügen. Allerdings können wir nun nicht mehr auf die Variable \texttt{bmr} zurückgreifen, da diese nur eine \textit{lokale} Variable ist. Wie können wir das ändern? Indem wir den Wert der Variable \texttt{bmr} per \lstinline|return| an das Hauptprogramm zurückgeben und als \textit{globale} Variable speichern (s. \cref{ex:bmr-simple}).
-
-\begin{minipage}{\linewidth}
-	\begin{figure}[H] % not really a figure, just acts as non-floating container
-
-		\begin{lstlisting}
-		def grundumsatz(gewicht, groesse, alter, geschlecht):
-			if geschlecht == 'mann':
-				bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
-			elif geschlecht == 'frau':
-				bmr = 447.593 + (9.247 * gewicht) + (3.098 * groesse) - (4.330 * alter)
-			
-			(*@\colorbox{CornflowerBlue}{return b\tikzmark{arrowFrom}mr}@*) # gib den bmr an das Programm zurück
-		
-		# Beispiel:
-		gewicht = 75  # kg
-		groesse = 180  # cm
-		alter = 30  # jahre
-		geschlecht = 'mann'
-		
-		# berechne grundumsatz(*@\colorbox{CornflowerBlue}{und speichere das Resultat in einer neuen Variable resultat}@*)
-		(*@\colorbox{CornflowerBlue}{resu\tikzmark{arrowTo}ltat = }@*) grundumsatz(gewicht, groesse, alter, geschlecht)
-		(*@\colorbox{CornflowerBlue}{print("Der Grundumsatz beträgt:", round(resultat, 2), "Kalorien")}@*)
-	\end{lstlisting}
-
-
-		\begin{tikzpicture}[overlay,remember picture]
-			% Wert zurückgeben
-			\draw[red,-stealth] (arrowFrom.north) to[bend left] node[right, fill=RoyalBlue,text=white,rounded corners] {Wert Zurückgeben} (arrowTo);
-		\end{tikzpicture}
-	\end{figure}
-\end{minipage}
-Nun haben wir eine erste, grobe Einschätzung des \gls{BMR}. Allerdings gibt es auch noch weitere mögliche Formeln, mithilfe denen der \gls{BMR} berechnet werden kann. Diese möchten wir nun ebenfalls berechnen, um die unterschiedlichen Schätzungen des \gls{BMR} anhand der verschiedenen Methoden zu vergleichen.
+Wir haben nun eine erste, grobe Einschätzung des \gls{BMR}. Allerdings gibt es auch noch weitere mögliche Formeln, mithilfe denen der \gls{BMR} berechnet werden kann. Diese möchten wir nun ebenfalls berechnen, um die unterschiedlichen Schätzungen des \gls{BMR} anhand der verschiedenen Methoden zu vergleichen.
 
 \begin{myexercise}\label{ex:bmr}
-	Schreiben Sie eine weitere Funktionen, um den \gls{BMR} anhand der Mifflin-St-Jeor-Gleichung und der Katch-McArdle-Formel zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
+	Schreiben Sie eine weitere Funktionen, um den \gls{BMR} anhand der \textbf{Mifflin-St-Jeor-Gleichung} und der \textbf{Katch-McArdle-Formel} zurückzugeben und berechnen Sie den Durchschnitt aller drei Formeln.
 	\begin{enumerate}
-		\item Mifflin-St-Jeor-Gleichung:
+		\item \textbf{Mifflin-St-Jeor-Gleichung}:
 		      \begin{enumerate}
 			      \item Männer:
 			            \begin{align*}
@@ -86,21 +54,17 @@ Nun haben wir eine erste, grobe Einschätzung des \gls{BMR}. Allerdings gibt es 
 				                       & \quad - 161
 			            \end{align*}
 		      \end{enumerate}
-		\item Katch-McArdle-Formel:
-		      \begin{enumerate}
-			      \item Grundformel:
+		\item \textbf{Katch-McArdle-Formel} (gleich für Männer sowie Frauen):
+		      
 			            \begin{align*}
 				            \text{BMR} & = 370                                  \\
 				                       & \quad + (21.6 \times \text{FFM in kg})
 			            \end{align*}
-
-			      \item Fett-freie Masse (in kg):
+						Wobei die fettfreie Masse (FFM) zuerst berechnet werden muss:
 			            \begin{align*}
 				            \text{FFM} & = \text{Körpergewicht (kg)}                \\
 				                       & \quad \times (1 - \text{Körperfettanteil})
 			            \end{align*}
-
-		      \end{enumerate}
 
 	\end{enumerate}
 
