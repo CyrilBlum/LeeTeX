@@ -10,7 +10,7 @@ def grundumsatz(gewicht, groesse, alter, geschlecht):
     - geschlecht: 'mann' oder 'frau'
     
     Rückgabe:
-    - BMR: Grundumsatz in Kalorien
+    - BMR: Grundumsatz in Kilokalorien
     """
     if geschlecht == 'mann':
         bmr = 88.362 + (13.397 * gewicht) + (4.799 * groesse) - (5.677 * alter)
@@ -21,4 +21,4 @@ def grundumsatz(gewicht, groesse, alter, geschlecht):
 
 # berechne grundumsatz
 bmr = grundumsatz(75, 180, 30, "mann")
-print("Der Grundumsatz beträgt:", round(bmr, 2), "Kalorien")
+print(f"Der Grundumsatz beträgt {bmr:.2f} Kilokalorien")

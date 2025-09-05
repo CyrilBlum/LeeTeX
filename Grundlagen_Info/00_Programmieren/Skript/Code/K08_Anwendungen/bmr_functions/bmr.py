@@ -23,11 +23,5 @@ def durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil):
     return durchschnitt
 
 # Beispiel
-gewicht = 75  # kg
-groesse = 180  # cm
-alter = 30  # jahre
-geschlecht = 'mann'
-koerperfettanteil = 0.12  # 12%
-
-durchschnitt = durchschnitt_bmr(gewicht, groesse, alter, geschlecht, koerperfettanteil)
-print("Der durchschnittliche Grundumsatz beträgt:", round(durchschnitt, 2), "Kalorien")
+durchschnitt = durchschnitt_bmr(75, 180, 30, "mann", .12)
+print(f"Der durchschnittliche Grundumsatz beträgt {durchschnitt:.2f} Kilokalorien")
