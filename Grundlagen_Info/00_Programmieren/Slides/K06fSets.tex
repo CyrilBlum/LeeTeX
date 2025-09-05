@@ -1,0 +1,142 @@
+\input{Grundlagen_Info/00_Programmieren/Skript/Macros}
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python}
+
+\title[Programmieren]{Programmieren: Sets}
+
+\subtitle{Sets}
+
+\author[Wendl, Cyril] % (optional)
+{Cyril Wendl}
+
+\institute[KLW] % (optional)
+{
+    Fachschaft Informatik\\
+    Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{Logos/LeeLogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}[fragile]{Mengen: \textbf{Vereinigung}}
+
+    \begin{itemize}
+        \item $A$ = Freunde von Anna: \emoji{cowboy-hat-face}, \emoji{partying-face}, \emoji{disguised-face}
+        \item $B$ = Freunde von Ben: \emoji{face-with-monocle}, \emoji{cowboy-hat-face}, \emoji{face-screaming-in-fear}
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \draw[filled] \firstcircle node {\emoji{partying-face}\emoji{disguised-face}}
+            \secondcircle node {\emoji{face-screaming-in-fear}\emoji{face-with-monocle}};
+            \node[anchor=south] at (current bounding box) {\emoji{cowboy-hat-face}};
+            \node[anchor=south] at (current bounding box.north) {$A \cup B$};
+        \end{tikzpicture}
+    \end{figure}
+    \begin{center}
+        $A \cup B$ = \{\emoji{cowboy-hat-face}, \emoji{partying-face}, \emoji{disguised-face}, \emoji{face-with-monocle}, \emoji{face-screaming-in-fear}\}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Mengen: \textbf{Schnittmenge}}
+
+    \begin{itemize}
+        \item $A$ = Freunde von Anna: \emoji{cowboy-hat-face}, \emoji{partying-face}, \emoji{disguised-face}
+        \item $B$ = Freunde von Ben: \emoji{face-with-monocle}, \emoji{cowboy-hat-face}, \emoji{face-screaming-in-fear}
+    \end{itemize}
+    \begin{figure}[H]
+
+        \centering
+        \begin{tikzpicture}
+            \begin{scope}
+                \clip \firstcircle;
+                \fill[filled] \secondcircle;
+            \end{scope}
+            \draw[outline] \firstcircle node {\emoji{partying-face}\emoji{disguised-face}};
+            \draw[outline] \secondcircle node {\emoji{face-screaming-in-fear}\emoji{face-with-monocle}};
+            \node[anchor=south] at (current bounding box) {\emoji{cowboy-hat-face}};
+            \node[anchor=south] at (current bounding box.north) {$A \cap B$};
+        \end{tikzpicture}
+    \end{figure}
+    \begin{center}
+        $A \cap B$ = \{\emoji{cowboy-hat-face}\}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Mengen: \textbf{Differenz}}
+
+    \begin{itemize}
+        \item $A$ = Freunde von Anna: \emoji{cowboy-hat-face}, \emoji{partying-face}, \emoji{disguised-face}
+        \item $B$ = Freunde von Ben: \emoji{face-with-monocle}, \emoji{cowboy-hat-face}, \emoji{face-screaming-in-fear}
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \begin{scope}
+                \clip \firstcircle;
+                \draw[filled, even odd rule] \firstcircle node {\emoji{partying-face}\emoji{disguised-face}}
+                \secondcircle;
+            \end{scope}
+            \draw[outline] \firstcircle;
+            \draw[outline] \secondcircle node {\emoji{face-screaming-in-fear}\emoji{face-with-monocle}};
+            \node[anchor=south] at (current bounding box) {\emoji{cowboy-hat-face}};
+            \node[anchor=south] at (current bounding box.north) {$A \setminus B$};
+        \end{tikzpicture}
+    \end{figure}
+    \begin{center}
+        $A \setminus B$ = \{\emoji{partying-face}, \emoji{disguised-face}\}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Listen zu Mengen umwandeln und Mengenoperationen}
+    \begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize]
+liste_a = ["Anna", "Ben", "Clara", "Anna"]
+liste_b = ["Ben", "David", "Eva"]
+
+# Listen zu Mengen umwandeln
+set_a = set(liste_a)
+set_b = set(liste_b)
+
+# Mengenoperationen
+vereinigung = set_a | set_b   # Alle Namen aus beiden Listen
+schnittmenge = set_a & set_b  # Namen in beiden Listen
+differenz = set_a - set_b     # Namen nur in liste_a
+
+print("Vereinigung:", vereinigung)
+print("Schnittmenge:", schnittmenge)
+print("Differenz:", differenz)
+    \end{lstlisting}
+    \begin{itemize}
+        \item Mit \lstinline|set(liste)| wird eine Liste in eine Menge umgewandelt.
+        \item Mengenoperationen: \lstinline||| (=Vereinigung), \lstinline|&| (=Schnittmenge), \lstinline|-| (=Schnittmenge)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Arbeit mit Sets}
+    \lstinputlisting[basicstyle=\ttfamily\scriptsize]{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/example_sets_fruit.py}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Aufgaben}
+    \textbf{Programmier-Skript, Kapitel 6.3}
+    \begin{itemize}
+        \item \readbox{Beispiel 6.15}
+        \item \aufgabebox{6.28}
+        \item Lernkontrolle ``Kapitel 6: Sets'' auf Moodle
+        \item \emoji{trophy} Challenge:
+              \begin{itemize}
+                  \item \aufgabebox{6.29-6.30}
+                  \item \aufgabebox{Weitere Moodle-Aufgaben}
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+

@@ -1,5 +1,5 @@
 schueler_a = ["Mathe", "Englisch", "Informatik", "Biologie"]
-schueler_b = ["Mathe", "Englisch", "Kunst", "Musik"]
+schueler_b = ["Mathe", "Englisch", "Informatik", "Kunst", "Musik"]
 schueler_c = ["Informatik", "Englisch", "Sport", "Geschichte"]
 
 pflichtkurse = ["Mathe", "Englisch"]
