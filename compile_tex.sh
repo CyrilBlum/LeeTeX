@@ -122,6 +122,10 @@ article_topics=(
     # Ergänzungsfach Informatik
     "Ergaenzungsfach_Ausschreibungstext:EF/Ausschreibung/ausschreibungstext.tex"
 
+    # Freifach Applied Data Analysis
+    "Freifach-GitHub:FF/ADA/tutorial_git.tex"
+    "Freifach-GitHub:FF/ADA/Auftrag.tex"
+
     # Various
     "Semesterplanung:Grundlagen_Info/Various/Semesterplanung"
     "Benotung:Grundlagen_Info/Various/Benotung"
