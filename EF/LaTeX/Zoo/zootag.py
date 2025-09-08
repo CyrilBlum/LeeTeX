@@ -11,7 +11,7 @@ labels = [
     "Forschung & Naturschutz",
     "Tierfutter & tierärztliche Betreuung",
 ]
-values = [78000, 22000, 21000, 7000, 7000, 4000, 4000]
+values = [190000, 22000, 21000, 7000, 7000, 4000, 4000]
 
 # ==== Pfad vorbereiten ====
 # Ordner, in dem das Skript liegt
@@ -26,6 +26,4 @@ plt.title("Ausgaben pro Tag (Total: CHF 143'000.–)", fontsize=14)
 
 # ==== Speichern ====
 plt.savefig(output_file, bbox_inches="tight")
-print(f"✅ PDF gespeichert unter: {output_file}")
-
-plt.show()
+print(f"PDF gespeichert unter: {output_file}")
