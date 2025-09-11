@@ -22,7 +22,7 @@ gemeinsam_alle = set_a & set_b & set_c
 # 3. Exklusive Kurse von Schüler A
 exklusiv_a = set_a - (set_b | set_c)
 
-# 4. Pflichtkurse, die jemand NICHT gewählt hat
+# 4. Pflichtkurse, die mindestens jemand NICHT gewählt hat
 nicht_bei_allen = set_pflicht - (set_a & set_b & set_c)
 
 # 5. Wahlkurse, die alle drei gewählt haben
