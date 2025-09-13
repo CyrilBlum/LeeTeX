@@ -1,0 +1,150 @@
+\lstset{style=Python}
+\title{Problemformulierung: Netzwerke (Chat-Kommunikation über Relay-Server)}
+\author{Cyril Wendl, Fachschaft Informatik}
+\date{\today}
+\begin{document}
+\maketitle
+
+
+\section*{Problemformulierung}
+
+Die Lernenden begegnen täglich Formen digitaler Kommunikation – sei es über WhatsApp, Instagram oder Online-Games. Doch wie Nachrichten in Sekundenbruchteilen von einem Gerät zum anderen gelangen, bleibt für sie ein „Black Box“-Phänomen. Das Problem, an dem sie sich abarbeiten sollen, lautet daher:
+
+\begin{quote}
+    \textit{„Wie ist es möglich, dass ich in Echtzeit mit anderen über das Internet kommunizieren kann?“}
+\end{quote}
+
+\textbf{Gegenwartsbedeutung:} Jugendliche nutzen Chats, Videocalls oder Multiplayer-Spiele selbstverständlich, ohne die dahinterliegende Infrastruktur zu verstehen. Durch die Problematisierung entsteht ein Bezug zu ihrer unmittelbaren Lebenswelt und ein Bewusstsein für Abhängigkeiten von Netzinfrastrukturen.
+
+\textbf{Zukunftsbedeutung:} Kenntnisse über Netzwerke sind nicht nur für Informatik-Studiengänge oder IT-Berufe relevant, sondern allgemein für eine reflektierte Teilhabe an der digitalen Gesellschaft: Wer versteht, wie Kommunikation technisch abläuft, kann auch Fragen von Datenschutz, Netzneutralität und digitaler Souveränität kompetenter einordnen.
+
+\textbf{Exemplarische Bedeutung:} Am Beispiel einer Chat-Kommunikation werden grundlegende Konzepte der Informatik sichtbar: IP-Adressen, Ports und Client-Server-Strukturen lassen sich am „alltäglichen Problem“ einer Chat-Nachricht erschließen und können auf andere digitale Dienste (E-Mail, Streaming, Online-Banking) übertragen werden.
+
+Das formulierte Problem ermöglicht es den Lernenden, technische Funktionsprinzipien mit ihrer eigenen Lebenswelt zu verbinden und diese kritisch zu reflektieren. Damit entspricht es sowohl den Prinzipien problemorientierten Lernens als auch Klafkis Anspruch auf eine didaktische Analyse.\clearpage
+
+% --- Lernaufgabe und didaktische Struktur ---
+\section*{Lernaufgabe: Chat-Kommunikation in Echtzeit}
+\textbf{Ziel:} Am Ende soll ein funktionsfähiges Programm stehen, mit dem die Lernenden in Echtzeit Nachrichten austauschen können.
+
+\textbf{Problembezug:} \enquote{Wie kann ich mit einer anderen Person eine Nachricht über das Internet austauschen?}
+
+\begin{table}[H]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{p{0.22\linewidth}|p{0.22\linewidth}|p{0.22\linewidth}|p{0.22\linewidth}}
+        \textbf{Learning Task (Komplexe Lernaufgabe)} & \textbf{Unterstützende Informationen} & \textbf{Just-in-time Informationen} & \textbf{Part-task Practice (Teilübungen)} \\
+        \midrule
+        Entwickeln Sie in Kleingruppen eine \textbf{funktionierende Chat-Anwendung} in Python, die über einen Relay-Server läuft. Am Ende sollen die Gruppen miteinander in Echtzeit Nachrichten austauschen können. &
+        \begin{itemize}
+            \item Visualisierung der Client-Server-Architektur (z. B. Whiteboard-Skizze)
+            \item Einführung in grundlegende Begriffe: IP-Adresse, Port, Socket
+            \item Analogie: \enquote{Postsystem} (Adresse $\rightarrow$ Empfänger)
+            \item Infoblätter / Moodle-Materialien mit Hintergrundwissen
+        \end{itemize} &
+        \begin{itemize}
+            \item Code-Snippets für \lstinline|socket.connect|, \lstinline|send|, \lstinline|recv|
+            \item Anleitung zur Fehlerbehandlung bei Verbindungsabbrüchen
+            \item Debugging-Tipps, wenn Nachrichten nicht ankommen
+            \item Schritt-für-Schritt-Hilfekarten (nur bei Bedarf zugänglich)
+        \end{itemize} &
+        \begin{itemize}
+            \item \textbf{Erste Übung:} Zwei Python-Skripte auf demselben Rechner verbinden
+            \item Übung: Eine \enquote{Hallo}-Nachricht an den Server senden und Antwort empfangen
+            \item Fehlerübungen: Verbindungsfehler identifizieren und beheben
+            \item Mini-Tests zu IP/Port-Adressen und deren Bedeutung
+        \end{itemize}
+    \end{tabular}
+    \caption{Didaktische Struktur der Lernaufgabe: Chat-Kommunikation}
+\end{table}
+
+\subsection*{Part-task Practice 1: Lokale Verbindung}
+% ... weitere Teilübungen können hier ergänzt werden ...
+\begin{myexercise}
+    \textbf{Part-task Practice 1: Lokale Verbindung}
+
+    \textbf{Aufgabe:} Schreiben Sie zwei Python-Programme, \texttt{server.py} und \texttt{client.py}, die auf demselben Rechner laufen. Der Client verbindet sich mit dem Server und schickt eine kurze Nachricht („Hallo“). Der Server empfängt die Nachricht und gibt sie auf der Konsole aus.
+
+    \textbf{Verwenden Sie folgende Grundstruktur:}
+
+    \begin{lstlisting}[caption={server.py}]
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("localhost", 12345))   # lokale IP, Port 12345
+server.listen(1)
+print("Warte auf Verbindung...")
+
+conn, addr = server.accept()
+print("Verbunden mit:", addr)
+
+nachricht = conn.recv(1024).decode()
+print("Empfangen:", nachricht)
+
+conn.close()
+server.close()
+\end{lstlisting}
+
+    \begin{lstlisting}[caption={client.py}]
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("localhost", 12345))
+client.send("Hallo".encode())
+
+client.close()
+\end{lstlisting}
+
+Lassen Sie \texttt{server.py} auf der Konsole laufen und führen Sie dann \texttt{client.py} aus, indem Sie in VS Code auf den Dropdown-Button rechts vom Run-Button clicken und ``Run Python File in Dedicated Terminal'' anklicken.
+
+Erweitern Sie nun Ihr Programm, indem der Client eine Nachricht schickt, und der Server antwortet mit ``''\texttt{Nachricht erhalten!}''.
+\begin{myanswer}
+\begin{lstlisting}[caption={server.py}]
+    # server.py
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("localhost", 12345))
+server.listen(1)
+print("Warte auf Verbindung...")
+
+conn, addr = server.accept()
+print("Verbunden mit:", addr)
+
+nachricht = conn.recv(1024).decode()
+print("Empfangen:", nachricht)
+
+conn.send("Nachricht erhalten!".encode())
+
+conn.close()
+server.close()
+\end{lstlisting}
+\begin{lstlisting}[caption={client.py}]
+    # client.py
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("localhost", 12345))
+client.send("Hallo Server!".encode())
+
+antwort = client.recv(1024).decode()
+print("Antwort vom Server:", antwort)
+
+client.close()
+\end{lstlisting}
+\end{myanswer}
+\end{myexercise}
+\begin{mychallenge}
+Versuchen Sie, den Client zu starten, bevor der Server läuft. Welche Fehlermeldung erhalten Sie? Wie können Sie das Problem beheben?
+\end{mychallenge}
+
+\begin{myexercise}[Part-task Practice 2: Eigene IP-Adresse verwenden]
+\textbf{Aufgabe:} Ermitteln Sie Ihre eigene IP-Adresse im lokalen Netzwerk (z. B. über den Befehl \texttt{ipconfig} in der Windows-Eingabeaufforderung oder \texttt{ifconfig} im Terminal auf macOS/Linux). Passen Sie die IP-Adresse in \texttt{client.py} und \texttt{server.py} entsprechend an, sodass der Server auf Ihrer lokalen IP-Adresse lauscht und der Client sich mit dieser verbindet.
+
+\textbf{Hinweis:} Stellen Sie sicher, dass beide Programme auf demselben Rechner ausgeführt werden, um die Verbindung zu testen.
+
+\textbf{Zusatzaufgabe:} Versuchen Sie, den Server auf einer anderen Maschine im selben Netzwerk zu starten und den Client von Ihrer Maschine aus zu verbinden. Welche Änderungen müssen Sie vornehmen?
+    
+\end{myexercise}
+
+\end{document}
