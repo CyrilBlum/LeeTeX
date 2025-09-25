@@ -5,7 +5,7 @@ class Buch:
         self.seitenzahl = seitenzahl
     
     def info(self):
-        print(f'"{self.titel}" von {self.autor}, {self.seitenzahl} Seiten')
+        print(f'{self.titel}: Buch von {self.autor}, {self.seitenzahl} Seiten')
 
 # Zwei Buchobjekte erstellen
 buch1 = Buch("Harry Potter und der Stein der Weisen", "J.K. Rowling", 335)
