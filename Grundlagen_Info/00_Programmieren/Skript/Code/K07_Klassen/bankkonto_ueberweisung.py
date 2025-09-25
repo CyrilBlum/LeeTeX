@@ -16,21 +16,22 @@ class Bankkonto:
             if betrag <= self.kontostand:
                 self.kontostand -= betrag
                 print(f"CHF {betrag} abgehoben. Neuer Kontostand: CHF {self.kontostand}")
-                return True
             else:
                 print("Fehler: Nicht genügend Guthaben")
-                return False
         else:
             print("Fehler: Betrag muss positiv sein")
-            return False
     
     def kontoinfo(self):
-        return f"Konto {self.kontonummer} ({self.inhaber}): CHF {self.kontostand}"
+        print(f"Konto {self.kontonummer} ({self.inhaber}): CHF {self.kontostand}")
     
     def ueberweisen(self, zielkonto, betrag):
-        if self.abheben(betrag):
+        if betrag <= self.kontostand:
+            self.abheben(betrag)
             zielkonto.einzahlen(betrag)
             print(f"Überweisung von CHF {betrag} an {zielkonto.inhaber} erfolgreich")
+        else:
+            print(f"Fehler: {self.inhaber} hat nicht genügend Guthaben")
+
 
 # Test
 konto1 = Bankkonto("CH123", "Anna", 1000)
@@ -38,6 +39,7 @@ konto2 = Bankkonto("CH456", "Ben", 500)
 
 print(konto1.kontoinfo())
 print(konto2.kontoinfo())
-konto1.ueberweisen(konto2, 300)
+konto1.ueberweisen(konto2, 300) # Überweisung, sollte klappen
+konto1.ueberweisen(konto2, 800) # erneute Überweisung, sollte fehlschlagen
 print(konto1.kontoinfo())
 print(konto2.kontoinfo())

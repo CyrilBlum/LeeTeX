@@ -22,13 +22,13 @@ class Bankkonto:
             print("Fehler: Betrag muss positiv sein")
     
     def kontoinfo(self):
-        return f"Konto {self.kontonummer} ({self.inhaber}): CHF {self.kontostand}"
+        print(f"Konto {self.kontonummer} ({self.inhaber}): CHF {self.kontostand}")
 
 # Objekt erstellen
 mein_konto = Bankkonto("CH123456", "Lea Müller", 1000)
 
 # Methoden aufrufen
-print(mein_konto.kontoinfo())
+mein_konto.kontoinfo()
 mein_konto.einzahlen(500)
 mein_konto.abheben(200)
-print(mein_konto.kontoinfo())
+mein_konto.kontoinfo()
