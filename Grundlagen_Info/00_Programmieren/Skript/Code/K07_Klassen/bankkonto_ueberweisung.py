@@ -1,5 +1,5 @@
 class Bankkonto:
-    def __init__(self, kontonummer, inhaber, kontostand=0):
+    def __init__(self, kontonummer, inhaber, kontostand):
         self.kontonummer = kontonummer
         self.inhaber = inhaber
         self.kontostand = kontostand
@@ -37,9 +37,9 @@ class Bankkonto:
 konto1 = Bankkonto("CH123", "Anna", 1000)
 konto2 = Bankkonto("CH456", "Ben", 500)
 
-print(konto1.kontoinfo())
-print(konto2.kontoinfo())
+konto1.kontoinfo()
+konto2.kontoinfo()
 konto1.ueberweisen(konto2, 300) # Überweisung, sollte klappen
 konto1.ueberweisen(konto2, 800) # erneute Überweisung, sollte fehlschlagen
-print(konto1.kontoinfo())
-print(konto2.kontoinfo())
+konto1.kontoinfo()
+konto2.kontoinfo()

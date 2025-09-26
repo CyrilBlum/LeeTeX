@@ -1,5 +1,5 @@
 class Bankkonto:
-    def __init__(self, kontonummer, inhaber, kontostand=0):
+    def __init__(self, kontonummer, inhaber, kontostand):
         self.kontonummer = kontonummer
         self.inhaber = inhaber
         self.kontostand = kontostand
