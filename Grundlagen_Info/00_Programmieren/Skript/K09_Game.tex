@@ -1,0 +1,137 @@
+\chapter{Game}\label{ch:K09_Game}
+
+\section{Einführung}
+In diesem Kapitel entwickeln wir Schritt für Schritt ein eigenes 2D-Game mit \tib{pygame-ce}. \tib{pygame-ce} ist eine moderne, Community-gepflegte Variante von Pygame und wird genau gleich importiert (\lstinline|import pygame as pg|). Sie eignet sich hervorragend, um in Python Grafiken, Animationen, Sound und Interaktionen umzusetzen.
+
+Essentielle Bausteine eines Games sind:
+\begin{itemize}
+  \item Fenster (Auflösung, Titel) und Zeichenfläche (\enquote{screen})
+  \item Game-Loop mit \textbf{Ereignissen} (Tastatur, Maus) und \textbf{Zeitsteuerung} (\gls{FPS}/\enquote{refresh rate})
+  \item Zeichnen: Hintergrund, Farben, geometrische Figuren, Bilder (\enquote{Sprites})
+  \item \textbf{Zustände} und \textbf{Objekte} (z.\,B. Spieler als \lstinline|Rect|), \textbf{Bewegungen} und \textbf{Kollisionen}
+  \item \textbf{Medien}: Bilder, Icon, Schrift, Sound/Musik
+\end{itemize}
+
+\begin{mydefinition}[Game-Loop]
+Ein Game läuft in einer Endlosschleife, bis das Programm beendet wird. In jeder Runde werden der Eingabestatus gelesen (\enquote{Events}), der interne Zustand aktualisiert (\enquote{Update}) und die Szene gezeichnet (\enquote{Render}). Eine \textbf{Clock} (=Uhr) begrenzt die Bildwiederholrate (\gls{FPS}), sodass das Game stabil und gleichmässig läuft.
+\end{mydefinition}
+
+Um \tib{pygame-ce} in VS Code zu installieren, gehen Sie wie folgt vor:
+
+\begin{enumerate}
+    \item Öffnen Sie das Terminal in VS Code (\enquote{Terminal} $\rightarrow$ \enquote{New Terminal}).
+    \item (Optional) Erstellen Sie ein virtuelles Environment:\\
+        \lstinline|python -m venv venv|\\
+        Aktivieren Sie das venv:\\
+        \textbf{Windows:} \lstinline|venv\Scripts\activate|\\
+        \textbf{macOS:} \lstinline|source venv/bin/activate|
+    \item Installieren Sie pygame-ce mit pip:\\
+        \lstinline|pip install pygame-ce|
+    \item Überprüfen Sie die Installation, indem Sie in einer Python-Datei folgenden Code ausführen:\\
+        \lstinline|import pygame as pg; print(pg.ver)|
+        Dieser Code sollte, sofern \texttt{pygame-ce} korrekt installiert ist, die Versionsnummer von \texttt{pygame-ce} ausgeben.
+\end{enumerate}
+
+Damit ist \texttt{pygame-ce} einsatzbereit und Sie können mit der Entwicklung starten.
+
+\begin{myexample}[Minimaler Game-Loop]
+    Folgender Code zeigt den minimalen Aufbau eines Pygame-Programms mit Fenster, Game-Loop und Ereignisverarbeitung. Kopieren Sie den Code in eine Datei \texttt{game\_intro.py} und führen Sie ihn in VS Code aus.
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro.py}
+\end{myexample}
+
+\begin{myexercise}[Fenster-Titel setzen]
+Setzen Sie einen passenden Fenstertitel (\lstinline|pg.display.set_caption("Mein Game")|). Optional: Laden Sie ein Fenster-Icon (PNG) und setzen Sie es via \lstinline|pg.display.set_icon(...)|.
+\end{myexercise}
+
+\begin{myexercise}[Hintergrund zeichnen]
+Füllen Sie den Hintergrund pro Frame mit einer Farbe mittels \lstinline|screen.fill((R,G,B))|. Experimentieren Sie mit unterschiedlichen Farbtönen.
+\end{myexercise}
+
+\begin{myexercise}[Geometrische Figuren]
+Zeichnen Sie geometrische Formen: Rechteck, Kreis, Linie. Nutzen Sie dafür \lstinline|pg.draw.rect|, \lstinline|pg.draw.circle| und \lstinline|pg.draw.line|. Achten Sie darauf, \textbf{nach} dem Zeichnen \lstinline|pg.display.flip()| aufzurufen.
+\begin{lstlisting}
+pg.draw.rect(screen, (0, 200, 120), pg.Rect(50, 50, 120, 80))
+pg.draw.circle(screen, (255, 200, 0), (400, 300), 60)
+pg.draw.line(screen, (200, 200, 255), (0, 0), (800, 600), 4)
+\end{lstlisting}
+\end{myexercise}
+
+\begin{myexercise}[Sonnenuntergang erstellen]
+Erzeugen Sie eine einfache Szene mit Himmel, Sonne und Meer. Tipp: Zeichnen Sie einen Farbverlauf am Himmel, indem Sie in einer Schleife schmale horizontale Rechtecke in leicht unterschiedlichen Farbtönen zeichnen. Die Sonne ist ein Kreis; das Meer ein Rechteck in der unteren Hälfte.
+\begin{lstlisting}
+# Himmel (einfacher Gradient)
+for y in range(0, HEIGHT//2):
+	c = 100 + int(155 * (y / (HEIGHT//2)))  # 100..255
+	pg.draw.rect(screen, (c, 120, 180), (0, y, WIDTH, 1))
+
+# Sonne
+pg.draw.circle(screen, (255, 200, 0), (WIDTH//2, HEIGHT//3), 60)
+
+# Meer
+pg.draw.rect(screen, (20, 80, 160), (0, HEIGHT//2, WIDTH, HEIGHT//2))
+\end{lstlisting}
+Optional: Lassen Sie die Sonne langsam sinken (Animation über mehrere Frames).
+\end{myexercise}
+
+\begin{myexercise}[Bewegungen (Tastatur)]
+Erstellen Sie ein Spieler-\lstinline|Rect| (z.\,B. \lstinline|50x50|) und bewegen Sie es mit den Pfeiltasten. Nutzen Sie \lstinline|pg.key.get_pressed()| und begrenzen Sie die Bewegung auf das Fenster (\enquote{Screen Bounds}).
+\begin{lstlisting}
+player = pg.Rect(100, 100, 50, 50)
+speed = 5
+keys = pg.key.get_pressed()
+if keys[pg.K_LEFT]:
+	player.x -= speed
+if keys[pg.K_RIGHT]:
+	player.x += speed
+if keys[pg.K_UP]:
+	player.y -= speed
+if keys[pg.K_DOWN]:
+	player.y += speed
+player.clamp_ip(screen.get_rect())  # im Fenster halten
+\end{lstlisting}
+\end{myexercise}
+
+\begin{myexercise}[Kollisionen]
+Legen Sie ein \lstinline|Rect| als \enquote{Ziel/Item} an (z.\,B. kleiner Kreis oder Block). Prüfen Sie eine Kollision mit \lstinline|player.colliderect(item)|. Bei Kollision: Position des Items neu zufällig setzen und optional Punkte zählen.
+\begin{lstlisting}
+import random
+item = pg.Rect(400, 300, 30, 30)
+if player.colliderect(item):
+	item.topleft = (random.randint(0, WIDTH-30), random.randint(0, HEIGHT-30))
+\end{lstlisting}
+\end{myexercise}
+
+\begin{myexercise}[Ereignisse (Keyboard/Maus)]
+Reagieren Sie auf \lstinline|KEYDOWN|- und \lstinline|MOUSEBUTTONDOWN|-Events. Beispiel: Bei Mausklick wird an der Klickposition ein kleiner Kreis gezeichnet (oder eine Partikelspur gestartet). Bei \lstinline|ESC| beendet sich das Game.
+\begin{lstlisting}
+for event in pg.event.get():
+	if event.type == pg.QUIT:
+		running = False
+	elif event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
+		running = False
+	elif event.type == pg.MOUSEBUTTONDOWN:
+		x, y = event.pos
+		pg.draw.circle(screen, (255, 100, 100), (x, y), 10)
+\end{lstlisting}
+\end{myexercise}
+
+\begin{myexercise}[Medien: Bild und Sound]
+Laden Sie ein Bild (\lstinline|.png|) und zeichnen Sie es mit \lstinline|screen.blit(...)|. Skalieren/rotieren Sie es optional. Laden Sie einen Sound (\lstinline|.wav/ .ogg|) mit \lstinline|pg.mixer.Sound| und spielen Sie ihn bei einer Kollision ab.
+\begin{lstlisting}
+img = pg.image.load("assets/player.png").convert_alpha()
+img = pg.transform.scale(img, (64, 64))
+screen.blit(img, player)
+
+pg.mixer.init()
+pickup = pg.mixer.Sound("assets/pickup.wav")
+if player.colliderect(item):
+	pickup.play()
+\end{lstlisting}
+Hinweis: Legen Sie die Medien in einem Ordner (z.\,B. \lstinline|assets/|) ab und achten Sie auf relative Pfade.
+\end{myexercise}
+
+\begin{myexercise}[Bonus: Kleines Sammelspiel]
+Verbinden Sie die vorherigen Bausteine: Bewegen Sie den Spieler, sammeln Sie Items (Punkte zählen), spielen Sie dabei einen Sound ab und zeichnen Sie im Hintergrund Ihren Sonnenuntergang. Begrenzen Sie die Spielzeit auf 60 Sekunden und zeigen Sie die verbleibende Zeit im Fenstertitel an.
+\end{myexercise}
+
+
