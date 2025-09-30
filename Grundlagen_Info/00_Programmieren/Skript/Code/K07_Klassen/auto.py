@@ -15,12 +15,12 @@ class Auto:
         print(f"Anzahl Autos insgesamt: {cls.anzahl_autos}")
 
 # Autos erstellen
-auto1 = Auto("VW", "Golf", 2018)
-auto2 = Auto("Tesla", "Model 3", 2021)
-auto3 = Auto("BMW", "X5", 2019)
+auto_1 = Auto("VW", "Golf", 2018)
+auto_2 = Auto("Tesla", "Model 3", 2021)
+auto_3 = Auto("BMW", "X5", 2019)
 
 # Infos ausgeben
-auto1.info()
-auto2.info()
-auto3.info()
+auto_1.info()
+auto_2.info()
+auto_3.info()
 Auto.get_statistik()

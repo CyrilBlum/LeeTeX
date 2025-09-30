@@ -8,9 +8,9 @@ class Buch:
         print(f'{self.titel}: Buch von {self.autor}, {self.seitenzahl} Seiten')
 
 # Zwei Buchobjekte erstellen
-buch1 = Buch("Harry Potter und der Stein der Weisen", "J.K. Rowling", 335)
-buch2 = Buch("Die unendliche Geschichte", "Michael Ende", 420)
+buch_1 = Buch("Harry Potter und der Stein der Weisen", "J.K. Rowling", 335)
+buch_2 = Buch("Die unendliche Geschichte", "Michael Ende", 420)
 
 # Methode aufrufen
-buch1.info()
-buch2.info()
+buch_1.info()
+buch_2.info()

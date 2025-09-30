@@ -83,24 +83,24 @@ class Bibliothek:
 bibliothek = Bibliothek("Stadtbibliothek Winterthur")
 
 # Bücher erstellen und hinzufügen
-buch1 = Buch("Harry Potter und der Stein der Weisen", "J.K. Rowling", "9783551557414")
-buch2 = Buch("Der Herr der Ringe", "J.R.R. Tolkien", "9783608939842")
-buch3 = Buch("Die unendliche Geschichte", "Michael Ende", "9783522202664")
+buch_1 = Buch("Harry Potter und der Stein der Weisen", "J.K. Rowling", "9783551557414")
+buch_2 = Buch("Der Herr der Ringe", "J.R.R. Tolkien", "9783608939842")
+buch_3 = Buch("Die unendliche Geschichte", "Michael Ende", "9783522202664")
 
-bibliothek.buch_hinzufuegen(buch1)
-bibliothek.buch_hinzufuegen(buch2)
-bibliothek.buch_hinzufuegen(buch3)
+bibliothek.buch_hinzufuegen(buch_1)
+bibliothek.buch_hinzufuegen(buch_2)
+bibliothek.buch_hinzufuegen(buch_3)
 
 # Mitglieder erstellen und registrieren
-mitglied1 = Bibliotheksmitglied("Lisa Müller", "M001")
-mitglied2 = Bibliotheksmitglied("Tom Schneider", "M002")
+mitglied_1 = Bibliotheksmitglied("Lisa Müller", "M001")
+mitglied_2 = Bibliotheksmitglied("Tom Schneider", "M002")
 
-bibliothek.mitglied_registrieren(mitglied1)
-bibliothek.mitglied_registrieren(mitglied2)
+bibliothek.mitglied_registrieren(mitglied_1)
+bibliothek.mitglied_registrieren(mitglied_2)
 
 # Bücher ausleihen
-mitglied1.buch_ausleihen(buch1)
-mitglied2.buch_ausleihen(buch3)
+mitglied_1.buch_ausleihen(buch_1)
+mitglied_2.buch_ausleihen(buch_3)
 
 # Suche durchführen
 print("\nSuchergebnisse für 'Harry':")
@@ -113,11 +113,11 @@ print("\n" + bibliothek.statistik())
 
 # Infos zu Mitgliedern anzeigen
 print("\nMitgliederinformationen:")
-print(mitglied1.info())
-print(mitglied2.info())
+print(mitglied_1.info())
+print(mitglied_2.info())
 
 # Buch zurückgeben
-mitglied1.buch_zurueckgeben(buch1)
+mitglied_1.buch_zurueckgeben(buch_1)
 
 # Aktualisierte Statistik
 print("\n" + bibliothek.statistik())

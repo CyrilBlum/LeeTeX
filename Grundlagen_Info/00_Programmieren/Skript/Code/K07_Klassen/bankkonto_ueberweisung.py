@@ -34,12 +34,12 @@ class Bankkonto:
 
 
 # Test
-konto1 = Bankkonto("CH123", "Anna", 1000)
-konto2 = Bankkonto("CH456", "Ben", 500)
+konto_1 = Bankkonto("CH123", "Anna", 1000)
+konto_2 = Bankkonto("CH456", "Ben", 500)
 
-konto1.kontoinfo()
-konto2.kontoinfo()
-konto1.ueberweisen(konto2, 300) # Überweisung, sollte klappen
-konto1.ueberweisen(konto2, 800) # erneute Überweisung, sollte fehlschlagen
-konto1.kontoinfo()
-konto2.kontoinfo()
+konto_1.kontoinfo()
+konto_2.kontoinfo()
+konto_1.ueberweisen(konto_2, 300) # Überweisung, sollte klappen
+konto_1.ueberweisen(konto_2, 800) # erneute Überweisung, sollte fehlschlagen
+konto_1.kontoinfo()
+konto_2.kontoinfo()
