@@ -1,7 +1,7 @@
 \chapter{Game}\label{ch:K09_Game}
 
 \section{Einführung}
-In diesem Kapitel entwickeln wir Schritt für Schritt ein eigenes 2D-Game mit \tib{pygame-ce}. \tib{pygame-ce} ist eine moderne, Community-gepflegte Variante von Pygame und wird genau gleich importiert (\lstinline|import pygame as pg|). Sie eignet sich hervorragend, um in Python Grafiken, Animationen, Sound und Interaktionen umzusetzen.
+In diesem Kapitel entwickeln wir Schritt für Schritt ein eigenes 2D-Game mit \texttt{pygame-ce}. \texttt{pygame-ce} ist eine moderne, Community-gepflegte Variante von Pygame und wird genau gleich importiert mit \lstinline|import pygame as pg|. Sie eignet sich hervorragend, um in Python Grafiken, Animationen, Sound und Interaktionen umzusetzen.
 
 Essentielle Bausteine eines Games sind:
 \begin{itemize}
@@ -37,22 +37,30 @@ Damit ist \texttt{pygame-ce} einsatzbereit und Sie können mit der Entwicklung s
 \begin{myexample}[Minimaler Game-Loop]
     Folgender Code zeigt den minimalen Aufbau eines Pygame-Programms mit Fenster, Game-Loop und Ereignisverarbeitung. Kopieren Sie den Code in eine Datei \texttt{game\_intro.py} und führen Sie ihn in VS Code aus.
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro.py}
+Ein schwarzes Fenster sollte erscheinen, das Sie mit dem Schliessen-Knopf beenden können.
 \end{myexample}
 
 \begin{myexercise}[Fenster-Titel setzen]
 Setzen Sie einen passenden Fenstertitel (\lstinline|pg.display.set_caption("Mein Game")|). Optional: Laden Sie ein Fenster-Icon (PNG) und setzen Sie es via \lstinline|pg.display.set_icon(...)|.
+\begin{myanswer}
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_window.py}
+\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Hintergrund zeichnen]
-Füllen Sie den Hintergrund pro Frame mit einer Farbe mittels \lstinline|screen.fill((R,G,B))|. Experimentieren Sie mit unterschiedlichen Farbtönen.
+Füllen Sie den Hintergrund pro Frame mit einer Farbe mittels \lstinline|screen.fill((R,G,B))|. Experimentieren Sie mit unterschiedlichen Farbtönen. Die Farbe muss in der Hauptschleife, aber vor \lstinline|pg.display.flip()|, gesetzt werden.
+\begin{myanswer}
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_background.py}
+\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Geometrische Figuren]
 Zeichnen Sie geometrische Formen: Rechteck, Kreis, Linie. Nutzen Sie dafür \lstinline|pg.draw.rect|, \lstinline|pg.draw.circle| und \lstinline|pg.draw.line|. Achten Sie darauf, \textbf{nach} dem Zeichnen \lstinline|pg.display.flip()| aufzurufen.
+Verwenden Sie folgende Befehle:
 \begin{lstlisting}
-pg.draw.rect(screen, (0, 200, 120), pg.Rect(50, 50, 120, 80))
-pg.draw.circle(screen, (255, 200, 0), (400, 300), 60)
-pg.draw.line(screen, (200, 200, 255), (0, 0), (800, 600), 4)
+pg.draw.rect(screen, rect_color, pg.Rect(rect_x, rect_y, rect_width, rect_height))
+pg.draw.circle(screen, circle_color, (circle_x, circle_y), circle_radius)
+pg.draw.line(screen, line_color, (start_x, start_y), (end_x, end_y), line_width)
 \end{lstlisting}
 \end{myexercise}
 
@@ -71,13 +79,18 @@ pg.draw.circle(screen, (255, 200, 0), (WIDTH//2, HEIGHT//3), 60)
 pg.draw.rect(screen, (20, 80, 160), (0, HEIGHT//2, WIDTH, HEIGHT//2))
 \end{lstlisting}
 Optional: Lassen Sie die Sonne langsam sinken (Animation über mehrere Frames).
+\begin{myanswer}
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_sunset.py}
+\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Bewegungen (Tastatur)]
-Erstellen Sie ein Spieler-\lstinline|Rect| (z.\,B. \lstinline|50x50|) und bewegen Sie es mit den Pfeiltasten. Nutzen Sie \lstinline|pg.key.get_pressed()| und begrenzen Sie die Bewegung auf das Fenster (\enquote{Screen Bounds}).
+Erstellen Sie ein Spieler-\lstinline|Rect| (z.\,B. \lstinline|50x50|) und bewegen Sie es mit den Pfeiltasten. Nutzen Sie \lstinline|pg.key.get_pressed()| und begrenzen Sie die Bewegung auf das Fenster (\enquote{Screen Bounds}). Verwenden Sie folgende Code-Vorlage:
 \begin{lstlisting}
+# Vor der Game-Loop:
 player = pg.Rect(100, 100, 50, 50)
 speed = 5
+# In der Game-Loop:
 keys = pg.key.get_pressed()
 if keys[pg.K_LEFT]:
 	player.x -= speed
@@ -87,22 +100,33 @@ if keys[pg.K_UP]:
 	player.y -= speed
 if keys[pg.K_DOWN]:
 	player.y += speed
-player.clamp_ip(screen.get_rect())  # im Fenster halten
+player.clamp_ip(screen.get_rect())  # Rechteck innerhalb des Fensters halten
 \end{lstlisting}
+\begin{myanswer}
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_player_rect.py}
+\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Kollisionen]
 Legen Sie ein \lstinline|Rect| als \enquote{Ziel/Item} an (z.\,B. kleiner Kreis oder Block). Prüfen Sie eine Kollision mit \lstinline|player.colliderect(item)|. Bei Kollision: Position des Items neu zufällig setzen und optional Punkte zählen.
 \begin{lstlisting}
 import random
-item = pg.Rect(400, 300, 30, 30)
+# ...
+# Vor der Game-Loop:
+item = pg.Rect(400, 300, 30, 30) # dieses Item soll gesammelt werden
+
+# ...
+# In der Game-Loop, nach der Spieler-Bewegung:
 if player.colliderect(item):
 	item.topleft = (random.randint(0, WIDTH-30), random.randint(0, HEIGHT-30))
 \end{lstlisting}
+\begin{myanswer}
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_collision.py}
+\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Ereignisse (Keyboard/Maus)]
-Reagieren Sie auf \lstinline|KEYDOWN|- und \lstinline|MOUSEBUTTONDOWN|-Events. Beispiel: Bei Mausklick wird an der Klickposition ein kleiner Kreis gezeichnet (oder eine Partikelspur gestartet). Bei \lstinline|ESC| beendet sich das Game.
+Reagieren Sie auf \lstinline|KEYDOWN|- und \lstinline|MOUSEBUTTONDOWN|-Events. Beispiel: Bei Mausklick wird an der Klickposition ein kleiner Kreis gezeichnet (oder eine Partikelspur gestartet). Bei \lstinline|ESC| beendet sich das Game. Um Ereignisse wie etwa einen Maus-Klick zu verarbeiten, verwenden Sie folgenden Code:
 \begin{lstlisting}
 for event in pg.event.get():
 	if event.type == pg.QUIT:
