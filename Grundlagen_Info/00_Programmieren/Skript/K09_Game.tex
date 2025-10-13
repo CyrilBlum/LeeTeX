@@ -1,6 +1,6 @@
 \chapter{Game}\label{ch:K09_Game}
 
-\section{Einführung}
+\section{Einführung in Pygame}
 In diesem Kapitel entwickeln wir Schritt für Schritt ein eigenes 2D-Game mit \texttt{pygame-ce}. \texttt{pygame-ce} ist eine moderne, Community-gepflegte Variante von Pygame und wird genau gleich importiert mit \lstinline|import pygame as pg|. Sie eignet sich hervorragend, um in Python Grafiken, Animationen, Sound und Interaktionen umzusetzen.
 
 Essentielle Bausteine eines Games sind:
@@ -145,23 +145,117 @@ for event in pg.event.get():
 \begin{myexercise}[Medien: Bild und Sound]
 Laden Sie ein Bild (\lstinline|.png|) und zeichnen Sie es mit \lstinline|screen.blit(...)|. Skalieren/rotieren Sie es optional. Laden Sie einen Sound (\lstinline|.wav/ .ogg|) mit \lstinline|pg.mixer.Sound| und spielen Sie ihn bei einer Kollision ab.
 \begin{lstlisting}
-img = pg.image.load("assets/player.png").convert_alpha()
-img = pg.transform.scale(img, (64, 64))
+img = pg.image.load("assets/player.jpeg") # Bild laden
+img = pg.transform.scale(img, (64, 64)) # optional: skalieren
 screen.blit(img, player)
 
+# Sound laden und abspielen
 pg.mixer.init()
-pickup = pg.mixer.Sound("assets/pickup.wav")
+motor = pg.mixer.Sound("assets/motor.wav")
 if player.colliderect(item):
-	pickup.play()
+	motor.play()
 \end{lstlisting}
-Hinweis: Legen Sie die Medien in einem Ordner (z.\,B. \lstinline|assets/|) ab und achten Sie auf relative Pfade.
+Hinweis: Legen Sie die Medien in einem Ordner (z.\,B. \lstinline|assets/|) ab und achten Sie auf relative Pfade. Die Dateien \texttt{player.jpeg} und \texttt{motor.mp3} finden Sie auf Moodle.
 \begin{myanswer}
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_media.py}
 \end{myanswer}
+Optional: Skalieren Sie das Bild auf eine bestimmte Höhe, wobei das Seitenverhältnis beibehalten wird, indem Sie das Seitenverhältnis mit den Befehlen \lstinline|img.get_width()| und \lstinline|img.get_height()| berechnen.
 \end{myexercise}
 
 \begin{myexercise}[Bonus: Kleines Sammelspiel]
 Verbinden Sie die vorherigen Bausteine: Bewegen Sie den Spieler, sammeln Sie Items (Punkte zählen), spielen Sie dabei einen Sound ab und zeichnen Sie im Hintergrund Ihren Sonnenuntergang. Begrenzen Sie die Spielzeit auf 60 Sekunden und zeigen Sie die verbleibende Zeit im Fenstertitel an.
 \end{myexercise}
 
+\section{Game-Auftrag}
 
+\subsection{Thema}
+Im Folgenden wählen Sie in Zweier-Gruppen (in Ausnahmefällen auch 3 möglich) eines von drei möglichen Game-Themen aus und entwickeln ein kleines 2D-Game mit \texttt{pygame-ce}. Die drei Themen sind:
+\begin{itemize}
+    \item \textbf{Sammelspiel:} Bewegen Sie eine Spielfigur (z.\,B. Auto, Raumschiff) und sammeln Sie Items ein (z.\,B. Treibstoff, Sterne). Jedes eingesammelte Item gibt Punkte.
+    \item \textbf{Endlos-Runner:} Steuern Sie eine Spielfigur (z.\,B. Läufer, Auto) und weichen Sie Hindernissen aus (z.\,B. Mauern, andere Autos). Jedes überstandene Hindernis gibt Punkte.
+    \item \textbf{Fangspiel:} Steuern Sie eine Spielfigur (z.\,B. Katze, Netz) und fangen Sie herumspringende Objekte (z.\,B. Mäuse, Schmetterlinge). Jedes gefangene Objekt gibt Punkte.
+\end{itemize}
+
+\subsection{Anforderungen}
+
+Ihr Projekt sollte folgende, essentielle Python-Konzepte sinnvoll einsetzen
+\begin{todolist}
+    \item Verwendung von \texttt{pygame-ce} für Fenster, Game-Loop, Ereignisse, Zeichnen, Kollisionen und Medien (Bilder, Sound), Steuerung mit Tastatur und/oder Maus
+    \item Verwendung physikalischer Formeln für Bewegungen (z.\,B. Geschwindigkeit, Beschleunigung, Schwerkraft)
+    \item Verwendung von \textbf{Variablen} zur Speicherung von Spielzuständen (z.\,B. Spielerposition, Punktestand, verbleibende Zeit)
+    \item Verwendung von \textbf{Funktionen} zur Strukturierung des Codes (z.\,B. \lstinline|def draw_player()|, \lstinline|def update_game()|, \lstinline|def handle_input()|), mit sowie ohne \lstinline|return|-Wert
+    \item Verwendung von \textbf{logischen Ausdrücken} und \textbf{Schleifen} zur Steuerung des Spielablaufs (z.\,B. Kollisionserkennung, Punkte zählen, Spielzeit)
+    \item Verwendung von \textbf{Datenstrukturen} (Listen, Dictionaries) zur Verwaltung von mehreren Spielobjekten (z.\,B. Liste von Items, Liste von Hindernissen)
+    \item Verwendung von \textbf{Klassen} zur Modellierung von Spielobjekten (z.\,B. \lstinline|class Player|, \lstinline|class Item|, \lstinline|class Obstacle|)
+\end{todolist}
+
+\subsection{Bonus}
+
+\begin{todolist}
+    \item Python-spezifisch:
+    \begin{todolist}
+        \item Verwendung mehrerer Python-Unterdateien zur besseren Strukturierung des Codes (z.\,B. \lstinline|game.py|, \lstinline|player.py|, \lstinline|item.py|)
+        \item Verwendung von \texttt{try/except} zur Behandlung von Fehlern (z.\,B. Laden von Medien, Division durch Null)
+        \item Verwendung von \texttt{with}-Anweisung zum sicheren Öffnen und Schliessen von Dateien (z.\,B. Highscore speichern)
+        \item Wenn Sie ein Punktesystem mit Highscore (gespeichert in einer Datei) implementieren.
+    \end{todolist}
+    \item Game-spezifisch:
+    \begin{todolist}
+        \item Wenn Sie ein Startmenü und/oder ein Game-Over-Bildschirm implementieren.
+        \item Wenn Sie Animationen (z.\,B. bewegte Spielfigur, animierte Hindernisse) einbauen.
+        \item Wenn Sie verschiedene Level oder Schwierigkeitsgrade (z.\,B. schnellere Hindernisse, mehr Items) implementieren.
+        \item Wenn Sie Power-Ups (z.\,B. temporäre Unverwundbarkeit, Doppelte Punkte) einbauen.
+        \item Wenn Sie Hintergrundmusik und/oder Soundeffekte (z.\,B. bei Kollision, Item-Sammlung) einbauen.
+        \item Wenn Sie das Spiel mit einem Gamepad/Controller steuern können.
+        \item Wenn Sie das Spiel mit einem Splash-Screen (Ladebildschirm) starten können.
+        \item Wenn Sie das Spiel mit einem Pausenmenü pausieren können.
+        \item Wenn Sie das Spiel mit einem Timer (Countdown) spielen können.
+        \item Wenn Sie das Spiel mit einem Multiplayer-Modus (z.\,B. zwei Spieler) spielen können.  
+    \end{todolist}
+    \item Weitere Ideen für Bonus:
+    \begin{todolist}
+        \item Wenn Sie das Spiel mit einem Level-Editor (zum Erstellen eigener Level) erweitern können.
+        \item Wenn Sie das Spiel mit einem Story-Modus (mit Handlung und Charakteren) erweitern können.
+        \item Wenn Sie das Spiel mit einem Tutorial (Anleitung) erweitern können.
+        \item Wenn Sie das Spiel mit einem Achievements-System (Erfolge) erweitern können.
+        \item Wenn Sie das Spiel mit einem Debug-Modus (zum Testen und Entwickeln) erweitern können.
+    \end{todolist}
+\end{todolist}
+
+\subsection{Abgabe der Games}
+Im Rahmen dieses Projekts geben Sie dreimal einen \textbf{Zwischenbericht} ab. Dieser beinhaltet:
+\begin{enumerate}
+    \item \textbf{Zwischenbericht 1 (nach 2 Wochen):} Konzept und Design des Spiels, Herausforderungen, Planung (ca. 1.5-2 Seiten). In diesem Zwischenbericht sollte Folgendes enthalten sein:
+    \begin{itemize}
+        \item Thema: Kurzbeschreibung des Spiels (Genre, Setting, Ziel), ca. 4-5 Sätze
+        \item Spielmechanik: Beschreibung der Hauptspielmechanik (Steuerung, Punktesystem, Level), ca. 5-6 Sätze
+        \item Medien: Liste der benötigten Medien (Bilder, Sounds) und deren Quellen (selbst erstellt, frei verfügbar)
+        \item Komplexität: Einschätzung der Komplexität des Spiels (Anzahl der Funktionen, Klassen, Datenstrukturen)
+        \item Zeitplan: Grober Zeitplan für die Umsetzung (Was wird in den nächsten Wochen gemacht?)
+        \item Gruppen-Aufteilung: Wer macht was in der Gruppe?
+        \item Herausforderungen: Welche Herausforderungen erwarten Sie bei der Umsetzung?
+    \end{itemize}
+    \item \textbf{Zwischenbericht 2 (nach 4 Wochen):} Fortschritt und Herausforderungen (ca. 1 Seite). In diesem Zwischenbericht sollte Folgendes enthalten sein:
+    \begin{itemize}
+        \item Fortschritt: Beschreibung des aktuellen Stands des Spiels (Was ist bereits umgesetzt? Was fehlt noch?)
+        \item Herausforderungen: Welche Herausforderungen sind aufgetreten und wie wurden sie gelöst?
+        \item Zeitplan: Aktualisierung des Zeitplans für die verbleibende Zeit (Was ist bereits umgesetzt? Was fehlt noch? Welche Probleme sind aufgetreten?
+        \item Gruppen-Aufteilung: Hat sich die Aufgabenverteilung in der Gruppe geändert? Wie wird die kommende Arbeit aufgeteilt?
+    \end{itemize}
+    \item \textbf{Abschlussbericht (nach 6 Wochen)}: Fertigstellung und Reflexion des Spiels (ca. 2-3 Seiten). In diesem Abschlussbericht sollte Folgendes enthalten sein:
+    \begin{itemize}
+        \item Spielbeschreibung: Kurzbeschreibung des fertigen Spiels (Genre, Setting, Ziel), ca. 4-5 Sätze
+        \item Spielmechanik: Beschreibung der Hauptspielmechanik (Steuerung, Punktesystem, Level), ca. 5-6 Sätze
+        \item Reflexion: Was lief gut? Was lief schlecht? Was würden Sie beim nächsten Mal anders machen?
+        \item Lernziele: Welche neuen Konzepte/Techniken haben Sie gelernt und angewendet?
+        \item Gruppenarbeit: Wie hat die Zusammenarbeit in der Gruppe funktioniert? Was lief gut/s
+        \item Herausforderungen: Welche Herausforderungen sind aufgetreten und wie wurden sie gelöst?
+        \item Medien: Liste der verwendeten Medien (Bilder, Sounds) und deren Quellen
+        \item Bonus: Welche Bonuspunkte wurden erreicht?
+        \item Screenshots: Fügen Sie 2-3 Screenshots des Spiels bei, die verschiedene Spielsituationen zeigen.
+        \item Screen Recording: Nehmen Sie ein kurzes Video (ca. 1-2 Minuten) auf, das das Gameplay zeigt. Laden Sie das Video auf eine Plattform (z.\,B. YouTube, Vimeo) hoch und fügen Sie den Link im Bericht ein.
+        \item Quellcode: Fügen Sie den Link zum GitHub-Repository bei, in dem der Quellcode des Spiels gespeichert ist.
+    \end{itemize}
+\end{enumerate}
+
+Die endgültige Abgabe des Games erfolgt via GitHub. Erstellen Sie ein öffentliches Repository mit dem Quellcode, den Medien und einer \texttt{README.md}-Datei, die das Spiel beschreibt und Anweisungen zur Ausführung enthält. Reichen Sie den Link zum Repository via Moodle ein. Für Anleitungen zur Erstellung eines GitHub-Repositories und zum Hochladen von Code, s. Anhang \ref{ch:GitHub}.

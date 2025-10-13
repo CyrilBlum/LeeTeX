@@ -1,0 +1,105 @@
+\section*{GitHub-Tutorial}
+\label{ch:GitHub}
+
+In diesem Tutorial lernen Sie Schritt für Schritt, wie Sie:
+\begin{itemize}
+  \item einen \textbf{GitHub-Account} erstellen,
+  \item ein neues \textbf{Repository} anlegen,
+  \item Ihren Rechner via \textbf{SSH} mit GitHub verbinden,
+  \item und ein bestehendes Python-Projekt mit \textbf{Git} (\lstinline|add|, \lstinline|commit|, \lstinline|push|) hochladen.
+\end{itemize}
+
+Git bietet folgende Haupt-Vorteile gegenüber dem Arbeiten auf dem lokalen Computer:
+\begin{itemize}
+  \item \textbf{Versionskontrolle}: Änderungen werden protokolliert, und frühere Versionen können leicht wiederhergestellt werden.
+  \item \textbf{Zusammenarbeit}: Mehrere Personen können gleichzeitig an einem Projekt arbeiten, ohne sich gegenseitig zu stören.
+  \item \textbf{Backup}: Der Code ist sicher in der Cloud gespeichert und kann von überall abgerufen werden.
+  \item \textbf{Automatisierte Pipelines}: Möglichkeit, bei jeder neuen Version einen automatischen Test- und Deployment-Prozess zu starten, beispielsweise, um eine Dash-App auf einem Server zu aktualisieren.
+\end{itemize}
+
+\subsection*{Git und VS Code vorbereiten}
+Installieren Sie Git mit folgendem Befehl:  
+
+\begin{lstlisting}[style=bash]
+# macOS
+brew install git
+
+# Linux (Ubuntu/Debian)
+sudo apt install git
+\end{lstlisting}
+
+Für Windows: Laden Sie Git von \url{https://git-scm.com/download/win} herunter und installieren Sie es.
+
+\subsection*{GitHub-Account erstellen}
+Öffnen Sie \url{https://github.com} und klicken Sie auf \textbf{Sign up}. Folgen Sie den Schritten, um einen Account anzulegen.  
+
+\subsection*{SSH-Schlüssel erstellen und hinterlegen}
+Erzeugen Sie ein Schlüsselpaar, laden Sie es in den SSH-Agent und fügen Sie den Public Key bei GitHub ein.
+
+Führen Sie folgenden Code auf Ihrem Computer aus (Terminal auf macOS oder Linux, bzw. Git Bash auf Windows):
+\begin{lstlisting}[style=bash]
+ssh-keygen -t ed25519 -C "ihre_email@schule.ch"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+pbcopy < ~/.ssh/id_ed25519.pub  # Public Key in Zwischenablage kopieren
+\end{lstlisting}
+
+
+Auf GitHub: \textbf{Settings} → \textbf{SSH and GPG keys} → \textbf{New SSH key}.  
+
+Testen Sie die Verbindung:  
+\begin{lstlisting}[style=bash]
+ssh -T git@github.com
+\end{lstlisting}
+
+\subsection*{Git konfigurieren}
+Damit bei jedem commit auf Git die richtigen Angaben verwendet werden, konfigurieren Sie Git mit Ihrem Namen und Ihrer E-Mail-Adresse. Zusätzlich stellen Sie den Standard-Branch auf \lstinline|main| ein:
+
+\begin{lstlisting}[style=bash]
+git config --global user.name "Vorname Nachname"
+git config --global user.email "vorname.nachname@stud.edu.zh.ch"
+git config --global init.defaultBranch main
+\end{lstlisting}
+
+\subsection*{Neues Repository auf GitHub}
+Erstellen Sie über das ``+'' oben rechts ein \textbf{New repository}, geben Sie einen Namen (z.\,B. \lstinline|mein-python-projekt|) und wählen Sie ``Public''.
+
+
+
+\subsection*{Projekt vorbereiten}
+Wechseln Sie in den Ordner Ihres Projekts:  
+\begin{lstlisting}[style=bash]
+cd /pfad/zu/projekt
+\end{lstlisting}
+
+Erstellen Sie eine \lstinline|.gitignore|-Datei für Python:
+\begin{lstlisting}
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.vscode/
+\end{lstlisting}
+
+\subsection*{Initialisieren, Committen, Pushen}
+\begin{lstlisting}[style=bash]
+git init
+git add .
+git commit -m "Erster commit!"
+
+git remote add origin git@github.com:<user>/<repo>.git
+git push -u origin main
+\end{lstlisting}
+
+\subsection*{Arbeiten mit VS Code}
+Öffnen Sie den Projektordner in VS Code.  
+Verwenden Sie die \textbf{Source Control}-Ansicht (Git-Symbol links), um Änderungen zu \textbf{stagen}, zu \textbf{committen} und zu \textbf{pushen}.
+
+\subsection*{Nützliche Befehle}
+\begin{lstlisting}[style=bash]
+# Änderungen abrufen
+git pull
+
+# Remote-URL prüfen
+git remote -v
+\end{lstlisting}

@@ -2,8 +2,8 @@ import pygame as pg
 from pathlib import Path
 
 pg.init() # Pygame initialisieren (starten)
-WIDTH, HEIGHT = 800, 600 # Fenstergrösse
-screen = pg.display.set_mode((WIDTH, HEIGHT)) # Fenster erstellen
+WINDOW = (800, 600) # Fenstergrösse (als Tuple gespeichert)
+screen = pg.display.set_mode(WINDOW) # Fenster erstellen
 
 base_dir = Path(__file__).parent
 icon = pg.image.load(base_dir / "icon.png")
@@ -12,8 +12,12 @@ pg.display.set_icon(icon)
 
 # Medien laden (Bild und Sound)
 assets = base_dir / "assets"
-img = pg.image.load(assets / "player.png").convert_alpha()
-img = pg.transform.scale(img, (64, 64))  # optional: skalieren
+img = pg.image.load(assets / "player.jpeg")
+# Skalieren auf bestimmte Höhe, Seitenverhältnis beibehalten
+desired_height = 100
+aspect_ratio = img.get_width() / img.get_height()
+new_width = int(desired_height * aspect_ratio)
+img = pg.transform.scale(img, (new_width, desired_height))
 
 # Spieler-Rect für Position/Kollision
 player = img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
@@ -26,9 +30,9 @@ item = item_surf.get_rect(center=(WIDTH // 3, HEIGHT // 2))
 # Sound laden
 try:
     pg.mixer.init()
-    pickup = pg.mixer.Sound(assets / "pickup.wav")
+    motor = pg.mixer.Sound(assets / "motor.mp3")
 except Exception:
-    pickup = None  # falls kein Audio verfügbar ist
+    motor = None  # falls kein Audio verfügbar ist
 
 background_color = (50, 80, 120)
 clock = pg.time.Clock() # Clock für Zeitsteuerung erstellen
@@ -59,8 +63,8 @@ while running:
 
     # Kollision + Sound
     if player.colliderect(item):
-        if not collided and pickup:
-            pickup.play()
+        if not collided and motor:
+            motor.play()
         collided = True
     else:
         collided = False

@@ -1,8 +1,8 @@
 import pygame as pg
 
 pg.init() # Pygame initialisieren (starten)
-WIDTH, HEIGHT = 800, 600 # Fenstergrösse
-screen = pg.display.set_mode((WIDTH, HEIGHT)) # Fenster erstellen
+WINDOW = (800, 600) # Fenstergrösse (als Tuple gespeichert)
+screen = pg.display.set_mode(WINDOW) # Fenster erstellen
 pg.display.set_caption("Mein erstes Game") # Fenstertitel setzen
 clock = pg.time.Clock() # Clock für Zeitsteuerung erstellen
 
