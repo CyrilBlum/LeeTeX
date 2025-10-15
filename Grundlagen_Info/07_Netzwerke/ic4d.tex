@@ -1,12 +1,79 @@
-\lstset{style=Python}
-\title{Problemformulierung: Netzwerke \\Chat-Kommunikation über einen Relay-Server}
-\author{Cyril Wendl, Fachschaft Informatik}
-\date{\today}
+
+% load package if document contains at least one citation
+\usepackage[maxbibnames=99,sorting=none,style=numeric,backend=biber]{biblatex}
+% enable option to print bibliography as a numbered subsection
+\defbibheading{bibsubsection}[\bibname]{%
+  \subsection{#1}%
+}
+\addbibresource{refs.bib}
+
 \begin{document}
-\maketitle
+
+\lstset{style=Python}
+%% Project-specific Preambles 
+\settoggle{includelogo}{true}
+
+\newcommand{\thesubject}{\textbf{Problemformulierung: Netzwerke} \\Chat-Kommunikation über einen Relay-Server}
+\newcommand{\thetopic}{Netzwerke}
+\newcommand{\theplace}{Dübendorf}
+\newcommand{\thelogo}{Logos/KZNLogo}
+\newcommand{\logosize}{.1\textwidth}
+
+\settoggle{oneauthor}{true}
+\settoggle{twomainauthors}{false}
+\def\mainauthors{
+	Cyril Wendl/cyril.wendl@edu.zh.ch,
+}
+
+\lhead[ \leftmark ]{\thetopic}
+\def\firstmainauthor{Cyril Wendl}
+\def\firstmainauthormail{cyril.wendl@edu.zh.ch}
+\rhead[\thesubject]{\textcopyleft{} \href{mailto:\firstmainauthormail}{\color{black}{\firstmainauthor}}, \thesubject, \the\year}
+
+\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+\maketitlepage{\thetopic}{}
+\tableofcontents\newpage
+
+% content %%
+\newtcolorbox{scaffoldBox}[1][]{
+    enhanced jigsaw,
+    breakable,
+    parbox=false,
+    attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+    %  attach boxed title to top text left={yshift=-3mm},
+    colback=\teacherColor!10,
+    colframe=\teacherColor,
+    colbacktitle=\teacherColor,
+    #1}
+
+\newtcolorbox{mainBox}[1][]{
+    enhanced jigsaw,
+    breakable,
+    parbox=false,
+    attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+    %  attach boxed title to top text left={yshift=-3mm},
+    colback=ForestGreen!10,
+    colframe=ForestGreen,
+    colbacktitle=ForestGreen,
+    #1}
+
+\chapter{Problemformulierung und Lernaufgaben}
+\section{Problemformulierung, Kontext und Relevanz}
 
 
-\section*{Problemformulierung}
+\begin{tcolorbox}[colback=blue!5!white, colframe=blue!80!black, title=Kontext]
+    \begin{table}[H]
+        \centering
+        \renewcommand{\arraystretch}{1.2}
+        \begin{tabular}{@{}r|p{0.65\linewidth}@{}}
+            \textbf{Gymnasialstufe} & 2. Jahr Kurzzeitgymnasium (1. Semester)                                                                                   \\
+            \midrule
+            \textbf{Alter}          & 16–17 Jahre                                                                                                               \\
+            \midrule
+            \textbf{Vorwissen}      & Grundlegende Programmierkenntnisse in Python; Einführung in Netzwerke, IP-Adressen, Ports und Client-Server-Architekturen \\
+        \end{tabular}
+    \end{table}
+\end{tcolorbox}
 
 Die Lernenden begegnen täglich Formen digitaler Kommunikation – sei es über WhatsApp, Instagram oder Online-Games. Doch wie Nachrichten in Sekundenbruchteilen von einem Gerät zum anderen gelangen, bleibt für sie ein „Black Box“-Phänomen. Das Problem, an dem sie sich abarbeiten sollen, lautet daher:
 
@@ -18,34 +85,38 @@ Die Lernenden begegnen täglich Formen digitaler Kommunikation – sei es über 
 
 \textbf{Zukunftsbedeutung:} Kenntnisse über Netzwerke sind nicht nur für Informatik-Studiengänge oder IT-Berufe relevant, sondern allgemein für eine reflektierte Teilhabe an der digitalen Gesellschaft: Wer versteht, wie Kommunikation technisch abläuft, kann auch Fragen von Datenschutz, Netzneutralität und digitaler Souveränität kompetenter einordnen.
 
-\textbf{Exemplarische Bedeutung:} Am Beispiel einer Chat-Kommunikation werden grundlegende Konzepte der Informatik sichtbar: IP-Adressen, Ports und Client-Server-Strukturen lassen sich am „alltäglichen Problem“ einer Chat-Nachricht erschließen und können auf andere digitale Dienste (E-Mail, Streaming, Online-Banking) übertragen werden.
+\textbf{Exemplarische Bedeutung:} Am Beispiel einer Chat-Kommunikation werden grundlegende Konzepte der Informatik sichtbar: IP-Adressen, Ports und Client-Server-Strukturen lassen sich am „alltäglichen Problem“ einer Chat-Nachricht erschliessen und können auf andere digitale Dienste (E-Mail, Streaming, Online-Banking) übertragen werden.
 
 Das formulierte Problem ermöglicht es den Lernenden, technische Funktionsprinzipien mit ihrer eigenen Lebenswelt zu verbinden und diese kritisch zu reflektieren. Damit entspricht es sowohl den Prinzipien problemorientierten Lernens als auch Klafkis Anspruch auf eine didaktische Analyse.\clearpage
 
 % --- Lernaufgabe und didaktische Struktur ---
-\section*{Lernaufgabe: Chat-Kommunikation in Echtzeit}
+\section{Lernaufgabe: Netzwerke}
 \textbf{Ziel:} Am Ende soll ein funktionsfähiges Programm stehen, mit dem die Lernenden in Echtzeit Nachrichten austauschen können.
 
 \textbf{Problembezug:} \enquote{Wie kann ich mit einer anderen Person eine Nachricht über das Internet austauschen?}
 
-\begin{tcolorbox}[colback=yellow!10!white, colframe=orange!80!black, title=Komplexe Lernaufgabe: Chat-Anwendung]
-        Entwickeln Sie in Kleingruppen eine \textbf{funktionierende Chat-Anwendung} in Python, die über einen Relay-Server läuft. Am Ende sollen die Gruppen miteinander in Echtzeit Nachrichten austauschen können.
-        \end{tcolorbox}
+\begin{mainBox}[title=Komplexe Lernaufgabe: Chat-Anwendung]
+    Die \textbf{Haupt-Lernaufgabe} lautet: Entwickeln Sie in Kleingruppen eine \textbf{funktionierende Chat-Anwendung} in Python, die über einen Relay-Server läuft. Am Ende sollen die Gruppen miteinander in Echtzeit Nachrichten austauschen können. Diese Haupt-Lernaufgabe ist in mehrere \textbf{Learning Tasks} unterteilt, die aufeinander aufbauen und jeweils durch unterstützende Informationen, Just-in-time Hilfen und Part-task Practice (Teilübungen) begleitet werden.
+\end{mainBox}
+
+\begin{scaffoldBox}[title=Scaffolding der Lernaufgaben]
+    Die Unterrichtssequenz besteht aus drei aufeinander aufbauenden Learning Tasks, welche jeweils durch vorausgehende, unterstützende Informationen, Just-in-time Hilfen und Part-task Practice (Teilübungen) begleitet werden. Dieses \textit{Scaffolding} jedes Learning Tasks wird jeweils in einer blauen Box hervorgehoben, ebenso wie das fortschreitende Zurückweichen (\textit{Fading}) der Unterstützung.
+\end{scaffoldBox}
 
 \begin{table}[H]
     \centering
     \small
     \renewcommand{\arraystretch}{1.2}
     \begin{tabular}{p{0.33\linewidth}|p{0.33\linewidth}|p{0.33\linewidth}}
-         \textbf{Unterstützende Informationen} & \textbf{Just-in-time Informationen} & \textbf{Part-task Practice (Teilübungen)} \\
+        \textbf{Unterstützende Informationen}                                                  & \textbf{Just-in-time Informationen} & \textbf{Part-task Practice (Teilübungen)} \\
         \midrule
-        
+
         \begin{itemize}
             \item Visualisierung der Client-Server-Architektur (Skript, Slides)
             \item Einführung in grundlegende Begriffe: IP-Adresse, Port, Socket
             \item Analogie: \enquote{Postsystem} (Adresse $\rightarrow$ Empfänger)
             \item Infoblätter / Moodle-Materialien mit Hintergrundwissen
-        \end{itemize} &
+        \end{itemize}                 &
         \begin{itemize}
             \item Code-Snippets für \lstinline|socket.connect|, \lstinline|send|, \lstinline|recv|
             \item Anleitung zur Fehlerbehandlung bei Verbindungsabbrüchen
@@ -62,10 +133,17 @@ Das formulierte Problem ermöglicht es den Lernenden, technische Funktionsprinzi
     \caption{Didaktische Struktur der Lernaufgabe: Chat-Kommunikation}
 \end{table}
 
-\subsection*{Part-task Practice 1: Lokale Verbindung}
-% ... weitere Teilübungen können hier ergänzt werden ...
-\begin{myexercise}
-    \textbf{Part-task Practice 1: Lokale Verbindung}
+\subsection{Learning Task 1: Lokale Verbindung via \textit{localhost}}
+
+\begin{scaffoldBox}
+    \textbf{Vorausgehende Konzepte}: Die SuS kennen bereits die historischen Hintergründe von Netzwerken, die Grundkonzepte von Netzwerkschichten, IP-Adressen, Sequenzierung und Ports, sowie die Client-Server-Architektur aufgrund einer vorangehenden Unterrichtssequenz. In der Vorausgehenden Unterrichtssequenz haben sich die SuS mit den grundlegenden Funktionen und der Bedeutung von Netzwerken auseinandergesetzt, indem Sie ein Spiel gespielt haben, bei dem sie Nachrichten über ein simuliertes Netzwerk via ausgedruckte Kärtchen zusenden mussten (s. \cref{sec:netzwerkspiel}). Dabei haben sie die Rolle von IP-Adressen und Ports kennengelernt und verstanden, wie Datenpakete in einem Netzwerk weitergeleitet werden.
+
+    \textbf{Neue Konzepte}: Client-Server-Architektur, IP-Adresse, Port, Socket, localhost.
+
+    Die neuen Begriffe werden zuerst anhand eines Videos (\href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Warriors of the Net}) und einer Analogie (Postsystem) eingeführt. Anschliessend wird die Grundstruktur eines Socket-Programms in Python vorgestellt. Die SuS lösen dabei einige vorbereitete Teilübungen (Part-task Practice), um die Konzepte zu verinnerlichen, und lösen danach die komplexe Lernaufgabe, bei der eine lokale Chat-Kommunikation über zwei Python-Skripte realisiert wird.
+\end{scaffoldBox}
+
+\begin{myexercise}[title=Chatten auf demselben Rechner]
 
     \textbf{Aufgabe:} Schreiben Sie zwei Python-Programme, \texttt{server.py} und \texttt{client.py}, die auf demselben Rechner laufen. Der Client verbindet sich mit dem Server und schickt eine kurze Nachricht („Hallo“). Der Server empfängt die Nachricht und gibt sie auf der Konsole aus.
 
@@ -98,13 +176,11 @@ client.send("Hallo".encode())
 
 client.close()
 \end{lstlisting}
+    Lassen Sie \texttt{server.py} auf der Konsole laufen und führen Sie dann \texttt{client.py} aus, indem Sie in VS Code auf den Dropdown-Button rechts vom Run-Button clicken und ``Run Python File in Dedicated Terminal'' anklicken.
 
-Lassen Sie \texttt{server.py} auf der Konsole laufen und führen Sie dann \texttt{client.py} aus, indem Sie in VS Code auf den Dropdown-Button rechts vom Run-Button clicken und ``Run Python File in Dedicated Terminal'' anklicken.
-
-Erweitern Sie nun Ihr Programm, indem der Client eine Nachricht schickt, und der Server antwortet mit ``''\texttt{Nachricht erhalten!}''.
-\begin{myanswer}
-\begin{lstlisting}[caption={server.py}]
-    # server.py
+    Erweitern Sie nun Ihr Programm, indem der Client eine Nachricht schickt, und der Server antwortet mit ``''\texttt{Nachricht erhalten!}''.
+    \begin{myanswer}
+        \begin{lstlisting}[caption=\texttt{server.py}]
 import socket
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -123,8 +199,7 @@ conn.send("Nachricht erhalten!".encode())
 conn.close()
 server.close()
 \end{lstlisting}
-\begin{lstlisting}[caption={client.py}]
-    # client.py
+        \begin{lstlisting}[caption=\texttt{client.py}]
 import socket
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -136,19 +211,395 @@ print("Antwort vom Server:", antwort)
 
 client.close()
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 \begin{mychallenge}
-Versuchen Sie, den Client zu starten, bevor der Server läuft. Welche Fehlermeldung erhalten Sie? Wie können Sie das Problem beheben?
+    Versuchen Sie, den Client zu starten, bevor der Server läuft. Welche Fehlermeldung erhalten Sie? Wie können Sie das Problem beheben?
 \end{mychallenge}
 
-\begin{myexercise}[Part-task Practice 2: Eigene IP-Adresse verwenden]
-\textbf{Aufgabe:} Ermitteln Sie Ihre eigene IP-Adresse im lokalen Netzwerk (z. B. über den Befehl \texttt{ipconfig} in der Windows-Eingabeaufforderung oder \texttt{ifconfig} im Terminal auf macOS/Linux). Passen Sie die IP-Adresse in \texttt{client.py} und \texttt{server.py} entsprechend an, sodass der Server auf Ihrer lokalen IP-Adresse lauscht und der Client sich mit dieser verbindet.
+\subsection{Learning Task 2: Chat-Kommunikation über ein lokales Netzwerk}
 
-\textbf{Hinweis:} Stellen Sie sicher, dass beide Programme auf demselben Rechner ausgeführt werden, um die Verbindung zu testen.
+\begin{scaffoldBox}
+    \textbf{Neue Konzepte}: IP-Adresse im lokalen Netzwerk, Firewall-Einstellungen.
 
-\textbf{Zusatzaufgabe:} Versuchen Sie, den Server auf einer anderen Maschine im selben Netzwerk zu starten und den Client von Ihrer Maschine aus zu verbinden. Welche Änderungen müssen Sie vornehmen?
-    
+    Die SuS lernen, wie sie die eigene IP-Adresse im lokalen Netzwerk ermitteln können (z. B. über den Befehl \texttt{ipconfig} in der Windows-Eingabeaufforderung oder \texttt{ifconfig} im Terminal auf macOS/Linux). Zudem wird erklärt, wie Firewall-Einstellungen den Datenverkehr beeinflussen können. Die Teilübungen (Part-task Practice) helfen den SuS, ihre Programme anzupassen und Verbindungsprobleme zu lösen. Am Ende steht die komplexe Lernaufgabe, bei der die Chat-Kommunikation über zwei Geräte im selben Netzwerk realisiert wird.
+
+    \textbf{Technische Herausforderungen}: Die Lehrperson sollte vorab testen, ob die Firewall-Einstellungen auf den Schulrechnern die Kommunikation über Sockets erlauben. Gegebenenfalls müssen Ausnahmen für die verwendeten Ports eingerichtet werden oder ein eigenes Netzwerk (z. B. über einen mobilen Hotspot oder einen eigenen WLAN-fähigen Router) genutzt werden.
+\end{scaffoldBox}
+
+\begin{myexercise}[title=Chatten im lokalen Netzwerk]
+
+    \textbf{Aufgabe:} Schreiben Sie zwei Python-Programme, \texttt{server.py} und \texttt{client.py}, die auf \textbf{verschiedenen Rechnern im selben lokalen Netzwerk} laufen. Der Server lauscht auf seiner lokalen IP-Adresse und einem Port (z.B. 12345). Der Client verbindet sich mit der IP-Adresse des Servers und schickt eine kurze Nachricht („Hallo LAN“). Der Server empfängt die Nachricht und gibt sie auf der Konsole aus.
+
+    \textbf{Schritte:}
+    \begin{enumerate}
+        \item Ermitteln Sie die lokale IP-Adresse des Servers (z.B. mit \texttt{ipconfig} oder \texttt{ifconfig}).
+        \item Passen Sie die \texttt{bind}- und \texttt{connect}-Befehle entsprechend an.
+        \item Starten Sie \texttt{server.py} auf Rechner A und \texttt{client.py} auf Rechner B.
+    \end{enumerate}
+
+    \textbf{Verwenden Sie folgende Grundstruktur:}
+
+    \begin{lstlisting}[caption={server.py}]
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("192.168.1.10", 12345))   # lokale IP des Servers, Port 12345
+server.listen(1)
+print("Warte auf Verbindung...")
+
+conn, addr = server.accept()
+print("Verbunden mit:", addr)
+
+nachricht = conn.recv(1024).decode()
+print("Empfangen:", nachricht)
+
+conn.close()
+server.close()
+    \end{lstlisting}
+
+    \begin{lstlisting}[caption={client.py}]
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("192.168.1.10", 12345))  # IP-Adresse des Servers, Port 12345
+client.send("Hallo LAN!".encode())
+
+client.close()
+    \end{lstlisting}
+
+    \textbf{Erweiterung:} Lassen Sie den Client eine Nachricht schicken und den Server mit \texttt{"Nachricht erhalten!"} antworten.
+
+    \begin{myanswer}
+        \begin{lstlisting}[caption=\texttt{server.py}]
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("192.168.1.10", 12345))
+server.listen(1)
+print("Warte auf Verbindung...")
+
+conn, addr = server.accept()
+print("Verbunden mit:", addr)
+
+nachricht = conn.recv(1024).decode()
+print("Empfangen:", nachricht)
+
+conn.send("Nachricht erhalten!".encode())
+
+conn.close()
+server.close()
+        \end{lstlisting}
+        \begin{lstlisting}[caption=\texttt{client.py}]
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("192.168.1.10", 12345))
+client.send("Hallo Server im LAN!".encode())
+
+antwort = client.recv(1024).decode()
+print("Antwort vom Server:", antwort)
+
+client.close()
+        \end{lstlisting}
+    \end{myanswer}
 \end{myexercise}
+
+\subsection{Learning Task 3: Chat-Kommunikation über das Internet, mittels Relay-Server}
+
+\begin{scaffoldBox}
+    \textbf{Neue Konzepte}: Öffentliche IP-Adresse, NAT, Port-Forwarding, Relay-Server, DNS (Domain Name System).
+
+    Die SuS lernen, wie sie die öffentliche IP-Adresse ihres Netzwerks ermitteln können (z. B. über Websites wie \href{https://whatismyipaddress.com/}{whatismyipaddress.com}). Zudem wird das Konzept von NAT (Network Address Translation) und Port-Forwarding erklärt, um zu verstehen, warum direkte Verbindungen oft nicht möglich sind. Zusätzlich wird das Domain Name System (DNS) eingeführt: DNS übersetzt menschenlesbare Domain-Namen (wie \texttt{chat.example.com}) in IP-Adressen, damit Programme Server im Internet finden können. Die Teilübungen (Part-task Practice) helfen den SuS, ihre Programme anzupassen und Verbindungsprobleme zu lösen. Am Ende steht die komplexe Lernaufgabe, bei der die Chat-Kommunikation über einen Relay-Server realisiert wird.
+
+    \textbf{Technische Herausforderungen}: Die Lehrperson sollte vorab testen, ob die Firewall-Einstellungen auf den Schulrechnern die Kommunikation über Sockets erlauben. Gegebenenfalls müssen Ausnahmen für die verwendeten Ports eingerichtet werden oder ein eigenes Netzwerk (z. B. über einen mobilen Hotspot oder einen eigenen WLAN-fähigen Router) genutzt werden.
+\end{scaffoldBox}
+
+\begin{myexercise}[title=Chatten über einen öffentlichen Relay-Server]
+
+    \textbf{Aufgabe:} Sie verbinden sich mit einem bereits laufenden öffentlichen Relay-Server, der Nachrichten zwischen mehreren Clients weiterleitet. Ziel ist, dass Sie und Ihre Mitschüler:innen sich gegenseitig Nachrichten schicken können.
+
+    \textbf{Schritte:}
+    \begin{enumerate}
+        \item Öffnen Sie \texttt{client.py} und passen Sie die \texttt{connect}-Zeile an:
+              \begin{lstlisting}[language=Python]
+client.connect(("88.198.193.239", 12345))
+        \end{lstlisting}
+        \item Senden Sie eine Nachricht (z.B. \enquote{Hallo an alle!}) an den Server.
+        \item Empfangen Sie die Antwort und geben Sie sie auf der Konsole aus.
+        \item Starten Sie \texttt{client.py} auf mehreren Rechnern gleichzeitig und tauschen Sie Nachrichten aus.
+        \item Probieren Sie aus, ob Sie von verschiedenen Rechnern aus gleichzeitig Nachrichten senden und empfangen können. Was passiert, wenn mehrere Clients verbunden sind? Können Sie sich gegenseitig Nachrichten schicken?
+        \item \textbf{Erweiterung:} Jeder Client gibt beim Start einen eigenen Namen ein. Beim Senden einer Nachricht wählen Sie aus, an welchen Namen (also an welchen anderen Client) die Nachricht geschickt werden soll. Die Nachricht wird dann nur an diesen Empfänger weitergeleitet.
+
+    \end{enumerate}
+
+    \textbf{Verwenden Sie folgende Grundstruktur:}
+
+    \begin{lstlisting}[caption={client.py}]
+    import socket
+
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect(("88.198.193.239", 12345))  # IP-Adresse des Relay-Servers, Port 12345
+
+    name = input("Dein Name: ")
+    client.send(name.encode())  # Namen an Server senden
+
+    def empfange():
+        while True:
+        antwort = client.recv(1024).decode()
+        if not antwort:
+            break
+        print(antwort)
+
+    import threading
+    threading.Thread(target=empfange, daemon=True).start()
+
+    while True:
+        empfaenger = input("Empfänger-Name (oder 'exit'): ")
+        if empfaenger.lower() == "exit":
+        break
+        nachricht = input("Nachricht: ")
+        if nachricht.lower() == "exit":
+        break
+        # Format: EMPFAENGER:Nachricht
+        client.send(f"{empfaenger}:{nachricht}".encode())
+
+    client.close()
+        \end{lstlisting}
+    \textbf{Hinweis:} Der Server muss die Namen der verbundenen Clients verwalten und Nachrichten entsprechend weiterleiten. So können Sie gezielt Nachrichten an einzelne Personen schicken.
+    \begin{myanswer}
+        \begin{lstlisting}[caption=\texttt{client.py}]
+import socket
+import threading
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("88.198.193.239", 12345))  # IP-Adresse des Relay-Servers, Port 12345
+
+name = input("Dein Name: ")
+client.send(name.encode())  # Namen an Server senden
+
+def empfange():
+    while True:
+        antwort = client.recv(1024).decode()
+        if not antwort:
+            break
+        print(antwort)
+
+threading.Thread(target=empfange, daemon=True).start()
+
+while True:
+    empfaenger = input("Empfänger-Name (oder 'exit'): ")
+    if empfaenger.lower() == "exit":
+        break
+    nachricht = input("Nachricht: ")
+    if nachricht.lower() == "exit":
+        break
+    # Format: EMPFAENGER:Nachricht
+    client.send(f"{empfaenger}:{nachricht}".encode())
+
+client.close()
+        \end{lstlisting}
+        \textbf{Hinweis:} Der Server muss die Namen der verbundenen Clients verwalten und Nachrichten entsprechend weiterleiten. So können Sie gezielt Nachrichten an einzelne Personen schicken.
+    \end{myanswer}
+    \begin{myanswer}
+        \begin{lstlisting}[caption=\texttt{server.py}]
+import socket
+import threading
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("0.0.0.0", 12345))
+server.listen()
+
+clients = []
+names = []
+
+def handle_client(client):
+    while True:
+        try:
+            nachricht = client.recv(1024).decode()
+            if not nachricht:
+                break
+            empfaenger, nachricht = nachricht.split(":", 1)
+            if empfaenger in names:
+                index = names.index(empfaenger)
+                clients[index].send(f"{names[clients.index(client)]}: {nachricht}".encode())
+        except:
+            break
+
+    client.close()
+    clients.remove(client)
+    names.remove(names[clients.index(client)])
+
+while True:
+    client, addr = server.accept()
+    clients.append(client)
+    name = client.recv(1024).decode()
+    names.append(name)
+    print(f"{name} hat sich verbunden.")
+    threading.Thread(target=handle_client, args=(client,), daemon=True).start()
+server.close()
+            \end{lstlisting}
+    \end{myanswer}
+\end{myexercise}
+
+
+% \section{Prüfungsaufgaben}
+
+% In diesem Abschnitt werden einige Ideen für Prüfungsaufgaben vorgestellt, die das Verständnis der Lernenden für Netzwerkkonzepte und deren praktische Anwendung testen.
+
+% \begin{myexercise}[\textbf{Theoriefrage}: IP-Adresse vs. Port]
+
+%     \textbf{Aufgabe:} Erklären Sie den Unterschied zwischen einer IP-Adresse und einem Port. Warum sind beide notwendig, um eine Netzwerkverbindung herzustellen?
+
+%     \begin{myanswer}
+%         Eine IP-Adresse identifiziert ein Gerät in einem Netzwerk eindeutig, ähnlich wie eine Hausadresse in der realen Welt. Sie gibt an, wohin Datenpakete gesendet werden sollen. Ein Port hingegen ist eine nummerische Kennung, die auf einem Gerät verwendet wird, um verschiedene Dienste oder Anwendungen zu unterscheiden. Während die IP-Adresse das Zielgerät angibt, spezifiziert der Port den spezifischen Dienst (z.B. Webserver, E-Mail-Server) auf diesem Gerät. Beide sind notwendig, um sicherzustellen, dass Daten korrekt zugestellt werden.
+%     \end{myanswer}
+% \end{myexercise}
+
+% \begin{myexercise}[\textbf{Debugging-Aufgabe}: Netzwerkfehler beheben]
+
+%     \textbf{Aufgabe:} Sie versuchen, Ihren \texttt{client.py} mit dem Server zu verbinden, erhalten aber die Fehlermeldung \texttt{ConnectionRefusedError}. Nennen Sie mindestens drei mögliche Ursachen für diesen Fehler und beschreiben Sie jeweils eine Lösungsmöglichkeit.
+
+%     \begin{myanswer}
+%         \begin{itemize}
+%             \item \textbf{Server läuft nicht:} Der Server wurde nicht gestartet oder ist abgestürzt. \textit{Lösung:} Starten Sie den Server und versuchen Sie die Verbindung erneut.
+%             \item \textbf{Falsche IP-Adresse oder Port:} Der Client versucht, sich mit einer falschen Adresse oder einem falschen Port zu verbinden. \textit{Lösung:} Überprüfen Sie die IP-Adresse und den Port im Code und passen Sie sie ggf. an.
+%             \item \textbf{Firewall blockiert die Verbindung:} Die Firewall auf dem Server- oder Client-Rechner blockiert den Netzwerkverkehr. \textit{Lösung:} Passen Sie die Firewall-Einstellungen an, um Verbindungen auf dem verwendeten Port zuzulassen.
+%         \end{itemize}
+%     \end{myanswer}
+% \end{myexercise}
+
+% % Define a simple macro for blanks (works in article)
+% \newcommand{\blank}[1]{\underline{\hspace{2cm}}}
+
+% \begin{myexercise}[\textbf{Lückentext}: Netzwerk-Grundlagen]
+
+%     In einem Computernetzwerk werden verschiedene Geräte miteinander verbunden, um Daten auszutauschen. Ein zentrales Element hierbei ist der \blank{Router}, welcher den Datenverkehr zwischen verschiedenen Netzwerken steuert. Innerhalb eines Netzwerks übernimmt ein \blank{Switch} die Verteilung der Datenpakete an die richtigen Geräte.
+
+%     Jedes Gerät in einem Netzwerk hat eine eindeutige \blank{IP}-Adresse. Dabei unterscheiden wir zwischen zwei Arten von Adressen: Während \blank{IPv4}-Adressen aus 32 Bit bestehen, nutzen \blank{IPv6}-Adressen 128 Bit und bieten dadurch eine wesentlich größere Anzahl möglicher Adressen.
+
+%     Zur Verwaltung der Routen, die Datenpakete nehmen sollen, verwendet ein Router eine \blank{Routing-Tabelle}. Damit der Router weiß, wie groß ein Teilnetz ist, wird eine \blank{Subnetzmaske} verwendet. Diese Maske hilft dabei, die Netzwerk- und die Hostanteile einer IP-Adresse zu trennen.
+
+%     Um den Domain-Namen in eine IP-Adresse zu übersetzen, wird das \blank{DNS}-Protokoll verwendet. Möchte man die IP-Adresse eines Domain-Namens herausfinden, kann man den Befehl \blank{nslookup} nutzen.
+
+%     Für Diagnosezwecke gibt es verschiedene Befehle. Mit \blank{ping} kann man überprüfen, ob ein anderes Gerät im Netzwerk erreichbar ist. Um die Netzwerkkonfiguration eines Geräts anzuzeigen, verwendet man den Befehl \blank{ipconfig} (Windows) bzw. \blank{ifconfig} (Linux/macOS).
+
+%     Um eine zuverlässige Datenübertragung zu gewährleisten, wird das \blank{TCP}-Protokoll verwendet. Für den Abruf von Webseiten kommt das \blank{HTTP}-Protokoll zum Einsatz.
+
+%     \begin{myanswer}
+%         In einem Computernetzwerk werden verschiedene Geräte miteinander verbunden, um Daten auszutauschen. Ein zentrales Element hierbei ist der \textbf{Router}, welcher den Datenverkehr zwischen verschiedenen Netzwerken steuert. Innerhalb eines Netzwerks übernimmt ein \textbf{Switch} die Verteilung der Datenpakete an die richtigen Geräte.
+
+%         Jedes Gerät in einem Netzwerk hat eine eindeutige \textbf{IP}-Adresse. Dabei unterscheiden wir zwischen zwei Arten von Adressen: Während \textbf{IPv4}-Adressen aus 32 Bit bestehen, nutzen \textbf{IPv6}-Adressen 128 Bit und bieten dadurch eine wesentlich größere Anzahl möglicher Adressen.
+
+%         Zur Verwaltung der Routen, die Datenpakete nehmen sollen, verwendet ein Router eine \textbf{Routing-Tabelle}. Damit der Router weiß, wie groß ein Teilnetz ist, wird eine \textbf{Subnetzmaske} verwendet. Diese Maske hilft dabei, die Netzwerk- und die Hostanteile einer IP-Adresse zu trennen.
+
+%         Um den Domain-Namen in eine IP-Adresse zu übersetzen, wird das \textbf{DNS}-Protokoll verwendet. Möchte man die IP-Adresse eines Domain-Namens herausfinden, kann man den Befehl \textbf{nslookup} nutzen.  
+
+%         Für Diagnosezwecke gibt es verschiedene Befehle. Mit \textbf{ping} kann man überprüfen, ob ein anderes Gerät im Netzwerk erreichbar ist. Um die Netzwerkkonfiguration eines Geräts anzuzeigen, verwendet man den Befehl \textbf{ipconfig} (Windows) bzw. \textbf{ifconfig} (Linux/macOS).
+
+%         Um eine zuverlässige Datenübertragung zu gewährleisten, wird das \textbf{TCP}-Protokoll verwendet. Für den Abruf von Webseiten kommt das \textbf{HTTP}-Protokoll zum Einsatz.
+%     \end{myanswer}
+% \end{myexercise}
+
+% \begin{myexercise}[\textbf{Zuordnungsaufgabe}: Netzwerk-Schichten]
+
+%     Ordnen Sie die folgenden Erklärungen der richtigen Netzwerk-Schicht zu (Anwendungsschicht, Physikalische Schicht, Vermittlungsschicht, Transportschicht):
+
+%     \begin{enumerate}
+%         \item \textbf{Stellt die elektrische, mechanische und funktionale Verbindung zwischen Geräten her.}
+%         \item \textbf{Sorgt für die korrekte Übertragung von Datenpaketen zwischen Sender und Empfänger, inklusive Fehlererkennung und -behebung.}
+%         \item \textbf{Regelt die Weiterleitung von Datenpaketen zwischen verschiedenen Netzwerken und bestimmt den besten Weg zum Ziel.}
+%         \item \textbf{Stellt Dienste wie E-Mail, Webseiten oder Dateiübertragung für den Nutzer bereit.}
+%     \end{enumerate}
+
+%     \begin{myanswer}
+%         \begin{itemize}
+%             \item \textbf{Physikalische Schicht}: Stellt die elektrische, mechanische und funktionale Verbindung zwischen Geräten her.
+%             \item \textbf{Transportschicht}: Sorgt für die korrekte Übertragung von Datenpaketen zwischen Sender und Empfänger, inklusive Fehlererkennung und -behebung.
+%             \item \textbf{Vermittlungsschicht}: Regelt die Weiterleitung von Datenpaketen zwischen verschiedenen Netzwerken und bestimmt den besten Weg zum Ziel.
+%             \item \textbf{Anwendungsschicht}: Stellt Dienste wie E-Mail, Webseiten oder Dateiübertragung für den Nutzer bereit.
+%         \end{itemize}
+%     \end{myanswer}
+% \end{myexercise}
+
+% \begin{myexercise}[\textbf{Anwendungsaufgabe}: Netzwerkbefehle praktisch nutzen]
+
+%     Sie möchten herausfinden, ob Ihr Computer eine Verbindung zu einem Server im Internet herstellen kann. Beschreiben Sie, wie Sie mit den Befehlen \texttt{ping} und \texttt{nslookup} vorgehen würden und was die jeweilige Ausgabe bedeutet.
+
+%     \begin{myanswer}
+%         Mit \texttt{ping} kann ich prüfen, ob der Server erreichbar ist, indem ich z.B. \texttt{ping google.com} eingebe. Die Ausgabe zeigt, ob Pakete erfolgreich gesendet und empfangen wurden. Mit \texttt{nslookup google.com} kann ich die IP-Adresse des Servers herausfinden. Die Ausgabe zeigt die zugehörige IP-Adresse und ggf. weitere DNS-Informationen.
+%     \end{myanswer}
+% \end{myexercise}
+
+% \begin{myexercise}[\textbf{Konzepte}: Client-Server-Architektur]
+
+%     Erklären Sie in eigenen Worten, wie die Client-Server-Architektur funktioniert und nennen Sie ein Beispiel aus dem Alltag, bei dem dieses Prinzip genutzt wird.
+
+%     \begin{myanswer}
+%         Bei der Client-Server-Architektur fordert ein Client (z.B. ein Browser) einen Dienst oder eine Ressource von einem Server an (z.B. eine Webseite). Der Server verarbeitet die Anfrage und schickt die Antwort zurück. Ein Beispiel ist das Abrufen einer Webseite: Der Browser ist der Client, der Webserver liefert die Seite.
+%     \end{myanswer}
+% \end{myexercise}
+
+% \begin{myexercise}[\textbf{Fehleranalyse}: Firewall und Netzwerkkommunikation]
+
+%     Sie haben ein Socket-Programm geschrieben, aber die Verbindung zwischen zwei Rechnern im lokalen Netzwerk funktioniert nicht. Nennen Sie zwei Möglichkeiten, wie eine Firewall die Kommunikation verhindern kann, und wie Sie das Problem lösen können.
+
+%     \begin{myanswer}
+%         Die Firewall kann entweder den verwendeten Port blockieren oder den gesamten eingehenden Netzwerkverkehr sperren. Lösung: Den Port in der Firewall freigeben oder eine Ausnahme für das Programm hinzufügen.
+%     \end{myanswer}
+% \end{myexercise}
+
+% \begin{myexercise}[\textbf{Programmieraufgabe}: Erweiterung eines Chat-Clients]
+
+%     Ihr Chat-Client kann bisher nur Nachrichten an einen Server senden und empfangen. Beschreiben Sie, wie Sie das Programm erweitern würden, damit mehrere Clients gleichzeitig Nachrichten austauschen können.
+
+%     \begin{myanswer}
+%         Der Server muss mehrere Verbindungen gleichzeitig verwalten, z.B. mit Threads. Jeder Client sendet seinen Namen beim Verbinden. Der Server leitet Nachrichten an den gewünschten Empfänger weiter, indem er die Namen und Verbindungen speichert und die Nachricht gezielt zustellt.
+%     \end{myanswer}
+% \end{myexercise}
+
+% \begin{myexercise}[\textbf{Theoriefrage}: NAT und Port-Forwarding]
+
+%     Erklären Sie, warum NAT (Network Address Translation) und Port-Forwarding notwendig sind, um eine Verbindung zu einem Server im Internet herzustellen, der sich hinter einem Router befindet.
+
+%     \begin{myanswer}
+%         NAT übersetzt private IP-Adressen im lokalen Netzwerk in die öffentliche IP-Adresse des Routers. Damit ein Server im lokalen Netzwerk von außen erreichbar ist, muss der Router eingehende Verbindungen über Port-Forwarding an die richtige lokale IP und den richtigen Port weiterleiten.
+%     \end{myanswer}
+% \end{myexercise}
+
+% \newpage
+\section{Lernziele}
+
+\begin{todolist}
+\item Ich kann die Grundkonzepte und Unterschiede zwischen IP, IPv4 und IPv6 erklären.
+\item Ich kann für IPv4 und IPv6 jeweils die Anzahl möglicher Adressen angeben und berechnen.
+\item Ich kann die Funktionen und Arbeitsweisen von Routern und Switches in einem Netzwerk verstehen und erläutern.
+% \item Ich kann eine Routing-Tabelle interpretieren und für einfache Routing-Entscheidungen nutzen.
+% \item Ich kann eine Subnetzmaske erstellen und anwenden, um Netzwerke in verschiedene Subnetze zu unterteilen.
+\item Ich kann die grundlegenden Konzepte von TCP beschreiben und dessen Einsatz im Kontext von Netzwerkprotokollen verstehen.
+% \item Ich kann grundlegende HTML-Strukturen erstellen und verstehen, wie HTML-Seiten über HTTP übertragen werden.
+\item Ich kann den Ablauf eines Abrufs von Webinhalten über das Internet in einzelnen Schritten und den darin involvierten Protokollen erläutern.
+\item Ich kann die Rolle eines DNS-Servers im Netzwerk erklären und wie DNS-Anfragen bearbeitet und beantwortet werden.
+\item Ich kann grundlegende Netzwerkbefehle wie \texttt{ping}, \texttt{ipconfig}/\texttt{ifconfig} und \texttt{nslookup} anwenden und deren Ausgabe interpretieren.
+\item Ich kann einfache Netzwerkprobleme identifizieren und grundlegende Schritte zur Fehlerbehebung durchführen.
+\item Ich kann die Client-Server-Architektur erklären und deren Bedeutung für die Kommunikation im Internet beschreiben.
+\item Ich kann in Python einfache Socket-Programme schreiben, die eine Verbindung zu einem Server herstellen und Nachrichten senden/empfangen.
+\item Ich kann eine Chat-Anwendung in Python entwickeln, die über einen Relay-Server Nachrichten zwischen mehreren Clients austauscht.
+\item Ich kann die grundlegenden Schritte zur Fehlerbehebung einer nicht funktionierenden Internet-Verbindung durchführen und dokumentieren.
+\end{todolist}
+
+\clearpage
+\appendix
+\chapter{Netzwerk-Spiel}\label{sec:netzwerkspiel}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\textwidth]{Grundlagen_Info/07_Netzwerke/Skript/Zettel.pdf}
+    \caption{Zettel für das Netzwerk-Spiel}
+\end{figure}
+\clearpage
+
+\input{Grundlagen_Info/07_Netzwerke/Skript/Chat-Client.tex}\newpage
+
+%\printglossaries
 
 \end{document}
