@@ -678,7 +678,7 @@ Diese Verschlüsslungsmethode galt während mehreren Jahrehunderten als sicher u
 \cref{fig:langer-text-vig-caesar} zeigt, dass Vigenère zu einer insgesamt homogeneren Verteilung aller Buchstaben im Kryptotext führt. Dies kommt daher, dass bei Vigenère jeder Klartext-Buchstaben auf \textit{mehrere} Kryptotext-Buchstaben verteilt wird, währenddem bei Caesar jeder Klartext-Buchstaben durch genau \textit{einen} Buchstaben im Kryptotext kodiert wird. \cref{tab:vigenere} zeigt die Vigenère-Tabelle, mithilfe welcher man einen Text mit der Vigenère-Methode ver- sowie entschlüsseln kann, sofern der Schlüssel bekannt ist. Folgende zwei Beispiele zeigen auf, wie diese Tabelle genutzt werden kann:
 
 \begin{enumerate}
-	\item \textbf{Verschlüsselung}: Soll beispielsweise der Klartext-Buchstabe \enquote{E} mit dem Schlüsselteil \enquote{K} verschlüsselt werden, so findet man in der Tabelle den entsprechenden Kryptotext-Buchstaben \enquote{O}. 
+	\item \textbf{Verschlüsselung}: Soll beispielsweise der Klartext-Buchstabe \enquote{E} mit dem Schlüsselteil \enquote{K} verschlüsselt werden, so findet man in der Tabelle den entsprechenden Kryptotext-Buchstaben \enquote{O}.
 	\item \textbf{Entschlüsselung}: Soll beispielsweise der Kryptotext-Buchstabe \enquote{O} mit dem Schlüsselteil \enquote{K} entschlüsselt werden, so sucht man in der Tabelle nach dem Klartext-Buchstaben, der mit \enquote{O} und \enquote{K} korrespondiert. Dies ist in diesem Fall der Buchstabe \enquote{E}.
 \end{enumerate}
 
@@ -771,8 +771,8 @@ Der Schlüssel muss demnach ``ICH'' sein und wir können den Text somit entschl�
 	\end{myanswer}
 \end{myexercise}
 \begin{minipage}{\textwidth} % wrapping this exercise in a minipage to enable printing it out on one page
-\begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]\label{ex:vigHaufigkeitGruppen}
-	
+	\begin{myexercise}[Vigenère knacken bei bekannter Schlüssellänge (zu dritt)]\label{ex:vigHaufigkeitGruppen}
+
 		Finden Sie für folgenden Vigenère-Text den Klartext heraus, wenn Sie wissen, dass der Schlüssel Länge 3 hat:
 
 		\colorstring[ForestGreen,RoyalBlue,Crimson]{WKJLMUAKJWZJWQVWVVKBGZBGJAVOMPFRGVMTWZMWVPLEKWMNWUGFBCJMKFMXWZNSMUKTKUPGNMTKKJDCGKAGDCPYNWWZWFAGJMHJMKZMKLQUL}
@@ -833,7 +833,7 @@ Die Grundidee hinter dem Kasiski-Test ist: Wenn ein Wort oder ein Wortteil im Kl
 
 Wenn wir also im Kryptotext nach wiederholten Sequenzen suchen, können wir daraus die Schlüssellänge ableiten.
 
-\begin{myexample}
+\begin{myexample}\label{ex:kasiskiTest}
 In folgendem Beispiel ist der Klartext auf der ersten Zeile. Der Schlüssel ``\text{CODE}'' wird verwendet, um den Gemeimtext (auf der dritten Zeile) zu erzeugen:
 
 \texttt{M\gold{EIN}KL\red{EIN}ERREIMSCH\red{EIN}TK\green{EIN}ERZUS\green{EIN}}
@@ -900,6 +900,56 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 	\end{myanswer}
 \end{myexercise}
 
+\begin{myexercise}
+	Finden Sie die Schlüssellänge für folgenden Vigenère-Text heraus, indem Sie den Kasiski-Test anwenden:
+
+	\texttt{\colorstring[black]{CMFBAMXPESRGILLDMNCEDMTKEHRPVFEIOKLHGIVSJYSQZDMUXYLRBJITQNZTDMOVMUMFCSDMUZGDRTTHVISGUMOURNFICFTRMFSEQIJKESJBVHHKFLNCPFINVMMCIFIKLGDRECIBLFRUEIJEEFCNEARMBCELEULRTREUALMURUEHJVAMJPIDDVVEGDRFZNDWIFCGWDYUKWULDHYNJVNVOVBDREVRESFIDDVVEGHRUVLKILKUDPMVREEFYIFOFZTDRVEDEISKIFOFZTDRXVRCIOUIDNVXEMHMZCGIORUBLJEIGVFIPDVTFEMPJTHDRFETVMDBLTRHLNSISJTTIUQTHQWFRKMFXEMHFELDMUSIKHTZNCDJVLDYOUWDVUVFDWUXEGEMKEMRBTHCIOVNRMDYDHITTHTPBEGDLPVRHKFEIMMIIEQXBVGKMDYEMESSEHXSZCGXFEERFJCDDXALDDQEZEFVVEDKEHVFTISUIDFFIPQYFWUMKVESDVFJTTRTLNCJVVRCM}}
+
+	Verwenden Sie dazu folgendes Online-Tool: \url{https://cryptbreaker.marcwidmer.xyz/solve}
+	\begin{enumerate}
+		\item Verwenden Sie das Analyse-Werkzeug \enquote{Kasiski-Analyse}, um die Abstände der sich wiederholenden Sequenzen der Länge 4 zu bestimmen.
+		      \begin{itemize}
+			      \item Notieren Sie sich die Positionen und Abstände der sich wiederholenden Sequenzen der Länge 4.
+			      \item Zerlegen Sie die Abstände in Primfaktoren.
+			      \item Finden Sie den grössten gemeinsamen Teiler der Abstände, um die Schlüssellänge zu erraten.
+		      \end{itemize}
+		\item Überprüfen Sie Ihre Vermutung, indem Sie im Analyse-Werkzeug die Häufigkeitsanalyse mit der Schrittweite (\textit{stride}) gleich der vermuteten Schlüssellänge durchführen.
+		\item Entschlüsseln Sie den Text mit dem \enquote{Vigenère}-Entschlüsslungswerkzeug.
+	\end{enumerate}
+
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Wir beobachten folgende Positionen und Abstände bei den Zeichenfolgen der Länge 4:
+			      \begin{itemize}
+				      \item \texttt{XEMH}: 283, 348 (Abstand 65) $\rightarrow$ $5\times13$
+				      \item \texttt{IDDV}: 223, 178 (Abstand 45) $\rightarrow$ $3\times3\times5$
+			      \end{itemize}
+			      Bereits aus diesen beiden Zeichenfolgen erkennen wir einen gemeinsamen Teiler von 5 und somit eine mögliche Schlüssellänge von 5.
+			\item Die Häufigkeitsanalyse mit Schrittweite 5 bestätigt unsere Vermutung, da die Häufigkeitsverteilung pro Gruppe stark von der Gleichverteilung abweicht.
+			\item Mit dem Schlüssel \texttt{ZEBRA} können wir den Text entschlüsseln und enthalten einen Ausschnitt des \href{https://www.ksimlee.ch/schule/leitbild/}{Leitbilds der Kantonsschule im Lee}.
+		\end{enumerate}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	\begin{enumerate}
+		\item Erklären Sie kurz: Dopplungen im Klartext (z.B. \enquote{EIN}) führen nicht unbedingt zu Dopplungen im Geheimtext.
+		\item Erklären Sie kurz: Dopplungen im Geheimtext müssen nicht in jedem Fall aus Dopplungen im Klartext stammen; sie können auch zufällig entstehen.
+	\end{enumerate}
+
+	\begin{myanswer}
+		Kurzbegründungen:
+		\begin{itemize}
+			\item Bei polyalphabetischer Verschlüsselung werden gleiche Trigramme an verschiedenen Textpositionen oft mit verschiedenen Schlüsselzeichen verschlüsselt, sodass Wiederholungen im Klartext nicht zwangsläufig gleiche Geheimtrigramme ergeben (s. z.B. \cref{ex:kasiskiTest}).
+			\item Geheimtext-Dopplungen können aber auch zufällig entstehen (z.B. ``\texttt{OML}''), wenn verschiedene Klartextfolgen unter unterschiedlichen Schlüsselteilen zufällig identische Geheimfolgen produzieren. Beispiel:
+			      \begin{itemize}
+				      \item Klartext: \texttt{EIN} mit Schlüsselteil \texttt{KEY} $\rightarrow$ Geheimtext: \texttt{OML}
+				      \item Klartext: \texttt{KOB} mit Schlüsselteil \texttt{EYK} $\rightarrow$ Geheimtext: \texttt{OML}
+			      \end{itemize}
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
+
 \begin{mychallenge}
 	Lösen Sie den Kasiski-Test online:
 	\qrcode[height=2cm]{https://www.dominikus-gymnasium.de/kasiski-test-spiel.html}
@@ -907,7 +957,7 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 
 \subsubsection{Bestimmung der Schlüssellänge: Friedman'sche Charakteristik}
 
-Eine weitere Möglichkeit, die Schlüssellänge zu erraten, besteht in der Verwendung der sogenannten Friedman'schen Charakteristik. 
+Eine weitere Möglichkeit, die Schlüssellänge zu erraten, besteht in der Verwendung der sogenannten Friedman'schen Charakteristik.
 
 William Friedman (1891-1969) war ein russisch-amerikanischer Kryptologe und Pionier auf dem Gebiet der Kryptoanalyse (siehe \cref{fig:william-friedman}). Kurz vor dem Ausbruch des zweiten Weltkriegs gründete er den Signals Intelligence Service (SIS), eine Geheimabteilung des US-Militärs zur Entzifferung feindlicher Codes und Geheimschriften.
 

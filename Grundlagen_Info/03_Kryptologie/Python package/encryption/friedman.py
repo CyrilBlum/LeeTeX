@@ -62,3 +62,7 @@ def draw_friedman(i, fc, turtle=False):
         plt.xticks(np.arange(1, i, 1.0))
         ax.yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0,xmax=1))
         return fig, ax
+    
+if __name__ == "__main__":
+    print(calculate_fc("PAPPERLAPAPP"))
+    print(calculate_fc("BACKSTEIN"))
