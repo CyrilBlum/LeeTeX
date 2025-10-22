@@ -135,7 +135,41 @@ Eine denkbare Darstellung von $p_1^{e_1}p_2^{e_2}\ldots p_t^{e_t}$ ist
 \end{align*}
 Mit der Vereinbarung aus \cref{myexample:Wiederholungen} erhalten wir wieder eine binäre Darstellung von $x$.
 \end{myexample}
+
+
 Leider sind die beiden Komprimierungsmethoden aus \cref{myexample:Wiederholungen,myexample:Primkomprimierung} nicht miteinander vergleichbar. Die erste Methode (Ausnutzung von Wiederholungen) erzeugt für gewisse Wörter eine kürzere Darstellung als die zweite Methode (Primfaktorisierung) und umgekehrt.
+
+
+\begin{myexample}[Unvergleichbarkeit von Komprimierungsmethoden]\label{myexample:Unvergleichbarkeit}
+	\leavevmode
+\begin{itemize}
+	\item Für das Wort $w_A := (10110010)^(512)$ mit der binären Länge von $8 \cdot 512 = 4096$ Bits, ergibt die Komprimierung aus \cref{myexample:Wiederholungen}:
+\begin{align*}
+	w_A &= (10110010)^{512} = (10110010)bin(512) = (10110010)1000000000 =\\
+	&= \underbrace{10}_{(}\underbrace{1100111100001100}_{10110010}\underbrace{01}_{)}\underbrace{11000000000000000000}_{1000000000}
+\end{align*}
+also als zusammenhängendes binäre Wort:
+\begin{align*}
+	1010110011110000110001011100000000000000
+\end{align*}
+mit einer Darstellungslänge von $40$ Bits gegenüber der unkomprimierten Darstellungslänge von $4096$ Bits.
+	\item Für das Wort $w_B := bin\lr{3^{5000}\cdot 5^{4000}\cdot 17^{3000}}$ mit der binären Länge von $17230$ Bits (siehe \cref{mytheorem:AnzahlZiffern}), ergibt die Komprimierung aus \cref{myexample:Primkomprimierung}:
+\begin{align*}
+	w_B &= bin\lr{3^{5000}\cdot 5^{4000}\cdot 17^{3000}} =\\
+	&= bin(3)(bin(5000))bin(5)(bin(4000))bin(17)(bin(3000)) =\\
+	&= 11(1001110001000)101(111110100000)10001(101110111000).
+\end{align*}
+Nach Anwendung unserer Vereinbarung
+\begin{align*}
+	0 \to 00, \quad 1 \to 11, \quad ( \to 10, \quad ) \to 01
+\end{align*}
+erhalten wir eine Darstellungslänge von $106$ Bits gegenüber der unkomprimierten Darstellungslänge von $17230$ Bits.
+	\item Die Komprimierungsmethode der Primfaktorisierung für $w_A$ wird vermutlich kaum gewinnbringend sein, da $dec(w_A)$ vermutlich nicht als Produkt hoher Potenzen weniger Primzahlen geschrieben werden kann. Umgekehrt wird $w_B$ erwartungsweise keine Muster von Wiederholungen von Nullen und Einsen aufweisen, deren Ausnützung sich lohnen würde.
+\end{itemize}
+\end{myexample}
+
+Somit sind die beiden Komprimierungsmethoden aus den Beispielen \ref{myexample:Wiederholungen} und \ref{myexample:Primkomprimierung} nicht miteinander vergleichbar. Die erste Methode (Ausnutzung von Wiederholungen) erzeugt für gewisse Wörter eine deutlich
+kürzere Darstellung als die zweite Methode (Primfaktorisierung) und umgekehrt.
 
 \section{Idee hinter der Kolmogorov-Komplexität}
 Die Definition eines Komplexitätsmasses sollte robust sein in dem Sinne, dass sie nicht auf einer arbiträren Wahl einer Komprimierungsmethode basiert. Ein Komplexitätsmass, welches keine arbiträre Wahl verwendet, ist die Kolmogorov-Komplexität. Um deren Definition zu verstehen, müssen wir zunächst den Begriff der \textit{Generierung} eines Worts einführen.
@@ -173,7 +207,7 @@ Beachte, dass der Algorithmus \texttt{B} eine kurze Beschreibung von $w$ relativ
 Die Idee von Kolmogorov besteht darin, dass wir uns nicht auf eine arbiträre Komprimierung einigen müssen. Stattdessen erlaubt er, beliebige Programme (in einer fest gewählten Programmiersprache) zur Beschreibung von Texten. Wenn ein Text durch ein kurzes Programm beschrieben werden kann, so hat es eine geringe Kolmogorov-Komplexität. Erlaubt ein Text hingegen keine kurze Beschreibung als Programm, so besitzt er eine hohe Kolmogorov-Komplexität.
 
 \section{Selbstbegrenzung von Programmen und Definition der Kolmogorov-Komplexität}
-Zunächst möchten wir das kleine und etwas mühsames Detail der sogenannten \textit{Selbstbegrenzung} adressieren und die damit verbundene Problematik in diesem Abschnitt aus dem Weg räumen. Betrachten wir dazu nochmals das folgende (standard) \texttt{C++}-Programm aus \cref{myexample:generateA}:
+Zunächst möchten wir das kleine, aber mühsame Detail der sogenannten \textit{Selbstbegrenzung} adressieren und die damit verbundene Problematik in diesem Abschnitt aus dem Weg räumen. Betrachten wir dazu nochmals das folgende (standard) \texttt{C++}-Programm aus \cref{myexample:generateA}:
 \begin{lstlisting}[language=C++,escapechar=!] 
 #include <iostream>
 void A() {
