@@ -136,9 +136,7 @@ Eine denkbare Darstellung von $p_1^{e_1}p_2^{e_2}\ldots p_t^{e_t}$ ist
 Mit der Vereinbarung aus \cref{myexample:Wiederholungen} erhalten wir wieder eine binäre Darstellung von $x$.
 \end{myexample}
 
-
 Leider sind die beiden Komprimierungsmethoden aus \cref{myexample:Wiederholungen,myexample:Primkomprimierung} nicht miteinander vergleichbar. Die erste Methode (Ausnutzung von Wiederholungen) erzeugt für gewisse Wörter eine kürzere Darstellung als die zweite Methode (Primfaktorisierung) und umgekehrt.
-
 
 \begin{myexample}[Unvergleichbarkeit von Komprimierungsmethoden]\label{myexample:Unvergleichbarkeit}
 	\leavevmode
@@ -214,21 +212,27 @@ void A() {
     std::cout << "00110111" << std::endl;
 }
 \end{lstlisting}
+
 Das Problem ist, dass wir typischerweise die Symbole der Tastatur in Binärcode durch Folgen von $7$ Nullen und Einsen (zum Beispiels mittels der ASCII-Kodierung) darstellen müssen (natürlich gibt es auch noch andere Möglichkeiten). Wenn wir aber das gesamte Programm \texttt{A} so kodieren, dann würden wir für das Wort $w := 00110111$ nicht nur $\abs{w}$ Bits benötigen, sondern $7\abs{w}$. Diesen Faktor $7$ möchten wir gerne vermeiden. Damit unser Programm genau das Wort $w$ (weder mehr noch weniger) ausgibt, muss klar sein, welcher Teil im Programm \texttt{A} dem Wort $w$ entspricht und welcher Teil dem Rest des Programms. Um dies zu erreichen, designen wir eine ganz leicht modifizierte Version des \texttt{g++} Compilers und der Programmiersprache \texttt{C++}. Lass uns diesen modifizierten Compiler \texttt{g'++} nennen und die angepasste Sprache \texttt{C'++}.
 \par
-Die Sprache \texttt{C'++} unterscheidet sich von standard \texttt{C++} lediglich darin, dass wir in einem \texttt{C'++} Programm die Escape-Sequenzen \cppinline{***} und \cppinline{+++} verwenden dürfen. Der modifizierte Compiler \texttt{g'++} übersetzt dann das Programm ganz normal in Maschinencode, integriert aber die (binäre Darstellung der) Programmteile, deren Beginn mit \cppinline{***} und Ende mit \cppinline{+++} gekennzeichnet wird, direkt in den Maschinencode. Eine Verwendung dieser Escape-Sequenzen für einen anderen Zweck wäre dann ein semantischer Fehler.
-\begin{lstlisting}[language=C++,escapechar=!] 
-#include <iostream>
-void A() {
-    std::cout << "***00110111+++" << std::endl;
-}
-\end{lstlisting}
+Die Sprache \texttt{C'++} unterscheidet sich von standard \texttt{C++} lediglich darin, dass wir in einem \texttt{C'++} Programm die Escape-Sequenzen \cppinline{***} und \cppinline{+++} verwenden dürfen. Der modifizierte Compiler \texttt{g'++} übersetzt dann das Programm ganz normal in Maschinencode, integriert aber die \textbf{binäre Darstellung} der Programmteile, deren Beginn mit \cppinline{***} und Ende mit \cppinline{+++} gekennzeichnet wird, direkt in den Maschinencode. Eine Verwendung dieser Escape-Sequenzen für einen anderen Zweck wäre dann ein semantischer Fehler.
+
+\begin{myexample}
+	Das Programm
+		\begin{lstlisting}[language=C++,escapechar=!] 
+        !\colorbox{Yellow}{\#include <iostream>}!
+        !\colorbox{Yellow}{void A() \{}!
+            !\colorbox{Yellow}{\hspace*{1.5em}std::cout << \texttt{"}***}!!\colorbox{YellowGreen}{00110111}!!\colorbox{Yellow}{+++\texttt{"} << std::endl;}!
+        !\colorbox{Yellow}{\texttt{\}}}!
+        \end{lstlisting}
+generiert das Wort $w := 00110111$ und ist eine gültiges Programm in Sprache \texttt{C'++}. Der Programmteil \colorbox{YellowGreen}{00110111} wird bei der Kompilierung des Programms mithilfe von \texttt{g'++} unverändert in dem Maschinencode vorkommen, wird also exakt $8$ Bits zu Länge des Maschinencodes beitragen.
+\end{myexample}
 
 Nun können wir endlich die formale Definition der Kolmogorov-Komplexität angeben:
 \begin{mydefinition}[Kolmogorov-Komplexität]\label{mydefinition:kolmogorov}
 Es sei $w$ ein binäres Wort. Die Kolmogorov-Komplexität $K(w)$ von $w$ ist definiert als das Minimum der \textbf{binären Längen} aller \texttt{C'++} Programme (kompiliert mit \texttt{g'++}), die $w$ generieren.
 \end{mydefinition}
-Für ein binäres Wort $w$ betrachten wir alle (unendlich vielen) Maschinencodes von \texttt{C'++} Programmen, die $w$ generieren. Die Länge eine kürzesten\footnote{Im Allgemeinen kann es mehrere verschiedene kürzeste Maschinencodes geben, die $w$ generieren.} solcher Maschinencodes ist dann die Zahl $K(w)$.
+Für ein binäres Wort $w$ betrachten wir alle (unendlich vielen) Maschinencodes der \texttt{C'++} Programme, die $w$ generieren. Die Länge eine kürzesten\footnote{Im Allgemeinen kann es mehrere verschiedene kürzeste Maschinencodes geben, die $w$ generieren.} solcher Maschinencodes ist dann die Zahl $K(w)$.
 \begin{myremark}
 	Ist $K(w)$ ein geeignetes Mass für den Informationsgehalt des binären Wortes $w$? Ja, da jede Komprimierungsmethode als Programm formuliert werden kann, bezieht die Kolmogorov-Komplexität jede denkbare Komprimierungsmethode ein. Es sei $x$ ein binäres Wort und $f$ eine Komprimierungsmethode (Funktion), die zu $x$ eine komprimierte Darstellung $x' := f(x)$ generiert. Es sei $f^{-1}$ die Umkehrung der Komprimierung $f$, also $f^{-1}(f(x)) = f^{-1}(x') = x$. Dann können wir ein Programm schreiben, welches lediglich (das kurze Wort) $x'$ als Parameter beinhaltet und $x$ wieder aus $x'$ mithilfe von $f^{-1}$ erzeugt und schliesslich ausgibt. Dazu muss $f^{-1}$ natürlich auch im Programm kodiert sein. Doch die binäre Länge der Beschreibung dieser Umkehrfunktion ist unabhängig von $x$ und $x'$ und kann somit als konstant angesehen werden. Das so aufgebaute Programm würde dann $x$ generieren, ohne die Darstellung von $x$ speichern zu müssen.
 \end{myremark}
@@ -388,7 +392,7 @@ Es existieren Wörter, die nicht komprimierbar sind, die also eine Kolmogorov-Ko
 		\begin{align*}
 			\sum_{k = 1}^{n-1} 2^k \stackrel{\cref{mytheorem:verallgemeinertegeometrischeSumme}}{=} 2^n - 2
 		\end{align*}
-		Elemente. Doch es gibt genau $2^n$ binäre Wörter der Länge $n$. Dies sind aber mehr als es nichtleere verschiedene Maschinencodes der Länge $<n$ gibt. Damit muss ein binäres Wort $x$ der Länge $n$ existieren, für welches kein Maschinencode mit Länge $<n$ existiert und somit $K(w) \geq n = \abs{w}$.
+		Elemente. Doch es gibt genau $2^n$ binäre Wörter der Länge $n$. Dies sind aber mehr als es nichtleere verschiedene Maschinencodes der Länge $<n$ gibt. Damit muss ein binäres Wort $x$ der Länge $n$ existieren, für welches kein Maschinencode mit Länge $<n$ existiert und somit $K(x) \geq n = \abs{w}$.
 	\end{myproof}
 \end{mytheorem}
 
