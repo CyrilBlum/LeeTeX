@@ -20,8 +20,8 @@ Um \tib{pygame-ce} in VS Code zu installieren, gehen Sie wie folgt vor:
 
 \begin{enumerate}
     \item Öffnen Sie das Terminal in VS Code (\enquote{Terminal} $\rightarrow$ \enquote{New Terminal}).
-    \item (Optional) Erstellen Sie ein virtuelles Environment:\\
-        \lstinline|python -m venv venv|\\
+    \item Erstellen Sie ein virtuelles Environment:\\
+        \lstinline|python3 -m venv venv|\\
         Aktivieren Sie das venv:\\
         \textbf{Windows:} \lstinline|venv\Scripts\activate|\\
         \textbf{macOS:} \lstinline|source venv/bin/activate|
@@ -41,14 +41,35 @@ Ein schwarzes Fenster sollte erscheinen, das Sie mit dem Schliessen-Knopf beende
 \end{myexample}
 
 \begin{myexercise}[Fenster-Titel setzen]
-Setzen Sie einen passenden Fenstertitel (\lstinline|pg.display.set_caption("Mein Game")|). Optional: Laden Sie ein Fenster-Icon (PNG) und setzen Sie es via \lstinline|pg.display.set_icon(...)|.
+Setzen Sie einen passenden Fenstertitel (\lstinline|pg.display.set_caption("Mein Game")|). Optional: Laden Sie ein Fenster-Icon (PNG) und setzen Sie es via \lstinline|pg.display.set_icon(...)|:
+
+\begin{lstlisting}
+icon = pg.image.load("path/to/icon.png")
+pg.display.set_icon(icon)
+\end{lstlisting}
+
+Hierzu müssen Sie ein Bild in Ihrem Projektordner ablegen und den relativen Pfad angeben. Wenn Ihr Ordner beispielsweise \texttt{Informatik/} heisst und das Bild gespeichert ist unter \texttt{Informatik/Game/icon.png}, dann verwenden Sie \lstinline|pg.image.load("Game/icon.png")|.
+
+Bei Windows ändert sich nur das Fenster-Icon, bei macOS wird das Icon nur im Dock angezeigt.
 \begin{myanswer}
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_window.py}
 \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Hintergrund zeichnen]
-Füllen Sie den Hintergrund pro Frame mit einer Farbe mittels \lstinline|screen.fill((R,G,B))|. Experimentieren Sie mit unterschiedlichen Farbtönen. Die Farbe muss in der Hauptschleife, aber vor \lstinline|pg.display.flip()|, gesetzt werden.
+Füllen Sie den Hintergrund pro Frame mit einer Farbe mittels \lstinline|screen.fill((R,G,B))|. Experimentieren Sie mit zufällig generierten Farbtönen:
+
+\begin{lstlisting}
+import random
+# ...
+# In der Game-Loop, im Render-Abschnitt:
+r = random.randint(0, 255)
+g = random.randint(0, 255)
+b = random.randint(0, 255)
+screen.fill((r, g, b))
+\end{lstlisting}
+
+Die Farbe muss in der Hauptschleife, aber vor \lstinline|pg.display.flip()|, gesetzt werden.
 \begin{myanswer}
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_background.py}
 \end{myanswer}

@@ -1,4 +1,5 @@
 import pygame as pg
+import random
 
 pg.init() # Pygame initialisieren (starten)
 WINDOW = (800, 600) # Fenstergrösse (als Tuple gespeichert)
@@ -7,7 +8,6 @@ icon = pg.image.load("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/icon
 pg.display.set_caption("Mein erstes Game") # Fenstertitel setzen
 pg.display.set_icon(icon)
 
-background_color = (50, 80, 120)
 
 clock = pg.time.Clock() # Clock für Zeitsteuerung erstellen
 
@@ -19,11 +19,15 @@ while running:
 			running = False
 
 	# --- Render --- (zeichnen)
+	r = random.randint(0, 255)
+	g = random.randint(0, 255)
+	b = random.randint(0, 255)
+	background_color = (r, g, b)
 	screen.fill(background_color) # Hintergrundfarbe setzen
 
 	pg.display.flip()
 
 	# --- Zeitsteuerung ---
-	clock.tick(60)  # 60 FPS
+	clock.tick(10)  # 10 FPS
 
 pg.quit()
