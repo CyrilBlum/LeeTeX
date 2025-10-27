@@ -141,7 +141,7 @@ Leider sind die beiden Komprimierungsmethoden aus \cref{myexample:Wiederholungen
 \begin{myexample}[Unvergleichbarkeit von Komprimierungsmethoden]\label{myexample:Unvergleichbarkeit}
 	\leavevmode
 \begin{itemize}
-	\item Für das Wort $w_A := (10110010)^(512)$ mit der binären Länge von $8 \cdot 512 = 4096$ Bits, ergibt die Komprimierung aus \cref{myexample:Wiederholungen}:
+	\item Für das Wort $w_A := (10110010)^{512}$ mit der binären Länge von $8 \cdot 512 = 4096$ Bits, ergibt die Komprimierung aus \cref{myexample:Wiederholungen}:
 \begin{align*}
 	w_A &= (10110010)^{512} = (10110010)bin(512) = (10110010)1000000000 =\\
 	&= \underbrace{10}_{(}\underbrace{1100111100001100}_{10110010}\underbrace{01}_{)}\underbrace{11000000000000000000}_{1000000000}
@@ -314,8 +314,8 @@ Es sei $v_n := 1^{(n^2)}$ für eine beliebige natürliche Zahl $n > 0$. Das Wort
 
 void Dn() {
     std::string wort;
-    M = ***!\colorbox{YellowGreen}{n}!+++
-    M = M * M
+    int M = ***!\colorbox{YellowGreen}{n}!+++
+    int M = M * M
     wort.reserve(M);
 
     for (int i = 0; i < M; ++i) {
@@ -338,7 +338,7 @@ Dass
 	\item die Programmausführung sehr viel Speicher belegen könnte
 	\item oder eine Berechnung wie \texttt{M * M} potenziell sehr viel Rechenzeit in Anspruch nehmen könnte
 \end{itemize}
-tut hier nichts zur Sache! Uns interessiert einzig und alleine die binäre Länge der \textbf{Beschreibung} eines Wortes.
+tut hier nichts zur Sache! Uns interessiert einzig und alleine die binäre Länge der \textbf{Beschreibung} eines Wortes. Wir gehen stets davon aus, dass die verwendeten Zahlentypen (wie \cppinline{int}) die berechneten Werte korrekt abspeichern können (die Zahlenbereiche ausreichend gross sind) und genügend Speicher vorhanden ist.
 \end{myexample}
 
 \begin{myexercise}
@@ -362,9 +362,9 @@ void Fn() {
 	\begin{myanswer}
 		Da \texttt{Fn} zweimal die binäre Kodierung von $n^2$ enthält, kann \texttt{Fn} sicherlich keine bessere obere Schranke liefern als
 		\begin{align*}
-			K(v_n)\leq c + 2\ceil{\log_2\lr{n^2 + 1}} \leq c' + 2\log_2{n^2} = c' + 4\log_2\lr{\sqrt{\abs{v_n}}}
+			K(v_n)\leq c + 2\ceil{\log_2\lr{n^2 + 1}} \leq c' + 2\log_2\lr{{n^2}} = c' + 4\log_2\lr{\sqrt{\abs{v_n}}}
 		\end{align*}
-		für geeignete Konstante $c, c'$.
+		für geeignete Konstanten $c, c'$.
 	\end{myanswer}
 \end{myexercise}
 
@@ -422,7 +422,7 @@ Ein nichtkomprimierbares Wort erlaubt also keine kürzere Beschreibung, als das 
 	\begin{myproof}
 		Für jede natürliche Zahl $n>0$ sei $G_n$ die Menge aller binären Wörter mit der Länge exakt $n$. Gemäss \cref{mytheorem:nichtkomprimierbar} existiert in $G_n$ mindestens ein nichtkomprimierbares Wort, also eine Wort $w$ mit $K(w)\geq n$. Unter allen diesen nichtkomprimierbaren Wörtern, sei $\alpha$ definiert als das erste solche Wort in der kanonischen Ordnung über dem binären Alphabet. Es gilt also insbesondere $K(\alpha)\geq n$.
 		\par
-		Angenommen es würde ein Algorithmus $Q$ existieren, der zu jedem binären Wort $w$ die Zahl $K(w)$ berechnet. Wir verwenden $Q$ um eine kurze Beschreibung von $\alpha$ anzugeben. Für jede natürliche Zahl $n>0$ sucht und generiert das folgende \texttt{C'++} Programm das Wort $\alpha$:
+		Angenommen es würde ein Algorithmus $Q$ existieren, der zu jedem binären Wort $w$ die Zahl $K(w)$ berechnet. Wir verwenden $Q$ um eine kurze Beschreibung von $\alpha$ anzugeben. Für jede natürliche Zahl $n>0$ sucht und generiert das folgende \texttt{C'++} Programm\footnote{genauer: in \texttt{C'++}-Pseudocode} das Wort $\alpha$:
 		\begin{lstlisting}[language=C++]
 #include <iostream>
 #include <string>
