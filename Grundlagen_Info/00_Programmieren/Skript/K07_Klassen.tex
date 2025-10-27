@@ -1,19 +1,24 @@
 \chapter{Objektorientierte Programmierung}\label{ch:K07_Klassen}
 \section{Klassen}
 \label{sec:classes}
-Bisher haben wir mit einfachen Variablen (integer, string, boolean) und Datenstrukturen (Listen, Dictionaries) gearbeitet. Letztlich sind alle Python-Variablen Objekte, welche bestimmte Eigenschaften und Methoden besitzen können. Methoden haben wir bereits bei Listen kennengelernt, wo wir beispielsweise die Methode \lstinline|.append()| verwendet haben, um ein Element an eine Liste anzuhängen. Diese Methoden sind spezifisch für den Datentyp der Liste und ermöglichen es uns, auf einfache Weise mit den Daten zu interagieren.
+Bisher haben wir mit einfachen Variablentypen (\textit{integer}, \textit{string}, \textit{boolean}) und grundlegenden Datenstrukturen wie \textit{Listen} und \textit{Dictionaries} gearbeitet. Dabei haben wir bereits gesehen, dass viele dieser Objekte über sogenannte \textbf{Methoden} verfügen. So konnten wir beispielsweise mit der Methode \lstinline|.append()| ein neues Element an eine Liste anhängen. Diese Methoden sind typisch für den jeweiligen Datentyp und ermöglichen es uns, bequem mit den enthaltenen Daten zu arbeiten.
 
-Python erlaubt es uns, eigene Datentypen zu definieren, die sowohl Daten als auch Funktionen, also Methoden, enthalten können. Dies geschieht durch die Definition von \textbf{Klassen}, welche ein zentrales Konzept innerhalb des Paradigmas ``\gls{OOP}'' sind. Klassen ermöglichen es uns, komplexe Objekte zu modellieren, die sowohl Eigenschaften (Attribute) als auch Verhalten (Methoden) besitzen.
+In Python sind tatsächlich \textbf{alle Variablen Objekte}. Jedes Objekt besitzt bestimmte \textbf{Eigenschaften} (Attribute) und kann über \textbf{Methoden} manipuliert oder abgefragt werden.
+
+Python erlaubt es uns jedoch nicht nur, bestehende Objekttypen zu verwenden, sondern auch \textbf{eigene Datentypen zu definieren}. Dies geschieht mithilfe von \textbf{Klassen}, einem zentralen Konzept des Programmierparadigmas der \gls{OOP}. Klassen dienen als Bauvorlage für komplexe Objekte, die sowohl \textbf{Daten} (Attribute) als auch \textbf{Verhalten} (Methoden) enthalten können. Auf diese Weise können wir reale oder abstrakte Dinge im Programm strukturiert und nachvollziehbar modellieren.
+
 
 \begin{mydefinition}
-Eine \textbf{Klasse} ist eine Vorlage für Objekte (Variablen), die Daten (Attribute) und Funktionen (Methoden) zusammenfasst. Sie definiert die Eigenschaften und das Verhalten einer Gruppe von Objekten. Ein \textbf{Objekt} ist eine konkrete Instanz ($=$ eine konkrete Kopie) einer Klasse.
-
-\textbf{Analogie}:
-\begin{enumerate}
-	\item Eine Klasse ist meist wie ein Bauplan für ein Haus. Der Bauplan beschreibt, wie das Haus aussehen soll (Attribute, z.B. Grösse, Farbe etc.) und welche Funktionen es hat (Methoden, etwa das Haus umbauen, abreissen etc.). Ein konkretes Haus, das nach diesem Plan gebaut wurde, ist eine Instanz dieser Klasse.
-	\item Stellen Sie sich eine Klasse wie die Vorlage für einen Menschen  vor. Die Klasse beschreibt allgemeine Eigenschaften und Fähigkeiten des Menschen (z.B. Name, Körpergrösse, Interessensgebiete, etc.). Ein konkretes Objekt wäre dann \textit{Albert Einstein}, mit spezifischen Attributen wie \lstinline|name = "Albert Einstein"| und \lstinline|interessen = "Physik"|. So können Sie aus der Vorlage (Klasse) beliebig viele Menschen-Objekte mit individuellen Eigenschaften erzeugen.
-\end{enumerate}
+Eine \textbf{Klasse} ist eine Vorlage oder Schablone für Objekte. Sie fasst \textbf{Daten} (Attribute) und \textbf{Funktionen} (Methoden) zusammen und beschreibt damit die \textbf{Eigenschaften} und das \textbf{Verhalten} einer ganzen Gruppe von Objekten.  
+Ein \textbf{Objekt} ist eine konkrete Instanz ($=$ ein tatsächlich existierendes Exemplar) einer Klasse.
 \end{mydefinition}
+
+Die folgenden beiden Analogien verdeutlichen die Beziehung zwischen einer Klasse und ihren Objekten:
+\begin{itemize}
+	\item Eine Klasse ist wie ein \textbf{Kochrezept}. Das Rezept beschreibt, welche \textit{Zutaten} (Attribute) benötigt werden und welche \textit{Schritte} (Methoden) ausgeführt werden, um ein Gericht zuzubereiten. Wenn Sie das Rezept befolgen, entsteht ein \textit{konkretes Gericht} — das ist das Objekt. Aus demselben Rezept (Klasse) können Sie beliebig viele Gerichte (Objekte) kochen, die gleich aufgebaut, aber individuell gewürzt sind (unterschiedliche Attributwerte).
+	
+	\item Eine Klasse kann man sich auch wie eine \textbf{Charaktervorlage} in einem Videospiel vorstellen. Die Vorlage \textit{Krieger} oder \textit{Magier} definiert allgemeine \textit{Eigenschaften} (z.B. Lebenspunkte, Stärke, Intelligenz) und \textit{Fähigkeiten} (z.B. angreifen, heilen, zaubern). Wenn Sie im Spiel einen neuen Charakter erstellen, z.B. \textit{Irelia die Kriegerin}, dann ist das ein \textit{Objekt}, welches auf der Vorlage \textit{Krieger} (der Klasse) basiert. Alle Krieger haben ähnliche Fähigkeiten, aber individuelle Werte.
+\end{itemize}
 
 Objekte werden in Games ständig verwendet, beispielsweise um Spieler, Gegner, Tiere, Wolken oder andere Elemente zu \enquote{spawnen}, also um diese mit zufälligen Variationen zu erzeugen. Die Grundidee von Klassen ist in \cref{fig:klassen-in-python} dargestellt.
 
@@ -42,9 +47,9 @@ Objekte werden in Games ständig verwendet, beispielsweise um Spieler, Gegner, T
 	\node[align=center,text width=4.5cm, font=\small, below=0.2cm of dogclass] {\lstinline|class Hund:|};
 	\node[title, above=0.5cm of dog1] {Objekte / Instanzen};
 	\node[align=center, text width=6.5cm, font=\small, below=0.2cm of dog1] {\begin{lstlisting}
-	hund_1 = Hund("Thommy", 510, "Grün")
-	hund_2 = Hund("Bello", 380, "Gelb")
-	hund_3 = Hund("Rocky", 315, "Rot")
+	hund_1 = Hund("Thommy", "Grün", ...)
+	hund_2 = Hund("Bello", "Gelb", ...)
+	hund_3 = Hund("Rocky", "Rot", ...)
 	# ...
 	\end{lstlisting}};
 
@@ -56,13 +61,13 @@ Objekte werden in Games ständig verwendet, beispielsweise um Spieler, Gegner, T
 		\lstinline|name|\\
 		\lstinline|farbe|\\
 		\lstinline|augenfarbe|\\
-		\lstinline|groesse|\\
+		\lstinline|gewicht|\\
 		\lstinline|laenge|\\
 		...};
 
 	\node[anchor=west, col] at (2.4,-3) {\textbf{Methoden}\\
-		\lstinline|gehe_gassi()|\\
-		\lstinline|belle_laut()|\\
+		\lstinline|gassi_gehen()|\\
+		\lstinline|belle()|\\
 		\lstinline|gehe_vorwaerts()|\\
 		\lstinline|ist_kastriert()|\\
 		\lstinline|kom_her()|\\
@@ -73,13 +78,13 @@ Objekte werden in Games ständig verwendet, beispielsweise um Spieler, Gegner, T
 		\lstinline|name : Tommy|\\
 		\lstinline|farbe : Grün|\\
 		\lstinline|augenfarbe : Braun|\\
-		\lstinline|groesse : 43cm|\\
-		\lstinline|laenge : 89cm|\\
+		\lstinline|gewicht|\\
+		\lstinline|laenge : 89|\\
 		...};
 
 	\node[anchor=west, col] at (11.9,-3) {\textbf{Methoden}\\
-		\lstinline|gehe_gassi()|\\
-		\lstinline|belle_laut()|\\
+		\lstinline|gassi_gehen()|\\
+		\lstinline|belle()|\\
 		\lstinline|gehe_vorwaert()|\\
 		\lstinline|ist_kastriert()|\\
 		\lstinline|komm_her()|\\
@@ -163,7 +168,7 @@ Im Grunde genommen kennen wir Klassen in Python bereits: So erstellen wir beispi
 
 
 \begin{myexample}[Klassen definieren]\label{myexample:klassen_definieren}
-Eine Klasse wird mit dem Schlüsselwort \lstinline|class| definiert. Im folgenden Beispiel erstellen wir eine Klasse \lstinline|Person| mit den Attributen \lstinline|name| und \lstinline|alter| sowie einer Methode \lstinline|geburtstag_feiern|.
+Eine Klasse wird mit dem Schlüsselwort \lstinline|class| definiert. Im folgenden Beispiel erstellen wir eine Klasse \lstinline|Person| mit den Attributen \lstinline|name| und \lstinline|alter| sowie zwei Methoden \lstinline|vorstellen| und \lstinline|geburtstag_feiern|.
 
 \lstinputlisting[language=Python,caption=\texttt{person.py},label=listing:person]{Grundlagen_Info/00_Programmieren/Skript/Code/K07_Klassen/person.py}
 \end{myexample}
@@ -171,12 +176,17 @@ Eine Klasse wird mit dem Schlüsselwort \lstinline|class| definiert. Im folgende
 \cref{myexample:klassen_definieren} führt bereits einige zentrale Konzepte einer Klasse ein:
 
 \begin{itemize}
-	\item \textbf{Der Konstruktor \lstinline|__init__|}: Diese spezielle Methode wird \textbf{automatisch aufgerufen}, wenn ein neues Objekt erstellt wird (z.B. bei \lstinline|anna = Person("Anna", 16)|). Ihre Hauptaufgabe ist es, das Objekt mit Anfangswerten zu initialisieren. Die Werte in den Klammern (\lstinline|"Anna"| und \lstinline|16|) werden dabei als Parameter an die \lstinline|__init__|-Methode übergeben. %
-	\item \textbf{Die Instanzvariable \lstinline|self|}: Das Schlüsselwort \lstinline|self| repräsentiert das konkrete Objekt (die Instanz), mit dem gerade gearbeitet wird. Wenn die Methode \lstinline|anna.geburtstag_feiern()| aufgerufen wird, verweist \lstinline|self| innerhalb der Methode auf das Objekt \lstinline|anna|. So wird sichergestellt, dass \lstinline|self.alter += 1| das Alter von \lstinline|anna| und nicht von einem anderen Objekt erhöht. \lstinline|self| muss immer der erste Parameter jeder Methode innerhalb einer Klasse sein.
-	\item \textbf{Attribute definieren}: Innerhalb der Klasse werden Attribute für ein Objekt mit \lstinline|self.attributname = wert| erstellt. Im Beispiel oben weist \lstinline|self.name = name| dem Attribut \lstinline|name| des Objekts den übergebenen Wert zu.
+	\item \textbf{Der Konstruktor \lstinline|__init__|}: Diese spezielle Methode wird \textbf{automatisch aufgerufen}, sobald ein neues Objekt erzeugt wird (z.B. bei \lstinline|anna = Person("Anna", 16)|). Ihre Hauptaufgabe besteht darin, das Objekt mit Anfangswerten zu initialisieren. Die Werte in den Klammern (\lstinline|"Anna"| und \lstinline|16|) werden dabei als Parameter an die \lstinline|__init__|-Methode übergeben.
+	
+	\item \textbf{Die Instanzvariable \lstinline|self|}: Das Schlüsselwort \lstinline|self| repräsentiert das konkrete Objekt (die Instanz), mit dem gerade gearbeitet wird. Wird beispielsweise \lstinline|anna.geburtstag_feiern()| aufgerufen, verweist \lstinline|self| innerhalb der Methode auf das Objekt \lstinline|anna|. Dadurch wird sichergestellt, dass \lstinline|self.alter += 1| das Alter von \lstinline|anna| und nicht das eines anderen Objekts verändert. \lstinline|self| muss immer der erste Parameter jeder Methode innerhalb einer Klasse sein.
+	
+	\item \textbf{Attribute definieren}: Innerhalb der Klasse werden Attribute eines Objekts mit \lstinline|self.attributname = wert| erstellt. Im obigen Beispiel weist \lstinline|self.name = name| dem Attribut \lstinline|name| des Objekts den übergebenen Wert zu.
+	
 	\item \textbf{Auf Attribute zugreifen}: Um den Wert eines Attributs innerhalb einer Methode zu lesen oder zu ändern, wird ebenfalls \lstinline|self.attributname| verwendet.
+	
 	\item \textbf{Methoden aufrufen}: Nachdem ein Objekt erstellt wurde (z.B. \lstinline|anna = Person("Anna", 16)|), können seine Methoden mit der Punkt-Notation aufgerufen werden. Der Aufruf \lstinline|anna.geburtstag_feiern()| führt die Methode für das Objekt \lstinline|anna| aus und erhöht dessen Alter.
 \end{itemize}
+
 
 \begin{myexample}[Bankkonto-Klasse]
 Ein praktisches Beispiel ist eine Klasse für Bankkonten:
