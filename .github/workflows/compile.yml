@@ -100,6 +100,7 @@ jobs:
     steps:
       - name: Download likely culprit file
         uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           name: last_failed_file
       - name: Read likely culprit file
@@ -108,17 +109,37 @@ jobs:
           if [ -f last_failed_file.txt ]; then
             culprit_line=$(head -n 1 last_failed_file.txt | tr -d '\r\n')
             echo "culprit=$culprit_line" >> $GITHUB_OUTPUT
-              else
+          else
             echo "culprit=Unknown" >> $GITHUB_OUTPUT
           fi
-      - name: Send email
+      - name: Send email (NAS connection lost)
+        if: ${{ steps.culprit.outputs.culprit == 'Unknown' }}
         uses: dawidd6/action-send-mail@v5
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          subject: 🚨 GitHub CI Failed
+          subject: "🛑 GitHub CI Failed: NAS connection lost"
+          to: cyril@wendl.ch, thomas.graf.numerics@gmail.com
+          from: GitHub Actions <${{ secrets.GMAIL_USERNAME }}>
+          body: |
+            The GitHub Actions pipeline failed and no culprit file was found.
+            This likely indicates the connection to the NAS was lost during the run.
+            Please check the server status and the latest commit changes.
+            Workflow: ${{ github.workflow }}
+            Branch: ${{ github.ref }}
+            Commit: ${{ github.sha }}
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      - name: Send email (specific culprit)
+        if: ${{ steps.culprit.outputs.culprit != 'Unknown' }}
+        uses: dawidd6/action-send-mail@v5
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "🚨 GitHub CI Failed: Check culprit file"
           to: cyril@wendl.ch, thomas.graf.numerics@gmail.com
           from: GitHub Actions <${{ secrets.GMAIL_USERNAME }}>
           body: |
