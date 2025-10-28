@@ -287,8 +287,9 @@ Dies gilt auch für mehr als drei Operanden.
 \end{figure}
 
 \clearpage
-\begin{myprocedure}[Kommunikationsprotokoll DIGITALER SCHLÜSSELTAUSCH]\label{myprocedure:Komm}
-	\leavevmode
+\begin{myprocedure}[Kommunikationsprotokoll Three-Pass Protocol]\label{myprocedure:Komm}
+	Das Kommunikationsprotokoll Three-Pass Protocol (auch Schlüsseltausch mit drei Durchgängen genannt) ermöglicht es Alice, einen geheimen Schlüssel $t$ an Bob zu senden, ohne dass sie zuvor einen gemeinsamen geheimen Schlüssel vereinbart haben. Dazu verwenden sowohl Alice als auch Bob jeweils einen eigenen zufälligen Schlüssel ($s_A$ bzw. $s_B$).
+	
 	\begin{description}
 		\item[Ausgangssituation:] Alice besitzt einen zufälligen binären Schlüssel $s_A$ der Länge $n$. Bob besitzt ebenfalls einen zufälligen binären Schlüssel derselben Länge $n$.
 		\item[Ziel:] Alice hat zuvor einen geheimen binären Schlüssel $t$ der Länge $n$ gewählt. Diesen Schlüssel (das ist hier der Klartext) möchte sie über einen unsicheren Kanal an Bob senden, ohne dass Unbefugte den Schlüssel erfahren.
@@ -376,15 +377,16 @@ zwar, auch wenn zwischen diesen zwei Anwendungen andere Schlüssel angewendet wo
 \end{myexercise}
 
 
-\section{Sicherheit des Schlüsseltauschs}
-Ist dieses Kommunikationsprotokoll sicher? Bietet es dieselbe Sicherheitsgarantie wie die Verwendung einer Truhe mit zwei Schlössern? Leider nicht.
+\subsection{Sicherheit des Drei-Wege-Schlüsseltauschs}
+Ist das Drei-Wege-Kommunikationsprotokoll sicher? Bietet es dieselbe Sicherheitsgarantie wie die Verwendung einer Truhe mit zwei Schlössern? 
+
 Wenn ein Kryptoanalyst nur einzelne Kryptotexte des Protokolls erhält und
-das Verfahren nicht kennt, wirkt die Kommunikation als eine Folge von Zufallsbits und in diesem Sinne ist unsere Implementierung dieses Verfahrens
-sicher. Wir müssen aber damit rechnen, dass
-der Gegner das Kommunikationsprotokoll kennt und die zwei zufällig generierten Schlüssel das Einzige sind, was ihm unbekannt ist. Wenn der Gegner (Eve) alle drei Kryptotexte ($k_A, k_{AB}, k_B$) gewinnen kann, kann er durch die folgenden Berechnungen den Klartext $t$ herausfinden:
+das Verfahren nicht kennt, wirkt die Kommunikation als eine Folge von Zufallsbits und in diesem Sinne ist unsere Implementierung dieses Verfahrens sicher.  Wir müssen aber damit rechnen, dass der Gegner das Kommunikationsprotokoll kennt (oder erratet) und die zwei zufällig generierten Schlüssel das Einzige sind, was ihm unbekannt ist. 
+
+Wenn der Gegner (Eve) alle drei Kryptotexte ($k_A, k_{AB}, k_B$) gewinnen kann, kann er durch die folgenden Berechnungen den Klartext $t$ herausfinden:
 \begin{align*}
 	& \textcolor{Red}{k_A} \oplus \textcolor{orange}{k_{AB}} \oplus \textcolor{yellow}{k_B} = \\
-	& (\textcolor{Blue}{t} \oplus \textcolor{DarkGreen}{s_A}) \oplus (\textcolor{Red}{k_A} \oplus \textcolor{Purple}{s_B}) \oplus (\textcolor{orage}{k_{AB}} \oplus \textcolor{DarkGreen}{s_A}) = \\
+	& (\textcolor{Blue}{t} \oplus \textcolor{DarkGreen}{s_A}) \oplus (\textcolor{Red}{k_A} \oplus \textcolor{Purple}{s_B}) \oplus (\textcolor{orange}{k_{AB}} \oplus \textcolor{DarkGreen}{s_A}) = \\
 	& (\textcolor{Blue}{t} \oplus \textcolor{DarkGreen}{s_A}) \oplus (\textcolor{Red}{k_A} \oplus \textcolor{Purple}{s_B}) \oplus ((\textcolor{Red}{k_A} \oplus \textcolor{Purple}{s_B}) \oplus \textcolor{DarkGreen}{s_A}) = \\
 	& \textcolor{Blue}{t} \oplus (\textcolor{DarkGreen}{s_A} \oplus \textcolor{DarkGreen}{s_A}) \oplus (\textcolor{Purple}{s_B} \oplus \textcolor{Purple}{s_B}) \oplus (\textcolor{Red}{k_A} \oplus \textcolor{Red}{k_A}) = \\
 	& \textcolor{Blue}{t} \oplus 0 \oplus 0 \oplus 0 = \\
@@ -393,7 +395,8 @@ der Gegner das Kommunikationsprotokoll kennt und die zwei zufällig generierten 
 
 \clearpage
 \section{Diffie-Hellman-Merkle-Schlüsseltausch}
-\begin{myprocedure}[Protokoll DIFFIE-HELLMAN-MERKLE (DHM)]\label{myprocedure:Diffie}
+\begin{myprocedure}[Protokoll Diffie-Hellman-Merkle (DHM)]\label{myprocedure:Diffie}
+	Das Kommunikationsprotokoll Diffie-Hellman-Merkle (DHM) ermöglicht es Alice und Bob, gemeinsam über einen öffentlichen Kanal einen geheimen Schlüssel zu vereinbaren, ohne dass sie zuvor einen gemeinsamen geheimen Schlüssel ausgemacht haben. Im Gegensatz zum Drei-Wege-Schlüsseltausch basiert das DHM-Protokoll auf der Schwierigkeit, das diskrete Logarithmusproblem zu lösen, ein mathematisches Problem, zu dem es (bisher) keinen effizienten Lösungsalgorithmus gibt.
 	\begin{description}
 		\item[Ausgangssituation:] Alice und Bob haben sich zuvor öffentlich auf eine grosse Primzahl $p$ und eine positive natürliche Zahl $g$ geeinigt. Dabei ist $g$ kleiner als $p$.
 		\item[Ziel:] Alice und Bob möchten gemeinsam mit einer öffentlichen Kommunikation einen Schlüssel $s_{AB}$ vereinbaren. Diesen Schlüssel darf keine Drittperson in Erfahrung bringen.
