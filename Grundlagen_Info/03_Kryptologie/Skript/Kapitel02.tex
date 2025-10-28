@@ -381,17 +381,19 @@ Ist dieses Kommunikationsprotokoll sicher? Bietet es dieselbe Sicherheitsgaranti
 Wenn ein Kryptoanalyst nur einzelne Kryptotexte des Protokolls erhält und
 das Verfahren nicht kennt, wirkt die Kommunikation als eine Folge von Zufallsbits und in diesem Sinne ist unsere Implementierung dieses Verfahrens
 sicher. Wir müssen aber damit rechnen, dass
-der Gegner das Kommunikationsprotokoll kennt und die zwei zufällig generierten Schlüssel das Einzige sind, was ihm unbekannt ist. Wenn der Gegner (Eve) alle drei Kryptotexte ($k_A, k_B, k_{AB}$) gewinnen kann, kann er durch die folgenden Berechnungen den Klartext $t$ herausfinden:
+der Gegner das Kommunikationsprotokoll kennt und die zwei zufällig generierten Schlüssel das Einzige sind, was ihm unbekannt ist. Wenn der Gegner (Eve) alle drei Kryptotexte ($k_A, k_{AB}, k_B$) gewinnen kann, kann er durch die folgenden Berechnungen den Klartext $t$ herausfinden:
 \begin{align*}
-	& k_A \oplus k_B \oplus k_{AB}  =                            \\
-	& (t \oplus s_A) \oplus (k_{AB} \oplus s_A) \oplus k_{AB} = \\
-	& t \oplus (s_A \oplus s_A) \oplus (k_{AB} \oplus k_{AB}) =      \\
-	& t \oplus 0 \oplus 0 = t.
+	& \textcolor{Red}{k_A} \oplus \textcolor{orange}{k_{AB}} \oplus \textcolor{yellow}{k_B} = \\
+	& (\textcolor{Blue}{t} \oplus \textcolor{DarkGreen}{s_A}) \oplus (\textcolor{Red}{k_A} \oplus \textcolor{Purple}{s_B}) \oplus (\textcolor{orage}{k_{AB}} \oplus \textcolor{DarkGreen}{s_A}) = \\
+	& (\textcolor{Blue}{t} \oplus \textcolor{DarkGreen}{s_A}) \oplus (\textcolor{Red}{k_A} \oplus \textcolor{Purple}{s_B}) \oplus ((\textcolor{Red}{k_A} \oplus \textcolor{Purple}{s_B}) \oplus \textcolor{DarkGreen}{s_A}) = \\
+	& \textcolor{Blue}{t} \oplus (\textcolor{DarkGreen}{s_A} \oplus \textcolor{DarkGreen}{s_A}) \oplus (\textcolor{Purple}{s_B} \oplus \textcolor{Purple}{s_B}) \oplus (\textcolor{Red}{k_A} \oplus \textcolor{Red}{k_A}) = \\
+	& \textcolor{Blue}{t} \oplus 0 \oplus 0 \oplus 0 = \\
+	& \textcolor{Blue}{t}.
 \end{align*}
 
 \clearpage
 \section{Diffie-Hellman-Merkle-Schlüsseltausch}
-\begin{myprocedure}[Protokoll DIFFIE-HELLMAN-MERKLE (DHM)]{myprocedure:Diffie}
+\begin{myprocedure}[Protokoll DIFFIE-HELLMAN-MERKLE (DHM)]\label{myprocedure:Diffie}
 	\begin{description}
 		\item[Ausgangssituation:] Alice und Bob haben sich zuvor öffentlich auf eine grosse Primzahl $p$ und eine positive natürliche Zahl $g$ geeinigt. Dabei ist $g$ kleiner als $p$.
 		\item[Ziel:] Alice und Bob möchten gemeinsam mit einer öffentlichen Kommunikation einen Schlüssel $s_{AB}$ vereinbaren. Diesen Schlüssel darf keine Drittperson in Erfahrung bringen.
