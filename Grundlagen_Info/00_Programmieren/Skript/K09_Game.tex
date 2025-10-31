@@ -6,13 +6,13 @@ In diesem Kapitel entwickeln wir Schritt für Schritt ein eigenes 2D-Game mit \t
 Essentielle Bausteine eines Games sind:
 \begin{itemize}
   \item Fenster (Auflösung, Titel) und Zeichenfläche (\enquote{screen})
-  \item Game-Loop mit \textbf{Ereignissen} (Tastatur, Maus) und \textbf{Zeitsteuerung} (\gls{FPS}/\enquote{refresh rate})
+  \item Game-Schleife mit \textbf{Ereignissen} (Tastatur, Maus) und \textbf{Zeitsteuerung} (\gls{FPS}/\enquote{refresh rate})
   \item Zeichnen: Hintergrund, Farben, geometrische Figuren, Bilder (\enquote{Sprites})
   \item \textbf{Zustände} und \textbf{Objekte} (z.\,B. Spieler als \lstinline|Rect|), \textbf{Bewegungen} und \textbf{Kollisionen}
   \item \textbf{Medien}: Bilder, Icon, Schrift, Sound/Musik
 \end{itemize}
 
-\begin{mydefinition}[Game-Loop]
+\begin{mydefinition}[Game-Schleife]
 Ein Game läuft in einer Endlosschleife, bis das Programm beendet wird. In jeder Runde werden der Eingabestatus gelesen (\enquote{Events}), der interne Zustand aktualisiert (\enquote{Update}) und die Szene gezeichnet (\enquote{Render}). Eine \textbf{Clock} (=Uhr) begrenzt die Bildwiederholrate (\gls{FPS}), sodass das Game stabil und gleichmässig läuft.
 \end{mydefinition}
 
@@ -42,8 +42,8 @@ Um \tib{pygame-ce} in VS Code zu installieren, gehen Sie wie folgt vor:
     \end{itemize}
 \end{myattention}
 
-\begin{myexample}[Minimaler Game-Loop]
-    Folgender Code zeigt den minimalen Aufbau eines Pygame-Programms mit Fenster, Game-Loop und Ereignisverarbeitung. Kopieren Sie den Code in eine Datei \texttt{game\_intro.py} und führen Sie ihn in VS Code aus.
+\begin{myexample}[Minimale Game-Schleife]
+    Folgender Code zeigt den minimalen Aufbau eines Pygame-Programms mit Fenster, Game-Schleife und Ereignisverarbeitung. Kopieren Sie den Code in eine Datei \texttt{game\_intro.py} und führen Sie ihn in VS Code aus.
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro.py}
 Ein schwarzes Fenster sollte erscheinen, das Sie mit dem Schliessen-Knopf beenden können.
 \end{myexample}
@@ -80,7 +80,7 @@ Füllen Sie den Hintergrund pro Frame mit einer Farbe mittels \lstinline|screen.
 \begin{lstlisting}
 import random
 # ...
-# In der Game-Loop, im Render-Abschnitt:
+# In der Game-Schleife, im Render-Abschnitt:
 r = random.randint(0, 255)
 g = random.randint(0, 255)
 b = random.randint(0, 255)
@@ -100,7 +100,7 @@ Die Farbe muss in der Hauptschleife, aber noch vor \lstinline|pg.display.flip()|
 \end{myexercise}
 
 \begin{myexercise}[Geometrische Figuren]
-Zeichnen Sie geometrische Formen: Rechteck, Kreis, Linie. Nutzen Sie dafür \lstinline|pg.draw.rect|, \lstinline|pg.draw.circle| und \lstinline|pg.draw.line|. Achten Sie darauf, \textbf{nach} dem Zeichnen \lstinline|pg.display.flip()| aufzurufen.
+Zeichnen Sie geometrische Formen: Rechteck, Kreis, Linie. Nutzen Sie dafür \lstinline|pg.draw.rect|, \lstinline|pg.draw.circle| und \lstinline|pg.draw.line|. Achten Sie darauf, \textbf{nach} dem Zeichnen \lstinline|pg.display.flip()| aufzurufen. Versuchen Sie, mittels folgender Befehle einen Apfel zu zeichnen:
 Verwenden Sie folgende Befehle:
 \begin{lstlisting}
 pg.draw.rect(screen, rect_color, pg.Rect(rect_x, rect_y, rect_width, rect_height))
@@ -143,11 +143,11 @@ Optional: Lassen Sie die Sonne langsam sinken (Animation über mehrere Frames).
 \begin{myexercise}[Bewegungen (Tastatur)]
 Erstellen Sie ein Spieler-\lstinline|Rect| (z.\,B. \lstinline|50x50|) und bewegen Sie es mit den Pfeiltasten. Nutzen Sie \lstinline|pg.key.get_pressed()| und begrenzen Sie die Bewegung auf das Fenster (\enquote{Screen Bounds}). Verwenden Sie folgende Code-Vorlage:
 \begin{lstlisting}
-# Vor der Game-Loop:
+# Vor der Game-Schleife:
 player = pg.Rect(100, 100, 50, 50) # Spieler-Rechteck erstellen
 speed = 5 # Bewegungsgeschwindigkeit
 
-# In der Game-Loop:
+# In der Game-Schleife:
 keys = pg.key.get_pressed() # alle gedrückten Tasten abfragen
 if keys[pg.K_LEFT]:
 	player.x -= speed
@@ -171,11 +171,11 @@ Legen Sie ein \lstinline|Rect| als \enquote{Ziel/Item} an (z.\,B. kleiner Kreis 
 \begin{lstlisting}
 import random
 # ...
-# Vor der Game-Loop:
+# Vor der Game-Schleife:
 item = pg.Rect(400, 300, 30, 30) # dieses Item soll gesammelt werden
 
 # ...
-# In der Game-Loop, nach der Spieler-Bewegung:
+# In der Game-Schleife, nach der Spieler-Bewegung:
 if player.colliderect(item):
 	item.topleft = (random.randint(0, WIDTH-30), random.randint(0, HEIGHT-30))
 \end{lstlisting}
@@ -189,9 +189,10 @@ Reagieren Sie auf \lstinline|KEYDOWN|- und \lstinline|MOUSEBUTTONDOWN|-Events. B
 
 Um Ereignisse wie etwa einen Maus-Klick zu verarbeiten, verwenden Sie folgenden Code:
 \begin{lstlisting}
-# Vor der Game-Loop:
+# Vor der Game-Schleife:
 mouse_positions = []  # Liste für Maus-Klick-Positionen
 
+# In der Game-Schleife, im Event-Abschnitt:
 for event in pg.event.get():
 	if event.type == pg.QUIT:
 		running = False
@@ -201,7 +202,7 @@ for event in pg.event.get():
 		x, y = event.pos
         mouse_positions.append((x, y))  # Position speichern
 
-# In der Game-Loop, im Render-Abschnitt:
+# In der Game-Schleife, im Render-Abschnitt:
 for pos in mouse_positions:
     pg.draw.circle(screen, (255, 100, 100), pos, 10)
 \end{lstlisting}
@@ -251,7 +252,7 @@ Weitere Themen können in Absprache mit der Lehrperson gewählt werden. Wichtig 
 
 Ihr Projekt sollte folgende, essentielle Python-Konzepte sinnvoll einsetzen
 \begin{todolist}
-    \item Verwendung von \texttt{pygame-ce} für Fenster, Game-Loop, Ereignisse, Zeichnen, Kollisionen und Medien (Bilder, Sound), Steuerung mit Tastatur und/oder Maus
+    \item Verwendung von \texttt{pygame-ce} für Fenster, Game-Schleife, Ereignisse, Zeichnen, Kollisionen und Medien (Bilder, Sound), Steuerung mit Tastatur und/oder Maus
     \item Verwendung physikalischer Formeln für Bewegungen (z.\,B. Geschwindigkeit, Beschleunigung, Schwerkraft)
     \item Verwendung von \textbf{Variablen} zur Speicherung von Spielzuständen (z.\,B. Spielerposition, Punktestand, verbleibende Zeit)
     \item Verwendung von \textbf{Funktionen} zur Strukturierung des Codes (z.\,B. \lstinline|def draw_player()|, \lstinline|def update_game()|, \lstinline|def handle_input()|), mit sowie ohne \lstinline|return|-Wert

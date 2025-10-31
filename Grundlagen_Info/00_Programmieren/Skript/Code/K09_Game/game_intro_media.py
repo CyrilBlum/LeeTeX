@@ -1,13 +1,15 @@
 import pygame as pg
 from pathlib import Path
 
-pg.init() # Pygame initialisieren (starten)
-WINDOW = (800, 600) # Fenstergrösse (als Tuple gespeichert)
-screen = pg.display.set_mode(WINDOW) # Fenster erstellen
+pg.init()  # Pygame initialisieren (starten)
+WIDTH = 800
+HEIGHT = 600
+WINDOW = (WIDTH, HEIGHT)  # Fenstergrösse (als Tuple gespeichert)
+screen = pg.display.set_mode(WINDOW)  # Fenster erstellen
 
 base_dir = Path(__file__).parent
 icon = pg.image.load(base_dir / "icon.png")
-pg.display.set_caption("Mein erstes Game") # Fenstertitel setzen
+pg.display.set_caption("Mein erstes Game")  # Fenstertitel setzen
 pg.display.set_icon(icon)
 
 # Medien laden (Bild und Sound)
@@ -35,9 +37,9 @@ except Exception:
     motor = None  # falls kein Audio verfügbar ist
 
 background_color = (50, 80, 120)
-clock = pg.time.Clock() # Clock für Zeitsteuerung erstellen
+clock = pg.time.Clock()  # Clock für Zeitsteuerung erstellen
 
-running = True # Hauptschleife
+running = True  #  Hauptschleife
 collided = False
 speed = 5
 
@@ -70,11 +72,12 @@ while running:
         collided = False
 
     # --- Render --- (zeichnen)
-    screen.fill(background_color) # Hintergrundfarbe setzen
+    screen.fill(background_color)  # Hintergrundfarbe setzen
 
     # Item und Spieler zeichnen
     screen.blit(item_surf, item)
-    screen.blit(img, player)  # optional: Rotation -> pg.transform.rotate(img, angle)
+    # optional: Rotation -> pg.transform.rotate(img, angle)
+    screen.blit(img, player)
 
     pg.display.flip()
 
