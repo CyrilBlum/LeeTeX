@@ -121,7 +121,7 @@ Dabei bezeichnen die Parameter Folgendes:
 \end{myexercise}
 
 \begin{myexercise}[Sonnenuntergang erstellen]
-Erzeugen Sie eine einfache Szene mit Himmel, Sonne und Meer. Tipp: Zeichnen Sie einen Farbverlauf am Himmel, indem Sie in einer Schleife schmale horizontale Rechtecke in leicht unterschiedlichen Farbtönen zeichnen. Die Sonne ist ein Kreis; das Meer ein Rechteck in der unteren Hälfte.
+Erzeugen Sie eine einfache Szene mit Himmel, Sonne und Meer. Tipp: Zeichnen Sie einen Farbverlauf am Himmel, indem Sie in einer Schleife schmale horizontale Rechtecke in leicht unterschiedlichen Farbtönen zeichnen. Die Sonne ist ein Kreis; das Meer ein Rechteck in der unteren Hälfte. Das Meer sollte ebenfalls einen Farbverlauf haben (von hellblau zu dunkelblau). Verwenden Sie folgenden Code als Vorlage:
 \begin{lstlisting}
 # Himmel (einfacher Gradient)
 for y in range(0, HEIGHT//2):
@@ -144,10 +144,11 @@ Optional: Lassen Sie die Sonne langsam sinken (Animation über mehrere Frames).
 Erstellen Sie ein Spieler-\lstinline|Rect| (z.\,B. \lstinline|50x50|) und bewegen Sie es mit den Pfeiltasten. Nutzen Sie \lstinline|pg.key.get_pressed()| und begrenzen Sie die Bewegung auf das Fenster (\enquote{Screen Bounds}). Verwenden Sie folgende Code-Vorlage:
 \begin{lstlisting}
 # Vor der Game-Loop:
-player = pg.Rect(100, 100, 50, 50)
-speed = 5
+player = pg.Rect(100, 100, 50, 50) # Spieler-Rechteck erstellen
+speed = 5 # Bewegungsgeschwindigkeit
+
 # In der Game-Loop:
-keys = pg.key.get_pressed()
+keys = pg.key.get_pressed() # alle gedrückten Tasten abfragen
 if keys[pg.K_LEFT]:
 	player.x -= speed
 if keys[pg.K_RIGHT]:
@@ -157,6 +158,8 @@ if keys[pg.K_UP]:
 if keys[pg.K_DOWN]:
 	player.y += speed
 player.clamp_ip(screen.get_rect())  # Rechteck innerhalb des Fensters halten
+
+pg.draw.rect(screen, (0,0,0), player) # Spieler (Rechteckt) zeichnen
 \end{lstlisting}
 \begin{myanswer}
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_player_rect.py}
