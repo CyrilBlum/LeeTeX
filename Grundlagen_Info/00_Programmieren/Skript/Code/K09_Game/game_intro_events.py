@@ -12,7 +12,7 @@ background_color = (50, 80, 120)
 clock = pg.time.Clock() # Clock für Zeitsteuerung erstellen
 
 # Liste für Kreise
-circles = []
+mouse_positions = []  # Liste für Maus-Klick-Positionen
 
 running = True # Hauptschleife
 while running:
@@ -24,14 +24,15 @@ while running:
 			running = False
 		elif event.type == pg.MOUSEBUTTONDOWN:
 			x, y = event.pos
-			circles.append((x, y))
+			mouse_positions.append((x, y))
 
 	# --- Render --- (zeichnen)
 	screen.fill(background_color) # Hintergrundfarbe setzen
 
 	# Kreise zeichnen
-	for x, y in circles:
-		pg.draw.circle(screen, (255, 100, 100), (x, y), 10)
+	# In der Game-Loop, im Render-Abschnitt:
+	for pos in mouse_positions:
+		pg.draw.circle(screen, (255, 100, 100), pos, 10)
 
 	pg.display.flip()
 

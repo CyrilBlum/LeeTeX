@@ -185,8 +185,13 @@ if player.colliderect(item):
 \end{myexercise}
 
 \begin{myexercise}[Ereignisse (Keyboard/Maus)]
-Reagieren Sie auf \lstinline|KEYDOWN|- und \lstinline|MOUSEBUTTONDOWN|-Events. Beispiel: Bei Mausklick wird an der Klickposition ein kleiner Kreis gezeichnet (oder eine Partikelspur gestartet). Bei \lstinline|ESC| beendet sich das Game. Um Ereignisse wie etwa einen Maus-Klick zu verarbeiten, verwenden Sie folgenden Code:
+Reagieren Sie auf \lstinline|KEYDOWN|- und \lstinline|MOUSEBUTTONDOWN|-Events. Beispiel: Bei Mausklick wird an der Klickposition ein kleiner Kreis gezeichnet (oder eine Partikelspur gestartet). Bei \lstinline|ESC| beendet sich das Game. Da die Kreise jedes Frame neu gezeichnet werden müssen, speichern Sie die Positionen in einer Liste.
+
+Um Ereignisse wie etwa einen Maus-Klick zu verarbeiten, verwenden Sie folgenden Code:
 \begin{lstlisting}
+# Vor der Game-Loop:
+mouse_positions = []  # Liste für Maus-Klick-Positionen
+
 for event in pg.event.get():
 	if event.type == pg.QUIT:
 		running = False
@@ -194,7 +199,11 @@ for event in pg.event.get():
 		running = False
 	elif event.type == pg.MOUSEBUTTONDOWN:
 		x, y = event.pos
-		pg.draw.circle(screen, (255, 100, 100), (x, y), 10)
+        mouse_positions.append((x, y))  # Position speichern
+
+# In der Game-Loop, im Render-Abschnitt:
+for pos in mouse_positions:
+    pg.draw.circle(screen, (255, 100, 100), pos, 10)
 \end{lstlisting}
 \begin{myanswer}
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_events.py}
