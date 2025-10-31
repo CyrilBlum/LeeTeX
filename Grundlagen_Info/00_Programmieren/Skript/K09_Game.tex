@@ -184,6 +184,22 @@ if player.colliderect(item):
 \end{myanswer}
 \end{myexercise}
 
+\begin{mychallenge}[Highscore anzeigen]
+Erstellen Sie eine Variable \lstinline|score|, die bei jeder Kollision um 1 erhöht wird. Zeichnen Sie den aktuellen Punktestand mit \lstinline|font.render(...)| oben links im Fenster. Verwenden Sie folgenden Code, um Text zu zeichnen:
+\begin{lstlisting}
+# Vor der Game-Schleife:
+font = pg.font.Font(None, 36)  # Schriftart und -grösse
+# ...
+# In der Game-Schleife, im Render-Abschnitt:
+score_text = font.render(f"Score: {score}", True, (0, 0, 0))
+screen.blit(score_text, (10, 10))  # Text oben links zeichnen
+\end{lstlisting}
+\begin{myanswer}
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_collision.py}
+\end{myanswer}
+    
+\end{mychallenge}
+
 \begin{myexercise}[Ereignisse (Keyboard/Maus)]
 Reagieren Sie auf \lstinline|KEYDOWN|- und \lstinline|MOUSEBUTTONDOWN|-Events. Beispiel: Bei Mausklick wird an der Klickposition ein kleiner Kreis gezeichnet (oder eine Partikelspur gestartet). Bei \lstinline|ESC| beendet sich das Game. Da die Kreise jedes Frame neu gezeichnet werden müssen, speichern Sie die Positionen in einer Liste.
 
@@ -229,11 +245,96 @@ Hinweis: Legen Sie die Medien in einem Ordner (z.\,B. \lstinline|assets/|) ab un
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_media.py}
 \end{myanswer}
 Optional: Skalieren Sie das Bild auf eine bestimmte Höhe, wobei das Seitenverhältnis beibehalten wird, indem Sie das Seitenverhältnis mit den Befehlen \lstinline|img.get_width()| und \lstinline|img.get_height()| berechnen.
+
+\textbf{Tipp:} Viele kostenlose Soundeffekte finden Sie unter \url{https://pixabay.com/sound-effects}.
 \end{myexercise}
 
 \begin{mychallenge}[Bonus: Kleines Sammelspiel]
 Verbinden Sie die vorherigen Bausteine: Bewegen Sie den Spieler, sammeln Sie Items (Punkte zählen), spielen Sie dabei einen Sound ab und zeichnen Sie im Hintergrund Ihren Sonnenuntergang. Begrenzen Sie die Spielzeit auf 60 Sekunden und zeigen Sie die verbleibende Zeit im Fenstertitel an.
 \end{mychallenge}
+
+\begin{myexercise}[Pong-Spiel]
+Erstellen Sie das klassische Pong-Spiel mit zwei Paddles und einem Ball.
+
+Das folgende Video zeigt das fertige Pong-Spiel: \url{https://youtu.be/vCoBgJlUg_c}
+
+Die Paddles werden mit den Tasten \lstinline|W/S| (links) und \lstinline|UP/DOWN| (rechts) gesteuert. Der Ball bewegt sich automatisch und prallt von den Paddles und den oberen/unteren Bildschirmrändern ab. Zählen Sie die Punkte, wenn ein Spieler den Ball am Gegner vorbei spielt. Gehen Sie Schritt für Schritt vor, indem Sie folgende Elemente umsetzen:
+\begin{enumerate}
+    \item Rechtecke für Paddles und Ball
+    \item Mittellinie zeichnen
+    \item Tastatur-Eingaben für Paddle-Bewegung (\texttt{W/S} und \texttt{UP/DOWN})
+    \item Kleines Rechteck für den Ball
+    \item Ball zufällig von der Mitte aus starten lassen
+    \item Kollisionserkennung für Ball und Paddles
+    \item Punkte zählen und anzeigen
+    \item Soundeffekte bei Kollisionen und Punkten
+\end{enumerate}
+\begin{myanswer}
+\lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_pong.py}
+\end{myanswer}  
+    
+\end{myexercise}
+
+\begin{myattention}[Hinweise zu Pong]
+Die folgende Sammlung von Hinweisen zeigt kleine Bausteine, die im Pong-Beispiel verwendet werden und Ihnen beim Verständnis oder bei eigenen Varianten helfen.
+
+\begin{itemize}
+
+    \item \textbf{Zufällige Start-Richtung für den Ball:}
+\begin{lstlisting}
+import random
+...
+ball_speed = 5
+# Geschwindigkeit als separate Variablen
+ball_vel_x = random.choice((-1, 1)) * ball_speed
+ball_vel_y = random.choice((-1, 1)) * ball_speed
+
+# In der Game-Schleife:
+ball.x += ball_vel_x
+ball.y += ball_vel_y
+\end{lstlisting}
+
+    \item \textbf{Rect-Ränder nutzen und Kollisionen \enquote{sauber} auflösen:}
+\begin{lstlisting}
+if ball.colliderect(left_paddle) and ball_vel.x < 0:
+    ball.left = left_paddle.right  # Ball aus dem Paddle schieben
+    ball_vel.x *= -1               # x-Richtung umkehren (Abprall)
+\end{lstlisting}
+
+    \item \textbf{Abprall oben/unten (Wände):}
+\begin{lstlisting}
+if ball.top <= 0:
+    ball.top = 0
+    ball_vel.y *= -1
+elif ball.bottom >= HEIGHT:
+    ball.bottom = HEIGHT
+    ball_vel.y *= -1
+\end{lstlisting}
+
+    \item \textbf{Trefferwinkel variieren:} Je weiter oben/unten am Paddle getroffen wird, desto mehr vertikale Geschwindigkeit.
+\begin{lstlisting}
+offset = (ball.centery - left_paddle.centery) / (paddle_h / 2)  # -1..+1
+ball_vel.y = ball_speed * offset
+\end{lstlisting}
+
+    \item \textbf{Zentrierten Text zeichnen:} \lstinline|get_rect(center=(...))| ist oft einfacher als Koordinaten zu raten.
+\begin{lstlisting}
+score_surf = font.render("0 : 0", True, (255, 255, 255))
+score_rect = score_surf.get_rect(center=(WIDTH // 2, 30))
+screen.blit(score_surf, score_rect)
+\end{lstlisting}
+
+    \item \textbf{Ball nach Punkt neu zentrieren (als Funktion):}
+\begin{lstlisting}
+def reset_ball(direction):  # direction: -1 nach links, +1 nach rechts
+    ball.center = (WIDTH // 2, HEIGHT // 2)
+    ball_vel.x = direction * ball_speed
+    ball_vel.y = random.choice((-1, 1)) * ball_speed
+\end{lstlisting}
+
+    \item \textbf{Nützliche Rect-Eigenschaften:} \lstinline|left, right, top, bottom, center, centery| helfen bei Ausrichtung und Kollisionen.
+\end{itemize}
+\end{myattention}
 
 \section{Game-Auftrag}
 
