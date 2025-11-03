@@ -1,5 +1,5 @@
 class Schueler:
-    schule = "Kantonsschule im Lee"  # Klassenattribut
+    schule = "Kantonsschule Im Lee"  # Klassenattribut
     
     def __init__(self, name, klasse):
         self.name = name  # Instanzattribut
