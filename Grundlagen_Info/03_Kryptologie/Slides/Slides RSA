@@ -1,0 +1,278 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python, basicstyle=\ttfamily\footnotesize}
+
+\title[Kryptologie]{Assymetrische Kryptologie}
+
+\author[Beestermöller, Judith] % (optional)
+{Judith Beestermöller}
+
+\institute[ETHZ] % (optional)
+{
+	Lehrdiplom Informatik\\
+	ETH Zürich
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{Logos/LeeLogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}{Asymmetrische Kryptographie}
+	\begin{itemize}[<+->]
+		\item Ein Kryptosystem, in dem man den selben Schlüssel zur Verschlüsselung wie zur Entschlüsselung verwendet, heisst \textbf{symmetrisch}. 
+        \item Bei einem \textbf{asymmetrischen Kryptosystem} werden verschiedene Schlüssel zur Ver- und Entschlüsselung verwendet.
+		\begin{itemize}
+			\item \textbf{Öffentlicher Schlüssel \emoji{unlock}} wird zum Verschlüsseln verwendet
+			\item \textbf{Privater Schlüssel \emoji{key}} wird zum Entschlüsseln verwendet
+		\end{itemize}
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Abbildung Asymetrische Kryptographie}
+   \begin{tikzpicture}[
+    emoji_style/.style={font=\huge},
+    arrow_style/.style={-Latex, thick, gray} 
+    ]
+        \node[emoji_style] (key) at (0,0) {\emoji{key}};
+
+		\node (plaintext) [left=.5cm of key, font=\Large] {\emoji{woman-technologist} Alice};
+        \node[emoji_style, right=3.5cm of key] (lock1) {\emoji{unlock}};
+        \node[emoji_style, above=.8cm of lock1] (lock2) {\emoji{unlock}};
+        \node[emoji_style, above=.8cm of lock2] (lock3) {\emoji{unlock}};
+        \node[emoji_style, below=.8cm of lock1] (lock4) {\emoji{unlock}};
+        \node[emoji_style, below=.8cm of lock4] (lock5) {\emoji{unlock}};
+
+		\node (plaintext) [right=.2cm of lock4, font=\Large] {\emoji{person-medium-skin-tone-curly-hair}};
+		\node (plaintext) [right=.2cm of lock5, font=\Large] {\emoji{woman-light-skin-tone-curly-hair}};
+		\node (plaintext) [right=.2cm of lock3, font=\Large] {\emoji{man-medium-dark-skin-tone-white-hair}};
+		\node (plaintext) [right=.2cm of lock1, font=\Large] {\emoji{man-medium-light-skin-tone-beard}};
+		\node (plaintext) [right=.2cm of lock2, font=\Large] {\emoji{woman-light-skin-tone-red-hair}};
+        
+        \draw[arrow_style] (lock1) -- node[above, font=\Large] {\emoji{envelope}} (key);
+        \draw[arrow_style] (lock2) -- node[above, font=\Large] {\emoji{envelope}} (key);
+        \draw[arrow_style] (lock3) -- node[above, font=\Large] {\emoji{envelope}} (key);
+        \draw[arrow_style] (lock4) -- node[above, font=\Large] {\emoji{envelope}} (key);
+        \draw[arrow_style] (lock5) -- node[above, font=\Large] {\emoji{envelope}} (key);
+		
+   \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Asymmetrisches Kryptosystem Ablauf}
+    \begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[node distance = 1cm and 2cm, data/.style={rectangle, rounded corners, text width=3cm, minimum width=3cm, minimum height=1cm, text centered, draw=ForestGreen, fill=ForestGreen!30},
+				startstop/.style={rectangle, rounded corners, minimum height=1cm, minimum width=3cm, text width=2.5cm, text centered, draw=RoyalBlue, fill=RoyalBlue!30}]
+
+			\footnotesize
+			% Nodes
+			\node (plaintext) [data] {\emoji{woman-technologist} Alice};
+			\node (ciphertext) [data, right=of plaintext] {Verschlüsselter\\Text};
+			\node (publickey) [startstop, above=of ciphertext] {\emoji{unlock} Öffentlicher Schlüssel\\von Bob};
+
+			\node (decryptedtext) [data, below=of ciphertext] {Verschlüsselter\\Text};
+			\node (privatekey) [startstop, below=of decryptedtext] {\emoji{key} Privater Schlüssel\\ von Bob};
+			\node (bob) [data, left=of decryptedtext] {\emoji{man-technologist} Bob};
+
+			% Arrows
+			\draw [->] (plaintext) -- (ciphertext);
+			\draw [->] (ciphertext) -- (decryptedtext);
+			\draw [->] (publickey) -- (ciphertext);
+			\draw [->] (privatekey) -- (decryptedtext);
+			\draw [->] (decryptedtext) -- (bob);
+
+			\node at ($(plaintext.east)!0.5!(ciphertext.west)$) [above] {Klartext};
+			\node at ($(publickey.south)!0.5!(ciphertext.north)$) [left] {Verschlüsselung};
+			\node at ($(ciphertext.south)!0.5!(decryptedtext.north)$) [left] {Übertragung};
+			\node at ($(privatekey.north)!0.5!(decryptedtext.south)$) [left] {Entschlüsselung};
+			\node at ($(decryptedtext.west)!0.5!(bob.east)$) [above] {Klartext};
+		\end{tikzpicture}
+		\caption{Prinzip der Public-Key-Verschlüsselung}
+		\label{fig:public-key-encryption}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{DHM ein asymmetrisches Kryptosystem}
+	\begin{itemize}[<+->]
+		\item Auch wenn Diffie-Hellman-Merkle zur Schlüsselgenerierung und nicht zum ver-/entschlüsseln verwendet wird, gilt es als ein asymmetrisches Kryptosysytem.
+		\item Frage: Was ist bei DHM der Public Key? Was ist der Private Key? 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Diffie-Hellman-Merkle}\footnotesize
+	\begin{myprocedure}[DIFFIE-HELLMAN-MERKLE (DHM)]
+		\begin{description}
+			\item[Ausgangssituation:] Alice und Bob haben sich zuvor öffentlich auf eine grosse Primzahl $p$ und eine positive natürliche Zahl $g$ geeinigt. Dabei ist $g$ kleiner als $p$.
+		\end{description}
+		\begin{enumerate}
+			\item Alice wählt zufällig eine positive ganze Zahl $a$ mit $a<p$ und hält diese geheim. Dann berechnet sie mit dieser geheimen Zahl:
+				{\color{red}$x := g^a\mod p$}
+				und sendet $x$ an Bob.
+			\item Bob wählt zufällig eine positive ganze Zahl $b$ mit $b<p$ und hält diese geheim. Dann berechnet er die Zahl
+				{\color{red}$y := g^b\mod p$}
+				und sendet $y$ an Alice.
+			\item Alice erhält $y$ von Bob und berechnet mit ihrer geheimen Zahl $a$ die Zahl
+				{\color{red}$s_{AB} := y^a\mod p$}.
+			\item Bob berechnet mit dem erhaltenen $x$ und seiner geheimen Zahl $b$ die Zahl
+				{\color{red}$s_{BA} := x^b\mod p$}.
+		\end{enumerate}
+	\end{myprocedure}
+\end{frame}
+
+\begin{frame}{Definition Umkehrfunktion}
+    \begin{mydefinition}[Umkehrfunktion]
+		Sei $f:A\rightarrow B$ eine Funktion. Die Funktion $g:B\rightarrow A$ ist die Umkehrfuntkion auch Inverse von $F$ wenn
+		\begin{align*}
+			g(f(a)) = a \hspace{0.5cm}\forall a\in A.
+		\end{align*}
+		Häufig schreibt man die Inverse einer Funktion $f$ als $f^{-1}$. 
+	\end{mydefinition}
+\end{frame}
+
+\begin{frame}{Aufgabe}
+	\begin{myexercise}\label{ex:invertierbareFunktionen}
+		\begin{enumerate}
+			\item Wählen Sie und Ihr/e Nachbar/in gemainsam eine beliebige invertierbare Funktion $f$ aus (z. B. $f(x) = 3x-4$), und bestimmen Sie $f^{-1}$.
+			\item Eine Person verschlüsselt nun eine Nachricht (Zahl) mit der Funktion $f$, die andere mit der Funktion $f^{-1}$. 
+			\item Tauschen Sie die Ergebnisse aus und verwenden Sie dieselbe Funktion, die Sie zum Verschlüsseln Ihrer Nachricht verwendet haben, zum Entschlüsseln. 
+			\item Erhalten Sie die Zahl, die Ihr/e Nachbar/in ursprünglich verschlüsselt hat? 
+			\item Warum verwenden Sie zweimal dieselbe Funktion? 
+		\end{enumerate}
+	\end{myexercise}
+\end{frame}
+
+\begin{frame}{Definition Einwegfunktion}
+    \begin{mydefinition}[Einwegfunktion (informell)]
+        Eine Einwegfunktion ist eine mathematische Funktion $f$, für die gilt: 
+        \begin{itemize}
+            \item Man kann die Funktion $f(x)=y$ "einfach" \ berechnen; d.h. der Computer kann dies effizient. 
+            \item Die Umkehrfunktion $f^{-1}(y)=x$ ist "schwierig" zu berechnen und kann auch von einem Computer nicht effizient berechnet werden.
+        \end{itemize}
+    \end{mydefinition}
+\end{frame}
+
+\begin{frame}{Einwegfunktion Diffie-Hellman-Merkle}
+	\includegraphics[width=\textwidth]{Grundlagen_Info/03_Kryptologie/Figures/discrete_log.jpg}
+\end{frame}
+
+\begin{frame}{Hinweis Umkehrfunktionen}
+	\begin{minipage}[c]{0.1\textwidth}
+		\centering
+		\Huge\emoji{red-exclamation-mark}
+	\end{minipage}
+	\begin{minipage}[c]{0.85\textwidth}
+		Bei allen Funktionen die für Asymetrische Kyptosysteme verwendet werden, kann man nicht beweisen, dass die Umkehrfunktion schwierig zu berechnen ist.\\\pause Wir haben nur \textbf{bisher} keinen schnellen Algorithmus gefunden.
+	\end{minipage}   
+\end{frame}
+
+\begin{frame}{RSA Schlüsselerzeugung}
+	Das RSA-Verfahren besteht aus folgenden Schritten:
+	\begin{myprocedure}
+		\begin{enumerate}
+			\item \textbf{Schlüsselerzeugung:}
+            \begin{itemize}
+                \item Wählen Sie zwei Primzahlen \( p \) und \( q \).
+                \item Berechnen Sie das \textbf{RSA-Modul} \red{\( n = p \cdot q \)}.
+                \item Berechnen Sie die \textbf{Eulersche Funktion} \red{\( \varphi(n) = (p-1)(q-1) \)}.
+                \item Wählen Sie den \textbf{Verschlüsselungsexponenten} \( e \), so dass \(e\) teilerfremd zu \( \varphi(n) \) und $ e < \varphi(n)$ ist.
+                \item Berechnen Sie den \textbf{Entschlüsselungsexponenten} \( d \), so dass \red{\( (e \cdot d) \mod \varphi(n) = 1  \)}. 
+                \item Die Zahlen $p$, $q$ und $\varphi(n)$ werden nun nicht mehr benötigt und können gelöscht werden.
+            \end{itemize}
+        \end{enumerate}
+    \end{myprocedure}
+\end{frame}
+        
+\begin{frame}{RSA Verschlüsselung}
+    \begin{myprocedure}
+        \begin{enumerate}
+			\item \textbf{Verschlüsselung:}
+				\begin{itemize}
+					\item Der Absender verschlüsselt eine \textbf{Klartext-Nachricht} \( \mathbf{m} \) (als Zahl) mit dem \red{öffentlichen Schlüssel \( \mathbf{(e, n)} \)}:
+							\[
+								c = \mathbf{m}^e \mod n.
+							\]
+					\item Das Ergebnis \( c \) ist der Kryptotext.
+				\end{itemize}
+			\item \textbf{Entschlüsselung:}
+				\begin{itemize}
+					\item Der Empfänger entschlüsselt die \textbf{verschlüsselte Nachricht} \( \mathbf{c} \) mit dem \red{privaten Schlüssel \( \mathbf{(d, n)} \)}:
+							\[
+								\mathbf{m} = c^d \mod n.
+							\]
+					\item Das Ergebnis \( \mathbf{m} \) ist die ursprüngliche Nachricht.
+				\end{itemize}
+		\end{enumerate}
+	\end{myprocedure}
+\end{frame}
+
+% \begin{frame}{Eulersche Phi Funktion}
+% 	\begin{itemize}
+% 		\item <1->Die Eulersche Phi Funktion $\varphi: \N_+\rightarrow \N_+$ ist definiert als $\varphi(x) := \vert \{a\in\N | 1\leq a\leq x \wedge ggt(a,x) = 1\}\vert$. \pause \\$\rightarrow$ Zählt wie viele natürliche Zahlen zwischen 1 und $n$ teilerfremd zu $n$ sind.
+% 		\item<3-> $\varphi(p)=p-1$ wenn $p$ eine Primzahl.
+% 		\item<4-> $\varphi(p^k) = p^k\cdot p^{k-1}$, da die einzigen Teiler von $p^k$ die Zahlen $1\cdot p, 2\cdot p, \dots, p^{k-1}p$ sind.
+% 		\item<5-> Für $a, b$ teilerfremd gilt $\varphi(a\cdot b) = \varphi(a)\varphi(b)$.
+% 		\item<6-> Sei $n=p_1^{k_1}\cdot p_2^{k_2}\dots p_j^{k_j}$ die Primfactorzerlegung von $n\in \N$,\pause \\  $\rightarrow \varphi(n)= \prod_{i=1}^j p_i^{k_i-1}(p_i-1)$
+% 	\end{itemize}
+% \end{frame}
+
+\begin{frame}[fragile]{RSA Beispiel Schlüsselerzeugung}
+	\begin{enumerate}[<+->]
+		\item Wir wählen zwei (für diese Übung kleine) Primzahlen aus, \( p = 3 \) und \( q = 11 \). Daraus folgt:
+			\begin{align*}
+				n  &= p \cdot q  = 3 \cdot 11 = 33\\
+				\varphi(n)  &= (p-1)(q-1) = 2 \cdot 10 = 20
+			\end{align*}
+		\item Wir wählen \( e = 3 \), da \( \operatorname{ggT}(3, 20) = 1 \) und $e<\varphi(n)$. 
+		\item Wir berechnen \( d \), so dass \( (e \cdot d) \mod \varphi(n) = 1  \) ergibt:
+			\[
+				(d \cdot 3) \mod 20 = 1  \quad \rightarrow \quad d = 7.
+			\]
+		\item Der öffentliche Schlüssel ist \( (e, n) = (3, 33) \). Der private ist \( (d, n) = (7, 33) \).
+		\item Sei $m=5$, dann ist \begin{align*} c=m^e \mod n &= 5^3\mod 33 = 26 \hspace{0.5cm}\text{und} \\ c^d\mod n &= 26^7\mod 33= 5\end{align*}
+	\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Aufgabe}{Was macht RSA schwierig zu brechen?}
+	\begin{myexercise}
+		Versuchen Sie herauszufinden was die Umkehrfunktion ist, auf die RSA basiert. 
+		\begin{enumerate}
+			\item Welche Gleichung muss Eve lösen, damit sie die verschlüsselte Nachricht entschlüsseln kann?
+			\item Was wissen wir über die Unbekannten in der Gleichung?/ Welche andere Gleichung müsste Eve lösen, um die Unbekannte zu finden?
+		\end{enumerate}
+	\end{myexercise}
+\end{frame}
+
+\begin{frame}{Umkehrfunktion RSA}
+	\begin{myexercise}
+		\begin{myanswer}
+			Um eine Verschlüsselte Nachricht zu entschlüsseln, muss Eve $d$ herausfinden. Sie weiss, dass $e\cdot d \mod\varphi(n) =1$, wobei $n=p\cdot q$. Da $p$ und $q$ Primzahlen sind, sind sie teilerfremd und es muss $\varphi(n)= (p-1)(q-1)$. Dies bedeutet, dass wenn Eve $n$ in seine Primfaktoren zerlegen kann, dann kann sie RSA knacken. Das Problme ist, dass wir keinen effizienten Algorithmus kennen, der die Primfaktorzerlegung berechnet.
+		\end{myanswer}
+	\end{myexercise}
+\end{frame}
+
+\begin{frame}{Aufgabe RSA}
+    \begin{myexercise}
+        Suchen Sie sich eine/n Partner/in und spielen Sie das RSA Protokoll gemeinsam durch. 
+		\begin{enumerate}
+			\item Wählen Sie $p=7$ und $q=13$ (Sie können auch andere Primzahlen verwenden). Berechnen Sie $n$ und $\varphi(n)$ gemeinsam.
+			\item Danach sollte jeder alleine einen öffentlichen und einen privaten Schlüssel berechnen.
+			\item Teilen Sie ihrer/m Partner/in den öffentlichen Schlüssel mit und verslüsseln Sie eine Nachricht an Ihre/n Partner/in, mit dem Schlüssel, den Sie erhalten haben. 
+			\item Entschlüssel Sie die Nachricht, die Sie von Ihrer/m Partner/in bekommen, mit Ihrem privaten Schlüssel.
+		\end{enumerate} 
+    \end{myexercise}
+\end{frame}
+
+\begin{frame}{Zusammenfassung}
+	\begin{itemize}[<+->]
+		\item \textbf{Asymmetrische Kryptosystem} Verwenden einen öffentlichen Schlüssel zum verschlüsseln und einen privaten Schlüssel zum entschlüsseln.
+		\item Die Schwierigkeit, asymmetrische Kryptosysteme zu knacken, liegt dadrin, dass es schwieig ist, die \textbf{Inverse} der Verschlüsselungsfunktion zu bestimmen.
+		\item \textbf{RSA} Beispiel für ein asymmetrisches Kryptosystem
+	\end{itemize}
+\end{frame}
