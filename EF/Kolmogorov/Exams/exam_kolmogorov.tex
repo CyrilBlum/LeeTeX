@@ -76,7 +76,7 @@
 	Welches dieser Bilder hat vermutlich eine höhere Komplexität im Sinne von Kolmogorov? Begründe deine Antwort.
 
 	\question[1] Bestimme die Länge der kürzesten binären Darstellung der Zahl $92340283$.
-
+	
 	\question
 	\begin{parts}
 		\part[1]
@@ -88,37 +88,42 @@
 	\question[2] Wir betrachten die Wörter $w_n = 0^n1^{n^2}$ für alle $n\in\N$. Welches der folgenden drei Programme $A_n, B_n, C_n$ liefert asymptotisch die beste obere Schranke für die Kolmogorov-Komplexität von $w_n$? Begründe deine Antwort.
 
 	\textbf{Bemerkung:} Der Ausdruck \verb|n^2| in \cref{listing:Cn} ist als explizite binäre Darstellung der Zahl $n^2$ zu verstehen und trägt $\abs{\text{Bin}\lr{n^2}}$ viele Bits zur binären Länge von $C_n$ bei.
-	\begin{lstlisting}[language=Pascal,caption=$A_n$]
-begin
-    x := n;
-    y := 0;
-    for i := 1 to x do
-    begin
-        write(0);
-        y := y + x;
-    end
-    for j := 1 to y do
-        write(1);
-end
+	\begin{lstlisting}[language=C++,caption=$A_n$]
+void An() {
+ int x = n;
+    int y = 0;
+    for (int i = 1; i <= x; ++i) {
+        std::cout << 0;
+        y = y + x;
+    }
+    for (int j = 1; j <= y; ++j) {
+        std::cout << 1;
+    }
+}
 \end{lstlisting}
 
-	\begin{lstlisting}[language=Pascal,caption=$B_n$]
-begin
-    for i := 1 to n do
-        write(0);
-    for i := 1 to n do
-        for j := 1 to n do
-            write(1);
-end
+	\begin{lstlisting}[language=C++,caption=$B_n$]
+void Bn() {
+    for (int i = 1; i <= ***n+++; ++i) {
+        std::cout << 0;
+    }
+    for (int i = 1; i <= ***n+++; ++i) {
+        for (int j = 1; j <= ***n+++; ++j) {
+            std::cout << 1;
+        }
+    }
+}
 \end{lstlisting}
-
-	\begin{lstlisting}[language=Pascal,caption=$C_n$,label=listing:Cn]
-begin
-    for i := 1 to n do
-        write(0);
-    for i := 1 to n^2 do
-        write(1);
-end
+	
+	\begin{lstlisting}[language=C++,caption=$C_n$,label=listing:Cn]
+void Cn() {
+    for (int i = 1; i <= ***n+++; ++i) {
+        std::cout << 0;
+    }
+    for (int i = 1; i <= +++n * n***; ++i) {
+        std::cout << 1;
+    }
+}
 \end{lstlisting}
 	\begin{solution}
 		Es lässt sich leicht nachprüfen, dass alle drei Programme jeweils die Ausgabe $w_n$ generieren. Die oberen Schranken für $K(w_n)$ ergeben sich aus der Länge der Darstellung der jeweiligen Programme in Maschinencode. Die Programme haben alle eine Konstante Länge, bis auf die Teile, die vom Parameter $n$ abhängen. Die Darstellung der Zahl $n$ benötigt eine Länge von $\abs{\text{Bin}\lr{n}}$ Bits. Die beste obere Schranke liefert Programm $A_n$, da der Parameter $n$ nur einmal vorkommt. Die Länge des Maschinencodes von $A$ ist $\ceil{\log_2(n+1)} + c_A$ und somit liefert $A_n$ die obere Schranke
@@ -146,16 +151,16 @@ end
 	\end{align*}
 	Gib eine (asymptotisch) möglichst gute obere Schranke für die Kolmogorov-Komplexität $K(w_n)$ von $w_n$ an, gemessen in der Länge $\abs{w_n}$ von $w_n$.
 	\begin{solution}
-		Wenn wir die Operation \verb|^| für die Exponentiation zulassen (dies ist nicht ursprüngliche Pascal-Syntax, wir wollen diese Notation aber im Folgenden verwenden, um die
-		Programme lesbarer darzustellen), erzeugt auch das folgende Programm das Wort $w_n$:
-		\begin{lstlisting}[language=Pascal,caption=$W_n$]
-begin
-    k := n;
-    k := 2*k^4;
-    k := 2^(2^k);
-    for i := 1 to k do
-        write(0);
-end
+		Das folgende Programm generiert das Wort $w_n$:
+		\begin{lstlisting}[language=C++,caption=$W_n$,label=listing:Wn]
+void Wn() {
+    int k = ***n+++;
+    k = 2 * pow(k, 4);
+    k = pow(2, pow(2, k));
+    for (int i = 0; i < k; ++i) {
+        std::cout << 0;
+    }
+}
 \end{lstlisting}
 		Die Maschinencodes dieser Programme $W_n$ sind alle identisch und unabhängig von $w_n$ (und haben somit eine konstante binäre Länge) mit Ausnahme der Darstellung von $n$ in der Zeile Nummer 2. Somit ist die binäre Länge eines Programms $W_n$ gegeben durch
 		\begin{align*}
@@ -186,13 +191,13 @@ end
 	\end{solution}
 
 	\question[1] Zeige, dass es für jede natürliche Zahl $n$ und jedes natürliche $i$ mit $i<n$ in dem Intervall $\ic{2^n}{2^{n+1} - 1}$ mindestens $2^n - 2^{n-i}$ natürliche Zahlen $x$ gibt mit $K(x) \geq n-i$.
-	%
-	% \question[2] Beweise die folgende Behauptung:
-	% \begin{center}
-	% 	Für jede natürliche Zahl $n>0$ existiert (mindestens) ein binäres Wort $w$ der Länge $n$, für welches gilt
-	% 	\begin{align*}
-	% 		K(w)\geq n = \abs{w},
-	% 	\end{align*}
-	% 	das heisst, für jede Länge $n$ existiert (mindestens) ein Wort dieser Länge, welches sich nicht komprimieren lässt.
-	% \end{center}
+	
+	\question[2] Beweise die folgende Behauptung:
+	\begin{center}
+		Für jede natürliche Zahl $n>0$ existiert (mindestens) ein binäres Wort $w$ der Länge $n$, für welches gilt
+		\begin{align*}
+			K(w)\geq n = \abs{w},
+		\end{align*}
+		das heisst, für jede Länge $n$ existiert (mindestens) ein Wort dieser Länge, welches sich nicht komprimieren lässt.
+	\end{center}
 \end{questions}
