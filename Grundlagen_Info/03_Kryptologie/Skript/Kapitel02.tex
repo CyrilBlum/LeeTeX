@@ -434,9 +434,7 @@ Wenn der Gegner (Eve) alle drei Kryptotexte ($k_A, k_{AB}, k_B$) gewinnen kann, 
 	\begin{align*}
 		p := 13 \quad \text{und}\quad g := 2
 	\end{align*}
-	(Sie können auch andere Werte $p$ und $q$ wählen als öffentlich bekannte Schlüssel.)
-
-	\textbf{Tipp}: Modulo-Berechnungen können Sie mit Hilfe von Python durchführen, z.B. auf \url{https://webtigerpython.ethz.ch}.
+	(Sie können auch eigene Werte wählen) als öffentlich bekannte Schlüssel.
 	\begin{myanswer}
 		\begin{itemize}
 		\item Alice wählt $a = 9$ und berechnet $x = 2^9 \mod 13 = 5$. Sie sendet $x = 5$ an Bob.
@@ -451,43 +449,20 @@ Wenn der Gegner (Eve) alle drei Kryptotexte ($k_A, k_{AB}, k_B$) gewinnen kann, 
 \begin{myexercise}
 	Versuchen Sie das Kommunikationsprotokoll \gls{DHM} zu knacken, indem Sie
 	für die gegebenen Werte $p, g, x$ und $y$ jeweils die geheimen Zahlen $a$ und $b$ berechnen und daraus
-	dann den vereinbarten Schlüssel $ s_{AB}$.
-
+	dann den vereinbarten Schlüssel $s_{AB}$.
 	\begin{aenum}
-		\item $g = 3, p = 5, x = 4, y = 2$
+		\item $g = 3, p = 5, x = 5, y = 2$
 		\item $g = 2, p = 13, x = 6, y = 11$
 	\end{aenum}
 	\begin{myanswer}
 		\begin{aenum}
-			\item Wenn wir $a = 2, b = 3$ wählen, erhalten wir:
-			\begin{align*}
-			      x := g^a\mod p = 4 & = 3^a \mod 5 = 3^2 \mod 5 = 4\\
-			      y := g^b\mod p = 2 & = 3^b \mod 5 = 3^3 \mod 5 = 2
-		      \end{align*}
-			Damit sind $a = 2$ und $b = 3$ die gesuchten geheimen Zahlen  und wir können den gemeinsamen Schlüssel berechnen:
-			\begin{align*}
-				s_{AB} := y^a\mod p = 2^{2}\mod 5 = 4\\
-				s_{BA} := x^b\mod p = 4^{3}\mod 5 = 4
-			\end{align*}
-
-			Somit ist der gemeinsame Schlüssel $s_{AB} = s_{BA} = 4$.
-			
-			\item Wenn wir $a = 5, b = 7$ wählen, erhalten wir:
-			\begin{align*}
-			      x := g^a\mod p = 6 & = 2^a \mod 13 = 2^5 \mod 13 = 6\\
-			      y := g^b\mod p = 11 & = 2^b \mod 13 = 2^7 \mod 13 = 11
-		      \end{align*}
-			Damit sind $a = 5$ und $b = 7$ die gesuchten geheimen Zahlen  und wir können den gemeinsamen Schlüssel berechnen:
-			\begin{align*}
-				s_{AB} := y^a\mod p = 11^{5}\mod 13 = 7\\
-				s_{BA} := x^b\mod p = 6^{7}\mod 13 = 7
-			\end{align*}
-			Somit ist der gemeinsame Schlüssel $s_{AB} = s_{BA} = 7$.
+			\item $a = 2, b = 3$ und $s_{AB} = 3^{2\cdot 3}\mod 5 = 4$
+			\item $a = 5, b = 7$ und $s_{AB} = 2^{5\cdot 7}\mod 13 = 7$
 		\end{aenum}
 	\end{myanswer}
 \end{myexercise}
 
 \subsection{Sicherheit des \gls{DHM}-Protokolls}
-Das \gls{DHM}-Protokoll ist sicher, weil es (bisher) keinen effizienten Algorithmus gibt, um das diskrete Logarithmusproblem zu lösen. Bei \gls{DHM} sind zwar die Schlüssel $p$ und $g$ öffentlich bekannt, zudem werden die Werte $x$ und $y$ über den öffentlichen Kanal gesendet, aber die geheimen Zahlen $a$ und $b$ sind nur Alice bzw. Bob bekannt. Der gemeinsame Schlüssel $s_{AB}$ wird aus den öffentlichen Werten $p, g, x$ und $y$ sowie den geheimen Zahlen $a$ bzw. $b$ berechnet. Um daraus den gemeinsamen Schlüssel $s_{AB}$ zu berechnen, müsste sie entweder die geheime Zahl $a$ von Alice oder die geheime Zahl $b$ von Bob bestimmen. Dies entspricht dem Lösen des diskreten Logarithmusproblems, was (bisher) als schwierig gilt.
+Das \gls{DHM}-Protokoll ist sicher, weil es (bisher) keinen effizienten Algorithmus gibt, um das diskrete Logarithmusproblem zu lösen. Ein Kryptoanalyst (Eve) kann zwar die öffentlichen Werte $p, g, x$ und $y$ in Erfahrung bringen, aber um daraus den gemeinsamen Schlüssel $s_{AB}$ zu berechnen, müsste sie entweder die geheime Zahl $a$ von Alice oder die geheime Zahl $b$ von Bob bestimmen. Dies entspricht dem Lösen des diskreten Logarithmusproblems, was (bisher) als schwierig gilt.
 
 Allerdings ist das DHM-Protokoll nicht gegen einen Man-in-the-Middle-Angriff geschützt. Ein Angreifer (Eve) könnte sich zwischen Alice und Bob schalten und so tun, als ob sie Alice wäre, wenn sie mit Bob kommuniziert, und umgekehrt. Dadurch könnte Eve sowohl mit Alice als auch mit Bob jeweils einen eigenen gemeinsamen Schlüssel vereinbaren und so die Kommunikation zwischen den beiden belauschen. Diese Schwäche kann durch die Verwendung von digitalen Signaturen behoben werden, welche die Authentizität der Kommunikationspartner sicherstellen. Ein Beispiel eines solchen Signaturverfahrens ist das \gls{RSA}-Kryptosystem (s. Kapitel \cref{subsec:rsa}).
