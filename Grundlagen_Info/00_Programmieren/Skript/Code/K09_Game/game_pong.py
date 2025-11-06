@@ -4,9 +4,7 @@ import random
 pg.init()
 WIDTH, HEIGHT = 800, 600
 screen = pg.display.set_mode((WIDTH, HEIGHT))
-icon = pg.image.load("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/icon.png")
 pg.display.set_caption("Pong")
-pg.display.set_icon(icon)
 
 background_color = (50, 80, 120)
 
@@ -19,7 +17,7 @@ right_paddle = pg.Rect(WIDTH - 30 - paddle_w, HEIGHT // 2 - paddle_h // 2, paddl
 
 # Ball (als Rechteck)
 ball_size = 14
-ball = pg.Rect(WIDTH // 2 - ball_size // 2, HEIGHT // 2 - ball_size // 2, ball_size, ball_size)
+ball = pg.Rect(WIDTH // 2 - ball_size // 2, HEIGHT // 2 - ball_size // 2, ball_size, ball_size) # ball startet in der Mitte
 ball_speed = 5
 # Geschwindigkeit als separate Variablen
 ball_vel_x = random.choice((-1, 1)) * ball_speed
@@ -90,21 +88,23 @@ while running:
     left_paddle.clamp_ip(screen.get_rect())
     right_paddle.clamp_ip(screen.get_rect())
 
-    # Ball bewegen (Rect erwartet Ganzzahlpositionen)
-    ball.x += int(ball_vel_x)
-    ball.y += int(ball_vel_y)
+    # Ball bewegen
+    ball.x += ball_vel_x
+    ball.y += ball_vel_y
 
     # Abprallen an Ober-/Unterkante
     if ball.top <= 0:
+        ball.top = 0
         ball_vel_y *= -1
         bounce_sound.play()
     elif ball.bottom >= HEIGHT:
+        ball.bottom = HEIGHT
         ball_vel_y *= -1
         bounce_sound.play()
 
     # Kollisionen mit Schlägern
-    if ball.colliderect(left_paddle) and ball_vel_x < 0:
-        ball.left = left_paddle.right
+    if ball.colliderect(left_paddle):
+        ball.left = left_paddle.right  # Ball aus dem Paddle schieben
         ball_vel_x *= -1
         # Optional: etwas Variation je nach Trefferposition hinzufügen
         offset = (ball.centery - left_paddle.centery) / (paddle_h / 2)
@@ -112,8 +112,8 @@ while running:
         ball_vel_y = max(-ball_speed, min(ball_speed, ball_speed * offset))
         bounce_sound.play()
 
-    if ball.colliderect(right_paddle) and ball_vel_x > 0:
-        ball.right = right_paddle.left
+    if ball.colliderect(right_paddle):
+        ball.right = right_paddle.left  # Ball aus dem Paddle schieben
         ball_vel_x *= -1
         offset = (ball.centery - right_paddle.centery) / (paddle_h / 2)
         ball_vel_y = max(-ball_speed, min(ball_speed, ball_speed * offset))
