@@ -186,7 +186,7 @@ pg.draw.rect(screen, (255, 0, 0), item) # Item zeichnen
 \end{myanswer}
 \end{myexercise}
 
-\begin{mychallenge}[Highscore anzeigen]
+\begin{myexercise}[Highscore anzeigen]
 Erstellen Sie eine Variable \lstinline|score|, die bei jeder Kollision um 1 erhöht wird. Zeichnen Sie den aktuellen Punktestand mit \lstinline|font.render(...)| oben links im Fenster. Verwenden Sie folgenden Code, um Text zu zeichnen:
 \begin{lstlisting}
 # Vor der Game-Schleife:
@@ -200,7 +200,7 @@ screen.blit(score_text, (10, 10))  # Text oben links zeichnen
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_collision.py}
 \end{myanswer}
     
-\end{mychallenge}
+\end{myexercise}
 
 \begin{myexercise}[Ereignisse (Keyboard/Maus)]
 Reagieren Sie auf \lstinline|KEYDOWN|- und \lstinline|MOUSEBUTTONDOWN|-Events. Beispiel: Bei Mausklick wird an der Klickposition ein kleiner Kreis gezeichnet (oder eine Partikelspur gestartet). Bei \lstinline|ESC| beendet sich das Game. Da die Kreise jedes Frame neu gezeichnet werden müssen, speichern Sie die Positionen in einer Liste.
@@ -230,18 +230,28 @@ for pos in mouse_positions:
 \end{myexercise}
 
 \begin{myexercise}[Medien: Bild und Sound]
-Laden Sie ein Bild (\lstinline|.png|) und zeichnen Sie es mit \lstinline|screen.blit(...)|. Skalieren/rotieren Sie es optional. Laden Sie einen Sound (\lstinline|.wav/ .ogg|) mit \lstinline|pg.mixer.Sound| und spielen Sie ihn bei einer Kollision ab.
+Laden Sie ein Bild (\lstinline|.png /.jpg|) und zeichnen Sie es mit \lstinline|screen.blit(...)|. Skalieren/rotieren Sie es optional. Laden Sie einen Sound (\lstinline|.wav/ .ogg / .mp3|) mit \lstinline|pg.mixer.Sound| und spielen Sie ihn bei einer Kollision ab.
+
+Für Bilder:
 \begin{lstlisting}
+# Vor der Game-Schleife:
 img = pg.image.load("assets/player.jpeg") # Bild laden
 img = pg.transform.scale(img, (64, 64)) # optional: skalieren
-screen.blit(img, player)
 
-# Sound laden und abspielen
-pg.mixer.init()
-motor = pg.mixer.Sound("assets/motor.wav")
-if player.colliderect(item):
-	motor.play()
+# In der Game-Schleife, im Render-Abschnitt:
+screen.blit(img, player) # Bild an Spieler-Position zeichnen
 \end{lstlisting}
+
+Für Sounds:
+\begin{lstlisting}
+# Vor der Game-Schleife:
+pg.mixer.init() # Mixer initialisieren (ist nötig für Sound)
+motor = pg.mixer.Sound("assets/motor.wav") # Sound laden
+# In der Game-Schleife, bei Kollision:
+if player.colliderect(item):
+    motor.play()
+\end{lstlisting}
+
 Hinweis: Legen Sie die Medien in einem Ordner (z.\,B. \lstinline|assets/|) ab und achten Sie auf relative Pfade. Die Dateien \texttt{player.jpeg} und \texttt{motor.mp3} finden Sie auf Moodle.
 \begin{myanswer}
 \lstinputlisting{Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/game_intro_media.py}
