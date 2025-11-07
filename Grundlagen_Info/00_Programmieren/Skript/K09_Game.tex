@@ -310,17 +310,12 @@ ball.y += ball_vel_y
     \item \textbf{Rect-Ränder nutzen und Kollisionen \enquote{sauber} auflösen:}
 \begin{lstlisting}
 if ball.colliderect(left_paddle):
-    ball.left = left_paddle.right  # Ball aus dem Paddle schieben
-    ball_vel.x *= -1               # x-Richtung umkehren (Abprall)
+    ball_vel_x *= -1     # x-Richtung umkehren (Abprall)
 \end{lstlisting}
 
     \item \textbf{Abprall oben/unten (Wände):}
 \begin{lstlisting}
-if ball.top <= 0:
-    ball.top = 0
-    ball_vel.y *= -1
-elif ball.bottom >= HEIGHT:
-    ball.bottom = HEIGHT
+if ball.top <= 0 or ball.bottom >= HEIGHT:
     ball_vel.y *= -1
 \end{lstlisting}
 
@@ -328,13 +323,6 @@ elif ball.bottom >= HEIGHT:
 \begin{lstlisting}
 offset = (ball.centery - left_paddle.centery) / (paddle_h / 2)  # -1..+1
 ball_vel.y = ball_speed * offset
-\end{lstlisting}
-
-    \item \textbf{Zentrierten Text zeichnen:} \lstinline|get_rect(center=(...))| ist oft einfacher als Koordinaten zu raten.
-\begin{lstlisting}
-score_surf = font.render("0 : 0", True, (255, 255, 255))
-score_rect = score_surf.get_rect(center=(WIDTH // 2, 30))
-screen.blit(score_surf, score_rect)
 \end{lstlisting}
 
     \item \textbf{Ball nach Punkt neu zentrieren (als Funktion):}
