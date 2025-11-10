@@ -11,16 +11,16 @@ class Person:
         print(f"Hallo, ich bin {self.name} und {self.alter} Jahre alt.")
 
 class Schueler(Person):
-    def __init__(self, name, alter, klasse):
+    def __init__(self, name, alter, schulklasse):
         super().__init__(name, alter)
-        self.klasse = klasse
+        self.schulklasse = schulklasse
     
     def vorstellen(self):
-        print(f"Hallo, ich bin {self.name}, {self.alter} Jahre alt und besuche die Klasse {self.klasse}.")
+        print(f"Hallo, ich bin {self.name}, {self.alter} Jahre alt und besuche die schulklasse {self.schulklasse}.")
     
-    def klasse_wechseln(self, neue_klasse):
-        self.klasse = neue_klasse
-        print(f"{self.name} besucht jetzt die Klasse {self.klasse}.")
+    def schulklasse_wechseln(self, neue_schulklasse):
+        self.schulklasse = neue_schulklasse
+        print(f"{self.name} besucht jetzt die schulklasse {self.schulklasse}.")
 
 # Test
 person = Person("Anna", 35)
@@ -31,5 +31,5 @@ person.geburtstag_feiern()
 
 schueler.vorstellen()
 schueler.geburtstag_feiern()
-schueler.klasse_wechseln("5a")
+schueler.schulklasse_wechseln("5a")
 schueler.vorstellen()
