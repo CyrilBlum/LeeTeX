@@ -1,13 +1,13 @@
 # Primzahlen
-p = 109
-q = 113
+p = 3
+q = 11
 # Berechnung n und phi(n)
 n = p * q
 phi_n = (p - 1) * (q - 1)
 print("n:", n)
 print("phi(n):", phi_n)
 # Wahl von e (muss teilerfremd zu phi(n) sein)
-e = 5  # 5 ist teilerfremd zu phi(n)
+e = 3  # 5 ist teilerfremd zu phi(n)
 # Berechnung von d
 d = pow(e, -1, phi_n)
 # Öffentlicher und privater Schlüssel

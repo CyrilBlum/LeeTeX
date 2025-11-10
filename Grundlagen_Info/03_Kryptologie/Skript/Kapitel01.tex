@@ -1285,7 +1285,7 @@ Daraus ergibt sich \( m = 3 \), also die ursprüngliche Nachricht.
 \end{myexample}
 
 
-\begin{myexercise}
+\begin{myexercise}\label{myexercise:rsa}
 	Alice möchte eine Nachricht an Bob mit \gls{RSA} verschlüsseln. Bob wählt die Hilfs-Primzahlen \( p = 5 \) und \( q = 7 \). Generieren Sie den öffentlichen Schlüssel ($e, n$) und den privaten Schlüssel ($d, n$) von Bob, indem Sie folgende Schritte ausführen:
 	\begin{enumerate}
 		\item Berechnen Sie \( n \) und \( \varphi(n) \).
@@ -1316,6 +1316,13 @@ Daraus ergibt sich \( m = 3 \), also die ursprüngliche Nachricht.
 	\end{myanswer}
 \end{myexercise}
 
+\begin{myexercise}
+	Ist die Wahl von \( p \) und \( q \) im obigen Beispiel sinnvoll? Begründen Sie Ihre Antwort.
+	\begin{myanswer}
+		Nein, die Wahl von \( p \) und \( q \) ist nicht sinnvoll, da beide Primzahlen zu klein sind. In der Praxis sollten \( p \) und \( q \) jeweils mindestens 2048 Bit lang sein, um eine ausreichende Sicherheit zu gewährleisten. Ansonsten kann es, wie im vorliegenden Beispiel, vorkommen, dass der private Schlüssel leicht durch Faktorisierung von \( n \) berechnet werden kann, oder dass der private Schlüssel sogar gleich dem öffentlichen Schlüssel ist (wie in diesem Beispiel, wo \( d = e = 5 \)).
+	\end{myanswer}
+\end{myexercise}
+
 \begin{mychallenge}
 	Wählen Sie zwei Primzahlen \( p \) und \( q \) mit jeweils mindestens 3 Ziffern. Generieren Sie den öffentlichen und privaten Schlüssel. Verschlüsseln Sie eine Nachricht Ihrer Wahl und entschlüsseln Sie diese wieder. Verwenden Sie Python, um die Berechnungen durchzuführen.
 
@@ -1328,3 +1335,81 @@ d = pow(e, -1, phi_n)
 		\lstinputlisting{Grundlagen_Info/03_Kryptologie/Python package/encryption/rsa_simple.py}
 	\end{myanswer}
 \end{mychallenge}
+
+\subsection{Digitale Signaturen mit \texorpdfstring{\acrshort{RSA}}{RSA}}
+Neben der Verschlüsselung von Nachrichten kann das \gls{RSA}-Verfahren auch zur Erstellung digitaler Signaturen verwendet werden. Digitale Signaturen dienen dazu, die Authentizität und Integrität einer Nachricht zu gewährleisten. Hierbei wird die Nachricht mit dem privaten Schlüssel des Absenders signiert, sodass der Empfänger die Signatur mit dem öffentlichen Schlüssel des Absenders überprüfen kann.
+
+\begin{myprocedure}[Digitale Signaturen mit \gls{RSA}]
+	Die Erstellung und Überprüfung digitaler Signaturen mit dem \gls{RSA}-Verfahren erfolgt in folgenden Schritten:
+\begin{enumerate}
+	\item \textbf{Signaturerstellung:}
+	      \begin{itemize}
+		      \item Der Absender erstellt eine \textbf{Nachricht} \( \mathbf{m} \).
+		      \item Er berechnet den \textbf{Hashwert} \( H(m) \) der Nachricht \( m \) mithilfe einer kryptographischen Hashfunktion (z.B. SHA-256).
+		      \item Der Absender signiert den Hashwert mit seinem \textbf{privaten Schlüssel} \( \mathbf{(d, n)} \):
+		            \[
+			            s = H(m)^d \mod n
+		            \]
+		      \item Das Ergebnis \( s \) ist die digitale Signatur.
+	      \end{itemize}
+	\item \textbf{Signaturüberprüfung:}
+	      \begin{itemize}
+		      \item Der Empfänger erhält die Nachricht \( m \) und die Signatur \( s \).
+		      \item Er berechnet den Hashwert \( H(m) \) der empfangenen Nachricht \( m \).
+		      \item Der Empfänger überprüft die Signatur mit dem \textbf{öffentlichen Schlüssel} \( \mathbf{(e, n)} \) des Absenders:
+		            \[
+			            H'(m) = s^e \mod n
+		            \]
+		      \item Wenn \( H'(m) = H(m) \), ist die Signatur gültig, andernfalls ist sie ungültig.
+	      \end{itemize}
+\end{enumerate}
+\end{myprocedure}
+
+\begin{myexample}
+	Angenommen, Alice möchte eine Nachricht \( m = 42 \) signieren. Sie verwendet ihren privaten Schlüssel \( (d, n) = (9677, 12317) \) und den öffentlichen Schlüssel \( (e, n) = (5, 12317) \).
+
+	\textbf{Signaturerstellung:}
+	\begin{align*}
+		s & = H(m)^d \mod n \\
+		  & = 42^{9677} \mod 12317 \\
+		  & = 161
+	\end{align*}
+
+	Die digitale Signatur ist also \( s = 161 \).
+
+	\textbf{Signaturüberprüfung:}
+	\begin{align*}
+		H'(m) & = s^e \mod n \\
+		      & = 161^5 \mod 12317 \\
+		      & = 42
+	\end{align*}
+
+	Da \( H'(m) = H(m) \), ist die Signatur gültig.
+\end{myexample}
+
+\begin{myexercise}
+	Alice möchte die Nachricht \( m = 15 \) signieren. Ihr privater Schlüssel ist \( (d, n) = (7, 33) \) und ihr öffentlicher Schlüssel ist \( (e, n) = (3, 33) \).
+
+	Erstellen Sie die digitale Signatur \( s \) für die Nachricht \( m \).
+
+	Überprüfen Sie danach die Signatur mit dem öffentlichen Schlüssel.
+	\begin{myanswer}
+		\textbf{Signaturerstellung:}
+		\begin{align*}
+			s & = H(m)^d \mod n \\
+			  & = 15^{7} \mod 33 \\
+			  & = 27
+		\end{align*}
+
+		Die digitale Signatur ist also \( s = 27 \).
+
+		\textbf{Signaturüberprüfung:}
+		\begin{align*}
+			H'(m) & = s^e \mod n \\
+			      & = 27^3 \mod 33 \\
+			      & = 15
+		\end{align*}
+
+		Da \( H'(m) = H(m) \), ist die Signatur gültig.
+	\end{myanswer}
+\end{myexercise}
