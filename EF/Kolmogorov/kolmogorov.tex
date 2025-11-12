@@ -11,7 +11,7 @@ Betrachte die wunderschöne Illustration eines Teils der Mandelbrotmenge in \cre
 	\caption{Mandelbrotmenge in 16k Auflösung}
 	\label{fig:mandelbrot_16k}
 \end{figure}
-Wird die Illustration in \cref{fig:mandelbrot_16k} Pixel für Pixel abgespeichert, benötigt die PNG-Kompression dieser Illustration rund $100$ Millionen Bits an Speicherplatz, um die Illustration zu beschreiben. Nun kann aber ein recht kurzes Computerprogramm (siehe \cref{listing:mandelbrot}) diese $100$ Millionen Bits reproduzieren, indem es von der Definition der Mandelbrotmenge Gebrauch macht. Dieses (kurze) Computerprogramm ist also eine deutlich kürzere Beschreibung der Illustration als die Angabe jedes Pixels. Für die Reproduktion dieser $100$ Bits benötigt unser Computerprogramm zahlreiche Rechenoperationen und viel Rechenzeit. Dies ändert aber nichts daran, dass das Programm eine kurze Beschreibung dieser Illustration der Mandelbrotmenge ist.
+Wird die Illustration in \cref{fig:mandelbrot_16k} Pixel für Pixel abgespeichert, benötigt die PNG-Kompression dieser Illustration rund $100$ Millionen Bits an Speicherplatz, um die Illustration zu beschreiben. Nun kann aber ein recht kurzes Computerprogramm (siehe \cref{listing:mandelbrot}) diese $100$ Millionen Bits reproduzieren, indem es von der Definition der Mandelbrotmenge Gebrauch macht. Dieses (kurze) Computerprogramm ist also eine deutlich kürzere Beschreibung der Illustration als die Angabe jedes Pixels. Für die Reproduktion dieser $100$ Bits benötigt unser Computerprogramm zahlreiche Rechenoperationen und viel Rechenzeit. Dies ändert aber nichts daran, dass das Programm eine kurze Beschreibung dieser Illustration der Mandelbrotmenge ist. An dieser Stelle können wir wärmstens empfehlen, einen Blick in das Werk\cite{LowComplexityArt} zu werfen.
 
 \begin{myexercise}
 		Betrachte die folgenden zwei Bilder. \cref{fig:fig1} zeigt ein Muster, erzeugt durch zahlreiche Kreise und \cref{fig:fig2} zeigt zufälliges Rauschen (white noise).
@@ -96,7 +96,6 @@ Komprimierung von $w$.
 	Obwohl das Wort $111111111$ sehr regelmässig und das Wort $010010110$ sehr unregelmässig erscheint, sind beide aus Sicht der klassischen Wahrscheinlichkeitstheorie gleich wahrscheinlich. Die klassische Wahrscheinlichkeitstheorie kann also nicht zwischen der Zufälligkeit einzelner Objekte unterscheiden. Genau diese Lücke wird durch die Kolmogorov-Komplexität geschlossen.
 \end{myanswer}
 \end{myexercise}
-
 
 Ein denkbares Vorgehen zur Messung des Informationsgehalts eines binären Worts $w$ wäre, sich auf eine konkrete Komprimierungsmethode $komp$ zu einigen.
 Die Länge $\abs{komp(w)}$ des komprimierten Wortes $komp(w)$ könnte dann als Mass für den Informationsgehalt von $w$ angesehen werden.
@@ -445,3 +444,54 @@ void seeking_alpha_n() {
 		können höchstens für endlich viele natürliche Zahlen $n>0$ gelten. Dies ist ein Widerspruch zur Annahme, dass ein Algorithmus $Q$ zur Berechnung der Kolmogorov-Komplexität von allen binären Wörtern existiert.
 	\end{myproof}
 \end{mytheorem}
+
+\clearpage
+\section{Verständnisaufgaben}
+
+\begin{myexercise}
+	Wie viele Stellen hat die kürzeste Darstellung der Zahl $n = 7^4 + 358$ in Basis $b = 6$?
+	\begin{myanswer}
+		Die gesuchte Länge ist
+		\begin{align*}
+			\ceil{\log_6\lr{7^4 + 358 + 1}} = \ceil{\ln\lr{7^4 + 359} / \ln\lr{6}} = 5.
+		\end{align*}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	Berechne
+	\begin{align*}
+		\sum_{k=0}^9 \lr{5 \cdot 4^k}.
+	\end{align*}
+
+	\begin{myanswer}
+		\begin{align*}
+			\sum_{k=0}^9 \lr{5 \cdot 4^k} &= 5\cdot \sum_{k=0}^9 \lr{4^k} = 5\cdot \frac{4^{10} - 1}{4 - 1} =\\
+			&= 1747625
+		\end{align*}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+		Es sei $q \neq 0$ eine reelle Zahl und $n$ und $m\leq n$ natürliche Zahlen. Dann gilt
+	\begin{align*}
+		\sum_{k = m}^n q^k = q^m + q^{m+1} + \ldots + q^n = \frac{q^{n+1}-q^m}{q-1}.
+	\end{align*}
+	\begin{myanswer}
+		Siehe den Beweis von \cref{mytheorem:verallgemeinertegeometrischeSumme}.
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+		Wie viele Elemente enthält die Menge
+	\begin{align*}
+		S := \setct{w}{$w$ ist ein binäres Wort mit $1\leq\abs{w}\leq n-1$}
+	\end{align*}
+	\begin{myanswer}
+		Es gibt genau $2^1$ binäre Wörter der Länge $1$, $2^2$ binäre Wörter der Länge $2$ und allgemein $2^k$ binäre Wörter der Länge $k$. Insgesamt enthält die Menge $S$ also genau
+		\begin{align*}
+			\sum_{k = 1}^{n-1} 2^k \stackrel{\cref{mytheorem:verallgemeinertegeometrischeSumme}}{=} 2^n - 2
+		\end{align*}
+		Elemente.
+	\end{myanswer}
+\end{myexercise}
