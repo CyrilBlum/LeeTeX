@@ -20,8 +20,8 @@ ball_size = 14
 ball = pg.Rect(WIDTH // 2 - ball_size // 2, HEIGHT // 2 - ball_size // 2, ball_size, ball_size) # ball startet in der Mitte
 ball_speed = 5
 # Geschwindigkeit als separate Variablen
-ball_vel_x = random.choice((-1, 1)) * ball_speed
-ball_vel_y = random.choice((-1, 1)) * ball_speed
+ball_speed_x = random.choice((-1, 1)) * ball_speed
+ball_speed_y = random.choice((-1, 1)) * ball_speed
 
 # Spielstand
 left_score = 0
@@ -43,9 +43,9 @@ clock = pg.time.Clock()
 def reset_ball(direction: int):
     """Ball zentrieren und in die angegebene Richtung starten (-1 links, +1 rechts)."""
     ball.center = (WIDTH // 2, HEIGHT // 2)
-    global ball_vel_x, ball_vel_y
-    ball_vel_x = direction * ball_speed
-    ball_vel_y = random.choice((-1, 1)) * ball_speed
+    global ball_speed_x, ball_speed_y
+    ball_speed_x = direction * ball_speed
+    ball_speed_y = random.choice((-1, 1)) * ball_speed
 
 
 def reset_match():
@@ -89,27 +89,27 @@ while running:
     right_paddle.clamp_ip(screen.get_rect())
 
     # Ball bewegen
-    ball.x += ball_vel_x
-    ball.y += ball_vel_y
+    ball.x += ball_speed_x
+    ball.y += ball_speed_y
 
     # Abprallen an Ober-/Unterkante
     if ball.top <= 0 or ball.bottom >= HEIGHT:
-        ball_vel_y *= -1
+        ball_speed_y *= -1
         bounce_sound.play()
 
     # Kollisionen mit Schlägern
     if ball.colliderect(left_paddle):
-        ball_vel_x *= -1
+        ball_speed_x *= -1
         # Variation je nach Trefferposition hinzufügen
         offset = (ball.centery - left_paddle.centery) / (paddle_h / 2)
         # Auf [-ball_speed, ball_speed] begrenzen und als Skalar beibehalten
-        ball_vel_y = max(-ball_speed, min(ball_speed, ball_speed * offset))
+        ball_speed_y = max(-ball_speed, min(ball_speed, ball_speed * offset))
         bounce_sound.play()
 
     if ball.colliderect(right_paddle):
-        ball_vel_x *= -1
+        ball_speed_x *= -1
         offset = (ball.centery - right_paddle.centery) / (paddle_h / 2)
-        ball_vel_y = max(-ball_speed, min(ball_speed, ball_speed * offset))
+        ball_speed_y = max(-ball_speed, min(ball_speed, ball_speed * offset))
         bounce_sound.play()
 
     # Punktewertung

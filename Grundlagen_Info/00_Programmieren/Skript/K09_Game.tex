@@ -299,39 +299,39 @@ import random
 ...
 ball_speed = 5
 # Geschwindigkeit als separate Variablen
-ball_vel_x = random.choice((-1, 1)) * ball_speed
-ball_vel_y = random.choice((-1, 1)) * ball_speed
+ball_speed_x = random.choice((-1, 1)) * ball_speed
+ball_speed_y = random.choice((-1, 1)) * ball_speed
 
 # In der Game-Schleife:
-ball.x += ball_vel_x
-ball.y += ball_vel_y
+ball.x += ball_speed_x
+ball.y += ball_speed_y
 \end{lstlisting}
 
     \item \textbf{Rect-Ränder nutzen und Kollisionen \enquote{sauber} auflösen:}
 \begin{lstlisting}
 if ball.colliderect(left_paddle):
-    ball_vel_x *= -1     # x-Richtung umkehren (Abprall)
+    ball_speed_x *= -1     # x-Richtung umkehren (Abprall)
 \end{lstlisting}
 
     \item \textbf{Abprall oben/unten (Wände):}
 \begin{lstlisting}
 if ball.top <= 0 or ball.bottom >= HEIGHT:
-    ball_vel_y *= -1
+    ball_speed_y *= -1
 \end{lstlisting}
 
     \item \textbf{Trefferwinkel variieren:} Je weiter oben/unten am Paddle getroffen wird, desto mehr vertikale Geschwindigkeit.
 \begin{lstlisting}
 offset = (ball.centery - left_paddle.centery) / (paddle_h / 2)  # -1..+1
-ball_vel_y = ball_speed * offset
+ball_speed_y = ball_speed * offset
 \end{lstlisting}
 
     \item \textbf{Ball nach Punkt neu zentrieren (als Funktion):}
 \begin{lstlisting}
 def reset_ball(direction):  # direction: -1 nach links, +1 nach rechts
     ball.center = (WIDTH // 2, HEIGHT // 2)
-    global ball_vel_x, ball_vel_y # Zugriff auf globale Variablen
-    ball_vel_x = direction * ball_speed
-    ball_vel_y = random.choice((-1, 1)) * ball_speed
+    global ball_speed_x, ball_speed_y # Zugriff auf globale Variablen
+    ball_speed_x = direction * ball_speed
+    ball_speed_y = random.choice((-1, 1)) * ball_speed
 \end{lstlisting}
 
     \item \textbf{Nützliche Rect-Eigenschaften:} \lstinline|left, right, top, bottom, center, centery| helfen bei Ausrichtung und Kollisionen.
