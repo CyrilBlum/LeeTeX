@@ -22,7 +22,7 @@
 \settoggle{oneauthor}{true}
 \settoggle{twomainauthors}{false}
 \def\mainauthors{
-	Cyril Wendl/cyril.wendl@edu.zh.ch,
+    Cyril Wendl/cyril.wendl@edu.zh.ch,
 }
 
 \lhead[ \leftmark ]{\thetopic}
@@ -215,6 +215,41 @@ client.close()
     Versuchen Sie, den Client zu starten, bevor der Server läuft. Welche Fehlermeldung erhalten Sie? Wie können Sie das Problem beheben?
 \end{mychallenge}
 
+
+\begin{myexercise}[Reflexionsfragen (formatives Assessment)]
+Notiere nach Abschluss von Learning Task 1 (max. 5 Minuten) kurze Antworten ins Lernjournal. Tausche dich danach mit einer Person aus und ergänze fehlende Punkte.
+
+\textbf{Fragen / Prompts:}
+\begin{enumerate}
+    \item Erkläre in \emph{eigenen Worten}: Was ist ein Socket? Welche zwei Operationen hast du verwendet?
+    \item Unterschied IP-Adresse vs. Port (verwende die Post-Analogie).
+    \item Warum muss der Server vor dem Client gestartet werden? Welche konkrete Fehlermeldung erscheint sonst?
+    \item Skizziere den Ablauf deiner Nachricht (Methodenaufrufe in Reihenfolge) vom Client zum Server.
+    \item Nenne mindestens einen Debugging-Schritt, falls keine Antwort zurückkommt.
+    \item Formuliere eine mögliche Ursache für \texttt{ConnectionRefusedError}.
+    \item Kurzer Selbstcheck (Ja/Nein): 
+        \begin{itemize}
+            \item Ich kann den Code ohne Vorlage erneut schreiben.
+            \item Ich verstehe jede Zeile von \texttt{server.py}.
+            \item Ich weiss, wann \texttt{recv} blockiert.
+        \end{itemize}
+    \item Ein persönliches Lernziel für Task 2 (ein Satz).
+\end{enumerate}
+
+\begin{myanswer}
+\begin{itemize}
+    \item Socket: Endpunkt einer TCP-Verbindung; genutzt: \texttt{socket()}, \texttt{bind()}, \texttt{listen()}, \texttt{accept()}, \texttt{connect()}, \texttt{send()}, \texttt{recv()}, \texttt{close()}.
+    \item IP = Adresse des Rechners; Port = „Tür“/Dienst auf diesem Rechner (Post: Hausnummer vs. Zimmernummer).
+    \item Server zuerst: Sonst kein Prozess lauscht → \texttt{ConnectionRefusedError: [Errno 61] Connection refused} (oder \texttt{111} unter Linux).
+    \item Ablauf: Client: \texttt{socket()} → \texttt{connect()} → \texttt{send()}; Server: \texttt{socket()} → \texttt{bind()} → \texttt{listen()} → \texttt{accept()} → \texttt{recv()} → (optional \texttt{send()} Antwort).
+    \item Debugging: Prüfen Port, laufender Server, Firewall, Print-Statements vor/nach \texttt{send/recv}, \texttt{netstat} zur Belegung.
+    \item Ursache \texttt{ConnectionRefusedError}: Server nicht gestartet / falscher Port / Firewall blockiert.
+    \item Blockierendes \texttt{recv}: Wartet bis Daten eintreffen oder Gegenstelle schliesst.
+    \item Lernziel-Beispiel: „Ich möchte in Task 2 mehrere Nachrichten nacheinander austauschen können.“
+\end{itemize}
+\end{myanswer}
+\end{myexercise}
+
 \section{Learning Task 2: Chat-Kommunikation über ein lokales Netzwerk}
 
 \begin{scaffoldBox}
@@ -303,6 +338,39 @@ client.close()
     \end{myanswer}
 \end{myexercise}
 
+\begin{myexercise}[Reflexionsfragen (formatives Assessment)]
+Notiere nach Abschluss von Learning Task 2 (max. 5 Minuten) kurze Antworten ins Lernjournal. Tausche dich danach mit einer Person aus und ergänze fehlende Punkte.
+
+\textbf{Fragen / Prompts:}
+\begin{enumerate}
+    \item Wie unterscheidet sich die IP-Adresse im lokalen Netzwerk von der \texttt{localhost}-Adresse?
+    \item Warum ist es wichtig, die richtige IP-Adresse des Servers zu verwenden?
+    \item Welche Fehlermeldung erscheint, wenn der Client versucht, sich mit einer falschen IP-Adresse zu verbinden?
+    \item Nenne mindestens einen Debugging-Schritt, falls keine Verbindung hergestellt werden kann.
+    \item Wie kannst du überprüfen, ob die Firewall die Verbindung blockiert?
+    \item Kurzer Selbstcheck (Ja/Nein): 
+        \begin{itemize}
+            \item Ich kann den Code ohne Vorlage erneut schreiben.
+            \item Ich verstehe jede Zeile von \texttt{server.py}.
+            \item Ich weiss, wie ich die lokale IP-Adresse meines Rechners finde.
+        \end{itemize}
+    \item Ein persönliches Lernziel für Task 3 (ein Satz).
+    \item Welche Herausforderungen könnten auftreten, wenn Sie versuchen, über das Internet zu kommunizieren, anstatt nur im lokalen Netzwerk?
+\end{enumerate}
+\begin{myanswer}
+\begin{itemize}
+    \item Unterschied: \texttt{localhost} (127.0.0.1) verweist nur auf den eigenen Rechner; die lokale IP (z.B. 192.168.x.x) identifiziert den Rechner im LAN für andere Geräte.
+    \item Richtige IP nötig, sonst versucht der Client einen nicht existierenden Host oder anderen Rechner zu erreichen → keine oder falsche Verbindung.
+    \item Mögliche Fehlermeldungen: \texttt{ConnectionRefusedError} (Dienst nicht aktiv), Timeout (keine Antwort), \texttt{OSError: No route to host}.
+    \item Debugging: IP neu ermitteln; Server läuft? Port korrekt? \texttt{ping} testen; \texttt{netstat} / \texttt{ss} prüfen; einfache Prints vor \texttt{connect}; anderen Port probieren.
+    \item Firewall prüfen: Temporär deaktivieren (nur testweise), Regel für Python-Port hinzufügen, Test mit \texttt{telnet <IP> <Port>} oder \texttt{nc}; Prüfen ob Verbindungsversuch geloggt wird.
+    \item Selbstcheck: Code reproduzierbar? Jede Zeile verstanden? IP finden gelingt? Wenn Nein → gezielt nacharbeiten.
+    \item Lernziel Task 3: „Ich kann einen Relay-Server nutzen, um gezielt Nachrichten an einen benannten Client zu senden.“
+    \item Herausforderungen Internet: NAT und Port-Forwarding nötig; dynamische öffentliche IP; zusätzliche Latenz; Firewalls/Provider-Restriktionen; Sicherheit (Verschlüsselung, Authentifizierung); DNS-Auflösung.
+\end{itemize}
+\end{myanswer}
+    
+\end{myexercise}
 \section{Learning Task 3: Chat-Kommunikation über das Internet, mittels Relay-Server}
 
 \begin{scaffoldBox}
@@ -440,148 +508,57 @@ server.close()
     \end{myanswer}
 \end{myexercise}
 
-\chapter{Prüfungsaufgaben}
-
-In diesem Abschnitt werden einige Ideen für Prüfungsaufgaben vorgestellt, die das Verständnis der Lernenden für Netzwerkkonzepte und deren praktische Anwendung testen.
-
-\begin{myexercise}[\textbf{Theoriefrage}: IP-Adresse vs. Port]
-
-    \textbf{Aufgabe:} Erklären Sie den Unterschied zwischen einer IP-Adresse und einem Port. Warum sind beide notwendig, um eine Netzwerkverbindung herzustellen?
-
-    \begin{myanswer}
-        Eine IP-Adresse identifiziert ein Gerät in einem Netzwerk eindeutig, ähnlich wie eine Hausadresse in der realen Welt. Sie gibt an, wohin Datenpakete gesendet werden sollen. Ein Port hingegen ist eine nummerische Kennung, die auf einem Gerät verwendet wird, um verschiedene Dienste oder Anwendungen zu unterscheiden. Während die IP-Adresse das Zielgerät angibt, spezifiziert der Port den spezifischen Dienst (z.B. Webserver, E-Mail-Server) auf diesem Gerät. Beide sind notwendig, um sicherzustellen, dass Daten korrekt zugestellt werden.
-    \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}[\textbf{Debugging-Aufgabe}: Netzwerkfehler beheben]
-
-    \textbf{Aufgabe:} Sie versuchen, Ihren \texttt{client.py} mit dem Server zu verbinden, erhalten aber die Fehlermeldung \texttt{ConnectionRefusedError}. Nennen Sie mindestens drei mögliche Ursachen für diesen Fehler und beschreiben Sie jeweils eine Lösungsmöglichkeit.
-
-    \begin{myanswer}
+\begin{myexercise}
+[Reflexionsfragen (formatives Assessment)]
+Notiere nach Abschluss von Learning Task 3 (max. 5 Minuten) kurze Antworten ins Lernjournal. Tausche dich danach mit einer Person aus und ergänze fehlende Punkte.
+\textbf{Fragen / Prompts:}
+\begin{enumerate}
+    \item Was ist der Unterschied zwischen einer lokalen IP-Adresse und einer öffentlichen IP-Adresse?
+    \item Erkläre kurz, was NAT (Network Address Translation) ist und warum es in Heimnetzwerken verwendet wird.
+    \item Warum ist Port-Forwarding notwendig, um Verbindungen von aussen zu einem Gerät im lokalen Netzwerk herzustellen?
+    \item Was ist ein Relay-Server und welche Rolle spielt er in diesem Szenario?
+    \item Wie funktioniert DNS (Domain Name System) und warum ist es wichtig für die Kommunikation im Internet?
+    \item Kurzer Selbstcheck (Ja/Nein): 
         \begin{itemize}
-            \item \textbf{Server läuft nicht:} Der Server wurde nicht gestartet oder ist abgestürzt. \textit{Lösung:} Starten Sie den Server und versuchen Sie die Verbindung erneut.
-            \item \textbf{Falsche IP-Adresse oder Port:} Der Client versucht, sich mit einer falschen Adresse oder einem falschen Port zu verbinden. \textit{Lösung:} Überprüfen Sie die IP-Adresse und den Port im Code und passen Sie sie ggf. an.
-            \item \textbf{Firewall blockiert die Verbindung:} Die Firewall auf dem Server- oder Client-Rechner blockiert den Netzwerkverkehr. \textit{Lösung:} Passen Sie die Firewall-Einstellungen an, um Verbindungen auf dem verwendeten Port zuzulassen.
+            \item Ich kann den Code ohne Vorlage erneut schreiben.
+            \item Ich verstehe jede Zeile von \texttt{client.py}.
+            \item Ich weiss, wie ich die öffentliche IP-Adresse meines Netzwerks finde.
         \end{itemize}
-    \end{myanswer}
+    \item Reflektiere: Welche Herausforderungen könnten auftreten, wenn Sie versuchen, über das Internet zu kommunizieren, anstatt nur im lokalen Netzwerk?
+\end{enumerate}
+\begin{myanswer}
+\begin{itemize}
+    \item Lokale IP: Identifiziert ein Gerät im lokalen Netzwerk (z.B.      192.168.x.x); öffentliche IP: Identifiziert das gesamte Netzwerk im Internet.
+    \item NAT übersetzt lokale IP-Adressen in eine öffentliche IP-Adresse, damit mehrere Geräte im Heimnetzwerk über eine einzige öffentliche IP-Adresse kommunizieren können.
+    \item Port-Forwarding leitet eingehende Verbindungen von der öffentlichen IP-Adresse an die richtige lokale IP-Adresse und den entsprechenden Port im Heimnetzwerk weiter.
+    \item Ein Relay-Server empfängt Nachrichten von Clients und leitet sie an die vorgesehenen Empfänger weiter, wodurch direkte Verbindungen zwischen Clients vermieden werden.
+    \item DNS übersetzt Domain-Namen in IP-Adressen, damit Menschen sich leicht zu merkende Namen verwenden können, anstatt sich numerische IP-Adressen merken zu müssen.
+    \item Selbstcheck: Code reproduzierbar? Jede Zeile verstanden? Öffentliche IP finden gelingt? Wenn Nein → gezielt nacharbeiten.
+    \item Herausforderungen Internet: NAT und Port-Forwarding nötig; dynamische öffentliche IP; zusätzliche Latenz; Firewalls/Provider-Restriktionen; Sicherheit (Verschlüsselung, Authentifizierung); DNS-Auflösung.
+\end{itemize}
+\end{myanswer}
 \end{myexercise}
 
-% Define a simple macro for blanks (works in article)
-\newcommand{\blank}[1]{\underline{\hspace{2cm}}}
-
-\begin{myexercise}[\textbf{Lückentext}: Netzwerk-Grundlagen]
-
-    In einem Computernetzwerk werden verschiedene Geräte miteinander verbunden, um Daten auszutauschen. Ein zentrales Element hierbei ist der \blank{Router}, welcher den Datenverkehr zwischen verschiedenen Netzwerken steuert. Innerhalb eines Netzwerks übernimmt ein \blank{Switch} die Verteilung der Datenpakete an die richtigen Geräte.
-
-    Jedes Gerät in einem Netzwerk hat eine eindeutige \blank{IP}-Adresse. Dabei unterscheiden wir zwischen zwei Arten von Adressen: Während \blank{IPv4}-Adressen aus 32 Bit bestehen, nutzen \blank{IPv6}-Adressen 128 Bit und bieten dadurch eine wesentlich größere Anzahl möglicher Adressen.
-
-    Zur Verwaltung der Routen, die Datenpakete nehmen sollen, verwendet ein Router eine \blank{Routing-Tabelle}. Damit der Router weiß, wie groß ein Teilnetz ist, wird eine \blank{Subnetzmaske} verwendet. Diese Maske hilft dabei, die Netzwerk- und die Hostanteile einer IP-Adresse zu trennen.
-
-    Um den Domain-Namen in eine IP-Adresse zu übersetzen, wird das \blank{DNS}-Protokoll verwendet. Möchte man die IP-Adresse eines Domain-Namens herausfinden, kann man den Befehl \blank{nslookup} nutzen.
-
-    Für Diagnosezwecke gibt es verschiedene Befehle. Mit \blank{ping} kann man überprüfen, ob ein anderes Gerät im Netzwerk erreichbar ist. Um die Netzwerkkonfiguration eines Geräts anzuzeigen, verwendet man den Befehl \blank{ipconfig} (Windows) bzw. \blank{ifconfig} (Linux/macOS).
-
-    Um eine zuverlässige Datenübertragung zu gewährleisten, wird das \blank{TCP}-Protokoll verwendet. Für den Abruf von Webseiten kommt das \blank{HTTP}-Protokoll zum Einsatz.
-
-    \begin{myanswer}
-        In einem Computernetzwerk werden verschiedene Geräte miteinander verbunden, um Daten auszutauschen. Ein zentrales Element hierbei ist der \textbf{Router}, welcher den Datenverkehr zwischen verschiedenen Netzwerken steuert. Innerhalb eines Netzwerks übernimmt ein \textbf{Switch} die Verteilung der Datenpakete an die richtigen Geräte.
-
-        Jedes Gerät in einem Netzwerk hat eine eindeutige \textbf{IP}-Adresse. Dabei unterscheiden wir zwischen zwei Arten von Adressen: Während \textbf{IPv4}-Adressen aus 32 Bit bestehen, nutzen \textbf{IPv6}-Adressen 128 Bit und bieten dadurch eine wesentlich größere Anzahl möglicher Adressen.
-
-        Zur Verwaltung der Routen, die Datenpakete nehmen sollen, verwendet ein Router eine \textbf{Routing-Tabelle}. Damit der Router weiß, wie groß ein Teilnetz ist, wird eine \textbf{Subnetzmaske} verwendet. Diese Maske hilft dabei, die Netzwerk- und die Hostanteile einer IP-Adresse zu trennen.
-
-        Um den Domain-Namen in eine IP-Adresse zu übersetzen, wird das \textbf{DNS}-Protokoll verwendet. Möchte man die IP-Adresse eines Domain-Namens herausfinden, kann man den Befehl \textbf{nslookup} nutzen.  
-
-        Für Diagnosezwecke gibt es verschiedene Befehle. Mit \textbf{ping} kann man überprüfen, ob ein anderes Gerät im Netzwerk erreichbar ist. Um die Netzwerkkonfiguration eines Geräts anzuzeigen, verwendet man den Befehl \textbf{ipconfig} (Windows) bzw. \textbf{ifconfig} (Linux/macOS).
-
-        Um eine zuverlässige Datenübertragung zu gewährleisten, wird das \textbf{TCP}-Protokoll verwendet. Für den Abruf von Webseiten kommt das \textbf{HTTP}-Protokoll zum Einsatz.
-    \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}[\textbf{Zuordnungsaufgabe}: Netzwerk-Schichten]
-
-    Ordnen Sie die folgenden Erklärungen der richtigen Netzwerk-Schicht zu (Anwendungsschicht, Physikalische Schicht, Vermittlungsschicht, Transportschicht):
-
-    \begin{enumerate}
-        \item \textbf{Stellt die elektrische, mechanische und funktionale Verbindung zwischen Geräten her.}
-        \item \textbf{Sorgt für die korrekte Übertragung von Datenpaketen zwischen Sender und Empfänger, inklusive Fehlererkennung und -behebung.}
-        \item \textbf{Regelt die Weiterleitung von Datenpaketen zwischen verschiedenen Netzwerken und bestimmt den besten Weg zum Ziel.}
-        \item \textbf{Stellt Dienste wie E-Mail, Webseiten oder Dateiübertragung für den Nutzer bereit.}
-    \end{enumerate}
-
-    \begin{myanswer}
-        \begin{itemize}
-            \item \textbf{Physikalische Schicht}: Stellt die elektrische, mechanische und funktionale Verbindung zwischen Geräten her.
-            \item \textbf{Transportschicht}: Sorgt für die korrekte Übertragung von Datenpaketen zwischen Sender und Empfänger, inklusive Fehlererkennung und -behebung.
-            \item \textbf{Vermittlungsschicht}: Regelt die Weiterleitung von Datenpaketen zwischen verschiedenen Netzwerken und bestimmt den besten Weg zum Ziel.
-            \item \textbf{Anwendungsschicht}: Stellt Dienste wie E-Mail, Webseiten oder Dateiübertragung für den Nutzer bereit.
-        \end{itemize}
-    \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}[\textbf{Anwendungsaufgabe}: Netzwerkbefehle praktisch nutzen]
-
-    Sie möchten herausfinden, ob Ihr Computer eine Verbindung zu einem Server im Internet herstellen kann. Beschreiben Sie, wie Sie mit den Befehlen \texttt{ping} und \texttt{nslookup} vorgehen würden und was die jeweilige Ausgabe bedeutet.
-
-    \begin{myanswer}
-        Mit \texttt{ping} kann ich prüfen, ob der Server erreichbar ist, indem ich z.B. \texttt{ping google.com} eingebe. Die Ausgabe zeigt, ob Pakete erfolgreich gesendet und empfangen wurden. Mit \texttt{nslookup google.com} kann ich die IP-Adresse des Servers herausfinden. Die Ausgabe zeigt die zugehörige IP-Adresse und ggf. weitere DNS-Informationen.
-    \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}[\textbf{Konzepte}: Client-Server-Architektur]
-
-    Erklären Sie in eigenen Worten, wie die Client-Server-Architektur funktioniert und nennen Sie ein Beispiel aus dem Alltag, bei dem dieses Prinzip genutzt wird.
-
-    \begin{myanswer}
-        Bei der Client-Server-Architektur fordert ein Client (z.B. ein Browser) einen Dienst oder eine Ressource von einem Server an (z.B. eine Webseite). Der Server verarbeitet die Anfrage und schickt die Antwort zurück. Ein Beispiel ist das Abrufen einer Webseite: Der Browser ist der Client, der Webserver liefert die Seite.
-    \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}[\textbf{Fehleranalyse}: Firewall und Netzwerkkommunikation]
-
-    Sie haben ein Socket-Programm geschrieben, aber die Verbindung zwischen zwei Rechnern im lokalen Netzwerk funktioniert nicht. Nennen Sie zwei Möglichkeiten, wie eine Firewall die Kommunikation verhindern kann, und wie Sie das Problem lösen können.
-
-    \begin{myanswer}
-        Die Firewall kann entweder den verwendeten Port blockieren oder den gesamten eingehenden Netzwerkverkehr sperren. Lösung: Den Port in der Firewall freigeben oder eine Ausnahme für das Programm hinzufügen.
-    \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}[\textbf{Programmieraufgabe}: Erweiterung eines Chat-Clients]
-
-    Ihr Chat-Client kann bisher nur Nachrichten an einen Server senden und empfangen. Beschreiben Sie, wie Sie das Programm erweitern würden, damit mehrere Clients gleichzeitig Nachrichten austauschen können.
-
-    \begin{myanswer}
-        Der Server muss mehrere Verbindungen gleichzeitig verwalten, z.B. mit Threads. Jeder Client sendet seinen Namen beim Verbinden. Der Server leitet Nachrichten an den gewünschten Empfänger weiter, indem er die Namen und Verbindungen speichert und die Nachricht gezielt zustellt.
-    \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}[\textbf{Theoriefrage}: NAT und Port-Forwarding]
-
-    Erklären Sie, warum NAT (Network Address Translation) und Port-Forwarding notwendig sind, um eine Verbindung zu einem Server im Internet herzustellen, der sich hinter einem Router befindet.
-
-    \begin{myanswer}
-        NAT übersetzt private IP-Adressen im lokalen Netzwerk in die öffentliche IP-Adresse des Routers. Damit ein Server im lokalen Netzwerk von außen erreichbar ist, muss der Router eingehende Verbindungen über Port-Forwarding an die richtige lokale IP und den richtigen Port weiterleiten.
-    \end{myanswer}
-\end{myexercise}
+\input{Grundlagen_Info/07_Netzwerke/Skript/ic4d/ic4dExam.tex}
 
 \chapter{Lernziele}
 
 \begin{todolist}
-\item Ich kann die Grundkonzepte und Unterschiede zwischen IP, IPv4 und IPv6 erklären.
-\item Ich kann für IPv4 und IPv6 jeweils die Anzahl möglicher Adressen angeben und berechnen.
-\item Ich kann die Funktionen und Arbeitsweisen von Routern und Switches in einem Netzwerk verstehen und erläutern.
-% \item Ich kann eine Routing-Tabelle interpretieren und für einfache Routing-Entscheidungen nutzen.
-% \item Ich kann eine Subnetzmaske erstellen und anwenden, um Netzwerke in verschiedene Subnetze zu unterteilen.
-\item Ich kann die grundlegenden Konzepte von TCP beschreiben und dessen Einsatz im Kontext von Netzwerkprotokollen verstehen.
-% \item Ich kann grundlegende HTML-Strukturen erstellen und verstehen, wie HTML-Seiten über HTTP übertragen werden.
-\item Ich kann den Ablauf eines Abrufs von Webinhalten über das Internet in einzelnen Schritten und den darin involvierten Protokollen erläutern.
-\item Ich kann die Rolle eines DNS-Servers im Netzwerk erklären und wie DNS-Anfragen bearbeitet und beantwortet werden.
-\item Ich kann grundlegende Netzwerkbefehle wie \texttt{ping}, \texttt{ipconfig}/\texttt{ifconfig} und \texttt{nslookup} anwenden und deren Ausgabe interpretieren.
-\item Ich kann einfache Netzwerkprobleme identifizieren und grundlegende Schritte zur Fehlerbehebung durchführen.
-\item Ich kann die Client-Server-Architektur erklären und deren Bedeutung für die Kommunikation im Internet beschreiben.
-\item Ich kann in Python einfache Socket-Programme schreiben, die eine Verbindung zu einem Server herstellen und Nachrichten senden/empfangen.
-\item Ich kann eine Chat-Anwendung in Python entwickeln, die über einen Relay-Server Nachrichten zwischen mehreren Clients austauscht.
-\item Ich kann die grundlegenden Schritte zur Fehlerbehebung einer nicht funktionierenden Internet-Verbindung durchführen und dokumentieren.
+    \item Ich kann die Grundkonzepte und Unterschiede zwischen IP, IPv4 und IPv6 erklären.
+    \item Ich kann für IPv4 und IPv6 jeweils die Anzahl möglicher Adressen angeben und berechnen.
+    \item Ich kann die Funktionen und Arbeitsweisen von Routern und Switches in einem Netzwerk verstehen und erläutern.
+    % \item Ich kann eine Routing-Tabelle interpretieren und für einfache Routing-Entscheidungen nutzen.
+    % \item Ich kann eine Subnetzmaske erstellen und anwenden, um Netzwerke in verschiedene Subnetze zu unterteilen.
+    \item Ich kann die grundlegenden Konzepte von TCP beschreiben und dessen Einsatz im Kontext von Netzwerkprotokollen verstehen.
+    % \item Ich kann grundlegende HTML-Strukturen erstellen und verstehen, wie HTML-Seiten über HTTP übertragen werden.
+    \item Ich kann den Ablauf eines Abrufs von Webinhalten über das Internet in einzelnen Schritten und den darin involvierten Protokollen erläutern.
+    \item Ich kann die Rolle eines DNS-Servers im Netzwerk erklären und wie DNS-Anfragen bearbeitet und beantwortet werden.
+    \item Ich kann grundlegende Netzwerkbefehle wie \texttt{ping}, \texttt{ipconfig}/\texttt{ifconfig} und \texttt{nslookup} anwenden und deren Ausgabe interpretieren.
+    \item Ich kann einfache Netzwerkprobleme identifizieren und grundlegende Schritte zur Fehlerbehebung durchführen.
+    \item Ich kann die Client-Server-Architektur erklären und deren Bedeutung für die Kommunikation im Internet beschreiben.
+    \item Ich kann in Python einfache Socket-Programme schreiben, die eine Verbindung zu einem Server herstellen und Nachrichten senden/empfangen.
+    \item Ich kann eine Chat-Anwendung in Python entwickeln, die über einen Relay-Server Nachrichten zwischen mehreren Clients austauscht.
+    \item Ich kann die grundlegenden Schritte zur Fehlerbehebung einer nicht funktionierenden Internet-Verbindung durchführen und dokumentieren.
 \end{todolist}
 
 \clearpage
