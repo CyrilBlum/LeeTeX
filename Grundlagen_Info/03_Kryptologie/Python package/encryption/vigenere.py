@@ -70,7 +70,7 @@ def display_vigenere_all(
         print(f"{name:>10}: {value}...")
 
 
-def show_letter_freq(text, show_diff_to_avg=False):
+def show_letter_freq(text, show_diff_to_avg=False, ylim=None):
     # @argument show_diff_to_avg: also show difference to expected average of 1/26
     fig, ax = plt.subplots()
 
@@ -88,6 +88,10 @@ def show_letter_freq(text, show_diff_to_avg=False):
         width=0.5,
         color="g",
     )
+
+    if ylim is not None:
+        ax.set_ylim(ylim)
+        
     if show_diff_to_avg:
         # Expected average frequency (1/26)
         avg_freq = 1 / 26 * 100  # in percentage

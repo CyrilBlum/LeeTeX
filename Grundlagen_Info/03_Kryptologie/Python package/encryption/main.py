@@ -17,7 +17,7 @@ def caesar_main():
     text_lang = open("Texts/Kafka.txt").readlines()[0]
     text_lang = preprocess_text(text_lang)
     text_lang_c = caesar(text_lang, 2)
-    fig, ax = show_letter_freq(text_lang_c)
+    fig, ax = show_letter_freq(text_lang_c, ylim=(0,20))
     # plt.show()
     plt.savefig("../../Figures/caesar-freq.pdf",
                 format="pdf", bbox_inches="tight")
@@ -34,7 +34,7 @@ def vigenere_main():
     text_lang = open("Texts/Kafka.txt").readlines()[0]
     text_lang_v = vigenere(text_lang, "ICH")
     print("LANGER TEXT", text_lang_v[:400])
-    fig, ax = show_letter_freq(text_lang_v)
+    fig, ax = show_letter_freq(text_lang_v, ylim=(0,20))
     # plt.show()
     plt.savefig("../../Figures/vigenere-freq.pdf",
                 format="pdf", bbox_inches="tight")
@@ -105,6 +105,9 @@ def monoalphabetic_main():
     print(ciphertext_new)
     print(shifts)
 
-
-vigenere_main()
+if __name__ == "__main__":
+    caesar_main()
+    # friedman_main()
+    # monoalphabetic_main()
+    vigenere_main()
 
