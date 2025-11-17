@@ -143,74 +143,79 @@ Das formulierte Problem ermöglicht es den Lernenden, technische Funktionsprinzi
 
 \begin{myexercise}[Chatten auf demselben Rechner]
 
-    \textbf{Aufgabe:} Schreiben Sie zwei Python-Programme, \texttt{server.py} und \texttt{client.py}, die auf demselben Rechner laufen. Der Client verbindet sich mit dem Server und schickt eine kurze Nachricht („Hallo“). Der Server empfängt die Nachricht und gibt sie auf der Konsole aus.
+    \textbf{Aufgabe:} Schreiben Sie zwei Python-Programme, \texttt{server\_localhost.py} und \texttt{client\_localhost.py}, die auf demselben Rechner laufen. Der Client verbindet sich mit dem Server und schickt eine kurze Nachricht („Hallo“). Der Server empfängt die Nachricht und gibt sie auf der Konsole aus.
 
     \textbf{Verwenden Sie folgende Grundstruktur:}
 
-    \begin{lstlisting}[caption={server.py}]
+    \begin{lstlisting}[caption={server\_localhost.py}]
 import socket
 
+PORT = ... # HIER Port-Nummer Ihrer Wahl einsetzen
+
+# Server-Socket erstellen
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("localhost", 12345))   # lokale IP, Port 12345
+server.bind(("localhost", PORT))   # lokale IP, Port 12345
 server.listen(1)
 print("Warte auf Verbindung...")
 
+# Verbindung akzeptieren
 conn, addr = server.accept()
-print("Verbunden mit:", addr)
+print(f"Verbunden mit {addr[0]} über Port {addr[1]}")
 
+# Nachricht empfangen
 nachricht = conn.recv(1024).decode()
-print("Empfangen:", nachricht)
+print(f"Empfangen: {nachricht}")
+
+# Antwort an den Client senden
+conn.send("Hallo Client, hier ist der Server!".encode())
 
 conn.close()
 server.close()
 \end{lstlisting}
 
-    \begin{lstlisting}[caption={client.py}]
+    \begin{lstlisting}[caption={client\_localhost.py}]
 import socket
 
+PORT = ... # HIER Port-Nummer Ihrer Wahl einsetzen
+
+# Client-Socket erstellen und mit dem Server verbinden
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(("localhost", 12345))
-client.send("Hallo".encode())
 
-client.close()
-\end{lstlisting}
-    Lassen Sie \texttt{server.py} auf der Konsole laufen und führen Sie dann \texttt{client.py} aus, indem Sie in VS Code auf den Dropdown-Button rechts vom Run-Button clicken und ``Run Python File in Dedicated Terminal'' anklicken.
+# Nachricht an den Server senden
+client.send("Hallo Server, hier ist der Client!".encode())
 
-    Erweitern Sie nun Ihr Programm, indem der Client eine Nachricht schickt, und der Server antwortet mit ``''\texttt{Nachricht erhalten!}''.
-    \begin{myanswer}
-        \begin{lstlisting}[caption=\texttt{server.py}]
-import socket
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("localhost", 12345))
-server.listen(1)
-print("Warte auf Verbindung...")
-
-conn, addr = server.accept()
-print("Verbunden mit:", addr)
-
-nachricht = conn.recv(1024).decode()
-print("Empfangen:", nachricht)
-
-conn.send("Nachricht erhalten!".encode())
-
-conn.close()
-server.close()
-\end{lstlisting}
-        \begin{lstlisting}[caption=\texttt{client.py}]
-import socket
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("localhost", 12345))
-client.send("Hallo Server!".encode())
-
+# Antwort vom Server empfangen
 antwort = client.recv(1024).decode()
 print("Antwort vom Server:", antwort)
 
 client.close()
 \end{lstlisting}
+    Lassen Sie \texttt{server\_localhost.py} auf der Konsole laufen und führen Sie dann \texttt{client\_localhost.py} aus, indem Sie in VS Code auf den Dropdown-Button rechts vom Run-Button clicken und ``Run Python File in Dedicated Terminal'' anklicken.
+
+    Erweitern Sie nun Ihr Programm, indem der Client eine Nachricht schickt, und der Server antwortet mit ``''\texttt{Nachricht erhalten!}''.
+    \begin{myanswer}
+    \lstinputlisting[caption={server\_localhost.py}]{Grundlagen_Info/07_Netzwerke/Code/server_localhost.py}
+    \lstinputlisting[caption={client\_localhost.py}]{Grundlagen_Info/07_Netzwerke/Code/client_localhost.py}
     \end{myanswer}
 \end{myexercise}
+
+\begin{myexercise}[Verständnisfragen]
+    \begin{itemize}
+        \item Was geschieht, wenn in \texttt{server\_localhost.py} die IP-Adresse \texttt{"localhost"} durch \texttt{"127.0.0.1"} ersetzt wird?
+        \item Was geschieht, wenn eine andere Port-Nummer als im Client und Server verwendet wird? Funktioniert die Verbindung? Weshalb (nicht)?
+        \item Warum muss der Server gestartet werden, bevor der Client versucht, sich zu verbinden?
+        \item Was passiert, wenn der Server eine Nachricht sendet, aber der Client keine Antwort erwartet?
+    \end{itemize}
+    \begin{myanswer}
+    \begin{itemize}
+        \item \texttt{"localhost"} und \texttt{"127.0.0.1"} sind äquivalent und verweisen beide auf die lokale IP-Adresse des eigenen Rechners.
+        \item Die Verbindung funktioniert nicht, da der Client versucht, sich mit einem Port zu verbinden, auf dem der Server nicht lauscht. Beide müssen denselben Port verwenden.
+        \item Der Server muss zuerst gestartet werden, damit er auf Verbindungsanfragen lauschen kann. Wenn der Client zuerst startet, gibt es keinen Prozess, der die Verbindung annimmt, was zu einem Fehler führt.
+        \item Wenn der Server eine Nachricht sendet, aber der Client keine Antwort erwartet, kann es sein, dass die Nachricht verloren geht oder der Client sie nicht verarbeitet, was zu Kommunikationsproblemen führen kann.
+    \end{myanswer}
+\end{myexercise}
+
 \begin{mychallenge}
     Versuchen Sie, den Client zu starten, bevor der Server läuft. Welche Fehlermeldung erhalten Sie? Wie können Sie das Problem beheben?
 \end{mychallenge}
