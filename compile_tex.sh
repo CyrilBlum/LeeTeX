@@ -213,7 +213,7 @@ latex_dir="${root_dir}/PDFs/"
 # Remove all formerly compiled files
 if [ -d "$latex_dir" ]; then
     cd "$latex_dir"
-    rm -f *.bcf *.ist *.log *.aux *.xml *.idx *.glo *.toc *.gz *.nav *.snm *vrb *.pdf *.bbl *.blg *.lot *.lof *.gls *glg
+    rm -Rf *.bcf *.ist *.log *.aux *.xml *.idx *.glo *.toc *.gz *.nav *.snm *vrb *.pdf *.bbl *.blg *.lot *.lof *.gls *glg
     cd "$root_dir"
 fi
 
@@ -345,7 +345,7 @@ for i in "${!classes[@]}"; do
         # Remove all aux files (but keep log files and PDFs)
         if [ -d "$latex_dir" ]; then
             cd "$latex_dir"
-            rm -f *.bcf *.ist *.aux *.xml *.idx *.glo *.toc *.gz *.nav *.snm *vrb *.bbl *.blg *.lot *.lof *.gls *glg
+            rm -Rf *.bcf *.ist *.aux *.xml *.idx *.glo *.toc *.gz *.nav *.snm *vrb *.bbl *.blg *.lot *.lof *.gls *glg
             cd "$root_dir"
         fi
 
