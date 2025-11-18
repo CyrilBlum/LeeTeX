@@ -436,7 +436,7 @@ Im Zusammenhang mit dem Internet werden häufig zwei Schichtenmodelle gegenüber
 \end{table}
 
 \begin{myexercise}
-	Verwenden Sie die Vorlage aus \ref{sec:netzwerkspiel}, um in der Klasse Nachrichten auszutauschen. Notieren Sie sich dabei:
+	Verwenden Sie die Vorlage aus \ref{chapter:netzwerkspiel}, um in der Klasse Nachrichten auszutauschen. Notieren Sie sich dabei:
 	\begin{itemize}
 		\item Welche Schicht für welche Aufgabe zuständig ist.
 		\item Welche Protokolle und Geräte in den jeweiligen Schichten verwendet würden.
@@ -572,19 +572,19 @@ Zusätzlich zur Steuerung der Datenübertragung können \gls{TCP}-Metadaten genu
 		% Draw the entities
 		\tikzset{c/.append style={fill=RoyalBlue!30,rounded corners, align=center, text width=5cm}}
 		\tikzset{person/.append style={text width=2.5cm,fill=ForestGreen!30,rounded corners,align=center}}
-		\node[person](Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
-		\node[person, right=of Bob] (Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
+		\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.2:21}};
+		\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.3:21}};
 		% Draw the arrows and labels
-		\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Ich möchte mit dir sprechen, Alice, auf Port 21. Bist du offen?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Alice.south);
-		\draw[->, thick, red, dashed] ([yshift=-3cm]Alice.south) -- node[c] { Ok, lass uns reden Bob! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Bob.south);
-		\draw[->, thick, red, dashed] ([yshift=-6cm]Bob.south) -- node[c] { Ok, danke Alice.\\ACK=1, SEQ\#11} ([yshift=-9cm]Alice.south);
-
-		\node[below of=Bob, yshift=-7cm] (BobZeit) {Zeit};
+		\draw[->, thick, red, dashed] (Alice.south) -- node[c] { Ich möchte mit dir sprechen, Bob, auf Port 21. Bist du offen?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Bob.south);
+		\draw[->, thick, red, dashed] ([yshift=-3cm]Bob.south) -- node[c] { Ok, lass uns reden Alice! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Alice.south);
+		\draw[->, thick, red, dashed] ([yshift=-6cm]Alice.south) -- node[c] { Ok, danke Bob.\\ACK=1, SEQ\#11} ([yshift=-9cm]Bob.south);
+		
 		\node[below of=Alice, yshift=-7cm] (AliceZeit) {Zeit};
+		\node[below of=Bob, yshift=-7cm] (BobZeit) {Zeit};
 
 		% Time line
-		\draw[->, thick] (Bob.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
-		\draw[->, thick] (Alice.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+		\draw[->, thick] (Alice.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+		\draw[->, thick] (Bob.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
 	\end{tikzpicture}
 	\caption{Drei-Wege-Handschlag im \gls{TCP}-Protokoll}
 	\label{fig:threewayHandshake}
@@ -605,20 +605,18 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 			% Draw the entities
 			\tikzset{c/.append style={fill=RoyalBlue!30,rounded corners, align=center, text width=5cm}}
 			\tikzset{person/.append style={text width=2.5cm,fill=ForestGreen!30,rounded corners,align=center}}
-			\node[person](Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
-			\node[person, right=of Bob] (Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
+			\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
+			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
 
 			% Draw the arrows and labels
 			\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Alice.south);
-			% \draw[->, thick, red, dashed] ([yshift=-3cm]Alice.south) -- node[c] { Ok, lass uns reden Bob! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Bob.south);
-			% \draw[->, thick, red, dashed] ([yshift=-6cm]Bob.south) -- node[c] { Ok, danke Alice.\\ACK=1, SEQ\#11} ([yshift=-9cm]Alice.south);
 
-			\node[below of=Bob, yshift=-1cm] (BobZeit) {Zeit};
 			\node[below of=Alice, yshift=-1cm] (AliceZeit) {Zeit};
+			\node[below of=Bob, yshift=-1cm] (BobZeit) {Zeit};
 
 			% Time line
-			\draw[->, thick] (Bob.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
-			\draw[->, thick] (Alice.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+			\draw[->, thick] (Alice.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+			\draw[->, thick] (Bob.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
 		\end{tikzpicture}
 		\label{fig:threewayHandshakeEx1}
 	\end{figure}
@@ -635,20 +633,19 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 			% Draw the entities
 			\tikzset{c/.append style={fill=RoyalBlue!30,rounded corners, align=center, text width=5cm}}
 			\tikzset{person/.append style={text width=2.5cm,fill=ForestGreen!30,rounded corners,align=center}}
-			\node[person](Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
-			\node[person, right=of Bob] (Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
+			\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
+			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
 
 			% Draw the arrows and labels
 			\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Alice.south);
 			\draw[->, thick, red, dashed] ([yshift=-3cm]Alice.south) -- node[c] {Ja, gerne.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Bob.south);
-			% \draw[->, thick, red, dashed] ([yshift=-6cm]Bob.south) -- node[c] { Ok, danke Alice.\\ACK=1, SEQ\#11} ([yshift=-9cm]Alice.south);
 
-			\node[below of=Bob, yshift=-4cm] (BobZeit) {Zeit};
 			\node[below of=Alice, yshift=-4cm] (AliceZeit) {Zeit};
+			\node[below of=Bob, yshift=-4cm] (BobZeit) {Zeit};
 
 			% Time line
-			\draw[->, thick] (Bob.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
-			\draw[->, thick] (Alice.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+			\draw[->, thick] (Alice.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+			\draw[->, thick] (Bob.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
 		\end{tikzpicture}
 		\label{fig:threewayHandshakeEx2}
 	\end{figure}
