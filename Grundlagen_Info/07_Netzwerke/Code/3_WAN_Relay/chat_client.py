@@ -26,7 +26,7 @@ def main():
         sock.connect((server_ip, port))
         print(f"Verbunden mit {server_ip}:{port}")
 
-        # Start thread to receive messages
+        # Start thread to receive messagesx§
         threading.Thread(target=receive, args=(sock,), daemon=True).start()
 
         recipient_ip = input("Empfänger-IP: ")
