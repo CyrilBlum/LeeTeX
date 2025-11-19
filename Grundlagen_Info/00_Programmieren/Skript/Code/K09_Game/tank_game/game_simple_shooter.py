@@ -86,8 +86,8 @@ while running:
                 t1.angle=0.3; t2.angle=0.3
                 t1.life=100; t2.life=100
                 # reposition tanks on new terrain
-                t1.ground = terrain_top_at(t1.x + t1.w/2, t1.h); t1.y = t1.ground; t1.vy = 0
-                t2.ground = terrain_top_at(t2.x + t2.w/2, t2.h); t2.y = t2.ground; t2.vy = 0
+                t1.ground = terrain_top_at(t1.x + t1.width/2, t1.height); t1.y = t1.ground; t1.speed_y = 0
+                t2.ground = terrain_top_at(t2.x + t2.width/2, t2.height); t2.y = t2.ground; t2.speed_y = 0
                 reload_sound.play()
             if winner is None:
                 if e.key==pg.K_SPACE: 
