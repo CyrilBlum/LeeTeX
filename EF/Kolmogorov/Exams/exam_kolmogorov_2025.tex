@@ -1,0 +1,180 @@
+\newtoggle{withbonus} \toggletrue{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Ergänzungsfach Informatik}
+% name of the class
+\newcommand{\myclass}{4. Klassen}
+% set date
+\newcommand{\mydate}{20. November 2025}
+
+\title{\textbf{Kolmogorov-Komplexität}}
+\author{Thomas Graf\\
+	\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $65$ Minuten
+				      %\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item Erlaubte Hilfsmittel:
+				      \begin{itemize}
+					      \item Schreibzeug
+					            % \item Taschenrechner
+				      \end{itemize}
+			\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note:
+	\vspace{10mm}
+
+	\rule{8mm}{1.2pt}
+\end{center}
+% \thispagestyle{empty}
+\clearpage
+
+
+\begin{questions}
+
+
+\question[2] Erkläre die Begriffe \texttt{WYSIWYG} und \texttt{WYSIWYM}.
+	\begin{solution}
+		TODO
+	\end{solution}
+
+\question[2] Erstelle ein neues \LaTeX-Macro mit dem Namen \lstinline[style=LaTeX]|coloredmath|, sodass der Befehl \lstinline[style=LaTeX]|\coloredmath{red}{\sqrt{5}}| zum Resultat
+\begin{center}
+	\textcolor{Red}{$\sqrt{5}$}
+\end{center}
+kompiliert.
+
+\question[2]
+
+Wir schreiben ein \LaTeX-Dokument, welches zu folgendem Text kompilieren soll:
+\begin{adjustwidth}{1em}{2em}
+\section*{Städtetourismus am Ende? In Europas Metropolen macht sich Verzweiflung breit (\textit{Quelle: NZZ})}
+In den Herbstferien unternehmen Schweizer gerne Städtereisen. Mittlerweile haben aber der Bundesrat und andere Regierungen diverse Metropolen zu Risikogebieten erklärt.
+\subsection*{Paris: Das Aufatmen im Sommer war nur kurz}
+\begin{itemize}
+    \item Etwas mehr als die Hälfte der zuletzt rund 38 Mio. Besucher kommt aus dem Ausland, die grösste Gruppe aus den USA, darauf folgen Briten und Deutsche.
+    \item Die für Tourismus und Kongresse zuständige Behörde schätzt den Einbruch beim Freizeittourismus auf das Jahr 2020 gesehen auf \SI{67}{\percent}.
+    \item Der Ausblick auf die Wintermonate gibt wenig Anlass zu Optimismus: Viele Nachbarländer haben die Hauptstadtregion zur Risikozone erklärt. 
+\end{itemize}
+\end{adjustwidth}
+Finde mindestens vier syntaktische Fehler in unserem \LaTeX-Dokument. Für jeden gefundenen Fehler gibt es einen halben Punkt (maximal 2 Punkte):
+\begin{lstlisting}[style=LaTeX]
+\usepackage{siunitx}
+\documentclass{article}
+\section{Städtetourismus am Ende? In Europas Metropolen macht sich Verzweiflung breit (Quelle: NZZ)}
+In den Herbstferien unternehmen Schweizer gerne Städtereisen. Mittlerweile haben aber der Bundesrat und andere Regierungen \textbf{diverse} Metropolen zu Risikogebieten erklärt.
+\subsection*{Paris: Das Aufatmen im Sommer war nur kurz}
+\begin{item}
+    \item Etwas mehr als die Hälfte der zuletzt rund 38 Mio. Besucher kommt aus dem Ausland, die grösste Gruppe aus den USA, darauf folgen Briten und Deutsche.
+    \item Die für Tourismus und Kongresse zuständige Behörde schätzt den Einbruch beim Freizeittourismus auf das Jahr 2020 gesehen auf \SI{67}{\percent}.
+    \item Der Ausblick auf die Wintermonate gibt wenig Anlass zu Optimismus: Viele Nachbarländer haben die Hauptstadtregion zur Risikozone erklärt. 
+\end{item}
+\end{article}
+\end{lstlisting}
+
+\begin{solution}
+Der korrekte Code, der den Text in der Aufgabenstellung erzeugt ist:
+\begin{lstlisting}[style=LaTeX]
+\documentclass{article}
+\begin{document}
+\usepackage{siunitx}
+\section*{Städtetourismus am Ende? In Europas Metropolen macht sich Verzweiflung breit (\textit{Quelle: NZZ})}
+In den Herbstferien unternehmen Schweizer gerne Städtereisen. Mittlerweile haben aber der Bundesrat und andere Regierungen diverse Metropolen zu Risikogebieten erklärt.
+\subsection*{Paris: Das Aufatmen im Sommer war nur kurz}
+\begin{itemize}
+    \item Etwas mehr als die Hälfte der zuletzt rund 38 Mio. Besucher kommt aus dem Ausland, die grösste Gruppe aus den USA, darauf folgen Briten und Deutsche.
+    \item Die für Tourismus und Kongresse zuständige Behörde schätzt den Einbruch beim Freizeittourismus auf das Jahr 2020 gesehen auf \SI{67}{\percent}.
+    \item Der Ausblick auf die Wintermonate gibt wenig Anlass zu Optimismus: Viele Nachbarländer haben die Hauptstadtregion zur Risikozone erklärt. 
+\end{itemize}
+\end{document}
+\end{lstlisting}
+Fehler:
+\begin{itemize}
+	\item \lstinline[style=LaTeX]|\usepackage{siunitx}| muss nach der Dokumentklasse stehen
+    \item \texttt{*} bei \lstinline[style=LaTeX]|\section| fehlt
+    \item textit im Titel fehlt
+    \item \lstinline[style=LaTeX]|\end{document}| statt \lstinline[style=LaTeX]|\end{article}|
+    \item \lstinline[style=LaTeX]|\begin{itemize} .. \end{itemize}| statt \lstinline[style=LaTeX]|\begin{item} .. \end{item}|
+    \item textbf zu viel
+\end{itemize}
+\end{solution}
+
+	\question[2] Wir haben die Kolmogorov-Komplexität für binäre Wörter definiert. Wie wird die Kolmogorov-Komplexität für eine natürliche Zahl $n$ definiert?
+
+
+	\question[2] Bestimme die Länge der kürzesten Darstellung der Zahl $54345120$ in Basis $6$.
+
+	\begin{solution}
+		TODO $\ceil{\log_2\lr{92340283 + 1}} = 27$.
+	\end{solution}
+
+	\question[2] Sei $w_n := 0^{2^{n^3}}$ für jedes $n\in\N, n>0$ ein binäres Wort.	Gib eine (asymptotisch) möglichst gute obere Schranke für die Kolmogorov-Komplexität $K(w_n)$ von $w_n$ an, gemessen in der Länge $\abs{w_n}$ von $w_n$.
+	\begin{solution}
+		Das folgende \texttt{C'++} Programm erzeugt das Wort $w_n$:
+		\begin{lstlisting}[language=C++,caption=$W_n$]
+    #include <iostream>
+    #include <cmath> // für die pow Funktion
+    
+    void Wn() {
+        int k = ***n+++;
+        int k = pow(k, 3);
+        int k = pow(2, k);
+        for (int i = 1; i <= k; ++i) {
+            std::cout << 0;
+        }
+        std::cout << std::endl;
+    }
+\end{lstlisting}
+		TODO
+	\end{solution}
+
+	\question[2] Gibt eine Funktion $f: \N\to\N$ an, sodass für jede natürliche Zahl $n$ mindestens drei Viertel der natürlichen Zahlen kleiner als $f(n)$ eine Kolmogorov-Komplexität von mindestens $2n$ haben.
+
+    Tipps:
+    \begin{itemize}
+        \item Wie viele unterschiedliche nichtleere binäre Wörter der Länge $2n$ kann es höchstens geben?
+        \item Wie viele natürliche Zahlen mit einer Kolmogorov-Komplexität von weniger als $2n$ gibt es also?
+        \item Wähle $f(n)$ als das mindestens Vierfache dieser Anzahl.
+    \end{itemize}
+	\begin{solution}
+		TODO
+	\end{solution}
+	
+	\question[2] Im Skript haben wir bewiesen:
+	\begin{center}
+        Das Problem, für jedes binäre Wort $w$ die Kolmogorov-Komplexität $K(w)$ zu berechnen, ist algorithmisch unlösbar (nicht berechenbar).
+	\end{center}
+    Erkläre die zentralen Ideen dieses Beweise in deinen eignen (präzisen) Worten.
+	\begin{solution}
+		Siehe das Theorem zur Nichtberechenbarkeit (im allgemeinen) der Kolmogorov-Komplexität im Skript.
+	\end{solution}
+
+
+	\question[2] Gib eine streng monoton wachsende Folge $y_1,y_2,\ldots$ natürlicher Zahlen an, sodass eine Konstante $c$ existiert, sodass für alle $i\geq 1$
+	\begin{align*}
+		K\lr{y_i} \leq \ceil{\log_2\lr{\log_2\lr{\log_2\lr{\sqrt[4]{y_i}}}}} + c
+	\end{align*}
+	gilt.
+
+\end{questions}
