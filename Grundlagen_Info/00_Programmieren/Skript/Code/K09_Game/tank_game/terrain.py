@@ -1,8 +1,7 @@
 import random
 import pygame as pg
+from settings import *
 
-BG = (25,30,35)
-W,H = 900,500
 # Terrain globals
 terrain_heights = []  # raw elevation values
 terrain_surface = []  # y pixel positions of surface
@@ -62,7 +61,7 @@ def draw_terrain(surf):
 def terrain_top_at(x, obj_height):
     """Return the y coordinate for the top of an object of height obj_height resting on terrain at horizontal x (center)."""
     cx = int(max(0, min(W - 1, x)))
-    surface_y = terrain_surface[cx] if terrain_surface else (H - 60)
+    surface_y = terrain_surface[int(cx)] if terrain_surface else (H - 60)
     return surface_y - obj_height
 
 def terrain_surface_y(x):

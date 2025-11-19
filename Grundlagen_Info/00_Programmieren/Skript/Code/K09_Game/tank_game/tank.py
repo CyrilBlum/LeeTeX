@@ -1,10 +1,8 @@
-import pygame as pg
-import random
-import math
 from terrain import *
-pg.init()
-target_points=5
-explosion_sound = pg.mixer.Sound("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/explosion.mp3")
+from settings import *
+
+bullets=[]
+
 
 class Tank:
     def __init__(self,x,color,dir, SCREENW, SCREENH):
@@ -15,11 +13,11 @@ class Tank:
         self.hitX = None
         self.hitY = None
         self.size = 20
-        
         # height, width
         self.height = self.size
         self.width = self.size * 2
-        
+
+        self.surface = pg.Surface((W, H), pg.SRCALPHA)
         self.centerx = self.x + self.width / 2
 
         self.speed_y = 0
@@ -82,18 +80,23 @@ class Tank:
         return pg.Rect(self.x, self.y - self.width // 2, self.width, self.height + self.width // 2)
     
     def draw(self,surf):
-        pg.draw.rect(surf, self.color, (self.x, self.y, self.width, self.height))
+        self.surface.fill((255,255,255,0))                         # notice the alpha value in the color
+        pg.draw.rect(self.surface, self.color, (self.x, self.y, self.width, self.height))
         cx = self.x + self.width // 2
         cy = self.y + self.height // 2
-        pg.draw.circle(surf, self.color, (cx, self.y), self.width // 2)
-        pg.draw.rect(surf, BG, (self.x, cy, self.width, self.width // 2))
+        pg.draw.circle(self.surface, self.color, (cx, self.y), self.width // 2)
+        pg.draw.rect(self.surface, BG, (self.x, cy, self.width, self.width // 2))
         cx, top, bx, by = self.barrel_tip()
-        pg.draw.line(surf, self.color, (cx, top), (bx, by), 6)
+        pg.draw.line(self.surface, self.color, (cx, top), (bx, by), 6)
+        
+        # draw life bar
         bar_w = self.width
         bar_h = 8
         life_ratio = self.life / 100
-        pg.draw.rect(surf, (200,0,0), (self.x, self.y + self.height * .7, bar_w, bar_h))
-        pg.draw.rect(surf, (0,200,0), (self.x, self.y + self.height * .7, bar_w * life_ratio, bar_h))
+        pg.draw.rect(self.surface, (200,0,0), (self.x, self.y + self.height * .7, bar_w, bar_h))
+        pg.draw.rect(self.surface, (0,200,0), (self.x, self.y + self.height * .7, bar_w * life_ratio, bar_h))
+
+        #surf.blit(self.surface, (0,0))
 
     def has_been_hit(self, hitX, hitY):
         explosion_sound.play()
@@ -101,3 +104,32 @@ class Tank:
         self.time_hit = 60
         self.hitX = hitX
         self.hitY = hitY
+        self.surface.set_alpha(int(self.life / 100 * 255))
+        if self.life == 0:
+            level_up_sound.play()
+
+
+class Bullet:
+    def __init__(self,x,y,vx,vy,owner):
+        self.x=x
+        self.y=y
+        self.vx=vx
+        self.vy=vy
+        self.r=6
+        self.owner=owner
+    def update(self):
+        self.x+=self.vx
+        self.y += self.vy 
+        self.vy += gravity  # gravity effect
+    def outofscreen(self):
+        return self.x<0 or self.x>W or self.y<0 or self.y>H
+    def draw(self,surf):
+        pg.draw.circle(surf,(250,240,200),(int(self.x),int(self.y)),self.r)
+    def rect(self):
+        return pg.Rect(self.x-self.r,self.y-self.r,self.r*2,self.r*2)
+
+def fire(tank):
+    cx,top,bx,by = tank.barrel_tip()
+    vx = (bx-cx)/60*speed_bullet
+    vy = (by-top)/60*speed_bullet
+    bullets.append(Bullet(bx,by,vx,vy,tank))
