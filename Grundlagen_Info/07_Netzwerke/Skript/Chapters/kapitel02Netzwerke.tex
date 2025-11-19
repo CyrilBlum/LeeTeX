@@ -575,9 +575,9 @@ Zusätzlich zur Steuerung der Datenübertragung können \gls{TCP}-Metadaten genu
 		\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.2:21}};
 		\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.3:21}};
 		% Draw the arrows and labels
-		\draw[->, thick, red, dashed] (Alice.south) -- node[c] { Ich möchte mit dir sprechen, Bob, auf Port 21. Bist du offen?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Bob.south);
-		\draw[->, thick, red, dashed] ([yshift=-3cm]Bob.south) -- node[c] { Ok, lass uns reden Alice! Ich bin offen auf Port 21.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Alice.south);
-		\draw[->, thick, red, dashed] ([yshift=-6cm]Alice.south) -- node[c] { Ok, danke Bob.\\ACK=1, SEQ\#11} ([yshift=-9cm]Bob.south);
+		\draw[->, thick, red, dashed] (Alice.south) -- node[c] { Ich möchte mit dir sprechen, Bob, auf Port 21. Bist du offen?\\SYN=0 (SEQ\# 10)} ([yshift=-3cm]Bob.south);
+		\draw[->, thick, red, dashed] ([yshift=-3cm]Bob.south) -- node[c] { Ok, lass uns reden Alice! Ich bin offen auf Port 21.\\SYN=0, ACK=1 (SEQ\# 10)} ([yshift=-6cm]Alice.south);
+		\draw[->, thick, red, dashed] ([yshift=-6cm]Alice.south) -- node[c] { Ok, danke Bob.\\ACK=1 (SEQ\#11)} ([yshift=-9cm]Bob.south);
 		
 		\node[below of=Alice, yshift=-7cm] (AliceZeit) {Zeit};
 		\node[below of=Bob, yshift=-7cm] (BobZeit) {Zeit};
@@ -589,11 +589,11 @@ Zusätzlich zur Steuerung der Datenübertragung können \gls{TCP}-Metadaten genu
 	\caption{Drei-Wege-Handschlag im \gls{TCP}-Protokoll}
 	\label{fig:threewayHandshake}
 \end{figure}
-Folgende Schritte des Drei-Wege-Handschlags werden in \cref{fig:threewayHandshake} illustriert:
+Folgende Schritte des Drei-Wege-Handschlags werden in \cref{fig:threewayHandshake} illustriert.
 \begin{enumerate}
-	\item Computer A (\textit{client}, \texttt{10.0.0.2}) erstellt eine Verbindungsanfrage zum Computer B (\textit{server}, \texttt{10.0.0.3}), mittels einem Paket, das nur das \texttt{SYN}-Flaggen gesetzt hat.
-	\item Der Server antwortet sowohl mit einem gesetzten \texttt{SYN} und einem \texttt{ACK}-Flaggen
-	\item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen\\
+	\item Computer A (\textit{client}, \texttt{10.0.0.2}) erstellt eine Verbindungsanfrage zum Computer B (\textit{server}, \texttt{10.0.0.3}), mittels einem Paket, das nur das \texttt{SYN}-Flaggen gesetzt hat. Mit der \texttt{SYN}-Flagge signalisiert der \textit{client}, dass er eine Verbindung aufbauen möchte. Die Sequenznummer (SEQ\#) wird auf einen zufälligen Startwert gesetzt (in diesem Beispiel 10), um die Reihenfolge der Pakete zu verfolgen.
+	\item Der Server antwortet sowohl mit einem gesetzten \texttt{SYN} und einem \texttt{ACK}-Flaggen. Das \texttt{ACK}-Flaggen signalisiert dem \textit{client}, dass die Verbindungsanfrage empfangen wurde. Der Server setzt ebenfalls eine eigene Sequenznummer (in diesem Beispiel ebenfalls 10, da er auch mit dem Verbindungsaufbau beginnt). Das \texttt{ACK}-Flaggen enthält zudem die Sequenznummer des \textit{client} plus 1 (in diesem Beispiel also 11), um zu bestätigen, dass die ursprüngliche Verbindungsanfrage empfangen wurde.
+	\item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen, welches die Sequenznummer des Servers plus 1 (in diesem Beispiel also 11) enthält, um zu bestätigen, dass die Antwort des Servers empfangen wurde. Somit weiss der Server, dass der \textit{client} die Verbindung akzeptiert hat.
 \end{enumerate}
 Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen können miteinander kommunizieren.
 
@@ -609,7 +609,7 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
 
 			% Draw the arrows and labels
-			\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Alice.south);
+			\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\SYN=0 (SEQ\# 10)} ([yshift=-3cm]Alice.south);
 
 			\node[below of=Alice, yshift=-1cm] (AliceZeit) {Zeit};
 			\node[below of=Bob, yshift=-1cm] (BobZeit) {Zeit};
@@ -637,8 +637,8 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
 
 			% Draw the arrows and labels
-			\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\SYN=1, SEQ\# 10} ([yshift=-3cm]Alice.south);
-			\draw[->, thick, red, dashed] ([yshift=-3cm]Alice.south) -- node[c] {Ja, gerne.\\SYN=1, ACK=1, ACK=11} ([yshift=-6cm]Bob.south);
+			\draw[->, thick, red, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\SYN=0 (SEQ\# 10)} ([yshift=-3cm]Alice.south);
+			\draw[->, thick, red, dashed] ([yshift=-3cm]Alice.south) -- node[c] {Ja, gerne.\\SYN=0, ACK=1 (SEQ\# 10)} ([yshift=-6cm]Bob.south);
 
 			\node[below of=Alice, yshift=-4cm] (AliceZeit) {Zeit};
 			\node[below of=Bob, yshift=-4cm] (BobZeit) {Zeit};

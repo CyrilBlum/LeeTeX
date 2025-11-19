@@ -1,7 +1,8 @@
 import socket
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("192.168.1.10", 12345))
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # Erlaube die Wiederverwendung des Ports (nützlich beim Neustart des Servers)
+server.bind(("192.168.1.18", 12345))
 server.listen(1)
 print("Warte auf Verbindung...")
 
