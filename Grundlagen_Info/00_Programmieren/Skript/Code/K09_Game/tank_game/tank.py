@@ -68,8 +68,10 @@ class Tank:
 
     def rect(self):
         return pg.Rect(self.x, self.y, self.w, self.h)
+    
     def hitbox(self):
         return pg.Rect(self.x, self.y - self.w // 2, self.w, self.h + self.w // 2)
+    
     def draw(self,surf):
         pg.draw.rect(surf, self.color, (self.x, self.y, self.w, self.h))
         cx = self.x + self.w // 2

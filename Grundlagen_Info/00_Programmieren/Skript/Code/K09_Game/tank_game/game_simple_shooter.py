@@ -1,6 +1,7 @@
 
 from tank import Tank
 from terrain import *
+from datetime import datetime
 
 pg.init()
 W,H = 900,500
@@ -12,13 +13,14 @@ gravity = 9.81 / FPS
 speed_angle = 0.04
 speed_tank = 6
 target_points=5
-font = pg.font.Font(None,36)
+font = pg.font.Font(None,24)
 clock = pg.time.Clock()
 speed_bullet = 15
 bullets=[]
 score=[0,0]
 running=True
 winner=None
+show_help=False
 
 init_terrain()
 
@@ -69,6 +71,9 @@ while running:
         elif e.type==pg.KEYDOWN:
             if e.key==pg.K_ESCAPE: 
                 running=False
+            # Toggle help overlay with Ctrl+K
+            if (e.key == pg.K_k) and (e.mod & pg.KMOD_CTRL):
+                show_help = not show_help
             if winner is None and e.key==pg.K_r:
                 print("No winner yet")
             if winner is not None and e.key==pg.K_r:
@@ -120,7 +125,11 @@ while running:
         if b.off(): 
             bullets.remove(b)
             continue
-        opponent = t2 if b.o is t1 else t1
+        if b.o is t1:
+            opponent = t2
+        else:
+            opponent = t1
+            
         if b.rect().colliderect(opponent.hitbox()):
             bullets.remove(b)
             opponent.has_been_hit(b.x, b.y)
@@ -144,7 +153,7 @@ while running:
         t.draw(screen)
         if t.time_hit>0:
             t.time_hit -= 1
-            ratio = max(0.0, min(1.0, t.time_hit / 60.0))
+            ratio = t.time_hit / 60.0
             img = explosion_img.copy()
             img.set_alpha(int(255 * ratio))
             screen.blit(img, (int(t.hitX - img.get_width() / 2), int(t.hitY - img.get_height() / 2)))
@@ -157,6 +166,36 @@ while running:
     if winner is not None:
         msg = font.render(f"Tank {winner+1} gewinnt! (R = neu)",True,(255,220,120))
         screen.blit(msg,(W//2-msg.get_width()//2,H//2-20))
+    if show_help:
+        # Draw semi-transparent overlay with controls
+        overlay = pg.Surface((W,H), pg.SRCALPHA)
+        overlay.fill((0,0,0,180))
+        screen.blit(overlay,(0,0))
+        lines = [
+            "Steuerung (Ctrl+K schliessen)",
+            "Spiel verlassen: ESC",
+            "Neustart (nach Sieg): R",
+            "",
+            "Tank 1:",
+            "Bewegen: A / D",
+            "Rohrwinkel: W / S",
+            "Springen: Q",
+            "Schiessen: SPACE",
+            "",
+            "Tank 2:",
+            "Bewegen: Pfeil Links / Rechts",
+            "Rohrwinkel: Pfeil Hoch / Runter",
+            "Springen: P",
+            "Schiessen: ENTER",
+            f"© Cyril Wendl, {datetime.now().year}"
+        ]
+        pad = 8
+        x = 20
+        y = 20
+        for line in lines:
+            t = font.render(line, True, (240,240,240))
+            screen.blit(t,(x,y))
+            y += t.get_height() + pad
     pg.display.flip()
     clock.tick(60)
 
