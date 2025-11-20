@@ -419,21 +419,22 @@ Ein nichtkomprimierbares Wort erlaubt also keine kürzere Beschreibung, als das 
 \begin{mytheorem}[$K(w)$ ist nicht für jedes binäre Wort berechenbar]\label{mytheorem:Knotcomputable}
 	Das Problem, für jedes binäre Wort $w$ die Kolmogorov-Komplexität $K(w)$ zu berechnen, ist algorithmisch unlösbar (nicht berechenbar).
 	\begin{myproof}
-		Für jede natürliche Zahl $n>0$ sei $G_n$ die Menge aller binären Wörter mit der Länge exakt $n$. Gemäss \cref{mytheorem:nichtkomprimierbar} existiert in $G_n$ mindestens ein nichtkomprimierbares Wort, also eine Wort $w$ mit $K(w)\geq n$. Unter allen diesen nichtkomprimierbaren Wörtern, sei $\alpha$ definiert als das erste solche Wort in der kanonischen Ordnung über dem binären Alphabet. Es gilt also insbesondere $K(\alpha)\geq n$.
+		Es sei $n>0$ eine natürliche Zahl und wir bezeichnen mit $\alpha$ das erste Wort bezüglich der kanonischen Ordnung über dem binären Alphabet, welches eine Kolmogorov-Komplexität von mindestens $n$ hat. Beachten Sie, dass gemäss \cref{mytheorem:nichtkomprimierbar} insbesondere zu jedem $n>0$ ein binäres Wort $w$ existiert mit $K(w)\geq n$. Die Existenz von $\alpha$ ist also gesichert. Bitte beachten Sie, dass wir keine Aussage zur Länge von $\alpha$ machen.
+
 		\par
 		Angenommen es würde ein Algorithmus $Q$ existieren, der zu jedem binären Wort $w$ die Zahl $K(w)$ berechnet. Wir verwenden $Q$ um eine kurze Beschreibung von $\alpha$ anzugeben. Für jede natürliche Zahl $n>0$ sucht und generiert das folgende \texttt{C'++} Programm\footnote{genauer: in \texttt{C'++}-Pseudocode} das Wort $\alpha$:
 		\begin{lstlisting}[language=C++]
-#include <iostream>
-#include <string>
-void seeking_alpha_n() {
-    x = leeres Wort;
-    k = 0;
-    while (k < ***n+++) {
-		x = Nachfolger von x in der kanonischen Ordnung über {0, 1}^*;
-		k = Q(x)
-    }
-    std::cout << x << std::endl;
-}
+			#include <iostream>
+			#include <string>
+			void seeking_alpha_n() {
+				x = leeres Wort;
+				Kx = Q(x);
+				while (Kx < ***n+++) {
+					x = Nachfolger von x in der kanonischen Ordnung über {0, 1}^*;
+					Kx = Q(x)
+				}
+				std::cout << x << std::endl;
+			}
         \end{lstlisting}
 		Für jede natürliche Zahl $n>0$, generiert das Programm \cppinline{seeking_alpha_n} das Wort $\alpha$. Beachten Sie, dass alle Algorithmen \cppinline{seeking_alpha_n} identisch sind bis auf die Zahl $n$. Es sei $c$ die Länge des Maschinencodes von \cppinline{seeking_alpha_n} bis auf die Angabe von $n$. Damit ist bewiesen, dass $K(\alpha) \leq c + \ceil{\log_2(n+1)}$.
 
