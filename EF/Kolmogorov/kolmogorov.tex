@@ -382,6 +382,9 @@ Es existieren Wörter, die nicht komprimierbar sind, die also eine Kolmogorov-Ko
 		K(w)\geq n = \abs{w},
 	\end{align*}
 	das heisst, für jede Länge $n$ existiert (mindestens) ein Wort dieser Länge, welches sich nicht komprimieren lässt.
+
+	\vspace{\baselineskip}
+	Insbesondere ist dadurch also für jedes natürliche $n>0$ die Existenz (mindestens) eines binären Wortes $w$ (wir sagen nichts über die Länge von $w$ aus) mit $K(w)\geq n$ gesichert.
 	\begin{myproof}
 		Unser Beweis verwendet ein einfaches kombinatorisches Argument (Abzählen): Ein Maschinencode kann höchstens ein binäres Wort generieren. Beachte auch, dass ein Maschinencode der Länge $0$ (leerer Maschinencode) kein Wort generieren kann. Wie viele nichtleere Maschinencodes der Länge kleiner als $n$ gibt es höchstens? Sicherlich sind es nicht mehr als es Elemente in der Menge
 		\begin{align*}
@@ -396,15 +399,6 @@ Es existieren Wörter, die nicht komprimierbar sind, die also eine Kolmogorov-Ko
 \end{mytheorem}
 
 Ein nichtkomprimierbares Wort erlaubt also keine kürzere Beschreibung, als das Wort vollständig zu beschreiben. Es gibt also keinen anderen Plan zu seiner Generierung, als einzig seine vollständige Beschreibung. Damit ist es plausible, dass \cref{mydefinition:zufall} unsere bislang beste bekannte Formalisierung des informellen Begriffes \enquote{zufällig} ist.
-
-\begin{myremark}\label{myremark:beliebigesK}
-\cref{mytheorem:nichtkomprimierbar} garantieret, dass für jede natürliche Zahl $n>0$ (mindestens) ein binäres Wort $w$ mit einer exakten Länge von $n$ mit $K(w)\geq n$ existiert. Eine schwächere Aussage, welche sofort aus \cref{mytheorem:nichtkomprimierbar} folgt, ist:
-
-\begin{center}
-Für jede natürliche Zahl $n>0$ existiert (mindestens) ein binäres Wort $w$ mit $K(w) \geq n$.\\
-(Wobei wir keinerlei Aussage zur Länge von $w$ gemacht haben.)
-\end{center}
-\end{myremark}
 
 \begin{mydefinition}[Zufälliges binäres Wort, zufällige Zahl]\label{mydefinition:zufall}
 \leavevmode
@@ -427,8 +421,13 @@ Für jede natürliche Zahl $n>0$ existiert (mindestens) ein binäres Wort $w$ mi
 
 \begin{mytheorem}[$K(w)$ ist nicht für jedes binäre Wort berechenbar]\label{mytheorem:Knotcomputable}
 	Das Problem, für jedes binäre Wort $w$ die Kolmogorov-Komplexität $K(w)$ zu berechnen, ist algorithmisch unlösbar (nicht berechenbar).
+
+	\vspace{\baselineskip}
+	Mit anderen Worten: Es existiert kein Algorithmus, welcher ein beliebiges binäres Wort $w$ als Eingabe erhält und die natürliche Zahl $K(w)$ als Ausgabe liefert.
 	\begin{myproof}
-		Es sei $n>0$ eine natürliche Zahl. Nun bezeichnen wir mit $\alpha$ das erste Wort bezüglich der kanonischen Ordnung über dem binären Alphabet, welches eine Kolmogorov-Komplexität von mindestens $n$ hat. Wegen \cref{myremark:beliebigesK} und der Verwendung der kanonischen Ordnung ist die Existenz und Eindeutigkeit von $\alpha$ gesichert. Bitte beachten Sie, dass wir keine Aussage zur Länge von $\alpha$ machen. Insbesondere wird also nicht behauptet, dass $\alpha$ die Länge $n$ hat.
+		Es sei $n>0$ eine natürliche Zahl. Nun bezeichnen wir mit $\alpha$ das erste Wort bezüglich der kanonischen Ordnung über dem binären Alphabet, welches eine Kolmogorov-Komplexität von mindestens $n$ hat.
+		Wegen \cref{mytheorem:nichtkomprimierbar} und der Verwendung der kanonischen Ordnung ist die Existenz und Eindeutigkeit von $\alpha$ gesichert.
+		Bitte beachten Sie, dass wir keine Aussage zur Länge von $\alpha$ machen. Insbesondere wird also nicht behauptet, dass $\alpha$ die Länge $n$ hat.
 
 		\vspace{\baselineskip}
 		Angenommen es existiert ein Algorithmus $Q$, der zu jedem binären Wort $w$ die Zahl $K(w)$ berechnet. Dann können wir $Q$ verwenden, um eine kurze Beschreibung von $\alpha$ anzugeben. Für jede natürliche Zahl $n>0$ sucht und generiert das folgende \texttt{C'++} Programm\footnote{genauer: in \texttt{C'++}-Pseudocode} das Wort $\alpha$:
