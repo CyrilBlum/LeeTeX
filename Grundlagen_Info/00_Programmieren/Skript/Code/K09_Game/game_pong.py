@@ -1,24 +1,30 @@
 import pygame as pg
 import random
-
 pg.init()
-WIDTH, HEIGHT = 800, 600
-screen = pg.display.set_mode((WIDTH, HEIGHT))
+
+info = pg.display.Info() # Informationen zum aktuellen Geräte-Display abrufen
+print(info)
+
+WIDTH = info.current_w # verwende doppelte Auflösung für bessere Qualität auf hochauflösenden Displays
+HEIGHT = info.current_h # verwende doppelte Auflösung für bessere Qualität auf hochauflösenden Displays
+FPS = 120 # Ziel-Bildwiederholrate
+
+screen = pg.display.set_mode((WIDTH, HEIGHT), pg.FULLSCREEN)
 pg.display.set_caption("Pong")
 
 background_color = (50, 80, 120)
 
 # Schläger
-paddle_w = 12
-paddle_h = 100
-paddle_speed = 6
+paddle_w = WIDTH * 0.02
+paddle_h = HEIGHT // 5
+paddle_speed = WIDTH * 0.01 / (FPS/60)
 left_paddle = pg.Rect(30, HEIGHT // 2 - paddle_h // 2, paddle_w, paddle_h)
 right_paddle = pg.Rect(WIDTH - 30 - paddle_w, HEIGHT // 2 - paddle_h // 2, paddle_w, paddle_h)
 
 # Ball (als Rechteck)
-ball_size = 14
+ball_size = WIDTH * 0.02
 ball = pg.Rect(WIDTH // 2 - ball_size // 2, HEIGHT // 2 - ball_size // 2, ball_size, ball_size) # ball startet in der Mitte
-ball_speed = 5
+ball_speed = WIDTH * 0.008 / (FPS/60)
 # Geschwindigkeit als separate Variablen
 ball_speed_x = random.choice((-1, 1)) * ball_speed
 ball_speed_y = random.choice((-1, 1)) * ball_speed
@@ -26,7 +32,7 @@ ball_speed_y = random.choice((-1, 1)) * ball_speed
 # Spielstand
 left_score = 0
 right_score = 0
-font = pg.font.Font(None, 36)
+font = pg.font.Font(None, int(HEIGHT * 0.1))
 
 # Sounds
 bg_sound = pg.mixer.Sound("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/retro-arcade-game-music.mp3")
@@ -125,7 +131,7 @@ while running:
     # Zeichnen
     screen.fill(background_color)
     # Mittellinie
-    pg.draw.line(screen, (255, 255, 255), (WIDTH // 2, 0), (WIDTH // 2, HEIGHT), 2)
+    pg.draw.line(screen, (255, 255, 255), (WIDTH // 2, 0), (WIDTH // 2, HEIGHT), int(WIDTH*0.005))
     # Schläger und Ball
     pg.draw.rect(screen, (240, 220, 90), left_paddle)
     pg.draw.rect(screen, (240, 220, 90), right_paddle)
@@ -134,10 +140,10 @@ while running:
     # Spielstandsanzeige
     score_text = f"{left_score} : {right_score}"
     score_surf = font.render(score_text, True, (255, 255, 255))
-    score_rect = score_surf.get_rect(center=(WIDTH // 2, 30))
+    score_rect = score_surf.get_rect(center=(WIDTH // 2, HEIGHT * 0.1))
     screen.blit(score_surf, score_rect)
 
     pg.display.flip()
-    clock.tick(60)
+    clock.tick(FPS)
 
 pg.quit()
