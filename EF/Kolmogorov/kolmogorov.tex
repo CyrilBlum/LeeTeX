@@ -397,6 +397,15 @@ Es existieren Wörter, die nicht komprimierbar sind, die also eine Kolmogorov-Ko
 
 Ein nichtkomprimierbares Wort erlaubt also keine kürzere Beschreibung, als das Wort vollständig zu beschreiben. Es gibt also keinen anderen Plan zu seiner Generierung, als einzig seine vollständige Beschreibung. Damit ist es plausible, dass \cref{mydefinition:zufall} unsere bislang beste bekannte Formalisierung des informellen Begriffes \enquote{zufällig} ist.
 
+\begin{myremark}\label{myremark:beliebigesK}
+\cref{mytheorem:nichtkomprimierbar} garantieret, dass für jede natürliche Zahl $n>0$ (mindestens) ein binäres Wort $w$ mit einer exakten Länge von $n$ mit $K(w)\geq n$ existiert. Eine schwächere Aussage, welche sofort aus \cref{mytheorem:nichtkomprimierbar} folgt, ist:
+
+\begin{center}
+Für jede natürliche Zahl $n>0$ existiert (mindestens) ein binäres Wort $w$ mit $K(w) \geq n$.\\
+(Wobei wir keinerlei Aussage zur Länge von $w$ gemacht haben.)
+\end{center}
+\end{myremark}
+
 \begin{mydefinition}[Zufälliges binäres Wort, zufällige Zahl]\label{mydefinition:zufall}
 \leavevmode
 \begin{itemize}
@@ -413,16 +422,16 @@ Ein nichtkomprimierbares Wort erlaubt also keine kürzere Beschreibung, als das 
 	\end{myanswer}
 \end{myexercise}
 
-
+\clearpage
 \section{Die Kolmogorov-Komplexität ist nicht berechnenbar}
 
 \begin{mytheorem}[$K(w)$ ist nicht für jedes binäre Wort berechenbar]\label{mytheorem:Knotcomputable}
 	Das Problem, für jedes binäre Wort $w$ die Kolmogorov-Komplexität $K(w)$ zu berechnen, ist algorithmisch unlösbar (nicht berechenbar).
 	\begin{myproof}
-		Es sei $n>0$ eine natürliche Zahl und wir bezeichnen mit $\alpha$ das erste Wort bezüglich der kanonischen Ordnung über dem binären Alphabet, welches eine Kolmogorov-Komplexität von mindestens $n$ hat. Beachten Sie, dass gemäss \cref{mytheorem:nichtkomprimierbar} insbesondere zu jedem $n>0$ ein binäres Wort $w$ existiert mit $K(w)\geq n$. Die Existenz von $\alpha$ ist also gesichert. Bitte beachten Sie, dass wir keine Aussage zur Länge von $\alpha$ machen.
+		Es sei $n>0$ eine natürliche Zahl. Nun bezeichnen wir mit $\alpha$ das erste Wort bezüglich der kanonischen Ordnung über dem binären Alphabet, welches eine Kolmogorov-Komplexität von mindestens $n$ hat. Wegen \cref{myremark:beliebigesK} und der Verwendung der kanonischen Ordnung ist die Existenz und Eindeutigkeit von $\alpha$ gesichert. Bitte beachten Sie, dass wir keine Aussage zur Länge von $\alpha$ machen. Insbesondere wird also nicht behauptet, dass $\alpha$ die Länge $n$ hat.
 
-		\par
-		Angenommen es würde ein Algorithmus $Q$ existieren, der zu jedem binären Wort $w$ die Zahl $K(w)$ berechnet. Wir verwenden $Q$ um eine kurze Beschreibung von $\alpha$ anzugeben. Für jede natürliche Zahl $n>0$ sucht und generiert das folgende \texttt{C'++} Programm\footnote{genauer: in \texttt{C'++}-Pseudocode} das Wort $\alpha$:
+		\vspace{\baselineskip}
+		Angenommen es existiert ein Algorithmus $Q$, der zu jedem binären Wort $w$ die Zahl $K(w)$ berechnet. Dann können wir $Q$ verwenden, um eine kurze Beschreibung von $\alpha$ anzugeben. Für jede natürliche Zahl $n>0$ sucht und generiert das folgende \texttt{C'++} Programm\footnote{genauer: in \texttt{C'++}-Pseudocode} das Wort $\alpha$:
 		\begin{lstlisting}[language=C++]
 			#include <iostream>
 			#include <string>
@@ -436,8 +445,9 @@ Ein nichtkomprimierbares Wort erlaubt also keine kürzere Beschreibung, als das 
 				std::cout << x << std::endl;
 			}
         \end{lstlisting}
-		Für jede natürliche Zahl $n>0$, generiert das Programm \cppinline{seeking_alpha_n} das Wort $\alpha$. Beachten Sie, dass alle Algorithmen \cppinline{seeking_alpha_n} identisch sind bis auf die Zahl $n$. Es sei $c$ die Länge des Maschinencodes von \cppinline{seeking_alpha_n} bis auf die Angabe von $n$. Damit ist bewiesen, dass $K(\alpha) \leq c + \ceil{\log_2(n+1)}$.
+		Alle Algorithmen \cppinline{seeking_alpha_n} sind identisch bis auf die Zahl $n$. Es sei $c$ die Länge des Maschinencodes von \cppinline{seeking_alpha_n} bis auf die Angabe von $n$. Damit ist bewiesen, dass $K(\alpha) \leq c + \ceil{\log_2(n+1)}$.
 
+		\vspace{\baselineskip}
 		Nach Definition von $\alpha$ gilt aber auch $K(\alpha) \geq n$ für alle $n\in\N$ mit $n>0$. Doch die Ungleichungen
 		\begin{align*}
 			n \leq K(\alpha) \leq c + \ceil{\log_2(n+1)}
