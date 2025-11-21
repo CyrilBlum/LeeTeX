@@ -1,10 +1,31 @@
+\lstset{style=Python,escapeinside={(*@}{@*)}}
+\fboxsep=.6pt
+
+% Define a toggle for exerciseonly mode (false by default)
+\newtoggle{exerciseonly}
+\settoggle{exerciseonly}{false}
+
+% Check for the class option 'exerciseonly'
+\makeatletter
+\@ifclasswith{book}{exerciseonly}{%
+	\settoggle{exerciseonly}{true}%
+}{}
+\makeatother
+
 % load package if document contains at least one citation
 \usepackage[maxbibnames=99,sorting=none,style=numeric,backend=biber]{biblatex}
 % enable option to print bibliography as a numbered subsection
 \defbibheading{bibsubsection}[\bibname]{%
   \subsection{#1}%
 }
+
+\setcounter{tocdepth}{2} % Show up to subsections in ToC
+
 \addbibresource{refs.bib}
+
+% Access metadata from the git distributed version control system
+\usepackage[grumpy,mark,maxdepth=8]{gitinfo2}
+
 \begin{document}
 %% Project-specific Preambles 
 \settoggle{includelogo}{true}
@@ -29,21 +50,22 @@
 \def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
 \maketitlepage{\thetopic}{}
 \tableofcontents
+\clearpage
 
-\lstset{style=Python,escapeinside={(*@}{@*)}}
-\fboxsep=.6pt
-
+%% content %%
 \input{EF/physikalische_simulation/Differentialgleichungen.tex}
 \input{EF/physikalische_simulation/Taylor_Approximation.tex}
 \input{EF/physikalische_simulation/Dynamik.tex}
 
+\clearpage
+
 %% Appendices
 \appendix
-\backmatter
-\printbibliography[heading=bibintoc]
-\printindex
+\section*{Anhänge}
+\addcontentsline{toc}{section}{Anhänge}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\input{EF/physikalische_simulation/appendix.tex}
 \printglossaries
-\bibliography{refs}\clearpage
-\printglossary[type=\acronymtype]
+\printbibliography[heading=bibintoc]
 
 \end{document}
