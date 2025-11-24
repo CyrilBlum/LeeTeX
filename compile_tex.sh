@@ -96,8 +96,8 @@ book_topics=(
     "Kompression:Grundlagen_Info/04_Kompression/Skript.tex"
     "Datenintegrität:Grundlagen_Info/05_Datenintegritaet/Skript/Skript"
     "Datenbanken:Grundlagen_Info/06_Datenbanken/Skript/Skript.tex"
-    "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
-    "Netzwerke_v2:Grundlagen_Info/07_Netzwerke/Skript/ic4d/ic4d_main.tex"
+    # "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
+    "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/ic4d/ic4d_main.tex"
     "Tabellenkalkulation:Grundlagen_Info/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
     "Aus_Daten_Lernen:Grundlagen_Info/10_Aus_Daten_Lernen/Skript/Skript.tex"
     

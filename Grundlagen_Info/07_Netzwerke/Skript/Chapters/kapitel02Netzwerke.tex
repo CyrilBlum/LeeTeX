@@ -116,230 +116,6 @@ Wie auf \cref{fig:internet_use_by_income_class} zu sehen ist, hat sich die Inter
 	\caption{Internetnutzung nach Land, 2024 (Quelle: \href{https://data.worldbank.org/indicator/IT.NET.USER.ZS}{Weltbank-Daten})}
 	\label{fig:internet_use_by_income_class_map}
 \end{figure}
-
-\subsection{Topologie}
-Beim Erstellen eines Netzwerks stellt sich als Erstes die Frage, welche Computer man mit welchen anderen Computern verbinden soll. Die Struktur der Verbindungen in einem Netzwerk kann also umformuliert werden als Graphen-Problem, bei dem es zu bestimmen gibt, welche Knoten eines Graphen miteinander über eine Kante verbunden werden. Die verschiedenen möglichen Strukturen eines Netzwerks werden auch als \textbf{Topologie} bezeichnet. Einige Beispiel-Topologien sind in \cref{fig:topologie} gezeigt.
-\begin{figure}[H]
-	\centering
-	% Bus Topology
-	\begin{subfigure}[b]{0.25\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\draw[ForestGreen, thick] (0,0) -- (2,0); % Bus
-			\foreach \x in {0.3, 0.9, 1.5} {
-					\filldraw[ForestGreen] (\x, 0) circle (2mm);
-				}
-		\end{tikzpicture}
-		\caption{Bus}
-	\end{subfigure}%
-	% Ring Topology
-	\begin{subfigure}[b]{0.25\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\draw[ForestGreen, thick] (0:1cm) \foreach \x in {60,120,...,360} {
-					-- (\x:1cm)
-				} -- cycle; % Completes the circle
-			\foreach \x in {0,60,...,300} {
-					\filldraw[ForestGreen] (\x:1cm) circle (2mm);
-				}
-		\end{tikzpicture}
-		\caption{Ring}
-	\end{subfigure}
-	% Stern
-	\begin{subfigure}[b]{0.25\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\node[fill=ForestGreen, circle, minimum size=5mm] at (0,0) (center) {};
-			\foreach \x in {0,45,...,315} {
-					\node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\x) {};
-					\draw[ForestGreen] (center) -- (node\x);
-				}
-		\end{tikzpicture}
-		\caption{Stern}
-	\end{subfigure}%
-	% Mesh Topology
-	\begin{subfigure}[b]{0.25\textwidth}
-		\centering
-		\begin{tikzpicture}
-			% Define nodes
-			\foreach \x [count=\i from 1] in {18,90,162,234,306} {
-					\node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\i) {};
-				}
-
-			% Connect nodes (to border points)
-			\foreach \x in {1,2,3,4,5} {
-					\foreach \y in {\x,...,5} {
-							\ifnum\x=\y\relax
-								% skip self-connection
-							\else
-								\draw[ForestGreen, thick] (node\x) -- (node\y);
-							\fi
-						}
-				}
-
-		\end{tikzpicture}
-		\caption{Vollvermascht}
-	\end{subfigure}
-	\begin{subfigure}{.25\textwidth}
-		\centering
-		\begin{tikzpicture}[
-				sibling distance=5mm, % Adjust spacing between siblings
-				level distance=8mm, % Adjust spacing between parent and child nodes
-				every node/.style={fill=ForestGreen, circle, thick, minimum size=2mm},
-				edge from parent/.style={ForestGreen, thick, draw}
-			]
-			% Define the tree
-			\node {} % Root node
-			child {node {}
-					child {node {}}
-					child {node {}}
-				}
-			child {node {}
-					child {node {}}
-					child {node {}}
-				}
-			child {node {}
-					child {node {}}
-					child {node {}}
-				};
-
-		\end{tikzpicture}
-		\caption{Baum}
-	\end{subfigure}
-	\caption{Beispiele von Netzwerk-Topologien}
-	\label{fig:topologie}
-\end{figure}
-
-Da Computer in Realität häufig nur über eine einzige Netzwerkkarte verfügen, können sie auch nur mit einem weiteren Computer verbunden werden. In einem lokalen Netzwerk trifft man daher häufig die Form einer Stern-Topologie an, bei der alle Computer mit einer zentralen \textbf{Switch} verbunden werden, also einem Gerät, welches mehrere Rechner an einem zentralen Punkt miteinander verbindet.
-
-\begin{myexercise}
-	Vergleichen Sie die Stern-Topologie mit der Vollvermascht-Topologie:
-	\begin{itemize}
-		\item In welcher Topologie ist es einfacher, ein neues Gerät anzuschliessen?
-		\item In welcher Topologie funktioniert die Kommunikation immer noch gut, selbst wenn einzelne Kabel oder Geräte ausfallen?
-		\item In welcher Topologie müssen mehr Kabel gekauft werden?
-	\end{itemize}
-	\begin{myanswer}
-		\begin{itemize}
-			\item In der Stern-Topologie ist es einfacher, ein neues Gerät anzuschliessen, da nur ein Kabel zum zentralen Switch benötigt wird. Falls kein zentraler Switch benötigt wird, ist beispielsweise die vollvermaschte Topologie einfacher, da das neue Gerät zu jedem anderen Gerät maximal ein Kabel benötigt.
-			\item In der Vollvermaschten Topologie funktioniert die Kommunikation immer noch gut, selbst wenn einzelne Kabel oder Geräte ausfallen.
-			\item In der Vollvermaschten Topologie müssen mehr Kabel gekauft werden.
-		\end{itemize}
-	\end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}
-	Wie viele Kabel müssen in der Stern-Topologie gekauft werden\dots
-	\begin{itemize}
-		\item Für 6 Geräte?
-		\item Für 10 Geräte?
-		\item Allgemeine Formel?
-	\end{itemize}
-	\begin{myanswer}
-		\begin{itemize}
-			\item Für 6 Geräte: 5 Kabel
-			\item Für 10 Geräte: 9 Kabel
-			\item Allgemeine Formel: $n-1$ Kabel, wobei $n$ die Anzahl der Geräte ist.
-		\end{itemize}
-	\end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}
-	Wie viele Kabel müssen in der Vollvermascht-Topologie gekauft werden\dots
-	\begin{itemize}
-		\item Für 6 Geräte?
-		\item Für 10 Geräte?
-		\item Allgemeine Formel?
-	\end{itemize}
-	\begin{myanswer}
-		\begin{itemize}
-			\item Für 6 Geräte: 15 Kabel
-			\item Für 10 Geräte: 45 Kabel
-			\item Allgemeine Formel: $\frac{n(n-1)}{2}$ Kabel, wobei $n$ die Anzahl der Geräte ist.
-		\end{itemize}
-	\end{myanswer}
-\end{myexercise}
-
-\subsection{Unicast, Multicast und Broadcast}
-Je nachdem für wie viele Teilnehmer eines Netzwerks eine Sendung bestimmt ist, unterscheidet man bei der Datenübertragung zwischen \textbf{Unicast}, \textbf{Multicast} und \textbf{Broadcast} (siehe \cref{fig:unicast-multicast-broadcast}).
-
-\begin{figure}[H]
-	\centering
-	% Unicast
-	\begin{subfigure}[b]{0.3\textwidth}
-		\centering
-		\begin{tikzpicture}
-			% Nodes
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Sender}] (A) at (0,0) {};
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Empfänger}] (B) at (3,0) {};
-			% Other nodes (not involved)
-			\node[fill=Gray!40, circle, minimum size=6mm] (C) at (1.5,1.2) {};
-			\node[fill=Gray!40, circle, minimum size=6mm] (D) at (1.5,-1.2) {};
-			% Arrows
-			\draw[->, thick, RoyalBlue] (A) -- (B);
-		\end{tikzpicture}
-		\caption{Unicast: 1:1}
-	\end{subfigure}%
-	% Multicast
-	\begin{subfigure}[b]{0.3\textwidth}
-		\centering
-		\begin{tikzpicture}
-			% Nodes
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Sender}] (A) at (0,0) {};
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Empfänger 1}] (B) at (3,0.8) {};
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=below:{Empfänger 2}] (C) at (3,-0.8) {};
-			% Other node (not involved)
-			\node[fill=Gray!40, circle, minimum size=6mm] (D) at (1.5,-1.8) {};
-			% Arrows
-			\draw[->, thick, RoyalBlue] (A) -- (B);
-			\draw[->, thick, RoyalBlue] (A) -- (C);
-		\end{tikzpicture}
-		\caption{Multicast: 1:n (Gruppe)}
-	\end{subfigure}%
-	% Broadcast
-	\begin{subfigure}[b]{0.3\textwidth}
-		\centering
-		\begin{tikzpicture}
-			% Nodes
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Sender}] (A) at (0,0) {};
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Empfänger 1}] (B) at (3,1.2) {};
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=right:{Empfänger 2}] (C) at (3,0) {};
-			\node[fill=ForestGreen, circle, minimum size=6mm, label=below:{Empfänger 3}] (D) at (3,-1.2) {};
-			% Arrows
-			\draw[->, thick, RoyalBlue] (A) -- (B);
-			\draw[->, thick, RoyalBlue] (A) -- (C);
-			\draw[->, thick, RoyalBlue] (A) -- (D);
-		\end{tikzpicture}
-		\caption{Broadcast: 1:alle}
-	\end{subfigure}
-	\caption{Unicast, Multicast und Broadcast: Übertragungsarten im Netzwerk}
-	\label{fig:unicast-multicast-broadcast}
-\end{figure}
-
-\begin{myexercise}
-	Welche Art der Datenübertragung verwenden die folgenden Alltagssituationen?
-	\begin{itemize}
-		\item Whatsapp-Nachricht an eine befreundete Person
-		\item Signalfeuer der chinesischen Mauer
-		\item Lautsprecherdurchsage im Flughafen
-		\item Lautsprecherdurchsage auf dem Gleis bei der SBB
-		\item Shoutbox im Intranet
-		\item Frage im Klassenchat
-		\item Email-Newsletter der Schulleitung
-	\end{itemize}
-	\begin{myanswer}
-		\begin{itemize}
-			\item Whatsapp-Nachricht an eine befreundete Person: \textbf{Unicast} (1:1)
-			\item Signalfeuer der chinesischen Mauer: \textbf{Multicast oder Broadcast} (an mehrere Wachtürme, aber nicht an alle Menschen in der Umgebung)
-			\item Lautsprecherdurchsage im Flughafen: \textbf{Broadcast} (an alle Anwesenden)
-			\item Lautsprecherdurchsage auf dem Gleis bei der SBB: \textbf{Multicast} (an alle auf dem Gleis aber nicht an alle Anwesenden im Bahnhof)
-			\item Shoutbox im Intranet: \textbf{Broadcast} (an alle Nutzer der Shoutbox)
-			\item Frage im Klassenchat: \textbf{Multicast} (an eine bestimmte Gruppe, z.B. die Klasse)
-			\item Email-Newsletter der Schulleitung: \textbf{Multicast} (an eine definierte Empfängergruppe)
-		\end{itemize}
-	\end{myanswer}
-\end{myexercise}
-
 \newpage
 \section{Internet-Schichten}
 \subsection{Schichtenmodell: Analogie}
@@ -1126,3 +902,226 @@ Ein Beispiel, wie das \gls{ARP}-Protokoll funktioniert, könnte wie folgt ausseh
 		\item Beantworten Sie danach die Zuordnungs-Fragen $\rightarrow$ \textbf{Abgabe Moodle}
 	\end{itemize}
 \end{mychallenge}
+
+\subsubsection{Topologie}
+Beim Erstellen eines Netzwerks stellt sich als Erstes die Frage, welche Computer man mit welchen anderen Computern verbinden soll. Die Struktur der Verbindungen in einem Netzwerk kann also umformuliert werden als Graphen-Problem, bei dem es zu bestimmen gibt, welche Knoten eines Graphen miteinander über eine Kante verbunden werden. Die verschiedenen möglichen Strukturen eines Netzwerks werden auch als \textbf{Topologie} bezeichnet. Einige Beispiel-Topologien sind in \cref{fig:topologie} gezeigt.
+\begin{figure}[H]
+	\centering
+	% Bus Topology
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\draw[ForestGreen, thick] (0,0) -- (2,0); % Bus
+			\foreach \x in {0.3, 0.9, 1.5} {
+					\filldraw[ForestGreen] (\x, 0) circle (2mm);
+				}
+		\end{tikzpicture}
+		\caption{Bus}
+	\end{subfigure}%
+	% Ring Topology
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\draw[ForestGreen, thick] (0:1cm) \foreach \x in {60,120,...,360} {
+					-- (\x:1cm)
+				} -- cycle; % Completes the circle
+			\foreach \x in {0,60,...,300} {
+					\filldraw[ForestGreen] (\x:1cm) circle (2mm);
+				}
+		\end{tikzpicture}
+		\caption{Ring}
+	\end{subfigure}
+	% Stern
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\node[fill=ForestGreen, circle, minimum size=5mm] at (0,0) (center) {};
+			\foreach \x in {0,45,...,315} {
+					\node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\x) {};
+					\draw[ForestGreen] (center) -- (node\x);
+				}
+		\end{tikzpicture}
+		\caption{Stern}
+	\end{subfigure}%
+	% Mesh Topology
+	\begin{subfigure}[b]{0.25\textwidth}
+		\centering
+		\begin{tikzpicture}
+			% Define nodes
+			\foreach \x [count=\i from 1] in {18,90,162,234,306} {
+					\node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\i) {};
+				}
+
+			% Connect nodes (to border points)
+			\foreach \x in {1,2,3,4,5} {
+					\foreach \y in {\x,...,5} {
+							\ifnum\x=\y\relax
+								% skip self-connection
+							\else
+								\draw[ForestGreen, thick] (node\x) -- (node\y);
+							\fi
+						}
+				}
+
+		\end{tikzpicture}
+		\caption{Vollvermascht}
+	\end{subfigure}
+	\begin{subfigure}{.25\textwidth}
+		\centering
+		\begin{tikzpicture}[
+				sibling distance=5mm, % Adjust spacing between siblings
+				level distance=8mm, % Adjust spacing between parent and child nodes
+				every node/.style={fill=ForestGreen, circle, thick, minimum size=2mm},
+				edge from parent/.style={ForestGreen, thick, draw}
+			]
+			% Define the tree
+			\node {} % Root node
+			child {node {}
+					child {node {}}
+					child {node {}}
+				}
+			child {node {}
+					child {node {}}
+					child {node {}}
+				}
+			child {node {}
+					child {node {}}
+					child {node {}}
+				};
+
+		\end{tikzpicture}
+		\caption{Baum}
+	\end{subfigure}
+	\caption{Beispiele von Netzwerk-Topologien}
+	\label{fig:topologie}
+\end{figure}
+
+Da Computer in Realität häufig nur über eine einzige Netzwerkkarte verfügen, können sie auch nur mit einem weiteren Computer verbunden werden. In einem lokalen Netzwerk trifft man daher häufig die Form einer Stern-Topologie an, bei der alle Computer mit einer zentralen \textbf{Switch} verbunden werden, also einem Gerät, welches mehrere Rechner an einem zentralen Punkt miteinander verbindet.
+
+\begin{myexercise}
+	Vergleichen Sie die Stern-Topologie mit der Vollvermascht-Topologie:
+	\begin{itemize}
+		\item In welcher Topologie ist es einfacher, ein neues Gerät anzuschliessen?
+		\item In welcher Topologie funktioniert die Kommunikation immer noch gut, selbst wenn einzelne Kabel oder Geräte ausfallen?
+		\item In welcher Topologie müssen mehr Kabel gekauft werden?
+	\end{itemize}
+	\begin{myanswer}
+		\begin{itemize}
+			\item In der Stern-Topologie ist es einfacher, ein neues Gerät anzuschliessen, da nur ein Kabel zum zentralen Switch benötigt wird. Falls kein zentraler Switch benötigt wird, ist beispielsweise die vollvermaschte Topologie einfacher, da das neue Gerät zu jedem anderen Gerät maximal ein Kabel benötigt.
+			\item In der Vollvermaschten Topologie funktioniert die Kommunikation immer noch gut, selbst wenn einzelne Kabel oder Geräte ausfallen.
+			\item In der Vollvermaschten Topologie müssen mehr Kabel gekauft werden.
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	Wie viele Kabel müssen in der Stern-Topologie gekauft werden\dots
+	\begin{itemize}
+		\item Für 6 Geräte?
+		\item Für 10 Geräte?
+		\item Allgemeine Formel?
+	\end{itemize}
+	\begin{myanswer}
+		\begin{itemize}
+			\item Für 6 Geräte: 5 Kabel
+			\item Für 10 Geräte: 9 Kabel
+			\item Allgemeine Formel: $n-1$ Kabel, wobei $n$ die Anzahl der Geräte ist.
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	Wie viele Kabel müssen in der Vollvermascht-Topologie gekauft werden\dots
+	\begin{itemize}
+		\item Für 6 Geräte?
+		\item Für 10 Geräte?
+		\item Allgemeine Formel?
+	\end{itemize}
+	\begin{myanswer}
+		\begin{itemize}
+			\item Für 6 Geräte: 15 Kabel
+			\item Für 10 Geräte: 45 Kabel
+			\item Allgemeine Formel: $\frac{n(n-1)}{2}$ Kabel, wobei $n$ die Anzahl der Geräte ist.
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
+
+\subsubsection{Unicast, Multicast und Broadcast}
+Je nachdem für wie viele Teilnehmer eines Netzwerks eine Sendung bestimmt ist, unterscheidet man bei der Datenübertragung zwischen \textbf{Unicast}, \textbf{Multicast} und \textbf{Broadcast} (siehe \cref{fig:unicast-multicast-broadcast}). Obschon dieses Unterkapitel hier bei der Netzzugriff-Schicht angesiedelt ist, so betrifft diese Unterscheidung alle Schichten des OSI-Modells, da sie die Art der Datenübertragung im gesamten Netzwerk beschreibt.
+
+\begin{figure}[H]
+	\centering
+	% Unicast
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}
+			% Nodes
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Sender}] (A) at (0,0) {};
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Empfänger}] (B) at (3,0) {};
+			% Other nodes (not involved)
+			\node[fill=Gray!40, circle, minimum size=6mm] (C) at (1.5,1.2) {};
+			\node[fill=Gray!40, circle, minimum size=6mm] (D) at (1.5,-1.2) {};
+			% Arrows
+			\draw[->, thick, RoyalBlue] (A) -- (B);
+		\end{tikzpicture}
+		\caption{Unicast: 1:1}
+	\end{subfigure}%
+	% Multicast
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}
+			% Nodes
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Sender}] (A) at (0,0) {};
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Empfänger 1}] (B) at (3,0.8) {};
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=below:{Empfänger 2}] (C) at (3,-0.8) {};
+			% Other node (not involved)
+			\node[fill=Gray!40, circle, minimum size=6mm] (D) at (1.5,-1.8) {};
+			% Arrows
+			\draw[->, thick, RoyalBlue] (A) -- (B);
+			\draw[->, thick, RoyalBlue] (A) -- (C);
+		\end{tikzpicture}
+		\caption{Multicast: 1:n (Gruppe)}
+	\end{subfigure}%
+	% Broadcast
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}
+			% Nodes
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Sender}] (A) at (0,0) {};
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=above:{Empfänger 1}] (B) at (3,1.2) {};
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=right:{Empfänger 2}] (C) at (3,0) {};
+			\node[fill=ForestGreen, circle, minimum size=6mm, label=below:{Empfänger 3}] (D) at (3,-1.2) {};
+			% Arrows
+			\draw[->, thick, RoyalBlue] (A) -- (B);
+			\draw[->, thick, RoyalBlue] (A) -- (C);
+			\draw[->, thick, RoyalBlue] (A) -- (D);
+		\end{tikzpicture}
+		\caption{Broadcast: 1:alle}
+	\end{subfigure}
+	\caption{Unicast, Multicast und Broadcast: Übertragungsarten im Netzwerk}
+	\label{fig:unicast-multicast-broadcast}
+\end{figure}
+
+\begin{myexercise}
+	Welche Art der Datenübertragung verwenden die folgenden Alltagssituationen?
+	\begin{itemize}
+		\item Whatsapp-Nachricht an eine befreundete Person
+		\item Signalfeuer der chinesischen Mauer
+		\item Lautsprecherdurchsage im Flughafen
+		\item Lautsprecherdurchsage auf dem Gleis bei der SBB
+		\item Shoutbox im Intranet
+		\item Frage im Klassenchat
+		\item Email-Newsletter der Schulleitung
+	\end{itemize}
+	\begin{myanswer}
+		\begin{itemize}
+			\item Whatsapp-Nachricht an eine befreundete Person: \textbf{Unicast} (1:1)
+			\item Signalfeuer der chinesischen Mauer: \textbf{Multicast oder Broadcast} (an mehrere Wachtürme, aber nicht an alle Menschen in der Umgebung)
+			\item Lautsprecherdurchsage im Flughafen: \textbf{Broadcast} (an alle Anwesenden)
+			\item Lautsprecherdurchsage auf dem Gleis bei der SBB: \textbf{Multicast} (an alle auf dem Gleis aber nicht an alle Anwesenden im Bahnhof)
+			\item Shoutbox im Intranet: \textbf{Broadcast} (an alle Nutzer der Shoutbox)
+			\item Frage im Klassenchat: \textbf{Multicast} (an eine bestimmte Gruppe, z.B. die Klasse)
+			\item Email-Newsletter der Schulleitung: \textbf{Multicast} (an eine definierte Empfängergruppe)
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
