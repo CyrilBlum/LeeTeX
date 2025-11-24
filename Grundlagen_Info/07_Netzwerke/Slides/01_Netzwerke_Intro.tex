@@ -98,20 +98,11 @@
 
 \begin{frame}[fragile]{Schichtenmodell: Übersicht}
     \Wider[3em]{\begin{center}
-            \begin{table}[h]
-                \centering\tiny
+            \begin{table}[H]
+                \centering
+                \footnotesize
                 \resizebox{\textwidth}{!}{
-                    \begin{tabular}{c|m{1.2cm}||m{1.2cm}||m{3.7cm}|m{1.3cm}|m{1.2cm}}
-                        \textbf{\#}              & \textbf{Schicht (OSI)}                     & \textbf{Schicht \newline (TCP / IP)}    & \textbf{Aufgabe}                                                                                                & \textbf{Informationsform}                 & \textbf{Gerät / \newline Protokoll}   \\ \midrule\midrule
-                        \rowcolor{yellow!10}7    & Anwendung \newline \textit{Application}    &                                         & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                                 & Nachricht                                 & \textbf{HTTP(S)}, FTP, SMTP...        \\
-                        \rowcolor{yellow!20}6    & Darstellung \newline \textit{Presentation} & Anwendung\newline\textit{Application}   & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                                 & JPEG, MPEG, GIF, \textbf{HTML}...     \\
-                        \rowcolor{yellow!30}5    & Sitzung \newline \textit{Session}          &                                         & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.         & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ...           \\
-                        \rowcolor{orange!20}4    & Transport\newline \textit{Transport}       & Transport\newline\textit{Transport}     & Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                    & Segment                                   & Firewall, \textbf{TCP}, UDP, Ports... \\
-                        \rowcolor{RoyalBlue!20}3 & Vermittlung \newline \textit{Network}      & Internet\newline\textit{Internet}       & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet.       & Paket                                     & Router, \textbf{IPv4}, IPv6           \\
-                        \rowcolor{Gray!15}2      & Sicherung \newline \textit{Data Link}      & \multirow{2}{*}{\shortstack{Netzzugriff                                                                                                                                                                                                       \\\textit{Data Link}}}& Übermittlung von Nachrichten von Knoten zu Knoten.                                                        & Frame                                  & Switch, Bridge, \textbf{MAC}...                            \\
-                        \rowcolor{Gray!25}1      & Bitübertragung \newline \textit{Physical}  &                                         & Herstellung physischer Verbindungen zwischen Geräten.                                                           & Bits                                      & Hub, Repeater, Modem, Kabel...        \\
-                    \end{tabular}}
-                \caption*{Internet-Schichten (\gls{OSI} und \gls{TCP}-\gls{IP}) sowie deren Aufgaben und Protokolle}
+\input{Grundlagen_Info/07_Netzwerke/Skript/osi-tcpip-table.tex}}
             \end{table}
         \end{center}}
 \end{frame}
@@ -123,19 +114,20 @@
     \begin{center}
         \begin{tcolorbox}[colframe=RoyalBlue, colback=white, boxrule=1pt, arc=4pt, left=2pt, right=2pt, top=2pt, bottom=2pt]
             \begin{table}[H]
-                \small
+                \tiny
                 \centering
                 \begin{tabular}{l|l}
-                    \coin{3} Von: & \texttt{192.168.0.\fldNum} \\\midrule
-                    \coin{3} An:  & \texttt{192.168.0.\fldNum} \\\midrule
-                    \coin{2} Sequenz:                                  & \texttt{\TextField[width=5cm, print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}}   \\\midrule
-                    \coin{1} Nachricht: & \TextField[width=5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{} \\
+                    \coin{3} Von:       & \texttt{192.168.0.\fldNum}                                                           \\\midrule
+                    \coin{3} An:        & \texttt{192.168.0.\fldNum}                                                           \\\midrule
+                    \coin{2} Sequenz:   & \texttt{\TextField[width=5cm, print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}} \\\midrule
+                    \coin{1} Nachricht: & \TextField[width=5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}           \\
                 \end{tabular}
             \end{table}
         \end{tcolorbox}
     \end{center}
-    \textbf{Anleitung}
+    \textbf{Anleitung}\small
     \begin{itemize}[<+->]
+        \item Zuerst: Notieren Sie sich eine einzigartige IP-Adresse für Ihren Computer, startend mit \texttt{192.168.0.xyz} (z.B. \texttt{192.168.0.3}), wobei  $\texttt{xyz} \in [0,255]$
         \item[\coin{1}] (Vorderseite) Schreiben Sie eine Nachricht (max. 10 Zeichen pro Karte)
         \item[\coin{2}] (Vorderseite) Nummerieren Sie die Karten in der Reihenfolge, in der sie gesendet werden sollen (Sequenz)
         \item[\coin{3}] (Rückseite) Fügen Sie die IP-Adressen der Absender- und Empfänger-Computer hinzu.
@@ -346,13 +338,13 @@
         \item \textbf{Client}
               \begin{itemize}
                   \item ``Kunde'' (von en. \textit{client})
-                  \item Computer-Programm, das etwas will
+                  \item Computer(-Programm), das etwas will
               \end{itemize}
         \item \textbf{Server}
               \begin{itemize}
                   \item ``Diener'' (von en. \textit{to serve} = bedienen, $\neq$ ``surf'')
-                  \item Computer-Programm, das etwas hat, das andere Computer brauchen
-                  \item Kann Verbindungsanfragen von anderen Computern akzeptieren / ablehnen
+                  \item Computer(-Programm), das etwas hat, das andere Computer(-Programme) brauchen
+                  \item Kann Verbindungsanfragen von anderen Computer(-Programmen) akzeptieren / ablehnen
               \end{itemize}
         \item \textbf{Host}
               \begin{itemize}

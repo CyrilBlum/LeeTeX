@@ -421,16 +421,7 @@ Im Zusammenhang mit dem Internet werden häufig zwei Schichtenmodelle gegenüber
 \begin{table}[H]
 	\centering
 	\footnotesize
-	\begin{tabular}{c|m{2.6cm}||m{2cm}||m{4.6cm}|m{2.5cm}|m{2cm}}
-		\textbf{\#}              & \textbf{Schicht (OSI)}                     & \textbf{Schicht \newline (TCP / IP)}  & \textbf{Aufgabe}                                                                                                & \textbf{Informations\-form}               & \textbf{Gerät / \newline Protokoll}   \\ \midrule\midrule
-		\rowcolor{yellow!10}7    & Anwendung \newline \textit{Application}    & Anwendung\newline\textit{Application} & Hilft bei der Identifizierung des Clients und synchronisiert die Kommunikation.                                 & Nachricht                                 & \textbf{HTTP(S)}, FTP, SMTP...        \\\midrule
-		\rowcolor{yellow!20}6    & Darstellung \newline \textit{Presentation} & Anwendung\newline\textit{Application} & Daten von der Anwendungsschicht werden extrahiert und für die Übertragung in das erforderliche Format gebracht. & Nachricht                                 & JPEG, MPEG, GIF, \textbf{HTML}...     \\\midrule
-		\rowcolor{yellow!30}5    & Sitzung \newline \textit{Session}          & Anwendung\newline\textit{Application} & Stellt Verbindung her, hält diese aufrecht, gewährleistet Authentifizierung und sichert die Sicherheit.         & Nachricht (oder verschlüsselte Nachricht) & Gateway, NetBIOS, PPTP, ...           \\\midrule
-		\rowcolor{orange!20}4    & Transport\newline \textit{Transport}       & Transport\newline\textit{Transport}   & Nimmt Dienst von der Vermittlungsschicht und stellt ihn der Anwendungsschicht zur Verfügung.                    & Segment                                   & Firewall, \textbf{TCP}, UDP, Ports... \\\midrule
-		\rowcolor{RoyalBlue!20}3 & Vermittlung \newline \textit{Network}      & Internet\newline\textit{Internet}     & Übertragung von Daten von einem Host zu einem anderen, der sich in unterschiedlichen Netzwerken befindet.       & Paket                                     & Router, \textbf{IPv4}, IPv6           \\\midrule
-		\rowcolor{Gray!15}2      & Sicherung \newline \textit{Data Link}      & Netzzugriff\newline\textit{Data Link} & Übermittlung von Nachrichten von Knoten zu Knoten.                                                              & Frame                                     & Switch, Bridge, \textbf{MAC}...       \\\midrule
-		\rowcolor{Gray!25}1      & Bitübertragung \newline \textit{Physical}  & Netzzugriff\newline\textit{Data Link} & Herstellung physischer Verbindungen zwischen Geräten.                                                           & Bits                                      & Hub, Repeater, Modem, Kabel...        \\
-	\end{tabular}
+	\input{Grundlagen_Info/07_Netzwerke/Skript/osi-tcpip-table.tex}
 	\label{table:osi-layers}
 	\caption{Internet-Schichten-Modelle \gls{OSI} und \gls{TCP}-\gls{IP} sowie deren wichtigste Aufgaben, Informationsformen, Geräte und Protokolle}
 \end{table}
@@ -659,7 +650,7 @@ Die Übertragungssicherungsschicht befasst sich mit der stabilen Übertragung vo
 
 \subsubsection{IP-Adressen}
 
-Eine \acrfull{IP}-Adresse ist eine Netzwerk-Adresse eines Computers. Somit ist sie in gewisser Weise der Wohnadresse einer Person ähnlich. Häufig werden IP-Adressen noch im \textbf{IPv4}-Format angegeben: Dieses besteht aus 4 bytes, also 4 Zahlen von 0 bis 255. Die IPv4-Adresse Wird meist dezimal angegeben (beispielsweise \texttt{192.168.0.1}).
+Eine \acrfull{IP}-Adresse ist eine Netzwerk-Adresse eines Computers. Somit ist sie in gewisser Weise der Wohnadresse einer Person ähnlich. Häufig werden IP-Adressen noch im \textbf{IPv4}-Format angegeben: Dieses besteht aus 4 bytes, also 4 Zahlen von 0 bis 255. Die IPv4-Adresse wird meist dezimal angegeben (beispielsweise \texttt{192.168.0.1}).
 \begin{myexercise}\label{ex:meine-ip}
 	Finden Sie Ihre eigene IPv4-Adresse heraus. Tipps:
 	\begin{itemize}
@@ -1084,18 +1075,46 @@ Mit dem Terminal-Befehl \texttt{host [ipadress]} kann nachgeschaut werden, welch
 
 \subsection{Netzzugriff-Schicht}
 \subsubsection{MAC-Adressen}
-Bisher haben wir mehrheitlich darüber gesprochen, wie Datenpakete zwischen adressierten Empfängern (siehe \gls{IP}-Adressen) hin- und hergeschickt werden, und wie Addressen in (Sub-)Netzwerke unterteilt und in verständliche Namen umgewandelt werden können. Eine \gls{IP}-Addresse kann mit der Adresse eines Hauses verglichen werden. Allerdings legt der Briefträger die Briefe und Pakete nicht an einer Adresse ab, sondern in einem Briefkasten, also einem konkreten Objekt. Falls sich der Briefkasten oder sogar das ganze Haus ändert, so bleibt die Adresse doch dieselbe. Ähnlich dieser Analogie kann in einem Computer die gesamte Hardware ausgetauscht werden, inklusive der Netzwerkkarte, welche sich um das Verschicken und Empfangen von Daten kümmert, und trotzdem sollte der Datentransport weiterhin funktionieren. Damit dies klappt, benötigen wir ein weiteres Protokoll, welches die \gls{IP}-Adresse in eine so genannte \gls{MAC}-Adresse umwandelt. Die \gls{MAC}-Adresse ist die physische Adresse der Netzwerkkarte in einem Computer, also sozusagen der ``Fingerabdruck'' der Netzwerkkarte. Sie wird normalerweise mit 48 bit angegeben, welche normalerweise der Kürze wegen in hexadezimaler Schreibweise notiert werden. Ein Beispiel einer \gls{MAC}-Adresse könnte wie folgt aussehen: \commandbox{48-2C-6A-1E-59-3D}
+Bisher haben wir mehrheitlich darüber gesprochen, wie Datenpakete zwischen adressierten Empfängern (siehe \gls{IP}-Adressen) hin- und hergeschickt werden, und wie Addressen in (Sub-)Netzwerke unterteilt und in verständliche Namen umgewandelt werden können. Eine \gls{IP}-Addresse kann mit der Adresse eines Hauses verglichen werden. Allerdings legt der Briefträger die Briefe und Pakete nicht an einer Adresse ab, sondern in einem Briefkasten, also einem konkreten Objekt. Falls sich der Briefkasten oder sogar das ganze Haus ändert, so bleibt die Adresse doch dieselbe. Ähnlich dieser Analogie kann in einem Computer die gesamte Hardware ausgetauscht werden, inklusive der Netzwerkkarte, welche sich um das Verschicken und Empfangen von Daten kümmert, und trotzdem sollte der Datentransport zum Computer weiterhin funktionieren. Damit dies klappt, benötigen wir ein weiteres Protokoll, welches die \gls{IP}-Adresse in eine so genannte \gls{MAC}-Adresse umwandelt. 
+
+\begin{mydefinition}[\gls{MAC}-Adresse]
+	Die \gls{MAC}-Adresse ist die physische Adresse der Netzwerkkarte in einem Computer, also sozusagen der \enquote{Fingerabdruck} der Netzwerkkarte. Sie wird normalerweise mit 48 bit (= 6 Bytes) angegeben, welche normalerweise der Kürze wegen in hexadezimaler Schreibweise notiert werden. Ein Beispiel einer \gls{MAC}-Adresse könnte wie folgt aussehen: \commandbox{48-2C-6A-1E-59-3D}.
+\end{mydefinition}
 
 \subsubsection{ARP}
-Damit eine \gls{IP}-Adresse in eine \gls{MAC}-Adresse umgewandelt werden kann, wird ein weiteres Protokoll benötigt, das \gls{ARP}.
+Damit eine \gls{IP}-Adresse in eine \gls{MAC}-Adresse umgewandelt werden kann, wird ein weiteres Protokoll benötigt, das \gls{ARP}. Dieses wird jedes Mal ausgeführt, wenn ein Computer eine Nachricht an eine bestimmte \gls{IP}-Adresse senden will, aber die dazugehörige \gls{MAC}-Adresse nicht kennt. In diesem Fall sendet der Computer eine Anfrage an alle Computer im selben Subnetz (Broadcast), um die \gls{MAC}-Adresse des gewünschten Empfängers zu erfahren. Der Computer mit der gesuchten \gls{IP}-Adresse antwortet dann mit seiner \gls{MAC}-Adresse (Unicast) und der sendende Computer kann nun die Nachricht an den Empfänger weiterleiten.
 
 Ein Beispiel, wie das \gls{ARP}-Protokoll funktioniert, könnte wie folgt aussehen:
 \begin{itemize}
-	\item Computer \commandbox|192.168.0.33| will Nachricht senden an \commandbox|192.168.0.34| im selben Subnetz (\commandBluebox|255.255.255.0|)
-	\item \commandbox|192.168.0.33| sendet daher eine Nachricht an alle Computer in \commandbox|192.168.0.x|: ``Wer hat die IP \commandbox|192.168.0.34|''?
-	\item Computer \commandbox|192.168.0.34| antwortet: ``Ich! Meine MAC ist \commandbox|60:4E:46:F5:08:09|.''
+	\item Computer \commandbox|192.168.0.33| will Nachricht senden an \commandbox|192.168.0.34| im selben Subnetz (Subnetz-Maske: \commandBluebox|255.255.255.0|)
+	\item \commandbox|192.168.0.33| sendet daher eine Nachricht an alle Computer in \commandbox|192.168.0.x|: \enquote{Wer hat die IP \commandbox|192.168.0.34|}?
+	\item Computer \commandbox|192.168.0.34| antwortet: \enquote{Ich! Meine MAC ist \commandbox|60:4E:46:F5:08:09|.}
 	\item Nun kann der Computer seine Nachricht direkt an den nächsten Empfänger (\textit{gateway}) übergeben.
 \end{itemize}
+
+\begin{myexercise}[WireShark-Auszug]
+	Sie erhalten folgenden WireShark-Auszug eines \gls{ARP}-Protokolls. Beantworten Sie die Fragen dazu.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{Grundlagen_Info/07_Netzwerke/Figures/wiresharkARP.png}
+		\caption{WireShark-Auszug eines \gls{ARP}-Protokolls}
+		\label{fig:arp-wireshark}
+	\end{figure}
+	\begin{itemize}
+		\item Welche \gls{IP}-Adresse hat der Computer, der die Anfrage sendet?
+		\item Welche \gls{MAC}-Adresse hat der Computer, der die Anfrage sendet?
+		\item Welche \gls{IP}-Adresse wird in der Anfrage gesucht?
+		\item Welche \gls{MAC}-Adresse hat der Computer, der die Antwort sendet?
+	\end{itemize}	
+	\begin{myanswer}
+		\begin{itemize}
+			\item \gls{IP}-Adresse des Computers, der die Anfrage sendet: \commandbox|172.20.10.5|
+			\item \gls{MAC}-Adresse des Computers, der die Anfrage sendet: \commandbox|c6:ac:18:ce:15:45|
+			\item \gls{IP}-Adresse des gesuchten Commputers: \commandbox|172.20.10.1|
+			\item \gls{MAC}-Adresse des gesuchten Computers: \commandbox|56:eb:e9:30:25:64|
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
 
 \begin{mychallenge}[Weitere Filius-Aufgaben (Troubleshooting)]
 	Lösen Sie die Troubleshooting-Aufgaben 2.13 auf folgendem \href{https://mychallenge.mygymer.ch/base/?book=network}{Link}.
