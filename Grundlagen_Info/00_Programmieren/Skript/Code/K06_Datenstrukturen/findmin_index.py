@@ -9,5 +9,8 @@ def finde_kleinste_zahl(liste):
         index += 1
     print(f"Kleinste Zahl: {kleinste_zahl}, Index: {index_kleinste}")
 
+
 # Beispielaufruf der Funktion
-finde_kleinste_zahl([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, -5]) # gibt Kleinste Zahl: -5, Index: 10 aus
+finde_kleinste_zahl(
+    [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, -5]
+)  # gibt Kleinste Zahl: -5, Index: 10 aus

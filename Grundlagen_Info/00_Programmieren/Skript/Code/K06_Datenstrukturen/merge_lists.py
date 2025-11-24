@@ -7,4 +7,5 @@ def verschmelzen(A, B):
         i += 1
     print(C)
 
-verschmelzen([4, 2], [5, 9]) # Ausgabe: [4, 5, 2, 9]
+
+verschmelzen([4, 2], [5, 9])  # Ausgabe: [4, 5, 2, 9]

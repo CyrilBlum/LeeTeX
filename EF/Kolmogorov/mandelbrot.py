@@ -18,9 +18,7 @@ def mandelbrot(c, max_iter):
 
 # Generate the Mandelbrot set
 @jit(nopython=True, parallel=True)
-def generate_mandelbrot(
-    width, height, re_start, re_end, im_start, im_end, max_iter
-):
+def generate_mandelbrot(width, height, re_start, re_end, im_start, im_end, max_iter):
     image = np.zeros((height, width), dtype=np.float32)
     for x in range(width):
         for y in range(height):
@@ -40,9 +38,7 @@ max_iter = 500
 # Timing and execution
 print("Generating Mandelbrot set...")
 start = time()
-image = generate_mandelbrot(
-    width, height, re_start, re_end, im_start, im_end, max_iter
-)
+image = generate_mandelbrot(width, height, re_start, re_end, im_start, im_end, max_iter)
 end = time()
 print(f"Done in {end - start:.2f} seconds.")
 

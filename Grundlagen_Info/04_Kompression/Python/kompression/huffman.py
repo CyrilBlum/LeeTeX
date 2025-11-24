@@ -2,6 +2,7 @@ from fractions import Fraction
 
 # Huffman Coding in python
 
+
 # Creating tree nodes
 class NodeTree(object):
 
@@ -16,17 +17,17 @@ class NodeTree(object):
         return (self.left, self.right)
 
     def __str__(self):
-        return '%s_%s' % (self.left, self.right)
+        return "%s_%s" % (self.left, self.right)
 
 
 # Main function implementing huffman coding
-def huffman_code_tree(node, left=True, binString=''):
+def huffman_code_tree(node, left=True, binString=""):
     if type(node) is str:
         return {node: binString}
     (l, r) = node.children()
     d = dict()
-    d.update(huffman_code_tree(l, True, binString + '0'))
-    d.update(huffman_code_tree(r, False, binString + '1'))
+    d.update(huffman_code_tree(l, True, binString + "0"))
+    d.update(huffman_code_tree(r, False, binString + "1"))
     return d
 
 
@@ -47,8 +48,8 @@ def calculate_huffman_codes(frequencies):
 
     huffmanCode = huffman_code_tree(nodes[0][0])
 
-    print(' Char | Frequency       | Huffman code ')
-    print('---------------------------------------')
+    print(" Char | Frequency       | Huffman code ")
+    print("---------------------------------------")
     len_chars = 0
     len_text = 100
     total_frequency = sum(frequencies.values())
@@ -57,15 +58,17 @@ def calculate_huffman_codes(frequencies):
         frequency = frequencies[char]
         frequency_fraction = Fraction(frequency, total_frequency)
         len_chars += frequency / total_frequency * len_text * len(code)
-        print(' %-4r | %15s | %12s' % (char, frequency_fraction, code))
+        print(" %-4r | %15s | %12s" % (char, frequency_fraction, code))
 
-    print('---------------------------------------')
-    print('Total encoded length: %.2f' % len_chars)
+    print("---------------------------------------")
+    print("Total encoded length: %.2f" % len_chars)
     return huffmanCode
 
 
 # Example usage with a string
-string = 'AAAABBBBBCCCDDDE'
+string = "AAAABBBBBCCCDDDE"
+
+
 def calculate_frequencies(input_string):
     frequencies = {}
     for c in input_string:
@@ -75,12 +78,13 @@ def calculate_frequencies(input_string):
             frequencies[c] = 1
     return frequencies
 
+
 frequencies = calculate_frequencies(string)
 
 print("Using string:")
 calculate_huffman_codes(frequencies)
 
 # Example usage with predefined frequencies
-predefined_frequencies = {'A': 3, 'B': 15, 'C': 59, 'D': 10, 'E': 4, 'F': 9}
+predefined_frequencies = {"A": 3, "B": 15, "C": 59, "D": 10, "E": 4, "F": 9}
 print("\nUsing predefined frequencies:")
 calculate_huffman_codes(predefined_frequencies)

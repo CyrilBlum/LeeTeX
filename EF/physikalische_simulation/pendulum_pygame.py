@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 
 # --- Pendulum class --------------------------------------------------------
 
+
 class Pendulum:
-    def __init__(self, fixation_point, length, angle, bob_radius=20, g=500, mass = 1):
+    def __init__(self, fixation_point, length, angle, bob_radius=20, g=500, mass=1):
         """
         fixation_point: (x, y) tuple for the fixed point on the ceiling
         length: length of the string in pixels
@@ -34,7 +35,7 @@ class Pendulum:
         # <=> phi''(t) = f(phi(t))
         # so the rhs is equal to the angular acceleration
         return -(self.g / self.length) * math.sin(x)
-    
+
     def update_euler(self, dt):
         ## Integrate (simple forward Euler) ##
         phi_old = self.angle
@@ -57,10 +58,12 @@ class Pendulum:
         # 3. update phi'(t_{n}) --> phi'(t_{n+1})
         # phi'(t_{n+1}) = phi'(t_{n}) + 0.5 * dt * [ f(phi(t_{n})) + f(phi(t_{n+1})) ]
         self.angular_velocity += 0.5 * dt * (phi_prime_prime_tn + self.rhs(self.angle))
-    
+
     def update_energies(self):
-        self.Ekin.append(0.5 * self.mass * (self.length * self.angular_velocity)**2)
-        self.Epot.append(self.mass * self.g * (self.length - self.length *math.cos(self.angle)))
+        self.Ekin.append(0.5 * self.mass * (self.length * self.angular_velocity) ** 2)
+        self.Epot.append(
+            self.mass * self.g * (self.length - self.length * math.cos(self.angle))
+        )
         self.Etot.append(self.Ekin[-1] + self.Epot[-1])
 
     @property
@@ -86,6 +89,7 @@ class Pendulum:
 
 # --- Basic Pygame setup & game loop ---------------------------------------
 
+
 def main():
     pygame.init()
 
@@ -99,8 +103,8 @@ def main():
     # Create a pendulum.
     # fixation_point is at the top center of the window, 100 px from the top edge.
     fixation_point = (width // 2, 100)
-    length = 300 # pixels
-    angle = math.radians(30) # 30 degrees from vertical
+    length = 300  # pixels
+    angle = math.radians(30)  # 30 degrees from vertical
     pendulum = Pendulum(fixation_point, length, angle)
 
     running = True
@@ -123,7 +127,9 @@ def main():
         screen.fill((240, 240, 240))  # light gray background
 
         # Optional: draw "ceiling"
-        pygame.draw.line(screen, (0, 0, 0), (0, fixation_point[1]), (width, fixation_point[1]), 2)
+        pygame.draw.line(
+            screen, (0, 0, 0), (0, fixation_point[1]), (width, fixation_point[1]), 2
+        )
 
         pendulum.draw(screen)
 
@@ -141,6 +147,7 @@ def main():
     plt.legend()
     plt.title("Pendulum energies over time")
     plt.show()
+
 
 if __name__ == "__main__":
     main()

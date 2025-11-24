@@ -39,9 +39,7 @@ def display_text_in_groups(text, keylength=3, n_groups=11):
     print(text_out)
 
 
-def display_vigenere_all(
-    vige_dec, vige_enc, vige_key, n_chars=10, with_delim=False
-):
+def display_vigenere_all(vige_dec, vige_enc, vige_key, n_chars=10, with_delim=False):
     p_vige_key = vige_key * int(np.ceil(n_chars / len(vige_key)))
     p_vige_key = p_vige_key[:n_chars]
     p_vige_dec = vige_dec[:n_chars]
@@ -91,7 +89,7 @@ def show_letter_freq(text, show_diff_to_avg=False, ylim=None):
 
     if ylim is not None:
         ax.set_ylim(ylim)
-        
+
     if show_diff_to_avg:
         # Expected average frequency (1/26)
         avg_freq = 1 / 26 * 100  # in percentage
@@ -138,14 +136,10 @@ def show_letter_freq(text, show_diff_to_avg=False, ylim=None):
 def show_letter_freq_multiple(text_enc, text_dec, add_hline=True):
     fig, ax = plt.subplots()
     c_enc = Counter(text_enc)
-    c_enc = {
-        k: c_enc.get(k, 0) / len(text_enc) * 100 for k in string.ascii_uppercase
-    }
+    c_enc = {k: c_enc.get(k, 0) / len(text_enc) * 100 for k in string.ascii_uppercase}
 
     c_dec = Counter(text_dec)
-    c_dec = {
-        k: c_dec.get(k, 0) / len(text_dec) * 100 for k in string.ascii_uppercase
-    }
+    c_dec = {k: c_dec.get(k, 0) / len(text_dec) * 100 for k in string.ascii_uppercase}
 
     print(c_dec)
 
@@ -180,4 +174,3 @@ def show_letter_freq_multiple(text_enc, text_dec, add_hline=True):
     ax.set_ylim(0, 25)
     ax.yaxis.set_major_formatter(mtick.PercentFormatter())
     return fig, ax
-

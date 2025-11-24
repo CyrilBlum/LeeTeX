@@ -1,21 +1,21 @@
 import pygame as pg
 
-pg.init() # Pygame initialisieren (starten)
-WINDOW = (800, 600) # Fenstergrösse (als Tuple gespeichert)
-screen = pg.display.set_mode(WINDOW) # Fenster erstellen
+pg.init()  # Pygame initialisieren (starten)
+WINDOW = (800, 600)  # Fenstergrösse (als Tuple gespeichert)
+screen = pg.display.set_mode(WINDOW)  # Fenster erstellen
 icon = pg.image.load("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/icon.png")
-pg.display.set_caption("Mein erstes Game") # Fenstertitel setzen
+pg.display.set_caption("Mein erstes Game")  # Fenstertitel setzen
 pg.display.set_icon(icon)
 
 background_color = (50, 80, 120)
 
-clock = pg.time.Clock() # Clock für Zeitsteuerung erstellen
+clock = pg.time.Clock()  # Clock für Zeitsteuerung erstellen
 
 # Spieler-Rect und Geschwindigkeit
 player = pg.Rect(100, 100, 50, 50)
 speed = 5
 
-running = True # Hauptschleife
+running = True  # Hauptschleife
 while running:
     # --- Events ---
     for event in pg.event.get():
@@ -35,7 +35,7 @@ while running:
     player.clamp_ip(screen.get_rect())  # im Fenster halten
 
     # --- Render --- (zeichnen)
-    screen.fill(background_color) # Hintergrundfarbe setzen
+    screen.fill(background_color)  # Hintergrundfarbe setzen
     pg.draw.rect(screen, (255, 255, 255), player)  # Spieler zeichnen
 
     pg.display.flip()

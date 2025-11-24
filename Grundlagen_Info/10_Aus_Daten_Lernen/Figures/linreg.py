@@ -1,23 +1,26 @@
 import pandas as pd
 import statsmodels.api as sm
-import statsmodels.formula.api as smf # statsmodels als smf importieren
+import statsmodels.formula.api as smf  # statsmodels als smf importieren
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import subprocess
 import matplotlib.pyplot as plt
-plt.style.use('ggplot')
+
+plt.style.use("ggplot")
 
 
 def exercises_jupyter_nb_polizei_krim():
     """Regressionsanalyse für Polizei vs. Kriminalität in ipynb"""
-    df = pd.read_csv("GrundlagenInfo/10_AusDatenLernen/Data/polizei_vs_kriminalitaet.csv")
+    df = pd.read_csv(
+        "GrundlagenInfo/10_AusDatenLernen/Data/polizei_vs_kriminalitaet.csv"
+    )
     df.head()
     plt.scatter(df["Polizeistreifen"], df["Straftaten"])
     plt.xlabel("Polizeistreifen (police)")
     plt.ylabel("Straftaten (crime)")
     plt.title("Straftaten vs. Polizeistreifen")
     plt.close()
-    #plt.show()
+    # plt.show()
 
     # Regressionsanalyse
     lm = smf.ols(formula="Polizeistreifen ~ Straftaten", data=df).fit()
@@ -33,25 +36,28 @@ def exercises_jupyter_nb_polizei_krim():
     y = m * x + q
     plt.plot(x, y, color="red", label="Regressionslinie")
     plt.close()
-    #plt.show()
+    # plt.show()
 
     # Vorhersage der Straftaten bei 6 Polizeikontrollen
     polizeikontrollen = 6
     vorhergesagte_straftaten = m * polizeikontrollen + q
-    print(f"Vorhergesagte Straftaten bei {polizeikontrollen} Polizeikontrollen: {vorhergesagte_straftaten}")
+    print(
+        f"Vorhergesagte Straftaten bei {polizeikontrollen} Polizeikontrollen: {vorhergesagte_straftaten}"
+    )
+
 
 def exercises_jupyter_nb_cars_co2():
     df_cars = pd.read_csv("GrundlagenInfo/10_AusDatenLernen/Data/cars-co2.csv")
     df_cars.head()
 
     # Streudiagramm für jede unabhängige Variable gegenüber CO2-Emissionen zeichnen
-    independent_variables = ['Volume', 'Weight']
+    independent_variables = ["Volume", "Weight"]
     for variable in independent_variables:
-        plt.scatter(df_cars[variable], df_cars['CO2'])
+        plt.scatter(df_cars[variable], df_cars["CO2"])
         plt.xlabel(variable)
-        plt.ylabel('CO2')
-        plt.title(f'CO2 vs {variable}')
-        #plt.show()
+        plt.ylabel("CO2")
+        plt.title(f"CO2 vs {variable}")
+        # plt.show()
         plt.close()
 
     # Erstellen eines linearen Modells mit statsmodels
@@ -63,8 +69,15 @@ def exercises_jupyter_nb_cars_co2():
     # Wie viel CO2 wird bei einem Gewicht von 2000 und einem Volumen von 1000 emittiert?
     gewicht = 2000
     volumen = 1000
-    vorhergesagtes_co2 = lm_cars.params["Intercept"] + lm_cars.params["Weight"] * gewicht + lm_cars.params["Volume"] * volumen
-    print(f"Vorhergesagtes CO2 bei Gewicht {gewicht} und Volumen {volumen}: {vorhergesagtes_co2}")
+    vorhergesagtes_co2 = (
+        lm_cars.params["Intercept"]
+        + lm_cars.params["Weight"] * gewicht
+        + lm_cars.params["Volume"] * volumen
+    )
+    print(
+        f"Vorhergesagtes CO2 bei Gewicht {gewicht} und Volumen {volumen}: {vorhergesagtes_co2}"
+    )
+
 
 def exercises_jupyter_notebook(df):
     # Datei einlesen
@@ -78,10 +91,10 @@ def exercises_jupyter_notebook(df):
     m = (y2 - y1) / (x2 - x1)
     q = y1 - m * x1
 
+
 def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
     # Datei einlesen
-    df = pd.read_csv(
-        "GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
+    df = pd.read_csv("GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
     # Scatter plot zeichnen und Regressionslinie basierend auf m und q einzeichnen
     plt.scatter(df["Schlafdauer"], df["Note"], label="Datenpunkte")
 
@@ -101,7 +114,7 @@ def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
         # Linie zeichnen basierend auf m und q
         x_values = [df["Schlafdauer"].min(), df["Schlafdauer"].max()]
         y_values = [m * x + q for x in x_values]
-        
+
         plt.plot(x_values, y_values, color="blue", label="Gerade")
 
         # Vorhersage für ca. 8 Stunden Schlaf
@@ -112,30 +125,54 @@ def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
         y_pred = m * x + q
 
         if add_pred:
-            print(f"Vorhersage für {x:.2f} Stunden Schlaf: {y_pred:.2f}, Datenpunkt bei x={x:.2f}, y={y:.2f}")
+            print(
+                f"Vorhersage für {x:.2f} Stunden Schlaf: {y_pred:.2f}, Datenpunkt bei x={x:.2f}, y={y:.2f}"
+            )
 
             # Punkt bei x=8, y=y_pred einzeichnen
-            plt.scatter(x, y_pred, color="green", label=f"Vorhersage ({x:.1f}h Schlaf)", zorder=5)
+            plt.scatter(
+                x,
+                y_pred,
+                color="green",
+                label=f"Vorhersage ({x:.1f}h Schlaf)",
+                zorder=5,
+            )
 
             # Horizontale Linie von Marker zur y-Achse
-            plt.hlines(y=y_pred, xmin=df["Schlafdauer"].min(), xmax=x, colors="green", linestyles="dashed")
-            plt.vlines(x=x, ymax=y_pred, ymin=df["Note"].min(), colors="green", linestyles="dashed")
+            plt.hlines(
+                y=y_pred,
+                xmin=df["Schlafdauer"].min(),
+                xmax=x,
+                colors="green",
+                linestyles="dashed",
+            )
+            plt.vlines(
+                x=x,
+                ymax=y_pred,
+                ymin=df["Note"].min(),
+                colors="green",
+                linestyles="dashed",
+            )
             # Print the three data points as a pandas DataFrame
-            plt.plot([x, x], [y, y_pred], color="red", linestyle="dotted", label="Abweichung")
+            plt.plot(
+                [x, x], [y, y_pred], color="red", linestyle="dotted", label="Abweichung"
+            )
 
             # Prepare DataFrame with prediction and actual data
-            df_pred = pd.DataFrame({
-                "x (Schlafdauer Datenpunkt)": [x_values[0], x, x_values[1]],
-                "y (Note Datenpunkt)": [y_values[0], y, y_values[1]],
-            })
-            df_pred["y (Note Vorhersage)"] = df_pred["x (Schlafdauer Datenpunkt)"].apply(lambda x: m * x + q)
-            df_pred["Differenz"] = df_pred["y (Note Vorhersage)"] - df_pred["y (Note Datenpunkt)"]
+            df_pred = pd.DataFrame(
+                {
+                    "x (Schlafdauer Datenpunkt)": [x_values[0], x, x_values[1]],
+                    "y (Note Datenpunkt)": [y_values[0], y, y_values[1]],
+                }
+            )
+            df_pred["y (Note Vorhersage)"] = df_pred[
+                "x (Schlafdauer Datenpunkt)"
+            ].apply(lambda x: m * x + q)
+            df_pred["Differenz"] = (
+                df_pred["y (Note Vorhersage)"] - df_pred["y (Note Datenpunkt)"]
+            )
             # Format DataFrame to two decimals before printing
             print(df_pred.round(1).T)
-
-
-
-
 
     # Achsenbeschriftungen und Legende hinzufügen
     plt.xlabel("Schlafdauer (Stunden)")
@@ -143,12 +180,14 @@ def plot_schlafdauer_vs_note(draw_2p_reg_line=False, add_pred=False):
     plt.legend()
     # Save the plot to a PDF file with no white margins
     plt.savefig(
-        f"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note{('_2p_reg' if draw_2p_reg_line else '')}{('_pred' if add_pred else '')}.pdf", bbox_inches='tight')
+        f"GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note{('_2p_reg' if draw_2p_reg_line else '')}{('_pred' if add_pred else '')}.pdf",
+        bbox_inches="tight",
+    )
     plt.close()
 
+
 def plot_schlafdauer_vs_note_3points_res():
-    df = pd.read_csv(
-        "GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
+    df = pd.read_csv("GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
     # Drei beliebige Zeilen auswählen und in einem neuen DataFrame speichern
     df_sample = df.iloc[[3, 18, 19]]
 
@@ -170,7 +209,13 @@ def plot_schlafdauer_vs_note_3points_res():
 
     # Punkte beschriften
     for i, (x, y) in enumerate(zip(df_sample["Schlafdauer"], df_sample["Note"])):
-        plt.annotate(f"Punkt {i+1}", (x, y), textcoords="offset points", xytext=(5, 5), ha="center")
+        plt.annotate(
+            f"Punkt {i+1}",
+            (x, y),
+            textcoords="offset points",
+            xytext=(5, 5),
+            ha="center",
+        )
 
     # Mittlerer Punkt
     middle_point = df_sample.iloc[1]
@@ -178,30 +223,40 @@ def plot_schlafdauer_vs_note_3points_res():
     middle_y = middle_point["Note"]
 
     # Vorhergesagter y-Wert auf der Regressionslinie für den mittleren Punkt
-    predicted_y = y_min_max[0] + (y_min_max[1] - y_min_max[0]) * \
-        ((middle_x - x_min_max[0]) / (x_min_max[1] - x_min_max[0]))
+    predicted_y = y_min_max[0] + (y_min_max[1] - y_min_max[0]) * (
+        (middle_x - x_min_max[0]) / (x_min_max[1] - x_min_max[0])
+    )
 
     # Vertikale Linie, die den Unterschied zeigt
-    plt.vlines(middle_x, ymin=predicted_y, ymax=middle_y,
-            color="green", linestyle="dashed", label="Unterschied")
+    plt.vlines(
+        middle_x,
+        ymin=predicted_y,
+        ymax=middle_y,
+        color="green",
+        linestyle="dashed",
+        label="Unterschied",
+    )
 
     # Achsenbeschriftungen und Legende hinzufügen
     plt.xlabel("Schlafdauer (Stunden)")
     plt.ylabel("Note")
     plt.legend()
-    plt.savefig("GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_res.pdf", bbox_inches='tight')
+    plt.savefig(
+        "GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_res.pdf",
+        bbox_inches="tight",
+    )
     plt.close()
 
 
-
 def plot_schlafdauer_vs_note_ols():
-    df = pd.read_csv(
-        "GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
-    
+    df = pd.read_csv("GrundlagenInfo/10_AusDatenLernen/Data/schlafdauer_vs_note.csv")
+
     # Datenpunkte zeichnen
     plt.scatter(df["Schlafdauer"], df["Note"], label="Datenpunkte")
 
-    lm = smf.ols(formula="Note ~ Schlafdauer", data=df).fit() # Regressionsmodell erstellen
+    lm = smf.ols(
+        formula="Note ~ Schlafdauer", data=df
+    ).fit()  # Regressionsmodell erstellen
     m = lm.params["Schlafdauer"]
     q = lm.params["Intercept"]
 
@@ -214,8 +269,12 @@ def plot_schlafdauer_vs_note_ols():
     plt.xlabel("Schlafdauer (Stunden)")
     plt.ylabel("Note")
     plt.legend()
-    plt.savefig("GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_ols.pdf", bbox_inches='tight')
+    plt.savefig(
+        "GrundlagenInfo/10_AusDatenLernen/Figures/schlafdauer_vs_note_ols.pdf",
+        bbox_inches="tight",
+    )
     plt.close()
+
 
 def plot_3d_plane_with_points():
     # Reset matplotlib style to default
@@ -223,7 +282,7 @@ def plot_3d_plane_with_points():
 
     # Create a figure and a 3D axis
     fig = plt.figure(figsize=(10, 7))
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.add_subplot(111, projection="3d")
 
     # Define the grid for the plane
     x = np.linspace(2, 9, 10)
@@ -234,8 +293,9 @@ def plot_3d_plane_with_points():
     num_points = 50
     x_points = np.random.uniform(3, 9, num_points)
     y_points = np.random.uniform(3, 8, num_points)
-    z_points = np.clip(0.5 * x_points + 0.4 * y_points +
-                       np.random.uniform(-2, 2, num_points)-2, 1, 6)
+    z_points = np.clip(
+        0.5 * x_points + 0.4 * y_points + np.random.uniform(-2, 2, num_points) - 2, 1, 6
+    )
 
     # Perform Ordinary Least Squares (OLS) to calculate m, n, and c
     A = np.column_stack((x_points, y_points))
@@ -245,25 +305,31 @@ def plot_3d_plane_with_points():
     z = m * x + n * y + c
 
     # Plot the surface
-    ax.plot_surface(x, y, z, alpha=0.5, cmap='viridis')
+    ax.plot_surface(x, y, z, alpha=0.5, cmap="viridis")
 
     # Calculate the plane's z values for the random x and y points
     z_plane = m * x_points + n * y_points + c
 
     # Determine colors and markers: points above the plane are red crosses, below are blue circles
-    colors = ['red' if z > z_plane[i]
-              else 'blue' for i, z in enumerate(z_points)]
-    markers = ['x' if z > z_plane[i] else 'o' for i, z in enumerate(z_points)]
+    colors = ["red" if z > z_plane[i] else "blue" for i, z in enumerate(z_points)]
+    markers = ["x" if z > z_plane[i] else "o" for i, z in enumerate(z_points)]
 
     # Plot the random points with appropriate colors and markers
     for i in range(len(z_points)):
-        ax.scatter(x_points[i], y_points[i], z_points[i], c=colors[i],
-                   marker=markers[i], label="Datenpunkte" if i == 0 else "", s=20)
+        ax.scatter(
+            x_points[i],
+            y_points[i],
+            z_points[i],
+            c=colors[i],
+            marker=markers[i],
+            label="Datenpunkte" if i == 0 else "",
+            s=20,
+        )
 
     # Set axis labels
-    ax.set_xlabel('Schlaf (=$x_1$)')
-    ax.set_ylabel('Lernaufwand (=$x_2$)')
-    ax.set_zlabel('Note (=y)', rotation=90)
+    ax.set_xlabel("Schlaf (=$x_1$)")
+    ax.set_ylabel("Lernaufwand (=$x_2$)")
+    ax.set_zlabel("Note (=y)", rotation=90)
 
     # Set the z-axis limits to ensure grades go up to 6 only
     ax.set_zlim(1, 6)
@@ -274,13 +340,18 @@ def plot_3d_plane_with_points():
     # Show the updated plot
     # Save the plot to a PDF file with no white margins
     # Save the plot with extra padding to avoid cropping the z axis label
-    plt.savefig("GrundlagenInfo/10_AusDatenLernen/Figures/linreg_3d.pdf", bbox_inches='tight', pad_inches=0.3)
+    plt.savefig(
+        "GrundlagenInfo/10_AusDatenLernen/Figures/linreg_3d.pdf",
+        bbox_inches="tight",
+        pad_inches=0.3,
+    )
     plt.close()
 
     # Automatically trim whitespace using pdfcrop
     # subprocess.run(["pdfcrop", "--margins", "0 0 0 0",
     #                 "GrundlagenInfo/10_AusDatenLernen/Figures/linreg_3d.pdf",
     #                 "GrundlagenInfo/10_AusDatenLernen/Figures/linreg_3d.pdf"], check=True)
+
 
 if __name__ == "__main__":
     # Call the function to plot the 3D plane with points

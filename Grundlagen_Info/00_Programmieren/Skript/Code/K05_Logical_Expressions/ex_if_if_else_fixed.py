@@ -5,5 +5,6 @@ def beschreibe_wetter(temperatur):
         print("warm")
     else:
         print("kühl")
-    
+
+
 beschreibe_wetter(33)

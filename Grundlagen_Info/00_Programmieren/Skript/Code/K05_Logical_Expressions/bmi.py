@@ -28,4 +28,5 @@ def bmi_rueckmeldung(bmi, geschlecht):
     else:
         return "Ungültiges Geschlecht"
 
+
 print(bmi_rueckmeldung(22.5, "w"))

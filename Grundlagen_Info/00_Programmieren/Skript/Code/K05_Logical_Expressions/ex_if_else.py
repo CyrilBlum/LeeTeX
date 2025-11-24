@@ -4,4 +4,5 @@ def beschreibe_wetter(temperatur):
     else:
         print("Es ist kühl")
 
+
 beschreibe_wetter(19)

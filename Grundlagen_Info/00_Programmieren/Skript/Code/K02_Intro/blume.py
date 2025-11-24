@@ -10,4 +10,3 @@ for _ in range(10):
 
 # Turtle-Zeichnung stehen lassen
 t.done()
-

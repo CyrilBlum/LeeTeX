@@ -5,7 +5,7 @@ import pandas as pd
 with connect("school.db") as con:
     # Datenbank-Cursor (=Lese/Schreibestift) holen
     cursor = con.cursor()
-    
+
     # SQL-Code zur Erstellung der Tabelle
     sql = """
         CREATE TABLE IF NOT EXISTS students (
@@ -15,19 +15,20 @@ with connect("school.db") as con:
             date_of_birth DATE
         )
     """
-    
+
     # SQL ausführen
     cursor.execute("DROP TABLE IF EXISTS students;")
     cursor.execute(sql)
-    
-    
+
     # insert
     sql = """
         INSERT INTO students (first_name, last_name, year_of_entry, date_of_birth)
         VALUES
            ('{}', '{}', {}, {})
-    """.format("Cyril", "Wendl", 20+2, "1992-11-07")
-    
+    """.format(
+        "Cyril", "Wendl", 20 + 2, "1992-11-07"
+    )
+
     cursor.execute(sql)
     cursor.execute("SELECT * FROM students")
     df = pd.read_sql_query("SELECT * FROM students", con)

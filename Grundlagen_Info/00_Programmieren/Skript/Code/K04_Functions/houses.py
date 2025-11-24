@@ -1,6 +1,7 @@
 import turtle as t
 import math
 
+
 def haus(laenge):
     anzahl_mauern = 4
     # Mauern
@@ -21,10 +22,12 @@ def haus(laenge):
     t.fd(laenge)
     t.lt(90)
 
+
 def haeuserreihe(laenge_pro_haus):
     anzahl_haeuser = 5
     for _ in range(anzahl_haeuser):
         haus(laenge_pro_haus)
+
 
 seitenlaenge = 50
 haeuserreihe(seitenlaenge)

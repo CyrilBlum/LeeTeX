@@ -3,7 +3,8 @@ def harmonisches_mittel(a, b):
         print("Das kann man nicht berechnen.")
     else:
         ergebnis = 2 / ((1 / a) + (1 / b))
-        print("Das harmonische Mittel ist: "+str(round(ergebnis, 3)))
+        print("Das harmonische Mittel ist: " + str(round(ergebnis, 3)))
+
 
 # Beispielaufrufe
 harmonisches_mittel(9, 5)  # Gibt das harmonische Mittel aus

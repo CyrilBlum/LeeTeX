@@ -9,4 +9,3 @@ def caesar(text, verschiebung):
         text_verschoben += caesar_buchstabe(buchstabe, verschiebung)
 
     return text_verschoben
-

@@ -4,6 +4,7 @@ import threading
 SERVER_HOST = "192.168.1.23"  # anpassen
 SERVER_PORT = 5000
 
+
 def receive_messages(sock):
     while True:
         try:
@@ -14,6 +15,7 @@ def receive_messages(sock):
             print(data.decode(), end="")
         except:
             break
+
 
 def main():
     username = input("Benutzername: ")
@@ -36,6 +38,7 @@ def main():
         s.send(msg.encode())
 
     s.close()
+
 
 if __name__ == "__main__":
     main()

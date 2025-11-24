@@ -8,15 +8,16 @@ def bubble_sort(liste):
         # Innere Schleife: Vergleiche benachbarte Elemente
         for _ in range(len(liste) - 1 - i):
             # Wenn das aktuelle Element grösser als das nächste ist, tausche sie
-            if liste[j] > liste[j+1]:
+            if liste[j] > liste[j + 1]:
                 temp = liste[j]  # Temporäre Variable zum Speichern des Werts
-                liste[j] = liste[j+1]  # Tausche die Werte
-                liste[j+1] = temp  # Setze den gespeicherten Wert an die neue Position
+                liste[j] = liste[j + 1]  # Tausche die Werte
+                liste[j + 1] = temp  # Setze den gespeicherten Wert an die neue Position
             j += 1  # Erhöhe den inneren Schleifenzähler
         i += 1  # Erhöhe den äusseren Schleifenzähler
-        
+
     # Gib die sortierte Liste aus
     print(liste)
+
 
 # Beispielverwendung
 numbers = [64, 34, 25, 12, 22, 11, 90]

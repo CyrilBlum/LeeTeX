@@ -9,6 +9,7 @@ t.penup()
 t.setpos(0, 400)
 t.pendown()
 
+
 def zacke():
     t.lt(45)
     t.fd(40)
@@ -16,9 +17,11 @@ def zacke():
     t.fd(40)
     t.lt(45)
 
+
 def reihe():
     for _ in range(10):
         zacke()
+
 
 t.pu()
 t.bk(200)
@@ -26,7 +29,7 @@ t.pd()
 
 for _ in range(10):
     reihe()
-    
+
     t.pu()
     t.bk(10 * 40 * math.sqrt(2))
     t.rt(90)

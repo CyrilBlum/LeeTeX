@@ -13,6 +13,7 @@ class Fahrzeug:
     def info(self):
         return f"{self.marke} {self.modell} ({self.baujahr}), {self.km_stand} km"
 
+
 # Kindklasse
 class ElektroAuto(Fahrzeug):
     def __init__(self, marke, modell, baujahr, batterie_kapazitaet):
@@ -30,7 +31,8 @@ class ElektroAuto(Fahrzeug):
             self.km_stand += strecke
             self.ladezustand -= verbrauch
             print(
-                f"Fahre {strecke} km elektrisch. Ladezustand: {self.ladezustand:.1f}%")
+                f"Fahre {strecke} km elektrisch. Ladezustand: {self.ladezustand:.1f}%"
+            )
         else:
             print("Nicht genug Batterieladung für diese Strecke!")
 

@@ -7,6 +7,7 @@ from background import Background
 from ui import UI
 from audio import *
 
+
 class Game:
     def __init__(self):
         pg.init()
@@ -14,8 +15,18 @@ class Game:
         pg.display.set_caption("Collection Game")
         self.clock = pg.time.Clock()
         self.running = True
-        self.player = Player(randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), 10, 30, SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.items = [Item(randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), 30, 30, 10) for _ in range(NUM_ITEMS)]
+        self.player = Player(
+            randint(0, SCREEN_WIDTH),
+            randint(0, SCREEN_HEIGHT),
+            10,
+            30,
+            SCREEN_WIDTH,
+            SCREEN_HEIGHT,
+        )
+        self.items = [
+            Item(randint(0, SCREEN_WIDTH), randint(0, SCREEN_HEIGHT), 30, 30, 10)
+            for _ in range(NUM_ITEMS)
+        ]
         self.background = Background(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.ui = UI(self.screen)
         self.audio = AudioManager()
@@ -54,7 +65,9 @@ class Game:
     def update_time(self):
         elapsed_time = (pg.time.get_ticks() - self.start_time) / 1000
         remaining_time = max(0, 60 - elapsed_time)
-        pg.display.set_caption(f"Collection Game - Score: {self.score} - Time Left: {int(remaining_time)}s")
+        pg.display.set_caption(
+            f"Collection Game - Score: {self.score} - Time Left: {int(remaining_time)}s"
+        )
         if remaining_time <= 0:
             self.running = False
 

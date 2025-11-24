@@ -2,7 +2,7 @@
 x = float(input("Geben Sie einen Wert für x ein (zwischen 0.5 und 1): "))
 
 # Initialisierung der Variablen
-summe = .5
+summe = 0.5
 nenner = 3
 anzahl_brueche = 1
 

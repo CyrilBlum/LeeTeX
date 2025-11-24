@@ -18,9 +18,9 @@ BLUE = (50, 150, 255)
 PINK = (255, 100, 180)
 
 # Spiel-Objektgrössen
-PUCK_RADIUS = 10*SCREEN_WIDTH/400
-PADDLE_WIDTH = 50*SCREEN_WIDTH/400
-PADDLE_HEIGHT = 10*SCREEN_WIDTH/400
+PUCK_RADIUS = 10 * SCREEN_WIDTH / 400
+PADDLE_WIDTH = 50 * SCREEN_WIDTH / 400
+PADDLE_HEIGHT = 10 * SCREEN_WIDTH / 400
 PADDLE_Y = SCREEN_HEIGHT - 30
 
 # Bewegungsgeschwindigkeit
@@ -31,6 +31,7 @@ PADDLE_SPEED = 8
 font_big = pygame.font.SysFont("Arial", 50)
 font_small = pygame.font.SysFont("Arial", 30)
 
+
 # Spielzustände
 def reset_game():
     return {
@@ -39,8 +40,9 @@ def reset_game():
         "puck_vx": random.choice(PUCK_SPEED_OPTIONS),
         "puck_vy": random.choice(PUCK_SPEED_OPTIONS),
         "paddle_x": SCREEN_WIDTH // 2,
-        "score": 0
+        "score": 0,
     }
+
 
 game = reset_game()
 running = True
@@ -68,7 +70,9 @@ while running:
         game["paddle_x"] += PADDLE_SPEED
 
     # Paddle im Fenster halten
-    game["paddle_x"] = max(PADDLE_WIDTH // 2, min(SCREEN_WIDTH - PADDLE_WIDTH // 2, game["paddle_x"]))
+    game["paddle_x"] = max(
+        PADDLE_WIDTH // 2, min(SCREEN_WIDTH - PADDLE_WIDTH // 2, game["paddle_x"])
+    )
 
     if game_active:
         # Ballposition aktualisieren
@@ -76,14 +80,21 @@ while running:
         game["puck_y"] += game["puck_vy"]
 
         # Kollision mit Wänden
-        if game["puck_x"] - PUCK_RADIUS <= 0 or game["puck_x"] + PUCK_RADIUS >= SCREEN_WIDTH:
+        if (
+            game["puck_x"] - PUCK_RADIUS <= 0
+            or game["puck_x"] + PUCK_RADIUS >= SCREEN_WIDTH
+        ):
             game["puck_vx"] *= -1
         if game["puck_y"] - PUCK_RADIUS <= 0:
             game["puck_vy"] *= -1
 
         # Kollision mit Paddle
-        if (PADDLE_Y < game["puck_y"] + PUCK_RADIUS < PADDLE_Y + PADDLE_HEIGHT and
-            game["paddle_x"] - PADDLE_WIDTH // 2 < game["puck_x"] < game["paddle_x"] + PADDLE_WIDTH // 2):
+        if (
+            PADDLE_Y < game["puck_y"] + PUCK_RADIUS < PADDLE_Y + PADDLE_HEIGHT
+            and game["paddle_x"] - PADDLE_WIDTH // 2
+            < game["puck_x"]
+            < game["paddle_x"] + PADDLE_WIDTH // 2
+        ):
             game["puck_vy"] *= -1.05
             game["puck_vx"] *= 1.05
             game["score"] += 1
@@ -93,7 +104,9 @@ while running:
             game_active = False
 
     # Zeichnen
-    pygame.draw.circle(screen, BLUE, (int(game["puck_x"]), int(game["puck_y"])), PUCK_RADIUS)
+    pygame.draw.circle(
+        screen, BLUE, (int(game["puck_x"]), int(game["puck_y"])), PUCK_RADIUS
+    )
     paddle_rect = pygame.Rect(0, 0, PADDLE_WIDTH, PADDLE_HEIGHT)
     paddle_rect.center = (game["paddle_x"], PADDLE_Y)
     pygame.draw.rect(screen, WHITE, paddle_rect)

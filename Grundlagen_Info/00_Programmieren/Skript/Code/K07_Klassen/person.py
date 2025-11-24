@@ -2,14 +2,14 @@ class Person:
     def __init__(self, name, alter):
         self.name = name
         self.alter = alter
-    
+
     def vorstellen(self):
         print(f"Hallo, ich heisse {self.name} und  bin {self.alter} Jahre alt.")
-        
+
     def geburtstag_feiern(self):
         self.alter += 1
         print(f"{self.name} ist jetzt {self.alter} Jahre alt.")
-    
+
 
 # Objekte der Klasse 'Person' erstellen
 anna = Person("Anna", 16)
@@ -17,7 +17,7 @@ jan = Person("Jan", 17)
 
 # Methoden aufrufen
 anna.vorstellen()  # Ausgabe: Hallo, ich heisse Anna und bin 16 Jahre alt.
-jan.vorstellen()   # Ausgabe: Hallo, ich heisse Jan und bin 17 Jahre alt.
+jan.vorstellen()  # Ausgabe: Hallo, ich heisse Jan und bin 17 Jahre alt.
 
 # Geburtstag feiern
 anna.geburtstag_feiern()  # Ausgabe: Anna ist jetzt 17 Jahre alt.

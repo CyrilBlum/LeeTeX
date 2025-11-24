@@ -6,17 +6,22 @@ from functools import reduce
 from vigenere import *
 from helpers import *
 
+
 def count_ngrams(text, n, top_k):
-    ngrams = [text[i:i+n] for i in range(len(text)-n+1)]
+    ngrams = [text[i : i + n] for i in range(len(text) - n + 1)]
     counter = Counter(ngrams)
     return counter.most_common(top_k)
+
 
 def find_positions(ngrams, text):
     positions = {}
     for ng in ngrams:
-        pos_list = [i+1 for i in range(len(text) - len(ng) + 1) if text[i:i+len(ng)] == ng]
+        pos_list = [
+            i + 1 for i in range(len(text) - len(ng) + 1) if text[i : i + len(ng)] == ng
+        ]
         positions[ng] = pos_list
     return positions
+
 
 def prime_factors(n):
     factors = []
@@ -33,14 +38,12 @@ def prime_factors(n):
         factors.append(n)
     return factors
 
+
 def gcd_of_differences_with_primes(position_dict):
     result = {}
     for ngram, positions in position_dict.items():
         if len(positions) < 2:
-            result[ngram] = {
-                'gcd': None,
-                'differences': []
-            }
+            result[ngram] = {"gcd": None, "differences": []}
             continue
 
         differences_info = []
@@ -49,21 +52,19 @@ def gcd_of_differences_with_primes(position_dict):
         for a, b in combinations(positions, 2):
             diff = abs(a - b)
             differences.append(diff)
-            differences_info.append({
-                'start': a,
-                'end': b,
-                'difference': diff,
-                'prime_factors': prime_factors(diff)
-            })
+            differences_info.append(
+                {
+                    "start": a,
+                    "end": b,
+                    "difference": diff,
+                    "prime_factors": prime_factors(diff),
+                }
+            )
 
         gcd_value = reduce(math.gcd, differences)
-        result[ngram] = {
-            'gcd': gcd_value,
-            'differences': differences_info
-        }
-    
-    return result
+        result[ngram] = {"gcd": gcd_value, "differences": differences_info}
 
+    return result
 
 
 def test_slides():
@@ -79,18 +80,19 @@ def test_slides():
     result = gcd_of_differences(result_pos)
     print(result)
 
+
 def test_arbeitsblatt():
     # code for Kasiski Arbeitsblatt
-    text= "UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ"
+    text = "UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ"
 
     # get 5 most common 3-grams
     result = count_ngrams(text, 3, 5)
     print(result)
-    
+
     # chose top two 3-grams
     ngrams = ["IOO", "OCE"]
 
-    # find positions of 3-grams in text 
+    # find positions of 3-grams in text
     result_pos = find_positions(ngrams, text)
     print(result_pos)
 
@@ -99,16 +101,11 @@ def test_arbeitsblatt():
     for key, val in result.items():
         print("{}:".format(key))
         for subkey, subval in val.items():
-            print("{}:{}".format(subkey,subval))
-
-
+            print("{}:{}".format(subkey, subval))
 
 
 def insert_subscripts_latex_wrapped(
-    text: str,
-    n: int,
-    line_length: int = 80,
-    highlight_ngrams=None
+    text: str, n: int, line_length: int = 80, highlight_ngrams=None
 ) -> str:
     if highlight_ngrams is None:
         highlight_ngrams = []
@@ -129,7 +126,9 @@ def insert_subscripts_latex_wrapped(
             matched = False
             for ngram in highlight_ngrams:
                 length = len(ngram)
-                segment = ''.join(tokens[j][0] for j in range(i, min(i+length, len(tokens))))
+                segment = "".join(
+                    tokens[j][0] for j in range(i, min(i + length, len(tokens)))
+                )
                 if segment == ngram:
                     # Markiere alle betroffenen Tokens
                     for j in range(length):
@@ -142,7 +141,7 @@ def insert_subscripts_latex_wrapped(
     # Step 3: Baue Zeilen mit jeweils genau line_length sichtbaren Zeichen
     lines = []
     for i in range(0, len(tokens), line_length):
-        line = ''.join(latex for _, latex in tokens[i:i+line_length])
+        line = "".join(latex for _, latex in tokens[i : i + line_length])
         lines.append(line)
 
     # Step 4: Zusammensetzen mit Zeilenabstand
@@ -151,25 +150,17 @@ def insert_subscripts_latex_wrapped(
     return r"\begin{alltt}" + "\n" + latex_body + "\n" + r"\end{alltt}"
 
 
-
-
-
-
-
-
 # long_text="UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ"
 # print(insert_subscripts_latex_wrapped(long_text,10,60, ["IOO", "OCE"]))
 # #test_arbeitsblatt()
 
 
-
-
 if __name__ == "__main__":
     # exercise 1
-    long_text="UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ"
-    print(insert_subscripts_latex_wrapped(long_text,10,60, ["IOO"]))
+    long_text = "UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ"
+    print(insert_subscripts_latex_wrapped(long_text, 10, 60, ["IOO"]))
 
     # exercise 2
-    long_text="UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ"
-    print(insert_subscripts_latex_wrapped(long_text,10,60, ["IOO"]))
-    #test_arbeitsblatt()
+    long_text = "UEUIOOCEUDIWIOOWRRCLWVUQURRCLWVNDTHXETHERRCFKRTWVSFYOQRNJJTGRSVUAVIOOCEQEIHRUIYOHITQLNJZNJVSEVRJRUILNGUEUIOOCEUDIWIOOWHRVRWVAXWZXIOOCEQIOOWAWDEWVAXWUQUWRCLWVDLVNDVCKJTHETDXEYFMUFLOVRQZCKKSPVHUYOHIEQ"
+    print(insert_subscripts_latex_wrapped(long_text, 10, 60, ["IOO"]))
+    # test_arbeitsblatt()

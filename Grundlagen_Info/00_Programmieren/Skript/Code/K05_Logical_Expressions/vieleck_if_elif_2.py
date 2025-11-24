@@ -1,5 +1,6 @@
 import turtle as t
 
+
 def zeichne_vieleck():
     n = int(input("Gib eine Zahl ein"))
     if n == 1:
@@ -21,5 +22,5 @@ def zeichne_vieleck():
         print("Bitte eine Zahl grösser oder gleich 1 eingeben.")
     t.done()
 
-zeichne_vieleck()
 
+zeichne_vieleck()

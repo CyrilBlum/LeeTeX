@@ -1,12 +1,13 @@
 class Schueler:
     schule = "Kantonsschule im Lee"  # Klassenattribut
-    
+
     def __init__(self, name, klasse):
         self.name = name  # Instanzattribut
         self.klasse = klasse  # Instanzattribut
-    
+
     def info(self):
         return f"{self.name}, Klasse {self.klasse}, {self.schule}"
+
 
 # Objekte erstellen
 s_1 = Schueler("Lisa", "3a")

@@ -1,4 +1,6 @@
 import turtle as t
+
+
 def dreieck():
     t.rt(30)
     t.fd(100)
@@ -7,6 +9,7 @@ def dreieck():
     t.rt(120)
     t.fd(100)
     t.rt(90)
+
 
 # change initial position
 t.pu()

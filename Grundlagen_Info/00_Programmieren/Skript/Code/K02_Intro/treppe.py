@@ -9,4 +9,3 @@ for _ in range(6):
 
 t.hideturtle()
 t.done()
-

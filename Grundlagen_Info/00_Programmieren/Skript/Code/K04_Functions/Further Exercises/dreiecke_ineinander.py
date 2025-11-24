@@ -1,5 +1,6 @@
 import turtle as t
 
+
 def dreieck(laenge):
     for i in range(3):
         t.forward(laenge)
@@ -12,6 +13,7 @@ def dreiecke_ineinander(anzahl, laenge):
         t.forward(laenge / 2)
         laenge = laenge / 2
         t.left(60)
+
 
 t.speed(0)
 dreiecke_ineinander(5, 200)

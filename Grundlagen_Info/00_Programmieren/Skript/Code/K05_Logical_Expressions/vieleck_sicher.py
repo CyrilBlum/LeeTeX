@@ -1,5 +1,6 @@
 import turtle as t
 
+
 def vielecke_sicher(anzahl, seite):
     if anzahl < 1:
         return
@@ -12,6 +13,7 @@ def vielecke_sicher(anzahl, seite):
             t.forward(seite)
             t.left(360 / anzahl)
         t.done()
+
 
 # Beispielaufruf
 vielecke_sicher(5, 100)

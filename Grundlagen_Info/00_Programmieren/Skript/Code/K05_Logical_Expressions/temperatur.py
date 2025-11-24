@@ -4,8 +4,8 @@ def temperatur_ist_unangenehm(temperatur):
     else:
         print("Angenehme Temperatur")
 
+
 temperatur_ist_unangenehm(5)
 temperatur_ist_unangenehm(15)
 temperatur_ist_unangenehm(25)
 temperatur_ist_unangenehm(35)
-

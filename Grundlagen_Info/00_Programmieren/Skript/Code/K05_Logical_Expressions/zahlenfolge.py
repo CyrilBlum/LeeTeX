@@ -1,4 +1,4 @@
-def zahlenfolge(x):    
+def zahlenfolge(x):
     while x > 1:
         print(x, " -> ")
         if x % 2 == 0:
@@ -6,6 +6,7 @@ def zahlenfolge(x):
         else:
             x = 3 * x + 1
     print(x)  # Ausgabe der letzten Zahl (1)
+
 
 # Beispielaufruf
 zahlenfolge(7)

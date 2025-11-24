@@ -2,7 +2,9 @@ from vigenere import *
 from caesar import *
 from friedman import *
 from monoalphabetic import *
-plt.style.use('ggplot')
+
+plt.style.use("ggplot")
+
 
 def caesar_main():
     # kurzer Text (Skript Aufgabe)
@@ -10,18 +12,17 @@ def caesar_main():
     text_kurz_c = caesar(text_kurz, 4)
     print(text_kurz_c)
     fig, ax = show_letter_freq(text_kurz_c)
-#    plt.show()
-    plt.savefig("../../Figures/caesar-freq-exercise.pdf",
-                format="pdf", bbox_inches="tight")
+    #    plt.show()
+    plt.savefig(
+        "../../Figures/caesar-freq-exercise.pdf", format="pdf", bbox_inches="tight"
+    )
 
     text_lang = open("Texts/Kafka.txt").readlines()[0]
     text_lang = preprocess_text(text_lang)
     text_lang_c = caesar(text_lang, 2)
-    fig, ax = show_letter_freq(text_lang_c, ylim=(0,20))
+    fig, ax = show_letter_freq(text_lang_c, ylim=(0, 20))
     # plt.show()
-    plt.savefig("../../Figures/caesar-freq.pdf",
-                format="pdf", bbox_inches="tight")
-
+    plt.savefig("../../Figures/caesar-freq.pdf", format="pdf", bbox_inches="tight")
 
 
 def vigenere_main():
@@ -34,10 +35,9 @@ def vigenere_main():
     text_lang = open("Texts/Kafka.txt").readlines()[0]
     text_lang_v = vigenere(text_lang, "ICH")
     print("LANGER TEXT", text_lang_v[:400])
-    fig, ax = show_letter_freq(text_lang_v, ylim=(0,20))
+    fig, ax = show_letter_freq(text_lang_v, ylim=(0, 20))
     # plt.show()
-    plt.savefig("../../Figures/vigenere-freq.pdf",
-                format="pdf", bbox_inches="tight")
+    plt.savefig("../../Figures/vigenere-freq.pdf", format="pdf", bbox_inches="tight")
 
     # vigenere frequencies by group
 
@@ -47,7 +47,14 @@ def vigenere_main():
     print(text_lang[:20])
     print(text_lang_v[:20])
 
-    print(vigenere("MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIPCQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB", "ICH", False))
+    print(
+        vigenere(
+            "MUZKJLQPAWJUMHYIILLCZAUPMRLZHLSVCMTZBCULGUPCIMPDQGTIPCQILVGYMGUBUJPNBMUZMNAPGYHNPKJLOTHBWSIVPWPKIHB",
+            "ICH",
+            False,
+        )
+    )
+
 
 # generate friedman figures
 def friedman_main(savefig=True):
@@ -60,29 +67,48 @@ def friedman_main(savefig=True):
 
     # plot letter frequencies for each subgroup (can only be done correctly if true keylength is known)
     keylength = len(key)
-    max_keylength = keylength+2
-    for keylen_test in range(max_keylength+1):
+    max_keylength = keylength + 2
+    for keylen_test in range(max_keylength + 1):
         for i in range(keylen_test):
             text_slice = text[i::keylen_test]
             # calculate friedman'sche Charakteristik
             fc = calculate_fc(text_slice)
-            print("Keylength: %2d, Group: %2d, FC_T:%.2f%%" % (keylen_test, i, fc*100))
+            print(
+                "Keylength: %2d, Group: %2d, FC_T:%.2f%%" % (keylen_test, i, fc * 100)
+            )
 
             # plot letter frequences
-            if i==0 and keylen_test==keylength:
+            if i == 0 and keylen_test == keylength:
                 fig, ax = show_letter_freq(text_slice, show_diff_to_avg=True)
-                ax.set_aspect(.5)
+                ax.set_aspect(0.5)
                 if savefig:
-                    plt.savefig("../../Figures/vigenere-"+"len"+str(keylen_test)+"-group"+str(i+1) +
-                            "-avg.pdf", format="pdf", bbox_inches="tight")
+                    plt.savefig(
+                        "../../Figures/vigenere-"
+                        + "len"
+                        + str(keylen_test)
+                        + "-group"
+                        + str(i + 1)
+                        + "-avg.pdf",
+                        format="pdf",
+                        bbox_inches="tight",
+                    )
                     plt.close()
                 else:
                     plt.show()
-                
+
             fig, ax = show_letter_freq(text_slice, show_diff_to_avg=False)
             ax.set_title(f"$FC_T: {fc:.2%}%$%")
             if savefig:
-                plt.savefig("../../Figures/vigenere-"+"len"+str(keylen_test)+"-group"+str(i+1)+".pdf", format="pdf", bbox_inches="tight")
+                plt.savefig(
+                    "../../Figures/vigenere-"
+                    + "len"
+                    + str(keylen_test)
+                    + "-group"
+                    + str(i + 1)
+                    + ".pdf",
+                    format="pdf",
+                    bbox_inches="tight",
+                )
                 plt.close()
             else:
                 plt.show()
@@ -105,9 +131,9 @@ def monoalphabetic_main():
     print(ciphertext_new)
     print(shifts)
 
+
 if __name__ == "__main__":
     caesar_main()
     # friedman_main()
     # monoalphabetic_main()
     vigenere_main()
-

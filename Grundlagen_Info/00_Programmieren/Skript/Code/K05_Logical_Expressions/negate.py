@@ -6,8 +6,6 @@ def temperatur_ist_angenehm(temperatur):
         print("Die Temperatur ist nicht angenehm.")
 
 
-
-
 # Aufgabe
 def ist_nicht_volljaehrig(alter):
     """
@@ -20,6 +18,7 @@ def ist_nicht_volljaehrig(alter):
     else:
         print(True)
 
+
 # Lösung:
 def ist_nicht_volljaehrig_loesung(alter):
     """
@@ -30,6 +29,7 @@ def ist_nicht_volljaehrig_loesung(alter):
     nicht_volljaehrig = not ist_volljaehrig
     print(nicht_volljaehrig)
 
+
 # Aufgabe 2: Ist die Temperatur nicht angenehm? (zwischen 20 und 25 Grad)
 def ist_temperatur_nicht_angenehm(temperatur):
     """
@@ -38,6 +38,7 @@ def ist_temperatur_nicht_angenehm(temperatur):
     """
     # Schüler-Code:
     pass
+
 
 # Lösung:
 def ist_temperatur_nicht_angenehm_loesung(temperatur):
@@ -49,6 +50,7 @@ def ist_temperatur_nicht_angenehm_loesung(temperatur):
     nicht_angenehm = not ist_angenehm
     print(nicht_angenehm)
 
+
 # Aufgabe 3: Ist die Zahl weder positiv noch gerade?
 def ist_weder_positiv_noch_gerade(zahl):
     """
@@ -57,6 +59,7 @@ def ist_weder_positiv_noch_gerade(zahl):
     """
     # Schüler-Code:
     pass
+
 
 # Lösung:
 def ist_weder_positiv_noch_gerade_loesung(zahl):
@@ -69,6 +72,7 @@ def ist_weder_positiv_noch_gerade_loesung(zahl):
     weder_positiv_noch_gerade = not (ist_positiv or ist_gerade)
     print(weder_positiv_noch_gerade)
 
+
 # Aufgabe 4: Sind beide Aussagen falsch? (z.B. "Es regnet" und "Es ist kalt")
 def sind_beide_aussagen_falsch(aussage1, aussage2):
     """
@@ -78,6 +82,7 @@ def sind_beide_aussagen_falsch(aussage1, aussage2):
     """
     # Schüler-Code:
     pass
+
 
 # Lösung:
 def sind_beide_aussagen_falsch_loesung(aussage1, aussage2):
@@ -90,6 +95,7 @@ def sind_beide_aussagen_falsch_loesung(aussage1, aussage2):
     beide_falsch = not beide_wahr
     print(beide_falsch)
 
+
 # Aufgabe 5: Ist die Zahl nicht im Bereich von 10 bis 50 (inklusive)?
 def ist_zahl_nicht_im_bereich(zahl):
     """
@@ -98,6 +104,7 @@ def ist_zahl_nicht_im_bereich(zahl):
     """
     # Schüler-Code:
     pass
+
 
 # Lösung:
 def ist_zahl_nicht_im_bereich_loesung(zahl):
@@ -108,6 +115,7 @@ def ist_zahl_nicht_im_bereich_loesung(zahl):
     im_bereich = 10 <= zahl <= 50
     nicht_im_bereich = not im_bereich
     print(nicht_im_bereich)
+
 
 # Beispielaufrufe für die Lösungen:
 # ist_nicht_volljaehrig_loesung(16)  # True

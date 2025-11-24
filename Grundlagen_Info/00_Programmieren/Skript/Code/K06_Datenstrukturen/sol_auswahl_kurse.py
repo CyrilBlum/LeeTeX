@@ -3,7 +3,7 @@ schueler_b = ["Mathe", "Englisch", "Informatik", "Kunst", "Musik"]
 schueler_c = ["Informatik", "Englisch", "Sport", "Geschichte"]
 
 pflichtkurse = ["Mathe", "Englisch"]
-wahlkurse   = ["Informatik", "Biologie", "Kunst", "Musik", "Sport", "Geschichte"]
+wahlkurse = ["Informatik", "Biologie", "Kunst", "Musik", "Sport", "Geschichte"]
 
 # Mengen
 set_a = set(schueler_a)

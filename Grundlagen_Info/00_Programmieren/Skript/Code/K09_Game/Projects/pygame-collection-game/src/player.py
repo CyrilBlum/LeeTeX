@@ -1,5 +1,6 @@
 import pygame as pg
 
+
 class Player:
     def __init__(self, x, y, width, height, screen_width, screen_height):
         self.rect = pg.Rect(x, y, width, height)
@@ -17,7 +18,7 @@ class Player:
             self.rect.y -= self.speed
         if keys[pg.K_DOWN]:
             self.rect.y += self.speed
-    
+
     def update(self):
         # Keep the player within the screen bounds (no drawing here)
         self.rect.clamp_ip(pg.Rect(0, 0, self.screen_width, self.screen_height))

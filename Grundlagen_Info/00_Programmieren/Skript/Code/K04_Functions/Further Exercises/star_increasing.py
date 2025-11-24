@@ -1,9 +1,11 @@
 import turtle as t
 
+
 def star(laenge):
     for _ in range(5):
         t.forward(laenge)
         t.right(144)
+
 
 t.lt(90)
 t.speed(40)

@@ -1,9 +1,9 @@
 # Mengen mit Früchten erstellen
-set_1 = {'Apfel', 'Banane', 'Orange', 'Traube'}
+set_1 = {"Apfel", "Banane", "Orange", "Traube"}
 
 # Sets können auch aus Listen erstellt werden
-liste_2 = ['Banane', 'Orange', 'Kiwi', 'Mango']
-liste_3 = ['Traube', 'Kiwi', 'Melone']
+liste_2 = ["Banane", "Orange", "Kiwi", "Mango"]
+liste_3 = ["Traube", "Kiwi", "Melone"]
 # Listen zu Sets konvertieren
 set_2 = set(liste_2)
 set_3 = set(liste_3)

@@ -1,16 +1,21 @@
 class Tier:
-	def geraeusch(self):
-		return "Ein Tier macht ein Geräusch"
+    def geraeusch(self):
+        return "Ein Tier macht ein Geräusch"
+
+
 class Hund(Tier):
-	def geraeusch(self):
-		return "Wuff"
+    def geraeusch(self):
+        return "Wuff"
+
+
 class Katze(Tier):
-	def geraeusch(self):
-		return "Miau"
+    def geraeusch(self):
+        return "Miau"
+
 
 tiere = [Tier(), Hund(), Katze()]
 for tier in tiere:
-	print(tier.geraeusch())
+    print(tier.geraeusch())
 
 # Ausgabe:
 # Ein Tier macht ein Geräusch

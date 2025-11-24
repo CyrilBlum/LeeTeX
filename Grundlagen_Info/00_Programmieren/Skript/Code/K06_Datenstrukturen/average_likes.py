@@ -1,8 +1,5 @@
-likes = {
-    "Anna": [5, 8, 12],
-    "Ben": [3, 7, 9],
-    "Clara": [10, 15, 20]
-}
+likes = {"Anna": [5, 8, 12], "Ben": [3, 7, 9], "Clara": [10, 15, 20]}
+
 
 def average_likes(username):
     if username in likes:
@@ -11,6 +8,7 @@ def average_likes(username):
         print(f"Durchschnittliche Likes für {username}: {avg:.2f}")
     else:
         print(f"Nutzer '{username}' nicht gefunden.")
+
 
 # Beispielaufruf:
 # average_likes("Anna")

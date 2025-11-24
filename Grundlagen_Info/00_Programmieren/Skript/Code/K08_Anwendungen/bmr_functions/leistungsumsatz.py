@@ -11,11 +11,11 @@ def berechne_leistungsumsatz(l_zeit, l_kcal):
     """
     kalorienverbrauch = 0
     i = 0
-    
+
     for i in range(len(l_zeit)):
         kalorienverbrauch += l_zeit[i] * l_kcal[i]
         i += 1
-    
+
     return kalorienverbrauch
 
 

@@ -1,13 +1,18 @@
 import pygame as pg
 import random
+
 pg.init()
 
-info = pg.display.Info() # Informationen zum aktuellen Geräte-Display abrufen
+info = pg.display.Info()  # Informationen zum aktuellen Geräte-Display abrufen
 print(info)
 
-WIDTH = info.current_w # verwende doppelte Auflösung für bessere Qualität auf hochauflösenden Displays
-HEIGHT = info.current_h # verwende doppelte Auflösung für bessere Qualität auf hochauflösenden Displays
-FPS = 120 # Ziel-Bildwiederholrate
+WIDTH = (
+    info.current_w
+)  # verwende doppelte Auflösung für bessere Qualität auf hochauflösenden Displays
+HEIGHT = (
+    info.current_h
+)  # verwende doppelte Auflösung für bessere Qualität auf hochauflösenden Displays
+FPS = 120  # Ziel-Bildwiederholrate
 
 screen = pg.display.set_mode((WIDTH, HEIGHT), pg.FULLSCREEN)
 pg.display.set_caption("Pong")
@@ -17,14 +22,18 @@ background_color = (50, 80, 120)
 # Schläger
 paddle_w = WIDTH * 0.02
 paddle_h = HEIGHT // 5
-paddle_speed = WIDTH * 0.01 / (FPS/60)
+paddle_speed = WIDTH * 0.01 / (FPS / 60)
 left_paddle = pg.Rect(30, HEIGHT // 2 - paddle_h // 2, paddle_w, paddle_h)
-right_paddle = pg.Rect(WIDTH - 30 - paddle_w, HEIGHT // 2 - paddle_h // 2, paddle_w, paddle_h)
+right_paddle = pg.Rect(
+    WIDTH - 30 - paddle_w, HEIGHT // 2 - paddle_h // 2, paddle_w, paddle_h
+)
 
 # Ball (als Rechteck)
 ball_size = WIDTH * 0.02
-ball = pg.Rect(WIDTH // 2 - ball_size // 2, HEIGHT // 2 - ball_size // 2, ball_size, ball_size) # ball startet in der Mitte
-ball_speed = WIDTH * 0.008 / (FPS/60)
+ball = pg.Rect(
+    WIDTH // 2 - ball_size // 2, HEIGHT // 2 - ball_size // 2, ball_size, ball_size
+)  # ball startet in der Mitte
+ball_speed = WIDTH * 0.008 / (FPS / 60)
 # Geschwindigkeit als separate Variablen
 ball_speed_x = random.choice((-1, 1)) * ball_speed
 ball_speed_y = random.choice((-1, 1)) * ball_speed
@@ -35,9 +44,15 @@ right_score = 0
 font = pg.font.Font(None, int(HEIGHT * 0.1))
 
 # Sounds
-bg_sound = pg.mixer.Sound("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/retro-arcade-game-music.mp3")
-bounce_sound = pg.mixer.Sound("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/laser.mp3")
-score_sound = pg.mixer.Sound("Grundlagen_Info/12_Pygame_CE/Project_Files/Platform/audio/shoot.wav")
+bg_sound = pg.mixer.Sound(
+    "Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/retro-arcade-game-music.mp3"
+)
+bounce_sound = pg.mixer.Sound(
+    "Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/laser.mp3"
+)
+score_sound = pg.mixer.Sound(
+    "Grundlagen_Info/12_Pygame_CE/Project_Files/Platform/audio/shoot.wav"
+)
 
 # Hintergrundmusik
 bg_sound.play(loops=-1)
@@ -75,7 +90,6 @@ while running:
                 reset_match()
             elif event.key == pg.K_ESCAPE:
                 running = False
-
 
     # Steuerung der Schläger
     keys = pg.key.get_pressed()
@@ -131,7 +145,13 @@ while running:
     # Zeichnen
     screen.fill(background_color)
     # Mittellinie
-    pg.draw.line(screen, (255, 255, 255), (WIDTH // 2, 0), (WIDTH // 2, HEIGHT), int(WIDTH*0.005))
+    pg.draw.line(
+        screen,
+        (255, 255, 255),
+        (WIDTH // 2, 0),
+        (WIDTH // 2, HEIGHT),
+        int(WIDTH * 0.005),
+    )
     # Schläger und Ball
     pg.draw.rect(screen, (240, 220, 90), left_paddle)
     pg.draw.rect(screen, (240, 220, 90), right_paddle)

@@ -3,8 +3,9 @@ import threading
 import tkinter as tk
 from tkinter import scrolledtext, messagebox
 
-SERVER_HOST = "192.168.1.23"   # anpassen
+SERVER_HOST = "192.168.1.23"  # anpassen
 SERVER_PORT = 5000
+
 
 class ChatClient:
     def __init__(self, root):
@@ -18,11 +19,15 @@ class ChatClient:
         tk.Label(top_frame, text="Benutzername:").pack(side=tk.LEFT)
         self.name_entry = tk.Entry(top_frame, width=15)
         self.name_entry.pack(side=tk.LEFT, padx=5)
-        self.connect_button = tk.Button(top_frame, text="Verbinden", command=self.connect)
+        self.connect_button = tk.Button(
+            top_frame, text="Verbinden", command=self.connect
+        )
         self.connect_button.pack(side=tk.LEFT)
 
         # Chat-Fenster
-        self.chat_box = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20, state=tk.DISABLED)
+        self.chat_box = scrolledtext.ScrolledText(
+            root, wrap=tk.WORD, width=60, height=20, state=tk.DISABLED
+        )
         self.chat_box.pack(padx=10, pady=10)
 
         # Nachrichteneingabe
@@ -33,7 +38,9 @@ class ChatClient:
         self.msg_entry.pack(side=tk.LEFT, padx=5)
         self.msg_entry.bind("<Return>", self.send_message_event)
 
-        self.send_button = tk.Button(bottom_frame, text="Senden", command=self.send_message)
+        self.send_button = tk.Button(
+            bottom_frame, text="Senden", command=self.send_message
+        )
         self.send_button.pack(side=tk.LEFT)
 
         self.socket = None
@@ -89,7 +96,9 @@ class ChatClient:
 
     def send_message(self):
         if not self.connected:
-            messagebox.showerror("Nicht verbunden", "Du bist nicht mit dem Server verbunden.")
+            messagebox.showerror(
+                "Nicht verbunden", "Du bist nicht mit dem Server verbunden."
+            )
             return
 
         msg = self.msg_entry.get().strip()

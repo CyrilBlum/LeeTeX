@@ -12,4 +12,3 @@ t.rt(10)
 sechseck()
 
 t.done()
-

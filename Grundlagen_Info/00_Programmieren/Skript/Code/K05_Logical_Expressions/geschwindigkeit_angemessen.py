@@ -4,6 +4,7 @@ def geschwindigkeit_angemessen(geschwindigkeit):
     else:
         print("Die Geschwindigkeit ist nicht angemessen")
 
+
 geschwindigkeit_angemessen(50)
 geschwindigkeit_angemessen(25)
 geschwindigkeit_angemessen(120)

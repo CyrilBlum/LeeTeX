@@ -1,5 +1,6 @@
 import turtle as t
 
+
 def zeichne_vieleck(eingabe):
     if eingabe == "1":
         t.color("red")
@@ -18,6 +19,7 @@ def zeichne_vieleck(eingabe):
             t.right(60)
     else:
         print("Nur die Zahlen 1, 2 oder 3 werden als Eingabe akzeptiert.")
+
 
 # Testaufrufe
 zeichne_vieleck("1")  # Test case 1: Red rectangle

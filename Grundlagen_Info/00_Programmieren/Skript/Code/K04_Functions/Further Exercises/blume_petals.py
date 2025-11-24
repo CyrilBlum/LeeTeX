@@ -1,5 +1,6 @@
 import turtle as t
 
+
 def sechseck():
     for _ in range(6):
         t.fd(30)
@@ -13,7 +14,7 @@ def blume():
         sechseck()
         t.rt(60)
         t.bk(100)
-        t.lt(360/10)
+        t.lt(360 / 10)
 
 
 blume()

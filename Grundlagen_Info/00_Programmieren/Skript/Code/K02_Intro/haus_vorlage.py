@@ -20,4 +20,3 @@ t.hideturtle()
 
 # Turtle-Zeichnung stehen lassen
 t.done()
-

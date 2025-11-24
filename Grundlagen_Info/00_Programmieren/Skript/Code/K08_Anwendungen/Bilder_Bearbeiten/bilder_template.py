@@ -7,6 +7,7 @@ import image_helper as ih
 ### Schwarz-Weiss-Bilder       ###
 ### ------------------------- ###
 
+
 def count_black_pixels(filename):
     """Zählt die schwarzen Pixel eines Schwarz-Weiss-Bildes."""
     pixel_list = ih.get_1d_bw(filename)
@@ -45,6 +46,7 @@ def random_black_white_image(width, height):
 ### ------------------------- ###
 ### Graustufen-Bilder          ###
 ### ------------------------- ###
+
 
 def invert_grayscale_image(filename):
     """Invertiert ein Graustufenbild (0 <-> 255) und zeigt es neben dem Original."""
@@ -94,6 +96,7 @@ def vertical_stripes(filename, stripe_width=2, gap=5):
 ### RGB-Bilder                 ###
 ### ------------------------- ###
 
+
 def increase_green(filename, factor=1.2):
     """Erhöht den Grün-Kanal eines RGB-Bildes um den gegebenen Faktor."""
     original_image = ih.get_rgb_image(filename)
@@ -129,6 +132,7 @@ def sepia_filter(filename):
 ### ------------------------- ###
 ### Weitere Aufgaben           ###
 ### ------------------------- ###
+
 
 def is_prime(number):
     """Prüft, ob eine Zahl eine Primzahl ist."""

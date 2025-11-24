@@ -55,16 +55,18 @@ for component in cal.walk():
         while current <= end_date:
             monday = current - timedelta(days=current.weekday())
             kw = monday.isocalendar()[1]
-            events.append({
-                "KW": kw,
-                "Woche": monday,
-                "Klasse": klasse,
-                "Lektion": lesson,
-                "Event": summary,
-                "Datum": current,
-                "Ort": location,
-                "Beschreibung": description
-            })
+            events.append(
+                {
+                    "KW": kw,
+                    "Woche": monday,
+                    "Klasse": klasse,
+                    "Lektion": lesson,
+                    "Event": summary,
+                    "Datum": current,
+                    "Ort": location,
+                    "Beschreibung": description,
+                }
+            )
             # Next week
             current += timedelta(days=7 - current.weekday())
 
@@ -72,12 +74,20 @@ for component in cal.walk():
 df = pd.DataFrame(events)
 
 # Pivot: one sheet per class, rows=KW, columns=Lektion, cell=Event (join if multiple)
-with pd.ExcelWriter("Grundlagen_Info/Various/Semesterplanung/events_by_class.xlsx") as writer:
-    for klasse in sorted(df['Klasse'].unique(), key=lambda x: (x == 'Alle', x)):
-        tab_name = 'Andere' if klasse == 'Alle' else klasse
-        sub = df[df['Klasse'] == klasse]
+with pd.ExcelWriter(
+    "Grundlagen_Info/Various/Semesterplanung/events_by_class.xlsx"
+) as writer:
+    for klasse in sorted(df["Klasse"].unique(), key=lambda x: (x == "Alle", x)):
+        tab_name = "Andere" if klasse == "Alle" else klasse
+        sub = df[df["Klasse"] == klasse]
         # Pivot table: index=KW, columns=Lektion, values=Event
-        pivot = sub.pivot_table(index=['KW', 'Woche'], columns='Lektion', values='Event', aggfunc=lambda x: '\n'.join(x), fill_value='')
+        pivot = sub.pivot_table(
+            index=["KW", "Woche"],
+            columns="Lektion",
+            values="Event",
+            aggfunc=lambda x: "\n".join(x),
+            fill_value="",
+        )
         # Sort by KW
         pivot = pivot.sort_index()
         pivot.to_excel(writer, sheet_name=tab_name)

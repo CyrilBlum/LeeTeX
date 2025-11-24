@@ -21,6 +21,7 @@ def binaere_suche(liste, ziel):
     if not gefunden:
         print("Ziel nicht gefunden.")
 
+
 # Beispiel-Liste (muss sortiert sein)
 meine_liste = [2, 3, 4, 10, 40]
 ziel = 10

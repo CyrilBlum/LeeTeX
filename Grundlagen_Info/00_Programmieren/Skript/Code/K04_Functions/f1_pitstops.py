@@ -4,11 +4,13 @@ def fahrzeit_ohne_stopps(strecke, kmh):
     zeit_sekunden = zeit_stunden * 3600
     return zeit_sekunden
 
+
 def gesamtzeit(strecke, kmh, stopps, stoppdauer):
     """Berechnet die Gesamtzeit inklusive Stopps"""
     fahrzeit_sek = fahrzeit_ohne_stopps(strecke, kmh)
     gesamtzeit_sek = fahrzeit_sek + (stopps * stoppdauer)
     return gesamtzeit_sek
+
 
 # Beispielwerte
 strecke = 305

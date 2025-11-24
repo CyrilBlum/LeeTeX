@@ -7,6 +7,7 @@ import image_helper as ih
 ### Schwarz-Weiss-Bilder       ###
 ### ------------------------- ###
 
+
 def count_black_pixels(filename):
     """Zählt die schwarzen Pixel eines Schwarz-Weiss-Bildes."""
     pixel_list = ih.get_1d_bw(filename)
@@ -46,6 +47,7 @@ def random_black_white_image(width, height):
 ### ------------------------- ###
 ### Graustufen-Bilder          ###
 ### ------------------------- ###
+
 
 def invert_grayscale_image(filename):
     """Invertiert ein Graustufenbild (0 <-> 255) und zeigt es neben dem Original."""
@@ -98,6 +100,7 @@ def vertical_stripes(filename, stripe_width=2, gap=5):
 ### RGB-Bilder                 ###
 ### ------------------------- ###
 
+
 def increase_green(filename, factor=1.2):
     """Erhöht den Grün-Kanal eines RGB-Bildes um den gegebenen Faktor."""
     original_image = ih.get_rgb_image(filename)
@@ -120,9 +123,9 @@ def sepia_filter(filename):
 
     transformed_pixels = []
     for r, g, b in pixels:
-        tr = int(min(0.393*r + 0.769*g + 0.189*b, 255))
-        tg = int(min(0.349*r + 0.686*g + 0.168*b, 255))
-        tb = int(min(0.272*r + 0.534*g + 0.131*b, 255))
+        tr = int(min(0.393 * r + 0.769 * g + 0.189 * b, 255))
+        tg = int(min(0.349 * r + 0.686 * g + 0.168 * b, 255))
+        tb = int(min(0.272 * r + 0.534 * g + 0.131 * b, 255))
         transformed_pixels.append((tr, tg, tb))
 
     w, h = original_image.size
@@ -133,6 +136,7 @@ def sepia_filter(filename):
 ### ------------------------- ###
 ### Weitere Aufgaben           ###
 ### ------------------------- ###
+
 
 def is_prime(number):
     """Prüft, ob eine Zahl eine Primzahl ist."""
@@ -162,10 +166,10 @@ def plot_primes(width, height):
 ### ------------------------- ###
 
 # --- Schwarz-Weiss-Bilder ---
-bw_file = "ivy_bw.jpg"        # Pfad zum Schwarz-Weiss-Bild
-gray_file = "ivy_gray.jpg"    # Pfad zum Graustufen-Bild
-rgb_file = "ivy_rgb.jpg"      # Pfad zum RGB-Bild
-effi_file = "effi_rgb.jpg"    # Pfad zum RGB-Bild für Sepia
+bw_file = "ivy_bw.jpg"  # Pfad zum Schwarz-Weiss-Bild
+gray_file = "ivy_gray.jpg"  # Pfad zum Graustufen-Bild
+rgb_file = "ivy_rgb.jpg"  # Pfad zum RGB-Bild
+effi_file = "effi_rgb.jpg"  # Pfad zum RGB-Bild für Sepia
 
 # Aufgabe 1: Anzahl schwarzer Pixel zählen
 num_black = count_black_pixels(bw_file)

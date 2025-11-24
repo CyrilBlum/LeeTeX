@@ -7,6 +7,7 @@ def gcd(a, b):
         a, b = b, a % b
     return a
 
+
 def find_coprime(n):
     """
     Hilfsfunktion:
@@ -16,6 +17,7 @@ def find_coprime(n):
     while gcd(n, candidate) != 1:
         candidate += 1
     return candidate
+
 
 def extended_gcd(a, b):
     """
@@ -30,6 +32,7 @@ def extended_gcd(a, b):
     y = x1
     return gcd, x, y
 
+
 def modular_inverse(e, phi_n):
     """
     Hilfsfunktion:
@@ -38,7 +41,8 @@ def modular_inverse(e, phi_n):
     gcd, x, _ = extended_gcd(e, phi_n)
     if gcd != 1:
         raise ValueError("Kein modulares Inverses existiert für e und phi_n.")
-    return x % phi_n  
+    return x % phi_n
+
 
 def rsa_encrypt(text, e, n):
     """
@@ -52,7 +56,7 @@ def rsa_encrypt(text, e, n):
     # Liste von Zahlen verschlüsseln (neue Liste verschlüsselter Zahlen erstellen)
     l_enc = []
     for z in l_txt:
-        l_enc.append(z ** e % n)
+        l_enc.append(z**e % n)
     return l_enc
 
 
@@ -62,6 +66,7 @@ def convert_numbers_to_text(l_num):
     for z in l_num:
         text_dec += chr(z)
     return text_dec
+
 
 def rsa_decrypt(l_enc, d, n):
     """
@@ -82,11 +87,12 @@ def rsa_keygen(p, q):
     Generiert ausgehend von zwei Primzahlen p und q den
     privaten und öffentlichen Schlüssel (gibt e, d und n zurück).
     """
-    n = p*q
-    phi_n = (p-1)*(q-1)
+    n = p * q
+    phi_n = (p - 1) * (q - 1)
     e = find_coprime(phi_n)
     d = modular_inverse(e, phi_n)
     return e, d, n
+
 
 def main():
     """
@@ -102,17 +108,21 @@ def main():
 
     # Schlüssel generieren
     e, d, n = rsa_keygen(p, q)
-    print("""
+    print(
+        """
     Der Schlüssel ist:
     Öffentlicher Schlüssel (e,n): (%d, %d),
-    Privater Schlüssel (d,n): (%d, %d)"""% (e, n, d, n))
+    Privater Schlüssel (d,n): (%d, %d)"""
+        % (e, n, d, n)
+    )
 
     # Nachricht mit eigenem (öffentlichen) Schlüssel verschlüsseln
     l_enc = rsa_encrypt(text, e, n)
-    
+
     # Nachricht mit eigenem (privaten) Schlüssel entschlüsseln
     l_dec_txt = rsa_decrypt(l_enc, d, n)
     print("Verschlüsselte Nachricht: ", convert_numbers_to_text(l_enc))
     print("Entschlüsselte Nachricht: ", l_dec_txt)
+
 
 main()

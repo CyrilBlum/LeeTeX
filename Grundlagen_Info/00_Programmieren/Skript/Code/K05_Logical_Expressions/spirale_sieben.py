@@ -1,5 +1,6 @@
 import turtle as t
 
+
 def zeichne_siebeneckige_spirale(startlaenge, verkleinerung):
     seitenlaenge = startlaenge
     winkel = 360 / 7  # Winkel für ein Siebeneck
@@ -8,6 +9,7 @@ def zeichne_siebeneckige_spirale(startlaenge, verkleinerung):
         t.forward(seitenlaenge)
         t.right(winkel)
         seitenlaenge -= verkleinerung
+
 
 # Turtle-Setup
 t.speed(0)  # Maximale Geschwindigkeit

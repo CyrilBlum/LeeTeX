@@ -6,6 +6,7 @@ def bewertung_fahrradtour(distanz_km, hoehenmeter):
     else:
         print("Zu lang")
 
+
 # Beispielaufrufe
 bewertung_fahrradtour(15, 300)  # Erwartet: "Zu kurz"
 bewertung_fahrradtour(50, 400)  # Erwartet: "Gute Tour"

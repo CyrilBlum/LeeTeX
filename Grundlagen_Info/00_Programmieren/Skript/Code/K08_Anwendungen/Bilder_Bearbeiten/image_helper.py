@@ -5,6 +5,7 @@ from PIL import Image
 # Image processing utilities (BW, Grayscale, RGB)
 # -------------------------------------------------
 
+
 def _flatten_2d(pixels_2d):
     """Flatten a 2D list into a 1D list (row-major order)."""
     return [pixel for row in pixels_2d for pixel in row]
