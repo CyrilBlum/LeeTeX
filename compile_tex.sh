@@ -296,9 +296,9 @@ for i in "${!classes[@]}"; do
         # Determine expected PDF name and remote path for remote existence check
         pdf_name="$(basename "$output_file" .tex).pdf"
         if [ "$class" = "book" ]; then
-            remote_pdf_path="PDFs/${LEVEL}/${topic}/${class}_${book_variant}/$pdf_name"
+            remote_pdf_path="PDFs/${LEVEL}/${topic}/Skript_${book_variant}/$pdf_name"
         elif [ "$class" = "beamer" ]; then
-            remote_pdf_path="PDFs/${LEVEL}/${main_topic}/beamer/${topic}/$pdf_name"
+            remote_pdf_path="PDFs/${LEVEL}/${main_topic}/Slides/${topic}/$pdf_name"
         else
             remote_pdf_path="PDFs/${LEVEL}/${class}/${topic}/$pdf_name"
         fi
