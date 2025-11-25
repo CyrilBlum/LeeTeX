@@ -24,6 +24,35 @@
 \titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
 
 \frame{\titlepage}
+
+\newcommand{\fldNum}{\refstepcounter{FormCounter}\raisebox{-0.28\normalbaselineskip}{\TextField[name=\theFormCounter, width=2cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}}}
+
+\begin{frame}{Netzwerk-Spiel (ca. 5')}
+    Sie sind ein Computer im Internet und möchten gerne eine Nachricht an einen anderen Computer senden:
+    \begin{center}
+        \begin{tcolorbox}[colframe=RoyalBlue, colback=white, boxrule=1pt, arc=4pt, left=2pt, right=2pt, top=2pt, bottom=2pt]
+            \begin{table}[H]
+                \tiny
+                \centering
+                \begin{tabular}{l|l}
+                    \coin{3} Von:       & \texttt{192.168.0.\fldNum}                                                           \\\midrule
+                    \coin{3} An:        & \texttt{192.168.0.\fldNum}                                                           \\\midrule
+                    \coin{2} Sequenz:   & \texttt{\TextField[width=5cm, print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}} \\\midrule
+                    \coin{1} Nachricht: & \TextField[width=5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}           \\
+                \end{tabular}
+            \end{table}
+        \end{tcolorbox}
+    \end{center}
+    \textbf{Anleitung}\small
+    \begin{itemize}[<+->]
+        \item (Bereits gemacht): Notieren Sie sich eine einzigartige IP-Adresse für Ihren Computer, startend mit \texttt{192.168.0.xyz} (z.B. \texttt{192.168.0.3}), wobei  $\texttt{xyz} \in [0,255]$
+        \item[\coin{1}] (Vorderseite) Schreiben Sie eine Nachricht (max. 10 Zeichen pro Karte)
+        \item[\coin{2}] (Vorderseite) Nummerieren Sie die Karten in der Reihenfolge, in der sie gesendet werden sollen (Sequenz)
+        \item[\coin{3}] (Rückseite) Fügen Sie die IP-Adressen der Absender- und Empfänger-Computer hinzu.
+        \item[\faTruck] Übergeben Sie die Karten dem ``Router'' (= ``Postbote'')
+    \end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{Was sind Netzwerke?}
     \begin{itemize}[<+->]
         \item Graphen:
@@ -102,37 +131,9 @@
                 \centering
                 \footnotesize
                 \resizebox{\textwidth}{!}{
-\input{Grundlagen_Info/07_Netzwerke/Skript/osi-tcpip-table.tex}}
+                    \input{Grundlagen_Info/07_Netzwerke/Skript/osi-tcpip-table.tex}}
             \end{table}
         \end{center}}
-\end{frame}
-
-\newcommand{\fldNum}{\refstepcounter{FormCounter}\raisebox{-0.28\normalbaselineskip}{\TextField[name=\theFormCounter, width=2cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}}}
-
-\begin{frame}{Netzwerk-Spiel (ca. 5')}
-    Sie sind ein Computer im Internet und möchten gerne eine Nachricht an einen anderen Computer senden:
-    \begin{center}
-        \begin{tcolorbox}[colframe=RoyalBlue, colback=white, boxrule=1pt, arc=4pt, left=2pt, right=2pt, top=2pt, bottom=2pt]
-            \begin{table}[H]
-                \tiny
-                \centering
-                \begin{tabular}{l|l}
-                    \coin{3} Von:       & \texttt{192.168.0.\fldNum}                                                           \\\midrule
-                    \coin{3} An:        & \texttt{192.168.0.\fldNum}                                                           \\\midrule
-                    \coin{2} Sequenz:   & \texttt{\TextField[width=5cm, print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}} \\\midrule
-                    \coin{1} Nachricht: & \TextField[width=5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}           \\
-                \end{tabular}
-            \end{table}
-        \end{tcolorbox}
-    \end{center}
-    \textbf{Anleitung}\small
-    \begin{itemize}[<+->]
-        \item Zuerst: Notieren Sie sich eine einzigartige IP-Adresse für Ihren Computer, startend mit \texttt{192.168.0.xyz} (z.B. \texttt{192.168.0.3}), wobei  $\texttt{xyz} \in [0,255]$
-        \item[\coin{1}] (Vorderseite) Schreiben Sie eine Nachricht (max. 10 Zeichen pro Karte)
-        \item[\coin{2}] (Vorderseite) Nummerieren Sie die Karten in der Reihenfolge, in der sie gesendet werden sollen (Sequenz)
-        \item[\coin{3}] (Rückseite) Fügen Sie die IP-Adressen der Absender- und Empfänger-Computer hinzu.
-        \item[\faTruck] Übergeben Sie die Karten dem ``Router'' (= ``Postbote'')
-    \end{itemize}
 \end{frame}
 
 \setbeamercolor{frametitle}{bg=yellow!20}
@@ -501,7 +502,7 @@
     \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{\faHandshake{} TCP: 3-way handshake}
+\begin{frame}[fragile]{\faHandshake{} TCP: 3-way handshake}{Transportschicht}
     \begin{columns}[c]
         \begin{column}{.6\textwidth}
             \begin{figure}[H]
@@ -538,9 +539,14 @@
                 \item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen\\
                       $\rightarrow$ TCP-Verbindung ist nun erstellt!
             \end{enumerate}
-
         \end{column}
     \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{\faHandshake{} TCP: 3-way handshake}{Auftrag}
+    \begin{itemize}
+        \item Skript: \aufgabebox{1.5, 1.6}
+    \end{itemize}
 \end{frame}
 
 \setbeamercolor{frametitle}{bg=RoyalBlue!20}
@@ -552,14 +558,14 @@
         \item Analogie: Wohnadresse einer Person (Strasse \& Stadt)
         \item Häufig im IPv4-Format: 4 bytes, also 4 Zahlen von 0-255
         \item Wird meist dezimal angegeben, z.B. 192.168.0.1
-        \item Übung: eigene IPv4-Adresse herausfinden
+        \item Übung: eigene, lokale IPv4-Adresse herausfinden
               \begin{itemize}
                   \item MacOS, Terminal (via Spotlight-Suche): \\
                         \commandbox|ipconfig getifaddr en0|
-                  \item Windows, Programm ``cmd'': \\
+                  \item Windows, Programm \enquote{\texttt{cmd}} (via \keys{\faWindows + R}): \\
                         \commandbox|ipconfig|
               \end{itemize}
-        \item Wie viele IPv4-Adressen gibt es?
+        \item Wie viele IPv4-Adressen gibt es? Reicht das?
               \begin{itemize}
                   \item $4\cdot 8 \text{ bits} = 32 \text{ bits}$
                   \item $2^{32} \sim 4 \text{ Milliarden Adressen}$
