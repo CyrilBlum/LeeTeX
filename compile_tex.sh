@@ -246,12 +246,12 @@ for i in "${!classes[@]}"; do
         if [ "$class" = "book" ]; then
             # Check if this is the exerciseonly variant
             if echo "$class_command" | grep -q "exerciseonly"; then
-                book_variant="exerciseonly"
-                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/${class}_${book_variant}/"
+                book_variant="ohne_loesungen"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/Skript_${book_variant}/"
                 output_file="${root_dir}/output_${class}_${book_variant}_${topic// /_}.tex"
             else
-                book_variant="solutions"
-                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/${class}_${book_variant}/"
+                book_variant="mit_loesungen"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/Skript_${book_variant}/"
                 output_file="${root_dir}/output_${class}_${book_variant}_${topic// /_}.tex"
             fi
         elif [ "$class" != "book" ]; then
@@ -263,7 +263,7 @@ for i in "${!classes[@]}"; do
                 main_topic=$(echo "$main_topic" | sed -E 's/([a-z])([A-Z])/\1 \2/g')
                 # Convert ASCII umlauts to actual umlauts
                 main_topic=$(echo "$main_topic" | sed -e 's/ae/ä/g' -e 's/oe/ö/g' -e 's/ue/ü/g' -e 's/Ae/Ä/g' -e 's/Oe/Ö/g' -e 's/Ue/Ü/g')
-                latex_dir="${root_dir}/PDFs/${LEVEL}/${main_topic}/beamer/${topic}/"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${main_topic}/Slides/${topic}/"
             else
                 latex_dir="${root_dir}/PDFs/${LEVEL}/${class}/${topic}/"
             fi
