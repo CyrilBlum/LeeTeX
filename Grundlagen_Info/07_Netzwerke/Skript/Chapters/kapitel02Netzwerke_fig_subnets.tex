@@ -1,0 +1,49 @@
+\begin{tikzpicture}[
+            >=Stealth,
+            host/.style={rectangle, draw=ForestGreen, fill=ForestGreen!10, rounded corners, minimum width=2.6cm, minimum height=1cm, align=center, font=\small},
+            sw/.style={rectangle, draw=RoyalBlue, fill=RoyalBlue!12, rounded corners, minimum width=2.4cm, minimum height=0.9cm, align=center, font=\small},
+            router/.style={circle, draw=OrangeRed, fill=OrangeRed!12, minimum size=1.2cm, align=center, font=\small},
+            netlabel/.style={font=\small\bfseries, red},
+            link/.style={thick}
+        ]
+
+        % horizontal column separation (change this number to adjust spacing, units = cm)
+        \def\colsep{3.2}
+
+        % Left LAN (LAN A)
+        \node[host] (A1) at ({0*\colsep},1.2) {\faLaptop\\192.168.1.10};
+        \node[host] (A2) at ({0*\colsep},0)   {\faLaptop\\192.168.1.11};
+        \node[host] (A3) at ({0*\colsep},-1.2){\faLaptop\\192.168.1.12};
+        \node[sw]   (SWL) at ({1*\colsep},-0.1) {\faNetworkWired\\Switch};
+
+        % Router between switches
+        \node[router] (R) at ({2*\colsep},0) {\faServer\\Router\\\small 192.168.1.1 \\ \small 192.168.2.1};
+
+        % Right LAN (LAN B)
+        \node[sw]   (SWR) at ({3*\colsep},-0.1) {\faNetworkWired\\Switch};
+        \node[host] (B1) at ({4*\colsep},1.2) {\faLaptop\\192.168.2.10};
+        \node[host] (B2) at ({4*\colsep},0)   {\faLaptop\\192.168.2.11};
+        \node[host] (B3) at ({4*\colsep},-1.2){\faLaptop\\192.168.2.12};
+
+        % LAN labels
+        \node[netlabel, above] at ({0*\colsep},1.9) {\acrshort{LAN} A};
+        \node[netlabel, above] at ({4*\colsep},1.9) {\acrshort{LAN} B};
+
+        % Connections: hosts to switches
+        \draw[link] (A1) -- (SWL);
+        \draw[link] (A2) -- (SWL);
+        \draw[link] (A3) -- (SWL);
+
+        \draw[link] (B1) -- (SWR);
+        \draw[link] (B2) -- (SWR);
+        \draw[link] (B3) -- (SWR);
+
+        % Switches to router
+        \draw[link] (SWL) -- (R) node[midway, above, font=\footnotesize] {eth0};
+        \draw[link] (SWR) -- (R) node[midway, above, font=\footnotesize] {eth1};
+
+        % Optional: draw a faint rounded box around each LAN
+        \node[draw=Gray!40, rounded corners, dashed, inner sep=6pt, fit=(A1)(A2)(A3)(SWL)] {};
+        \node[draw=Gray!40, rounded corners, dashed, inner sep=6pt, fit=(B1)(B2)(B3)(SWR)] {};
+
+    \end{tikzpicture}
