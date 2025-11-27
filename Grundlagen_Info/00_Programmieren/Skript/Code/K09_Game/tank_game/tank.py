@@ -144,7 +144,7 @@ class Bullet:
         return self.x < 0 or self.x > W or self.y < 0 or self.y > H
 
     def draw(self, surf):
-        pg.draw.circle(surf, (250, 240, 200), (int(self.x), int(self.y)), self.r)
+        pg.draw.circle(surf, self.owner.color, (int(self.x), int(self.y)), self.r)
 
     def rect(self):
         return pg.Rect(self.x - self.r, self.y - self.r, self.r * 2, self.r * 2)

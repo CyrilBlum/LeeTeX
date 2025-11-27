@@ -1,8 +1,7 @@
 from tank import *
 from terrain import *
 from datetime import datetime
-
-# from settings import *
+from settings import *
 
 font = pg.font.Font(None, 24)
 clock = pg.time.Clock()
