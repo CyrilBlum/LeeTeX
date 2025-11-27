@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 class Pendulum:
-    def __init__(self, fixation_point, length, angle, bob_radius=20, g=500, mass=1):
+    def __init__(self, fixation_point, length, angle, bob_radius=20, g=1500, mass=1):
         """
         fixation_point: (x, y) tuple for the fixed point on the ceiling
         length: length of the string in pixels
@@ -104,7 +104,7 @@ def main():
     # fixation_point is at the top center of the window, 100 px from the top edge.
     fixation_point = (width // 2, 100)
     length = 300  # pixels
-    angle = math.radians(30)  # 30 degrees from vertical
+    angle = math.radians(40)  # 30 degrees from vertical
     pendulum = Pendulum(fixation_point, length, angle)
 
     running = True
@@ -118,7 +118,7 @@ def main():
         dt = clock.tick(60) / 1000.0
 
         # --- update_euler game state ---
-        pendulum.update_velocity_verlet(dt)
+        pendulum.update_euler(dt)
 
         # --- update_energies ---
         pendulum.update_energies()
