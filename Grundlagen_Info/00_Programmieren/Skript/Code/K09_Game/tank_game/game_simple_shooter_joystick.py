@@ -6,7 +6,7 @@ from settings import *
 pg.joystick.init()
 
 
-#This is a simple class that will help us print to the screen.
+# This is a simple class that will help us print to the screen.
 # It has nothing to do with the joysticks, just outputting the
 # information.
 class TextPrint:
@@ -20,7 +20,7 @@ class TextPrint:
         self.y += self.line_height
 
     def reset(self):
-        self.x = W*3/4
+        self.x = W * 3 / 4
         self.y = 10
         self.line_height = 12
 
@@ -29,6 +29,7 @@ class TextPrint:
 
     def unindent(self):
         self.x -= 10
+
 
 # from settings import *
 
@@ -41,7 +42,7 @@ show_help = False
 
 init_terrain()
 
- # Get ready to print.
+# Get ready to print.
 text_print = TextPrint()
 
 # This dict can be left as-is, since pygame will generate a
@@ -49,6 +50,7 @@ text_print = TextPrint()
 # at the start of the program.
 joysticks = {}
 DEADZONE = 0.3
+
 
 # ------------------------
 # Power-up (Health Kit)
@@ -68,7 +70,10 @@ class PowerUp:
         # Placeholder drawing: a simple box with "+ Health" text
         # In future, replace with a PNG sprite
         color = (220, 240, 120)
-        surf.blit(heal_img, (self.x - heal_img.get_width() / 2, self.y - heal_img.get_height() / 2))
+        surf.blit(
+            heal_img,
+            (self.x - heal_img.get_width() / 2, self.y - heal_img.get_height() / 2),
+        )
         label = font.render("Health +", True, (10, 10, 10))
         surf.blit(label, (int(self.x - label.get_width() / 2), int(self.y - 24)))
 
@@ -79,9 +84,11 @@ next_powerup_time = 180  # frames until next spawn (approx 3s at 60 FPS)
 powerup_min = 4 * 60
 powerup_max = 8 * 60
 
+
 def schedule_next_powerup():
     global next_powerup_time
     next_powerup_time = random.randint(powerup_min, powerup_max)
+
 
 def spawn_powerup():
     # Pick a random X within screen margins
@@ -90,8 +97,10 @@ def spawn_powerup():
     y = terrain_top_at(x, 24) - 10
     powerups.append(PowerUp(x, y))
 
+
 # Initialize first spawn schedule
 schedule_next_powerup()
+
 
 def get_tank_for_joystick(instance_id: int):
     # Map joysticks in sorted order to tanks: 0->t1, 1->t2
@@ -105,6 +114,7 @@ def get_tank_for_joystick(instance_id: int):
     if idx == 1:
         return t2
     return None
+
 
 # Generate tanks
 t1 = Tank(70, (120, 200, 90, 255), 1, W, H)
@@ -332,7 +342,7 @@ while running:
                     t.life = min(100, t.life + pu.amount)
                     t.surface.set_alpha(int(t.life / 100 * 255))
                     # Optional pickup feedback: briefly flash
-                    #t.time_hit = min(t.time_hit + 20, 60)
+                    # t.time_hit = min(t.time_hit + 20, 60)
                     powerups.remove(pu)
 
     if winner is not None:
@@ -368,7 +378,7 @@ while running:
             "Start (7/9): Neustart nach Sieg",
             "",
             "Power-Ups:",
-            "Gelber Kreis mit \"Health +\": +25 Leben beim Einsammeln",
+            'Gelber Kreis mit "Health +": +25 Leben beim Einsammeln',
             f"© Cyril Wendl, {datetime.now().year}",
         ]
         pad = 8

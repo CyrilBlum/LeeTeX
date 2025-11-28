@@ -4,11 +4,9 @@ import random
 pg.init()  # Pygame initialisieren (starten)
 WINDOW = (800, 600)  # Fenstergrösse (als Tuple gespeichert)
 screen = pg.display.set_mode(WINDOW)  # Fenster erstellen
-icon = pg.image.load("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/icon.png")
 pg.display.set_caption("Mein erstes Game")  # Fenstertitel setzen
+icon = pg.image.load("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/icon.png")
 pg.display.set_icon(icon)
-
-
 clock = pg.time.Clock()  # Clock für Zeitsteuerung erstellen
 
 running = True  # Hauptschleife
