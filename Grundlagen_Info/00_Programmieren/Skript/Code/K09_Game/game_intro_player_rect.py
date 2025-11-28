@@ -6,9 +6,7 @@ screen = pg.display.set_mode(WINDOW)  # Fenster erstellen
 icon = pg.image.load("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/icon.png")
 pg.display.set_caption("Mein erstes Game")  # Fenstertitel setzen
 pg.display.set_icon(icon)
-
 background_color = (50, 80, 120)
-
 clock = pg.time.Clock()  # Clock für Zeitsteuerung erstellen
 
 # Spieler-Rect und Geschwindigkeit
@@ -22,7 +20,7 @@ while running:
         if event.type == pg.QUIT:
             running = False
 
-    # --- Update (Input/Bewegung) ---
+    # --- Update (Input / Bewegung) ---
     keys = pg.key.get_pressed()
     if keys[pg.K_LEFT]:
         player.x -= speed
@@ -34,7 +32,7 @@ while running:
         player.y += speed
     player.clamp_ip(screen.get_rect())  # im Fenster halten
 
-    # --- Render --- (zeichnen)
+    # --- render (zeichnen) --- 
     screen.fill(background_color)  # Hintergrundfarbe setzen
     pg.draw.rect(screen, (255, 255, 255), player)  # Spieler zeichnen
 

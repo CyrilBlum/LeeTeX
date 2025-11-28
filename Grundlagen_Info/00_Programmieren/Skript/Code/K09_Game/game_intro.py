@@ -17,7 +17,7 @@ while running:
 
     # --- Update --- (Spielzustand aktualisieren)
 
-    # --- Render --- (zeichnen)
+    # --- render (zeichnen) --- 
     screen.fill((30, 30, 40))
     pg.display.flip()
 

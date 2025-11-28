@@ -21,10 +21,10 @@ while running:
         if event.type == pg.QUIT:
             running = False
 
-    # --- Render --- (zeichnen)
+    # --- Update & Render ---
     # Himmel (einfacher Gradient)
     for y in range(0, HEIGHT // 2):
-        red = 100 + int(155 * (y / (HEIGHT // 2)))  # 100..255
+        red = 100 + int(155 * (y / (HEIGHT // 2)))  # 100 ... 255
         pg.draw.rect(screen, (red, 120, 180), (0, y, WIDTH, 1))
 
     # Sonne sinkt langsam (maximal bis zum Meer)

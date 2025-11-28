@@ -16,7 +16,7 @@ while running:
         if event.type == pg.QUIT:
             running = False
 
-    # --- Render --- (zeichnen)
+    # --- render (zeichnen) --- 
     r = random.randint(0, 255)
     g = random.randint(0, 255)
     b = random.randint(0, 255)

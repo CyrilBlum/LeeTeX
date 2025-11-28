@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 
 
 # --- Pendulum class --------------------------------------------------------
-
-
 class Pendulum:
     def __init__(self, fixation_point, length, angle, bob_radius=20, g=1500, mass=1):
         """
@@ -88,8 +86,6 @@ class Pendulum:
 
 
 # --- Basic Pygame setup & game loop ---------------------------------------
-
-
 def main():
     pygame.init()
 

@@ -26,7 +26,7 @@ while running:
             x, y = event.pos
             mouse_positions.append((x, y))
 
-    # --- Render --- (zeichnen)
+    # --- render (zeichnen) --- 
     screen.fill(background_color)  # Hintergrundfarbe setzen
 
     # Kreise zeichnen

@@ -71,7 +71,7 @@ while running:
     else:
         collided = False
 
-    # --- Render --- (zeichnen)
+    # --- render (zeichnen) --- 
     screen.fill(background_color)  # Hintergrundfarbe setzen
 
     # Item und Spieler zeichnen
