@@ -1,6 +1,6 @@
 def bubbleSort(A):
-    length = len(A)
-    for i in reversed(range(length)):
+    n = len(A)
+    for i in reversed(range(n)):
         swapped = False
         for j in range(i):
             if A[j] > A[j + 1]:

@@ -11,7 +11,7 @@ class Pendulum:
         length: length of the string in pixels
         angle:  initial angle from vertical in radians
         bob_radius: radius of the bob (circle)
-        g: gravitational acceleration constant (pixels/(s^2))
+        g: gravitational acceleration constant (pixels / (s^2))
         """
         self.fixation_point = pygame.Vector2(fixation_point)
         self.length = length

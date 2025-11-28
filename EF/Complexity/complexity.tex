@@ -1,14 +1,36 @@
-\lstset{style=Python,escapeinside={(*@}{@*)}}
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
 
-\begin{frame}{Komplexitätstheorie}
+% default settings for listings
+\lstset{style=python, basicstyle=\ttfamily\footnotesize}
+
+\title[Programmieren]{Programmieren: Klassen}
+
+\subtitle{Komplexitätstheorie}
+
+\author[Graf, Thomas] % (optional)
+{Thomas Graf}
+
+\institute[KLW] % (optional)
+{
+	Fachschaft Informatik\\
+	Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{Logos/LeeLogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}{algorithmisch lösbare und algorithmisch unlösbare Probleme}
 	\begin{itemize}[<+->]
-		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch
-				      lösbar}}, wenn ein Algorithmus zur Lösung dieses Problems existiert, und ein Problem ist
-		      \textbf{\textcolor{Red}{algorithmisch unlösbar}}, wenn kein Algorithmus für dieses Problem existiert.
+		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch lösbar}}, wenn ein Algorithmus zur Lösung dieses Problems existiert, und ein Problem ist \textbf{\textcolor{Red}{algorithmisch unlösbar}}, wenn kein Algorithmus für dieses Problem existiert.
 		\item Wir werden uns in diesem Thema auf \textbf{\textcolor{Green}{algorithmisch lösbare}} Probleme beschränken.
 	\end{itemize}
 \end{frame}
-
 
 \begin{frame}{Komplexitätstheorie}
 	\begin{itemize}[<+->]
@@ -20,48 +42,50 @@
 
 \begin{frame}{Komplexitätstheorie}
 	\begin{itemize}[<+->]
-		\item Es stellte sich die Frag, ob dieser Misserfolg eine Folge unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu
-		      finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
-		\item  Dies führte dazu, dass man begann, die Schwierigkeit der algorithmisch lösbaren Probleme bezüglich des Rechenaufwands zu
-		      messen, um so die Probleme nach deren Schwierigkeitsgrad zu klassifizieren.
+		\item Es stellte sich die Frag, ob dieser Misserfolg eine Folge unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
+		\item  Dies führte dazu, dass man begann, die Schwierigkeit der algorithmisch lösbaren Probleme bezüglich des Rechenaufwands zu messen, um so die Probleme nach deren Schwierigkeitsgrad zu klassifizieren.
 	\end{itemize}
 \end{frame}
 
-
 \begin{frame}{Komplexitätstheorie}
-	Die Komplexitätstheorie ist die Theorie der quantitativen Gesetze und Grenzen der algorithmischen Informationsverarbeitung. Diese Theorie hat auch eine physikalische
-	Dimension. Zum Beispiel hält man ein lösbares Problem für \enquote{praktisch unlösbar}, wenn die praktische Ausführung eines Algorithmus zur Lösung des Problems mehr Energie bräuchte,	als es im ganzen bekannten Universum gibt.
+	Die Komplexitätstheorie ist die Theorie der quantitativen Gesetze und Grenzen der algorithmischen Informationsverarbeitung. Diese Theorie hat auch eine physikalische Dimension: Zum Beispiel hält man ein lösbares Problem für \enquote{praktisch unlösbar}, wenn die praktische Ausführung eines Algorithmus zur Lösung des Problems mehr Energie bräuchte, als im bekannten Universum vorhanden ist.
 \end{frame}
 
+\begin{frame}{Fallstudie: \texttt{insertion\_sort}}
+	Illustration und Idee von \texttt{insertion\_sort} zusammen im Plenum besprechen.
+\end{frame}
 
-\begin{frame}{\texttt{insertionSort} implementieren}
-	\begin{myexercise}[\texttt{insertionSort}]\label{myexercise:insertionSort}
-		Implementiere den \texttt{insertionSort} Algorithmus.
+\begin{frame}{\texttt{insertion\_sort} implementieren}
+	\begin{myexercise}[\texttt{insertion\_sort}]\label{myexercise:insertion_sort}
+		Implementiere den \texttt{insertion\_sort} Algorithmus.
 	\end{myexercise}
 \end{frame}
 
-\begin{frame}{\texttt{insertionSort}}
+\begin{frame}{\texttt{insertion\_sort}}
 	\begin{myanswer}
-		\lstinputlisting[language=Python,caption=\texttt{insertionSort.py},label=listing:insertionSort]{EF/Complexity/Code/insertionSort.py}
+		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort.py},label=listing:insertion_sort]{EF/Complexity/Code/insertion_sort.py}
 	\end{myanswer}
 \end{frame}
 
-
-\begin{frame}{Analyse von \texttt{insertionSort} (Problemgrösse $n$)}
+\begin{frame}{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
 	\begin{itemize}[<+->]
-		\item Wir bezeichnen mit der Konstanten $c_i$ die Zeit, welche zur einmaligen Ausführung der $i$-ten Zeile benötigt wird.
-		\item Für $j = 1, 2, \ldots, n - 1$ sei $t_j$ die Anzahl der Überprüfungen der \lstinline|while|-Bedingung.
-		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab).
-		      Bei einer solchen Schleife über $n$ Wiederholungen, wird der Schleifenkörper genau $n$ mal ausgeführt.
-		      Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
-		\item Die Schleifen-Bedingung wird also genau $n+1$ überprüft.
+		\item Wir bezeichnen mit der Konstanten $c_i$ ($c$ steht für $cost$) die Zeit, welche zur einmaligen Ausführung der $i$-ten Zeile benötigt wird.
+		\item Für $j = 1, 2, \ldots, n - 1$ sei $t_j$ ($t$ steht für $times$) die Anzahl der Überprüfungen der \lstinline|while|-Bedingung.
+		\item Die Anzahl $t_j$ hängt natürlich von der konkreten Probleminstanz ab.
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
+	\begin{itemize}[<+->]
+		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab).
+		\item Bei einer solchen Schleife über $m$ Wiederholungen, wird der Schleifenkörper genau $m$ mal ausgeführt. Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
+		\item Die Schleifen-Bedingung wird also genau $m+1$ überprüft.
+	\end{itemize}
+\end{frame}
 
-\begin{frame}[fragile]{Analyse von \texttt{insertionSort}}
+\begin{frame}[fragile]{Analyse von \texttt{insertion\_sort}}
 	\begin{lstlisting}[escapechar=!]
-	def insertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
+	def insertion_sort(A): !\tikzmark{c1end}!                     !\tikzmark{c1start}!
         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
             key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
             i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
@@ -74,7 +98,7 @@
 	\begin{tikzpicture}[overlay, remember picture,
 			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
 		\only<2->{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!50!white};}
-		\only<3->{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n$}{green!50!white};}
+		\only<3->{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n-1$}{green!50!white};}
 		\only<4->{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!50!white};}
 		\only<5->{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!50!white};}
 		\only<6->{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!50!white};}
@@ -85,10 +109,9 @@
 	\end{tikzpicture}
 \end{frame}
 
-
-\begin{frame}[fragile]{Analyse von \texttt{insertionSort}}
+\begin{frame}[fragile]{Analyse von \texttt{insertion\_sort}}
 	\begin{lstlisting}[escapechar=!]
-	def insertionSort(A): !\tikzmark{c1end}!                      !\tikzmark{c1start}!
+	def insertion_sort(A): !\tikzmark{c1end}!                     !\tikzmark{c1start}!
         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
             key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
             i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
@@ -101,7 +124,7 @@
 	\begin{tikzpicture}[overlay, remember picture,
 			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
 		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!50!white};}
-		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n$}{green!50!white};}
+		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n-1$}{green!50!white};}
 		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!50!white};}
 		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!50!white};}
 		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!50!white};}
@@ -112,29 +135,25 @@
 	\end{tikzpicture}
 \end{frame}
 
-
 \begin{frame}{worst case}
-	\enquote{The worst-case running time of an algorithm gives us an upper bound on the
-		running time for any input. Knowing it provides a guarantee that the algorithm
-		will never take any longer. We need not make some educated guess about the
-		running time and hope that it never gets much worse.}\cite{IntroductionAlgo}
+	\enquote{The worst-case running time of an algorithm gives us an upper bound on the	running time for any input. Knowing it provides a guarantee that the algorithm will never take any longer. We need not make some educated guess about the running time and hope that it never gets much worse.}\cite{IntroductionAlgo}
 \end{frame}
 
+\begin{frame}{worst case}
+	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (Achtung: wir meinen wirklich die \textbf{minimale}) Laufzeit welche unser \texttt{insertion\_sort} Algorithmus benötigt, um jede (auch die schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
+\end{frame}
 
 \begin{frame}{worst case}
-	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (achtung: wir meinen wirklich die minimale) Laufzeit welche unser \texttt{insertionSort} Algorithmus benötigt, um jede (auch die schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
-
 	Für $T(n)$ gilt natürlich:
 	\begin{align*}
-		T(n) = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) + \\
+		T(n) = c_1 + c_9 + (c_2 + c_3 + c_4 + c_8)(n-1) + \\
 		+ c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}}
 	\end{align*}
 	Doch wie lauten die Terme $t_j$?
 \end{frame}
 
-
 \begin{frame}[fragile]{Worst Case}
-	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0...j-1]} verglichen werden, also mit $j$ vielen. Somit gilt also
+	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0\ldotsj-1]} verglichen werden, also mit $j$ vielen. Somit gilt also
 	\begin{align*}
 		t_j = j, \quad i = 1, 2, \ldots, n-1.
 	\end{align*}
@@ -142,14 +161,14 @@
 
 
 \begin{frame}[fragile]{Worst Case}
-	Gauss Summenformel:
+	Gauss-Summenformel:
 	\begin{align*}
 		\sum_{j=0}^{n} j = \sum_{j=1}^{n} j = \frac{n(n+1)}{2}
 	\end{align*}
 \end{frame}
 
 \begin{frame}
-	Mithilfe der Summenformel finden wir:
+	Mithilfe der Gauss-Summenformel finden wir:
 	\begin{align*}
 		\textcolor{RoyalBlue}{\sum_{j=1}^{n-1} t_j} & = \sum_{j=1}^{n-1} (j)  =                 \\
 		                                            & = \sum_{j=1}^{n} (j) - n =                \\
@@ -157,7 +176,6 @@
 		                                            & = \textcolor{RoyalBlue}{\frac{n(n-1)}{2}}
 	\end{align*}
 \end{frame}
-
 
 \begin{frame}
 	und auch:
@@ -170,35 +188,31 @@
 	\end{align*}
 \end{frame}
 
-
 \begin{frame}[fragile]
 	\begin{align*}
-		T(n) & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                                  \\
+		T(n) & = c_1 + c_9 + (c_2 + c_3 + c_4 + c_8)(n-1) +                                                                                                  \\
 		     & + c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}} =                          \\
-		     & = c_1 + c_9 + c_2n + (c_3 + c_4 + c_8)(n-1) +                                                                                                  \\
+		     & = c_1 + c_9 + (c_2 + c_3 + c_4 + c_8)(n-1) +                                                                                                  \\
 		     & + c_5\lr{\textcolor{RoyalBlue}{\frac{n(n-1)}{2}}} + c_6\lr{\textcolor{Magenta}{\frac{n^2 - 3n + 2}{2}}} =                                      \\
 		     & = \underbrace{\lr{\frac{c_5}{2} + \frac{c_6}{2}}}_{=:a}n^2 + \underbrace{\lr{c_2 + c_3 + c_4 - \frac{c_5}{2} - \frac{3c_6}{2} + c_8}}_{=:b}n + \\
-		     & + \underbrace{\lr{c_1 - c_3 - c_4 + c_6 - c_8 + c_9}}_{=:c} =                                                                                  \\
+		     & + \underbrace{\lr{c_1 + c_9 + c_6 - c_2 - c_3 - c_4 - c_8}}_{=:c} =                                                                                  \\
 		     & = an^2 + bn + c
 	\end{align*}
 	mit $a\neq 0$
 \end{frame}
 
-
-\begin{frame}{\texttt{bubbleSort}}
+\begin{frame}{\texttt{bubble\_sort}}
 	\begin{myexercise}
-		Führen Sie eine Laufzeitanalyse (im worst case) von \texttt{bubbleSort} durch.
-		\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{bubbleSort.py},label=listing:bubbleSort]{EF/Complexity/Code/bubbleSort.py}
+		Führen Sie die Laufzeitanalyse (im worst case) von \texttt{bubble\_sort} durch.
+		\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort]{EF/Complexity/Code/bubble_sort.py}
 	\end{myexercise}
 \end{frame}
 
-
-\begin{frame}[fragile]{Analyse von \texttt{bubbleSort} (worst case, Problemgrösse $n$)}
-	(etwas grober als bei \texttt{insertionSort})
+\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} (worst case, Problemgrösse $n$)}
 	\begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily]
-	def bubbleSort(A): !\tikzmark{c1end}!                                      !\tikzmark{c1start}!
-        length = len(A) !\tikzmark{c2end}!                                     !\tikzmark{c2start}!
-        for i in reversed(range(length)): !\tikzmark{c3end}!                   !\tikzmark{c3start}!
+	def bubble_sort(A): !\tikzmark{c1end}!                                     !\tikzmark{c1start}!
+        n = len(A) !\tikzmark{c2end}!                                          !\tikzmark{c2start}!
+        for i in reversed(range(n)): !\tikzmark{c3end}!                        !\tikzmark{c3start}!
             swapped = False !\tikzmark{c4end}!                                 !\tikzmark{c4start}!
             for j in range(i): !\tikzmark{c5end}!                              !\tikzmark{c5start}!
                 if A[j] > A[j + 1]: !\tikzmark{c6end}!                         !\tikzmark{c6start}!
@@ -224,18 +238,16 @@
 	\end{tikzpicture}
 \end{frame}
 
-
 \begin{frame}[fragile]
 	\begin{align*}
 		\tilde{T}(n) & = \tilde{c}_1 +  \tilde{c}_2 + \tilde{c}_{11} + (\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_9)n + \\
 		             & + (\tilde{c}_5 + \tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8) \sum_{i=0}^{n-1}i =                \\
 		             & = \tilde{c}_1 +  \tilde{c}_2 + \tilde{c}_{11} + (\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_9)n + \\
 		             & + (\tilde{c}_5 + \tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8) \frac{n(n-1)}{2} =                 \\
-		             & = \tilde{a}n^2 + \tilde{b}n + \tilde{c},
+		             & = \ldots = \tilde{a}n^2 + \tilde{b}n + \tilde{c},
 	\end{align*}
 	wobei $\tilde{a}, \tilde{b}, \tilde{c}$ Konstanten sind und $\tilde{a}\neq 0$
 \end{frame}
-
 
 \begin{frame}{asymptotische Betrachtung}
 	\begin{align*}
@@ -244,24 +256,34 @@
 	\begin{align*}
 		 & \lim_{n\to\infty}\frac{T(n)}{\tilde{T}(n)} = \lim_{n\to\infty}\frac{an^2 + bn + c}{\tilde{a}n^2 + \tilde{b}n + \tilde{c}} =\frac{a}{\tilde{a}}
 	\end{align*}
-	Die Laufzeiten von \texttt{insertionSort} und \texttt{bubbleSort} unterscheiden sich also lediglich um einen konstanten Faktor.
+	Die asymptotischen Laufzeiten von \texttt{insertion\_sort} und \texttt{bubble\_sort} unterscheiden sich also lediglich um einen konstanten Faktor.
 \end{frame}
-
 
 \begin{frame}{asymptotische Betrachtung}
-	Die asymptotische Betrachtung zeigt auf, dass sich die Laufzeiten von sowohl \texttt{insertionSort} als auch \texttt{bubbleSort} von einer beliebigen Polynomfunktion vom Grad 2 lediglich um eine (multiplikative) Konstante unterscheiden. Dies gilt also insbesondere für die quadratische Funktion $n\mapsto n^2$.
-\end{frame}
+	\begin{align*}
+		 & \lim_{n\to\infty}\frac{n^2}{T(n)} = \lim_{n\to\infty}\frac{n^2}{an^2 + bn + c} =\frac{1}{a}
+	\end{align*}
+	\begin{align*}
+		 & \lim_{n\to\infty}\frac{T(n)}{n^2} = \lim_{n\to\infty}\frac{an^2 + bn + c}{n^2} = a
+	\end{align*}
+	Die asymptotischen Laufzeiten von \texttt{insertion\_sort} und \texttt{bubble\_sort} unterscheiden sich also lediglich um einen konstanten Faktor.
 
+	\vspace{\baselineskip}
+	(Und analog für \texttt{bubble\_sort}.)
+
+	\vspace{\baselineskip}
+	Die asymptotische Betrachtung zeigt auf, dass sich die Laufzeiten von sowohl \texttt{insertion\_sort} als auch \texttt{bubble\_sort} von einer beliebigen Polynomfunktion vom Grad 2 lediglich um eine (multiplikative) Konstante unterscheiden. Dies gilt also insbesondere für die quadratische Funktion $n\mapsto n^2$.
+\end{frame}
 
 \begin{frame}{asymptotische Betrachtung}
 	Intuitiv gesprochen, möchten wir sagen, dass in einer asymptotischen Betrachtung, die exakten Wert der Konstanten $a, b, c$ mit $a\neq 0$ in einem Ausdruck $T(n) = an^2 + bn + c$ \enquote{nicht wirklich wichtig sind}. Diese Aussage basiert auf der Beobachtung, dass sich alle Terme dieser Form (asymptotisch) lediglich um eine multiplikative Konstante unterscheiden.
 
+	\vspace{\baselineskip}
 	Diese intuitive Betrachtung hat man in der Informatik und Mathematik formalisiert. Dies führt uns zu den sogenannten \textit{Landau-Symbolen}.
 \end{frame}
 
-
-\begin{frame}{Landau-Symbole}
-	Es seien $f$ und $g$ Folgen reeller Zahlen\footnote{Für unsere Zwecke reicht die Betrachtung von Folgen natürlicher Zahlen.}.\\
+\begin{frame}{Landau-Symbole (allgemein)}
+	Es seien $f$ und $g$ Folgen reeller Zahlen.\\
 	\vspace{0.5cm}
 	\centering
 	\small
@@ -280,21 +302,43 @@
 		$f \in \omega(g)$ & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = \infty$    & \makecell{$f$ wächst schneller als $g$,             \\$g\in o(f)$}                                      \\
 		\hline
 	\end{tabular}
-	(Wir werden meist nur $\lim$ anstelle von $\limsup$ oder $\liminf$ betrachten müssen.)
 \end{frame}
 
+\begin{frame}{Landau-Symbole (Komplexitätstheorie)}
+	Im Kontext der Komplexitätstheorie seien $f$ und $g$ Folgen natürlicher Zahlen.
+	\vspace{0.5cm}
+	\centering
+	\small
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Notation} & \textbf{Definition}                                              & \textbf{Bedeutung}                                  \\
+		\hline
+		$f \in o(g)$      & $\lim\limits_{n \to \infty} \frac{f(n)}{g(n)} = 0$         & $f$ wächst langsamer als $g$                        \\
+		\hline
+		$f \in O(g)$      & $\limsup\limits_{n \to \infty} \frac{f(n)}{g(n)} < \infty$ & $f$ wächst höchstens so schnell wie $g$             \\
+		\hline
+		$f \in \Omega(g)$ & $\liminf\limits_{n \to \infty} \frac{f(n)}{g(n)} > 0$      & \makecell{$f$ wächst mindestens so schnell wie $g$, \\$g\in O(f)$}                          \\
+		\hline
+		$f \in \Theta(g)$ & \makecell{$f \in O(g)\cap \Omega(g)$,                                                                                  \\ $0 < \lim\limits_{n \to \infty} \frac{f(n)}{g(n)} < \infty$} & \makecell{$f$ wächst gleich schnell wie $g$,        \\sowohl $f\in O(g)$ als auch $f\in\Omega(g)$} \\
+		\hline
+		$f \in \omega(g)$ & $\lim\limits_{n \to \infty} \frac{f(n)}{g(n)} = \infty$    & \makecell{$f$ wächst schneller als $g$,             \\$g\in o(f)$}                                      \\
+		\hline
+	\end{tabular}
+	Wir gehen davon aus, dass die von uns untersuchten Folgen $h(n)$ stets gilt:
+	\[
+	\limsup\limits_{n \to \infty} h(n) = \liminf\limits_{n \to \infty} h(n) = \lim\limits_{n \to \infty} h(n).
+	\]
+\end{frame}
 
 \begin{frame}
 	\begin{myexercise}\label{myexercise:complexity00}
 		Entscheide, ob die folgenden Aussagen zutreffen:
 		\begin{enumerate}
-			\item Es sei $T(n)$ die worst case Laufzeit von \texttt{insertionSort}. Zeige, dass $T\in\Theta(n^2)$.
-			\item Es seien $a, b$ zwei positive reelle Zahlen und $a\neq 1$ und $b\neq 1$. Zeige, dass $\log_a\in\Theta\lr{\log_b}$.
+			\item Es sei $T(n)$ die worst case Laufzeit von \texttt{insertion\_sort}. Zeige, dass $T\in\Theta(n^2)$.
+			\item Es seien $a, b$ zwei positive reelle Zahlen mit $a\neq 1$, $b\neq 1$. Zeige, dass $\log_a\in\Theta\lr{\log_b}$.
 		\end{enumerate}
 	\end{myexercise}
 \end{frame}
-
-
 \begin{frame}
 	\begin{myexercise}\label{myexercise:complexity01}
 		Entscheide, ob die folgenden Aussagen zutreffen:
@@ -306,7 +350,6 @@
 		\end{enumerate}
 	\end{myexercise}
 \end{frame}
-
 
 \begin{frame}
 	\begin{myexercise}\label{myexercise:complexity02}
@@ -321,8 +364,6 @@
 		\end{enumerate}
 	\end{myexercise}
 \end{frame}
-
-
 \begin{frame}{Algorithmus präsentieren}
 	\begin{enumerate}
 		\item Bildet 3er-Gruppen.
@@ -337,8 +378,6 @@
 		\item Diskussion der Laufzeit des Algorithmus
 	\end{itemize}
 \end{frame}
-
-
 \begin{frame}[fragile]
 	Sei $A$ eine $m\times n$-Matrix mit Einträgen
 	\begin{align*}
@@ -363,11 +402,10 @@
 	\end{align*}
 \end{frame}
 
-
 \begin{frame}[fragile]{Matrix-Vektor-Multiplikation}
 Das Matrix-Vektor-Produkt $Ax$ ist genau dann definiert, wenn die \enquote{Breite} (Anzahl der Spalten) von $A$ der \enquote{Höhe} (Länge) von $x$ entspricht. Die \enquote{Höhe} des Produkts $Ax$ entspricht der \enquote{Höhe} der Matrix $A$.
 
-Betrachten wir nun den allgemeinen Fall. Sei $A$ eine $m\times n$-Matrix mit Einträgen
+Betrachten wir nun den allgemeinen Fall: Sei $A$ eine $m\times n$-Matrix mit Einträgen
 \begin{align*}
     A =
 \begin{pmatrix}
@@ -396,100 +434,148 @@ x_n
 		\lstinputlisting[language=Python,caption=\texttt{mvm.py},label=listing:mvm]{EF/Complexity/Code/mvm.py}
 \end{frame}
 
+\begin{frame}[fragile]
+	Dabei ist zum Beispiel die Komponente $b_3$ von $b$ gegeben durch die Zahl
+	\begin{align*}
+		a_{3,1}x_1 + a_{3,2}x_2 + \ldots + a_{3,n}x_n.
+	\end{align*}
+	Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
+	\begin{align*}
+		b_i := \sum_{k=1}^n a_{i,k}x_k = a_{i,1}x_1 + a_{i,2}x_2 + \ldots + a_{i,n}x_n, \quad (i=1,2,\ldots,m).
+	\end{align*}
+\end{frame}
 
-% \begin{frame}[fragile]
-% 	Dabei ist zum Beispiel die Komponente $b_3$ von $b$ gegeben durch die Zahl
-% 	\begin{align*}
-% 		a_{3,1}x_1 + a_{3,2}x_2 + \ldots + a_{3,n}x_n.
-% 	\end{align*}
-% 	Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
-% 	\begin{align*}
-% 		b_i := \sum_{k=1}^n a_{i,k}x_k = a_{i,1}x_1 + a_{i,2}x_2 + \ldots + a_{i,n}x_n, \quad (i=1,2,\ldots,m).
-% 	\end{align*}
-% \end{frame}
+\begin{frame}[fragile]{Matrix-Vektor-Multiplikation}
+Dann ist das Produkt $b:=Ax$ ein Vektor der Länge $m$:
+\[
+  \left(\begin{array}{*4{c}}
+    a_{1,1} & a_{1,2} & \dots & a_{1,n} \\
+    a_{2,1} & a_{2,2} & \dots & a_{2,n} \\
+    \textcolor{ForestGreen}{a_{3,1}} & \textcolor{ForestGreen}{a_{3,2}} & \dots & \textcolor{ForestGreen}{a_{3,n}} \\
+    a_{4,1} & a_{4,2} & \dots & a_{4,n} \\
+    \vdots & \vdots & & \vdots \\
+    a_{m,1} & a_{m,2} & \dots & a_{m,n}
+  \end{array}\right)
+  \lr{\begin{array}{*1{c}}
+    \textcolor{ForestGreen}{x_1}\\
+    \textcolor{ForestGreen}{x_2} \\
+    \vdots \\
+    \textcolor{ForestGreen}{x_n}
+  \end{array}}
+ =
+  \lr{\begin{array}{*1{c}}
+    b_1 \\
+    b_2 \\
+    \textcolor{ForestGreen}{b_3}\\
+    b_4 \\
+    \vdots\\
+    b_m
+  \end{array}}
+\]
+\end{frame}
 
-% \begin{frame}[fragile]{Matrix-Vektor-Multiplikation}
-% Hallo
-% \end{frame}
+\begin{frame}[fragile]{Matrix-Vektor-Multiplikation}
+Dabei ist zum Beispiel die Komponente $\textcolor{ForestGreen}{b_3}$ des Vektors $b$ gegeben durch die Zahl
+\begin{align*}
+    \textcolor{ForestGreen}{a_{3,1}x_1} + \textcolor{ForestGreen}{a_{3,2}x_2} + \ldots + \textcolor{ForestGreen}{a_{3,n}x_n}.
+\end{align*}
+Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
+\begin{align*}
+    b_i := \sum_{k=1}^n a_{i,k}x_k = a_{i,1}x_1 + a_{i,2}x_2 + \ldots + a_{i,n}x_n, \quad (i=1,2,\ldots,m).
+\end{align*}
+\end{frame}
 
+\begin{frame}[fragile]{Matrix-Matrix-Multiplikation}
+\newcommand{\myunit}{1 cm}
+\tikzset{
+    node style sp/.style={draw,circle,minimum size=\myunit},
+    node style ge/.style={circle,minimum size=\myunit},
+    arrow style mul/.style={draw,sloped,midway,fill=white},
+    arrow style plus/.style={midway,sloped,fill=white},
+}
 
-% \begin{frame}[fragile]{Matrix-Vektor-Multiplikation}
-% Dabei ist zum Beispiel die Komponente $b_3$ von $b$ gegeben durch die Zahl
-% \begin{align*}
-%     a_{3,1}x_1 + a_{3,2}x_2 + ... + a_{3,n}x_n.
-% \end{align*}
-% Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
-% \begin{align*}
-%     b_i := \sum_{k=1}^n a_{i,k}x_k = a_{i,1}x_1 + a_{i,2}x_2 + ... + a_{i,n}x_n, \quad (i=1,2,...,m).
-% \end{align*}
-% \end{frame}
+\begin{figure}
+\centering
+% Scales content to fit screen size automatically
+\begin{adjustbox}{max width=0.5\textwidth, max height=0.5\textheight}
+\begin{minipage}{\linewidth} % Ensures diagrams stack vertically
+\centering
 
+\begin{tikzpicture}[>=latex]
+% unit
+% defintion of matrices
+\matrix (A) [matrix of math nodes,%
+             nodes = {node style ge},%
+             left delimiter  = (,%
+             right delimiter = )] at (0,0)
+{%
+  a_{1,1} &\ldots & a_{1,k} & \ldots & a_{1,n}  \\
+    \vdots & \ddots & \vdots & \vdots & \vdots \\
+  |[node style sp]| a_{i,1} & \ldots%
+         & |[node style sp]| a_{i,k}%
+                  & \ldots%
+                           & |[node style sp]| a_{i,n} \\
+  \vdots & \vdots& \vdots & \ddots & \vdots  \\
+  a_{m,1}& \ldots & a_{m,k} & \ldots & a_{m,n}  \\
+};
+\node [draw,below] at (A.south)
+      { $A$ : \textcolor{ForestGreen}{$m$-Zeilen}, \textcolor{black}{$n$-Spalten}};
+\matrix (B) [matrix of math nodes,%
+             nodes = {node style ge},%
+             left delimiter  = (,%
+             right delimiter =)] at (7*\myunit,7*\myunit)
+{%
+  b_{1,1} &  \ldots& |[node style sp]| b_{1,j}%
+                  & \ldots & b_{1,p}  \\
+  \vdots& \ddots & \vdots & \vdots & \vdots \\
+  b_{k,1} &  \ldots& |[node style sp]| b_{k,j}%
+                  & \ldots & b_{k,p}  \\
+  \vdots& \vdots & \vdots & \ddots & \vdots \\
+  b_{n,1} &  \ldots& |[node style sp]| b_{n,j}%
+                  & \ldots & b_{n,p}  \\
+};
+\node [draw,above] at (B.north)
+      { $B$ : \textcolor{black}{$n$-Zeilen}, \textcolor{Goldenrod}{$p$-Spalten}};
+% matrice resultat
+\matrix (C) [matrix of math nodes,%
+             nodes = {node style ge},%
+             left delimiter  = (,%
+             right delimiter = )] at (7*\myunit,0)
+{%
+  c_{1,1} & \ldots& c_{1,j} & \ldots & c_{1,p} \\
+  \vdots& \ddots & \vdots & \vdots & \vdots \\
+    c_{i,1}& \ldots & |[node style sp,red]| c_{i,j}%
+                  & \ldots & c_{i,p} \\
+  \vdots& \vdots & \vdots & \ddots & \vdots \\
+  c_{m,1}& \ldots & c_{m,j} & \ldots & c_{m,p} \\
+};
+\node [draw,below] at (C.south) 
+    {$ C=A\times B$ : \textcolor{ForestGreen}{$m$-Zeilen},
+                      \textcolor{Goldenrod}{$p$-Spalten}};
+% arrows
+\draw[blue] (A-3-1.north) -- (C-3-3.north);
+\draw[blue] (A-3-1.south) -- (C-3-3.south);
+\draw[blue] (B-1-3.west)  -- (C-3-3.west);
+\draw[blue] (B-1-3.east)  -- (C-3-3.east);
+\draw[<->,red](A-3-1) to[in=180,out=90] 
+    node[arrow style mul] (x) {$a_{i1}\times b_{1j}$} (B-1-3);
+\draw[<->,red](A-3-3) to[in=180,out=90] 
+    node[arrow style mul] (y) {$a_{ik}\times b_{kj}$}(B-3-3);
+\draw[<->,red](A-3-5) to[in=180,out=90] 
+    node[arrow style mul] (z) {$a_{ip}\times b_{pj}$}(B-5-3);
+\draw[red,->] (x) to node[arrow style plus] {$+\raisebox{.5ex}{\ldots}+$} (y)
+    to node[arrow style plus] {$+\raisebox{.5ex}{\ldots}+$} (z);
+                  %
+                  % to (C-3-3.north west);
+\draw[->,red,decorate,decoration=zigzag] (z) -- (C-3-3.north west);
+\end{tikzpicture}
+\end{minipage}
+\end{adjustbox}
 
-% \begin{frame}[fragile]{Matrix-Matrix-Multiplikation}
-% \newcommand{\myunit}{1 cm}
-% \tikzset{
-%     node style sp/.style={draw,circle,minimum size=\myunit},
-%     node style ge/.style={circle,minimum size=\myunit},
-%     arrow style mul/.style={draw,sloped,midway,fill=white, font=\tiny},
-%     arrow style plus/.style={midway,sloped,fill=white, font=\tiny},
-% }
-% \begin{figure}[H]
-%     \centering
-% \resizebox{\textwidth}{!}{%
-% 	\begin{tikzpicture}[>=latex]
-% 		\matrix (A) [matrix of math nodes, nodes = {node style ge},
-% 		left delimiter  = (,right delimiter = )] at (0,0)
-% 		{a_{1,1} & a_{1,2} & \ldots & a_{1,n}  \\
-% 			|[node style sp]| a_{2,1}& |[node style sp]| a_{2,2}& \ldots & |[node style sp]| a_{2,n} \\
-% 			\vdots & \vdots & \ddots & \vdots  \\
-% 			a_{m,1} & a_{m,2} & \ldots & a_{m,n}  \\
-% 		};
-% 		\node [draw,below=10pt] at (A.south)
-% 		{ $A$ : \textcolor{ForestGreen}{$m$-Zeilen}, $n$-Spalten};
-
-% 		\matrix (B) [matrix of math nodes, nodes = {node style ge},%
-% 		left delimiter  = (,right delimiter =)] at (6*\myunit,6*\myunit)
-% 		{%
-% 			b_{1,1} & |[node style sp]| b_{1,2} & \ldots & b_{1,p}  \\
-% 			b_{2,1} & |[node style sp]| b_{2,2} & \ldots & b_{2,p}  \\
-% 			\vdots & \vdots & \ddots & \vdots  \\
-% 			b_{n,1} & |[node style sp]| b_{n,2} & \ldots & b_{n,p}  \\
-% 		};
-% 		\node [draw,above=10pt] at (B.north)
-% 		{ $B$ : $n$-Zeilen, \textcolor{Goldenrod}{$p$-Spalten}};
-
-% 		\matrix (C) [matrix of math nodes, nodes = {node style ge},%
-% 		left delimiter  = (,right delimiter = )] at (6*\myunit,0)
-% 		{ c_{1,1} & c_{1,2} & \ldots & c_{1,p} \\
-% 			c_{2,1} & |[node style sp,red]| c_{2,2}%
-% 			& \ldots & c_{2,p} \\
-% 			\vdots & \vdots & \ddots & \vdots \\
-% 			c_{m,1} & c_{m,2} & \ldots & c_{m,p} \\
-% 		};
-
-% 		\draw[blue] (A-2-1.north) -- (C-2-2.north);
-% 		\draw[blue] (A-2-1.south) -- (C-2-2.south);
-% 		\draw[blue] (B-1-2.west)  -- (C-2-2.west);
-% 		\draw[blue] (B-1-2.east)  -- (C-2-2.east);
-% 		\draw[<->,red](A-2-1) to[in=180,out=90]
-% 		node[arrow style mul] (x) {$a_{2,1}b_{1,2}$} (B-1-2);
-% 		\draw[<->,red](A-2-2) to[in=180,out=90]
-% 		node[arrow style mul] (y) {$a_{2,2}b_{2,2}$} (B-2-2);
-% 		\draw[<->,red](A-2-4) to[in=180,out=90]
-% 		node[arrow style mul] (z) {$a_{2,n}b_{n,2}$} (B-4-2);
-% 		\draw[red,->] (x) to node[arrow style plus] {$+$} (y)
-% 		to node[arrow style plus] {$+\raisebox{.5ex}{\ldots}+$} (z)%
-% 		to (C-2-2.north west);
-
-% 		\node [draw,below=10pt] at (C.south)
-% 		{$ C=AB$ : \textcolor{ForestGreen}{$m$-Zeilen},  \textcolor{Goldenrod}{$p$-Spalten}};
-% 	\end{tikzpicture}
-% }
-%     \caption{Veranschaulichung des Matrixprodukts $C = AB$. Zur illustrativen Zwecken, wurde die Matrix $B$ \enquote{oben rechts} der Matrix $B$ angebracht.}
-%     \label{fig:visualmult}
-% \end{figure}
-% \end{frame}
-
+    \caption{Veranschaulichung des Matrixprodukts $C = AB$.}
+    \label{fig:visualmult}
+\end{figure}
+\end{frame}
 
 \begin{frame}
 	Im Allgemeinen ist der Eintrag $c_{i,j}$ von $C$ das Vektor-Vektor-Produkt der $i$-ten Zeile von $A$ mit der $j$-ten Spalte von $B$. Deshalb ist es notwendig, dass die \enquote{Breite} von $A$ genau der \enquote{Höhe} von $B$ entspricht. Das Produkt $C=AB$ wird die \enquote{Höhe} von $A$ und die \enquote{Breite} von $B$ haben. Formal definiert man die Einträge von $C$ wie folgt:
@@ -499,12 +585,48 @@ x_n
 	für $(i=1,2,\ldots ,m; j=1,2,\ldots,p)$.
 \end{frame}
 
-
 \begin{frame}[fragile]{Matrix-Matrix-Multiplikation}
 		\leavevmode
 		\lstinputlisting[language=Python,caption=\texttt{mmm.py},label=listing:mmm]{EF/Complexity/Code/mmm.py}
 \end{frame}
 
+\begin{frame}
+	Die folgende schematische Darstellung soll nochmals die Situation der Matrixdimensionen in dem Produkt $AB=C$ verdeutlichen. In den letzten beiden Beispielen sind $A$ und $B$ jeweils Vektoren derselben Länge.
+\end{frame}
+
+\begin{frame}
+\[
+\drawmatrix[height=0.875cm,width=0.5cm]A
+\cdot 
+\drawmatrix[height=0.5cm,width=1.25cm]B
+=
+\drawmatrix[height=0.875cm,width=1.25cm]C
+\]
+
+\[
+\drawmatrix[height=0.5cm,width=1.25cm]A
+\cdot 
+\drawmatrix[height=1.25cm,width=0.25cm]B
+=
+\drawmatrix[height=0.5cm,width=0.25cm]C
+\]
+
+\[
+\drawmatrix[height=0.125cm,width=1cm]A
+\cdot 
+\drawmatrix[height=1cm,width=0.125cm]B
+=
+\drawmatrix[height=0.125cm,width=0.125cm]C\in\R
+\]
+\[
+\drawmatrix[height=1cm,width=0.125cm]A
+\cdot 
+\drawmatrix[height=0.125cm,width=1cm]B
+=
+\drawmatrix[height=1cm,width=1cm]C
+\]
+Die Matrix $C$ ist so \enquote{hoch} wie $A$ und so \enquote{breit} wie $B$. Das Produkt $AB$ ist nur definiert, wenn $B$ so \enquote{hoch} ist, wie $A$ \enquote{breit} ist. Hat eine reelle $1\times 1$-Matrix $C$ den Eintrag $x$, so identifizieren wir die Matrix $C$ mit ihrem Eintrag $x$ (der reellen Zahl $x$).
+\end{frame}
 
 \begin{frame}[fragile]
 	\begin{enumerate}
@@ -519,6 +641,6 @@ x_n
 	Wie kann fast jeder Algorithmus modifiziert werden, dass er eine \enquote{schnelle} best-case Laufzeit hat?
 \end{frame}
 
-% \begin{frame}{Referenzen}
-% 	\printbibliography[heading=none]
-% \end{frame}
+\begin{frame}{Referenzen}
+	\printbibliography[heading=none]
+\end{frame}
