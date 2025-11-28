@@ -135,15 +135,15 @@
 	\end{tikzpicture}
 \end{frame}
 
-\begin{frame}{worst case}
-	\enquote{The worst-case running time of an algorithm gives us an upper bound on the	running time for any input. Knowing it provides a guarantee that the algorithm will never take any longer. We need not make some educated guess about the running time and hope that it never gets much worse.}\cite{IntroductionAlgo}
+\begin{frame}{worst-case}
+	\enquote{The worst-case running time of an algorithm gives us an upper bound on the	running time for any input. Knowing it provides a guarantee that the algorithm will never take any longer. We need not make some educated guess about the running time and hope that it never gets much worse.}%\cite{IntroductionAlgo}
 \end{frame}
 
-\begin{frame}{worst case}
-	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (Achtung: wir meinen wirklich die \textbf{minimale}) Laufzeit welche unser \texttt{insertion\_sort} Algorithmus benötigt, um jede (auch die schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
+\begin{frame}{worst-case}
+	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst-case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (Achtung: wir meinen wirklich die \textbf{minimale}) Laufzeit welche unser \texttt{insertion\_sort} Algorithmus benötigt, um jede (auch die schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
 \end{frame}
 
-\begin{frame}{worst case}
+\begin{frame}{worst-case}
 	Für $T(n)$ gilt natürlich:
 	\begin{align*}
 		T(n) = c_1 + c_9 + (c_2 + c_3 + c_4 + c_8)(n-1) + \\
@@ -152,7 +152,7 @@
 	Doch wie lauten die Terme $t_j$?
 \end{frame}
 
-\begin{frame}[fragile]{Worst Case}
+\begin{frame}[fragile]{worst-case}
 	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0\ldotsj-1]} verglichen werden, also mit $j$ vielen. Somit gilt also
 	\begin{align*}
 		t_j = j, \quad i = 1, 2, \ldots, n-1.
@@ -160,7 +160,7 @@
 \end{frame}
 
 
-\begin{frame}[fragile]{Worst Case}
+\begin{frame}[fragile]{worst-case}
 	Gauss-Summenformel:
 	\begin{align*}
 		\sum_{j=0}^{n} j = \sum_{j=1}^{n} j = \frac{n(n+1)}{2}
@@ -203,12 +203,12 @@
 
 \begin{frame}{\texttt{bubble\_sort}}
 	\begin{myexercise}
-		Führen Sie die Laufzeitanalyse (im worst case) von \texttt{bubble\_sort} durch.
+		Führen Sie die Laufzeitanalyse (im worst-case) von \texttt{bubble\_sort} durch.
 		\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort]{EF/Complexity/Code/bubble_sort.py}
 	\end{myexercise}
 \end{frame}
 
-\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} (worst case, Problemgrösse $n$)}
+\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} (worst-case, Problemgrösse $n$)}
 	\begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily]
 	def bubble_sort(A): !\tikzmark{c1end}!                                     !\tikzmark{c1start}!
         n = len(A) !\tikzmark{c2end}!                                          !\tikzmark{c2start}!
@@ -334,7 +334,7 @@
 	\begin{myexercise}\label{myexercise:complexity00}
 		Entscheide, ob die folgenden Aussagen zutreffen:
 		\begin{enumerate}
-			\item Es sei $T(n)$ die worst case Laufzeit von \texttt{insertion\_sort}. Zeige, dass $T\in\Theta(n^2)$.
+			\item Es sei $T(n)$ die worst-case Laufzeit von \texttt{insertion\_sort}. Zeige, dass $T\in\Theta(n^2)$.
 			\item Es seien $a, b$ zwei positive reelle Zahlen mit $a\neq 1$, $b\neq 1$. Zeige, dass $\log_a\in\Theta\lr{\log_b}$.
 		\end{enumerate}
 	\end{myexercise}
@@ -550,7 +550,7 @@ Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
   c_{m,1}& \ldots & c_{m,j} & \ldots & c_{m,p} \\
 };
 \node [draw,below] at (C.south) 
-    {$ C=A\times B$ : \textcolor{ForestGreen}{$m$-Zeilen},
+    {$ C=A\cdot B$ : \textcolor{ForestGreen}{$m$-Zeilen},
                       \textcolor{Goldenrod}{$p$-Spalten}};
 % arrows
 \draw[blue] (A-3-1.north) -- (C-3-3.north);
@@ -558,11 +558,11 @@ Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
 \draw[blue] (B-1-3.west)  -- (C-3-3.west);
 \draw[blue] (B-1-3.east)  -- (C-3-3.east);
 \draw[<->,red](A-3-1) to[in=180,out=90] 
-    node[arrow style mul] (x) {$a_{i1}\times b_{1j}$} (B-1-3);
+    node[arrow style mul] (x) {$a_{i,1}\cdot b_{1,j}$} (B-1-3);
 \draw[<->,red](A-3-3) to[in=180,out=90] 
-    node[arrow style mul] (y) {$a_{ik}\times b_{kj}$}(B-3-3);
+    node[arrow style mul] (y) {$a_{i,k}\cdot b_{k,j}$}(B-3-3);
 \draw[<->,red](A-3-5) to[in=180,out=90] 
-    node[arrow style mul] (z) {$a_{ip}\times b_{pj}$}(B-5-3);
+    node[arrow style mul] (z) {$a_{i,n}\cdot b_{n,j}$}(B-5-3);
 \draw[red,->] (x) to node[arrow style plus] {$+\raisebox{.5ex}{\ldots}+$} (y)
     to node[arrow style plus] {$+\raisebox{.5ex}{\ldots}+$} (z);
                   %
@@ -582,12 +582,12 @@ Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
 	\begin{align}\label{eq:matrixproduct}
 		c_{i,j} := \sum_{k=1}^n a_{i,k}b_{k,j} = a_{i,1}b_{1,j}+a_{i,2}b_{2,j}+\ldots+a_{i,n}b_{n,j},
 	\end{align}
-	für $(i=1,2,\ldots ,m; j=1,2,\ldots,p)$.
+	für $(i=1,2,\ldots ,m \quad j=1,2,\ldots,p)$.
 \end{frame}
 
 \begin{frame}[fragile]{Matrix-Matrix-Multiplikation}
 		\leavevmode
-		\lstinputlisting[language=Python,caption=\texttt{mmm.py},label=listing:mmm]{EF/Complexity/Code/mmm.py}
+		\lstinputlisting[language=Python,caption=\texttt{mmm.py},label=listing:mmm,basicstyle=\ttfamily\normalsize]{EF/Complexity/Code/mmm.py}
 \end{frame}
 
 \begin{frame}
@@ -637,10 +637,10 @@ Die Matrix $C$ ist so \enquote{hoch} wie $A$ und so \enquote{breit} wie $B$. Das
 \end{frame}
 
 
-\begin{frame}[fragile]{Best-Case}
+\begin{frame}[fragile]{best-case}
 	Wie kann fast jeder Algorithmus modifiziert werden, dass er eine \enquote{schnelle} best-case Laufzeit hat?
 \end{frame}
 
-\begin{frame}{Referenzen}
-	\printbibliography[heading=none]
-\end{frame}
+% \begin{frame}{Referenzen}
+% 	\printbibliography[heading=none]
+% \end{frame}
