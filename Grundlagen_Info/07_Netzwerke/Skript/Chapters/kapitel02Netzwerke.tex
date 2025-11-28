@@ -561,14 +561,31 @@ Die Übertragungssicherungsschicht befasst sich mit der stabilen Übertragung vo
 \subsection{IP-Adressen}
 
 Eine \acrfull{IP}-Adresse ist eine Netzwerk-Adresse eines Computers. Somit ist sie in gewisser Weise der Wohnadresse einer Person ähnlich. Häufig werden \gls{IP}-Adressen noch im \textbf{IPv4}-Format angegeben: Dieses besteht aus 4 bytes, also 4 Zahlen von 0 bis 255. Die \gls{IP}v4-Adresse wird meist dezimal angegeben (beispielsweise \texttt{192.168.0.1}).
+
+Häufig wird zwischen der \textbf{lokalen} und der \textbf{globalen} \gls{IP}-Adresse unterschieden:
+\begin{itemize}
+	\item Die \textbf{lokale} \gls{IP}-Adresse (auch private \gls{IP}-Adresse genannt) ist die Adresse eines Computers innerhalb eines lokalen Netzwerks (z.B. im Heimnetzwerk oder Firmennetzwerk). Diese Adresse ist nur innerhalb dieses lokalen Netzwerks gültig und kann von anderen Computern im Internet nicht direkt erreicht werden.
+	\item Die \textbf{globale} \gls{IP}-Adresse (auch öffentliche \gls{IP}-Adresse genannt) ist die Adresse eines Computers im gesamten Internet. Diese Adresse ist weltweit eindeutig und ermöglicht es Computern, miteinander über das Internet zu kommunizieren. Die globale \gls{IP}-Adresse wird in der Regel von einem Internetdienstanbieter (ISP) zugewiesen.
+\end{itemize}
+
+Der Grund, warum es lokale und globale \gls{IP}-Adressen gibt, liegt darin, dass es nicht genügend globale \gls{IP}-Adressen für alle Geräte auf der Welt gibt. Durch die Verwendung von lokalen \gls{IP}-Adressen in privaten Netzwerken können viele Geräte dieselbe lokale Adresse verwenden, solange sie sich in unterschiedlichen Netzwerken befinden. Der Router in einem lokalen Netzwerk übernimmt dann die Aufgabe, die Kommunikation zwischen den lokalen Geräten und dem Internet zu koordinieren, indem er die lokalen Adressen in die globale Adresse übersetzt (dies wird als \gls{NAT}, bezeichnet).
+
+Die lokale Netzwerk-Adresse eines Computers wird häufig automatisch von einem \textbf{\gls{DHCP}-Server} zugewiesen, welcher in der Regel im Router integriert ist. Der \gls{DHCP}-Server verwaltet dabei einen Pool von verfügbaren \gls{IP}-Adressen und weist jedem Computer, der sich mit dem Netzwerk verbindet, eine freie Adresse aus diesem Pool zu. Dies geschieht automatisch und vereinfacht die Verwaltung von \gls{IP}-Adressen in einem Netzwerk erheblich. 
+
 \begin{myexercise}\label{ex:meine-ip}
-	Finden Sie Ihre eigene IPv4-Adresse heraus. Tipps:
+	Finden Sie Ihre eigene lokale IPv4-Adresse heraus. Tipps:
 	\begin{itemize}
 		\item MacOS, Terminal (via Spotlight-Suche): \\
 		      \commandbox|ipconfig getifaddr en0|
 		\item Windows, Programm ``cmd'': \\
 		      \commandbox|ipconfig|
 	\end{itemize}
+	Ihre eigene globale IP können Sie beispielsweise über die Webseite \url{https://www.whatismyip.com/} herausfinden.
+\end{myexercise}
+
+\begin{myexercise}
+Führen Sie folgendes Skript in Python aus, um zu überprüfen, ob Sie dieselbe lokale und globale \gls{IP}-Adresse wie in \cref{ex:meine-ip} herausgefunden haben:
+\lstinputlisting{Grundlagen_Info/07_Netzwerke/Code/get_net_configs.py}
 \end{myexercise}
 
 \begin{myexercise}
@@ -1016,14 +1033,13 @@ Ein einfacher Anwendungsfall eines Servers ist der sogenannte \textbf{Echo-Serve
 \subsection{Email-Server}
 Ein Echo-Server ist zugegebenermassen ein sehr einfacher Anwendungsfall. In der Praxis gibt es viele komplexere Server, die verschiedene Dienste bereitstellen. Ein häufig verwendeter Server ist der \textbf{Email-Server}. Ein Email-Server ist dafür verantwortlich, E-Mails zu empfangen, zu speichern und zu senden. Es gibt verschiedene Protokolle, die für den Betrieb von Email-Servern verwendet werden, darunter:
 \begin{itemize}
-	\item \textbf{\acrfull{SMTP}}: Dieses Protokoll wird hauptsächlich zum Senden von E-Mails verwendet. Es ermöglicht es einem Client, eine E-Mail an einen Server zu senden, der die E-Mail dann an den Empfänger weiterleitet.
-	\item \textbf{\acrfull{POP3}}: Dieses Protokoll wird verwendet, um E-Mails von einem Server herunterzuladen. Es ermöglicht es einem Client, E-Mails vom Server abzurufen und lokal zu speichern.
-	\item \textbf{\acrfull{IMAP}}: Dieses Protokoll wird ebenfalls zum Abrufen von E-Mails verwendet, bietet jedoch mehr Funktionen als \gls{POP3}. Mit \gls{IMAP} können Clients E-Mails auf dem Server verwalten, ohne sie herunterzuladen.
+	\item \textbf{\acrfull{SMTP}}: Dieses Protokoll wird hauptsächlich zum Senden von E-Mails verwendet. Es ermöglicht es einem Client, eine E-Mail an einen Server zu senden, der die E-Mail dann an den Empfänger weiterleitet. Standardmässig wird \gls{SMTP} über den Port 25 betrieben.
+	\item \textbf{\acrfull{POP3}}: Dieses Protokoll wird verwendet, um E-Mails von einem Server herunterzuladen. Es ermöglicht es einem Client, E-Mails vom Server abzurufen und lokal zu speichern. Standardmässig wird \gls{POP3} über den Port 110 betrieben.
+	\item \textbf{\acrfull{IMAP}}: Dieses Protokoll wird ebenfalls zum Abrufen von E-Mails verwendet, bietet jedoch mehr Funktionen als \gls{POP3}. Mit \gls{IMAP} können Clients E-Mails auf dem Server verwalten, ohne sie herunterzuladen. Standardmässig wird \gls{IMAP} über den Port 143 betrieben.
 \end{itemize}
 
 \begin{myexercise}[Filius-Anwendung: Email-Server]
-	Schauen Sie sich das Filius-Video Nummer 6 an. Erstellen Sie selber einen Email-Server sowie zwei Clients in Filius, die mit dem Email-Server kommunizieren können. Testen Sie die Konfiguration, indem Sie E-Mails von einem Client an den anderen senden und überprüfen, ob die E-Mails korrekt empfangen werden.
-	
+	Erstellen Sie in Filius eine Client-Server-Architektur, ähnlich derjenigen aus Video 5. Diesmal soll der Server jedoch als Email-Server fungieren, der sowohl \gls{SMTP} als auch \gls{POP3} unterstützt. Installieren Sie dazu auf dem Server einen ``E-Mail-Server'' und auf dem Client einen ``E-Mail-Client''. Konfigurieren Sie den Server so, dass er E-Mails empfangen und senden kann, und konfigurieren Sie die Clients entsprechend, damit sie E-Mails über den Server senden und empfangen können. Testen Sie die Konfiguration, indem Sie eine E-Mail von einem Client an einen anderen Client senden und überprüfen, ob die E-Mail korrekt empfangen wird.	
 \end{myexercise}
 
 \subsection{Web-Server}
@@ -1133,12 +1149,12 @@ Wir können den Ablauf einer Abfrage etwas detaillierter aufzeigen, indem wir ei
 
 Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige weitere Schritte erfolgen. Wie werden beispielsweise die Daten vom Server zum Client transportiert? Dafür müssen wir uns näher mit der Transportschicht auseinandersetzen.
 
-\begin{mychallenge}[Das Internet]
-	Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.7-2.9 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
-\end{mychallenge}
+\begin{myexercise}[Filius-Anwendung: Web-Server]
+	Erstellen Sie in Filius eine Client-Server-Architektur, ähnlich derjenigen aus Video 5. Diesmal soll der Server jedoch als Web-Server fungieren, der das \gls{HTTP}-Protokoll unterstützt. Installieren Sie dazu auf dem Server einen ``Webserver'' und auf dem Client einen ``Webbrowser''. Die Dateien, welche dem Client dargestellt werden sollen, befinden sich bereits auf dem Server. Installieren Sie auf dem Server zusätzlich die Software ``Text-Editor'' und öffnen Sie die Datei \texttt{index.html}, im Ordner \texttt{webserver}, um den Inhalt der Webseite anzupassen. Fügen Sie einen neuen Titel und Text hinzu, der auf der Webseite angezeigt werden soll, und testen Sie von einem anderen Client aus, ob die Änderungen korrekt angezeigt werden.
+\end{myexercise}
 
-\begin{mychallenge}
-	Richten Sie sich Ihren eigenen Email-Server ein, indem Sie folgende Aufgaben ausführen: \href{https://inf-schule.de/rechnernetze/filius/internet/exkurs_email}{Link}.
+\begin{mychallenge}[\gls{HTML} genauer verstehen]
+	Besuchen Sie folgende Webseite: \url{https://www.w3schools.com/html} und lesen Sie die Grundlagen von \gls{HTML}. Erstellen Sie anschliessend eine einfache \gls{HTML}-Datei mit einem Titel, einer Überschrift und einem Absatz. Speichern Sie die Datei als \texttt{meine_erste_webseite.html} und öffnen Sie sie in Ihrem Webbrowser, um das Ergebnis zu sehen.
 \end{mychallenge}
 
 \subsection{\texorpdfstring{\gls{DNS}-Server}{DNS}-Server}
@@ -1228,9 +1244,9 @@ Mit dem Terminal-Befehl \texttt{host [ipadress]} kann nachgeschaut werden, welch
 	\end{myanswer}
 \end{myexercise}
 
-\begin{mychallenge}[DNS-Server]
-	Schauen Sie sich jeweils zuerst die Videos an und erledigen Sie danach Aufgaben 2.10-2.12 auf folgendem \href{https://informatik.mygymer.ch/base/?book=network}{Link}. Laden Sie Ihre Lösungen als \texttt{.fls}-Dateien auf Moodle hoch.
-\end{mychallenge}
+\begin{myexercise}[Filus-\gls{DNS}-Server]
+	Erstellen Sie in Filius eine Client-Server-Architektur, ähnlich derjenigen aus Video 5, allerdings mit 2 Servern, wovon der erste als \gls{DNS}-Server und der zweite als Web-Server fungiert. Der DNS-Server soll dem Client die \gls{IP}-Adresse des Web-Servers bereitstellen, damit der Client anschliessend eine Webseite vom Web-Server anfordern kann. Schauen Sie sich hierzu auf Filius um, welche Software-Pakete für die jeweiligen Server zur Verfügung stehen. Vergessen Sie nicht, den \gls{DNS}-Server auch bei jedem Client einzutragen, damit dieser weiss, an welchen Server er die \gls{DNS}-Anfragen schicken muss!
+\end{myexercise}
 
 \section{Weitere Aufgaben}
 
