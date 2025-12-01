@@ -4,7 +4,7 @@
 % default settings for listings
 \lstset{style=python, basicstyle=\ttfamily\footnotesize}
 
-\title[Programmieren]{Programmieren: Klassen}
+\title[Programmieren]{Komplexitätstheorie}
 
 \subtitle{Komplexitätstheorie}
 
@@ -25,7 +25,7 @@
 
 \frame{\titlepage}
 
-\begin{frame}{algorithmisch lösbare und algorithmisch unlösbare Probleme}
+\begin{frame}{Berechenbarkeit}
 	\begin{itemize}[<+->]
 		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch lösbar}}, wenn ein Algorithmus zur Lösung dieses Problems existiert, und ein Problem ist \textbf{\textcolor{Red}{algorithmisch unlösbar}}, wenn kein Algorithmus für dieses Problem existiert.
 		\item Wir werden uns in diesem Thema auf \textbf{\textcolor{Green}{algorithmisch lösbare}} Probleme beschränken.
@@ -34,9 +34,9 @@
 
 \begin{frame}{Komplexitätstheorie}
 	\begin{itemize}[<+->]
-		\item Die Komplexitätstheorie strebt eine feinere Einteilung der algorithmisch lösbaren Probleme an.
 		\item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche rechnerunterstützte Lösung des Problems darstellt!
 		\item Es gab viele praxisrelevante, algorithmisch lösbare Probleme, für die alle entworfenen Programme tagelang auf gegebenen Eingaben ohne Erfolg arbeiteten. Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
+		\item Die Komplexitätstheorie strebt eine feinere Einteilung der algorithmisch lösbaren Probleme an.
 	\end{itemize}
 \end{frame}
 
@@ -48,7 +48,7 @@
 \end{frame}
 
 \begin{frame}{Komplexitätstheorie}
-	Die Komplexitätstheorie ist die Theorie der quantitativen Gesetze und Grenzen der algorithmischen Informationsverarbeitung. Diese Theorie hat auch eine physikalische Dimension: Zum Beispiel hält man ein lösbares Problem für \enquote{praktisch unlösbar}, wenn die praktische Ausführung eines Algorithmus zur Lösung des Problems mehr Energie bräuchte, als im bekannten Universum vorhanden ist.
+	Die Komplexitätstheorie ist die Theorie der quantitativen Gesetze und Grenzen der algorithmischen Informationsverarbeitung. Diese Theorie hat auch eine physikalische Dimension: Zum Beispiel hält man ein zwar berechenbares Problem sicherlich für \enquote{praktisch unlösbar}, wenn die Ausführung eines Algorithmus zur Lösung des Problems mehr Energie bräuchte, als im bekannten Universum vorhanden ist.
 \end{frame}
 
 \begin{frame}{Fallstudie: \texttt{insertion\_sort}}
@@ -57,15 +57,17 @@
 
 \begin{frame}{\texttt{insertion\_sort} implementieren}
 	\begin{myexercise}[\texttt{insertion\_sort}]\label{myexercise:insertion_sort}
-		Implementiere den \texttt{insertion\_sort} Algorithmus.
+		Implementiere den \texttt{insertion\_sort} Algorithmus. Kompletiere dazu die folgende Vorlage:
+		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort\_template.py},label=listing:insertion_sort]{EF/Complexity/Code/insertion_sort_template.py}
 	\end{myexercise}
 \end{frame}
 
-\begin{frame}{\texttt{insertion\_sort}}
+\begin{frame}
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort.py},label=listing:insertion_sort]{EF/Complexity/Code/insertion_sort.py}
 	\end{myanswer}
 \end{frame}
+
 
 \begin{frame}{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
 	\begin{itemize}[<+->]
@@ -79,7 +81,7 @@
 	\begin{itemize}[<+->]
 		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab).
 		\item Bei einer solchen Schleife über $m$ Wiederholungen, wird der Schleifenkörper genau $m$ mal ausgeführt. Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
-		\item Die Schleifen-Bedingung wird also genau $m+1$ überprüft.
+		\item Die Schleifen-Bedingung wird also genau $m+1$ überprüft. Also genau einmal mehr als der Schleifenkörper.
 	\end{itemize}
 \end{frame}
 
@@ -136,11 +138,11 @@
 \end{frame}
 
 \begin{frame}{worst-case}
-	\enquote{The worst-case running time of an algorithm gives us an upper bound on the	running time for any input. Knowing it provides a guarantee that the algorithm will never take any longer. We need not make some educated guess about the running time and hope that it never gets much worse.}%\cite{IntroductionAlgo}
+	Den schwierigsten / schlimmsten Probleminstanzen (Fällen) kommt in der Informatik eine besondere Bedeutung zu. Man spricht von der \textit{Laufzeit im Schlimmsten Fall} (englisch: \textit{worst-case running time}). Die Idee hinter diesem Ansatz ist offensichtlich: In der Zeit in der wir diese schlimmsten Fälle berechnen können, können wir erst recht alle anderen Fälle berechnen.
 \end{frame}
 
-\begin{frame}{worst-case}
-	Oft interessieren wir uns für die Laufzeit im schlimmsten Fall (worst-case). Wir bezeichnen mit $T(n)$, die \textbf{minimale} (Achtung: wir meinen wirklich die \textbf{minimale}) Laufzeit welche unser \texttt{insertion\_sort} Algorithmus benötigt, um jede (auch die schwierigste) Probleminstanz der Grösse $n$ (hier: Liste der Länge $n$) zu lösen.
+\begin{frame}{worst-case für \texttt{insertion\_sort}}
+	 Wir bezeichnen mit $T(n)$, die \textbf{minimale} (Achtung: wir meinen wirklich die \textbf{minimale}) Laufzeit welche unser \texttt{insertion\_sort} Algorithmus benötigt, um jede (auch die schwierigste) Probleminstanz der Grösse $n$ (hier: zu sortierende Liste der Länge $n$) zu lösen.
 \end{frame}
 
 \begin{frame}{worst-case}
@@ -153,7 +155,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{worst-case}
-	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0\ldotsj-1]} verglichen werden, also mit $j$ vielen. Somit gilt also
+	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0...j-1]} verglichen werden, also mit $j$ vielen. Somit gilt also
 	\begin{align*}
 		t_j = j, \quad i = 1, 2, \ldots, n-1.
 	\end{align*}
@@ -172,7 +174,7 @@
 	\begin{align*}
 		\textcolor{RoyalBlue}{\sum_{j=1}^{n-1} t_j} & = \sum_{j=1}^{n-1} (j)  =                 \\
 		                                            & = \sum_{j=1}^{n} (j) - n =                \\
-		                                            & = \frac{n(n-1)}{2} - n =                  \\
+		                                            & = \frac{n(n+1)}{2} - n =                  \\
 		                                            & = \textcolor{RoyalBlue}{\frac{n(n-1)}{2}}
 	\end{align*}
 \end{frame}
@@ -203,7 +205,8 @@
 
 \begin{frame}{\texttt{bubble\_sort}}
 	\begin{myexercise}
-		Führen Sie die Laufzeitanalyse (im worst-case) von \texttt{bubble\_sort} durch.
+		Führen Sie die Laufzeitanalyse (im worst-case) von \\
+		\texttt{bubble\_sort} durch.
 		\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort]{EF/Complexity/Code/bubble_sort.py}
 	\end{myexercise}
 \end{frame}
@@ -565,13 +568,11 @@ Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
     node[arrow style mul] (z) {$a_{i,n}\cdot b_{n,j}$}(B-5-3);
 \draw[red,->] (x) to node[arrow style plus] {$+\raisebox{.5ex}{\ldots}+$} (y)
     to node[arrow style plus] {$+\raisebox{.5ex}{\ldots}+$} (z);
-                  %
-                  % to (C-3-3.north west);
+                  to (C-3-3.north west);
 \draw[->,red,decorate,decoration=zigzag] (z) -- (C-3-3.north west);
 \end{tikzpicture}
 \end{minipage}
 \end{adjustbox}
-
     \caption{Veranschaulichung des Matrixprodukts $C = AB$.}
     \label{fig:visualmult}
 \end{figure}
@@ -591,7 +592,7 @@ Allgemein sind die Komponenten des Matrix-Vektor-Produkts $b=Ax$ gegeben durch
 \end{frame}
 
 \begin{frame}
-	Die folgende schematische Darstellung soll nochmals die Situation der Matrixdimensionen in dem Produkt $AB=C$ verdeutlichen. In den letzten beiden Beispielen sind $A$ und $B$ jeweils Vektoren derselben Länge.
+	Die folgende schematische Darstellung soll nochmals die Situation der Matrixdimensionen in dem Produkt $C = AB$ verdeutlichen. In den letzten beiden Beispielen sind $A$ und $B$ jeweils Vektoren derselben Länge.
 \end{frame}
 
 \begin{frame}
