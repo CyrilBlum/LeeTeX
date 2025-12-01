@@ -270,7 +270,7 @@ Ein Beispiel, wie das \gls{ARP}-Protokoll funktioniert, könnte wie folgt ausseh
 
 \subsection{Ping}
 % TODO potentially add tcolorbox for each terminal command introduced, with example use
-Mit dem Befehl \enquote{\texttt{ping}} kann überprüft werden, ob ein Rechner im Netzwerk erreichbar ist. Dabei wird eine minimale, inhaltslose Nachricht an einen anderen Rechner (=\gls{IP}-Adresse) geschickt. Das Ziel ist es, zu überprüfen, ob eine gewisse \gls{IP}-Adresse im Netzwerk existiert. Der Befehl \enquote{\textit{ping}} ist vergleichbar mit einem Ping-Pong-Spiel: Der Absender-Rechner, der eine \enquote{ping}-Nachricht schickt, erhält vom Ziel-Rechner, sofern dieser erreicht wird, viermal eine \enquote{pong}-Nachricht zurückgeschickt. Der \texttt{ping}-Befehl kann im Terminal (MacOS, UNIX-Systeme), bzw \texttt{cmd} (Windows) wie folgt ausgeführt werden: \commandbox|ping [ip address]|, also z.B. \commandbox|ping 159.233.1.22|. Der Ping-Befehl verwendet das \gls{ICMP}-Protokoll (Internet Control Message Protocol) der Internetschicht, um die Nachrichten zu verschicken. Das \gls{ICMP}-Protokoll ist ein Protokoll, das speziell für die Übertragung von Kontroll-Nachrichten im Netzwerk entwickelt wurde, allerdings nicht für den Datentransfer von Nutzdaten.
+Mit dem Befehl \commandbox*|ping| kann überprüft werden, ob ein Rechner im Netzwerk erreichbar ist. Dabei wird eine minimale, inhaltslose Nachricht an einen anderen Rechner (=\gls{IP}-Adresse) geschickt. Das Ziel ist es, zu überprüfen, ob eine gewisse \gls{IP}-Adresse im Netzwerk existiert. Der Befehl \enquote{\textit{ping}} ist vergleichbar mit einem Ping-Pong-Spiel: Der Absender-Rechner, der eine \enquote{ping}-Nachricht schickt, erhält vom Ziel-Rechner, sofern dieser erreicht wird, viermal eine \enquote{pong}-Nachricht zurückgeschickt. Der \texttt{ping}-Befehl kann im Terminal (MacOS, UNIX-Systeme), bzw \texttt{cmd} (Windows) wie folgt ausgeführt werden: \commandbox*|ping [ip address]|, also z.B. \commandbox*|ping 159.233.1.22|. Der Ping-Befehl verwendet das \gls{ICMP}-Protokoll (Internet Control Message Protocol) der Internetschicht, um die Nachrichten zu verschicken. Das \gls{ICMP}-Protokoll ist ein Protokoll, das speziell für die Übertragung von Kontroll-Nachrichten im Netzwerk entwickelt wurde, allerdings nicht für den Datentransfer von Nutzdaten.
 
 \begin{mycaution}
 	Eine Spezial-Variante des \texttt{ping}-Befehls ist der sogenannte \textcolor{red}{\faSkull{} Ping of Death}, bei dem ein bösartiger Computer ein zu grosses Datenpaket an einen anderen Computer schickte, das beim Zusammensetzen zum Zusammensturz des Zielrechners führte. Dies ist seit Ende der 90er-Jahre auf den meisten Computern nicht mehr möglich: Die Sicherheitslücke wurde behoben, indem beispielsweise die Paketgrösse vor dem Zusammensetzen überprüft wurde.
@@ -311,14 +311,29 @@ Mit dem Befehl \enquote{\texttt{ping}} kann überprüft werden, ob ein Rechner i
 \end{myexercise}
 
 \begin{mychallenge}[WireShark-Installation und \gls{ARP} mit WireShark beobachten]
-	Installieren Sie das Netzwerk-Analyse-Tool \textbf{WireShark} auf Ihrem Computer (Anleitung siehe \href{https://www.wireshark.org/download.html}{wireshark.org}). Versuchen Sie, einen \gls{ARP}-Austausch in Ihrem eigenen Netzwerk zu beobachten. Dazu müssen Sie zuerste den \gls{ARP}-Cache Ihres Computers leeren:
+	Installieren Sie das Netzwerk-Analyse-Tool \textbf{WireShark} auf Ihrem Computer (Anleitung siehe \href{https://www.wireshark.org/download.html}{wireshark.org}). Versuchen Sie, einen \gls{ARP}-Austausch in Ihrem eigenen Netzwerk zu beobachten. Dazu müssen Sie zuerste den \gls{ARP}-Cache Ihres Computers leeren. Folgende Befehle müssen in der Befehlszeile eingegeben werden, diese kann wie folgt geöffnet werden:
 
 	\begin{itemize}
-		\item Windows: Öffnen Sie die Eingabeaufforderung (cmd) und geben Sie den Befehl \commandbox|arp -d| ein.
-		\item MacOS: Öffnen Sie das Terminal und geben Sie den Befehl \commandbox|sudo arp -a -d| ein.
+		\item Windows: Öffnen Sie die Eingabeaufforderung (cmd) via \keys{\faWindows+R} und Eingabe von \texttt{cmd}
+		\item MacOS: Öffnen Sie das Terminal (z.B. über Spotlight-Suche)
 	\end{itemize}
 
-	Danach müssen Sie in WireShark die richtige Netzwerkschnittstelle auswählen (z.B. WLAN oder Ethernet) und einen Display-Filter für \gls{ARP} setzen (geben Sie dazu in das Filter-Feld \commandbox|arp && (arp.src.proto_ipv4 == MEINEIP or arp.dst.proto_ipv4 == MEINEIP)| ein). Ihre \gls{IP}-Adresse können Sie mit dem Befehl \commandbox|ipconfig| (Windows) oder \commandbox|ifconfig getifaddr en0| (MacOS) herausfinden.
+	Geben Sie danach folgenden Befehl zum Leeren des \gls{ARP}-Caches ein:
+	\begin{itemize}
+		\item Windows: \commandbox*|arp -d|
+		\item MacOS: \commandbox*|sudo arp -a -d|
+	\end{itemize}
+
+	Danach müssen Sie in WireShark die richtige Netzwerkschnittstelle auswählen (z.B. WLAN oder Ethernet) und einen Display-Filter für \gls{ARP} setzen. Geben Sie dazu in das Filter-Feld Folgendes ein:
+	
+	\commandbox|arp && (arp.src.proto_ipv4 == MEINEIP or arp.dst.proto_ipv4 == MEINEIP)|
+	
+	Ihre \gls{IP}-Adresse können Sie mit dem folgenden Befehl in der Befehlszeile herausfinden:
+
+	\begin{itemize}
+		\item Windows: \commandbox*|ipconfig| 
+		\item MacOS: \commandbox*|ifconfig getifaddr en0|
+	\end{itemize} 
 
 	Starten Sie die Aufnahme in WireShark und versuchen Sie, eine beliebige Webseite in Ihrem Browser zu öffnen. Beobachten Sie die \gls{ARP}-Anfragen und -Antworten in WireShark.
 \end{mychallenge}
@@ -576,9 +591,9 @@ Die lokale Netzwerk-Adresse eines Computers wird häufig automatisch von einem \
 	Finden Sie Ihre eigene lokale \gls{IP}v4-Adresse heraus. Tipps:
 	\begin{itemize}
 		\item MacOS, Terminal (via Spotlight-Suche): \\
-		      \commandbox|ipconfig getifaddr en0|
+		      \commandbox*|ipconfig getifaddr en0|
 		\item Windows, Programm \enquote{cmd}: \\
-		      \commandbox|ipconfig|
+		      \commandbox*|ipconfig|
 	\end{itemize}
 	Ihre eigene globale \gls{IP}v4-Adresse können Sie beispielsweise über die Webseite \url{https://www.whatismyip.com/} herausfinden.
 \end{myexercise}
@@ -827,11 +842,11 @@ Bis anhin haben wir gesehen, wie wir einzelne Rechner mittels einer IP adressier
 	\item \textbf{Interface} = Schnittstelle: Die physikalische Schnittstelle am Router (z.B. Ethernet-Stecker, daher häufig abgekürzt, beispielsweise, \texttt{eth0} für das erste Ethernet-Interface oder \texttt{wlan0} für das erste \gls{WLAN}-Interface), über die eine Ziel-Adresse (Gateway) erreichbar ist. Im Beispiel aus \cref{fig:router-subnetze} ist das Interface für Pakete, die von \gls{LAN} A zu \gls{LAN} B geschickt werden sollen, das Ethernet-Kabel, das den Router mit dem \gls{LAN} A verbindet, also \texttt{eth0}.
 \end{itemize}
 
-Ein Beispiel einer Routing-Tabelle ist in \cref{table:routing} abgebildet.
+Ein Beispiel einer minimalen Routing-Tabelle ist in \cref{table:routing} abgebildet.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{ l | l || l | l}
+	\begin{tabular}{ l | l | l | l}
 		\textbf{Ziel-\gls{IP}} & \textbf{Netzmaske} & \textbf{Gateway} & \textbf{Interface} \\
 		\midrule\midrule
 		0.0.0.0                & 0.0.0.0            & 192.168.1.1      & eth0               \\
@@ -1234,14 +1249,14 @@ Der Prozess der Beantwortung einer Frage nach der IP-Adresse einer Web-Adresse i
 \end{myexercise}
 
 
-Mit dem Terminal-Befehl \texttt{host [ipadress]} kann nachgeschaut werden, welche \gls{IP}-Adresse zu einer bestimmten Webseite gehört. Mit dem Befehl \texttt{nslookup [ipadress]} erhalten Sie dieselben Informationen und zusätzlich dazu noch die \gls{IP}-Adresse des \gls{DNS}-Servers, der Ihnen die Informationen geliefert hat.
+Mit dem Terminal-Befehl \commandbox*|host [ipadress]| kann nachgeschaut werden, welche \gls{IP}-Adresse zu einer bestimmten Webseite gehört. Mit dem Befehl \commandbox*|nslookup [ipadress]| erhalten Sie dieselben Informationen und zusätzlich dazu noch die \gls{IP}-Adresse des \gls{DNS}-Servers, der Ihnen die Informationen geliefert hat.
 
 
 
 \begin{myexercise}
-	Verwenden Sie die Befehle \texttt{host} oder \texttt{nslookup}, um herauszufinden, welche \gls{IP}-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese \gls{IP} im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
+	Verwenden Sie die Befehle \commandbox*|host| oder \commandbox*|nslookup| in der Befehlszeile, um herauszufinden, welche \gls{IP}-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese \gls{IP} im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
 	\begin{myanswer}
-		Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
+		Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox*|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
 	\end{myanswer}
 \end{myexercise}
 

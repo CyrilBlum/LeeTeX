@@ -1,9 +1,9 @@
 \begin{tikzpicture}[
             >=Stealth,
             host/.style={rectangle, draw=ForestGreen, fill=ForestGreen!10, rounded corners, minimum width=2.6cm, minimum height=1cm, align=center, font=\small},
-            sw/.style={rectangle, draw=RoyalBlue, fill=RoyalBlue!12, rounded corners, minimum width=2.4cm, minimum height=0.9cm, align=center, font=\small},
-            router/.style={circle, draw=OrangeRed, fill=OrangeRed!12, minimum size=1.2cm, align=center, font=\small},
-            netlabel/.style={font=\small\bfseries, red},
+            sw/.style={rectangle, draw=RoyalBlue, fill=RoyalBlue!12, rounded corners, minimum width=1.8cm, minimum height=0.9cm, align=center, font=\small},
+            router/.style={rectangle, rounded corners, draw=OrangeRed, fill=OrangeRed!12, minimum size=1.2cm, align=center, font=\small},
+            netlabel/.style={font=\small\bfseries},
             link/.style={thick}
         ]
 
@@ -25,10 +25,6 @@
         \node[host] (B2) at ({4*\colsep},0)   {\faLaptop\\192.168.2.11};
         \node[host] (B3) at ({4*\colsep},-1.2){\faLaptop\\192.168.2.12};
 
-        % LAN labels
-        \node[netlabel, above] at ({0*\colsep},1.9) {\acrshort{LAN} A};
-        \node[netlabel, above] at ({4*\colsep},1.9) {\acrshort{LAN} B};
-
         % Connections: hosts to switches
         \draw[link] (A1) -- (SWL);
         \draw[link] (A2) -- (SWL);
@@ -43,7 +39,10 @@
         \draw[link] (SWR) -- (R) node[midway, above, font=\footnotesize] {eth1};
 
         % Optional: draw a faint rounded box around each LAN
-        \node[draw=Gray!40, rounded corners, dashed, inner sep=6pt, fit=(A1)(A2)(A3)(SWL)] {};
-        \node[draw=Gray!40, rounded corners, dashed, inner sep=6pt, fit=(B1)(B2)(B3)(SWR)] {};
-
+        \node[draw=RoyalBlue!60, rounded corners, thick, dashed, inner sep=6pt, fit=(A1)(A2)(A3)(SWL)] (lan1area){};
+        \node[draw=Crimson!60, rounded corners, thick, dashed, inner sep=6pt, fit=(B1)(B2)(B3)(SWR)] (lan2area){};
+    
+        % LAN labels
+        \node[netlabel, RoyalBlue, align=left, anchor=south west] at (lan1area.north west) {LAN A: 192.168.1.0/24};
+        \node[netlabel,  Crimson, align=right, anchor=south east] at (lan2area.north east) {LAN B: 192.168.2.0/24};
     \end{tikzpicture}
