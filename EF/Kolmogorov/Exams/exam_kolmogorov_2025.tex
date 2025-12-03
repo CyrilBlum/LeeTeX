@@ -56,7 +56,27 @@
 
 \question[2] Erkläre die Begriffe \texttt{WYSIWYG} und \texttt{WYSIWYM}.
 	\begin{solution}
-		TODO
+		\phantom{1}
+
+	\textbf{WYSIWYG} (\enquote{\textcolor{Red}{W}hat \textcolor{Red}{Y}ou \textcolor{Red}{S}ee \textcolor{Red}{I}s \textcolor{Red}{W}hat \textcolor{Red}{Y}ou \textcolor{Red}{G}et})
+
+	\begin{itemize}
+		\item 
+	Bei (echtem) WYSIWYG wird ein Dokument während der Bearbeitung am Bildschirm genauso angezeigt, wie es bei der Ausgabe über ein anderes Gerät, z.B. einen Drucker, aussieht. ($\rightarrow$ Echtzeitdarstellung)
+		\item 
+	bekannte Beispiele: MS Word, MS PowerPoint, Gmail, WhatsApp
+	\end{itemize}
+
+	\textbf{WYSIWYM} (\enquote{\textcolor{NavyBlue}{W}hat \textcolor{NavyBlue}{Y}ou \textcolor{NavyBlue}{S}ee \textcolor{NavyBlue}{I}s \textcolor{NavyBlue}{W}hat \textcolor{NavyBlue}{Y}ou \textcolor{NavyBlue}{M}ean})
+
+	\begin{itemize}
+		\item 
+	Am Bildschirm ist während der Eingabe für den Benutzer nur in etwa erkennbar, was er mit seiner Formatierung bezwecken will.
+		\item
+	Die endgültige Formatierung wird erst beim Umwandeln des Dokuments in ein Endformat (z.B. PDF) durchgeführt.
+		\item
+	bekannte Beispiele: \LaTeX, (X)HTML, CSS
+	\end{itemize}
 	\end{solution}
 
 \question[2] Erstelle ein neues \LaTeX-Macro mit dem Namen \lstinline[style=LaTeX]|coloredmath|, sodass der Befehl \lstinline[style=LaTeX]|\coloredmath{red}{\sqrt{5}}| zum Resultat
@@ -64,9 +84,11 @@
 	\textcolor{Red}{$\sqrt{5}$}
 \end{center}
 kompiliert.
+	\begin{solution}
+		\lstinline[style=LaTeX]|\newcommand{\coloredmath}[2]{\textcolor{#1}{$#2$}}|
+	\end{solution}
 
 \question[2]
-
 Wir schreiben ein \LaTeX-Dokument, welches zu folgendem Text kompilieren soll:
 \begin{adjustwidth}{1em}{2em}
 \section*{Städtetourismus am Ende? In Europas Metropolen macht sich Verzweiflung breit (\textit{Quelle: NZZ})}
@@ -113,20 +135,22 @@ Fehler:
 \begin{itemize}
 	\item \lstinline[style=LaTeX]|\usepackage{siunitx}| muss nach der Dokumentklasse stehen
     \item \texttt{*} bei \lstinline[style=LaTeX]|\section| fehlt
-    \item textit im Titel fehlt
+    \item \lstinline[style=LaTeX]|\textit{...}| im Titel fehlt
     \item \lstinline[style=LaTeX]|\end{document}| statt \lstinline[style=LaTeX]|\end{article}|
-    \item \lstinline[style=LaTeX]|\begin{itemize} .. \end{itemize}| statt \lstinline[style=LaTeX]|\begin{item} .. \end{item}|
+    \item \lstinline[style=LaTeX]|\begin{itemize} ... \end{itemize}| statt \lstinline[style=LaTeX]|\begin{item} ... \end{item}|
     \item textbf zu viel
 \end{itemize}
 \end{solution}
 
 	\question[2] Wir haben die Kolmogorov-Komplexität für binäre Wörter definiert. Wie wird die Kolmogorov-Komplexität für eine natürliche Zahl $n$ definiert?
+	\begin{solution}
+	Die Kolmogorov-Komplexität $K(n)$ einer natürlichen Zahl $n$ ist $K(n) := K(bin(n))$.
+	\end{solution}
 
 
 	\question[2] Bestimme die Länge der kürzesten Darstellung der Zahl $54345120$ in Basis $6$.
-
 	\begin{solution}
-		TODO $\ceil{\log_2\lr{92340283 + 1}} = 27$.
+		$\ceil{\log_6\lr{54345120 + 1}} = 10$.
 	\end{solution}
 
 	\question[2] Sei $w_n := 0^{2^{n^3}}$ für jedes $n\in\N, n>0$ ein binäres Wort.	Gib eine (asymptotisch) möglichst gute obere Schranke für die Kolmogorov-Komplexität $K(w_n)$ von $w_n$ an, gemessen in der Länge $\abs{w_n}$ von $w_n$.
@@ -146,19 +170,37 @@ Fehler:
         std::cout << std::endl;
     }
 \end{lstlisting}
-		TODO
+		Es gilt $\abs{w_n} = 2^{n^3}$ und somit
+		\begin{align*}
+			n = \sqrt[3]{\log_2\lr{\abs{w_n}}}.
+		\end{align*}
+
+		Im Programm \texttt{Wn} ist einzig die binäre Kodierung von \texttt{n} abhängig von $n$ beziehungsweise von $w_n$. Der Rest des Programms ist unabhängig von der konkreten Wahl von $n$ (für jede Wahl von $n$ gleich).
+
+		Damit existiert Konstanten $c_0$ und $c_1$, sodass
+\begin{align*}
+	K(w_n) &\leq c_0 + \ceil{\log_2(n+1)} \leq \log_2(n) + c_1 = \log_2\lr{\sqrt[3]{\log_2\lr{\abs{w_n}}}} + c_1 = \\
+	&=\log_2\lr{\log_2\lr{\abs{w_n}}} / 3 + c_1
+\end{align*}
+für beliebiges natürliches $n>0$.
 	\end{solution}
 
 	\question[2] Gibt eine Funktion $f: \N\to\N$ an, sodass für jede natürliche Zahl $n$ mindestens drei Viertel der natürlichen Zahlen kleiner als $f(n)$ eine Kolmogorov-Komplexität von mindestens $2n$ haben.
 
     Tipps:
     \begin{itemize}
-        \item Wie viele unterschiedliche nichtleere binäre Wörter der Länge $2n$ kann es höchstens geben?
         \item Wie viele natürliche Zahlen mit einer Kolmogorov-Komplexität von weniger als $2n$ gibt es also?
         \item Wähle $f(n)$ als das mindestens Vierfache dieser Anzahl.
     \end{itemize}
 	\begin{solution}
-		TODO
+		Die Anzahl unterschiedlicher nichtleerer Maschinencodes der Länge kleiner als $2n$ ist nicht grösser als
+		\begin{align*}
+			\sum_{k = 1}^{2n-1}\lr{2^k} = 2^{2n} - 2.
+		\end{align*}
+		Es gibt also maximal $2^{2n} - 2$ binäre Wörter mit einer Kolmogorov-Komplexität kleiner als $2n$. Da alle natürlichen Zahlen paarweise verschiedene Binärdarstellungen haben, gibt es also höchstens $2^{2n} - 2$ natürliche Zahlen mit einer Kolmogorov-Komplexität kleiner als $2n$.
+
+		\vspace{\baselineskip}
+		Damit ist die Wahl $f(n):= 4 \cdot 2^{2n}$ sinnvoll, denn $2^{2n} - 2 < 2^{2n} = \frac{f(n)}{4}$ und somit haben mehr als $3/4$ der natürlichen Zahlen kleiner als $f(n)$ eine Kolmogorov-Komplexität von mindestens $2n$.
 	\end{solution}
 	
 	\question[2] Im Skript haben wir bewiesen:
@@ -170,11 +212,38 @@ Fehler:
 		Siehe das Theorem zur Nichtberechenbarkeit (im allgemeinen) der Kolmogorov-Komplexität im Skript.
 	\end{solution}
 
-
 	\question[2] Gib eine streng monoton wachsende Folge $y_1,y_2,\ldots$ natürlicher Zahlen an, sodass eine Konstante $c$ existiert, sodass für alle $i\geq 1$
 	\begin{align*}
 		K\lr{y_i} \leq \ceil{\log_2\lr{\log_2\lr{\log_2\lr{\sqrt[4]{y_i}}}}} + c
 	\end{align*}
 	gilt.
+	\begin{solution}
+		Wir definieren die gesuchte Zahlenfolge durch
+		\begin{align*}
+			y_i := \lr{2^{2^i}}^4 = 2^{2^{i+2}}
+		\end{align*}
+		für alle $n\in\N, n>0$. Offensichtlich ist diese Zahlenfolge streng monoton wachsend und $i = \log_2\lr{\log_2\lr{\sqrt[4]{y_i}}}$.
 
+		\vspace{\baselineskip}
+		Die kürzeste binäre Darstellung von $y_i$ ist eine Eins gefolgt von $2^{i+2}$ Nullen, also $\text{bin}\lr{y_i} = 1(0)^{2^{i+2}}$. Das folgende \texttt{C'++} Programm erzeugt das Wort $y_i$:
+		\begin{lstlisting}[language=C++,caption=$yi$]
+    #include <iostream>
+    #include <cmath> // für die pow Funktion
+    
+    void yi() {
+        int k = ***i+++;
+        int k = pow(2, k + 2);
+		std::cout << 1;
+        for (int j = 1; j <= k; ++j) {
+            std::cout << 0;
+        }
+        std::cout << std::endl;
+    }
+\end{lstlisting}
+	Da alle Programme \texttt{yi} gleich sind bis auf die binäre Darstellung von $i$ folgt:
+	\begin{align*}
+		K\lr{y_i} \leq \ceil{\log_2\lr{i}} + c = \ceil{\log_2\lr{\log_2\lr{\log_2\lr{\sqrt[4]{y_i}}}}} + c
+	\end{align*}
+	für eine geeignete Konstante $c$.
+	\end{solution}
 \end{questions}
