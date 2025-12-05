@@ -11,9 +11,9 @@
 % default settings for listings
 \lstset{style=python}
 
-\title[Netzwerke]{Netzwerke}
+\title[Internet]{Internet}
 
-\subtitle{Schichtenmodell und Protokolle}
+%\subtitle{Schichtenmodell und Protokolle}
 
 \author[Wendl, Cyril] % (optional)
 {Cyril Wendl}
@@ -155,20 +155,20 @@
     \small\pause
     \only<2>{
         \begin{table}[H]
-        \centering
-        \begin{tabular}{p{2cm}|l}
-            \rowcolor{\networkLayerColor!20} Von:                                         & \texttt{192.168.0.3}  \\\midrule
-            \rowcolor{\networkLayerColor!20} An:                                          & \texttt{192.168.0.11} \\\midrule
-            \rowcolor{\transportLayerColor!20}Sequenz:                                    & 1                     \\\midrule
-            \rowcolor{\applicationLayerColor!20}Nachricht\newline\tiny (max. 10 Zeichen): & \texttt{Hi Bob, wi}   \\
-        \end{tabular}
-        \begin{tabular}{p{2cm}|l}
-            \rowcolor{\networkLayerColor!20} Von:                                         & \texttt{192.168.0.3}  \\\midrule
-            \rowcolor{\networkLayerColor!20} An:                                          & \texttt{192.168.0.11} \\\midrule
-            \rowcolor{\transportLayerColor!20}Sequenz:                                    & 2                     \\\midrule
-            \rowcolor{\applicationLayerColor!20}Nachricht\newline\tiny (max. 10 Zeichen): & \texttt{e geht's?}    \\
-        \end{tabular}
-    \end{table}
+            \centering
+            \begin{tabular}{p{2cm}|l}
+                \rowcolor{\networkLayerColor!20} Von:                                         & \texttt{192.168.0.3}  \\\midrule
+                \rowcolor{\networkLayerColor!20} An:                                          & \texttt{192.168.0.11} \\\midrule
+                \rowcolor{\transportLayerColor!20}Sequenz:                                    & 1                     \\\midrule
+                \rowcolor{\applicationLayerColor!20}Nachricht\newline\tiny (max. 10 Zeichen): & \texttt{Hi Bob, wi}   \\
+            \end{tabular}
+            \begin{tabular}{p{2cm}|l}
+                \rowcolor{\networkLayerColor!20} Von:                                         & \texttt{192.168.0.3}  \\\midrule
+                \rowcolor{\networkLayerColor!20} An:                                          & \texttt{192.168.0.11} \\\midrule
+                \rowcolor{\transportLayerColor!20}Sequenz:                                    & 2                     \\\midrule
+                \rowcolor{\applicationLayerColor!20}Nachricht\newline\tiny (max. 10 Zeichen): & \texttt{e geht's?}    \\
+            \end{tabular}
+        \end{table}
     }
     \pause
     \begin{columns}[t]
@@ -350,6 +350,271 @@
     \begin{center}
         Wie bauen wir am besten ein grösseres Netzwerk auf?
     \end{center}
+
+    \input{Grundlagen_Info/07_Netzwerke/Skript/Chapters/kapitel02Netzwerke_fig_topologies.tex}
+
+\end{frame}
+
+\begin{frame}{Unicast, Broadcast, Multicast}
+    \begin{itemize}
+        \item \textbf{Unicast}: Nachricht wird an einen einzigen Empfänger gesendet
+        \item \textbf{Broadcast}: Nachricht wird an alle Empfänger im selben Subnetz gesendet
+        \item \textbf{Multicast}: Nachricht wird an eine ausgewählte Gruppe von Empfängern gesendet
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        % Use three responsive subfigures that scale to the local \linewidth so they look good
+        % both in beamer (narrow) and article (wide).
+        \begin{subfigure}[b]{0.32\linewidth}
+            \centering
+            \resizebox{\linewidth}{!}{%
+                \begin{tikzpicture}[every node/.style={circle,minimum size=6mm,inner sep=0pt}]
+                    % Nodes
+                    \node[fill=ForestGreen, draw=black] (A) at (0,0) {};
+                    \node[fill=ForestGreen, draw=black] (B) at (3,0) {};
+                    \node[fill=Gray!40, draw=black] (C) at (1.5,1.2) {};
+                    \node[fill=Gray!40, draw=black] (D) at (1.5,-1.2) {};
+                    % Labels
+                    \node[above,font=\small] at (A.north) {Sender};
+                    \node[above,font=\small] at (B.north) {Empfänger};
+                    % Arrow
+                    \draw[->, thick, RoyalBlue] (A) -- (B);
+                \end{tikzpicture}%
+            }
+            \caption*{\small Unicast: \texttt{1:1}}
+        \end{subfigure}\pause\hfill
+        \begin{subfigure}[b]{0.32\linewidth}
+            \centering
+            \resizebox{\linewidth}{!}{%
+                \begin{tikzpicture}[every node/.style={circle,minimum size=6mm,inner sep=0pt}]
+                    % Nodes
+                    \node[fill=ForestGreen, draw=black] (A) at (0,0) {};
+                    \node[fill=ForestGreen, draw=black] (B) at (3,0.8) {};
+                    \node[fill=ForestGreen, draw=black] (C) at (3,-0.8) {};
+                    \node[fill=Gray!40, draw=black] (D) at (1.5,-1.8) {};
+                    % Labels
+                    \node[above,font=\small] at (A.north) {Sender};
+                    \node[above,font=\small] at (B.north) {Empfänger 1};
+                    \node[below,font=\small] at (C.south) {Empfänger 2};
+                    % Arrows
+                    \draw[->, thick, RoyalBlue] (A) -- (B);
+                    \draw[->, thick, RoyalBlue] (A) -- (C);
+                \end{tikzpicture}%
+            }
+            \caption*{\small Multicast: \texttt{1:n}}
+        \end{subfigure}\pause\hfill
+        \begin{subfigure}[b]{0.32\linewidth}
+            \centering
+            \resizebox{\linewidth}{!}{%
+                \begin{tikzpicture}[every node/.style={circle,minimum size=6mm,inner sep=0pt}]
+                    % Nodes
+                    \node[fill=ForestGreen, draw=black] (A) at (0,0) {};
+                    \node[fill=ForestGreen, draw=black] (B) at (3,1.2) {};
+                    \node[fill=ForestGreen, draw=black] (C) at (3,0) {};
+                    \node[fill=ForestGreen, draw=black] (D) at (3,-1.2) {};
+                    % Labels
+                    \node[above,font=\small] at (A.north) {Sender};
+                    \node[above,font=\small] at (B.north) {Empfänger 1};
+                    \node[right,font=\small] at (C.east) {Empfänger 2};
+                    \node[below,font=\small] at (D.south) {Empfänger 3};
+                    % Arrows
+                    \draw[->, thick, RoyalBlue] (A) -- (B);
+                    \draw[->, thick, RoyalBlue] (A) -- (C);
+                    \draw[->, thick, RoyalBlue] (A) -- (D);
+                \end{tikzpicture}%
+            }
+            \caption*{\small Broadcast: \texttt{1:alle}}
+        \end{subfigure}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Auftrag (\textasciitilde{} 10')}
+    \begin{itemize}
+        \item \aufgabebox{1.7-1.10}
+    \end{itemize}
+\end{frame}
+
+
+
+\section{Vermittlungsschicht}
+\setbeamercolor{frametitle}{bg=\networkLayerColor!20}
+
+\begin{frame}[fragile]{\faMapMarker{} IP-Adresse}{Vermittlungsschicht}
+
+    \begin{itemize}[<+->]
+        \item Netzwerk-Adresse eines Computers
+        \item Analogie: Wohnadresse einer Person (Strasse \& Stadt)
+        \item Häufig im IPv4-Format: 4 bytes, also 4 Zahlen von 0-255
+        \item Wird meist dezimal angegeben, z.B. 192.168.0.1
+        \item Wie viele IPv4-Adressen gibt es? Reicht das?
+              \begin{itemize}
+                  \item $4\cdot 8 \text{ bits} = 32 \text{ bits}$
+                  \item $2^{32} \sim 4 \text{ Milliarden Adressen}$
+                  \item $\rightarrow \text{zu wenig!}$
+              \end{itemize}
+        \item IPv6: 128 bits, fast unendlich viele Adressen
+              \[2^{128} \sim 3.4\cdot 10^{38}\]
+        \item Lokale vs. globale IP-Adresse
+              \begin{itemize}
+                  \item \textbf{Lokale IP}: nur im lokalen Netzwerk gültig (z.B. 192.168.x.x, 10.x.x.x)
+                  \item \textbf{Globale IP}: weltweit eindeutig (z.B. 8.8.8.8)
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Eigene IP-Adresse herausfinden}
+    \begin{itemize}
+        \item MacOS, Terminal (via Spotlight-Suche): \\
+              \commandbox*|ipconfig getifaddr en0|
+        \item Windows, Programm \enquote{\texttt{cmd}} (via \keys{\faWindows + R}): \\
+              \commandbox*|ipconfig|
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\faCompass{} \texttt{ping}}{Vermittlungsschicht}
+
+    \begin{itemize}[<+->]
+        \item Im Terminal / cmd: \commandbox*|ping [ip address]|, z.B.:\\
+              \commandbox*|ping 159.233.1.22|
+        \item Minimale Nachricht an andere \gls{IP}-Adresse schicken
+        \item Ziel: schauen ob eine \gls{IP} existiert, bzw. erreichbar ist, wird mittels \gls{ICMP} realisiert
+    \end{itemize} 
+\end{frame}
+
+\begin{frame}
+    Auftrag
+    \begin{itemize}
+        \item \aufgabebox{1.11 - 1.13}: eigene IPv4-Adresse herausfinden
+        \item \aufgabebox{1.15 - 1.17}: Notation \gls{IP}v4 und \gls{IP}v6
+        \item \challengebox{1.14}: \acrshort{ARP}-Scan
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/subnets}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+    \begin{center}
+        \textbf{Switch} oder \textbf{Router}?!?
+    \end{center}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.38\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/salt}
+        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/sunrise}
+        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/swisscom}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+    \begin{center}
+        \textbf{Switch} oder \textbf{Router}?!?
+    \end{center}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.38\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/salt-back}
+        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/sunrise-back}
+        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/swisscom-back}
+    \end{figure}
+    \pause
+        \begin{center}
+            Beides (meistens) im gleichen Gerät!
+        \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
+    \textbf{Subnetzwerke}
+    \begin{itemize}[<+->]
+        \item Verschiedene Geräte gehören zum gleichen Subnetz, falls Sie
+              \begin{itemize}
+                  \item Physisch miteinander verbunden sind (WLAN, Kabel, etc.)
+                  \item Die gleiche Subnetzmaske teilen (später mehr dazu)
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\faGlobe{} Netzmasken}{Vermittlungsschicht}
+    \textbf{Netzmaske}
+    \begin{itemize}[<+->]
+        \item Sieht ähnlich aus wie eine IP-Adresse: \commandBluebox|xxx.xxx.xxx.xxx|
+        \item Fasst mehrere IPs zu einer Gruppe (= Subnetz) zusammen
+        \item Gibt an, wie viele Stellen einer IP-Adresse gleich sein müssen, damit mehrer Computer zum gleichen (Sub-)Netzwerk gehören.
+        \item \textbf{Beispiel}:
+              \begin{table}[H]
+                  \centering
+                  \tiny
+                  \begin{tabular}{r|l|l}
+                                   & Dezimal                        & Binär                                                                 \\\midrule\midrule
+                      IP 1         & \texttt{159.233.1.22}          & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00010110} \\\midrule
+                      IP 2         & \texttt{159.233.1.1}           & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00000001} \\\midrule
+                      Subnetzmaske & \commandBluebox|255.255.255.0| & \texttt{\textcolor{ForestGreen}{11111111.11111111.11111111}.00000000}
+                  \end{tabular}
+              \end{table}
+              Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, zum selben Netzwerk gehören
+        \item Wird manchmal \enquote{informell} auch so angegeben: \commandBluebox|159.233.1.x|
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Übung}
+    \begin{table}[H]
+        \centering
+        \footnotesize
+        \begin{tabular}{l|l|l|p{2cm}}
+
+            \textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
+
+            213.45.19.89       & 255.255.255.0      & 213.45.17.89     &                                     \\\midrule
+
+            213.45.19.89       & 255.255.0.0        & 213.45.17.89     &                                     \\\midrule
+
+            88.100.11.17       & 255.255.255.0      & 88.100.11.254    &                                     \\\midrule
+
+            88.100.11.17       & 0.0.0.0            & 213.45.19.89     &                                     \\\midrule
+
+            10.0.0.0           & 255.255.255.252    & 10.0.0.1         &                                     \\\midrule
+            1.2.3.0            & 255.255.255.252    & 1.2.3.5          &
+        \end{tabular}
+    \end{table}
+    \begin{itemize}
+        \item $\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen.
+        \item Umrechner dezimal $\rightarrow$ binär: \qrcode[height=1cm]{https://oinf.ch/interactive/ips-und-netzmaske/}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Aufträge (Skript)}
+    \begin{itemize}
+        \item Subnetzmasken
+              \begin{itemize}
+                  \item \aufgabebox{Aufgaben 2.10 - 2.12}
+              \end{itemize}
+        \item Router
+              \begin{itemize}
+                  \item \abgabebox{Aufgabe 2.14  (MyGymer 2.4-2.6)}
+                  \item \challengebox{Aufgabe 2.13 (Link lesen)}
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Subnetze \& Netzmasken}{Weitere Übungen (Lösung)}
+    \begin{table}[H]
+        \centering
+        \resizebox{\textwidth}{!}{
+            \begin{tabular}{p{1.2cm}||c|c||c|c||c|c|}
+                \textbf{Netzmaske Subnetz} & \multicolumn{2}{c||}{255.255.255.0} & \multicolumn{2}{c||}{255.255.0.0} & \multicolumn{2}{c|}{255.255.255.240}                                        \\
+                \cmidrule{2-7}
+                                           & IP 3.4.5.6                          & IP 3.3.3.3                        & IP 3.4.5.6                           & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 \\
+                \midrule\midrule
+                3.3.3.4                    & Nein                                & Ja                                & Nein                                 & Ja         & Nein       & Ja         \\\midrule
+                4.4.4.3                    & Nein                                & Nein                              & Nein                                 & Nein       & Nein       & Nein       \\\midrule
+                3.4.5.99                   & Ja                                  & Nein                              & Ja                                   & Nein       & Nein       & Nein       \\\midrule
+                3.3.4.4                    & Nein                                & Nein                              & Nein                                 & Ja         & Nein       & Nein       \\\midrule
+                3.4.7.7                    & Nein                                & Ja                                & Ja                                   & Nein       & Nein       & Nein       \\\midrule
+                3.3.3.17                   & Nein                                & Ja                                & Nein                                 & Ja         & Nein       & Nein       \\
+            \end{tabular}}
+    \end{table}
 \end{frame}
 
 \section{Transportschicht}
@@ -464,176 +729,6 @@
     \end{itemize}
 \end{frame}
 
-\section{Vermittlungsschicht}
-\setbeamercolor{frametitle}{bg=\networkLayerColor!20}
-
-\begin{frame}[fragile]{\faMapMarker{} IP-Adresse}{Vermittlungsschicht}
-
-    \begin{itemize}[<+->]
-        \item Netzwerk-Adresse eines Computers
-        \item Analogie: Wohnadresse einer Person (Strasse \& Stadt)
-        \item Häufig im IPv4-Format: 4 bytes, also 4 Zahlen von 0-255
-        \item Wird meist dezimal angegeben, z.B. 192.168.0.1
-        \item Übung: eigene, lokale IPv4-Adresse herausfinden
-              \begin{itemize}
-                  \item MacOS, Terminal (via Spotlight-Suche): \\
-                        \commandbox*|ipconfig getifaddr en0|
-                  \item Windows, Programm \enquote{\texttt{cmd}} (via \keys{\faWindows + R}): \\
-                        \commandbox*|ipconfig|
-              \end{itemize}
-        \item Wie viele IPv4-Adressen gibt es? Reicht das?
-              \begin{itemize}
-                  \item $4\cdot 8 \text{ bits} = 32 \text{ bits}$
-                  \item $2^{32} \sim 4 \text{ Milliarden Adressen}$
-                  \item $\rightarrow \text{zu wenig!}$
-              \end{itemize}
-        \item IPv6: 128 bits, fast unendlich viele Adressen
-              \[2^{128} \sim 3.4\cdot 10^{38}\]
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{\faCompass{} \texttt{ping}}{Vermittlungsschicht}
-
-    \begin{itemize}[<+->]
-        \item Im Terminal / cmd: \commandbox*|ping [ip address]|, z.B.:\\
-              \commandbox*|ping 159.233.1.22|
-        \item Minimale Nachricht an andere IP schicken
-        \item Ziel: schauen ob eine IP existiert, bzw. erreichbar ist
-        \item \textcolor{red}{\faSkull{} Ping of Death}: Grösstenteils nicht mehr möglich
-              \begin{itemize}
-                  \item Ein zu grosses Datenpaket wurde versendet, das beim Empfang zum Absturz führte
-                  \item Behoben (für Computer ca. $>$ 1998), indem z.B. Paketgrösse vor Zusammensetzen überprüft wird
-              \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/subnets}
-    \end{figure}
-\end{frame}
-
-\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
-    \begin{center}
-        \textbf{Switch} oder \textbf{Router}?!?
-    \end{center}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.38\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/salt}
-        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/sunrise}
-        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/swisscom}
-    \end{figure}
-\end{frame}
-
-\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
-    \begin{center}
-        \textbf{Switch} oder \textbf{Router}?!?
-    \end{center}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.38\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/salt-back}
-        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/sunrise-back}
-        \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/swisscom-back}
-    \end{figure}
-    \only<2->{
-        \begin{center}
-            Beides!
-        \end{center}
-    }
-\end{frame}
-
-\begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
-    \textbf{Subnetzwerke}
-    \begin{itemize}[<+->]
-        \item Verschiedene Geräte gehören zum gleichen Subnetz, falls Sie
-              \begin{itemize}
-                  \item Physisch miteinander verbunden sind (WLAN, Kabel, etc.)
-                  \item Die gleiche Subnetzmaske teilen (später mehr dazu)
-              \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{\faGlobe{} Netzmasken}{Vermittlungsschicht}
-    \textbf{Netzmaske}
-    \begin{itemize}[<+->]
-        \item Sieht ähnlich aus wie eine IP-Adresse: \commandBluebox|xxx.xxx.xxx.xxx|
-        \item Fasst mehrere IPs zu einer Gruppe (= Subnetz) zusammen
-        \item Gibt an, wie viele Stellen einer IP-Adresse gleich sein müssen, damit mehrer Computer zum gleichen (Sub-)Netzwerk gehören.
-        \item \textbf{Beispiel}:
-              \begin{table}[H]
-                  \centering
-                  \tiny
-                  \begin{tabular}{r|l|l}
-                                   & Dezimal                        & Binär                                                                 \\\midrule\midrule
-                      IP 1         & \texttt{159.233.1.22}          & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00010110} \\\midrule
-                      IP 2         & \texttt{159.233.1.1}           & \texttt{\textcolor{ForestGreen}{10011111.11101001.00000001}.00000001} \\\midrule
-                      Subnetzmaske & \commandBluebox|255.255.255.0| & \texttt{\textcolor{ForestGreen}{11111111.11111111.11111111}.00000000}
-                  \end{tabular}
-              \end{table}
-              Bedeutet, dass alle IP-Adressen die mit \commandbox|159.233.1.[...]| anfangen, zum selben Netzwerk gehören
-        \item Wird manchmal \enquote{informell} auch so angegeben: \commandBluebox|159.233.1.x|
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Subnetze \& Netzmasken}{Übung}
-    \begin{table}[H]
-        \centering
-        \footnotesize
-        \begin{tabular}{l|l|l|p{2cm}}
-
-            \textbf{Eigene IP} & \textbf{Netzmaske} & \textbf{Ziel-IP} & \textbf{Gleiches \newline Subnetz?} \\\midrule\midrule
-
-            213.45.19.89       & 255.255.255.0      & 213.45.17.89     &                                     \\\midrule
-
-            213.45.19.89       & 255.255.0.0        & 213.45.17.89     &                                     \\\midrule
-
-            88.100.11.17       & 255.255.255.0      & 88.100.11.254    &                                     \\\midrule
-
-            88.100.11.17       & 0.0.0.0            & 213.45.19.89     &                                     \\\midrule
-
-            10.0.0.0           & 255.255.255.252    & 10.0.0.1         &                                     \\\midrule
-            1.2.3.0            & 255.255.255.252    & 1.2.3.5          &
-        \end{tabular}
-    \end{table}
-    \begin{itemize}
-        \item $\rightarrow$ IPs dürfen sich nur an denjenigen Stellen unterscheiden, wo in der Maske (binär!) Nullen stehen.
-        \item Umrechner dezimal $\rightarrow$ binär: \qrcode[height=1cm]{https://oinf.ch/interactive/ips-und-netzmaske/}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Subnetze \& Netzmasken}{Aufträge (Skript)}
-    \begin{itemize}
-        \item Subnetzmasken
-              \begin{itemize}
-                  \item \aufgabebox{Aufgaben 2.10 - 2.12}
-              \end{itemize}
-        \item Router
-              \begin{itemize}
-                  \item \abgabebox{Aufgabe 2.14  (MyGymer 2.4-2.6)}
-                  \item \challengebox{Aufgabe 2.13 (Link lesen)}
-              \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Subnetze \& Netzmasken}{Weitere Übungen (Lösung)}
-    \begin{table}[H]
-        \centering
-        \resizebox{\textwidth}{!}{
-            \begin{tabular}{p{1.2cm}||c|c||c|c||c|c|}
-                \textbf{Netzmaske Subnetz} & \multicolumn{2}{c||}{255.255.255.0} & \multicolumn{2}{c||}{255.255.0.0} & \multicolumn{2}{c|}{255.255.255.240}                                        \\
-                \cmidrule{2-7}
-                                           & IP 3.4.5.6                          & IP 3.3.3.3                        & IP 3.4.5.6                           & IP 3.3.3.3 & IP 3.4.5.6 & IP 3.3.3.3 \\
-                \midrule\midrule
-                3.3.3.4                    & Nein                                & Ja                                & Nein                                 & Ja         & Nein       & Ja         \\\midrule
-                4.4.4.3                    & Nein                                & Nein                              & Nein                                 & Nein       & Nein       & Nein       \\\midrule
-                3.4.5.99                   & Ja                                  & Nein                              & Ja                                   & Nein       & Nein       & Nein       \\\midrule
-                3.3.4.4                    & Nein                                & Nein                              & Nein                                 & Ja         & Nein       & Nein       \\\midrule
-                3.4.7.7                    & Nein                                & Ja                                & Ja                                   & Nein       & Nein       & Nein       \\\midrule
-                3.3.3.17                   & Nein                                & Ja                                & Nein                                 & Ja         & Nein       & Nein       \\
-            \end{tabular}}
-    \end{table}
-\end{frame}
 
 \section{Anwendungsschicht}
 \setbeamercolor{frametitle}{bg=\applicationLayerColor!20}

@@ -267,6 +267,7 @@ Ein Beispiel, wie das \gls{ARP}-Protokoll funktioniert, könnte wie folgt ausseh
 	\item Nun kann der Computer seine Nachricht direkt an den nächsten Empfänger (\textit{gateway}) übergeben.
 \end{itemize}
 
+Die Resultate aller \gls{ARP}-Anfragen werden in einer so genannten \textbf{ARP-Tabelle} gespeichert, damit nicht jedes Mal eine neue Anfrage gesendet werden muss. Diese Tabelle wird periodisch aktualisiert, um sicherzustellen, dass die Zuordnungen aktuell bleiben. Um die \gls{ARP}-Tabelle auf einem Computer anzuzeigen, kann der Befehl \commandbox*|arp -a| im Terminal (MacOS, UNIX-Systeme), bzw. \texttt{cmd} (Windows) verwendet werden.
 
 \subsection{Ping}
 % TODO potentially add tcolorbox for each terminal command introduced, with example use
@@ -338,6 +339,24 @@ Mit dem Befehl \commandbox*|ping| kann überprüft werden, ob ein Rechner im Net
 	Starten Sie die Aufnahme in WireShark und versuchen Sie, eine beliebige Webseite in Ihrem Browser zu öffnen. Beobachten Sie die \gls{ARP}-Anfragen und -Antworten in WireShark.
 \end{mychallenge}
 
+\subsection{Verschlüsselung von Netzwerken}
+In einem lokalen Netzwerk können Datenpakete von jedem Gerät im selben Netzwerk abgefangen und gelesen werden. Um die Sicherheit und Vertraulichkeit der Daten zu gewährleisten, werden verschiedene Verschlüsselungsmethoden verwendet. Eine gängige Methode ist die Verwendung des \gls{WPA}-Protokolls, welches eine starke Verschlüsselung der Datenpakete ermöglicht. \gls{WPA} verwendet den \gls{AES}-Verschlüsselungsalgorithmus, um die Daten zu schützen, welcher letztlich auf dem \gls{RC4}-Algorithmus basiert, welcher seinerseits auf einem symmetrischen Schlüsselverfahren beruht, welches in seiner Grundstruktur auf der \textbf{Vigenère}-Verschlüsselung basiert. Es gibt verschiedene Versionen von \gls{WPA}, darunter \gls{WPA}2 und \gls{WPA}3, die jeweils verbesserte Sicherheitsfunktionen bieten. In einem passwortfreien Netzwerk (offenes Netzwerk) sind die Datenpakete unverschlüsselt und können von jedem Gerät im selben Netzwerk abgefangen und gelesen werden. Um dies zu illustrieren, schauen wir uns folgenden Wireshark-Auszug eines unverschlüsselten \gls{HTTP}-Datenpakets an.
+
+\begin{myexample}[Wireshark-Auszug eines unverschlüsselten \gls{HTTP}-Datenpakets]
+	In \cref{fig:http-wireshark} ist ein Wireshark-Auszug eines unverschlüsselten \gls{HTTP}-Datenpakets zu sehen. 
+	\begin{figure}[H]
+		\centering
+        \includegraphics[width=\textwidth]{Grundlagen_Info/07_Netzwerke/Figures/exampleComWireshark}
+        \caption{Wireshark-Screenshot während eines Webseitenaufrufs}
+		\label{fig:http-wireshark}
+	\end{figure}
+	Im unteren Teil von \cref{fig:http-wireshark} ist der Payload des Pakets dargestellt, welcher den eigentlichen Inhalt der Nachricht enthält. In diesem Fall handelt es sich um eine \gls{HTTP}-Anfrage, die von einem Client an einen Server gesendet wird. Der Payload enthält dabei Informationen wie die angeforderte Ressource (z.B. eine Webseite), den Hostnamen des Servers und andere Metadaten. Da das Netzwerk unverschlüsselt ist, kann jeder, der Zugriff auf das Netzwerk hat, den Inhalt dieses Pakets lesen und somit die angeforderten Informationen einsehen.
+\end{myexample}
+
+\begin{mycaution}[Strafrechtliche Aspekte beim Mithören von Netzwerken]
+	Das Abfangen und Mitlesen von Datenpaketen in einem Netzwerk ohne ausdrückliche Erlaubnis der beteiligten Parteien ist in vielen Ländern illegal und kann strafrechtlich verfolgt werden. In der Schweiz beispielsweise verstösst das unbefugte Abfangen von Daten gegen das Bundesgesetz über den Datenschutz (DSG) und das Strafgesetzbuch (StGB). Personen, die beim unbefugten Abfangen von Daten erwischt werden, können mit Geldstrafen oder sogar Freiheitsstrafen belegt werden. Es ist daher wichtig, die rechtlichen Rahmenbedingungen zu kennen und einzuhalten.
+\end{mycaution}
+
 \subsection{Switches}
 Jede Netzwerkkarte kann nur mit genau einem anderen Gerät in einem lokalen Netzwerk kommunizieren. Damit mehrere Geräte in einem lokalen Netzwerk miteinander kommunizieren können, werden sogenannte \textbf{Switches} verwendet. Ein Switch ist ein Gerät, das mehrere Netzwerkkarten miteinander verbindet und es ihnen ermöglicht, Datenpakete direkt aneinander zu senden. Der Switch lernt dabei die \gls{MAC}-Adressen der angeschlossenen Geräte und leitet die Datenpakete nur an das Gerät weiter, für das sie bestimmt sind. Dadurch wird der Datenverkehr im Netzwerk effizienter gestaltet, da nicht alle Geräte jedes Datenpaket empfangen müssen.
 
@@ -345,99 +364,9 @@ Jede Netzwerkkarte kann nur mit genau einem anderen Gerät in einem lokalen Netz
 	Schauen Sie sich das \href{https://www.youtube.com/watch?v=Kn8v_HrckUM&list=PLUfZiVdJui-57k0VcRecHX0JTEhOMgiKP}{Filius-Video Nummer 2} an und führen Sie alle gezeigten Schritte ebenfalls in Filius aus.
 \end{myexercise}
 
-
 \subsection{Topologie}
 Beim Erstellen eines Netzwerks stellt sich als Erstes die Frage, welche Computer man mit welchen anderen Computern verbinden soll. Die Struktur der Verbindungen in einem Netzwerk kann also umformuliert werden als Graphen-Problem, bei dem es zu bestimmen gibt, welche Knoten eines Graphen miteinander über eine Kante verbunden werden. Die verschiedenen möglichen Strukturen eines Netzwerks werden auch als \textbf{Topologie} bezeichnet. Einige Beispiel-Topologien sind in \cref{fig:topologie} gezeigt.
-\begin{figure}[H]
-	\centering
-	% Bus Topology
-	\begin{subfigure}[b]{0.25\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\draw[ForestGreen, thick] (0,0) -- (2,0); % Bus
-			\foreach \x in {0.3, 0.9, 1.5} {
-					\filldraw[ForestGreen] (\x, 0) circle (2mm);
-				}
-		\end{tikzpicture}
-		\caption{Bus}
-	\end{subfigure}%
-	% Ring Topology
-	\begin{subfigure}[b]{0.25\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\draw[ForestGreen, thick] (0:1cm) \foreach \x in {60,120,...,360} {
-					-- (\x:1cm)
-				} -- cycle; % Completes the circle
-			\foreach \x in {0,60,...,300} {
-					\filldraw[ForestGreen] (\x:1cm) circle (2mm);
-				}
-		\end{tikzpicture}
-		\caption{Ring}
-	\end{subfigure}
-	% Stern
-	\begin{subfigure}[b]{0.25\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\node[fill=ForestGreen, circle, minimum size=5mm] at (0,0) (center) {};
-			\foreach \x in {0,45,...,315} {
-					\node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\x) {};
-					\draw[ForestGreen] (center) -- (node\x);
-				}
-		\end{tikzpicture}
-		\caption{Stern}
-	\end{subfigure}%
-	% Mesh Topology
-	\begin{subfigure}[b]{0.25\textwidth}
-		\centering
-		\begin{tikzpicture}
-			% Define nodes
-			\foreach \x [count=\i from 1] in {18,90,162,234,306} {
-					\node[fill=ForestGreen, circle, minimum size=2mm] at (\x:1cm) (node\i) {};
-				}
-
-			% Connect nodes (to border points)
-			\foreach \x in {1,2,3,4,5} {
-					\foreach \y in {\x,...,5} {
-							\ifnum\x=\y\relax
-								% skip self-connection
-							\else
-								\draw[ForestGreen, thick] (node\x) -- (node\y);
-							\fi
-						}
-				}
-
-		\end{tikzpicture}
-		\caption{Vollvermascht}
-	\end{subfigure}
-	\begin{subfigure}{.25\textwidth}
-		\centering
-		\begin{tikzpicture}[
-				sibling distance=5mm, % Adjust spacing between siblings
-				level distance=8mm, % Adjust spacing between parent and child nodes
-				every node/.style={fill=ForestGreen, circle, thick, minimum size=2mm},
-				edge from parent/.style={ForestGreen, thick, draw}
-			]
-			% Define the tree
-			\node {} % Root node
-			child {node {}
-					child {node {}}
-					child {node {}}
-				}
-			child {node {}
-					child {node {}}
-					child {node {}}
-				}
-			child {node {}
-					child {node {}}
-					child {node {}}
-				};
-
-		\end{tikzpicture}
-		\caption{Baum}
-	\end{subfigure}
-	\caption{Beispiele von Netzwerk-Topologien}
-	\label{fig:topologie}
-\end{figure}
+\input{Grundlagen_Info/07_Netzwerke/Skript/Chapters/kapitel02Netzwerke_fig_topologies.tex}
 
 Da Computer in Realität häufig nur über eine einzige Netzwerkkarte verfügen, können sie auch nur mit einem weiteren Computer verbunden werden. In einem lokalen Netzwerk (\gls{LAN}) trifft man daher häufig die Form einer Stern-Topologie an, bei der alle Computer mit einer zentralen \textbf{Switch} verbunden werden, also einem Gerät, welches mehrere Rechner an einem zentralen Punkt miteinander verbindet.
 
@@ -598,10 +527,28 @@ Die lokale Netzwerk-Adresse eines Computers wird häufig automatisch von einem \
 	Ihre eigene globale \gls{IP}v4-Adresse können Sie beispielsweise über die Webseite \url{https://www.whatismyip.com/} herausfinden.
 \end{myexercise}
 
+\begin{myexercise}[\commandbox*|ping| im lokalen Netzwerk]
+	Tauschen Sie zu zweit ihre lokale \gls{IP}v4-Adresse aus (siehe \cref{ex:meine-ip}) und überprüfen Sie, ob Sie sich gegenseitig im lokalen Netzwerk anpingen können. Verwenden Sie dazu den Befehl \commandbox*|ping [lokale IP-Adresse des anderen Teilnehmers]| im Terminal (MacOS) oder in der Eingabeaufforderung (Windows).
+\end{myexercise}
+
+
+
 \begin{myexercise}
 	Führen Sie folgendes Skript in Python aus, um zu überprüfen, ob Sie dieselbe lokale und globale \gls{IP}-Adresse wie in \cref{ex:meine-ip} herausgefunden haben:
 	\lstinputlisting{Grundlagen_Info/07_Netzwerke/Code/get_net_configs.py}
 \end{myexercise}
+
+\begin{mychallenge}[ARP-Scan im lokalen Netzwerk]
+	Falls Sie wissen wollen, welche anderen Geräte im lokalen Netzwerk existieren, können Sie ein \gls{ARP}-Scan mit dem Programm \texttt{arp-scan} durchführen. Am einfachsten kann das Programm \texttt{arp-scan} auf MacOS mit Homebrew installiert werden. Führen Sie dazu im Terminal folgenden Befehl aus:
+	\commandbox*|brew install arp-scan|
+
+	Führen Sie danach folgenden Befehl aus, um alle Geräte im lokalen Netzwerk zu scannen:
+	\commandbox*|sudo arp-scan --localnet --interface=en0|
+
+	 Die Option \commandbox*|--localnet| sorgt dafür, dass nur das lokale Netzwerk gescannt wird. Die Option \commandbox*|--interface=en0| bedeutet, dass die Netzwerkschnittstelle \commandbox|en0| (normalerweise WLAN) verwendet wird.
+
+	Ihre \gls{ARP}-Tabelle wird danach mit den gefundenen Geräten aktualisiert. Sie können die Tabelle mit dem Befehl \commandbox*|arp -a| (MacOS) bzw. \commandbox*|arp -a| (Windows) anzeigen.
+\end{mychallenge}
 
 \begin{myexercise}
 	Bringen Sie folgende \gls{IP}v4-Adresse in die dezimale Schreibweise:
@@ -1080,7 +1027,7 @@ Eine Ihnen bekannte Situation findet sich vor, wenn ein Client $\mathcal{C}$ ein
 	      \end{itemize}
 \end{enumerate}
 
-Der schematische Ablauf eines Webseiten-Abrufs mit dem HTTP-Protokoll ist in \cref{fig:http-request-simple} abgebildet.
+Der schematische Ablauf eines Webseiten-Abrufs mit dem \gls{HTTP}-Protokoll ist in \cref{fig:http-request-simple} abgebildet.
 
 \begin{figure}[H]
 	\centering
