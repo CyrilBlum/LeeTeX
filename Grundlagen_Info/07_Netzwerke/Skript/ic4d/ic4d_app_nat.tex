@@ -1,0 +1,93 @@
+
+\chapter{\gls{NAT} und Port Forwarding}
+\label{app:nat_port_forwarding}
+\section{\acrfull{NAT}}
+\textbf{\gls{NAT}} (Network Address Translation) ist ein Verfahren, das in Routern verwendet wird, um die Kommunikation zwischen Computern in einem lokalen Netzwerk und dem Internet zu ermöglichen. Dabei wird die lokale \gls{IP}-Adresse eines Computers in eine globale \gls{IP}-Adresse übersetzt, wenn Datenpakete das lokale Netzwerk verlassen, und umgekehrt, wenn Datenpakete aus dem Internet empfangen werden. Dies ermöglicht es mehreren Computern in einem lokalen Netzwerk, dieselbe globale \gls{IP}-Adresse zu teilen, wodurch die Anzahl der benötigten globalen Adressen reduziert wird.
+
+\begin{myexample}[\acrfull{NAT}]
+Stellen Sie sich vor, Sie haben ein lokales Netzwerk mit mehreren Computern, die alle die gleiche globale \gls{IP}-Adresse \texttt{203.0.113.5} teilen. Ein Computer im lokalen Netzwerk mit der lokalen Adresse \texttt{192.168.1.10} möchte eine Anfrage an einen externen Server mit der Adresse \texttt{8.8.8.8} senden. Der Router übersetzt diese Anfrage wie folgt:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c|c|c|c}
+		\textbf{Phase} & \textbf{Quell-IP} & \textbf{Ziel-IP} & \textbf{Ort} \\
+		\midrule\midrule
+		Vor \gls{NAT} & \texttt{192.168.1.10} (lokal) & \texttt{8.8.8.8} & Lokales Netzwerk \\
+		\midrule
+		Nach \gls{NAT} & \texttt{203.0.113.5} (global) & \texttt{8.8.8.8} & Internet \\
+		\midrule
+		Rückweg & \texttt{8.8.8.8} & \texttt{203.0.113.5} (global) & Internet \\
+		\midrule
+		Nach Rückübersetzung & \texttt{8.8.8.8} & \texttt{192.168.1.10} (lokal) & Lokales Netzwerk \\
+	\end{tabular}
+	\caption{Beispiel einer \gls{NAT}-Übersetzung: Ein lokales Gerät kommuniziert mit einem externen Server}
+\end{table}
+
+\textbf{Mehrere Geräte im \gls{LAN} mit gleicher globaler Adresse}: Wenn mehrere Computer im lokalen Netzwerk gleichzeitig auf denselben oder verschiedene externe Server zugreifen möchten, verwendet der Router nicht nur die \gls{IP}-Adressen zur Unterscheidung, sondern auch die \textbf{Port-Nummern}. Der Router erstellt dabei eine \textbf{\gls{NAT}-Tabelle}, die nicht nur die lokalen und globalen \gls{IP}-Adressen, sondern auch die zugehörigen Ports speichert. Ein Beispiel:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c|c|c|c|c}
+		\textbf{Lokale IP:Port} & \textbf{Global IP:Port} & \textbf{Ziel IP:Port} & \textbf{Protokoll} & \textbf{Status} \\
+		\midrule\midrule
+		\texttt{192.168.1.10:45000} & \texttt{203.0.113.5:45000} & \texttt{8.8.8.8:443} & \gls{TCP} & Aktiv \\
+		\midrule
+		\texttt{192.168.1.11:45001} & \texttt{203.0.113.5:45001} & \texttt{8.8.8.8:443} & \gls{TCP} & Aktiv \\
+		\midrule
+		\texttt{192.168.1.12:45002} & \texttt{203.0.113.5:45002} & \texttt{93.184.216.34:80} & \gls{TCP} & Aktiv \\
+	\end{tabular}
+	\caption{\gls{NAT}-Tabelle mit mehreren lokalen Geräten, die gleichzeitig auf externe Server zugreifen}
+\end{table}
+
+Dadurch können mehrere Geräte im lokalen Netzwerk gleichzeitig mit verschiedenen (oder sogar denselben) externen Servern kommunizieren, obwohl sie alle die gleiche globale \gls{IP}-Adresse nutzen. Der Router kann anhand der Port-Nummern und lokalen Adressen genau unterscheiden, welche Antworten an welche lokalen Geräte zurückgeleitet werden müssen.
+\end{myexample}
+
+\gls{NAT} wird weiter unterschieden in:
+\begin{itemize}
+    \item \textbf{Statisches NAT}: Hierbei wird eine feste Zuordnung zwischen jeder lokalen \gls{IP}-Adresse und einer globalen \gls{IP}-Adresse erstellt. Dies wird oft für Server verwendet, die von aussen erreichbar sein müssen. Für private Netzwerke mit vielen Geräten ist dies jedoch unpraktisch, da es viele globale \gls{IP}-Adressen erfordert.
+    \item \textbf{Dynamisches NAT}: Hierbei wird eine lokale \gls{IP}-Adresse dynamisch einer verfügbaren globalen \gls{IP}-Adresse zugeordnet, wenn eine Verbindung nach aussen hergestellt wird. Dies ist effizienter als statisches \gls{NAT}, da nicht für jedes Gerät eine feste globale Adresse benötigt wird. Aufgrund der Tatsache, dass mehrere \gls{IP}-Adressen benötigt werden, ist dies jedoch immer noch nicht ideal für grosse Netzwerke.
+    \item \textbf{\gls{PAT} (Port Address Translation)}: Auch als \textbf{NAT Overloading} bekannt, ermöglicht \gls{PAT} mehreren Geräten in einem lokalen Netzwerk, dieselbe globale \gls{IP}-Adresse zu teilen, indem unterschiedliche Port-Nummern verwendet werden. Dies ist die am häufigsten verwendete Form von \gls{NAT} in Heimnetzwerken, da es die Anzahl der benötigten globalen \gls{IP}-Adressen minimiert. Jeder lokale Computer wird durch eine Kombination aus der gemeinsamen globalen \gls{IP}-Adresse und einer eindeutigen Port-Nummer identifiziert In Praxis wird mit \gls{NAT} indirekt meistens \gls{PAT} gemeint.
+\end{itemize}
+
+\section{\acrfull{PAT}}
+\begin{myexample}[\acrfull{PAT}]
+Angenommen, Sie haben drei Computer in Ihrem lokalen Netzwerk mit den folgenden lokalen \gls{IP}-Adressen:
+\begin{itemize}
+    \item Computer 1: \texttt{192.168.1.10}
+    \item Computer 2: \texttt{192.168.1.11}
+    \item Computer 3: \texttt{192.168.1.12}
+\end{itemize}
+Alle drei Computer teilen sich die gleiche globale \gls{IP}-Adresse \texttt{203.0.113.5}. Wenn alle drei Computer gleichzeitig eine Verbindung zu einem externen Server herstellen möchten, weist der Router jedem Computer eine eindeutige Port-Nummer zu, um die Verbindungen zu unterscheiden. Die \gls{PAT}-Tabelle im Router könnte wie folgt aussehen:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+        \textbf{Lokale IP:Port} & \textbf{Global IP:Port} & \textbf{Ziel IP:Port} & \textbf{Protokoll} \\
+        \midrule\midrule
+        \texttt{192.168.1.10:50000} & \texttt{203.0.113.5:50000} & \texttt{8.8.8.8:443} & \gls{TCP} \\
+        \midrule
+        \texttt{192.168.1.11:50001} & \texttt{203.0.113.5:50001} & \texttt{8.8.8.8:443} & \gls{TCP} \\
+        \midrule
+        \texttt{192.168.1.12:50002} & \texttt{203.0.113.5:50002} & \texttt{8.8.8.8:443} & \gls{TCP} \\
+    \end{tabular}
+    \caption{\gls{PAT}-Tabelle mit mehreren lokalen Geräten, die die gleiche globale \gls{IP}-Adresse teilen}
+\end{table}
+Die Port-Nummern (50000, 50001, 50002) ermöglichen es dem Router, die eingehenden Antworten vom externen Server korrekt an die jeweiligen lokalen Computer weiterzuleiten, obwohl sie alle dieselbe globale \gls{IP}-Adresse verwenden.
+\end{myexample}
+
+\section{Port Forwarding}
+Port Forwarding kann in Verbindung mit \gls{NAT} verwendet werden, um eingehende Verbindungen von externen Computern an bestimmte lokale Computer weiterzuleiten. Dies ist besonders nützlich, wenn ein lokaler Computer (z.B. ein Webserver oder ein Spieleserver) von außerhalb des lokalen Netzwerks erreichbar sein soll. Durch das Einrichten von Port Forwarding im Router kann der Datenverkehr, der an eine bestimmte Port-Nummer der globalen \gls{IP}-Adresse gesendet wird, an die entsprechende lokale \gls{IP}-Adresse und Port-Nummer weitergeleitet werden. 
+
+\begin{myexample}[Port Forwarding]
+Angenommen, Sie haben einen Webserver in Ihrem lokalen Netzwerk mit der lokalen \gls{IP}-Adresse \texttt{192.168.1.20} und möchten, dass dieser von außerhalb Ihres Netzwerks über das Internet erreichbar ist. Ihr Router hat die globale \gls{IP}-Adresse \texttt{203.0.113.5}. Sie richten im Router eine Port-Weiterleitung ein, die eingehende Verbindungen auf Port 80 (\gls{HTTP}) der globalen Adresse an die lokale Adresse \texttt{192.168.1.20} auf Port 80 weiterleitet. Dadurch können externe Benutzer über \texttt{http://203.0.113.5} auf Ihren Webserver zugreifen, obwohl dieser sich in einem privaten Netzwerk befindet. Die Forwarding-Tabelle im Router könnte wie folgt aussehen:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c|c|c|c}
+		\textbf{Externer Port} & \textbf{Interne IP} & \textbf{Interner Port} & \textbf{Protokoll} \\
+		\midrule\midrule
+		80 & \texttt{192.168.1.20} & 80 & \gls{TCP} \\
+	\end{tabular}
+	\caption{Port Forwarding-Tabelle im Router}
+\end{table}
+
+Das Protokoll kann entweder \gls{TCP} oder \gls{UDP} sein, je nachdem, welche Art von Datenverkehr weitergeleitet werden soll. Typischerweise wird \gls{TCP} für Webserver und andere verbindungsorientierte Dienste verwendet, da es eine zuverlässige Datenübertragung gewährleistet. \gls{UDP} wird hingegen typischerweise für Anwendungen wie Online-Spiele oder \gls{VPN}-Dienste genutzt, die eine schnellere, aber weniger zuverlässige Übertragung erfordern.
+\end{myexample}

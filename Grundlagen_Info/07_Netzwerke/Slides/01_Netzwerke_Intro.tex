@@ -439,27 +439,107 @@
 \section{Vermittlungsschicht}
 \setbeamercolor{frametitle}{bg=\networkLayerColor!20}
 
-\begin{frame}[fragile]{\faMapMarker{} IP-Adresse}{Vermittlungsschicht}
+\begin{frame}[fragile]{\faMapMarker{} \gls{IP}-Adresse}{Vermittlungsschicht}
 
     \begin{itemize}[<+->]
-        \item Netzwerk-Adresse eines Computers
+        \item \gls{IP}-Adresse = Netzwerk-Adresse eines Computers
         \item Analogie: Wohnadresse einer Person (Strasse \& Stadt)
-        \item Häufig im IPv4-Format: 4 bytes, also 4 Zahlen von 0-255
-        \item Wird meist dezimal angegeben, z.B. 192.168.0.1
-        \item Wie viele IPv4-Adressen gibt es? Reicht das?
+        \item Häufig im \gls{IP}v4-Format: 4 bytes, also 4 Zahlen von 0-255, z.B.:\\
+              \textcolor{blue}{\texttt{11000000.10101000.00000001.00000101}}
+        \item Wird meist dezimal angegeben, z.B. \textcolor{blue}{\texttt{192.168.1.5}}
+
+        \item Wie viele \gls{IP}v4-Adressen gibt es? Reicht das?
               \begin{itemize}
                   \item $4\cdot 8 \text{ bits} = 32 \text{ bits}$
-                  \item $2^{32} \sim 4 \text{ Milliarden Adressen}$
-                  \item $\rightarrow \text{zu wenig!}$
+                        \[2^{32} \sim 4 \text{ Milliarden Adressen} \rightarrow \text{zu wenig!}\]
               \end{itemize}
-        \item IPv6: 128 bits, fast unendlich viele Adressen
-              \[2^{128} \sim 3.4\cdot 10^{38}\]
-        \item Lokale vs. globale IP-Adresse
-              \begin{itemize}
-                  \item \textbf{Lokale IP}: nur im lokalen Netzwerk gültig (z.B. 192.168.x.x, 10.x.x.x)
-                  \item \textbf{Globale IP}: weltweit eindeutig (z.B. 8.8.8.8)
-              \end{itemize}
+        \item \gls{IP}v6: 128 bits, fast unendlich viele Adressen
+              \[2^{128} \sim 3.4\cdot 10^{38}  \text{ Adressen}\]
     \end{itemize}
+\end{frame}
+
+\begin{frame}{\faMapMarker{} \gls{IP}-Adresse}{Lokale und globale Adressen}
+    \textbf{Lokale} vs. \textbf{globale} \gls{IP}-Adresse
+    \begin{itemize}
+        \item Aufgrund von \gls{IP}v4-Mangel: Unterscheidung zwischen lokalen und globalen \gls{IP}-Adressen
+        \item \textbf{Lokale \gls{IP}}: nur im lokalen Netzwerk gültig (z.B. 192.168.x.x, 10.x.x.x)
+        \item \textbf{Globale \gls{IP}}: weltweit eindeutig (z.B. 8.8.8.8)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Lokale vs. globale \gls{IP}-Adresse}{\acrfull{NAT}}
+    \begin{figure}[H]
+        \centering
+        \resizebox{\linewidth}{!}{
+            \begin{tikzpicture}[
+                    base/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, text=white, rounded corners, text width=2.5cm, align=center, inner sep=8pt},
+                    device/.style={base, fill=ForestGreen},
+                    router/.style={base, fill=\networkLayerColor},
+                    server/.style={base, fill=Crimson},
+                    arrow/.style={-Stealth, thick, text width=3cm, align=center}
+                ]
+
+                % Nodes
+                \node[device] (client) {Client\\\texttt{192.168.0.10}};
+                \node[device, below=.5cm of client] (client2) {Client\\\texttt{192.168.0.11}};
+                \node[device, below=.5cm of client2] (client3) {Client\\\texttt{192.168.0.12}};
+                \node[router, right=3cm of client2] (nat) {Router\\\texttt{80.152.43.21}};
+                \node[server, right=3cm of nat] (web) {Webserver\\\texttt{159.233.1.22}};
+
+                \node[draw=Crimson!60, rounded corners, thick, dashed, inner sep=6pt, fit=(client)(client2)(client3)(nat)] (lan2area){};
+
+                % Label boxes
+                \node[red, align=left, font=\small, anchor=south west] at (lan2area.north west) {Lokales Netzwerk};
+                \node[below=0.5cm of web, text width=2.5cm, align=center, font=\small] {Internet};
+
+                % Arrows and animations
+                \only<1>{
+                    \draw[arrow] (client.east) -- (nat.west) node[midway, above, text=black] {Anfrage von\\\texttt{192.168.0.10}};
+                }
+                
+                \only<2>{
+                    \draw[arrow] (nat.east) -- (web.west) node[midway, above, text=black] {Anfrage von\\\texttt{80.152.43.21} \faCheck};
+                }
+                
+                \only<3>{
+                    \draw[arrow] (web.west) -- (nat.east) node[midway, below, text=black] {Antwort an\\\texttt{80.152.43.21}};
+                }
+                
+                \only<4>{
+                    \draw[arrow] (nat.west) -- (client.east) node[midway, below, text=black] {Antwort an\\\texttt{192.168.0.10} \faCheck};
+                }
+
+                % NAT table
+                \only<2->{
+                    \node[below=0.1cm of nat, text width=3.5cm, font=\tiny, inner sep=8pt, draw, rounded corners, fill=\networkLayerColor!10] (natTable) {
+                        \textbf{\acrshort{NAT}-Tabelle}
+                        \begin{tabular}{p{1.4cm}|p{1.4cm}}
+                            \textbf{Lokal} & \textbf{Global} \\
+                            \midrule\midrule
+                            192.168.0.10 & 80.152.43.21 \\
+
+                        \end{tabular}
+                    };
+                }
+            \end{tikzpicture}
+        }
+    \end{figure}
+    
+    \only<1-2>{
+        \textbf{Ausgehende Anfrage}
+        \begin{itemize}
+            \item Client sendet Anfrage mit lokaler IP-Adresse
+            \item Router ersetzt lokale IP durch seine globale IP
+        \end{itemize}
+    }
+    
+    \only<3-4>{
+        \textbf{Eingehende Antwort}
+        \begin{itemize}
+            \item Server antwortet an die globale IP des Routers
+            \item Router schlägt in NAT-Tabelle nach und leitet an lokale IP weiter
+        \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}[fragile]{Eigene IP-Adresse herausfinden}
@@ -478,7 +558,7 @@
               \commandbox*|ping 159.233.1.22|
         \item Minimale Nachricht an andere \gls{IP}-Adresse schicken
         \item Ziel: schauen ob eine \gls{IP} existiert, bzw. erreichbar ist, wird mittels \gls{ICMP} realisiert
-    \end{itemize} 
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -520,9 +600,9 @@
         \includegraphics[width=0.2\linewidth]{Grundlagen_Info/07_Netzwerke/Figures/swisscom-back}
     \end{figure}
     \pause
-        \begin{center}
-            Beides (meistens) im gleichen Gerät!
-        \end{center}
+    \begin{center}
+        Beides (meistens) im gleichen Gerät!
+    \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{\faMapMarker{} Sub-Netze}{Vermittlungsschicht}
@@ -588,12 +668,9 @@
     \begin{itemize}
         \item Subnetzmasken
               \begin{itemize}
-                  \item \aufgabebox{Aufgaben 2.10 - 2.12}
-              \end{itemize}
-        \item Router
-              \begin{itemize}
-                  \item \abgabebox{Aufgabe 2.14  (MyGymer 2.4-2.6)}
-                  \item \challengebox{Aufgabe 2.13 (Link lesen)}
+                  \item \aufgabebox{Netzmasken: 1.20-1.23}
+                  \item \aufgabebox{Filius: 1.24}
+                  \item \challengebox{1.25}
               \end{itemize}
     \end{itemize}
 \end{frame}
@@ -716,16 +793,7 @@
 
 \begin{frame}[fragile]{\faHandshake{} TCP: 3-way handshake}{Auftrag}
     \begin{itemize}
-        \item Skript: \aufgabebox{1.5, 1.6}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{IP-Adressen}{Aufträge (Skript)}
-    \begin{itemize}
-        \item \abgabebox{Aufgabe 2.4}
-        \item \aufgabebox{Aufgaben 2.5, 2.6, 2.7}
-        \item \abgabebox{Aufgabe 2.8  (MyGymer 2.1-2.3)}
-        \item \challengebox{Aufgabe 2.9}
+        \item Skript: \aufgabebox{1.28-1.29}
     \end{itemize}
 \end{frame}
 
@@ -909,22 +977,22 @@
 
 \begin{frame}[fragile]{Webserver}{Aufträge (Skript)}
     \begin{itemize}
-        \item \abgabebox{Aufgabe 2.15 (MyGymer 2.7-2.9)}
-        \item \challengebox{Aufgabe 2.16}
+        \item \aufgabebox{Filius (Echo-Server): 1.30}
+        \item \aufgabebox{Filius (Email-Server): 1.31}
+        \item \aufgabebox{Filius (Web-Server): 1.32}
     \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}[fragile]{DNS}
-    DNS = \textit{Domain Name Server}
+\begin{frame}[fragile]{\acrfull{DNS}}
     \begin{itemize}
         \item Wenn Sie auf eine Webseite wie \url{https://sbb.ch} gehen, woher weiss der Client, von welchem Server er die Informationen anfragen soll?
-        \item DNS: URL $\rightleftarrows$ IP-Adresse!
+        \item \gls{DNS}: \acrshort{URL} $\rightleftarrows$ \acrshort{IP}-Adresse!
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{DNS}
+\begin{frame}[fragile]{\gls{DNS}}
     \begin{figure}[H]
         \resizebox{\linewidth}{!}{
             \begin{tikzpicture}[
@@ -936,7 +1004,7 @@
 
                 % Nodes
                 \node[client] (client) {Client\\\texttt{192.168.0.10}};
-                \node[server, right=4.2cm of client] (dns) {DNS-Server\\\texttt{192.168.2.1}};
+                \node[server, right=4.2cm of client] (dns) {\gls{DNS}-Server\\\texttt{192.168.2.1}};
                 \node[server, right=4.2cm of dns] (web) {Webserver\\\texttt{192.168.0.11}};
                 \node[text width=3cm, right=0cm of dns] (dnsTable) {\tiny \begin{tabular}{p{1.1cm}|p{1.2cm}}
                         \textbf{Domain\newline Name} & \textbf{IP-\newline Addresse} \\
@@ -963,20 +1031,19 @@
 
             \end{tikzpicture}}
         \centering
-        \caption{Schematischer Ablauf einer DNS-Anfrage}
+        \caption{Schematischer Ablauf einer \gls{DNS}-Anfrage}
         \label{fig:dns}
     \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]{DNS}{Aufträge (Skript)}
+\begin{frame}[fragile]{\gls{DNS}}{Aufträge (Skript)}
     \begin{itemize}
-        \item \aufgabebox{Aufgaben 2.17, 2.18}
-        \item \abgabebox{Aufgabe 2.19 (MyGymer 2.10-2.12)}
+        \item \aufgabebox{Aufgaben 1.34-1.36}
     \end{itemize}
 
     Weitere Aufgaben
     \begin{itemize}
-        \item \aufgabebox{Aufgabe 2.20}
-        \item \challengebox{Aufgabe 2.21 (MyGymer 2.13)}
+        \item \aufgabebox{1.37-1.38}
+        \item \challengebox{1.39-1.40}
     \end{itemize}
 \end{frame}
