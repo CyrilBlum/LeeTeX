@@ -340,7 +340,9 @@ Mit dem Befehl \commandbox*|ping| kann überprüft werden, ob ein Rechner im Net
 \end{mychallenge}
 
 \subsection{Verschlüsselung von Netzwerken}
-In einem lokalen Netzwerk können Datenpakete von jedem Gerät im selben Netzwerk abgefangen und gelesen werden. Um die Sicherheit und Vertraulichkeit der Daten zu gewährleisten, werden verschiedene Verschlüsselungsmethoden verwendet. Eine gängige Methode ist die Verwendung des \gls{WPA}-Protokolls, welches eine starke Verschlüsselung der Datenpakete ermöglicht. \gls{WPA} verwendet den \gls{AES}-Verschlüsselungsalgorithmus, um die Daten zu schützen, welcher letztlich auf dem \gls{RC4}-Algorithmus basiert, welcher seinerseits auf einem symmetrischen Schlüsselverfahren beruht, welches in seiner Grundstruktur auf der \textbf{Vigenère}-Verschlüsselung basiert. Es gibt verschiedene Versionen von \gls{WPA}, darunter \gls{WPA}2 und \gls{WPA}3, die jeweils verbesserte Sicherheitsfunktionen bieten. In einem passwortfreien Netzwerk (offenes Netzwerk) sind die Datenpakete unverschlüsselt und können von jedem Gerät im selben Netzwerk abgefangen und gelesen werden. Um dies zu illustrieren, schauen wir uns folgenden Wireshark-Auszug eines unverschlüsselten \gls{HTTP}-Datenpakets an.
+In einem lokalen Netzwerk können Datenpakete von jedem Gerät im selben Netzwerk abgefangen und gelesen werden. Um die Sicherheit und Vertraulichkeit der Daten zu gewährleisten, werden verschiedene Verschlüsselungsmethoden verwendet. Eine gängige Methode ist die Verwendung des \gls{WPA}-Protokolls, welches eine starke Verschlüsselung der Datenpakete ermöglicht. \gls{WPA} verwendet den \gls{AES}-Verschlüsselungsalgorithmus, um die Daten zu schützen. Dabei handelt es sich um einen symmetrischen Verschlüsselungsalgorithmus, welcher als sehr sicher gilt und in vielen Anwendungen eingesetzt wird.
+
+Es gibt verschiedene Versionen von \gls{WPA}, darunter \gls{WPA}2 und \gls{WPA}3, die jeweils verbesserte Sicherheitsfunktionen bieten. In einem passwortfreien Netzwerk (offenes Netzwerk) sind die Datenpakete grundsätzlich unverschlüsselt und können von jedem Gerät im selben Netzwerk abgefangen und gelesen werden. Um dies zu illustrieren, schauen wir uns folgenden Wireshark-Auszug eines unverschlüsselten \gls{HTTP}-Datenpakets an.
 
 \begin{myexample}[Wireshark-Auszug eines unverschlüsselten \gls{HTTP}-Datenpakets]
 In \cref{fig:http-wireshark} ist ein Wireshark-Auszug eines unverschlüsselten \gls{HTTP}-Datenpakets zu sehen.
@@ -626,7 +628,7 @@ Eine \gls{IP}v6-Adresse besteht aus 128 Bits, wobei die 128 Bits in 8 Gruppen zu
 \end{myexercise}
 
 \begin{myremark}[IPv4 vs. IPv6]
-	In der Praxis werden \gls{IP}v4-Adressen immer noch am häufigsten verwendet, da viele ältere Geräte und Netzwerke nur \gls{IP}v4 unterstützen. Allerdings wird \gls{IP}v6 zunehmend wichtiger, da die Anzahl der Geräte im Internet stetig zunimmt und der Adressraum von \gls{IP}v4 nicht mehr ausreicht. Viele moderne Betriebssysteme und Netzwerke unterstützen bereits \gls{IP}v6, und es wird erwartet, dass in Zukunft immer mehr Geräte auf \gls{IP}v6 umsteigen werden. Um den Mangel an \gls{IP}v4-Adressen zu beheben, werden auch Techniken wie \gls{NAT} eingesetzt, die es ermöglichen, mehrere Geräte hinter einer einzigen öffentlichen \gls{IP}-Adresse zu betreiben.
+	In der Praxis werden \gls{IP}v4-Adressen immer noch am häufigsten verwendet, da viele ältere Geräte und Netzwerke nur \gls{IP}v4 unterstützen. Allerdings wird \gls{IP}v6 zunehmend wichtiger, da die Anzahl der Geräte im Internet stetig zunimmt und der Adressraum von \gls{IP}v4 nicht mehr ausreicht. Viele moderne Betriebssysteme und Netzwerke unterstützen bereits \gls{IP}v6, und es wird erwartet, dass in Zukunft immer mehr Geräte auf \gls{IP}v6 umsteigen werden. Um den Mangel an \gls{IP}v4-Adressen zu beheben, werden auch Techniken wie \acrfull{NAT}, \acrfull{PAT} und Port Forwarding eingesetzt, die es ermöglichen, mehrere Geräte hinter einer einzigen öffentlichen \gls{IP}-Adresse zu betreiben (s. \cref{app:nat_port_forwarding} für weitere Informationen zu \acrshort{NAT}, \acrshort{PAT} und Port Forwarding).
 \end{myremark}
 
 \subsection{Netzmasken \& Subnetze}
@@ -791,21 +793,24 @@ Bis anhin haben wir gesehen, wie wir einzelne Rechner mittels einer IP adressier
 
 Ein Beispiel einer minimalen Routing-Tabelle ist in \cref{table:routing} abgebildet.
 
+\newcolumntype{S}{>{\small}p{5cm}<{\small}}   % small font, centered
+\newcolumntype{T}{>{\ttfamily}l<{\ttfamily}}   % small font, monospace
+
 \begin{table}[H]
 	\centering
-	\begin{tabular}{ l | l | l | l}
-		\textbf{Ziel-\gls{IP}} & \textbf{Netzmaske} & \textbf{Gateway} & \textbf{Interface} \\
+	\begin{tabular}{ T | T | T | T | S }
+		\normalfont\textbf{Ziel-\gls{IP}} & \normalfont\textbf{Netzmaske} & \normalfont\textbf{Gateway} & \normalfont\textbf{Interface} & \normalsize\textbf{Kommentar}                                                       \\
 		\midrule\midrule
-		0.0.0.0                & 0.0.0.0            & 192.168.1.1      & eth0               \\
-		192.168.1.0            & 255.255.255.0      & 0.0.0.0          & eth0               \\
-		192.168.2.0            & 255.255.255.0      & 0.0.0.0          & eth1               \\
-		10.0.0.0               & 255.0.0.0          & 192.168.1.2      & eth0               \\
-		172.16.0.0             & 255.240.0.0        & 192.168.2.2      & eth1               \\
-		127.0.0.0              & 255.0.0.0          & 0.0.0.0          & lo                 \\
+		192.168.1.0            & 255.255.255.0      & 0.0.0.0          & eth0               & Direkt verbundenes \gls{LAN} \texttt{192.168.1.0/24} wird über Kabel \texttt{eth0} erreicht. \\\midrule
+		192.168.2.0            & 255.255.255.0      & 0.0.0.0          & eth1               & Direkt verbundenes \gls{LAN} \texttt{192.168.2.0/24} wird über Kabel \texttt{eth1} erreicht. \\\midrule
+		0.0.0.0                & 0.0.0.0            & 192.168.1.1      & eth0               & Standardroute ins Internet (\textit{default gateway})                               \\
 	\end{tabular}
-	\caption{Beispiel einer Routing-Tabelle}
+	\caption{Beispiel einer Routing-Tabelle eines Routers, welcher sich in zwei \glspl{LAN} \texttt{192.168.1.0/24} und \texttt{192.168.2.0/24} befindet.}
 	\label{table:routing}
 \end{table}
+
+Beim sogenannten \textit{default gateway} handelt es sich um die Standardroute, die verwendet wird, wenn keine spezifischere Route für eine Ziel-\gls{IP} in der Routing-Tabelle gefunden werden kann. In der Regel ist das Default Gateway die \gls{IP}-Adresse des Routers, der das Subnetz mit dem Internet verbindet.
+
 
 \begin{myexercise}[Filius-Anwendung: Router \& Gateway]
 	Schauen Sie sich das \href{https://www.youtube.com/watch?v=Kn8v_HrckUM&list=PLUfZiVdJui-57k0VcRecHX0JTEhOMgiKP}{Filius-Video Nummer 3} an. Laden Sie danach die Datei \enquote{\texttt{Filius-3.fls}} von Moodle herunter und bearbeiten Sie die darin enthaltene Netzwerkkonfiguration:
@@ -824,7 +829,7 @@ Ein Beispiel einer minimalen Routing-Tabelle ist in \cref{table:routing} abgebil
 
 
 \begin{myremark}[Automatische Zuweisung von \acrshort{IP}-Adressen via \acrshort{DHCP}]
-	In der Praxis ist es unpraktisch, wenn jeder Computer in einem Netzwerk manuell mit einer \gls{IP}-Adresse konfiguriert werden muss. Daher wird häufig das \acrfull{DHCP} verwendet, um Computern automatisch eine \gls{IP}-Adresse zuzuweisen, wenn sie sich mit dem Netzwerk verbinden. Ein \gls{DHCP}-Server verwaltet einen Pool von verfügbaren \gls{IP}-Adressen und weist diese dynamisch an Computer zu, die eine Verbindung zum Netzwerk herstellen. Dies erleichtert die Verwaltung von Netzwerken erheblich, insbesondere in Umgebungen mit vielen Geräten, wie z.B. in Unternehmen oder öffentlichen Netzwerken.
+	In der Praxis ist es unpraktisch, wenn jeder Computer in einem Netzwerk manuell mit einer \gls{IP}-Adresse konfiguriert werden muss. Daher wird häufig das \acrfull{DHCP} verwendet, um Computern automatisch eine \gls{IP}-Adresse zuzuweisen, wenn sie sich mit dem Netzwerk verbinden. Ein \gls{DHCP}-Server verwaltet einen Pool von verfügbaren \gls{IP}-Adressen und weist diese dynamisch an Computer zu, die eine Verbindung zum Netzwerk herstellen. Dies erleichtert die Verwaltung von Netzwerken erheblich, insbesondere in Umgebungen mit vielen Geräten, wie z.B. in Unternehmen oder öffentlichen Netzwerken. Falls ein gewisses Gerät immer dieselbe lokale \gls{IP}-Adresse benötigt (z.B. ein Drucker oder ein Server), kann bei vielen Routern eine so genannte \textbf{\gls{IP}-Reservierung} eingerichtet werden, die sicherstellt, dass dieses Gerät immer dieselbe \gls{IP}-Adresse erhält.
 \end{myremark}
 
 \subsection{\texorpdfstring{Zusammenfügen mehrerer \glspl{LAN} zum \gls{WAN} (Internet)}{Zusammenfügen mehrerer LANs zum WAN (Internet)}}
@@ -878,6 +883,16 @@ Einige der wichtigsten Metadaten sind:
 	\item \textbf{Ziffern} für die \textit{Sequence} (Sequenz) und \textit{Acknowledgement} (Anerkennung) von Paketen, die die richtige Reihenfolge der gesendeten und erhaltenen Daten gerantieren.
 	\item Weitere Daten, die für den Transport notwendig sind.
 \end{itemize}
+
+\begin{myexercise}
+	Testen Sie, was beim Aufrufen von \url{http://www.sbb.ch:80} und \url{http://www.sbb.ch:81} passiert. Erklären Sie den Unterschied.
+	\begin{myanswer}
+		\begin{itemize}
+			\item \url{http://www.sbb.ch:80} funktioniert, da Port 80 der Standard-Port für HTTP-Verbindungen ist. Der Webserver der SBB hört auf diesem Port und kann daher die Anfrage verarbeiten und die Webseite ausliefern.
+			\item \url{http://www.sbb.ch:81} funktioniert nicht, da Port 81 kein Standard-Port für HTTP-Verbindungen ist und der Webserver der SBB wahrscheinlich nicht auf diesem Port hört. Daher kann die Anfrage nicht verarbeitet werden und es wird keine Webseite ausgeliefert.
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
 
 Nebst \gls{TCP} gibt es noch ein weiteres Protokoll in der Transportschicht, das \gls{UDP}. Im Gegensatz zu \gls{TCP} stellt \gls{UDP} keine zuverlässige Datenübertragung sicher, sondern sendet die Daten einfach los, ohne zu überprüfen, ob sie auch angekommen sind. Dies ist nützlich für Anwendungen, bei denen Geschwindigkeit wichtiger ist als Zuverlässigkeit, wie z.B. bei Online-Gaming oder Video-Streaming, oder auch für \gls{VPN}-Verbindungen.
 
@@ -1107,11 +1122,20 @@ Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige we
 	Erstellen Sie in Filius eine Client-Server-Architektur, ähnlich derjenigen aus Video 5. Diesmal soll der Server jedoch als Web-Server fungieren, der das \gls{HTTP}-Protokoll unterstützt. Installieren Sie dazu auf dem Server einen \enquote{Webserver} und auf dem Client einen \enquote{Webbrowser}. Die Dateien, welche dem Client dargestellt werden sollen, befinden sich bereits auf dem Server. Installieren Sie auf dem Server zusätzlich die Software \enquote{Text-Editor} und öffnen Sie die Datei \texttt{index.html}, im Ordner \texttt{webserver}, um den Inhalt der Webseite anzupassen. Fügen Sie einen neuen Titel und Text hinzu, der auf der Webseite angezeigt werden soll, und testen Sie von einem anderen Client aus, ob die Änderungen korrekt angezeigt werden.
 \end{myexercise}
 
+\begin{mychallenge}[Filius-Anwendung: ``Echter'' Webserver via Modem (zu zweit)]
+	In Filius können Sie auch einen ``echten'' Webserver einrichten, der über ein Modem den anderen Rechnern im gleichen \gls{LAN} zur Verfügung steht. Richten Sie dazu in Filius einen Webserver ein, der über ein Modem mit dem \gls{LAN} verbunden ist. Das Modem muss ihre lokale IP-Adresse haben. Belassen Sie den Standard-Port 12345. Richten Sie anschliessend auf einem anderen Rechner im gleichen \gls{LAN} auf Filius ein Netzwerk mit einem Client und einem Modem ein, das mit dem gleichen \gls{LAN} verbunden ist. Verwenden Sie als IP-Adresse im Modem die lokale IP-Adresse der ersten Person, bei welcher der Webserver läuft.
+	Versuchen Sie zunächst, den Webserver der ersten Person von der zweiten Person aus mit einem \commandbox*|ping|-Befehl zu erreichen. Öffnen Sie anschliessend den Webbrowser auf dem Client der zweiten Person und geben Sie die IP-Adresse des Webservers der ersten Person ein, um auf die Webseiten der ersten Person zuzugreifen.
+\end{mychallenge}
+
+\begin{myremark}[Modem vs. Router]
+	In Filius gibt es sowohl Modems als auch Router. Ein \textbf{Modem} (\textbf{Mo}dulator-\textbf{Dem}odulator) ist ein Gerät, das digitale Signale in analoge Signale umwandelt und umgekehrt, um die Kommunikation über Telefonleitungen oder Kabelverbindungen zu ermöglichen. Ein \textbf{Router} hingegen ist ein Gerät, das Datenpakete zwischen verschiedenen Netzwerken weiterleitet und den Datenverkehr innerhalb eines Netzwerks verwaltet. In Filius wird ein Modem verwendet, um eine Verbindung zu einem externen Netzwerk herzustellen, während ein Router verwendet wird, um den Datenverkehr innerhalb eines lokalen Netzwerks zu steuern. In Wirklichkeit sind viele moderne Geräte eine Kombination aus Modem und Router, die beide Funktionen in einem einzigen Gerät vereinen.
+\end{myremark}
+
 \begin{mychallenge}[\gls{HTML} genauer verstehen]
 	Besuchen Sie folgende Webseite: \url{https://www.w3schools.com/html} und lesen Sie die Grundlagen von \gls{HTML}. Erstellen Sie anschliessend eine einfache \gls{HTML}-Datei mit einem Titel, einer Überschrift und einem Absatz. Speichern Sie die Datei als \texttt{meine\_erste\_webseite.html} und öffnen Sie sie in Ihrem Webbrowser, um das Ergebnis zu sehen.
 \end{mychallenge}
 
-\subsection{\texorpdfstring{\gls{DNS}-Server}{DNS}-Server}
+\subsection{\texorpdfstring{\gls{DNS}-Server}{DNS-Server}}
 Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer Webseiten, aus der Angabe eines Servers und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (siehe \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Ein Beispiel einer solchen Tabelle ist in \cref{tab:dnsEntries} gezeigt.
 
 \begin{table}[H]
