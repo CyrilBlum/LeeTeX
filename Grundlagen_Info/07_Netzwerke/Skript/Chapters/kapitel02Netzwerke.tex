@@ -273,7 +273,7 @@ Die Resultate aller \gls{ARP}-Anfragen werden in einer so genannten \textbf{ARP-
 % TODO potentially add tcolorbox for each terminal command introduced, with example use
 Mit dem Befehl \commandbox*|ping| kann überprüft werden, ob ein Rechner im Netzwerk erreichbar ist. Dabei wird eine minimale, inhaltslose Nachricht an einen anderen Rechner (=\gls{IP}-Adresse) geschickt. Das Ziel ist es, zu überprüfen, ob eine gewisse \gls{IP}-Adresse im Netzwerk existiert. Der Befehl \enquote{\textit{ping}} ist vergleichbar mit einem Ping-Pong-Spiel: Der Absender-Rechner, der eine \enquote{ping}-Nachricht schickt, erhält vom Ziel-Rechner, sofern dieser erreicht wird, viermal eine \enquote{pong}-Nachricht zurückgeschickt. Der \texttt{ping}-Befehl kann im Terminal (MacOS, UNIX-Systeme), bzw \texttt{cmd} (Windows) wie folgt ausgeführt werden: \commandbox*|ping [ip address]|, also z.B. \commandbox*|ping 159.233.1.22|. Der Ping-Befehl verwendet das \gls{ICMP}-Protokoll (Internet Control Message Protocol) der Internetschicht, um die Nachrichten zu verschicken. Das \gls{ICMP}-Protokoll ist ein Protokoll, das speziell für die Übertragung von Kontroll-Nachrichten im Netzwerk entwickelt wurde, allerdings nicht für den Datentransfer von Nutzdaten.
 
-\begin{mycaution}
+\begin{mycaution}[Ping of Death]
 	Eine Spezial-Variante des \texttt{ping}-Befehls ist der sogenannte \textcolor{red}{\faSkull{} Ping of Death}, bei dem ein bösartiger Computer ein zu grosses Datenpaket an einen anderen Computer schickte, das beim Zusammensetzen zum Zusammensturz des Zielrechners führte. Dies ist seit Ende der 90er-Jahre auf den meisten Computern nicht mehr möglich: Die Sicherheitslücke wurde behoben, indem beispielsweise die Paketgrösse vor dem Zusammensetzen überprüft wurde.
 \end{mycaution}
 
@@ -359,6 +359,7 @@ Im unteren Teil von \cref{fig:http-wireshark} ist der Payload des Pakets dargest
 	Das Abfangen und Mitlesen von Datenpaketen in einem Netzwerk ohne ausdrückliche Erlaubnis der beteiligten Parteien ist in vielen Ländern illegal und kann strafrechtlich verfolgt werden. In der Schweiz beispielsweise verstösst das unbefugte Abfangen von Daten gegen das Bundesgesetz über den Datenschutz (DSG) und das Strafgesetzbuch (StGB). Personen, die beim unbefugten Abfangen von Daten erwischt werden, können mit Geldstrafen oder sogar Freiheitsstrafen belegt werden. Es ist daher wichtig, die rechtlichen Rahmenbedingungen zu kennen und einzuhalten.
 \end{mycaution}
 
+
 \subsection{Switches}
 Jede Netzwerkkarte kann nur mit genau einem anderen Gerät in einem lokalen Netzwerk kommunizieren. Damit mehrere Geräte in einem lokalen Netzwerk miteinander kommunizieren können, werden sogenannte \textbf{Switches} verwendet. Ein Switch ist ein Gerät, das mehrere Netzwerkkarten miteinander verbindet und es ihnen ermöglicht, Datenpakete direkt aneinander zu senden. Der Switch lernt dabei die \gls{MAC}-Adressen der angeschlossenen Geräte und leitet die Datenpakete nur an das Gerät weiter, für das sie bestimmt sind. Dadurch wird der Datenverkehr im Netzwerk effizienter gestaltet, da nicht alle Geräte jedes Datenpaket empfangen müssen.
 
@@ -367,7 +368,7 @@ Jede Netzwerkkarte kann nur mit genau einem anderen Gerät in einem lokalen Netz
 \end{myexercise}
 
 \subsection{Topologie}
-Beim Erstellen eines Netzwerks stellt sich als Erstes die Frage, welche Computer man mit welchen anderen Computern verbinden soll. Die Struktur der Verbindungen in einem Netzwerk kann also umformuliert werden als Graphen-Problem, bei dem es zu bestimmen gibt, welche Knoten eines Graphen miteinander über eine Kante verbunden werden. Die verschiedenen möglichen Strukturen eines Netzwerks werden auch als \textbf{Topologie} bezeichnet. Einige Beispiel-Topologien sind in \cref{fig:topologie} gezeigt.
+Beim Erstellen eines Netzwerks stellt sich als Erstes die Frage, welche Computer man mit welchen anderen Computern verbinden soll. Die Struktur der Verbindungen in einem Netzwerk kann also umformuliert werden als Graphen-Problem, bei dem es zu bestimmen gibt, welche Knoten eines Graphen miteinander über eine Kante verbunden werden. In den folgenden Graphen bezeichnen Knoten die Computer und Kanten die Verbindungen (Kabel) zwischen den Computern. Die verschiedenen möglichen Strukturen eines Netzwerks werden auch als \textbf{Topologie} bezeichnet. Einige Beispiel-Topologien sind in \cref{fig:topologie} gezeigt.
 \input{Grundlagen_Info/07_Netzwerke/Skript/Chapters/kapitel02Netzwerke_fig_topologies.tex}
 
 Da Computer in Realität häufig nur über eine einzige Netzwerkkarte verfügen, können sie auch nur mit einem weiteren Computer verbunden werden. In einem lokalen Netzwerk (\gls{LAN}) trifft man daher häufig die Form einer Stern-Topologie an, bei der alle Computer mit einer zentralen \textbf{Switch} verbunden werden, also einem Gerät, welches mehrere Rechner an einem zentralen Punkt miteinander verbindet.
@@ -799,11 +800,11 @@ Ein Beispiel einer minimalen Routing-Tabelle ist in \cref{table:routing} abgebil
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ T | T | T | T | S }
-		\normalfont\textbf{Ziel-\gls{IP}} & \normalfont\textbf{Netzmaske} & \normalfont\textbf{Gateway} & \normalfont\textbf{Interface} & \normalsize\textbf{Kommentar}                                                       \\
+		\normalfont\textbf{Ziel-\gls{IP}} & \normalfont\textbf{Netzmaske} & \normalfont\textbf{Gateway} & \normalfont\textbf{Interface} & \normalsize\textbf{Kommentar}                                                                \\
 		\midrule\midrule
-		192.168.1.0            & 255.255.255.0      & 0.0.0.0          & eth0               & Direkt verbundenes \gls{LAN} \texttt{192.168.1.0/24} wird über Kabel \texttt{eth0} erreicht. \\\midrule
-		192.168.2.0            & 255.255.255.0      & 0.0.0.0          & eth1               & Direkt verbundenes \gls{LAN} \texttt{192.168.2.0/24} wird über Kabel \texttt{eth1} erreicht. \\\midrule
-		0.0.0.0                & 0.0.0.0            & 192.168.1.1      & eth0               & Standardroute ins Internet (\textit{default gateway})                               \\
+		192.168.1.0                       & 255.255.255.0                 & 0.0.0.0                     & eth0                          & Direkt verbundenes \gls{LAN} \texttt{192.168.1.0/24} wird über Kabel \texttt{eth0} erreicht. \\\midrule
+		192.168.2.0                       & 255.255.255.0                 & 0.0.0.0                     & eth1                          & Direkt verbundenes \gls{LAN} \texttt{192.168.2.0/24} wird über Kabel \texttt{eth1} erreicht. \\\midrule
+		0.0.0.0                           & 0.0.0.0                       & 192.168.1.1                 & eth0                          & Standardroute ins Internet (\textit{default gateway})                                        \\
 	\end{tabular}
 	\caption{Beispiel einer Routing-Tabelle eines Routers, welcher sich in zwei \glspl{LAN} \texttt{192.168.1.0/24} und \texttt{192.168.2.0/24} befindet.}
 	\label{table:routing}
