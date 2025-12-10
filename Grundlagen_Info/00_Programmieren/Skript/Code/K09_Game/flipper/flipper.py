@@ -2,13 +2,79 @@ import math as m
 import pygame as pg
 import random as r
 
+HEIGHT = 1000
+WIDTH = int(HEIGHT/800 * 500)
+WINDOW = (WIDTH, HEIGHT)
+FPS = 60
+SPEEDUP = FPS/60
 
+# --- Initialisierung ---
+pg.init()
+pg.mixer.init()
+
+screen = pg.display.set_mode(WINDOW, pg.SCALED)
+pg.display.set_caption("flipper")
+clock = pg.time.Clock()
+font = pg.font.Font(None, 36)
+
+pg.mixer.init()
+
+# --- Sounds ---
+flipper_sound = pg.mixer.Sound("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/pinball13.mp3")
+stick_sound = pg.mixer.Sound("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/pinball27.mp3")
+stick_release_sound = pg.mixer.Sound("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/pinball34.mp3")
+
+# --- Bilder ---
+dollar = pg.image.load("Grundlagen_Info/00_Programmieren/Skript/Code/K09_Game/assets/euro.png").convert_alpha()
+dollar = pg.transform.scale(dollar, (60, 60))
+
+class StickObj:
+    def __init__(self, position, width, height, color):
+        self.rect = pg.Rect(position[0], position[1], width, height)
+        self.color = color
+        self.sticky_duration = 0
+        self.direction_stick_x = 0
+        self.direction_stick_y = 0
+    
+    def draw(self, screen):
+        pg.draw.circle(screen, self.color, self.rect.center, self.rect.width // 2)
+
+    def was_hit(self):
+        if self.sticky_duration == 0:
+            self.direction_stick_x = r.choice((-1,1))
+            self.direction_stick_y = r.choice((-1,1))
+            stick_sound.play()
+            self.sticky_duration = 120  # frames
+
+    def update(self, ball, score, step_ballx, step_bally):
+        if self.sticky_duration > 1:
+            self.sticky_duration -= 1
+            if self.sticky_duration % 15 == 0:
+                self.color = (r.randint(100,255), r.randint(100,255), r.randint(100,255))
+            step_bally = 0
+            step_ballx = 0
+            
+        elif self.sticky_duration == 1:
+            score += 5
+            stick_release_sound.play()
+            
+            ball.centerx = self.rect.centerx + self.direction_stick_x*30
+            ball.centery = self.rect.centery + self.direction_stick_y*30
+            step_ballx = self.direction_stick_x * 5
+            step_bally = self.direction_stick_y * 5
+            self.sticky_duration -= 1
+
+        return ball, score, step_ballx, step_bally
+        
+
+    
 
 class CollectObj:
     """
     Objekt auf dem Flipperkasten, welches eingesammelt werden kann.
     """
     def __init__(self, position, radius, color):
+        self.rect = pg.Rect(position[0], position[1], radius*2, radius*2)
         self.position = position
         self.radius = radius
         self.color = color
@@ -16,7 +82,7 @@ class CollectObj:
     
     def draw(self, screen):
         if not self.collected:
-            pg.draw.circle(screen, self.color, self.position, self.radius)
+            screen.blit(dollar, (self.position[0], self.position[1]))
             
 
 
@@ -88,6 +154,8 @@ class Flipper:
             # Flipper schlägt nach oben, bis zum Maximalwinkel
             if self.flipper_type == "left":
                 self.current_angle = min(self.max_angle, self.current_angle + self.speed)
+                if self.current_speed == 0 and self.current_angle < self.max_angle:
+                    flipper_sound.play()
                 # if moving up, speed is set to self.speed
                 if self.current_angle < self.max_angle:
                     self.current_speed = self.speed
@@ -97,6 +165,8 @@ class Flipper:
             else:  # right flipper
                 self.current_angle = max(self.max_angle, self.current_angle - self.speed)
                 # if moving up, speed is set to self.speed
+                if self.current_speed == 0 and self.current_angle > self.max_angle:
+                    flipper_sound.play()
                 if self.current_angle > self.max_angle:
                     self.current_speed = self.speed
                 # if not moving, speed is 0
@@ -197,4 +267,4 @@ class Flipper:
         if y_flipper_top is None or y_flipper_bottom is None:
             return False
 
-        return ball.bottom >= y_flipper_top and ball.top <= 800
+        return ball.bottom >= y_flipper_top and ball.top <= HEIGHT
