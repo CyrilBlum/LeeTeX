@@ -37,8 +37,7 @@ obj_stick = StickObj(
 
 # --- Ball Bewegungsvariablen ---
 step_bally = 0
-#step_ballx = r.choice((-1, 1)) * r.uniform(3, 5)
-step_ballx = 0
+step_ballx = r.choice((-1, 1)) * r.uniform(3, 5)
 
 # --- Flipper ---
 flipper_left = Flipper(
@@ -49,7 +48,7 @@ flipper_left = Flipper(
     speed = int(8/SPEEDUP*(WIDTH/800)),
     width = 20,
     color = (100, 100, 100),
-    bounceback_factor=3,
+    bounceback_factor=5,
     flipper_type="left"
 )
 
@@ -61,7 +60,7 @@ flipper_right = Flipper(
     speed = int(8/SPEEDUP*(WIDTH/800)),
     width = 20,
     color = (100, 100, 100),
-    bounceback_factor=3,
+    bounceback_factor=5,
     flipper_type="right"
 )
 
