@@ -275,13 +275,134 @@
 	(Und analog für \texttt{bubble\_sort}.)
 
 	\vspace{\baselineskip}
-	Die asymptotische Betrachtung zeigt auf, dass sich die Laufzeiten von sowohl \texttt{insertion\_sort} als auch \texttt{bubble\_sort} von einer beliebigen Polynomfunktion vom Grad $2$ lediglich um eine (multiplikative) Konstante unterscheiden. Dies gilt also insbesondere für die quadratische Funktion $n\mapsto n^2$.
+	Die asymptotische (Grenzwert für Problemgrössse $n\to\infty$) Betrachtung zeigt auf, dass sich die Laufzeiten von sowohl \texttt{insertion\_sort} als auch \texttt{bubble\_sort} von einer beliebigen Polynomfunktion vom Grad $2$ lediglich um eine (multiplikative) Konstante unterscheiden. Dies gilt also insbesondere für die quadratische Funktion $n\mapsto n^2$.
 \end{frame}
 
 \begin{frame}{asymptotische Betrachtung}
-	Intuitiv gesprochen, möchten wir sagen, dass in einer asymptotischen Betrachtung, die exakten Wert der Konstanten $a, b, c$ mit $a\neq 0$ in einem Ausdruck $T(n) = an^2 + bn + c$ \enquote{nicht wirklich wichtig sind}. Diese Aussage basiert auf der Beobachtung, dass sich alle Terme dieser Form (asymptotisch) lediglich um eine multiplikative Konstante unterscheiden.
+	Intuitiv gesprochen, möchten wir sagen, dass in einer asymptotischen Betrachtung, die exakten Wert der Konstanten $a, b, c$ mit $a\neq 0$ in einem Ausdruck $T(n) = an^2 + bn + c$ \enquote{nicht wirklich wichtig sind}. Diese Aussage basiert auf der Beobachtung, dass sich alle Terme dieser Form (asymptotisch) lediglich multiplikative und additive Konstanten unterscheiden:
+\end{frame}
 
-	\vspace{\baselineskip}
+\begin{frame}{asymptotische Betrachtung}
+	\begin{center}
+		{\small
+\enquote{Although we can sometimes determine the exact running time of an algorithm, as we did for insertion
+sort $\ldots$, the extra precision is not usually worth the effort of computing
+it. For large enough inputs, the multiplicative constants and lower-order terms of
+an exact running time are dominated by the effects of the input size itself.
+When we look at input sizes large enough to make only the order of growth of
+the running time relevant, we are studying the asymptotic efficiency of algorithms.
+That is, we are concerned with how the running time of an algorithm increases with
+the size of the input in the limit, as the size of the input increases without bound.
+Usually, an algorithm that is asymptotically more efficient will be the best choice
+for all but very small inputs.}
+		}
+	\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+	\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=7.5cm, % Eine etwas größere Breite, da es nun ein Einzelplot ist
+    height=7.5cm,
+    axis lines=left,
+    ticks=none,
+    xmin=0, xmax=16,
+    ymin=0, ymax=15,
+    domain=0:14,
+    samples=200,
+	clip=false
+]
+
+% 1. Plot (Standardfarbe/Schwarz)
+\addplot[
+  thick, % Die Dicke wurde hier wieder hinzugefügt
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 2.5)
+  (1.0, 2.3)
+  (2.0, 1.5)
+  (3.0, 2.5)
+  (4.0, 3.2)
+  (5.0, 4.3)
+  (6.0, 3.7)
+  (7.0, 4.5)
+  (8.0, 5.5)
+  (9.0, 6.5)
+  (10.0, 7.2)
+  (11.0, 8.0)
+  (12.0, 9.3)
+  (13.0, 10.8)
+  (14.0, 11.8)
+};
+
+% 2. Plot (Blau)
+\addplot[
+  Blue,
+  thick, % Dicke beibehalten
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 4.9)
+  (1.0, 1.4)
+  (2.0, 2.8)
+  (3.0, 2.5)
+  (4.0, 1.2)
+  (5.0, 3.4)
+  (6.0, 3.1)
+  (7.0, 3.0)
+  (8.0, 4.2)
+  (9.0, 5.7)
+  (10.0, 6.0)
+  (11.0, 6.8)
+  (12.0, 7.9)
+  (13.0, 9.8)
+  (14.0, 10.6)
+};
+
+% 3. Plot (ForestGreen)
+\addplot[
+  ForestGreen,
+  thick, % Dicke beibehalten
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 1.1)
+  (1.0, 4.6)
+  (2.0, 3.2)
+  (3.0, 3.5)
+  (4.0, 4.2)
+  (5.0, 4.8)
+  (6.0, 4.7)
+  (7.0, 5.5)
+  (8.0, 6.5)
+  (9.0, 7.6)
+  (10.0, 8.9)
+  (11.0, 9.3)
+  (12.0, 10.5)
+  (13.0, 11.9)
+  (14.0, 13.5)
+};
+
+% Zusätzliche Elemente (bleiben unverändert, da sie in axis cs: arbeiten)
+\addplot[dashed] coordinates {(3,0) (3,15)};
+\node at (axis cs:3.0,-0.4) {{\tiny $n_0$}};
+
+\node at (axis cs:14.8,12.0) {{\tiny $f(n)$}};
+\node at (axis cs:15.4,10.4) {{\tiny \textcolor{Blue}{$c_1g(n)$}}};
+\node at (axis cs:15.0,14.1) {{\tiny \textcolor{ForestGreen}{$c_2g(n)$}}};
+
+\end{axis}
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}{asymptotische Betrachtung}
 	Diese intuitive Betrachtung hat man in der Informatik und Mathematik formalisiert. Dies führt uns zu den sogenannten \textit{Landau-Symbolen}, die in der Mathematik und Informatik eine grosse Bedeutung haben.
 \end{frame}
 
