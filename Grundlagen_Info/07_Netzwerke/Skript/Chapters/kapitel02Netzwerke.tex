@@ -896,7 +896,7 @@ Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben N
 				4.4.4.3                    & Nein                               & Nein                             & Nein                                & Nein    & Nein    & Nein    \\\midrule
 				3.4.5.99                   & Ja                                 & Nein                             & Ja                                  & Nein    & Nein    & Nein    \\\midrule
 				3.3.4.4                    & Nein                               & Nein                             & Nein                                & Ja      & Nein    & Nein    \\\midrule
-				3.4.7.7                    & Nein                               & Nein                               & Ja                                  & Nein    & Nein    & Nein    \\\midrule
+				3.4.7.7                    & Nein                               & Nein                             & Ja                                  & Nein    & Nein    & Nein    \\\midrule
 				3.3.3.17                   & Nein                               & Ja                               & Nein                                & Ja      & Nein    & Nein    \\
 			\end{tabular}
 		\end{table}
@@ -905,23 +905,47 @@ Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben N
 
 
 \begin{mydefinition}[\acrshort{CIDR}-Notation]
-Die Subnetzmaske wird häufig verkürzt in der sogenannten \gls{CIDR} angegeben. Dabei wird die Subnetzmaske als \gls{IP}-Adresse gefolgt von einem Schrägstrich und der Anzahl der Einsen in der Subnetzmaske geschrieben. In \cref{example:subnet} könnte die Subnetzmaske also auch als: \texttt{159.233.1/24} geschrieben werden, da die Subnetzmaske 24 Einsen hat.
+Das Netzwerk aus \cref{example:subnet} könnte dezimal angegeben werden wie folgt: \texttt{159.233.1.0/255.255.255.0}, wobei der erste Teil die \gls{IP}-Adresse eines Hosts im Subnetz ist und der zweite Teil die Subnetzmaske angibt. 
+
+Die Subnetzmaske wird häufig verkürzt in der sogenannten \gls{CIDR} angegeben. Dabei wird die Subnetzmaske als \gls{IP}-Adresse gefolgt von einem Schrägstrich und der Anzahl der Einsen in der Subnetzmaske geschrieben. Die Subnetzmaske aus \cref{example:subnet} könnte somit auch als \texttt{159.233.1.0/24} geschrieben werden, da die Subnetzmaske 24 Einsen hat. 
+
+Durch diese Schreibweise wird zudem schnell ersichtlich, wie gross das Netzwerk maximal sein darf. Die ersten 24 Bits der \gls{IP}-Adresse müssen immer gleich sein, daher bietet dieses Netzwerk Platz für maximal $2^{32-24} = 256$ unterschiedliche Hosts.
 \end{mydefinition}
 
 
 \begin{myexercise}[\acrshort{CIDR}-Notation]
-	Geben Sie die folgenden Subnetzmasken in \gls{CIDR}-Notation an und notieren Sie die möglichen Adressebereiche für beide Beispielnetze, also die kleinste und grösste mögliche \gls{IP}-Adresse im jeweiligen Subnetz.
+	Geben Sie die folgenden Subnetzmasken in \gls{CIDR}-Notation an und notieren Sie die möglichen Adressebereiche für beide Beispielnetze, also die kleinste und grösste mögliche \gls{IP}-Adresse im jeweiligen Subnetz. Notieren Sie zudem, wie viele Hosts in jedem Subnetz Platz haben.
 	\begin{itemize}
-		\item Beispielnetz: \texttt{192.168.1.0} mit Netzmaske \texttt{255.255.255.192}
-		\item Beispielnetz: \texttt{10.0.0.0} mit Netzmaske \texttt{255.128.0.0}
+		\item \textbf{Netz 1}: \texttt{192.168.1.0} mit Netzmaske \texttt{255.255.255.192}
+		\item \textbf{Netz 2}: \texttt{10.0.0.0} mit Netzmaske \texttt{255.128.0.0}
 	\end{itemize}
+	Um die Adressbereiche zu berechnen, können Sie den Online-Rechner unter \url{https://oinf.ch/interactive/ips-und-netzmaske/} verwenden.
+
+	\begin{table}[H]
+			\centering
+			\begin{tabular}{l||m{2.5cm}|m{1.75cm}|m{2.5cm}|m{2.5cm}}
+								&  \multirow{2}{2cm}{\textbf{\gls{CIDR}-\newline Schreibweise}}&\multirow{2}{2cm}{\textbf{Anzahl Hosts}} & \multicolumn{2}{l}{\textbf{Adressbereich}} \\\cmidrule{4-5}
+								& & & \textbf{Start} & \textbf{Ende} \\
+				\midrule\midrule
+				\texttt{Netz 1}  & \fldT & \fldT& \fldT           & \fldT         \\
+				\midrule
+				\texttt{Netz 2} & \fldT & \fldT     & \fldT&\fldT       \\
+			\end{tabular}
+			\caption{Subnetzmasken in CIDR-Notation mit Anzahl Hosts und Adressbereichen}
+		\end{table}
 	\begin{myanswer}
-		\begin{itemize}
-			\item \texttt{255.255.255.192} = /26 (binär: 11111111.11111111.11111111.11000000)\\
-			      Beispiel-Netz: \texttt{192.168.1.0/26} (Adressbereich: \texttt{192.168.1.0}–\texttt{192.168.1.63})
-			\item \texttt{255.128.0.0}   = /9  (binär: 11111111.10000000.00000000.00000000)\\
-			      Beispiel-Netz: \texttt{10.0.0.0/9} (Adressbereich: \texttt{10.0.0.0}–\texttt{10.127.255.255})
-		\end{itemize}
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{l||l|m{1.75cm}|l|l}
+								&  \multirow{2}{2cm}{\textbf{\gls{CIDR}-\newline Schreibweise}}&\multirow{2}{1.75cm}{\textbf{Anzahl Hosts}} & \multicolumn{2}{l}{\textbf{Adressbereich}} \\\cmidrule{4-5}
+																& & & \textbf{Start} & \textbf{Ende} \\
+												\midrule\midrule
+												\texttt{Netz 1}  & \texttt{192.168.1.0/26} & $2^{32-26} = 2^{6} = 64$& \texttt{192.168.1.0}           & \texttt{192.168.1.63}         \\
+												\midrule
+												\texttt{Netz 2} & \texttt{10.0.0.0/9} & $2^{32-9} = 2^{23} = 8\,388\,608$     & \texttt{10.0.0.0}              & \texttt{10.127.255.255}       \\
+			\end{tabular}
+			\caption{Subnetzmasken in CIDR-Notation mit Anzahl Hosts und Adressbereichen}
+		\end{table}
 	\end{myanswer}
 \end{myexercise}
 
