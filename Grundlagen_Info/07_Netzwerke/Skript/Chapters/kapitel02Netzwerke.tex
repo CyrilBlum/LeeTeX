@@ -905,44 +905,53 @@ Um herauszufinden, ob die IP-Adressen von Computer 1 und Computer 2 zum selben N
 
 
 \begin{mydefinition}[\acrshort{CIDR}-Notation]
-Das Netzwerk aus \cref{example:subnet} könnte dezimal angegeben werden wie folgt: \texttt{159.233.1.0/255.255.255.0}, wobei der erste Teil die \gls{IP}-Adresse eines Hosts im Subnetz ist und der zweite Teil die Subnetzmaske angibt. 
+Das Netzwerk aus \cref{example:subnet} könnte dezimal angegeben werden wie folgt: 
 
-Die Subnetzmaske wird häufig verkürzt in der sogenannten \gls{CIDR} angegeben. Dabei wird die Subnetzmaske als \gls{IP}-Adresse gefolgt von einem Schrägstrich und der Anzahl der Einsen in der Subnetzmaske geschrieben. Die Subnetzmaske aus \cref{example:subnet} könnte somit auch als \texttt{159.233.1.0/24} geschrieben werden, da die Subnetzmaske 24 Einsen hat. 
+\texttt{159.233.1.0/255.255.255.0}
+
+Dabei bezeichnet der erste Teil die \gls{IP}-Adresse eines (gültigen) Hosts im Subnetz, und der zweite Teil bezeichnet die Subnetzmaske. 
+
+Die Subnetzmaske wird häufig verkürzt in der sogenannten \gls{CIDR}-Schreibweise angegeben. Dabei wird die Subnetzmaske als \gls{IP}-Adresse gefolgt von einem Schrägstrich und der Anzahl der Einsen in der Subnetzmaske geschrieben. Die Subnetzmaske aus \cref{example:subnet} könnte somit auch als \texttt{159.233.1.0/24} geschrieben werden, da die Subnetzmaske 24 Einsen hat. 
 
 Durch diese Schreibweise wird zudem schnell ersichtlich, wie gross das Netzwerk maximal sein darf. Die ersten 24 Bits der \gls{IP}-Adresse müssen immer gleich sein, daher bietet dieses Netzwerk Platz für maximal $2^{32-24} = 256$ unterschiedliche Hosts.
 \end{mydefinition}
 
 
 \begin{myexercise}[\acrshort{CIDR}-Notation]
-	Geben Sie die folgenden Subnetzmasken in \gls{CIDR}-Notation an und notieren Sie die möglichen Adressebereiche für beide Beispielnetze, also die kleinste und grösste mögliche \gls{IP}-Adresse im jeweiligen Subnetz. Notieren Sie zudem, wie viele Hosts in jedem Subnetz Platz haben.
+	Geben Sie die folgenden Subnetzmasken in \gls{CIDR}-Notation an und notieren Sie die möglichen Adressebereiche für beide Netze 2 und 3, also die kleinste und grösste mögliche \gls{IP}-Adresse im jeweiligen Subnetz. Notieren Sie zudem, wie viele Hosts in jedem Subnetz Platz haben.
 	\begin{itemize}
-		\item \textbf{Netz 1}: \texttt{192.168.1.0} mit Netzmaske \texttt{255.255.255.192}
-		\item \textbf{Netz 2}: \texttt{10.0.0.0} mit Netzmaske \texttt{255.128.0.0}
+		\item \textbf{Netz 1} (Beispiel): \texttt{24.10.10.0} mit Netzmaske \texttt{255.255.255.240}
+		\item \textbf{Netz 2}: \texttt{192.168.1.0} mit Netzmaske \texttt{255.255.255.192}
+		\item \textbf{Netz 3}: \texttt{10.0.0.0} mit Netzmaske \texttt{255.128.0.0}
 	\end{itemize}
 	Um die Adressbereiche zu berechnen, können Sie den Online-Rechner unter \url{https://oinf.ch/interactive/ips-und-netzmaske/} verwenden.
 
 	\begin{table}[H]
 			\centering
-			\begin{tabular}{l||m{2.5cm}|m{1.75cm}|m{2.5cm}|m{2.5cm}}
-								&  \multirow{2}{2cm}{\textbf{\gls{CIDR}-\newline Schreibweise}}&\multirow{2}{2cm}{\textbf{Anzahl Hosts}} & \multicolumn{2}{l}{\textbf{Adressbereich}} \\\cmidrule{4-5}
+			\begin{tabular}{l||m{2.5cm}|m{2.25cm}|m{2.5cm}|m{2.5cm}}
+								&  \multirow{2}{2cm}{\textbf{\gls{CIDR}-\newline Schreibweise}}&\multirow{2}{2.25cm}{\textbf{Anzahl Hosts}} & \multicolumn{2}{l}{\textbf{Adressbereich}} \\\cmidrule{4-5}
 								& & & \textbf{Start} & \textbf{Ende} \\
 				\midrule\midrule
-				\texttt{Netz 1}  & \fldT & \fldT& \fldT           & \fldT         \\
+				Netz 1 & \texttt{24.10.10.0/28} & $2^{32-28} = 2^{4} = 16$ & \texttt{24.10.10.0} & \texttt{24.10.10.15} \\\midrule
+				Netz 2  & \fldT & \fldT& \fldT           & \fldT         \\
 				\midrule
-				\texttt{Netz 2} & \fldT & \fldT     & \fldT&\fldT       \\
+				Netz 3 & \fldT & \fldT     & \fldT&\fldT       \\
+				
 			\end{tabular}
 			\caption{Subnetzmasken in CIDR-Notation mit Anzahl Hosts und Adressbereichen}
 		\end{table}
 	\begin{myanswer}
 		\begin{table}[H]
 			\centering
-			\begin{tabular}{l||l|m{1.75cm}|l|l}
-								&  \multirow{2}{2cm}{\textbf{\gls{CIDR}-\newline Schreibweise}}&\multirow{2}{1.75cm}{\textbf{Anzahl Hosts}} & \multicolumn{2}{l}{\textbf{Adressbereich}} \\\cmidrule{4-5}
+			\begin{tabular}{l||l|m{2.5cm}|l|l}
+								&  \multirow{2}{2cm}{\textbf{\gls{CIDR}-\newline Schreibweise}}&\multirow{2}{2.25cm}{\textbf{Anzahl Hosts}} & \multicolumn{2}{l}{\textbf{Adressbereich}} \\\cmidrule{4-5}
 																& & & \textbf{Start} & \textbf{Ende} \\
 												\midrule\midrule
-												\texttt{Netz 1}  & \texttt{192.168.1.0/26} & $2^{32-26} = 2^{6} = 64$& \texttt{192.168.1.0}           & \texttt{192.168.1.63}         \\
+												Netz 1 & \texttt{24.10.10.0/28} & $2^{32-28} = 2^{4} = 16$ & \texttt{24.10.10.0} & \texttt{24.10.10.15} \\\midrule
+												Netz 2  & \texttt{192.168.1.0/26} & $2^{32-26} = 2^{6} = 64$& \texttt{192.168.1.0}           & \texttt{192.168.1.63}         \\
 												\midrule
-												\texttt{Netz 2} & \texttt{10.0.0.0/9} & $2^{32-9} = 2^{23} = 8\,388\,608$     & \texttt{10.0.0.0}              & \texttt{10.127.255.255}       \\
+												Netz 3 & \texttt{10.0.0.0/9} & $2^{32-9} = 2^{23} = 8\,388\,608$     & \texttt{10.0.0.0}              & \texttt{10.127.255.255}       \\
+												
 			\end{tabular}
 			\caption{Subnetzmasken in CIDR-Notation mit Anzahl Hosts und Adressbereichen}
 		\end{table}
@@ -1004,7 +1013,13 @@ Beim sogenannten \textit{default gateway} handelt es sich um die Standardroute, 
 
 
 \begin{myremark}[Automatische Zuweisung von \acrshort{IP}-Adressen via \acrshort{DHCP}]
-	In der Praxis ist es unpraktisch, wenn jeder Computer in einem Netzwerk manuell mit einer \gls{IP}-Adresse konfiguriert werden muss. Daher wird häufig das \acrfull{DHCP} verwendet, um Computern automatisch eine \gls{IP}-Adresse zuzuweisen, wenn sie sich mit dem Netzwerk verbinden. Ein \gls{DHCP}-Server verwaltet einen Pool von verfügbaren \gls{IP}-Adressen und weist diese dynamisch an Computer zu, die eine Verbindung zum Netzwerk herstellen. Dies erleichtert die Verwaltung von Netzwerken erheblich, insbesondere in Umgebungen mit vielen Geräten, wie z.B. in Unternehmen oder öffentlichen Netzwerken. Falls ein gewisses Gerät immer dieselbe lokale \gls{IP}-Adresse benötigt (z.B. ein Drucker oder ein Server), kann bei vielen Routern eine so genannte \textbf{\gls{IP}-Reservierung} eingerichtet werden, die sicherstellt, dass dieses Gerät immer dieselbe \gls{IP}-Adresse erhält.
+	In der Praxis ist es unpraktisch, wenn jeder Computer in einem Netzwerk manuell mit einer \gls{IP}-Adresse konfiguriert werden muss. Daher wird häufig das \acrfull{DHCP} verwendet, um Computern automatisch eine \gls{IP}-Adresse zuzuweisen, wenn sie sich mit dem Netzwerk verbinden. 
+	
+	Ein \gls{DHCP}-Server verwaltet einen Pool von verfügbaren \gls{IP}-Adressen und weist diese dynamisch an Computer zu, die eine Verbindung zum Netzwerk herstellen. Dies erleichtert die Verwaltung von Netzwerken erheblich, insbesondere in Umgebungen mit vielen Geräten, wie z.B. in Unternehmen oder öffentlichen Netzwerken. 
+\end{myremark}
+
+\begin{myremark}[\gls{IP}-Reservierung]\label{remark:ip-reservation}
+	Falls ein gewisses Gerät immer dieselbe lokale \gls{IP}-Adresse benötigt (z.B. ein Drucker oder ein Server), kann bei vielen Routern eine so genannte \textbf{\gls{IP}-Reservierung} eingerichtet werden, die sicherstellt, dass dieses Gerät immer dieselbe \gls{IP}-Adresse erhält, selbst wenn es sich erneut mit dem Netzwerk verbindet. Dies wird typischerweise durch die Zuordnung der \gls{MAC}-Adresse des Geräts zu einer bestimmten \gls{IP}-Adresse im \gls{DHCP}-Server des Routers erreicht.
 \end{myremark}
 
 \subsection{\texorpdfstring{Zusammenfügen mehrerer \glspl{LAN} zum \gls{WAN} (Internet)}{Zusammenfügen mehrerer LANs zum WAN (Internet)}}
@@ -1169,8 +1184,33 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 \subsection{Echo-Server}
 Ein einfacher Anwendungsfall eines Servers ist der sogenannte \textbf{Echo-Server}. Ein Echo-Server empfängt Nachrichten von einem Client und sendet diese unverändert zurück. Dies kann nützlich sein, um die Erreichbarkeit eines Servers zu testen oder um die Latenzzeit zwischen Client und Server zu messen. Ein Echo-Server arbeitet typischerweise auf einem bestimmten Port.
 
-\begin{myexercise}[Filius-Anwendung: Echo-Server]
+\begin{myexercise}[Filius-Anwendung: Echo-Server]\label{ex:filius-echo-server}
 	Schauen Sie sich das \href{https://www.youtube.com/watch?v=Kn8v_HrckUM&list=PLUfZiVdJui-57k0VcRecHX0JTEhOMgiKP}{Filius-Video Nummer 5} an. Erstellen Sie selber einen Echo-Server sowie zwei Clients in Filius, die mit dem Echo-Server kommunizieren können. Testen Sie die Konfiguration, indem Sie Nachrichten von den Clients an den Echo-Server senden und überprüfen, ob die Nachrichten korrekt zurückgesendet werden.
+\end{myexercise}
+
+\begin{myexercise}
+	Schauen Sie sich das Datenaustausch-Fenster von \cref{ex:filius-echo-server} genauer an. Erklären Sie, was auf jeder Zeile passiert.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{Grundlagen_Info/07_Netzwerke/Figures/echoServer.png}
+		\caption{Datenaustausch-Fenster eines Echo-Servers in Filius}
+		\label{fig:filius-echo-server-output}
+	\end{figure}
+
+	\begin{myanswer}
+		\begin{enumerate}
+			\item \textbf{Zeile 1 (ARP)}: Der Client (192.168.0.10) sendet eine ARP-Anfrage (\textit{Broadcast}) an alle Geräte im Netzwerk, um die MAC-Adresse des Servers (192.168.0.11) zu finden.
+			\item \textbf{Zeile 2 (ARP)}: Der Server (192.168.0.11) antwortet mit seiner MAC-Adresse (86:77:1C:6A:51:D7) direkt an den Client (\textit{Unicast}).
+			\item \textbf{Zeile 3 (TCP)}: Der Client startet den Drei-Wege-Handschlag mit einem SYN-Paket (Sequenznummer: 2.000.000), um eine TCP-Verbindung zum Server aufzubauen.
+			\item \textbf{Zeile 4 (TCP)}: Der Server antwortet mit SYN+ACK (eigene Sequenznummer: 1.000.000, Bestätigung: 2.000.001), um die Verbindung zu bestätigen und seine eigene Sequenznummer mitzuteilen.
+			\item \textbf{Zeile 5 (TCP)}: Der Client sendet ein ACK-Paket (Sequenznummer: 2.000.001, Bestätigung: 1.000.001), um den Drei-Wege-Handschlag abzuschliessen. Die TCP-Verbindung ist nun etabliert.
+			\item \textbf{Zeile 6 (Anwendung)}: Der Client sendet die Nachricht \enquote{Hallo!} über die etablierte TCP-Verbindung an den Echo-Server.
+			\item \textbf{Zeile 7 (TCP)}: Der Server bestätigt den Empfang der Nachricht mit einem ACK-Paket (Sequenznummer: 1.000.001, Bestätigung: 2.000.008). Die Bestätigungsnummer ist um 8 erhöht worden, da eine Nachricht mit 8 Bytes empfangen wurde.
+			\item \textbf{Zeile 8 (Anwendung)}: Der Echo-Server sendet die Nachricht \enquote{Hallo!} unverändert zurück an den Client.
+			\item \textbf{Zeile 9 (TCP)}: Der Client bestätigt den Empfang der Echo-Nachricht mit einem ACK-Paket (Sequenznummer: 2.000.008, Bestätigung: 1.000.008).
+		\end{enumerate}
+	\end{myanswer}
 \end{myexercise}
 
 \subsection{Email-Server}
@@ -1298,7 +1338,12 @@ Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige we
 \end{myexercise}
 
 \begin{mychallenge}[Filius-Anwendung: ``Echter'' Webserver via Modem (zu zweit)]
-	In Filius können Sie auch einen ``echten'' Webserver einrichten, der über ein Modem den anderen Rechnern im gleichen \gls{LAN} zur Verfügung steht. Richten Sie dazu in Filius einen Webserver ein, der über ein Modem mit dem \gls{LAN} verbunden ist. Das Modem muss ihre lokale IP-Adresse haben. Belassen Sie den Standard-Port 12345. Richten Sie anschliessend auf einem anderen Rechner im gleichen \gls{LAN} auf Filius ein Netzwerk mit einem Client und einem Modem ein, das mit dem gleichen \gls{LAN} verbunden ist. Verwenden Sie als IP-Adresse im Modem die lokale IP-Adresse der ersten Person, bei welcher der Webserver läuft.
+	In Filius können Sie auch einen ``echten'' Webserver einrichten, der über ein Modem den anderen Rechnern im gleichen \gls{LAN} zur Verfügung steht. 
+	
+	Diese Aufgabe funktioniert nur, wenn Sie sich im gleichen Subnetz befinden. Sie sollten daher einen persönlichen Hotspot (z.B. via Mobiltelefon) erstellen, mit welchem sich beide Personen verbinden können.
+	
+	Richten Sie nun in Filius einen Webserver ein, der über ein Modem mit dem \gls{LAN} verbunden ist. Das Modem muss ihre lokale IP-Adresse haben. Belassen Sie den Standard-Port 12345. Richten Sie anschliessend auf einem anderen Rechner im gleichen \gls{LAN} auf Filius ein Netzwerk mit einem Client und einem Modem ein, das mit dem gleichen \gls{LAN} verbunden ist. Verwenden Sie als IP-Adresse im Modem die lokale IP-Adresse der ersten Person, bei welcher der Webserver läuft.
+
 	Versuchen Sie zunächst, den Webserver der ersten Person von der zweiten Person aus mit einem \commandbox*|ping|-Befehl zu erreichen. Öffnen Sie anschliessend den Webbrowser auf dem Client der zweiten Person und geben Sie die IP-Adresse des Webservers der ersten Person ein, um auf die Webseiten der ersten Person zuzugreifen.
 \end{mychallenge}
 
