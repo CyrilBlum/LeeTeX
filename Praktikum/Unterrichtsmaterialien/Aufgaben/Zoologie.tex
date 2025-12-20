@@ -1,0 +1,153 @@
+\begin{myexercise}
+    Wir wollen die in Tabelle \ref{tab:klassen_uebersicht} zusammengefasste Hierarchie eines Zoologischen Inventarsystems erstellen. 
+\begin{enumerate}
+    \item Lesen Sie sich zunächst die Beschreibung unseres Zoologischen Inventarsystems auf der folgenden Seite genau durch. 
+    \item Implementieren Sie die Klasse \texttt{Lebewesen} mit all ihren Attributen und Methoden. 
+    \item Testen Sie Ihre Klasse \texttt{Lebewesen}. Nutzen Sie dafür folgenden Code:
+        \begin{lstlisting}[language=Python, basicstyle=\ttfamily\small]
+            pilz = Lebewesen("Pilz", 1)
+            baum = Lebewesen("Baum", 10)
+            pilz.zeige_basisdaten() 
+            print(f"Gesamtpopulation erwartet: 2, tatsächlich: {Lebewesen.get_gesamt_population()}")
+        \end{lstlisting}
+        Der erwartete Output sollte wie folgt sein:
+        \begin{lstlisting}
+            Lebewesen: Pilz, Alter: 1 Jahre
+            Gesamtpopulation erwartet: 2, tatsächlich: 2     
+        \end{lstlisting}
+    \item Implementieren Sie nun die Klasse \texttt{Tier} mit allen Attributen und Methoden. 
+    \item Testen Sie dann die Klasse \texttt{Tier} mit allen geerbten und neuen Methoden mit folgendem Code:
+    \begin{lstlisting}[language=Python, basicstyle=\ttfamily\small]
+        adler = Tier("Adler", 4, "Vogel")
+        adler.zeige_basisdaten() 
+        adler.fressen()
+        print(f"Gesamtpopulation erwartet: 3, tatsächlich: {Lebewesen.get_gesamt_population()}")
+    \end{lstlisting}
+    
+    Der erwartete Output (basierend auf den Objekten aus Schritt 3 und 5) sollte wie folgt sein:
+    \begin{lstlisting}
+        Lebewesen: Adler, Alter: 4 Jahre
+        Das Tier Adler frisst.
+        Gesamtpopulation erwartet: 3, tatsächlich: 3
+    \end{lstlisting}
+
+    \item Implementieren Sie nun die Klasse \texttt{Pflanze} mit allen Attributen und Methoden. 
+    \item Testen Sie die Funktionalität mit folgendem Code:
+    \begin{lstlisting}[language=Python, basicstyle=\ttfamily\small]
+    rose = Pflanze(name="Rose", alter=1, farbe="Rot")
+    rose.zeige_basisdaten()
+    rose.wachsen()
+    print(f"Gesamtpopulation erwartet: 4, tatsächlich: {Lebewesen.get_gesamt_population()}")
+    \end{lstlisting}
+    
+    Der erwartete Output (basierend auf den Objekten aus Schritt 3, 5 und 7) sollte wie folgt sein:
+    \begin{lstlisting}
+        Lebewesen: Rose, Alter: 1 Jahre
+        Die Pflanze Rose wächst und benötigt Licht.
+        Gesamtpopulation erwartet: 4, tatsächlich: 4
+    \end{lstlisting}
+
+    \item Implementieren Sie als Letztes die Klasse \texttt{Saeugetier} mit allen Attributen und Methoden
+    \item Testen Sie alle geerbten Methoden sowie die beiden Klassenattribute mit folgendem Code:
+    \begin{lstlisting}[language=Python, basicstyle=\ttfamily\small]
+        loewe = Saeugetier(name="Löwe", alter=8, fellfarbe="Gelbbraun", nahrungsart="Fleischfresser")
+        baer = Saeugetier(name="Bär", alter=12, fellfarbe="Braun", nahrungsart="Allesfresser")
+
+        # Geerbte Methode der 2. Ebene (Tier) testen:
+        loewe.fressen()
+
+        # Geerbte Methode der 1. Ebene (Lebewesen) testen:
+        baer.zeige_basisdaten()
+
+        # Eigene Methode testen:
+        loewe.fell_pflegen()
+
+        # Klassenattribute testen:
+        print(f"Gesamtpopulation erwartet: 6, tatsächlich: {Lebewesen.get_gesamt_population()}")
+        print(f"Säugetiere erwartet: 2, tatsächlich: {Saeugetier.get_anzahl_saeugetiere()}")
+    \end{lstlisting}
+    
+    Der erwartete Output sollte wie folgt sein:
+    \begin{lstlisting}
+        Das Tier Löwe frisst.
+        Lebewesen: Bär, Alter: 12 Jahre
+        Das Säugetier Löwe pflegt sein Fell.
+        Gesamtpopulation erwartet: 6, tatsächlich: 6
+        Säugetiere erwartet: 2, tatsächlich: 2
+    \end{lstlisting}
+    \item Herzlichen Glückwunsch, Sie haben die komplette Aufgabe gelöst. 
+\end{enumerate}
+
+	% \begin{myanswer}
+	% 	\lstinputlisting[language=Python,caption=\texttt{Zoologischen_Inventarsystem.py},label=listing:zoologisches_inventarsystem,basicstyle=\ttfamily\scriptsize]{Praktikum/Unterrichtsmaterialien/Code/Zoologischen_Inventarsystem.py}
+	% \end{myanswer}
+\end{myexercise}
+
+\clearpage
+
+\begin{table}[h]
+    \centering
+    \caption{Übersicht der Klassen im Zoologischen Inventarsystem}
+    \label{tab:klassen_uebersicht}
+    \begin{tabular}{l c l l}
+        \toprule
+        \textbf{Klasse} & \textbf{Vererbt von} & \textbf{Zweck} & \textbf{Klassenattribut} \\
+        \midrule
+        \texttt{Lebewesen} & Basisklasse & Definiert grundlegende Lebensmerkmale. & \texttt{gesamt\_population} \\
+        \texttt{Tier} & \texttt{Lebewesen} & Fügt tierische Merkmale hinzu. & -- \\
+        \texttt{Pflanze} & \texttt{Lebewesen} & Fügt pflanzliche Merkmale hinzu. & -- \\
+        \texttt{Saeugetier} & \texttt{Tier} & Fügt spezifische Säugetier-Merkmale hinzu. & \texttt{anzahl\_saeugetiere} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Jede Klasse hat die folgenden Attribute und Methoden:
+
+\begin{enumerate}
+    \item \textbf{Klasse: \texttt{Lebewesen} (Basisklasse)}
+    \begin{itemize}
+        \item \textbf{Klassenattribute:}
+        \begin{itemize}
+            \item \texttt{gesamt\_population}: Zählt die \textbf{Gesamtanzahl aller Lebewesen-Objekte} (Startwert 0).
+        \end{itemize}
+        \item \textbf{Methoden:}
+        \begin{itemize}
+            \item \texttt{\_\_init\_\_(self, name, alter)}: Initialisiert \texttt{self.name} und \texttt{self.alter}. \textbf{Inkrementiert} \texttt{gesamt\_population}.
+            \item \texttt{zeige\_basisdaten(self)}: Gibt den Namen und das Alter aus.
+            \item \texttt{get\_gesamt\_population()} ($\mathbf{@classmethod}$): Gibt die Gesamtanzahl aller erfassten Lebewesen aus.
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Klasse: \texttt{Tier} (Subklasse von \texttt{Lebewesen})}
+    \begin{itemize}
+        \item \textbf{Klassenattribute:} Keine spezifischen.
+        \item \textbf{Methoden:}
+        \begin{itemize}
+            \item \texttt{\_\_init\_\_(self, name, alter, art)}: Ruft den Konstruktor der Oberklasse auf. Initialisiert \texttt{self.art}.
+            \item \texttt{fressen(self)}: Gibt eine Meldung aus, dass das Tier frisst.
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{Klasse: \texttt{Pflanze} (Subklasse von \texttt{Lebewesen})}
+    \begin{itemize}
+        \item \textbf{Klassenattribute:} Keine spezifischen.
+        \item \textbf{Methoden:}
+        \begin{itemize}
+            \item \texttt{\_\_init\_\_(self, name, alter, farbe)}: Ruft den Konstruktor der Oberklasse auf. Initialisiert \texttt{self.farbe}.
+            \item \texttt{wachsen(self)}: Gibt aus, dass die Pflanze wächst und Licht benötigt.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Klasse: \texttt{Saeugetier} (Subklasse von \texttt{Tier})}
+    \begin{itemize}
+        \item \textbf{Klassenattribute:}
+        \begin{itemize}
+            \item \texttt{anzahl\_saeugetiere}: Zählt, wie viele \textbf{Saeugetier-Objekte} speziell erstellt wurden (Startwert 0).
+        \end{itemize}
+        \item \textbf{Methoden:}
+        \begin{itemize}
+            \item \texttt{\_\_init\_\_(self, name, alter, fellfarbe, nahrungsart)}: Ruft den Konstruktor der Oberklasse (\texttt{Tier}) auf. Initialisiert \texttt{self.fellfarbe} und \texttt{self.nahrungsart}. \textbf{Inkrementiert} \texttt{anzahl\_saeugetiere}.
+            \item \texttt{fell\_pflegen(self)}: Gibt aus, dass das Säugetier sein Fell pflegt.
+            \item \texttt{get\_anzahl\_saeugetiere()} ($\mathbf{@classmethod}$): Gibt die Anzahl der Säugetiere aus.
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}

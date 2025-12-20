@@ -1,0 +1,225 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python, basicstyle=\ttfamily\footnotesize}
+
+\title[Programmieren]{Programmieren: Klassen}
+
+\author[Beestermöller, Judith] % (optional)
+{Judith Beestermöller}
+
+\institute[KLW] % (optional)
+{
+	Lehrdiplom Informatik\\
+	ETH Zürich
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{Logos/LeeLogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}[fragile]{Beim letzten Mal: Klassen}
+	\begin{itemize}[<+->]
+		\item Klasse = Bauplan für Objekt, dessen \textbf{Attribute} und \textbf{Methoden} wir selber bestimmen.
+		\item \textbf{\_\_init\_\_} = Konstruktor der Klasse: wird automatisch aufgerufen, wenn ein neues Objekt erstellt wird.
+		\item \textbf{self}: Instanzvariale - repräsentiert das konkrete Objekt mit dem gerade gearbeitet wird. \rightarrow  muss immer der erste Parameter jeder Methode innerhalb einer Klasse sein
+		\item \textbf{Attribute definieren}: self.attributname = wert 
+		\item \textbf{Auf Attribute zugreifen}:  self.attributname 
+		\item \textbf{Methoden aufrufen}: Punkt-Notation
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Klassen in Python}
+	\begin{itemize}
+		\item Wir haben Klassen bereits zuvor kennengelernt: \textbf{Listen, Zahlen, Zeichenketten!}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Listen als Klassen}
+	\begin{figure}[H]
+		\begin{tikzpicture}[font=\sffamily\footnotesize, scale=0.6]
+			% Styles
+			\tikzset{
+				title/.style={align=center},
+				col/.style={align=left, text width=4.5cm}
+			}
+
+			% --- Links: Klasse Liste (Bauplan) ---
+			% --- Links: Klasse Liste (Bauplan) ---
+			% Draw dashed circle
+			\draw<1->[dashed, thick] (1.8,2.6) circle [radius=0.5cm];
+			% Icon node inside circle
+			\node<1->[inner sep=0pt] (listclass) at (1.8,2.6)
+			{\faListUl}; % FontAwesome list icon for class
+
+			% --- Rechts: mehrere Instanzen als Icons ---
+			\node[inner sep=0pt, visible on=<2->] (list1) at (10.0,2.4)
+			{\textcolor{Crimson}{\faListUl}}; % FontAwesome square icon for instance
+			\node[inner sep=0pt, visible on=<2->] at (10.5,2.6)
+			{\textcolor{RoyalBlue}{\faListUl}};
+			\node[inner sep=0pt, visible on=<2->] at (11,2.8)
+			{\textcolor{ForestGreen}{\faListUl}};
+
+			\node<1->[title, above=0.7cm of listclass] {Klasse};
+			\node<1->[align=center,text width=4.5cm, font=\small, below=0.4cm of listclass] {\lstinline|class list:|};
+			\node<2->[title, above=0.7cm of list1] {Objekte / Instanzen};
+			\node[anchor=north west, below=0.8cm of listclass, text width=4cm, font=\small, visible on=<2->](listCreate) {\begin{lstlisting}
+				liste1 = [1,2,3]
+				liste2 = ["a","b"]
+				liste3 = [True, False]
+				# ...
+			\end{lstlisting}};
+
+			% Pfeil
+			\draw<2->[-Latex, thick] (2.2,2.6) -- node[above]{Instanz(en) erzeugen} (9.6, 2.6);
+
+			% Linke Spalten
+			\node<3->[anchor=north west, col, xshift=0.5cm, yshift=-0.4cm] (attributes) at (listCreate.north east) { 
+				\textbf{Attribute}\\
+				\texttt{Elemente}\\
+				\texttt{Länge}\\
+				...
+			};
+
+			\node<4->[anchor=north west, col, xshift=-1.5cm] at (attributes.north east) { 
+				\textbf{Methoden}\\
+				\texttt{append()}\\
+				\texttt{remove()}\\
+				\texttt{sort()}\\
+				\texttt{pop()}\\
+				\texttt{count()}\\
+				...
+			};
+
+		\end{tikzpicture}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{dir()-Funktion}
+	\begin{itemize}
+		\item die Funktion dir() gibt eine Liste aller verfügbaren Methoden eines Objectes heraus.
+	\end{itemize}
+	\lstinputlisting[language=Python,caption=\texttt{verfuegbare\_methoden.py},label=listing:verfuegbare_methoden]{Praktikum/Unterrichtsmaterialien/Code/verfuegbare_methoden.py}
+\end{frame}
+
+% \begin{frame}{Aufgabe}
+% 	\begin{myexercise}
+% 		Wählen Sie eine Ihnen bekannte Datenstruktur z.B. int oder Mengen. Welche Attribute und welche Methoden der Klasse welche die Datenstruktur definiert kennen Sie? Nutzen Sie die dir()-Methode um noch weitere Methoden nachzuschauen.
+% 	\end{myexercise}
+% \end{frame}
+
+\begin{frame}[fragile]{Klassenattribute Beispiel}
+  	\begin{lstlisting}[basicstyle=\ttfamily\tiny, numbers=left, framerule=1pt]
+		class Schueler:
+    		schule = "Kantonsschule im Lee"  # Klassenattribut
+			anzahl_schueler = 0
+
+			def __init__(self, name, klasse):
+				self.name = name  # Instanzattribut
+				self.klasse = klasse  # Instanzattribut
+				Schueler.anzahl_schueler += 1 # Verändert Klassenattribut
+			
+			def info(self):
+				return f"{self.name}, Klasse {self.klasse}, {self.schule}"
+			
+			@classmethod
+			def get_anzahl_schueler(cls):
+				return print(f"Anzahl Schüler insgesamt: {cls.anzahl_schueler}")
+
+		lisa = Schueler("Lisa", "3a")
+		tim = Schueler("Tim", "4b")
+
+		print(lisa.info())  # Lisa, Klasse 3a, Kantonsschule im Lee
+
+		# Klassenattribut über die Klasse ändern
+		Schueler.schule = "KLW"
+
+		Schueler.get_anzahl_schueler() # Anzahl Schüler insgesamt: 2
+
+		print(lisa.info())  # Lisa, Klasse 3a, KLW
+		print(tim.info())  # Tim, Klasse 4b, KLW
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Klassenattribute}
+	\begin{itemize}
+		\item Bisher: Attribute wurden für jedes Objekt der Klasse im Konstruktor initaliziert. Alle Attribute konnten für jedes Objekt verschieden sein. $\rightarrow$ \textbf{Instanzattribute}
+		\item Man kann auch Attribute definieren, die für alle Instanzen der Klasse gleich sind. $\rightarrow$ \textbf{Klassenattribute}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Aufgaben}{Programmier-Skript}
+	\begin{itemize}
+		\item \aufgabebox{Aufgaben 7.3}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Vererbung Beispiel}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, escapechar=!, numbers=left,framerule=1pt]
+		class Fahrzeug:
+			def __init__(self, marke, baujahr):
+				self.marke = marke
+				self.baujahr = baujahr
+				self.geschwindigkeit = 0
+
+			def beschleunigen(self, delta):
+				self.geschwindigkeit += delta
+				print(f"{self.marke} beschleunigt. Neue Geschwindigkeit: {self.geschwindigkeit} km/h.")
+
+		class Auto(Fahrzeug):!\tikzmark{comment1start}!				!\tikzmark{comment1end}!
+			def __init__(self, marke, baujahr, anzahl_tueren):
+				super().__init__(marke, baujahr) !\tikzmark{comment2start}!					!\tikzmark{comment2end}!
+				self.anzahl_tueren = anzahl_tueren !\tikzmark{comment3start}!			!\tikzmark{comment3end}!
+			
+			def hupen(self): !\tikzmark{comment4start}!				!\tikzmark{comment4end}!
+				print(f"Das {self.marke} hupt laut!")
+
+		mein_auto = Auto("BMW", 2022, 5)
+		mein_auto.beschleunigen(30) !# Ausgabe: BMW beschleunigt. Neue Geschwindigkeit: 30 km/h.!
+
+		mein_auto.hupen() !# Ausgabe: Das BMW hupt laut!!
+
+		print(f"Anzahl Türen: {mein_auto.anzahl_tueren}, Baujahr: {mein_auto.baujahr}")
+	\end{lstlisting}
+
+	\begin{tikzpicture}[overlay, remember picture, every node/.style={draw=red!50,fill=red!50!white,text=black,rounded corners}]
+        \only<2->{
+            \drawArrow{comment1start}{comment1end}{\tiny Auto ist eine Subklasse von Fahrzeug}{RoyalBlue!50!white}; 
+        }
+        \only<3->{
+            \drawArrow{comment2start}{comment2end}{\tiny Ruft den Konstruktor der Basisklasse auf}{RoyalBlue!50!white};
+        }
+        \only<4->{
+            \drawArrow{comment3start}{comment3end}{\tiny Neues Attribut}{RoyalBlue!50!white};
+            \drawArrow{comment4start}{comment4end}{\tiny Neue Methode}{RoyalBlue!50!white};
+        }
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Vererbung}
+	\begin{itemize}
+		\item Manchmal möchten wir eine Klasse basierend auf einer anderen Klasse erstellen
+		\item Bei der \textbf{Vererbung} erbt die Kindklasse (Subklasse) Attribute und Methoden der Elternklasse
+		\item Wir können noch zusäzliche weiter Attribute und Methoden definieren.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Aufgaben}{Programmier-Skript}
+	\begin{itemize}
+		\item \readbox{Beispiel Definition 7.2 und Beispiel 7.6}
+		\item \aufgabebox{Aufgabe Zoologie (Moodle)}
+		\item Schnelle \aufgabebox{Aufgaben 7.4 \& 7.5 (Programmier Skript)}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Zusammenfassung}
+	\begin{itemize}[<+->]
+		\item Klassenattribute erlauben uns Attribute zu definieren, welche für alle Instanzen der Klasse gleich sind.
+		\item Vererbung ermöglicht es, eine neue Klasse basierend auf einer vorhandenen Klasse zu erstellen und deren Eigenschaften und Methoden zu übernehmen.
+	\end{itemize}
+\end{frame}
