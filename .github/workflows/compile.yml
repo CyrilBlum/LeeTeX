@@ -33,18 +33,31 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    # Debug runner environment
+    - name: Debug runner environment
+      shell: bash
+      run: |
+        echo "Runner name: $RUNNER_NAME"
+        echo "Runner OS: $RUNNER_OS"
+        echo "Shell: $SHELL"
+        bash --version
+        sh --version || true
+        uname -a
+
     # Check out the repository
     - name: Checkout repository
       uses: actions/checkout@v2
 
     # Ensure latest version
     - name: Ensure latest version
+      shell: bash
       run: |
         git fetch --all
         git reset --hard origin/main
 
     # Set up git hooks for git2info
     - name: Set up git2info hooks
+      shell: bash
       run: |
         cp -a Git_Internal_Files/. .git/hooks
         cd .git/hooks/
@@ -81,7 +94,8 @@ jobs:
           echo "files=$(cat changed_files.txt)" >> $GITHUB_OUTPUT
         fi
     # Runs the compile_tex.sh script
-    - name: Run compile_tex.sh      
+    - name: Run compile_tex.sh
+    shell: bash
       run: |
         mkdir PDFs
         ./compile_tex.sh "${{ secrets.LEE_TEX_SSH_PASSWORD }}" "${{ steps.changed_files.outputs.files }}"
