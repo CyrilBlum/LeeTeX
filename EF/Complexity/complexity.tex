@@ -29,13 +29,14 @@
 	\begin{itemize}[<+->]
 		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch lösbar}}, wenn ein Algorithmus zur Lösung dieses Problems existiert, und ein Problem ist \textbf{\textcolor{Red}{algorithmisch unlösbar}}, wenn kein Algorithmus für dieses Problem existiert.
 		\item Wir werden uns in diesem Thema auf \textbf{\textcolor{Green}{algorithmisch lösbare}} Probleme beschränken.
+		\item Könnt ihr euch noch an ein Beispiel eines algorithmisch unlösbaren Problems erinnern?
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Komplexitätstheorie}
 	\begin{itemize}[<+->]
 		\item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche rechnerunterstützte Lösung des Problems darstellt!
-		\item Es gab viele praxisrelevante, algorithmisch lösbare Probleme, für die alle entworfenen Programme tagelang auf gegebenen Eingaben ohne Erfolg arbeiteten. Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
+		\item Es waren zahlreiche praxisrelevante algorithmische Probleme bekannt, die zwar grundsätzlich algorithmisch lösbar waren, aber für die alle entworfenen Programme tagelang auf gegebenen Eingaben ohne Erfolg arbeiteten. Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
 		\item Die Komplexitätstheorie strebt eine feinere Einteilung der algorithmisch lösbaren Probleme an.
 	\end{itemize}
 \end{frame}
@@ -43,7 +44,7 @@
 \begin{frame}{Komplexitätstheorie}
 	\begin{itemize}[<+->]
 		\item Es stellte sich die Frag, ob dieser Misserfolg eine Folge unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
-		\item  Dies führte dazu, dass man begann, die Schwierigkeit der algorithmisch lösbaren Probleme bezüglich des Rechenaufwands zu messen, um so die Probleme nach deren Schwierigkeitsgrad zu klassifizieren.
+		\item Dies führte dazu, dass man begann, die Schwierigkeit der algorithmisch lösbaren Probleme bezüglich des Rechenaufwands zu messen, um so die Probleme nach deren Schwierigkeitsgrad zu klassifizieren.
 	\end{itemize}
 \end{frame}
 
@@ -52,7 +53,7 @@
 \end{frame}
 
 \begin{frame}{Fallstudie: \texttt{insertion\_sort}}
-	Illustration und Idee von \texttt{insertion\_sort} zusammen im Plenum besprechen.
+	Illustration und Idee von \texttt{insertion\_sort} zusammen im Plenum besprechen (Anhand des Sortierens von Spielkarten).
 \end{frame}
 
 \begin{frame}{\texttt{insertion\_sort} implementieren}
@@ -68,7 +69,6 @@
 	\end{myanswer}
 \end{frame}
 
-
 \begin{frame}{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
 	\begin{itemize}[<+->]
 		\item Wir bezeichnen mit der Konstanten $c_i$ ($c$ steht für $cost$) die Zeit, welche zur einmaligen Ausführung der $i$-ten Zeile benötigt wird.
@@ -79,9 +79,9 @@
 
 \begin{frame}{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
 	\begin{itemize}[<+->]
-		\item Betrachten wir eine Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab).
+		\item Betrachten wir eine \lstinline|while|-Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab).
 		\item Bei einer solchen Schleife über $m$ Wiederholungen, wird der Schleifenkörper genau $m$ mal ausgeführt. Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
-		\item Die Schleifen-Bedingung wird also genau $m+1$ überprüft. Also genau einmal mehr als der Schleifenkörper.
+		\item Die Schleifen-Bedingung der \lstinline|while|-Schleife wird genau $m+1$ überprüft. Also genau einmal mehr als der Schleifenkörper.
 	\end{itemize}
 \end{frame}
 
@@ -252,14 +252,81 @@
 	wobei $\tilde{a}, \tilde{b}, \tilde{c}$ Konstanten sind und $\tilde{a}\neq 0$
 \end{frame}
 
+\begin{frame}{Das Random Access Machine (RAM) Modell}
+	\begin{itemize}[<+->]
+	\item Bisher haben wir in unseren Komplexitätsanalysen jeder Zeile eine Variable für die Ausführungszeit zugewiesen (Kosten $c_i$ für die $i$-te Zeile). Dies ist zwar sehr rigoros und formal korrekt, aber auch sehr aufwendig und nur wenig konkret.
+	\item Um die Analyse zu vereinfachen, verwenden wir das \textbf{Random Access Machine (RAM)} Modell.
+	\item In diesem Modell nehmen wir an, dass jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) genau \textbf{einen Zeitschritt} benötigt.
+	\item Dies ermöglicht es uns, die Laufzeit eines Algorithmus einfach durch das Zählen der ausgeführten elementaren Operationen zu bestimmen.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Das Random Access Machine (RAM) Modell}
+	\begin{itemize}[<+->]
+		\item Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Modell: die \textbf{Random Access Machine (RAM)}.
+		\item Die RAM ist ein idealisierter Computer, der dem Von-Neumann-Architektur-Prinzip ähnelt.
+		\item \textbf{Wichtige Eigenschaften:}
+		\begin{itemize}
+			\item \textbf{Speicher:} Unendlich viele Speicherzellen\footnote{Natürlich wird jeder Algorithmus, welcher seine Arbeit nach endlich vielen Schritten beendet, nur endlich viele Speicherzellen benötigen.}, auf die direkt zugegriffen werden kann (Random Access).
+			\item \textbf{Register:} Jede Zelle kann eine beliebig grosse ganze Zahl speichern.
+			\item \textbf{Programm:} Eine Folge von einfachen Befehlen, die sequentiell abgearbeitet werden.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Kostenmodell der RAM}
+	\begin{itemize}[<+->]
+		\item Wie messen wir die \enquote{Zeit} in diesem Modell?
+		\item \textbf{Einheitskostenmodell (Uniform Cost Model):}
+		\begin{itemize}
+			\item Jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) benötigt genau \textbf{einen Zeitschritt}.
+			\item Die Grösse der Operanden spielt dabei keine Rolle (vereinfachende Annahme).
+		\end{itemize}
+		\item \textbf{Bedeutung für die Analyse:}
+		\begin{itemize}
+			\item Die Laufzeit eines Algorithmus entspricht der Anzahl der ausgeführten elementaren Operationen.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Motivation für die asymptotische Analyse}
+	\begin{itemize}[<+->]
+		\item \textbf{Fokus auf grosse Eingaben (Skalierbarkeit):}
+		\begin{itemize}
+			\item Für kleine Problemgrössen $n$ sind fast alle Algorithmen schnell genug berechenbar.
+			\item Interessant ist, wie sich die Laufzeit verhält, wenn die Problemgrössse $n$ wächst ($n \to \infty$).
+		\end{itemize}
+		\item \textbf{Praktische Betrachtung:}
+		\begin{itemize}
+			\item Exakte Formeln wie $T_0(n) = 12n^2 + 5n + 100$ oder $T_1(n) = 10n^2 + 8n + 213$ sind mühsam zu handhaben.
+			\item Inwiefern unterscheiden sich die Laufzeiten $T_0(n)$ und $T_1(n)$ wirklich?
+			\item In der Praxis stellte sich heraus, dass es am sinnvollsten ist, das wesentliche Wachstumsverhalten von Algorithmenzu betrachten.
+			\item Bezogen auf $T_0(n)$ und $T_1(n)$ heisst dies, dass beide Algorithmen im Wesentlichen quadratisch wachsen.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Motivation für die asymptotische Analyse}
+	\begin{itemize}[<+->]
+		\item \textbf{Unabhängigkeit von Hardware und exakter Implementierung:}
+		\begin{itemize}
+			\item Die exakten Laufzeitformeln hängen stark von der konkreten Hardware und der genauen Implementierung algorithmischer Ideen ab.
+			\item Konstante Kosten von $\textcolor{Red}{100}$ Operationen wie in dem Term $T_0(n) = 12n^2 + 5n + \textcolor{Red}{100}$ sind z.B. auf eine anfängliche Initialisierung von Variablen zurückzuführen, die auf verschiedenen Maschinen unterschiedlich lange dauern kann.
+			\item In der asymptotischen Analyse (bei grossen Probleminstanzen) sind solche Kosten vernachlässigbar.
+			\item Ähnlich verhält sich dies bei Termen tieferer Ordnung wie $\textcolor{Blue}{5n}$ im Term $T_0(n) = 12n^2 + \textcolor{Blue}{5n} + 100$.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{asymptotische Betrachtung}
+	Lasst uns die Quotienten $\frac{\tilde{T}(n)}{T(n)}$ und $\frac{T(n)}{\tilde{T}(n)}$ der beiden Algorithmen \texttt{insertion\_sort} und \texttt{bubble\_sort} betrachten:
 	\begin{align*}
 		 & \lim_{n\to\infty}\frac{\tilde{T}(n)}{T(n)} = \lim_{n\to\infty}\frac{\tilde{a}n^2 + \tilde{b}n + \tilde{c}}{an^2 + bn + c} =\frac{\tilde{a}}{a}
 	\end{align*}
 	\begin{align*}
 		 & \lim_{n\to\infty}\frac{T(n)}{\tilde{T}(n)} = \lim_{n\to\infty}\frac{an^2 + bn + c}{\tilde{a}n^2 + \tilde{b}n + \tilde{c}} =\frac{a}{\tilde{a}}
 	\end{align*}
-	Die asymptotischen Laufzeiten von \texttt{insertion\_sort} und \texttt{bubble\_sort} unterscheiden sich also lediglich um einen konstanten Faktor. Die analoge Betrachtung kann natürlich auch für \texttt{bubble\_sort}) durchgeführt werden.
+	Die Grenzwerte der Quotienten unterscheiden sich also lediglich um konstante Faktoren.
 \end{frame}
 
 \begin{frame}{asymptotische Betrachtung}
@@ -269,6 +336,9 @@
 	\begin{align*}
 		 & \lim_{n\to\infty}\frac{T(n)}{n^2} = \lim_{n\to\infty}\frac{an^2 + bn + c}{n^2} = a
 	\end{align*}
+	(Die analoge Betrachtung kann natürlich auch für \texttt{bubble\_sort}) durchgeführt werden.)
+	
+	\vspace{\baselineskip}
 	Die asymptotische (Grenzwert für Problemgrössse $n\to\infty$) Betrachtung zeigt auf, dass sich die Laufzeiten von sowohl \texttt{insertion\_sort} als auch \texttt{bubble\_sort} von einer beliebigen Polynomfunktion vom Grad $2$ lediglich um eine (multiplikative) Konstante unterscheiden. Dies gilt also insbesondere für die quadratische Funktion $n\mapsto n^2$.
 \end{frame}
 
@@ -280,7 +350,7 @@
 	\begin{center}
 		{\small
 \enquote{Although we can sometimes determine the exact running time of an algorithm, as we did for insertion
-sort $\ldots$, the extra precision is not usually worth the effort of computing
+sort $[\ldots ]$, the extra precision is not usually worth the effort of computing
 it. For large enough inputs, the multiplicative constants and lower-order terms of
 an exact running time are dominated by the effects of the input size itself.
 When we look at input sizes large enough to make only the order of growth of
@@ -293,12 +363,17 @@ for all but very small inputs.}
 	\end{center}
 \end{frame}
 
+\begin{frame}{asymptotische Betrachtung (Landau-Symbole)}
+	Diese intuitive Betrachtung hat man in der Informatik und Mathematik formalisiert. Dies führt uns zu den sogenannten \textit{Landau-Symbolen}, die in der Mathematik und Informatik eine grosse Bedeutung haben.
+	Wir führen nun einige Mengen von Funktionen ein, die uns helfen, das asymptotische Verhalten von Algorithmen zu beschreiben.
+\end{frame}
+
 \begin{frame}
 \begin{figure}
 	\centering
 \begin{tikzpicture}
 \begin{axis}[
-    width=7.5cm, % Eine etwas größere Breite, da es nun ein Einzelplot ist
+    width=7.5cm, % Eine etwas grössere Breite, da es nun ein Einzelplot ist
     height=7.5cm,
     axis lines=left,
     ticks=none,
@@ -398,11 +473,211 @@ for all but very small inputs.}
 \end{frame}
 
 \begin{frame}
-Wir schreiben $f(n)\in\Theta(g(n))$, falls positive Konstanten $n_0, c_1$ und $c_2$ existieren, sodass für alle $n\geq n_0$ der Wert $f(n)$ zwischen $c_1g(n)$ und $c_2g(n)$ liegt.
+\begin{figure}
+	\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=7.5cm, % Eine etwas grössere Breite, da es nun ein Einzelplot ist
+    height=7.5cm,
+    axis lines=left,
+    ticks=none,
+    xmin=0, xmax=16,
+    ymin=0, ymax=15,
+    domain=0:14,
+    samples=200,
+	clip=false
+]
+
+% 1. Plot (Standardfarbe/Schwarz)
+\addplot[
+  thick, % Die Dicke wurde hier wieder hinzugefügt
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 2.5)
+  (1.0, 2.3)
+  (2.0, 1.5)
+  (3.0, 2.5)
+  (4.0, 3.2)
+  (5.0, 4.3)
+  (6.0, 3.7)
+  (7.0, 4.5)
+  (8.0, 5.5)
+  (9.0, 6.5)
+  (10.0, 7.2)
+  (11.0, 8.0)
+  (12.0, 9.3)
+  (13.0, 10.8)
+  (14.0, 11.8)
+};
+
+% 2. Plot (ForestGreen)
+\addplot[
+  ForestGreen,
+  thick, % Dicke beibehalten
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 1.1)
+  (1.0, 4.6)
+  (2.0, 3.2)
+  (3.0, 3.5)
+  (4.0, 4.2)
+  (5.0, 4.8)
+  (6.0, 4.7)
+  (7.0, 5.5)
+  (8.0, 6.5)
+  (9.0, 7.6)
+  (10.0, 8.9)
+  (11.0, 9.3)
+  (12.0, 10.5)
+  (13.0, 11.9)
+  (14.0, 13.5)
+};
+
+% Zusätzliche Elemente (bleiben unverändert, da sie in axis cs: arbeiten)
+\addplot[dashed] coordinates {(3,0) (3,15)};
+\node at (axis cs:3.0,-0.4) {{\tiny $n_0$}};
+
+\node at (axis cs:14.8,12.0) {{\tiny $f(n)$}};
+\node at (axis cs:15.0,14.1) {{\tiny \textcolor{ForestGreen}{$cg(n)$}}};
+\end{axis}
+\end{tikzpicture}
+\caption{$f(n)\in O(g(n))$. Ab $n_0$ verläuft die Funktion $f(n)$ nicht mehr oberhalb der Kurve von $cg(n)$. Bitte beachte, dass das hier gezeigte $n_0$ nicht der kleinste mögliche Wert ist. Der kleinste mögliche Wert wäre in der gezeigten Situation der $x$-Koordinate des Schnittpunkts der beiden Kurven.}
+\label{fig:O}
+\end{figure}
 \end{frame}
 
-\begin{frame}{asymptotische Betrachtung}
-	Diese intuitive Betrachtung hat man in der Informatik und Mathematik formalisiert. Dies führt uns zu den sogenannten \textit{Landau-Symbolen}, die in der Mathematik und Informatik eine grosse Bedeutung haben.
+\begin{frame}
+\begin{figure}
+    \centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=7.5cm,
+    height=7.5cm,
+    axis lines=left,
+    ticks=none,
+    xmin=0, xmax=16,
+    ymin=0, ymax=15,
+    domain=0:14,
+    samples=200,
+    clip=false
+]
+
+% 1. Plot f(n) - Die Funktion, die oben liegen soll (Schwarz)
+\addplot[
+  thick,
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 1.1)
+  (1.0, 4.6)
+  (2.0, 3.2)
+  (3.0, 3.5)
+  (4.0, 4.2)
+  (5.0, 4.8)
+  (6.0, 4.7)
+  (7.0, 5.5)
+  (8.0, 6.5)
+  (9.0, 7.6)
+  (10.0, 8.9)
+  (11.0, 9.3)
+  (12.0, 10.5)
+  (13.0, 11.9)
+  (14.0, 13.5)
+};
+
+% 2. Plot c*g(n) - Die untere Schranke (ForestGreen)
+\addplot[
+  ForestGreen,
+  thick,
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 2.5)
+  (1.0, 2.3)
+  (2.0, 1.5)
+  (3.0, 2.5)
+  (4.0, 3.2)
+  (5.0, 4.3)
+  (6.0, 3.7)
+  (7.0, 4.5)
+  (8.0, 5.5)
+  (9.0, 6.5)
+  (10.0, 7.2)
+  (11.0, 8.0)
+  (12.0, 9.3)
+  (13.0, 10.8)
+  (14.0, 11.8)
+};
+
+% Vertikale Linie für n0
+\addplot[dashed] coordinates {(3,0) (3,15)};
+\node at (axis cs:3.0,-0.4) {{\tiny $n_0$}};
+
+% Beschriftungen
+\node at (axis cs:15.0,14.1) {{\tiny $f(n)$}};
+\node at (axis cs:14.8,12.0) {{\tiny \textcolor{ForestGreen}{$cg(n)$}}};
+
+\end{axis}
+\end{tikzpicture}
+\caption{$f(n)\in \Omega(g(n))$. Ab $n_0$ verläuft die Funktion $f(n)$ nicht mehr unterhalb der Kurve von $cg(n)$. Bitte beachte, dass das hier gezeigte $n_0$ nicht der kleinste mögliche Wert ist. Der kleinste mögliche Wert wäre in der gezeigten Situation der $x$-Koordinate des Schnittpunkts der beiden Kurven.}
+\label{fig:Omega}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\textbf{Definition ($\Theta$-Notation)}\\
+Intuitiv bedeutet $f(n)\in\Theta(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) genauso schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ zwischen zwei Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
+
+\vspace{\baselineskip}
+$f$ wächst also weder wesentlich schneller noch wesentlich langsamer als $g$.
+
+\vspace{\baselineskip}
+Genauer:
+\begin{align}\label{eq:Theta}
+    \Theta(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c_1, c_2, n_0, \text{ sodass} \nonumber \\
+    & \left. 0 \leq c_1 g(n) \leq f(n) \leq c_2 g(n) \text{ für alle } n \geq n_0 \right\}
+\end{align}
+\end{frame}
+
+\begin{frame}
+\textbf{Definition ($O$-Notation)}\\
+Intuitiv bedeutet $f(n)\in O(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) höchstens so schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ unterhalb eines Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
+
+\vspace{\baselineskip}
+$f$ wächst also höchstens so schnell wie $g$.
+
+\vspace{\baselineskip}
+Genauer:
+\begin{align}\label{eq:grossO}
+    O(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c, n_0, \text{ sodass} \nonumber \\
+    & \left. 0 \leq f(n) \leq c g(n) \text{ für alle } n \geq n_0 \right\}
+\end{align}
+\end{frame}
+
+\begin{frame}
+\textbf{Definition ($\Omega$-Notation)}\\
+Intuitiv bedeutet $f(n)\in\Omega(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) mindestens so schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ oberhalb eines Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
+
+\vspace{\baselineskip}
+$f$ wächst also mindestens so schnell wie $g$.
+
+\vspace{\baselineskip}
+Genauer:
+\begin{align}\label{eq}
+    \Omega(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c, n_0, \text{ sodass} \nonumber \\
+    & \left. 0 \leq c g(n) \leq f(n) \text{ für alle } n \geq n_0 \right\}
+\end{align}
+\end{frame}
+
+\begin{frame}{äquivalente Definitionen}
+Man kann zeigen, dass die Definitionen von $\Theta$, $O$ und $\Omega$ (in den Gleichungen \ref{eq:Theta}, \ref{eq:grossO} und \ref{eq}) äquivalent sind zu den folgenden Grenzwertdefinitionen (wir haben noch weitere Symbole definiert):
 \end{frame}
 
 \begin{frame}{Landau-Symbole (allgemein)}
@@ -428,7 +703,7 @@ Wir schreiben $f(n)\in\Theta(g(n))$, falls positive Konstanten $n_0, c_1$ und $c
 \end{frame}
 
 \begin{frame}{Landau-Symbole (Komplexitätstheorie)}
-	Im Kontext der Komplexitätstheorie seien $f$ und $g$ Folgen natürlicher Zahlen.
+	Im Kontext der Komplexitätstheorie seien $f$ und $g$ Folgen natürlicher Zahlen (sie beschreiben jeweils eine Anzahl von Rechenoperationen).
 	\vspace{0.5cm}
 	\centering
 	\small
@@ -822,14 +1097,17 @@ nicht in dem oben beschriebenen Sinne (durch einen optimalen Algorithmus) defini
 \begin{frame}{obere und untere Schranke}
 Deswegen spricht man in der Komplexitätstheorie nur über obere und untere Schranken für die Komplexität eines
 Problems im Sinne der folgenden Definition:
-\begin{mydefinition}\label{mydefinition:schranke}
-TODO
-\end{mydefinition}
+{\scriptsize\begin{mydefinition}\label{mydefinition:schranke}
+Sei $P$ ein Berechnungsproblem und $g(n)$ eine Funktion.
+    \begin{description}
+        \item[Obere Schranke für $P$:] Wir nennen $O(g(n))$ eine obere Schranke für die Komplexität von $P$, wenn es einen Algorithmus $A$ gibt, der $P$ löst und dessen Worst-Case Laufzeit $T_A(n) \in O(g(n))$ erfüllt.
+        
+        \item[Untere Schranke für $P$:] Wir nennen $\Omega(g(n))$ eine untere Schranke für die Komplexität von $P$, wenn für \textbf{jeden} Algorithmus $A$, der $P$ löst, gilt: $T_A(n) \in \Omega(g(n))$.
+        
+        \item[Optimalität:] Ein Algorithmus $A$ heisst \emph{optimal} für $P$, wenn $\Omega(g(n))$ eine untere Schranke für die Komplexität von $P$ ist und zugleich $T_A(n) \in O(g(n))$ gilt.
+    \end{description}
+\end{mydefinition}}
 \end{frame}
-
-
-
-
 
 
 
