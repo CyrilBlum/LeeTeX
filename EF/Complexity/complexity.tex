@@ -6,8 +6,6 @@
 
 \title[Programmieren]{Komplexitätstheorie}
 
-\subtitle{Komplexitätstheorie}
-
 \author[Graf, Thomas] % (optional)
 {Thomas Graf}
 
@@ -52,6 +50,10 @@
 	Die Komplexitätstheorie ist die Theorie der quantitativen Gesetze und Grenzen der algorithmischen Informationsverarbeitung. Diese Theorie hat auch eine physikalische Dimension: Zum Beispiel hält man ein zwar berechenbares Problem sicherlich für \enquote{praktisch unlösbar}, wenn die Ausführung eines Algorithmus zur Lösung des Problems mehr Energie bräuchte, als im bekannten Universum vorhanden ist.
 \end{frame}
 
+\begin{frame}{Fallstudie: \texttt{insertion\_sort} und \texttt{bubble\_sort}}
+	Wir wollen uns die beiden Sortieralgorithmen \texttt{insertion\_sort} und \texttt{bubble\_sort} anschauen und deren Laufzeiten analysieren.
+\end{frame}
+
 \begin{frame}{Fallstudie: \texttt{insertion\_sort}}
 	Illustration und Idee von \texttt{insertion\_sort} zusammen im Plenum besprechen (Anhand des Sortierens von Spielkarten).
 \end{frame}
@@ -59,20 +61,21 @@
 \begin{frame}{\texttt{insertion\_sort} implementieren}
 	\begin{myexercise}[\texttt{insertion\_sort}]\label{myexercise:insertion_sort}
 		Implementiere den \texttt{insertion\_sort} Algorithmus. Kompletiere dazu die folgende Vorlage:
-		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort\_template.py},label=listing:insertion_sort]{EF/Complexity/Code/insertion_sort_template.py}
+		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort\_template.py},label=listing:insertion_sort,numbers=left]{EF/Complexity/Code/insertion_sort_template.py}
 	\end{myexercise}
 \end{frame}
 
 \begin{frame}
 	\begin{myanswer}
-		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort.py}]{EF/Complexity/Code/insertion_sort.py}
+		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort.py},numbers=left]{EF/Complexity/Code/insertion_sort.py}
 	\end{myanswer}
 \end{frame}
 
 \begin{frame}{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
 	\begin{itemize}[<+->]
+		\item Mit $n$ bezeichnen wir die \textbf{Problemgrösse}, also die Grösse der Eingabe für unseren Algorithmus. Im Fall von \texttt{insertion\_sort} ist dies die Länge der zu sortierenden Liste.
 		\item Wir bezeichnen mit der Konstanten $c_i$ ($c$ steht für $cost$) die Zeit, welche zur einmaligen Ausführung der $i$-ten Zeile benötigt wird.
-		\item Für $j = 1, 2, \ldots, n - 1$ sei $t_j$ ($t$ steht für $times$) die Anzahl der Überprüfungen der \lstinline|while|-Bedingung.
+		\item Für $j = 1, 2, \ldots, n - 1$ sei $t_j$ ($t$ steht für $times$) die Anzahl der Überprüfungen der \lstinline|while|-Bedingung (Zeile 5) in der $j$-ten Iteration der äusseren \lstinline|for|-Schleife (Zeile 2).
 		\item Die Anzahl $t_j$ hängt natürlich von der konkreten Probleminstanz ab.
 	\end{itemize}
 \end{frame}
@@ -160,7 +163,6 @@
 		t_j = j, \quad i = 1, 2, \ldots, n-1.
 	\end{align*}
 \end{frame}
-
 
 \begin{frame}[fragile]{worst-case}
 	Gauss-Summenformel:
@@ -252,6 +254,10 @@
 	wobei $\tilde{a}, \tilde{b}, \tilde{c}$ Konstanten sind und $\tilde{a}\neq 0$
 \end{frame}
 
+\begin{frame}{Das Modell der Random Access Machine (RAM)}
+	Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Modell: die \textbf{Random Access Machine (RAM)}.
+\end{frame}
+
 \begin{frame}{Das Random Access Machine (RAM) Modell}
 	\begin{itemize}[<+->]
 	\item Bisher haben wir in unseren Komplexitätsanalysen jeder Zeile eine Variable für die Ausführungszeit zugewiesen (Kosten $c_i$ für die $i$-te Zeile). Dies ist zwar sehr rigoros und formal korrekt, aber auch sehr aufwendig und nur wenig konkret.
@@ -300,7 +306,7 @@
 		\begin{itemize}
 			\item Exakte Formeln wie $T_0(n) = 12n^2 + 5n + 100$ oder $T_1(n) = 10n^2 + 8n + 213$ sind mühsam zu handhaben.
 			\item Inwiefern unterscheiden sich die Laufzeiten $T_0(n)$ und $T_1(n)$ wirklich?
-			\item In der Praxis stellte sich heraus, dass es am sinnvollsten ist, das wesentliche Wachstumsverhalten von Algorithmenzu betrachten.
+			\item In der Praxis stellte sich heraus, dass es am sinnvollsten ist, das wesentliche Wachstumsverhalten von Algorithmen zu betrachten.
 			\item Bezogen auf $T_0(n)$ und $T_1(n)$ heisst dies, dass beide Algorithmen im Wesentlichen quadratisch wachsen.
 		\end{itemize}
 	\end{itemize}
@@ -343,7 +349,7 @@
 \end{frame}
 
 \begin{frame}{asymptotische Betrachtung}
-	Intuitiv gesprochen, möchten wir sagen, dass in einer asymptotischen Betrachtung, die exakten Wert der Konstanten $a, b, c$ mit $a\neq 0$ in einem Ausdruck $T(n) = an^2 + bn + c$ \enquote{nicht wirklich wichtig sind}. Diese Aussage basiert auf der Beobachtung, dass sich alle Terme dieser Form (asymptotisch) lediglich multiplikative und additive Konstanten unterscheiden:
+	Intuitiv gesprochen, möchten wir sagen, dass in einer asymptotischen Betrachtung, die exakten Wert der Konstanten $a, b, c$ mit $a\neq 0$ in einem Ausdruck $T(n) = an^2 + bn + c$ \enquote{nicht wirklich wichtig sind}.
 \end{frame}
 
 \begin{frame}{asymptotische Betrachtung}
@@ -365,7 +371,239 @@ for all but very small inputs.}
 
 \begin{frame}{asymptotische Betrachtung (Landau-Symbole)}
 	Diese intuitive Betrachtung hat man in der Informatik und Mathematik formalisiert. Dies führt uns zu den sogenannten \textit{Landau-Symbolen}, die in der Mathematik und Informatik eine grosse Bedeutung haben.
-	Wir führen nun einige Mengen von Funktionen ein, die uns helfen, das asymptotische Verhalten von Algorithmen zu beschreiben.
+
+	\vspace{\baselineskip}
+	Es sei $g$ eine Funktion. Wir führen nun die \textbf{Mengen von Funktionen} (Landau-Symbole) $O(g(n))$, $\Omega(g(n))$ und $\Theta(g(n))$ ein, die uns helfen, das asymptotische Verhalten von Algorithmen zu beschreiben.
+\end{frame}
+
+
+\begin{frame}
+\textbf{Definition ($O$-Notation)}\\
+Intuitiv bedeutet $f(n)\in O(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) höchstens so schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ unterhalb eines Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
+
+\vspace{\baselineskip}
+$f$ wächst also höchstens so schnell wie $g$.
+
+\vspace{\baselineskip}
+Genauer:
+\begin{align}\label{eq:grossO}
+    O(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c, n_0, \text{ sodass} \nonumber \\
+    & \left. 0 \leq f(n) \leq c g(n) \text{ für alle } n \geq n_0 \right\}
+\end{align}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+	\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=7.5cm, % Eine etwas grössere Breite, da es nun ein Einzelplot ist
+    height=7.5cm,
+    axis lines=left,
+    ticks=none,
+    xmin=0, xmax=16,
+    ymin=0, ymax=15,
+    domain=0:14,
+    samples=200,
+	clip=false
+]
+
+% 1. Plot (Standardfarbe/Schwarz)
+\addplot[
+  thick, % Die Dicke wurde hier wieder hinzugefügt
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 2.5)
+  (1.0, 2.3)
+  (2.0, 1.5)
+  (3.0, 2.5)
+  (4.0, 3.2)
+  (5.0, 4.3)
+  (6.0, 3.7)
+  (7.0, 4.5)
+  (8.0, 5.5)
+  (9.0, 6.5)
+  (10.0, 7.2)
+  (11.0, 8.0)
+  (12.0, 9.3)
+  (13.0, 10.8)
+  (14.0, 11.8)
+};
+
+% 2. Plot (ForestGreen)
+\addplot[
+  ForestGreen,
+  thick, % Dicke beibehalten
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 1.1)
+  (1.0, 4.6)
+  (2.0, 3.2)
+  (3.0, 3.5)
+  (4.0, 4.2)
+  (5.0, 4.8)
+  (6.0, 4.7)
+  (7.0, 5.5)
+  (8.0, 6.5)
+  (9.0, 7.6)
+  (10.0, 8.9)
+  (11.0, 9.3)
+  (12.0, 10.5)
+  (13.0, 11.9)
+  (14.0, 13.5)
+};
+
+% Zusätzliche Elemente (bleiben unverändert, da sie in axis cs: arbeiten)
+\addplot[dashed] coordinates {(3,0) (3,15)};
+\node at (axis cs:3.0,-0.4) {{\tiny $n_0$}};
+
+\node at (axis cs:14.8,12.0) {{\tiny $f(n)$}};
+\node at (axis cs:15.0,14.1) {{\tiny \textcolor{ForestGreen}{$cg(n)$}}};
+\end{axis}
+\end{tikzpicture}
+\caption{$f(n)\in O(g(n))$. Ab $n_0$ verläuft die Funktion $f(n)$ nicht mehr oberhalb der Kurve von $cg(n)$. Bitte beachte, dass das hier gezeigte $n_0$ nicht der kleinste mögliche Wert ist. Der kleinste mögliche Wert wäre in der gezeigten Situation der $x$-Koordinate des Schnittpunkts der beiden Kurven.}
+\label{fig:O}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Beispiel ($O$-Notation)}
+	\begin{myexercise}
+		Zeige, dass $f(n) = 3n^2 + 2n + 5 \in O(n^2)$.
+	\end{myexercise}
+	\begin{myanswer}
+		Wir müssen positive Konstanten $c$ und $n_0$ finden, sodass $0 \leq 3n^2 + 2n + 5 \leq cn^2$ für alle $n \geq n_0$ gilt.
+		Wähle z.B. $c=10$. Dann ist $3n^2 + 2n + 5 \leq 10n^2$ für alle $n \geq 1$.
+		Denn $10n^2 - (3n^2 + 2n + 5) = 7n^2 - 2n - 5$, was für alle $n \geq 1$ nicht negativ ist. Also können wir $c:=10$ und $n_0:=1$ wählen.
+		Somit ist $3n^2 + 2n + 5 \in O(n^2)$ gezeigt.
+	\end{myanswer}
+\end{frame}
+
+\begin{frame}
+\textbf{Definition ($\Omega$-Notation)}\\
+Intuitiv bedeutet $f(n)\in\Omega(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) mindestens so schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ oberhalb eines Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
+
+\vspace{\baselineskip}
+$f$ wächst also mindestens so schnell wie $g$.
+
+\vspace{\baselineskip}
+Genauer:
+\begin{align}\label{eq:Omega}
+    \Omega(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c, n_0, \text{ sodass} \nonumber \\
+    & \left. 0 \leq c g(n) \leq f(n) \text{ für alle } n \geq n_0 \right\}
+\end{align}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+    \centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=7.5cm,
+    height=7.5cm,
+    axis lines=left,
+    ticks=none,
+    xmin=0, xmax=16,
+    ymin=0, ymax=15,
+    domain=0:14,
+    samples=200,
+    clip=false
+]
+
+% 1. Plot f(n) - Die Funktion, die oben liegen soll (Schwarz)
+\addplot[
+  thick,
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 1.1)
+  (1.0, 4.6)
+  (2.0, 3.2)
+  (3.0, 3.5)
+  (4.0, 4.2)
+  (5.0, 4.8)
+  (6.0, 4.7)
+  (7.0, 5.5)
+  (8.0, 6.5)
+  (9.0, 7.6)
+  (10.0, 8.9)
+  (11.0, 9.3)
+  (12.0, 10.5)
+  (13.0, 11.9)
+  (14.0, 13.5)
+};
+
+% 2. Plot c*g(n) - Die untere Schranke (ForestGreen)
+\addplot[
+  ForestGreen,
+  thick,
+  smooth,
+  tension=0.3, 
+  samples=200  
+]  coordinates {
+  (0.0, 2.5)
+  (1.0, 2.3)
+  (2.0, 1.5)
+  (3.0, 2.5)
+  (4.0, 3.2)
+  (5.0, 4.3)
+  (6.0, 3.7)
+  (7.0, 4.5)
+  (8.0, 5.5)
+  (9.0, 6.5)
+  (10.0, 7.2)
+  (11.0, 8.0)
+  (12.0, 9.3)
+  (13.0, 10.8)
+  (14.0, 11.8)
+};
+
+% Vertikale Linie für n0
+\addplot[dashed] coordinates {(3,0) (3,15)};
+\node at (axis cs:3.0,-0.4) {{\tiny $n_0$}};
+
+% Beschriftungen
+\node at (axis cs:15.0,14.1) {{\tiny $f(n)$}};
+\node at (axis cs:14.8,12.0) {{\tiny \textcolor{ForestGreen}{$cg(n)$}}};
+
+\end{axis}
+\end{tikzpicture}
+\caption{$f(n)\in \Omega(g(n))$. Ab $n_0$ verläuft die Funktion $f(n)$ nicht mehr unterhalb der Kurve von $cg(n)$. Bitte beachte, dass das hier gezeigte $n_0$ nicht der kleinste mögliche Wert ist. Der kleinste mögliche Wert wäre in der gezeigten Situation der $x$-Koordinate des Schnittpunkts der beiden Kurven.}
+\label{fig:Omega}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Beispiel ($\Omega$-Notation)}
+	\begin{myexercise}
+		Zeige, dass $f(n) = 3n^2 + 2n + 5 \in \Omega(n^2)$.
+	\end{myexercise}
+	\begin{myanswer}
+		Wir müssen positive Konstanten $c$ und $n_0$ finden, sodass $0 \leq cn^2 \leq 3n^2 + 2n + 5$ für alle $n \geq n_0$ gilt.
+		Wähle $c=1$. Dann ist $n^2 \leq 3n^2 + 2n + 5$ für alle $n \geq 1$.
+		Denn $3n^2 + 2n + 5 - n^2 = 2n^2 + 2n + 5$, was für $n \geq 1$ immer positiv ist.
+		Also können wir $c:=1$ und $n_0:=1$ wählen.
+		Somit ist $3n^2 + 2n + 5 \in \Omega(n^2)$ gezeigt.
+	\end{myanswer}
+\end{frame}
+
+\begin{frame}
+\textbf{Definition ($\Theta$-Notation)}\\
+Intuitiv bedeutet $f(n)\in\Theta(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) genauso schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ zwischen zwei Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
+
+\vspace{\baselineskip}
+$f$ wächst also weder wesentlich schneller noch wesentlich langsamer als $g$.
+
+\vspace{\baselineskip}
+Genauer:
+\begin{align}\label{eq:Theta}
+    \Theta(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c_1, c_2, n_0, \text{ sodass} \nonumber \\
+    & \left. 0 \leq c_1 g(n) \leq f(n) \leq c_2 g(n) \text{ für alle } n \geq n_0 \right\}
+\end{align}
+Man beachte, dass $f(n)\in\Theta(g(n))$ genau dann gilt, wenn sowohl $f(n)\in O(g(n))$ als auch $f(n)\in\Omega(g(n))$ gilt.
 \end{frame}
 
 \begin{frame}
@@ -472,212 +710,18 @@ for all but very small inputs.}
 \end{figure}
 \end{frame}
 
-\begin{frame}
-\begin{figure}
-	\centering
-\begin{tikzpicture}
-\begin{axis}[
-    width=7.5cm, % Eine etwas grössere Breite, da es nun ein Einzelplot ist
-    height=7.5cm,
-    axis lines=left,
-    ticks=none,
-    xmin=0, xmax=16,
-    ymin=0, ymax=15,
-    domain=0:14,
-    samples=200,
-	clip=false
-]
-
-% 1. Plot (Standardfarbe/Schwarz)
-\addplot[
-  thick, % Die Dicke wurde hier wieder hinzugefügt
-  smooth,
-  tension=0.3, 
-  samples=200  
-]  coordinates {
-  (0.0, 2.5)
-  (1.0, 2.3)
-  (2.0, 1.5)
-  (3.0, 2.5)
-  (4.0, 3.2)
-  (5.0, 4.3)
-  (6.0, 3.7)
-  (7.0, 4.5)
-  (8.0, 5.5)
-  (9.0, 6.5)
-  (10.0, 7.2)
-  (11.0, 8.0)
-  (12.0, 9.3)
-  (13.0, 10.8)
-  (14.0, 11.8)
-};
-
-% 2. Plot (ForestGreen)
-\addplot[
-  ForestGreen,
-  thick, % Dicke beibehalten
-  smooth,
-  tension=0.3, 
-  samples=200  
-]  coordinates {
-  (0.0, 1.1)
-  (1.0, 4.6)
-  (2.0, 3.2)
-  (3.0, 3.5)
-  (4.0, 4.2)
-  (5.0, 4.8)
-  (6.0, 4.7)
-  (7.0, 5.5)
-  (8.0, 6.5)
-  (9.0, 7.6)
-  (10.0, 8.9)
-  (11.0, 9.3)
-  (12.0, 10.5)
-  (13.0, 11.9)
-  (14.0, 13.5)
-};
-
-% Zusätzliche Elemente (bleiben unverändert, da sie in axis cs: arbeiten)
-\addplot[dashed] coordinates {(3,0) (3,15)};
-\node at (axis cs:3.0,-0.4) {{\tiny $n_0$}};
-
-\node at (axis cs:14.8,12.0) {{\tiny $f(n)$}};
-\node at (axis cs:15.0,14.1) {{\tiny \textcolor{ForestGreen}{$cg(n)$}}};
-\end{axis}
-\end{tikzpicture}
-\caption{$f(n)\in O(g(n))$. Ab $n_0$ verläuft die Funktion $f(n)$ nicht mehr oberhalb der Kurve von $cg(n)$. Bitte beachte, dass das hier gezeigte $n_0$ nicht der kleinste mögliche Wert ist. Der kleinste mögliche Wert wäre in der gezeigten Situation der $x$-Koordinate des Schnittpunkts der beiden Kurven.}
-\label{fig:O}
-\end{figure}
+\begin{frame}{Beispiel ($\Theta$-Notation)}
+	\begin{myexercise}
+		Zeige, dass $f(n) = 3n^2 + 2n + 5 \in \Theta(n^2)$.
+	\end{myexercise}
+	\begin{myanswer}
+		Wir haben bereits gezeigt, dass $f(n) = 3n^2 + 2n + 5 \in O(n^2)$ und $f(n) = 3n^2 + 2n + 5 \in \Omega(n^2)$.
+		Also gilt $f(n) = 3n^2 + 2n + 5 \in \Theta(n^2)$.
+	\end{myanswer}
 \end{frame}
 
-\begin{frame}
-\begin{figure}
-    \centering
-\begin{tikzpicture}
-\begin{axis}[
-    width=7.5cm,
-    height=7.5cm,
-    axis lines=left,
-    ticks=none,
-    xmin=0, xmax=16,
-    ymin=0, ymax=15,
-    domain=0:14,
-    samples=200,
-    clip=false
-]
-
-% 1. Plot f(n) - Die Funktion, die oben liegen soll (Schwarz)
-\addplot[
-  thick,
-  smooth,
-  tension=0.3, 
-  samples=200  
-]  coordinates {
-  (0.0, 1.1)
-  (1.0, 4.6)
-  (2.0, 3.2)
-  (3.0, 3.5)
-  (4.0, 4.2)
-  (5.0, 4.8)
-  (6.0, 4.7)
-  (7.0, 5.5)
-  (8.0, 6.5)
-  (9.0, 7.6)
-  (10.0, 8.9)
-  (11.0, 9.3)
-  (12.0, 10.5)
-  (13.0, 11.9)
-  (14.0, 13.5)
-};
-
-% 2. Plot c*g(n) - Die untere Schranke (ForestGreen)
-\addplot[
-  ForestGreen,
-  thick,
-  smooth,
-  tension=0.3, 
-  samples=200  
-]  coordinates {
-  (0.0, 2.5)
-  (1.0, 2.3)
-  (2.0, 1.5)
-  (3.0, 2.5)
-  (4.0, 3.2)
-  (5.0, 4.3)
-  (6.0, 3.7)
-  (7.0, 4.5)
-  (8.0, 5.5)
-  (9.0, 6.5)
-  (10.0, 7.2)
-  (11.0, 8.0)
-  (12.0, 9.3)
-  (13.0, 10.8)
-  (14.0, 11.8)
-};
-
-% Vertikale Linie für n0
-\addplot[dashed] coordinates {(3,0) (3,15)};
-\node at (axis cs:3.0,-0.4) {{\tiny $n_0$}};
-
-% Beschriftungen
-\node at (axis cs:15.0,14.1) {{\tiny $f(n)$}};
-\node at (axis cs:14.8,12.0) {{\tiny \textcolor{ForestGreen}{$cg(n)$}}};
-
-\end{axis}
-\end{tikzpicture}
-\caption{$f(n)\in \Omega(g(n))$. Ab $n_0$ verläuft die Funktion $f(n)$ nicht mehr unterhalb der Kurve von $cg(n)$. Bitte beachte, dass das hier gezeigte $n_0$ nicht der kleinste mögliche Wert ist. Der kleinste mögliche Wert wäre in der gezeigten Situation der $x$-Koordinate des Schnittpunkts der beiden Kurven.}
-\label{fig:Omega}
-\end{figure}
-\end{frame}
-
-
-\begin{frame}
-\textbf{Definition ($\Theta$-Notation)}\\
-Intuitiv bedeutet $f(n)\in\Theta(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) genauso schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ zwischen zwei Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
-
-\vspace{\baselineskip}
-$f$ wächst also weder wesentlich schneller noch wesentlich langsamer als $g$.
-
-\vspace{\baselineskip}
-Genauer:
-\begin{align}\label{eq:Theta}
-    \Theta(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c_1, c_2, n_0, \text{ sodass} \nonumber \\
-    & \left. 0 \leq c_1 g(n) \leq f(n) \leq c_2 g(n) \text{ für alle } n \geq n_0 \right\}
-\end{align}
-\end{frame}
-
-\begin{frame}
-\textbf{Definition ($O$-Notation)}\\
-Intuitiv bedeutet $f(n)\in O(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) höchstens so schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ unterhalb eines Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
-
-\vspace{\baselineskip}
-$f$ wächst also höchstens so schnell wie $g$.
-
-\vspace{\baselineskip}
-Genauer:
-\begin{align}\label{eq:grossO}
-    O(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c, n_0, \text{ sodass} \nonumber \\
-    & \left. 0 \leq f(n) \leq c g(n) \text{ für alle } n \geq n_0 \right\}
-\end{align}
-\end{frame}
-
-\begin{frame}
-\textbf{Definition ($\Omega$-Notation)}\\
-Intuitiv bedeutet $f(n)\in\Omega(g(n))$, dass $f(n)$ asymptotisch (für grosse $n$) mindestens so schnell wächst wie $g(n)$. Noch einfacher gesagt: Für genügend grosse $n$ liegt $f(n)$ oberhalb eines Vielfachen von $g(n)$. Mit \enquote{genügend grosse $n$} meinen wir, dass es eine Konstante $n_0$ gibt, sodass die Aussage für alle $n\geq n_0$ gilt.\\
-
-\vspace{\baselineskip}
-$f$ wächst also mindestens so schnell wie $g$.
-
-\vspace{\baselineskip}
-Genauer:
-\begin{align}\label{eq}
-    \Omega(g(n)) := \left\{ f(n) \right. &  \; ; \; \text{es existieren positive Konstanten } c, n_0, \text{ sodass} \nonumber \\
-    & \left. 0 \leq c g(n) \leq f(n) \text{ für alle } n \geq n_0 \right\}
-\end{align}
-\end{frame}
-
-\begin{frame}{äquivalente Definitionen}
-Man kann zeigen, dass die Definitionen von $\Theta$, $O$ und $\Omega$ (in den Gleichungen \ref{eq:Theta}, \ref{eq:grossO} und \ref{eq}) äquivalent sind zu den folgenden Grenzwertdefinitionen (wir haben noch weitere Symbole definiert):
+\begin{frame}{äquivalente Definitionen durch Grezwerte}
+Man kann zeigen\footnote{Dies folgt (vereinfacht gesagt) aus der Definition der Landau-Symbole und der Tatsache, dass die Grenzwerte existieren, wenn die Funktionen asymptotisch gleich wachsen.}, dass die Definitionen von $O$, $\Omega$ und $\Theta$ (in den Gleichungen \ref{eq:grossO}, \ref{eq:Omega} und \ref{eq:Theta}) äquivalent sind zu den folgenden Grenzwertdefinitionen (wir haben noch weitere Symbole definiert):
 \end{frame}
 
 \begin{frame}{Landau-Symbole (allgemein)}
@@ -705,7 +749,7 @@ Man kann zeigen, dass die Definitionen von $\Theta$, $O$ und $\Omega$ (in den Gl
 \begin{frame}{Landau-Symbole (Komplexitätstheorie)}
 	Im Kontext der Komplexitätstheorie seien $f$ und $g$ Folgen natürlicher Zahlen (sie beschreiben jeweils eine Anzahl von Rechenoperationen).
 	\vspace{0.5cm}
-	\centering
+	\begin{center}
 	\small
 	\begin{tabular}{|c|c|c|}
 		\hline
@@ -722,6 +766,7 @@ Man kann zeigen, dass die Definitionen von $\Theta$, $O$ und $\Omega$ (in den Gl
 		$f \in \omega(g)$ & $\lim\limits_{n \to \infty} \frac{f(n)}{g(n)} = \infty$    & \makecell{$f$ wächst schneller als $g$,             \\$g\in o(f)$}                                      \\
 		\hline
 	\end{tabular}
+	\end{center}
 	Wir gehen davon aus, dass die von uns untersuchten Folgen $h(n)$ stets gilt:
 	\[
 	\limsup\limits_{n \to \infty} h(n) = \liminf\limits_{n \to \infty} h(n) = \lim\limits_{n \to \infty} h(n).
@@ -1097,7 +1142,7 @@ nicht in dem oben beschriebenen Sinne (durch einen optimalen Algorithmus) defini
 \begin{frame}{obere und untere Schranke}
 Deswegen spricht man in der Komplexitätstheorie nur über obere und untere Schranken für die Komplexität eines
 Problems im Sinne der folgenden Definition:
-{\scriptsize\begin{mydefinition}\label{mydefinition:schranke}
+{\scriptsize\begin{mydefinition}[Obere- und untere Schranke, Optimalität]\label{mydefinition:schranke}
 Sei $P$ ein Berechnungsproblem und $g(n)$ eine Funktion.
     \begin{description}
         \item[Obere Schranke für $P$:] Wir nennen $O(g(n))$ eine obere Schranke für die Komplexität von $P$, wenn es einen Algorithmus $A$ gibt, der $P$ löst und dessen Worst-Case Laufzeit $T_A(n) \in O(g(n))$ erfüllt.
