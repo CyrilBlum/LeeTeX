@@ -359,6 +359,28 @@ Im unteren Teil von \cref{fig:http-wireshark} ist der Payload des Pakets dargest
 	Das Abfangen und Mitlesen von Datenpaketen in einem Netzwerk ohne ausdrückliche Erlaubnis der beteiligten Parteien ist in vielen Ländern illegal und kann strafrechtlich verfolgt werden. In der Schweiz beispielsweise verstösst das unbefugte Abfangen von Daten gegen das Bundesgesetz über den Datenschutz (DSG) und das Strafgesetzbuch (StGB). Personen, die beim unbefugten Abfangen von Daten erwischt werden, können mit Geldstrafen oder sogar Freiheitsstrafen belegt werden. Es ist daher wichtig, die rechtlichen Rahmenbedingungen zu kennen und einzuhalten.
 \end{mycaution}
 
+\begin{myexercise}[WireShark-Auszug]
+	Sam und Martina haben ein Python-Game geschrieben mit Multiplayer-Funktionalität innerhalb des lokalen Netzwerks. Sam hat das Spiel auf seinem Computer gestartet und Martina möchte sich mit Sams Spiel verbinden. Sams Computer hat die \gls{IP}-Adresse \commandbox|192.168.0.97| und Martinas Computer die \gls{IP}-Adresse \commandbox|192.168.0.121|. Unten ist ein WireShark-Auszug von Martinas Computer zu sehen, als sie versucht, sich mit Sams Spiel zu verbinden. Beantworten Sie die Fragen dazu.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{Grundlagen_Info/07_Netzwerke/Figures/wiresharkGame.png}
+		\caption{WireShark-Auszug von Martinas Computer}
+		\label{fig:game-wireshark}
+	\end{figure}
+	\begin{itemize}
+		\item Über welches Protokoll versucht Martina, sich mit Sams Spiel zu verbinden? Welche Vorteile bietet dies gegenüber anderen möglichen Protokollen?
+		\item Verwenden Sam und Martina ein unverschlüsseltes oder verschlüsseltes Netzwerk?
+	\end{itemize}
+
+	\begin{myanswer}
+		\begin{itemize}
+			\item Martina versucht, sich über das \gls{TCP}-Protokoll mit Sams Spiel zu verbinden. \gls{TCP} bietet den Vorteil, dass es eine zuverlässige, verbindungsorientierte Kommunikation ermöglicht. Es stellt sicher, dass alle Datenpakete in der richtigen Reihenfolge und ohne Verluste ankommen, was besonders wichtig für Multiplayer-Spiele ist, bei denen die Konsistenz der Spielzustände gewährleistet sein muss. Im Gegensatz dazu bietet beispielsweise \gls{UDP} keine Garantie für die Zustellung oder Reihenfolge der Pakete, was zu Inkonsistenzen im Spiel führen könnte. Trotzdem wird \gls{UDP} in einigen Spielen verwendet, da es schneller ist und weniger Overhead hat.
+			\item Sam und Martina verwenden ein unverschlüsseltes Netzwerk, da die Daten im Payload lesbar sind.
+		\end{itemize}
+	\end{myanswer}
+
+\end{myexercise}
+
 
 \subsection{Switches}
 Jede Netzwerkkarte kann nur mit genau einem anderen Gerät in einem lokalen Netzwerk kommunizieren. Damit mehrere Geräte in einem lokalen Netzwerk miteinander kommunizieren können, werden sogenannte \textbf{Switches} verwendet. Ein Switch ist ein Gerät, das mehrere Netzwerkkarten miteinander verbindet und es ihnen ermöglicht, Datenpakete direkt aneinander zu senden. Der Switch lernt dabei die \gls{MAC}-Adressen der angeschlossenen Geräte und leitet die Datenpakete nur an das Gerät weiter, für das sie bestimmt sind. Dadurch wird der Datenverkehr im Netzwerk effizienter gestaltet, da nicht alle Geräte jedes Datenpaket empfangen müssen.
