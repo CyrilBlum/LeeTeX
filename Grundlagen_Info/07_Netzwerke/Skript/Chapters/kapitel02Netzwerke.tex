@@ -1131,32 +1131,15 @@ Zusätzlich zur Steuerung der Datenübertragung können \gls{TCP}-Metadaten genu
 
 \begin{figure}[H]
 	\centering
-	\begin{tikzpicture}[>=Stealth, node distance=4cm and 8cm]
-		% Draw the entities
-		\tikzset{c/.append style={fill=\transportLayerColor!30,rounded corners, align=center, text width=5cm}}
-		\tikzset{person/.append style={text width=2.5cm,fill=ForestGreen!30,rounded corners,align=center}}
-		\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.2:21}};
-		\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.3:21}};
-		% Draw the arrows and labels
-		\draw[->, thick, \transportLayerColor, dashed] (Alice.south) -- node[c] { Ich möchte mit dir sprechen, Bob, auf Port 21. Bist du offen?\\SYN=0 (SEQ\# 10)} ([yshift=-3cm]Bob.south);
-		\draw[->, thick, \transportLayerColor, dashed] ([yshift=-3cm]Bob.south) -- node[c] { Ok, lass uns reden Alice! Ich bin offen auf Port 21.\\SYN=0, ACK=1 (SEQ\# 10)} ([yshift=-6cm]Alice.south);
-		\draw[->, thick, \transportLayerColor, dashed] ([yshift=-6cm]Alice.south) -- node[c] { Ok, danke Bob.\\ACK=1 (SEQ\#11)} ([yshift=-9cm]Bob.south);
-
-		\node[below of=Alice, yshift=-7cm] (AliceZeit) {Zeit};
-		\node[below of=Bob, yshift=-7cm] (BobZeit) {Zeit};
-
-		% Time line
-		\draw[->, thick] (Alice.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
-		\draw[->, thick] (Bob.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
-	\end{tikzpicture}
+	\input{Grundlagen_Info/07_Netzwerke/Skript/Chapters/kapitel02Netzwerke_fig_tcpHandshake.tex}
 	\caption{Drei-Wege-Handschlag im \gls{TCP}-Protokoll}
 	\label{fig:threewayHandshake}
 \end{figure}
 Folgende Schritte des Drei-Wege-Handschlags werden in \cref{fig:threewayHandshake} illustriert.
 \begin{enumerate}
-	\item Computer A (\textit{client}, \texttt{10.0.0.2}) erstellt eine Verbindungsanfrage zum Computer B (\textit{server}, \texttt{10.0.0.3}), mittels einem Paket, das nur das \texttt{SYN}-Flaggen gesetzt hat. Mit der \texttt{SYN}-Flagge signalisiert der \textit{client}, dass er eine Verbindung aufbauen möchte. Die Sequenznummer (SEQ\#) wird auf einen zufälligen Startwert gesetzt (in diesem Beispiel 10), um die Reihenfolge der Pakete zu verfolgen.
-	\item Der Server antwortet sowohl mit einem gesetzten \texttt{SYN} und einem \texttt{ACK}-Flaggen. Das \texttt{ACK}-Flaggen signalisiert dem \textit{client}, dass die Verbindungsanfrage empfangen wurde. Der Server setzt ebenfalls eine eigene Sequenznummer (in diesem Beispiel ebenfalls 10, da er auch mit dem Verbindungsaufbau beginnt). Das \texttt{ACK}-Flaggen enthält zudem die Sequenznummer des \textit{client} plus 1 (in diesem Beispiel also 11), um zu bestätigen, dass die ursprüngliche Verbindungsanfrage empfangen wurde.
-	\item Im letzten Schritt antwortet der \textit{client} nochmals mit einem einzelnen \texttt{ACK}-Flaggen, welches die Sequenznummer des Servers plus 1 (in diesem Beispiel also 11) enthält, um zu bestätigen, dass die Antwort des Servers empfangen wurde. Somit weiss der Server, dass der \textit{client} die Verbindung akzeptiert hat.
+	\item \textbf{Schritt 1 (\texttt{SYN}):} Computer A (\textit{Client}, \texttt{10.0.0.2}) möchte eine Verbindung zu Computer B (\textit{Server}, \texttt{10.0.0.3}) aufbauen und sendet deshalb ein \gls{TCP}-Segment mit gesetztem \texttt{SYN}-Flag. Damit signalisiert der Client, dass er die Kommunikation starten möchte, und teilt zugleich mit, mit welcher initialen Sequenznummer (\texttt{SEQ}) er seine Segmente nummeriert.
+	\item \textbf{Schritt 2 (\texttt{SYN + ACK}):} Computer B antwortet auf die Anfrage mit einem Segment, bei dem \texttt{SYN} und \texttt{ACK} gesetzt sind. Das \texttt{ACK}-Flag bestätigt den Empfang des vorherigen Segments von Computer A (inklusive dessen Sequenznummer plus 1), und das \texttt{SYN}-Flag gibt an, mit welcher eigenen initialen Sequenznummer der Server seine Segmente starten wird.
+	\item \textbf{Schritt 3 (\texttt{}ACK):} Computer A bestätigt diese Antwort abschliessend mit einem Segment mit gesetztem \texttt{ACK}-Flag. Damit ist der Verbindungsaufbau abgeschlossen: Beide Computer haben die Start-Sequenznummern synchronisiert und können nun über eine zuverlässige \gls{TCP}-Verbindung mit dem eigentlichen Datentransfer beginnen.
 \end{enumerate}
 Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen können miteinander kommunizieren.
 
@@ -1172,7 +1155,7 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
 
 			% Draw the arrows and labels
-			\draw[->, thick, \transportLayerColor, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\SYN=0 (SEQ\# 10)} ([yshift=-3cm]Alice.south);
+			\draw[->, thick, \transportLayerColor, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\\texttt{SYN, SEQ} = $x$} ([yshift=-3cm]Alice.south);
 
 			\node[below of=Alice, yshift=-1cm] (AliceZeit) {Zeit};
 			\node[below of=Bob, yshift=-1cm] (BobZeit) {Zeit};
@@ -1200,8 +1183,8 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
 
 			% Draw the arrows and labels
-			\draw[->, thick, \transportLayerColor, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\SYN=0 (SEQ\# 10)} ([yshift=-3cm]Alice.south);
-			\draw[->, thick, \transportLayerColor, dashed] ([yshift=-3cm]Alice.south) -- node[c] {Ja, gerne.\\SYN=0, ACK=1 (SEQ\# 10)} ([yshift=-6cm]Bob.south);
+			\draw[->, thick, \transportLayerColor, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\\texttt{SYN, SEQ} = $x$} ([yshift=-3cm]Alice.south);
+			\draw[->, thick, \transportLayerColor, dashed] ([yshift=-3cm]Alice.south) -- node[c] {Ja, gerne.\\\texttt{SYN, SEQ} = $y$ \texttt{ACK}=$x+1$} ([yshift=-6cm]Bob.south);
 
 			\node[below of=Alice, yshift=-4cm] (AliceZeit) {Zeit};
 			\node[below of=Bob, yshift=-4cm] (BobZeit) {Zeit};
@@ -1226,7 +1209,11 @@ Ein einfacher Anwendungsfall eines Servers ist der sogenannte \textbf{Echo-Serve
 \end{myexercise}
 
 \begin{myexercise}
-	Schauen Sie sich das Datenaustausch-Fenster von \cref{ex:filius-echo-server} genauer an. Erklären Sie, was auf jeder Zeile passiert.
+	Schauen Sie sich das Datenaustausch-Fenster von \cref{ex:filius-echo-server} genauer an. 
+	\begin{enumerate}
+		\item Erklären Sie, was auf jeder Zeile passiert. 
+		\item Über welche Ports erfolg die Kommunikation?
+	\end{enumerate}
 
 	\begin{figure}[H]
 		\centering
@@ -1236,16 +1223,25 @@ Ein einfacher Anwendungsfall eines Servers ist der sogenannte \textbf{Echo-Serve
 	\end{figure}
 
 	\begin{myanswer}
+
 		\begin{enumerate}
-			\item \textbf{Zeile 1 (ARP)}: Der Client (192.168.0.10) sendet eine ARP-Anfrage (\textit{Broadcast}) an alle Geräte im Netzwerk, um die MAC-Adresse des Servers (192.168.0.11) zu finden.
-			\item \textbf{Zeile 2 (ARP)}: Der Server (192.168.0.11) antwortet mit seiner MAC-Adresse (86:77:1C:6A:51:D7) direkt an den Client (\textit{Unicast}).
-			\item \textbf{Zeile 3 (TCP)}: Der Client startet den Drei-Wege-Handschlag mit einem SYN-Paket (Sequenznummer: 2.000.000), um eine TCP-Verbindung zum Server aufzubauen.
-			\item \textbf{Zeile 4 (TCP)}: Der Server antwortet mit SYN+ACK (eigene Sequenznummer: 1.000.000, Bestätigung: 2.000.001), um die Verbindung zu bestätigen und seine eigene Sequenznummer mitzuteilen.
-			\item \textbf{Zeile 5 (TCP)}: Der Client sendet ein ACK-Paket (Sequenznummer: 2.000.001, Bestätigung: 1.000.001), um den Drei-Wege-Handschlag abzuschliessen. Die TCP-Verbindung ist nun etabliert.
-			\item \textbf{Zeile 6 (Anwendung)}: Der Client sendet die Nachricht \enquote{Hallo!} über die etablierte TCP-Verbindung an den Echo-Server.
-			\item \textbf{Zeile 7 (TCP)}: Der Server bestätigt den Empfang der Nachricht mit einem ACK-Paket (Sequenznummer: 1.000.001, Bestätigung: 2.000.008). Die Bestätigungsnummer ist um 8 erhöht worden, da eine Nachricht mit 8 Bytes empfangen wurde.
-			\item \textbf{Zeile 8 (Anwendung)}: Der Echo-Server sendet die Nachricht \enquote{Hallo!} unverändert zurück an den Client.
-			\item \textbf{Zeile 9 (TCP)}: Der Client bestätigt den Empfang der Echo-Nachricht mit einem ACK-Paket (Sequenznummer: 2.000.008, Bestätigung: 1.000.008).
+			\item \textbf{Erklärung der Zeilen}:
+			\begin{enumerate}
+			\item \textbf{Zeile 1 (ARP)}: Der Client (\commandbox|192.168.0.10|) sendet eine \gls{ARP}-Anfrage (\textit{Broadcast}) an alle Geräte im Netzwerk, um die \gls{MAC}-Adresse des Servers (\commandbox|192.168.0.11|) zu finden.
+			\item \textbf{Zeile 2 (ARP)}: Der Server (\commandbox|192.168.0.11|) antwortet mit seiner \gls{MAC}-Adresse (\commandbox|86:77:1C:6A:51:D7|) direkt an den Client (\textit{Unicast}).
+			\item \textbf{Zeile 3 (TCP)}: Der Client startet den Drei-Wege-Handschlag mit einem SYN-Paket (Sequenznummer: \texttt{5.000.000}), um eine \gls{TCP}-Verbindung zum Server aufzubauen.
+			\item \textbf{Zeile 4 (TCP)}: Der Server antwortet mit SYN+ACK (eigene Sequenznummer: \texttt{4.000.000}, Bestätigung: \texttt{5.000.001}), um die Verbindung zu bestätigen und seine eigene Sequenznummer mitzuteilen.
+			\item \textbf{Zeile 5 (TCP)}: Der Client sendet ein ACK-Paket (Sequenznummer: \texttt{5.000.001}, Bestätigung: \texttt{4.000.001}), um den Drei-Wege-Handschlag abzuschliessen. Die \gls{TCP}-Verbindung ist nun etabliert.
+			\item \textbf{Zeile 6 (Anwendung)}: Der Client sendet die Nachricht \enquote{\texttt{hello!}} über die etablierte TCP-Verbindung an den Echo-Server.
+			\item \textbf{Zeile 7 (TCP)}: Der Server bestätigt den Empfang der Nachricht mit einem ACK-Paket (Sequenznummer: \texttt{4.000.001}, Bestätigung: \texttt{5.000.007}). Die Bestätigungsnummer ist um 7 erhöht worden, da eine Nachricht mit 7 Bytes empfangen wurde (jedes Zeichen ist ein Byte).
+			\item \textbf{Zeile 8 (Anwendung)}: Der Echo-Server sendet die Nachricht \enquote{\texttt{hello!}} unverändert zurück an den Client.
+			\item \textbf{Zeile 9 (TCP)}: Der Client bestätigt den Empfang der Echo-Nachricht mit einem ACK-Paket (Sequenznummer: \texttt{5.000.007}, Bestätigung: \texttt{4.000.007}).
+		\end{enumerate}
+			\item \textbf{Ports der Kommunikation}:
+			\begin{itemize}
+				\item Der Client verwendet den Quellport \texttt{14060} (dynamisch zugewiesener Port) und den Zielport \texttt{55555}, welchen wir in Filius beim Server als Echo-Port eingestellt haben.
+				\item Der Server verwendet den Quellport \texttt{55555} und den Zielport \texttt{14060}.
+			\end{itemize}
 		\end{enumerate}
 	\end{myanswer}
 \end{myexercise}
@@ -1258,10 +1254,10 @@ Ein Echo-Server ist zugegebenermassen ein sehr einfacher Anwendungsfall. In der 
 	\item \textbf{\acrfull{IMAP}}: Dieses Protokoll wird ebenfalls zum Abrufen von E-Mails verwendet, bietet jedoch mehr Funktionen als \gls{POP3}. Mit \gls{IMAP} können Clients E-Mails auf dem Server verwalten, ohne sie herunterzuladen. Standardmässig wird \gls{IMAP} über den Port 143 betrieben.
 \end{itemize}
 
-\begin{myexercise}[Filius-Anwendung: Email-Server]
+\begin{mychallenge}[Filius-Anwendung: Email-Server]
 	Erstellen Sie in Filius eine Client-Server-Architektur, ähnlich derjenigen aus Video 5. Diesmal soll der Server jedoch als Email-Server fungieren, der sowohl \gls{SMTP} als auch \gls{POP3} unterstützt. Installieren Sie dazu auf dem Server einen \enquote{E-Mail-Server} und auf dem Client einen \enquote{E-Mail-Client}. Indem Sie den E-Mail-Server konfigurieren, richten Sie automatich sowohl den \gls{SMTP}- wie auch den \gls{POP3}-Dienst ein.
 	Zunächst müssen Sie auf dem Server alle Konten anlegen, die es geben soll, und die Maildomain festlegen. Heisst die Maildomain beispielsweise \texttt{filius.ch}, so enden alle Email-Adressen auf \texttt{@filius.ch}. Auf der Client-Seite muss ebenfalls zuerst ein Konto eingerichtet werden. Testen Sie die Konfiguration, indem Sie eine E-Mail von einem Client an einen anderen Client senden und überprüfen, ob die E-Mail korrekt empfangen wird.
-\end{myexercise}
+\end{mychallenge}
 
 \subsection{Web-Server}
 Eine Ihnen bekannte Situation findet sich vor, wenn ein Client $\mathcal{C}$ eine Webseite von einem Server $\mathcal{S}$ anfordert. Dies geschieht beispielsweise, wenn Sie von Ihrem Mobiltelefon oder Laptop aus eine Webseite über den Browser aufrufen. Im Folgenden werden wir auf vereinfachte Weise veranschaulichen, welche Schritte geschehen müssen, damit Sie ihre Webseite sehen können.
@@ -1279,12 +1275,12 @@ Eine Ihnen bekannte Situation findet sich vor, wenn ein Client $\mathcal{C}$ ein
 	      Dabei handelt es sich um Programme, die eine Datei (meist \texttt{.html}) aus dem Internet anfordern und diese nach dem Empfang darstellen können.  Die angeforderten Dateien enthalten dabei Informationen zu Inhalten, Struktur, Darstellung und Interaktivität einer Webseite. Das Senden / Empfangen von Webseite-Dateien selber übernimmt das Betriebssystem (z.B. Windows, MacOS), nachdem es durch den Browser dazu aufgefordert wurde.
 	\item Sobald Sie Ihren Browser aufgerufen haben, geben Sie eine Web-Adresse ein. Eine solche Web-Adresse wird im Allgemeinen \gls{URL} genannt und besteht aus folgenden Komponenten:
 	      \[
-		      \underbrace{\text{http://}}_{\text{Protokoll}}
-		      \underbrace{\text{www.}}_{\text{Server}}
-		      \underbrace{\text{beispiel.}}_{\text{Domain}}
-		      \underbrace{\text{ch}}_{\text{\acrshort{TLD}\tikzmark{tld}}}
-		      \underbrace{\text{/dokumente/}}_{\text{Ordner}}
-		      \underbrace{\text{reglemente.html}}_{\text{Dateiname}}
+		      \underbrace{\text{\texttt{http://}}}_{\text{Protokoll}}
+		      \underbrace{\text{\texttt{www.}}}_{\text{Server}}
+		      \underbrace{\text{\texttt{beispiel.}}}_{\text{Domain}}
+		      \underbrace{\text{\texttt{ch}}}_{\text{\acrshort{TLD}\tikzmark{tld}}}
+		      \underbrace{\text{\texttt{/dokumente/}}}_{\text{Ordner}}
+		      \underbrace{\text{\texttt{reglemente.html}}}_{\text{Dateiname}}
 	      \]
 
 	      \begin{itemize}
@@ -1319,8 +1315,8 @@ Der schematische Ablauf eines Webseiten-Abrufs mit dem \gls{HTTP}-Protokoll ist 
 		\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
 
 		% Connections
-		\draw[process, Crimson] (clientStart.east) -- node[arrowtext, above] {\texttt{http://192.168.10.2/index.html}\\(HTTP-Anfrage \texttt{GET /index.html})} (serverStart.west);
-		\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {HTTP-Antwort \\(Statuscode + Daten)} (clientEnd.east);
+		\draw[process, Crimson] (clientStart.east) -- node[arrowtext, above] {\texttt{http://192.168.10.2/index.html}\\(\gls{HTTP}-Anfrage \texttt{GET /index.html})} (serverStart.west);
+		\draw[process, ForestGreen] (serverEnd.west) -- node[arrowtext, below] {\gls{HTTP}-Antwort \\(Statuscode + Daten)} (clientEnd.east);
 	\end{tikzpicture}
 	\caption{Schematischer Ablauf eines Webseiten-Aufrufs mit dem \gls{HTTP}-Protokoll}
 	\label{fig:http-request-simple}

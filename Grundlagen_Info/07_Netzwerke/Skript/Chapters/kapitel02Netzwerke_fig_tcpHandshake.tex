@@ -1,0 +1,20 @@
+\begin{tikzpicture}[>=Stealth, node distance=2cm and 4cm]
+		% Draw the entities
+		\tikzset{c/.append style={fill=\transportLayerColor!30,rounded corners, align=center, text width=5cm}}
+		\tikzset{person/.append style={text width=2.5cm,fill=ForestGreen!30,rounded corners,align=center}}
+		\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.2:21}};
+		\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.3:21}};
+		
+        % Draw the arrows and labels
+		\draw[->, thick, \transportLayerColor, dashed] (Alice.south) -- node[c] { Ich möchte mit dir sprechen, Bob, auf Port 21. Bist du offen?\\\texttt{SYN, SEQ} = $x$} ([yshift=-2.5cm]Bob.south);
+
+		\draw[->, thick, \transportLayerColor, dashed] ([yshift=-2.5cm]Bob.south) -- node[c] { Ok, lass uns reden Alice! Ich bin offen auf Port 21.\\\texttt{SYN, SEQ} = $y$ \texttt{ACK}=$x+1$} ([yshift=-4cm]Alice.south);
+		\draw[->, thick, \transportLayerColor, dashed] ([yshift=-4cm]Alice.south) -- node[c] { Ok, danke Bob.\\\texttt{ACK}=$y+1$} ([yshift=-6cm]Bob.south);
+
+		\node[below of=Alice, yshift=-5cm] (AliceZeit) {Zeit};
+		\node[below of=Bob, yshift=-5cm] (BobZeit) {Zeit};
+
+		% Time line
+		\draw[->, thick] (Alice.south) -- node[xshift=-.2cm, rotate=270] {Zeitachse von Alice} (AliceZeit);
+		\draw[->, thick] (Bob.south) -- node[xshift=.2cm, rotate=270] {Zeitachse von Bob} (BobZeit);
+	\end{tikzpicture}
