@@ -1137,11 +1137,17 @@ Zusätzlich zur Steuerung der Datenübertragung können \gls{TCP}-Metadaten genu
 \end{figure}
 Folgende Schritte des Drei-Wege-Handschlags werden in \cref{fig:threewayHandshake} illustriert.
 \begin{enumerate}
-	\item \textbf{Schritt 1 (\texttt{SYN}):} Computer A (\textit{Client}, \texttt{10.0.0.2}) möchte eine Verbindung zu Computer B (\textit{Server}, \texttt{10.0.0.3}) aufbauen und sendet deshalb ein \gls{TCP}-Segment mit gesetztem \texttt{SYN}-Flag. Damit signalisiert der Client, dass er die Kommunikation starten möchte, und teilt zugleich mit, mit welcher initialen Sequenznummer (\texttt{SEQ}) er seine Segmente nummeriert.
+	\item \textbf{Schritt 1 (\texttt{SYN}):} Computer A (\textit{Client}, \texttt{10.0.0.1}) möchte eine Verbindung zu Computer B (\textit{Server}, \texttt{10.0.0.2}) aufbauen und sendet deshalb ein \gls{TCP}-Segment mit gesetztem \texttt{SYN}-Flag. Damit signalisiert der Client, dass er die Kommunikation starten möchte, und teilt zugleich mit, mit welcher initialen Sequenznummer (\texttt{SEQ}) er seine Segmente nummeriert.
 	\item \textbf{Schritt 2 (\texttt{SYN + ACK}):} Computer B antwortet auf die Anfrage mit einem Segment, bei dem \texttt{SYN} und \texttt{ACK} gesetzt sind. Das \texttt{ACK}-Flag bestätigt den Empfang des vorherigen Segments von Computer A (inklusive dessen Sequenznummer plus 1), und das \texttt{SYN}-Flag gibt an, mit welcher eigenen initialen Sequenznummer der Server seine Segmente starten wird.
 	\item \textbf{Schritt 3 (\texttt{}ACK):} Computer A bestätigt diese Antwort abschliessend mit einem Segment mit gesetztem \texttt{ACK}-Flag. Damit ist der Verbindungsaufbau abgeschlossen: Beide Computer haben die Start-Sequenznummern synchronisiert und können nun über eine zuverlässige \gls{TCP}-Verbindung mit dem eigentlichen Datentransfer beginnen.
 \end{enumerate}
-Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen können miteinander kommunizieren.
+Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen können miteinander kommunizieren. Die Sequenznummern werden im Folgenden immer nach folgender Logik erhöht:
+
+\begin{itemize}
+	\item Für jedes gesendete Byte werden die Sequenznummern um 1 erhöht.
+	\item Für jedes empfangene Byte wird die Acknowledgement-Nummer um 1 erhöht.
+	\item Spezielle \gls{TCP}-Flags wie \texttt{SYN} und \texttt{FIN} erhöhen die Sequenznummer jeweils um 1.
+\end{itemize}
 
 \begin{myexercise}[Fragen zum Drei-Wege-Handschlag \cite{InfSchuleVerbindungsaufbau}]
 	Erklären Sie, weshalb es in folgendem Beispiel nicht sinnvoll wäre, dass Bob morgen ins Kino ginge.
@@ -1151,8 +1157,8 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 			% Draw the entities
 			\tikzset{c/.append style={fill=\transportLayerColor!30,rounded corners, align=center, text width=5cm}}
 			\tikzset{person/.append style={text width=2.5cm,fill=ForestGreen!30,rounded corners,align=center}}
-			\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
-			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
+			\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.1}};
+			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2}};
 
 			% Draw the arrows and labels
 			\draw[->, thick, \transportLayerColor, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\\texttt{SYN, SEQ} = $x$} ([yshift=-3cm]Alice.south);
@@ -1179,8 +1185,8 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 			% Draw the entities
 			\tikzset{c/.append style={fill=\transportLayerColor!30,rounded corners, align=center, text width=5cm}}
 			\tikzset{person/.append style={text width=2.5cm,fill=ForestGreen!30,rounded corners,align=center}}
-			\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.3:21}};
-			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2:21}};
+			\node[person](Alice) {\faFemale{} Alice\\\texttt{10.0.0.1}};
+			\node[person, right=of Alice] (Bob) {\faMale{} Bob\\\texttt{10.0.0.2}};
 
 			% Draw the arrows and labels
 			\draw[->, thick, \transportLayerColor, dashed] (Bob.south) -- node[c] { Treffen wir uns morgen um 20:00 im Kino?\\\texttt{SYN, SEQ} = $x$} ([yshift=-3cm]Alice.south);
@@ -1201,6 +1207,7 @@ Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen kö
 \end{myexercise}
 
 \section{\texorpdfstring{\textcolor{\applicationLayerColor}{Anwendungsschicht}}{Anwendungsschicht}}
+
 \subsection{Echo-Server}
 Ein einfacher Anwendungsfall eines Servers ist der sogenannte \textbf{Echo-Server}. Ein Echo-Server empfängt Nachrichten von einem Client und sendet diese unverändert zurück. Dies kann nützlich sein, um die Erreichbarkeit eines Servers zu testen oder um die Latenzzeit zwischen Client und Server zu messen. Ein Echo-Server arbeitet typischerweise auf einem bestimmten Port.
 
@@ -1212,7 +1219,7 @@ Ein einfacher Anwendungsfall eines Servers ist der sogenannte \textbf{Echo-Serve
 	Schauen Sie sich das Datenaustausch-Fenster von \cref{ex:filius-echo-server} genauer an. 
 	\begin{enumerate}
 		\item Erklären Sie, was auf jeder Zeile passiert. 
-		\item Über welche Ports erfolg die Kommunikation?
+		\item Über welche Ports erfolgt die Kommunikation beim Server und beim Client?
 	\end{enumerate}
 
 	\begin{figure}[H]
@@ -1230,12 +1237,12 @@ Ein einfacher Anwendungsfall eines Servers ist der sogenannte \textbf{Echo-Serve
 			\item \textbf{Zeile 1 (ARP)}: Der Client (\commandbox|192.168.0.10|) sendet eine \gls{ARP}-Anfrage (\textit{Broadcast}) an alle Geräte im Netzwerk, um die \gls{MAC}-Adresse des Servers (\commandbox|192.168.0.11|) zu finden.
 			\item \textbf{Zeile 2 (ARP)}: Der Server (\commandbox|192.168.0.11|) antwortet mit seiner \gls{MAC}-Adresse (\commandbox|86:77:1C:6A:51:D7|) direkt an den Client (\textit{Unicast}).
 			\item \textbf{Zeile 3 (TCP)}: Der Client startet den Drei-Wege-Handschlag mit einem SYN-Paket (Sequenznummer: \texttt{5.000.000}), um eine \gls{TCP}-Verbindung zum Server aufzubauen.
-			\item \textbf{Zeile 4 (TCP)}: Der Server antwortet mit SYN+ACK (eigene Sequenznummer: \texttt{4.000.000}, Bestätigung: \texttt{5.000.001}), um die Verbindung zu bestätigen und seine eigene Sequenznummer mitzuteilen.
-			\item \textbf{Zeile 5 (TCP)}: Der Client sendet ein ACK-Paket (Sequenznummer: \texttt{5.000.001}, Bestätigung: \texttt{4.000.001}), um den Drei-Wege-Handschlag abzuschliessen. Die \gls{TCP}-Verbindung ist nun etabliert.
-			\item \textbf{Zeile 6 (Anwendung)}: Der Client sendet die Nachricht \enquote{\texttt{hello!}} über die etablierte TCP-Verbindung an den Echo-Server.
-			\item \textbf{Zeile 7 (TCP)}: Der Server bestätigt den Empfang der Nachricht mit einem ACK-Paket (Sequenznummer: \texttt{4.000.001}, Bestätigung: \texttt{5.000.007}). Die Bestätigungsnummer ist um 7 erhöht worden, da eine Nachricht mit 7 Bytes empfangen wurde (jedes Zeichen ist ein Byte).
+			\item \textbf{Zeile 4 (TCP)}: Der Server antwortet mit \texttt{SYN+ACK} (eigene Sequenznummer: \texttt{4.000.000}, Bestätigung: \texttt{5.000.001}), um die Verbindung zu bestätigen und seine eigene Sequenznummer mitzuteilen.
+			\item \textbf{Zeile 5 (TCP)}: Der Client sendet ein \texttt{ACK}-Paket (Sequenznummer: \texttt{5.000.001}, Bestätigung: \texttt{4.000.001}), um den Drei-Wege-Handschlag abzuschliessen. Die \gls{TCP}-Verbindung ist nun etabliert.
+			\item \textbf{Zeile 6 (Anwendung)}: Der Client sendet die Nachricht \enquote{\texttt{hello!}} über die etablierte \gls{TCP}-Verbindung an den Echo-Server.
+			\item \textbf{Zeile 7 (TCP)}: Der Server bestätigt den Empfang der Nachricht mit einem \texttt{ACK}-Paket (Sequenznummer: \texttt{4.000.001}, Bestätigung: \texttt{5.000.007}). Die Bestätigungsnummer ist um 7 erhöht worden, da eine Nachricht mit 7 Bytes empfangen wurde (jedes Zeichen ist ein Byte).
 			\item \textbf{Zeile 8 (Anwendung)}: Der Echo-Server sendet die Nachricht \enquote{\texttt{hello!}} unverändert zurück an den Client.
-			\item \textbf{Zeile 9 (TCP)}: Der Client bestätigt den Empfang der Echo-Nachricht mit einem ACK-Paket (Sequenznummer: \texttt{5.000.007}, Bestätigung: \texttt{4.000.007}).
+			\item \textbf{Zeile 9 (TCP)}: Der Client bestätigt den Empfang der Echo-Nachricht mit einem \texttt{ACK}-Paket (Sequenznummer: \texttt{5.000.007}, Bestätigung: \texttt{4.000.007}).
 		\end{enumerate}
 			\item \textbf{Ports der Kommunikation}:
 			\begin{itemize}
@@ -1258,6 +1265,8 @@ Ein Echo-Server ist zugegebenermassen ein sehr einfacher Anwendungsfall. In der 
 	Erstellen Sie in Filius eine Client-Server-Architektur, ähnlich derjenigen aus Video 5. Diesmal soll der Server jedoch als Email-Server fungieren, der sowohl \gls{SMTP} als auch \gls{POP3} unterstützt. Installieren Sie dazu auf dem Server einen \enquote{E-Mail-Server} und auf dem Client einen \enquote{E-Mail-Client}. Indem Sie den E-Mail-Server konfigurieren, richten Sie automatich sowohl den \gls{SMTP}- wie auch den \gls{POP3}-Dienst ein.
 	Zunächst müssen Sie auf dem Server alle Konten anlegen, die es geben soll, und die Maildomain festlegen. Heisst die Maildomain beispielsweise \texttt{filius.ch}, so enden alle Email-Adressen auf \texttt{@filius.ch}. Auf der Client-Seite muss ebenfalls zuerst ein Konto eingerichtet werden. Testen Sie die Konfiguration, indem Sie eine E-Mail von einem Client an einen anderen Client senden und überprüfen, ob die E-Mail korrekt empfangen wird.
 \end{mychallenge}
+
+Weshalb braucht es überhaupt einen Email-Server? Ohne einen Email-Server müsste jeder Computer, der eine E-Mail senden oder empfangen möchte, direkt mit dem Computer des Empfängers kommunizieren. Dies wäre jedoch unpraktisch, insbesondere wenn der Empfänger offline ist -- in diesem Falle müsste der Sender warten, bis der Empfänger wieder online ist, um die E-Mail zuzustellen, oder die Mail würde ungelesen im Internet verloren gehen, da der Empfänger nicht erreichbar ist. Im Allgemeinen sind Servers rund um die Uhr online. Im Beispiel eines Email-Servers kann der Server die E-Mails speichern, bis der Empfänger sie abruft. Ähnlich ist es auch bei anderen Servern, wie beispielsweise Web-Servern, welche wir als nächstes betrachten.
 
 \subsection{Web-Server}
 Eine Ihnen bekannte Situation findet sich vor, wenn ein Client $\mathcal{C}$ eine Webseite von einem Server $\mathcal{S}$ anfordert. Dies geschieht beispielsweise, wenn Sie von Ihrem Mobiltelefon oder Laptop aus eine Webseite über den Browser aufrufen. Im Folgenden werden wir auf vereinfachte Weise veranschaulichen, welche Schritte geschehen müssen, damit Sie ihre Webseite sehen können.
