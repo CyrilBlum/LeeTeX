@@ -15,7 +15,7 @@ remote_pdf_exists() {
         return 1 # Always "not found" on macOS
     fi
     # Convert remote_pdf_path (PDFs/...) to absolute path on server
-    local abs_remote_path="/volume1/web/PDFs/$remote_pdf_path"
+    local abs_remote_path="/volume1/$remote_pdf_path"
     echo "::group::Checking remote PDF existence"
     echo "::notice:: abs_remote_path: $abs_remote_path"
     ssh_output=$(sshpass -p "$LEE_TEX_SSH_PASSWORD" ssh -p 50037 -o StrictHostKeyChecking=no leetex@51.154.56.61 "ls -l '$abs_remote_path'")
@@ -24,11 +24,11 @@ remote_pdf_exists() {
     echo "::notice:: ssh output:"
     echo "$ssh_output"
     if [ $ssh_exit -eq 0 ]; then
-        echo "::notice:: File $remote_pdf_path exists on server (ssh)."
+        echo "::notice:: File $abs_remote_path exists on server (ssh)."
         echo "::endgroup::"
         return 0
     else
-        echo "::notice:: File $remote_pdf_path does not exist on server (ssh)."
+        echo "::notice:: File $abs_remote_path does not exist on server (ssh)."
         echo "::endgroup::"
         return 1
     fi
@@ -296,11 +296,11 @@ for i in "${!classes[@]}"; do
         # Determine expected PDF name and remote path for remote existence check
         pdf_name="$(basename "$output_file" .tex).pdf"
         if [ "$class" = "book" ]; then
-            remote_pdf_path="PDFs/${LEVEL}/${topic}/Skript_${book_variant}/$pdf_name"
+            remote_pdf_path="web/PDFs/${LEVEL}/${topic}/Skript_${book_variant}/$pdf_name"
         elif [ "$class" = "beamer" ]; then
-            remote_pdf_path="PDFs/${LEVEL}/${main_topic}/Slides/${topic}/$pdf_name"
+            remote_pdf_path="web/PDFs/${LEVEL}/${main_topic}/Slides/${topic}/$pdf_name"
         else
-            remote_pdf_path="PDFs/${LEVEL}/${class}/${topic}/$pdf_name"
+            remote_pdf_path="web/PDFs/${LEVEL}/${class}/${topic}/$pdf_name"
         fi
 
         # Only build if the topic's input_path matches a changed file or PDF is missing on remote
