@@ -21,47 +21,8 @@ jobs:
     name: Test if runner is reachable
     runs-on: self-hosted
     steps:
-      - name: Pre-clean runner workdir + temp (self-hosted)
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "Pre-cleaning..."
-          echo "GITHUB_WORKSPACE=${GITHUB_WORKSPACE:-}"
-          echo "RUNNER_TEMP=${RUNNER_TEMP:-}"
-
-          # Clean workspace (repo checkout dir)
-          if [[ -n "${GITHUB_WORKSPACE:-}" && -d "$GITHUB_WORKSPACE" && "$GITHUB_WORKSPACE" != "/" ]]; then
-            shopt -s dotglob nullglob
-            rm -rf "${GITHUB_WORKSPACE:?}/"*
-          fi
-
-          # Clean runner temp
-          if [[ -n "${RUNNER_TEMP:-}" && -d "$RUNNER_TEMP" && "$RUNNER_TEMP" != "/" ]]; then
-            shopt -s dotglob nullglob
-            rm -rf "${RUNNER_TEMP:?}/"*
-          fi
-
       - name: Echo test
         run: echo "Runner is alive!"
-
-      - name: Post-clean runner workdir + temp (self-hosted)
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "Post-cleaning..."
-          echo "GITHUB_WORKSPACE=${GITHUB_WORKSPACE:-}"
-          echo "RUNNER_TEMP=${RUNNER_TEMP:-}"
-
-          if [[ -n "${GITHUB_WORKSPACE:-}" && -d "$GITHUB_WORKSPACE" && "$GITHUB_WORKSPACE" != "/" ]]; then
-            shopt -s dotglob nullglob
-            rm -rf "${GITHUB_WORKSPACE:?}/"*
-          fi
-
-          if [[ -n "${RUNNER_TEMP:-}" && -d "$RUNNER_TEMP" && "$RUNNER_TEMP" != "/" ]]; then
-            shopt -s dotglob nullglob
-            rm -rf "${RUNNER_TEMP:?}/"*
-          fi
 
   # This workflow contains a single job called "compile", which compiles all TeX files and sends them to a server folder via rsync
   compile:
@@ -72,26 +33,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Pre-clean runner workdir + temp (self-hosted)
-      shell: bash
-      run: |
-        set -euo pipefail
-        echo "Pre-cleaning..."
-        echo "GITHUB_WORKSPACE=${GITHUB_WORKSPACE:-}"
-        echo "RUNNER_TEMP=${RUNNER_TEMP:-}"
-
-        # Clean workspace (repo checkout dir)
-        if [[ -n "${GITHUB_WORKSPACE:-}" && -d "$GITHUB_WORKSPACE" && "$GITHUB_WORKSPACE" != "/" ]]; then
-          shopt -s dotglob nullglob
-          rm -rf "${GITHUB_WORKSPACE:?}/"*
-        fi
-
-        # Clean runner temp
-        if [[ -n "${RUNNER_TEMP:-}" && -d "$RUNNER_TEMP" && "$RUNNER_TEMP" != "/" ]]; then
-          shopt -s dotglob nullglob
-          rm -rf "${RUNNER_TEMP:?}/"*
-        fi
-
     # Debug runner environment
     - name: Debug runner environment
       shell: bash
@@ -136,7 +77,7 @@ jobs:
     # Ensure working tree is clean and up to date
     - name: Checkout latest main
       run: git checkout main
-
+      
     # Get changed files in the commit range
     - name: Get changed files
       id: changed_files
@@ -152,14 +93,12 @@ jobs:
           fi
           echo "files=$(cat changed_files.txt)" >> $GITHUB_OUTPUT
         fi
-
     # Runs the compile_tex.sh script
     - name: Run compile_tex.sh
       shell: bash
       run: |
         mkdir PDFs
         ./compile_tex.sh "${{ secrets.LEE_TEX_SSH_PASSWORD }}" "${{ steps.changed_files.outputs.files }}"
-
     - name: Upload likely culprit file
       if: failure()
       uses: actions/upload-artifact@v4
@@ -167,26 +106,6 @@ jobs:
         name: last_failed_file
         path: last_failed_file.txt
         if-no-files-found: ignore
-
-    - name: Post-clean runner workdir + temp (self-hosted)
-      if: always()
-      shell: bash
-      run: |
-        set -euo pipefail
-        echo "Post-cleaning..."
-        echo "GITHUB_WORKSPACE=${GITHUB_WORKSPACE:-}"
-        echo "RUNNER_TEMP=${RUNNER_TEMP:-}"
-
-        if [[ -n "${GITHUB_WORKSPACE:-}" && -d "$GITHUB_WORKSPACE" && "$GITHUB_WORKSPACE" != "/" ]]; then
-          shopt -s dotglob nullglob
-          rm -rf "${GITHUB_WORKSPACE:?}/"*
-        fi
-
-        if [[ -n "${RUNNER_TEMP:-}" && -d "$RUNNER_TEMP" && "$RUNNER_TEMP" != "/" ]]; then
-          shopt -s dotglob nullglob
-          rm -rf "${RUNNER_TEMP:?}/"*
-        fi
-
   notify:
     name: Send email if anything fails
     runs-on: ubuntu-latest
