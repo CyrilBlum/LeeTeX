@@ -6,9 +6,9 @@
 % name of the class
 \newcommand{\myclass}{4. Klassen}
 % set date
-\newcommand{\mydate}{17. April 2025}
+\newcommand{\mydate}{15. Januar 2025}
 
-\title{\textbf{Zahlendarstellung, Komplexitätstheorie}}
+\title{\textbf{Komplexitätstheorie}}
 \author{Thomas Graf\\
 	\mycourse, \myclass}
 \date{\mydate}
@@ -18,7 +18,7 @@
 \begin{center}
 	\fbox{\parbox{140mm}{\centering
 			\begin{itemize}
-				\item Dauer der Prüfung: $85$ Minuten
+				\item Dauer der Prüfung: $60$ Minuten
 				      %\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
 				\item Erlaubte Hilfsmittel:
 				      \begin{itemize}
@@ -95,7 +95,7 @@
 		\vspace{0.5cm}
 		Beweise oder widerlege die Behauptung oder finde ein Gegenbeispiel. Begründe deine Antwort!
 		\begin{solution}
-			richtig, $a_n\in O(b_n)$ impliziert, dass eine Konstante $C_0>0$ existiert mit $a_n / b_n < C_1$ und $b_n\in O(a_n)$ impliziert, dass eine Konstante $C_1>0$ existiert mit $b_n / a_n < C_1$. Wähle also $C:=\max\lr{C_0, 1/C_1}$.
+			richtig, $a_n\in O(b_n)$ impliziert, dass eine Konstante $C_0>0$ existiert mit $a_n / b_n < C_0$ und $b_n\in O(a_n)$ impliziert, dass eine Konstante $C_1>0$ existiert mit $b_n / a_n < C_1$. Wähle also $C:=\max\lr{C_0, 1/C_1}$.
 		\end{solution}
 		\droptotalpoints
 	\end{parts}
@@ -154,9 +154,9 @@
 
 	\question[2] Erkläre genau, wie man fast jeden Algorithmus modifizieren kann, sodass er eine gute best-case Laufzeit hat. Erkläre die Modifikation am konkreten Beispiel von \texttt{insertion\_sort}. Natürlich musst du hier nicht den \texttt{insertion\_sort} Algorithmus hinschreiben.
 	\begin{solution}
-		Sei $A$ ein gegebener Algorithmus. Wir wollen $A$ modifizieren. Der modifizierte Algorithmus soll $B$ heissen. $B$ produziert zuerst einen zufälligen Output (im gewünschten Format) und überprüft, ob dieser Output das Ziel von $A$ erfüllt. Falls dies der Fall ist, dann ist $B$ mit der Arbeit fertig (best-case). Anderenfalls verwendet $B$ einfach, wie gewohnt, den Algorithmus $A$, um das Problem zu lösen. Die best-case Laufzeit reduziert sich also lediglich auf das Überprüfen einer Lösung, nicht jedoch auf das Produzieren einer solchen.
+		Sei $A$ ein gegebener Algorithmus. Wir wollen $A$ modifizieren. Der modifizierte Algorithmus soll $B$ heissen. $B$ erstellt einen beliebigen Output im gewünschten Format und überprüft, ob dieser Output das Ziel von $A$ erfüllt.	Falls dies der Fall ist, dann ist $B$ mit der Arbeit fertig (best-case). Anderenfalls verwendet $B$ einfach, wie gewohnt, den Algorithmus $A$, um das Problem zu lösen. Die best-case Laufzeit reduziert sich also lediglich auf das Überprüfen einer Lösung, nicht jedoch auf das Produzieren einer solchen.
 
-		Konkret bei \texttt{insertion\_sort}: $A$ ist der \texttt{insertion\_sort} Algorithmus. $B$ permutiert die gegebene Liste zufällig und prüft, ob die Elemente nun bereits sortiert sind. Sollte dies der Fall sein, wird die permutierte Liste ausgegeben (best-case). Ansonsten ruft $B$ einfach $A$, also \texttt{insertion\_sort} auf.
+		Konkret bei \texttt{insertion\_sort}: $A$ ist der \texttt{insertion\_sort} Algorithmus. Da der Input (zu sortierende Liste) bereits das Format des Outputs hat, muss $B$ lediglich prüfen, ob die Liste bereits sortiert ist. Sollte dies der Fall sein, wird die Liste (der Input) direkt als Ouput ausgegeben (best-case). Ansonsten ruft $B$ einfach $A$, also \texttt{insertion\_sort}, auf.
 	\end{solution}
 
 
@@ -174,48 +174,48 @@
 			Wir wissen, dass es Algorithmen gibt, welche eine gewünschte Matrix-Matrix-Multiplikation in $O\lr{n^{2.38}}$ implementieren. Damit ist die erste Aussage sicherlich falsch.
 			Der Algorithmus
 			\begin{lstlisting}[language=Python, numbers=none]
-# Multiply n x n matrices a and b
-def mmm(A, B, C, n):
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                C[i*n + j] += A[i*n + k] * B[k*n + j]
-                for h in range(n):
-                    print(h)
-\end{lstlisting}
+				# Multiply n x n matrices a and b
+				def mmm(A, B, C, n):
+					for i in range(n):
+						for j in range(n):
+							for k in range(n):
+								C[i * n + j] += A[i * n + k] * B[k * n + j]
+								for h in range(n):
+									print(h)
+			\end{lstlisting}
 			implementiert eine gewünschte Matrix-Matrix-Multiplikation in Zeit $\Theta\lr{n^4}$. Somit sind auch die zweite und dritte Behauptung falsch.
 		\end{solution}
 		\part[1] Beschreibe ein algorithmisches Problem und einen Algorithmus für dieses Problem, welcher eine Laufzeit von $\Theta\lr{n}$ hat.
 		\droptotalpoints
 		\begin{solution}
 			\begin{lstlisting}[language=Python, numbers=none]
-# finde maximales Element in Array A der Länge n
-def find_max(A):
-    currentMax = A[0]
-    for element in A:
-        if element > currentMax:
-            currentMax = element
-    return currentMax
-\end{lstlisting}
+				# finde maximales Element in Array A der Länge n
+				def find_max(A):
+					currentMax = A[0]
+					for element in A:
+						if element > currentMax:
+							currentMax = element
+					return currentMax
+			\end{lstlisting}
 		\end{solution}
 	\end{parts}
 
 
 	\question Gegeben sei der folgende Suchalgorithmus:
-	\begin{lstlisting}[language=Python]
-def search(E, n, key):
-    left = 0
-    right = n - 1
+		\begin{lstlisting}[language=Python]
+		def search(E, n, key):
+			left = 0
+			right = n - 1
 
-    while left <= right:
-        if E[left] == key or E[right] == key:
-            return True
+			while left <= right:
+				if E[left] == key or E[right] == key:
+					return True
 
-        left += 1
-        right -= 1
+				left += 1
+				right -= 1
 
-    return False
-\end{lstlisting}
+			return False
+		\end{lstlisting}
 	Als Eingabe erhält er ein Array \verb|E| mit \verb|n| Einträgen sowie einen Schlüssel \verb|key| für den er überprüft, ob er in dem
 	Eingabe-Array enthalten ist oder nicht.
 	\begin{parts}
@@ -238,16 +238,16 @@ def search(E, n, key):
 	\begin{parts}
 		\part[1] \leavevmode
 		\begin{lstlisting}[language=Python]
-import random
+			import random
 
-a = 0
-b = 2
+			a = 0
+			b = 2
 
-for i in range(n):
-    for j in range(n):
-        b += random.randint(0, RAND_MAX)
-        a = a + b * random.randint(0, RAND_MAX)
-\end{lstlisting}
+			for i in range(n):
+				for j in range(n):
+					b += random.randint(0, RAND_MAX)
+					a = a + b * random.randint(0, RAND_MAX)
+			\end{lstlisting}
 		\begin{checkboxes}
 			\choice $\Theta\lr{n}$
 			\choice $\Theta\lr{\sqrt{n}}$
@@ -259,19 +259,19 @@ for i in range(n):
 
 		\part[1] \leavevmode
 		\begin{lstlisting}[language=Python]
-import random
+			import random
 
-maximum = 1000
+			maximum = 1000
 
-a = 0
-b = 0
+			a = 0
+			b = 0
 
-for i in range(n):
-    a = a + random.randint(0, maximum)
+			for i in range(n):
+				a = a + random.randint(0, maximum)
 
-for j in range(n):
-    b = b + random.randint(0, maximum)
-\end{lstlisting}
+			for j in range(n):
+				b = b + random.randint(0, maximum)
+		\end{lstlisting}
 		\begin{checkboxes}
 			\correctchoice $\Theta\lr{n}$
 			\choice $\Theta\lr{\sqrt{n}}$
@@ -282,13 +282,13 @@ for j in range(n):
 		\end{checkboxes}
 		\part[1] \leavevmode
 		\begin{lstlisting}[language=Python]
-a = 0
-i = n
+			a = 0
+			i = n
 
-while i > 0:
-    a += i
-    i //= 2  # Integer division
-\end{lstlisting}
+			while i > 0:
+				a += i
+				i //= 2  # Integer division
+		\end{lstlisting}
 		\begin{checkboxes}
 			\choice $\Theta\lr{n}$
 			\choice $\Theta\lr{\sqrt{n}}$
@@ -300,16 +300,16 @@ while i > 0:
 
 		\part[1] \leavevmode
 		\begin{lstlisting}[language=Python]
-i = n // 2
-k = 0
+			i = n // 2
+			k = 0
 
-while i <= n:
-    j = 2
-    while j <= n:
-        k = k + n // 2
-        j = j * 2
-    i += 1
-\end{lstlisting}
+			while i <= n:
+				j = 2
+				while j <= n:
+					k = k + n // 2
+					j = j * 2
+				i += 1
+		\end{lstlisting}
 		\begin{checkboxes}
 			\choice $\Theta\lr{n}$
 			\choice $\Theta\lr{\sqrt{n}}$
@@ -322,16 +322,16 @@ while i <= n:
 
 	\question Der Algorithmus \verb|bubbleSort| ist gegeben durch:
 	\begin{lstlisting}[language=Python]
-# A function to implement bubble sort
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n - 1):
-        # Last i elements are already in place
-        for j in range(n - i - 1):
-            if arr[j] > arr[j + 1]:
-                # Swap elements
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-\end{lstlisting}
+		# A function to implement bubble sort
+		def bubble_sort(arr):
+			n = len(arr)
+			for i in range(n - 1):
+				# Last i elements are already in place
+				for j in range(n - i - 1):
+					if arr[j] > arr[j + 1]:
+						# Swap elements
+						arr[j], arr[j + 1] = arr[j + 1], arr[j]
+	\end{lstlisting}
 	\begin{parts}
 		\part[2] Bestimme die worst-case Laufzeit von \verb|bubbleSort|. Zeige deine Schritte ausführlich.
 		\begin{solution}
@@ -347,7 +347,7 @@ def bubble_sort(arr):
 	\end{parts}
 	\clearpage
 	\noindent
-	Es seien $f$ und $g$ Folgen reeller Zahlen\footnote{Für unsere Zwecke reicht die Betrachtung von Folgen natürlicher Zahlen.}.\\
+	Es seien $f$ und $g$ Folgen reeller Zahlen.\\
 	\vspace{0.5cm}
 	\centering
 	\small
