@@ -15,7 +15,7 @@ remote_pdf_exists() {
         return 1 # Always "not found" on macOS
     fi
     # Convert remote_pdf_path (PDFs/...) to absolute path on server
-    local abs_remote_path="/volume1/LeeTeX/$remote_pdf_path"
+    local abs_remote_path="/volume1/web/PDFs/$remote_pdf_path"
     echo "::group::Checking remote PDF existence"
     echo "::notice:: abs_remote_path: $abs_remote_path"
     ssh_output=$(sshpass -p "$LEE_TEX_SSH_PASSWORD" ssh -p 50037 -o StrictHostKeyChecking=no leetex@51.154.56.61 "ls -l '$abs_remote_path'")
@@ -355,7 +355,7 @@ for i in "${!classes[@]}"; do
         # Copy all files and folders from PDFs to Cyril's Synology NAS
         if [[ "$OSTYPE" != *darwin* ]]; then
             # Use sshpass to provide the password non-interactively
-            sshpass -p "$LEE_TEX_SSH_PASSWORD" rsync -av --chmod=ugo=rwX -e "ssh -p 50037 -o StrictHostKeyChecking=no" "${root_dir}/PDFs/" leetex@51.154.56.61:/volume1/LeeTeX/PDFs/
+            sshpass -p "$LEE_TEX_SSH_PASSWORD" rsync -av --chmod=ugo=rwX -e "ssh -p 50037 -o StrictHostKeyChecking=no" "${root_dir}/PDFs/" leetex@51.154.56.61:/volume1/web/PDFs/
 
             if [ $? -ne 0 ]; then
                 echo "::error::rsync failed. Aborting."
