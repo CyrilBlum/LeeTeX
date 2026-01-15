@@ -1,7 +1,6 @@
 #!/bin/bash
 # At the top of compile_tex.sh
-LEE_TEX_SSH_PASSWORD="$1"
-CHANGED_FILES_CSV="$2"
+CHANGED_FILES_CSV="$1"
 
 # Parse changed files into an array (if provided)
 IFS=',' read -r -a CHANGED_FILES <<<"$CHANGED_FILES_CSV"
@@ -18,7 +17,7 @@ remote_pdf_exists() {
     local abs_remote_path="/volume1/$remote_pdf_path"
     echo "::group::Checking remote PDF existence"
     echo "::notice:: abs_remote_path: $abs_remote_path"
-    ssh_output=$(sshpass -p "$LEE_TEX_SSH_PASSWORD" ssh -p 50037 -o StrictHostKeyChecking=no leetex@51.154.56.61 "ls -l '$abs_remote_path'")
+    ssh_output=$(ssh synology "ls -l '$abs_remote_path'")
     ssh_exit=$?
     echo "::notice:: ssh exit code: $ssh_exit"
     echo "::notice:: ssh output:"
@@ -355,7 +354,7 @@ for i in "${!classes[@]}"; do
         # Copy all files and folders from PDFs to Cyril's Synology NAS
         if [[ "$OSTYPE" != *darwin* ]]; then
             # Use sshpass to provide the password non-interactively
-            sshpass -p "$LEE_TEX_SSH_PASSWORD" rsync -av --chmod=ugo=rwX -e "ssh -p 50037 -o StrictHostKeyChecking=no" "${root_dir}/PDFs/" leetex@51.154.56.61:/volume1/web/PDFs/
+            rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" synology:/volume1/web/PDFs/
 
             if [ $? -ne 0 ]; then
                 echo "::error::rsync failed. Aborting."
