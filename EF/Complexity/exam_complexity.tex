@@ -95,7 +95,36 @@
 		\vspace{0.5cm}
 		Beweise oder widerlege die Behauptung oder finde ein Gegenbeispiel. Begründe deine Antwort!
 		\begin{solution}
-			richtig, $a_n\in O(b_n)$ impliziert, dass eine Konstante $C_0>0$ existiert mit $a_n / b_n < C_0$ und $b_n\in O(a_n)$ impliziert, dass eine Konstante $C_1>0$ existiert mit $b_n / a_n < C_1$. Wähle also $C:=\max\lr{C_0, 1/C_1}$.
+			Die Behauptung ist wahr. Da $a_n, b_n > 0$ für alle $n \in \mathbb{N}$, ist das Verhältnis $\frac{a_n}{b_n}$ stets wohldefiniert und positiv.
+
+\begin{enumerate}
+    \item \textbf{Anwendung der Definitionen:}
+    \begin{itemize}
+        \item Aus $a_n \in O(b_n)$ folgt: Es existieren $C_0 > 0$ und $N_0 \in \mathbb{N}$, sodass für alle $n \geq N_0$ gilt:
+        \begin{equation} a_n \leq C_0 b_n \implies \frac{a_n}{b_n} \leq C_0 \end{equation}
+        \item Aus $b_n \in O(a_n)$ folgt: Es existieren $C_1 > 0$ und $N_1 \in \mathbb{N}$, sodass für alle $n \geq N_1$ gilt:
+        \begin{equation} b_n \leq C_1 a_n \implies \frac{1}{C_1} \leq \frac{a_n}{b_n} \end{equation}
+    \end{itemize}
+
+    \item \textbf{Zusammenführung für fast alle (alle ausser endlich viele) $n$:}\\
+    Setze $N := \max\lrc{N_0, N_1}$. Für alle $n \geq N$ gilt:
+    \begin{equation} \frac{1}{C_1} \leq \frac{a_n}{b_n} \leq C_0 \end{equation}
+
+    \item \textbf{Erweiterung auf alle $n \in \mathbb{N}$:}\\
+    Um die Schranken für die gesamte Folge zu finden, betrachten wir die endliche Menge der Quotienten vor dem Index $N$:
+    \[ S = \left\{ \frac{a_1}{b_1}, \frac{a_2}{b_2}, \dots, \frac{a_{N-1}}{b_{N-1}} \right\} \]
+    Wir definieren nun das globale Maximum $M$ und Minimum $m$:
+    \begin{align*}
+        M &:= \max\lr{S \cup \{C_0\}} \\
+        m &:= \min\lr{S \cup \{1/C_1\}}
+    \end{align*}
+    Da alle beteiligten Werte positiv sind, gilt für alle $n \in \mathbb{N}$: $0 < m \leq \frac{a_n}{b_n} \leq M < \infty$.
+
+    \item \textbf{Wahl der Konstante $C$:}\\
+    Wähle $C := \max\lrc{ M + 1, \frac{1}{m} + 1}$. Da $M+1 > M$ und $\frac{1}{m}+1 > \frac{1}{m}$ (woraus $m > \frac{1}{M+1}$ folgt), ergibt sich für alle $n \in \mathbb{N}$:
+    \[ C^{-1} < m \leq \frac{a_n}{b_n} \leq M < C \]
+\end{enumerate}
+Damit ist die Existenz einer solchen Konstante $C$ bewiesen.
 		\end{solution}
 		\droptotalpoints
 	\end{parts}
@@ -116,13 +145,13 @@
 			ist die Behauptung wahr.
 		\end{solution}
 
-		\part[1] $\lr{5\cos\lr{m^2}m}\in O\lr{m}$
+		\part[1] $\lr{5\cos\lr{\pi m^2}m}\in O\lr{m}$
 		\begin{solution}
 			Wegen
 			\begin{align*}
-				 & \limsup_{m\to\infty}\frac{\abs{5\cos\lr{m^2}m}}{\abs{m}} = \\
-				 & =\limsup_{m\to\infty} 5\abs{\cos\lr{m^2}} =                \\
-				 & =5 < \infty,
+				 & \limsup_{m\to\infty}\frac{\abs{5\cos\lr{\pi m^2}m}}{\abs{m}} = \\
+				 & =\limsup_{m\to\infty} 5\abs{\cos\lr{\pi m^2}} =                \\
+				 & = 5 < \infty,
 			\end{align*}
 			ist die Behauptung wahr.
 		\end{solution}
@@ -152,12 +181,25 @@
 	\end{parts}
 
 
-	\question[2] Erkläre genau, wie man fast jeden Algorithmus modifizieren kann, sodass er eine gute best-case Laufzeit hat. Erkläre die Modifikation am konkreten Beispiel von \texttt{insertion\_sort}. Natürlich musst du hier nicht den \texttt{insertion\_sort} Algorithmus hinschreiben.
+	\question[2] Erkläre genau, wie man fast jeden Algorithmus $A$  modifizieren kann, sodass er eine \enquote{gute} best-case Laufzeit hat.
 	\begin{solution}
-		Sei $A$ ein gegebener Algorithmus. Wir wollen $A$ modifizieren. Der modifizierte Algorithmus soll $B$ heissen. $B$ erstellt einen beliebigen Output im gewünschten Format und überprüft, ob dieser Output das Ziel von $A$ erfüllt.	Falls dies der Fall ist, dann ist $B$ mit der Arbeit fertig (best-case). Anderenfalls verwendet $B$ einfach, wie gewohnt, den Algorithmus $A$, um das Problem zu lösen. Die best-case Laufzeit reduziert sich also lediglich auf das Überprüfen einer Lösung, nicht jedoch auf das Produzieren einer solchen.
+Aus didaktischen gründen beschreiben die Modifikation stets anhand von zwei verschiedenen Algorithmen: Dem $\Theta(n^2)$ \lstinline|bubble_sort| Algorithmus (siehe \cref{listing:bubble_pre}) zum Sortieren eines Arrays $L$ der Länge $n$ und einem $\Theta(n^3)$ Algorithmus \lstinline|det| (siehe \cref{listing:det_pre_check}) zur Berechnung des Determinanten einer gegeben $n\times n$-Matrix $M$. Die Modifikation für den allgmeinen Fall ist analog durchzuführen.
 
-		Konkret bei \texttt{insertion\_sort}: $A$ ist der \texttt{insertion\_sort} Algorithmus. Da der Input (zu sortierende Liste) bereits das Format des Outputs hat, muss $B$ lediglich prüfen, ob die Liste bereits sortiert ist. Sollte dies der Fall sein, wird die Liste (der Input) direkt als Ouput ausgegeben (best-case). Ansonsten ruft $B$ einfach $A$, also \texttt{insertion\_sort}, auf.
-	\end{solution}
+\begin{enumerate}
+\item Prüfe, ob die erhaltene Eingabe eine besonders einfachen Instanzen ist:
+\begin{itemize}
+	\item Für \lstinline|bubble\_sort|: Überprüfe, ob das Array $L$ bereits sortiert ist.\footnote{Eine solche Überprüfung (pre-Check) kann meist in kurzer Zeit durchgeführt werden (z.B. in $\Theta(n)$, um die Ordnung in einem Array der Länge $n$ zu überprüfen bzw. in $O(n^2)$, um die Struktur einer Matrix zu überprüfen).}
+	\item Für \lstinline|det|: Überprüfe ob $M$ entweder eine Diagonalmatrix ist oder (mindestens) eine Nullzeile / Nullspalte besitzt.
+\end{itemize}
+\item Falls \enquote{ja}, berechne die Lösung für diese einfache Instanz (das Array $L$ bleibt unverändert, Determinate in diesen einfachen Fällen berechnen) und akzeptiere diese Lösung als Ausgabe.
+\item Falls \enquote{nein}, führe den ursprünglichen Algorithmus $A$ aus und übernimm dessen Ausgabe.
+\end{enumerate}
+
+Natürlich wird durch diese Modifikation $A$ seine Laufzeit im worst-case verlangsamt (wegen der Kosten den pre-Check). Dennoch hat der modifizierte Algorithmus eine gute best-case Laufzeit, da er für einfache Instanzen sehr schnell die Lösung berechnen kann.
+
+\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{bubble\_pre.py},label=listing:bubble_pre,numbers=left]{EF/Complexity/Code/bubble_pre.py}
+\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{det\_pre\_check.py},label=listing:det_pre_check,numbers=left]{EF/Complexity/Code/det_pre_check.py}
+\end{solution}
 
 
 	\clearpage
@@ -191,11 +233,11 @@
 			\begin{lstlisting}[language=Python, numbers=none]
 				# finde maximales Element in Array A der Länge n
 				def find_max(A):
-					currentMax = A[0]
+					current_max = A[0]
 					for element in A:
-						if element > currentMax:
-							currentMax = element
-					return currentMax
+						if element > current_max:
+							current_max = element
+					return current_max
 			\end{lstlisting}
 		\end{solution}
 	\end{parts}
@@ -359,7 +401,7 @@
 		\hline
 		$f \in O(g)$      & $\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$ & $f$ wächst höchstens so schnell wie $g$             \\
 		\hline
-		$f \in \Omega(g)$ & $\liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} > 0$      & \makecell{$f$ wächst mindestens so schnell wie $g$, \\$g\in O(f)$}                          \\
+		$f \in Lmega(g)$ & $\liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} > 0$      & \makecell{$f$ wächst mindestens so schnell wie $g$, \\$g\in O(f)$}                          \\
 		\hline
 		$f \in \Theta(g)$ & \makecell{$f \in O(g)\cap \Omega(g)$,                                                                                  \\ $0 < \liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} \leq$ \\ $\leq\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$} & \makecell{$f$ wächst gleich schnell wie $g$,        \\sowohl $f\in O(g)$ als auch $f\in\Omega(g)$} \\
 		\hline
