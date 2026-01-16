@@ -1,6 +1,6 @@
 def A_modifiziert(L):
     n = len(L)
-    
+
     #### Pre-Check ####
     # Prüfe, ob die Liste bereits sortiert ist O(n)
     is_sorted = True
@@ -14,5 +14,5 @@ def A_modifiziert(L):
 
     # #### FALLBACK: Originaler Algorithmus A (O(n^2)) ####
     bubble_sort(L)
-            
-    return L  # Worst-Case: O(n^2)  
+
+    return L  # Worst-Case: O(n^2)

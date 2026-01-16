@@ -1,0 +1,81 @@
+\lstset{style=Python,escapeinside={(*@}{@*)}}
+\fboxsep=.6pt
+
+% Define a toggle for exerciseonly mode (false by default)
+\newtoggle{exerciseonly}
+\settoggle{exerciseonly}{false}
+
+% Check for the class option 'exerciseonly'
+\makeatletter
+\@ifclasswith{book}{exerciseonly}{%
+	\settoggle{exerciseonly}{true}%
+}{}
+\makeatother
+
+% load package if document contains at least one citation
+\usepackage[maxbibnames=99,sorting=none,style=numeric,backend=biber]{biblatex}
+% enable option to print bibliography as a numbered subsection
+\defbibheading{bibsubsection}[\bibname]{%
+  \subsection{#1}%
+}
+
+\setcounter{tocdepth}{2} % Show up to subsections in ToC
+
+\addbibresource{refs.bib}
+
+% Access metadata from the git distributed version control system
+\usepackage[grumpy,mark,maxdepth=8]{gitinfo2}
+
+\begin{document}
+%% Project-specific Preambles 
+\settoggle{includelogo}{true}
+
+\newcommand{\thesubject}{Informatik}
+\newcommand{\thetopic}{Digitale Logik und Hardware}
+\newcommand{\theplace}{Winterthur}
+\newcommand{\thelogo}{Logos/LeeLogo}
+\newcommand{\logosize}{.5\textwidth}
+
+\settoggle{oneauthor}{false}
+\settoggle{twomainauthors}{false}
+\def\mainauthors{
+	Michael Anderegg/michael.anderegg@edu.zh.ch
+}
+\def\majorcontributors{
+	Thomas Graf/thomas.graf@edu.zh.ch
+}
+\def\firstmainauthor{Michael Anderegg}
+\def\firstmainauthormail{michael.anderegg@edu.zh.ch}
+
+\lhead[ \leftmark ]{\thetopic}
+\rhead[\thesubject]{\textcopyleft{} \thesubject, \the\year}
+
+\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+\maketitlepage{\thetopic}{}
+\tableofcontents
+\clearpage
+
+%% content %%
+\input{Grundlagen_Info/11_Hardware/Skript/Einleitung.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/Einleitung_Veroeffentlichung.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/00_Boolesche_Logik.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/01_Logikgatter.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/02_Boolesche_Arithmetik.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/03_ALU.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/04_Speicher.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/05_Computer.tex}
+\clearpage
+
+
+\appendix
+% \input{Grundlagen_Info/11_Hardware/Skript/Lernziele.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/Appendix.tex}
+% \input{Grundlagen_Info/11_Hardware/Skript/Cheatsheet.tex}
+% \backmatter
+% \listoftables\clearpage
+% \listoffigures\clearpage
+% \printbibliography[heading=bibintoc]
+% \printindex
+% \printglossary[type=\acronymtype]
+
+\end{document}
