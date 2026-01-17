@@ -1,18 +1,28 @@
-\section{Boolesche Logik}\label{sect:boolscheLogik}
-Als der irische Mathematiker George Boole im Jahr 1847 mit seinem Werk \emph{The Mathematical Analysis of Logic} \cite*{boole}
- erstmals eine formale Beschreibung der Logik lieferte, konnte er nicht ahnen, dass seine Ideen die Grundlage für die Entwicklung von Computern bilden würden. Der Zusammenhang zwischen logischen Formeln und digitalen Schaltkreisen wurde erst 90 Jahre später durch den US-amerikanischen Mathematiker und Elektrotechniker Claude Shannon entdeckt und in seiner Arbeit \emph{A Symbolic Analysis of Relay and Switching Circuits} von 1937 veröffentlicht \cite*{shannon}. 
+\chapter{Boolesche Logik}\label{ch:BoolscheLogik}
+Als der irische Mathematiker George Boole im Jahr 1847 mit seinem Werk \emph{The Mathematical Analysis of Logic} \cite{Boole} erstmals eine formale Beschreibung der Logik lieferte, konnte er nicht ahnen, dass seine Ideen die Grundlage für die Entwicklung von Computern bilden würden. Der Zusammenhang zwischen logischen Formeln und digitalen Schaltkreisen wurde erst 90 Jahre später durch den US-amerikanischen Mathematiker und Elektrotechniker Claude Shannon entdeckt und in seiner Arbeit \emph{A Symbolic Analysis of Relay and Switching Circuits} von 1937 veröffentlicht \cite{shannon}. 
 
 In diesem Kapitel werden wir die Grundzüge der Booleschen Algebra kennenlernen, bevor wir sie im darauffolgenden Kapitel mit elektronischen Schaltkreisen in Verbindung bringen.
 
-\begin{ueb}{Einstiegsproblem}{EinstiegLogik}
-    Zoé schlägt ihren Freund*innen Adam, Bea, Chloé, Damian und Fiona einen Ausflug vor. Chloé sagt: \glqq Ich komme, aber nur, falls Adam und Bea nicht beide kommen.\grqq{} Damian meint hingegen: \glqq Ich komme, aber nur, falls Adam auch dabei ist, oder Bea zu Hause bleibt.\grqq{} Fiona meint schliesslich: \glqq Wenn Adam kommt und Bea zuhause bleibt, oder umgekehrt, wenn Adam zuhause bleibt und Bea kommt, bin ich auch dabei. Ansonsten bleibe ich zu Hause.\grqq{}
+\begin{myexercise}[Einstiegsaufgabe]\label{myexercise:EinstiegLogik}
+    Zoé schlägt ihren Freunden Adam, Bea, Chloé, Damian und Fiona einen Ausflug vor. Chloé sagt:
+    \begin{quote}
+    Ich komme, aber nur, falls Adam und Bea nicht beide kommen.
+    \end{quote}
+
+    Damian meint hingegen sagt:
+    \begin{quote}
+    Ich komme, aber nur, falls Adam auch dabei ist, oder Bea zu Hause bleibt.
+    \end{quote}
+    Fiona meint schliesslich:
+    \begin{quote}
+    Wenn Adam kommt und Bea zuhause bleibt, oder umgekehrt, wenn Adam zuhause bleibt und Bea kommt, bin ich auch dabei. Ansonsten bleibe ich zu Hause.
+    \end{quote}
 
     Je nach Teilnahme von Adam und Bea werden die anderen drei also ebenfalls teilnehmen oder dem Ausflug fernbleiben. 
     
-    Verschaffen Sie sich anhand der nachstehenden Tabelle einen Überblick darüber, wer unter welchen Bedingungen mit von der Partie ist. Darin bedeutet eine 1, dass die entsprechende Person kommt, und eine 0, dass sie fernbleibt. Die vier Zeilen der Tabelle entsprechen den vier Bedingungen, zu denen Adam und Bea teilnehmen könnten (beide bleiben fern, nur Bea nimmt teil, nur Adam nimmt teil, beide nehmen teil). Die dritte Spalte spiegelt die Aussage von Chloé wider, dass sie teilnimmt, falls Adam und Bea nicht beide mitkommen.
+    Verschaffen Sie sich anhand der nachstehenden Tabelle einen Überblick darüber, wer unter welchen Bedingungen mit von der Partie ist. Darin bedeutet eine 1, dass die entsprechende Person kommt, und eine $0$, dass sie fernbleibt. Die vier Zeilen der Tabelle entsprechen den vier Bedingungen, zu denen Adam und Bea teilnehmen könnten (beide bleiben fern, nur Bea nimmt teil, nur Adam nimmt teil, beide nehmen teil). Die dritte Spalte spiegelt die Aussage von Chloé wider, dass sie teilnimmt, falls Adam und Bea nicht beide mitkommen.
 
     Füllen Sie die beiden Spalten von Damian und Fiona entsprechend aus, sodass die Einträge zur Aussage der jeweiligen Person passen.
-    
         \begin{center}
             \begin{tabular}{ |c|c||c|c|c| } 
              \hline
@@ -25,36 +35,36 @@ In diesem Kapitel werden wir die Grundzüge der Booleschen Algebra kennenlernen,
              \hline
             \end{tabular}
         \end{center}
-    
-    
-\end{ueb}
-\clearpage
+    \begin{myanswer}
+        Diese Musterlösung finden Sie in \cref{sec:00_BoolscheLogik_Loesungen}.
+    \end{myanswer}
+\end{myexercise}
  
-Die Tabelle aus dem \glqq Einstiegsproblem\grqq{}ist ein erstes Beispiel für das, was man in der Logik eine Wahrheitstabelle nennt. Betrachten Sie dazu den bereits ausgefüllten Bereich der Tabelle mit den Angaben zu Adam, Bea und Chloé. Die Teilnahme von Chloé kann eindeutig aus den Informationen über die Teilnahme von Adam und Bea ermittelt werden. Chloés Aussage, dass sie genau dann am Ausflug teilnimmt, wenn Adam und Bea nicht beide erscheinen, kann als eine Funktion der Form $(a,b) \mapsto c(a,b)$ aufgefasst werden, wobei $a, b$ und $c$ den Wert 1 oder 0 haben und für die Teilnahme von Adam, Bea und Chloé stehen. Dies ist ein Beispiel für eine sogenannte Boolesche Funktion:
-\begin{definition}
-    {Boolesche Logik, Variablen und Funktionen}{}
-    Die \emph{Boolesche Logik} handelt von Operationen und Funktionen auf Variablen, die genau zwei Werte annehmen können. Solche Variablen nennt man \emph{Boolesche Variablen} und die Werte, welche sie annehmen können, werden je nach Kontext mit wahr/falsch, ja/nein, hohe/tiefe Spannung oder auf viele weitere Arten bezeichnet. Der Einfachheit halber werden wir sie mit 1 und 0 bezeichnen – genauso wie auch die Werte einzelner Bits in der Informatik.
+Die Tabelle in \cref{myexercise:EinstiegLogik} ist ein erstes Beispiel für das, was man in der Logik eine \emph{Wahrheitstabelle}\index{Wahrheitstabelle} nennt. Betrachten Sie dazu den bereits ausgefüllten Anteil der Tabelle mit den Angaben zu Adam, Bea und Chloé. Die Teilnahme von Chloé kann eindeutig aus den Informationen über die Teilnahme von Adam und Bea ermittelt werden. Chloés Aussage, dass sie genau dann am Ausflug teilnimmt, wenn Adam und Bea nicht beide erscheinen, kann als eine Funktion der Form $(a,b) \mapsto c(a,b)$ aufgefasst werden, wobei $a, b$ und $c(a, b)$ jeweils entweder den Wert 1 oder 0 haben und für die Teilnahmen von Adam, Bea und Chloé stehen. Dies ist ein Beispiel für eine sogenannte \emph{Boolesche Funktion}.
 
-    Eine \emph{Boolesche Funktion von $n$ Variablen} ($n\in\N$) ist eine Funktion, die als Input die Werte von $n$ Booleschen Variablen annimmt und deren Output 1 oder 0 ist. Solche Funktionen kann man mit einer sogenannten \emph{Wahrheitstabelle} definieren, in welcher zu jeder möglichen Belegung der Inputvariablen der entsprechende Output angegeben wird.
-\end{definition}
+\begin{mydefinition}[Boolesche Variablen, Boolesche Logik, und Boolesche Funktionen]\label{mydefinition:BoolscheLogik}
+    Wir führen nun drei Begriffe ein, die in der Mathematik, Informatik und der digitalen Elektronik eine wichtige Rolle spielen:
+    \begin{description}
+        \item[Boolesche Variable\index{Boolesche(r)!Variable}:] Variable, die genau einen von zwei Werten annehmen kann. Abhängig vom Kontext werden diese Werte typischerweise mit (\emph{wahr} / \emph{falsch}), (\emph{ja} / \emph{nein}), (\emph{ein} / \emph{aus}), (\emph{hohe Spannung} / \emph{niedrige Spannung}). In diesem Text werden wir die beiden Werte mit $1$ und $0$ bezeichnen –-- genauso wie auch die möglichen Werte eines einzelen Bits.
+        \item[Boolesche Logik\index{Boolesche(r)!Logik}:] Teilgebiet der Mathematik, das sich mit Operationen und Funktionen auf Booleschen Variablen beschäftigt.
+        \item[Boolesche Funktion\index{Boolesche(r)!Funktion}:] Funktion, die als Input eine Anzahl Boolescher Variablen erhält und deren Output ebenfalls eine\footnote{Wir definieren eine Boolesche Funktion hier nur für den Fall, dass der Output ebenfalls eine einzelne Boolesche Variable ist. In der Informatik sind auch Funktionen mit mehreren Outputvariablen von Bedeutung, die wir hier aber nicht betrachten werden.} Boolesche Variable ist. \textcolor{Gray}{Bitte beachten Sie, dass jede Funktion vollständig definiert ist, wenn wir für jede mögliche Belegung der Inputvariablen den entsprechenden Output angeben.}
+    \end{description}
+\end{mydefinition}
 
-Schauen wir uns gleich konkrete Beispiele für Boolesche Funktionen an: 
-
-\begin{bsp}{Erste Boolesche Funktionen}{boolscheOperationen}
+Schauen wir uns gleich konkrete Beispiele für Boolesche Funktionen an:
+\begin{myexample}[Erste Boolesche Funktionen]\label{myexample:BoolscheOperationen}
     Die Boolesche Funktion $\NEG(x)$ invertiert den Wert der Inputvariable und wird häufig mit $\NEG(x)=\overline{x}$ bezeichnet. Die entsprechende Wahrheitstabelle ist:
     \begin{center}
         \begin{tabular}{ c||c } 
-            $x$ & $\overline{x}$ \\
-         \hline
-         0&1\\
-         1&0
+        $x$ & $\overline{x}$ \\
+        \hline
+        0&1\\
+        1&0
         \end{tabular}
     \end{center}
-
     Die beiden bekanntesten Booleschen Funktionen in zwei Variablen heissen \emph{AND} und \emph{OR}. Bezeichnet werden sie mit den beiden Symbolen $x \wedge y$ für $\AND(x,y)$ beziehungsweise mit $x \vee y$ für $\OR(x,y)$. Ihre Wahrheitstabellen sehen wie folgt aus:
     \begin{center}
         \begin{tabular}{c|c||c}
-            
             $x$ & $y$ & $x\wedge y$ \\
             \hline
             0 & 0 & 0 \\
@@ -64,7 +74,6 @@ Schauen wir uns gleich konkrete Beispiele für Boolesche Funktionen an:
         \end{tabular}
             \quad
         \begin{tabular}{c|c||c}
-        
             $x$ & $y$ & $x \vee y$ \\
             \hline
             0 & 0 & 0 \\
@@ -73,11 +82,11 @@ Schauen wir uns gleich konkrete Beispiele für Boolesche Funktionen an:
             1&1&1
         \end{tabular}  
     \end{center}
-\end{bsp}
+\end{myexample}
 
-Anstatt mit einer Wahrheitstabelle können neue Boolesche Funktionen auch als eine Verkettung der Booleschen Operationen aus Beispiel \ref{bsp:boolscheOperationen} angegeben werden. 
-\begin{bsp}{XOR als Boolescher Ausdruck}{xor}
-    Die Funktion \emph{XOR} kann durch den folgenden \emph{Booleschen Ausdruck} definiert werden:
+Anstatt mit einer Wahrheitstabelle können neue Boolesche Funktionen auch als eine Verkettung der Booleschen Operationen aus Beispiel \cref{myexample:BoolscheOperationen} angegeben werden. 
+\begin{myexample}[XOR als Boolescher Ausdruck]\label{myexample:XOR}
+    Die Funktion \emph{XOR}\index{XOR} kann durch den folgenden \emph{Booleschen Ausdruck}\index{Boolesche(r)!Ausdruck} definiert werden:
     $$\mathrm{XOR}(x,y) = (x\wedge \overline{y}) \vee (\overline{x} \wedge y).$$ 
     Die Wahrheitstabelle der Funktion XOR lässt sich ausgehend von der Definition als Verkettung der drei Operationen NEG, AND, OR leicht herleiten, indem man von innen nach aussen arbeitet:
     \begin{center}
@@ -90,10 +99,10 @@ Anstatt mit einer Wahrheitstabelle können neue Boolesche Funktionen auch als ei
             1&1&0&0&0&0&0 \\
         \end{tabular}
     \end{center}
-    In der Wahrheitstabelle erkennt man, dass die XOR-Funktion genau dann den Wert 1 annimmt, wenn genau eine der beiden Inputvariablen den Wert 1 hat. So gelangen wir zu der Bezeichnung XOR als Abkürzung für \glqq eXclusive OR\grqq{}.
-\end{bsp}
+    In der Wahrheitstabelle erkennt man, dass die XOR-Funktion genau dann den Wert 1 annimmt, wenn genau eine der beiden Inputvariablen den Wert 1 hat. So gelangen wir zu der Bezeichnung \textcolor{Red}{XOR} als Abkürzung für \emph{e\textcolor{Red}{X}clusive \textcolor{Red}{OR}}.
+\end{myexample}
 
-\begin{ueb}{Wahrheitstabellen für Boolesche Ausdrücke aufstellen}{Wahrheitstabelle}
+\begin{myexercise}[Wahrheitstabellen für Boolesche Ausdrücke aufstellen]\label{myexercise:Wahrheitstabelle}
     \begin{enumerate}
         \item Die Funktion \emph{NOR} ist definiert durch 
         $$\mathrm{NOR}(x,y) = \overline{x\vee y}.$$
@@ -104,199 +113,291 @@ Anstatt mit einer Wahrheitstabelle können neue Boolesche Funktionen auch als ei
         \item Wir haben nun einige Boolesche Funktionen mit zwei Inputvariablen untersucht. Wie viele unterschiedliche Boolesche Funktionen dieser Art gibt es insgesamt?
         \item Ein Beispiel für eine Boolesche Funktion mit drei Inputs wäre: $$f(x,y,z) = \overline{x} \wedge (y\vee z).$$ Geben Sie die Wahrheitstabelle dieser Funktion an.
     \end{enumerate}
-\end{ueb}
-Bisher haben wir stets ausgehend von einem Booleschen Ausdruck die entsprechende Wahrheitstabelle hergeleitet. Ist auch der umgekehrte Weg möglich? In anderen Worten: Lässt sich jede Boolesche Funktion als eine Verkettung der drei Operationen NEG, AND und OR darstellen? Das ist tatsächlich möglich! Der Beweis dieser Aussage ist aber nicht ganz leicht und wir werden hier darauf verzichten, zeigen aber anhand eines Beispiels das grundsätzliche Vorgehen.
-\begin{bsp}{Disjunkte Normalform einer Funktion}{dnf}
-    Wir betrachten eine Boolesche Funktion $f$ in drei Variablen, die durch die folgende Wahrheitstabelle definiert ist:
-    \begin{center}
-        \begin{tabular}{c|c|c||c}
-            $x$ & $y$ & $z$ & $f(x,y,z) $\\
+    \begin{myanswer}
+        \begin{enumerate}
+    \item Analog zu \cref{myexample:XOR} werten wir die Teile im Booleschen Ausdruck $\mathrm{NOR}(x,y) = \overline{x\vee y}$ von innen nach aussen aus:\\
+        \begin{tabular}{c|c||c||c} 
+            $x$ & $y$ & $x\vee y$ & NOR$(x, y)$ \\
             \hline
-            0&0&0&0 \\
-            0&0&1&1 \\
-            0&1&0&0 \\
-            0&1&1&1 \\
-            1&0&0&0 \\
-            1&0&1&0 \\
-            1&1&0&1 \\
-            1&1&1&0            
-        \end{tabular}
-    \end{center}
-    Nun richten wir unsere Aufmerksamkeit auf die drei Zeilen, in denen die Funktion den Wert 1 annimmt. Für jede dieser Zeilen definieren wir unter Verwendung der Operatoren NEG und AND einen Booleschen Ausdruck in $x,y$ und $z$, der genau dann den Output 1 liefert, wenn die Inputvariablen den Wert entsprechend der betrachteten Zeile aufweisen. Der passende Ausdruck für die zweite Zeile in der Wahrheitstabelle der Funktion $f$ ist $(\overline{x} \wedge \overline{y}) \wedge z$ und dessen Wahrheitstabelle sieht wie folgt aus:
-    \begin{center}
-        \begin{tabular}{c|c|c||c}
-            $x$ & $y$ & $z$ &  $(\overline{x} \wedge \overline{y}) \wedge z$\\
-            \hline
-            0&0&0&0 \\
-            0&0&1&1 \\
-            0&1&0&0 \\
+            0 & 0 &0& 1 \\
             0&1&1&0 \\
-            1&0&0&0 \\
-            1&0&1&0 \\
-            1&1&0&0 \\
-            1&1&1&0            
-        \end{tabular} 
-    \end{center}
-   Ein analoger Ausdruck für die vierte Zeile in der Wahrheitstabelle von $f$ ist $(\overline{x} \wedge y )\wedge z$ und jener für die siebte Zeile lautet $(x \wedge y) \wedge \overline{z}$. 
-
-   Die OR-Verknüpfung dieser drei Hilfsfunktionen entspricht dann der Funktion $f$:
-   $$f(x,y,z) = ((\overline{x} \wedge \overline{y}) \wedge z) \vee ((\overline{x} \wedge y )\wedge z) \vee ((x \wedge y) \wedge \overline{z}).$$
-
-   Ein solche Darstellung einer Booleschen Funktion als eine OR-Verknüpfung von UND-ver\-knüpf\-ten Booleschen Variablen oder deren Negation nennt man \emph{disjunkte Normalform}.
-\end{bsp}
-
-Genauso wie in dem Beispiel kann jede Boolesche Funktion auf einen Ausdruck zurückgeführt werden, der nur die NEG-, AND- und OR-Operationen verwendet. Dabei spielt es keine Rolle, wie viele Inputvariablen die Funktion hat. Die ganze Tragweite dieser Aussage kann man erahnen, wenn man bedenkt, dass es zum Beispiel mehr als $10^{300}$ Boolesche Funktionen mit 10 Inputvariablen gibt – und jede einzelne kann als eine Verknüpfung der drei Grundoperationen dargestellt werden!
-
-\begin{ueb}
-    {Disjunkte Normalform einer Funktion}{UebZuDNF}
-    \begin{enumerate}
-        \item Folgen Sie dem Beispiel \ref{bsp:dnf} und stellen Sie die folgende Funktion als einen Booleschen Ausdruck dar.
-        \begin{center}
-            \begin{tabular}{c|c|c||c}
-                $x$&$y$&$z$&$f(x,y,z)$ \\
-                \hline
-                0&0&0&1 \\
-                0&0&1&0 \\
-                0&1&0&0 \\
-                0&1&1&1 \\
-                1&0&0&1 \\
-                1&0&1&0 \\
-                1&1&0&0 \\
-                1&1&1&1  
-            \end{tabular}
-        \end{center}
-        \item Wie viele unterschiedliche Boolesche Funktionen mit $n$ Inputvariablen gibt es? \newline Tipp: Bestimmen Sie zuerst, wie viele unterschiedliche Belegungen die $n$ Inputvariablen haben können. 
-    \end{enumerate}
-\end{ueb}
-
-Die ganze Vielfalt an Booleschen Funktionen haben wir damit auf bloss drei Operationen zu\-rück\-ge\-führt. Das ist eine beachtliche Leistung, aber es geht noch besser\dots
-
-\begin{ueb}
-    {OR aus AND und NEG}{OR aus AND und NEG}
-     Stellen Sie die Boolesche Funktion OR als eine Kombination von AND- und NEG-Funktionen dar. \newline Tipp: Es ist nur eine AND-Verknüpfung nötig.
-\end{ueb}
-
-Wenn sich jede Boolesche Funktion aus einer Kombination von NEG-, AND- und OR-Funktionen darstellen lässt und letztere wiederum eine Verkettung der ersten beiden ist, kann man folglich alle logischen Funktionen als eine Kombination der beiden Funktionen NEG und AND erzeugen.
-
-Es reichen also bloss zwei logische Funktionen, um alle anderen zu erzeugen! Das ist erstaunlich, aber es geht sogar noch ein wenig besser: Eine einzige Funktion allein reicht aus, um alle anderen Booleschen Funktionen zu erzeugen!
-
-%\begin{definition}
- %   {NAND}{defNAND}
-    Die Boolesche Funktion \emph{NAND} ist definiert als
-    $$\NAND(x,y) = 
-    %\NEG(\AND(x,y)) =
-    \overline{x\wedge y}.$$
-    Die Wahrheitstabelle der NAND-Funktion lautet:
-    \begin{center}
-        \begin{tabular}{c|c||c}
-            $x$&$y$&$\NAND(x,y)$ \\
+            1&0&1&0\\
+            1&1&1&0
+        \end{tabular}
+        \vspace{\baselineskip}
+    \item Mit der gleichen Herangehensweise können die einzelnen Bausteine in $\mathrm{XNOR}(x,y) = (x\wedge y) \vee (\overline{x} \wedge \overline{y})$ schrittweise ausgewertet werden.\\
+        \begin{tabular}{c|c||c|c| c |c || c}
+            $x$ & $y$ & $\overline{x}$ & $\overline{y}$ & $x\wedge y$ & $\overline{x} \wedge \overline{y}$ & XNOR($x, y$) \\
             \hline
-            0&0&1 \\
-            0&1&1 \\
-            1&0&1 \\
-            1&1&0        
+            0&0&1&1&0&1&1 \\
+            0&1&1&0&0&0&0 \\
+            1&0&0&1&0&0&0 \\
+            1&1&0&0&1&0&1 \\
         \end{tabular}
-    \end{center}
-%\end{definition}
+        \vspace{\baselineskip}
+    \item Für jede der vier Zeilen der Wahrheitstabelle gibt es zwei mögliche Outputs. Insgesamt gibt es also $2^4=16$ Boolesche Funktionen mit zwei Inputvariablen.
+    \item Die gesuchte Tabelle lautet:\\
+        \begin{tabular}{c|c|c||c | c || c}
+            $x$ & $y$ & $z$ & $\bar x$ & $y\vee z$ & $f(x,y,z)$ \\
+            \hline
+            0 & 0 & 0 & 1 & 0 & 0 \\
+            0 & 0 & 1 & 1 & 1 & 1 \\
+            0 & 1 & 0 & 1 & 1 & 1 \\
+            0 & 1 & 1 & 1 & 1 & 1 \\
+            1 & 0 & 0 & 0 & 0 & 0 \\
+            1 & 0 & 1 & 0 & 1 & 0 \\
+            1 & 1 & 0 & 0 & 1 & 0 \\
+            1 & 1 & 1 & 0 & 1 & 0 
+        \end{tabular}  
+   \end{enumerate}
+\end{myanswer}
+\end{myexercise}
 
+Bisher haben wir stets ausgehend von einem Booleschen Ausdruck die entsprechende Wahrheitstabelle hergeleitet. Ist auch der umgekehrte Weg möglich? In anderen Worten: Lässt sich jede Boolesche Funktion als eine Verkettung der drei Operationen NEG, AND und OR darstellen? Das ist tatsächlich möglich! Der Beweis dieser Aussage ist aber nicht ganz leicht und wir werden hier darauf verzichten, zeigen aber anhand eines Beispiels das grundsätzliche Vorgehen.
+% \begin{bsp}{Disjunkte Normalform einer Funktion}{dnf}
+%     Wir betrachten eine Boolesche Funktion $f$ in drei Variablen, die durch die folgende Wahrheitstabelle definiert ist:
+%     \begin{center}
+%         \begin{tabular}{c|c|c||c}
+%             $x$ & $y$ & $z$ & $f(x,y,z) $\\
+%             \hline
+%             0&0&0&0 \\
+%             0&0&1&1 \\
+%             0&1&0&0 \\
+%             0&1&1&1 \\
+%             1&0&0&0 \\
+%             1&0&1&0 \\
+%             1&1&0&1 \\
+%             1&1&1&0            
+%         \end{tabular}
+%     \end{center}
+%     Nun richten wir unsere Aufmerksamkeit auf die drei Zeilen, in denen die Funktion den Wert 1 annimmt. Für jede dieser Zeilen definieren wir unter Verwendung der Operatoren NEG und AND einen Booleschen Ausdruck in $x,y$ und $z$, der genau dann den Output 1 liefert, wenn die Inputvariablen den Wert entsprechend der betrachteten Zeile aufweisen. Der passende Ausdruck für die zweite Zeile in der Wahrheitstabelle der Funktion $f$ ist $(\overline{x} \wedge \overline{y}) \wedge z$ und dessen Wahrheitstabelle sieht wie folgt aus:
+%     \begin{center}
+%         \begin{tabular}{c|c|c||c}
+%             $x$ & $y$ & $z$ &  $(\overline{x} \wedge \overline{y}) \wedge z$\\
+%             \hline
+%             0&0&0&0 \\
+%             0&0&1&1 \\
+%             0&1&0&0 \\
+%             0&1&1&0 \\
+%             1&0&0&0 \\
+%             1&0&1&0 \\
+%             1&1&0&0 \\
+%             1&1&1&0            
+%         \end{tabular} 
+%     \end{center}
+%    Ein analoger Ausdruck für die vierte Zeile in der Wahrheitstabelle von $f$ ist $(\overline{x} \wedge y )\wedge z$ und jener für die siebte Zeile lautet $(x \wedge y) \wedge \overline{z}$. 
 
-\begin{ueb}
-    {NEG und OR aus NAND}{NANDRules}
-    \begin{enumerate}
-        \item Füllen Sie die folgende Wahrheitstabelle aus. Um welche Funktion handelt es sich?
-        \begin{center}
-            \begin{tabular}{c||c}
-                $x$&$\NAND(x,x)$ \\
-                \hline
-                0& \\
-                1&
-            \end{tabular}
-        \end{center}
-        %\item Stellen Sie die Funktion AND als eine Verkettung von NAND-Funktionen dar. Tipp: Sie können auch NEG-Funktionen verwenden und diese in einem zweiten Schritt durch NAND-Funktionen ersetzen.
-        \item Stellen Sie die OR-Funktion als eine Verkettung von NAND-Funktionen dar. Tipp: Die Übung \ref{uebng:OR aus AND und NEG} könnte helfen.
-        \item Stellen Sie auch die AND-Funktion als eine Verkettung von NAND-Funktionen dar.
-    \end{enumerate}
-\end{ueb}
-Die Erkenntnisse aus den Übungen \ref{uebng:OR aus AND und NEG} und \ref{uebng:NANDRules} kombiniert mit jenen aus dem Beispiel \ref{bsp:dnf} implizieren, dass jede erdenkliche Boolesche Funktion letztlich eine Verkettung von NAND-Funktionen ist! 
+%    Die OR-Verknüpfung dieser drei Hilfsfunktionen entspricht dann der Funktion $f$:
+%    $$f(x,y,z) = ((\overline{x} \wedge \overline{y}) \wedge z) \vee ((\overline{x} \wedge y )\wedge z) \vee ((x \wedge y) \wedge \overline{z}).$$
 
-\begin{bsp}
-    {Boolesche Funktionen als Verkettung von NAND-Funktionen}{Damian aus NAND}
-    Wir erinnern uns an das Einstiegsproblem \ref{uebng:EinstiegLogik}, an den Ausflug, den Zoé mit ihren Freund*innen unternehmen möchte. Die Teilnahme von Chloé $c$, Damian $d$ und Fiona $f$ kann je als eine Boolesche Funktion aufgefasst werden, wobei die Inputvariablen $a$ und $b$ für das Erscheinen von Adam und Bea stehen.
+%    Ein solche Darstellung einer Booleschen Funktion als eine OR-Verknüpfung von UND-ver\-knüpf\-ten Booleschen Variablen oder deren Negation nennt man \emph{disjunkte Normalform}.
+% \end{bsp}
 
-    \begin{center}
-        \begin{tabular}{ |c|c||c|c|c| } 
-         \hline
-         $a$ & $b$ & $c(a,b)$ & $d(a,b)$ & $f(a,b)$ \\ 
-         \hline
-         0 & 0 & 1 & 1 & 0 \\ 
-         0 & 1 & 1 & 0 & 1\\
-         1 & 0 & 1 & 1 & 1 \\
-         1 & 1 & 0 & 1 &  0\\ 
-         \hline
-        \end{tabular}
-    \end{center}
-
-    Um jede dieser Funktionen als Verkettung von NAND-Verknüpfungen darzustellen, werden sie zuerst als Boolescher Ausdruck angegeben. Dazu kann man beispielsweise die entsprechende disjunkte Normalform bestimmen wie in Beispiel \ref{bsp:dnf}. Bei den Funktionen im vorliegenden Beispiel geht es allerdings etwas einfacher und man findet leicht die folgenden Booleschen Ausdrücke:
-    $$ c(a,b) = \overline{a\wedge b}, \qquad d(a,b) = a \vee \overline{b}, \qquad f(a,b) =\mathrm{XOR}(x,y) = (x\wedge \overline{y}) \vee (\overline{x} \wedge y). $$
-    Nun kann man mit den Ergebnissen aus Aufgabe \ref{uebng:NANDRules} die vorkommenden NEG-, OR- und AND-Funktionen der Reihe nach durch NAND-Verkettungen ersetzen. Für die Funktion $c(a,b)$ erhält man:
-    \begin{align*}
-        c(a,b)  & = \overline{a\wedge b} \\
-                & = \NAND(a,b)
-                % & = \overline{\NAND(\NAND(a,b), \NAND(a,b))} \\
-                % & = \NAND\left(\NAND(\NAND(a,b), \NAND(a,b)), \NAND(\NAND(a,b), \NAND(a,b)) \right).
-    \end{align*}
-    
-    Analog können auch die beiden anderen Funktionen nur mit NAND erzeugt werden:
-    \begin{align*}
-        d(a,b)  & = \NAND(\NAND(a, a) , b) \\
-        f(a,b)  & = \NAND( \NAND(a, \NAND(b,b)), \NAND(\NAND(a,a),b)).
-    \end{align*}
-
-
-
-\end{bsp}
-
-%Versuchen Sie es selbst:
+% Genauso wie in dem Beispiel kann jede Boolesche Funktion auf einen Ausdruck zurückgeführt werden, der nur die NEG-, AND- und OR-Operationen verwendet. Dabei spielt es keine Rolle, wie viele Inputvariablen die Funktion hat. Die ganze Tragweite dieser Aussage kann man erahnen, wenn man bedenkt, dass es zum Beispiel mehr als $10^{300}$ Boolesche Funktionen mit 10 Inputvariablen gibt – und jede einzelne kann als eine Verknüpfung der drei Grundoperationen dargestellt werden!
 
 % \begin{ueb}
-%     {Boolesche Funktionen als eine Kombination von NANDs}{fromNAND2func}
-%     Stellen Sie die folgenden Booleschen Funktionen als eine Verkettung von NAND-Funktionen dar. Tipp: Finden Sie in einem ersten Schritt für jede Funktion einen passenden Booleschen Ausdruck und ersetzen Sie die vorkommenden AND-, OR- und NEG-Funktionen durch NAND-Verkettungen gemäss Aufgabe \ref{uebng:NANDRules}.
+%     {Disjunkte Normalform einer Funktion}{UebZuDNF}
 %     \begin{enumerate}
-%         \item $\XOR(x,y)$
-%         \item NOR$(x,y)$
-%         \item XNOR$(x,y)$
-%         \item Die Funktion $f(x,y,z)$, die durch die folgende Wahrheitstabelle definiert ist:
+%         \item Folgen Sie dem Beispiel \ref{bsp:dnf} und stellen Sie die folgende Funktion als einen Booleschen Ausdruck dar.
 %         \begin{center}
 %             \begin{tabular}{c|c|c||c}
 %                 $x$&$y$&$z$&$f(x,y,z)$ \\
 %                 \hline
-%                 0&0&0&0 \\
-%                 0&0&1&1 \\
+%                 0&0&0&1 \\
+%                 0&0&1&0 \\
 %                 0&1&0&0 \\
-%                 0&1&1&0 \\
-%                 1&0&0&0 \\
+%                 0&1&1&1 \\
+%                 1&0&0&1 \\
 %                 1&0&1&0 \\
-%                 1&1&0&1 \\
-%                 1&1&1&0  
+%                 1&1&0&0 \\
+%                 1&1&1&1  
 %             \end{tabular}
 %         \end{center}
-
+%         \item Wie viele unterschiedliche Boolesche Funktionen mit $n$ Inputvariablen gibt es? \newline Tipp: Bestimmen Sie zuerst, wie viele unterschiedliche Belegungen die $n$ Inputvariablen haben können. 
 %     \end{enumerate}
-    
 % \end{ueb}
 
-\begin{zsf}{}{}
-    Variablen, die nur zwei unterschiedliche Werte $0/1$ annehmen können, werden Boolesche Variablen genannt. Entsprechend nennt man Funktionen, die mit Booleschen Variablen operieren, Boolesche Funktionen. Sie können durch Angabe ihrer Wahrheitstabellen oder durch einen Booleschen Ausdruck definiert werden.
+% Die ganze Vielfalt an Booleschen Funktionen haben wir damit auf bloss drei Operationen zu\-rück\-ge\-führt. Das ist eine beachtliche Leistung, aber es geht noch besser\dots
 
-    Wichtige Boolesche Funktionen sind:
-    \begin{itemize}
-        \item AND$(x,y) = x\wedge y$. Der Output der AND-Funktion ist genau dann 1, wenn beide Inputs den Wert 1 aufweisen.
-        \item OR$(x,y) = x\vee y$. Der Output der OR-Funktion ist genau dann 1, wenn mindestens ein Input den Wert 1 aufweist.
-        \item NEG$(x) = \bar x$. Der Output der NEG-Funktion ist genau dann 1, wenn der Input 0 ist.
-        \item NAND$(x,y)= \overline{x\wedge y}$. Der Output der NAND-Funktion ist genau dann 1, wenn mindestens einer der Inputs den Wert 0 hat.
-        \item XOR$(x,y)$. Der Output der XOR-Funktion ist genau dann 1, wenn die Inputs unterschiedliche Werte aufweisen.
-        \item XNOR$(x,y)$. Der Output der XNOR-Funktion ist genau dann 1, wenn die Inputs die gleichen Werte aufweisen.
-    \end{itemize}
+% \begin{ueb}
+%     {OR aus AND und NEG}{OR aus AND und NEG}
+%      Stellen Sie die Boolesche Funktion OR als eine Kombination von AND- und NEG-Funktionen dar. \newline Tipp: Es ist nur eine AND-Verknüpfung nötig.
+% \end{ueb}
 
-    Jede Boolesche Funktion lässt sich als eine Verkettung von NAND-Funktionen darstellen.
-\end{zsf}
+% Wenn sich jede Boolesche Funktion aus einer Kombination von NEG-, AND- und OR-Funktionen darstellen lässt und letztere wiederum eine Verkettung der ersten beiden ist, kann man folglich alle logischen Funktionen als eine Kombination der beiden Funktionen NEG und AND erzeugen.
+
+% Es reichen also bloss zwei logische Funktionen, um alle anderen zu erzeugen! Das ist erstaunlich, aber es geht sogar noch ein wenig besser: Eine einzige Funktion allein reicht aus, um alle anderen Booleschen Funktionen zu erzeugen!
+
+% %\begin{definition}
+%  %   {NAND}{defNAND}
+%     Die Boolesche Funktion \emph{NAND} ist definiert als
+%     $$\NAND(x,y) = 
+%     %\NEG(\AND(x,y)) =
+%     \overline{x\wedge y}.$$
+%     Die Wahrheitstabelle der NAND-Funktion lautet:
+%     \begin{center}
+%         \begin{tabular}{c|c||c}
+%             $x$&$y$&$\NAND(x,y)$ \\
+%             \hline
+%             0&0&1 \\
+%             0&1&1 \\
+%             1&0&1 \\
+%             1&1&0        
+%         \end{tabular}
+%     \end{center}
+% %\end{definition}
+
+
+% \begin{ueb}
+%     {NEG und OR aus NAND}{NANDRules}
+%     \begin{enumerate}
+%         \item Füllen Sie die folgende Wahrheitstabelle aus. Um welche Funktion handelt es sich?
+%         \begin{center}
+%             \begin{tabular}{c||c}
+%                 $x$&$\NAND(x,x)$ \\
+%                 \hline
+%                 0& \\
+%                 1&
+%             \end{tabular}
+%         \end{center}
+%         %\item Stellen Sie die Funktion AND als eine Verkettung von NAND-Funktionen dar. Tipp: Sie können auch NEG-Funktionen verwenden und diese in einem zweiten Schritt durch NAND-Funktionen ersetzen.
+%         \item Stellen Sie die OR-Funktion als eine Verkettung von NAND-Funktionen dar. Tipp: Die Übung \ref{uebng:OR aus AND und NEG} könnte helfen.
+%         \item Stellen Sie auch die AND-Funktion als eine Verkettung von NAND-Funktionen dar.
+%     \end{enumerate}
+% \end{ueb}
+% Die Erkenntnisse aus den Übungen \ref{uebng:OR aus AND und NEG} und \ref{uebng:NANDRules} kombiniert mit jenen aus dem Beispiel \ref{bsp:dnf} implizieren, dass jede erdenkliche Boolesche Funktion letztlich eine Verkettung von NAND-Funktionen ist! 
+
+% \begin{bsp}
+%     {Boolesche Funktionen als Verkettung von NAND-Funktionen}{Damian aus NAND}
+%     Wir erinnern uns an das Einstiegsproblem \ref{uebng:EinstiegLogik}, an den Ausflug, den Zoé mit ihren Freund*innen unternehmen möchte. Die Teilnahme von Chloé $c$, Damian $d$ und Fiona $f$ kann je als eine Boolesche Funktion aufgefasst werden, wobei die Inputvariablen $a$ und $b$ für das Erscheinen von Adam und Bea stehen.
+
+%     \begin{center}
+%         \begin{tabular}{ |c|c||c|c|c| } 
+%          \hline
+%          $a$ & $b$ & $c(a,b)$ & $d(a,b)$ & $f(a,b)$ \\ 
+%          \hline
+%          0 & 0 & 1 & 1 & 0 \\ 
+%          0 & 1 & 1 & 0 & 1\\
+%          1 & 0 & 1 & 1 & 1 \\
+%          1 & 1 & 0 & 1 &  0\\ 
+%          \hline
+%         \end{tabular}
+%     \end{center}
+
+%     Um jede dieser Funktionen als Verkettung von NAND-Verknüpfungen darzustellen, werden sie zuerst als Boolescher Ausdruck angegeben. Dazu kann man beispielsweise die entsprechende disjunkte Normalform bestimmen wie in Beispiel \ref{bsp:dnf}. Bei den Funktionen im vorliegenden Beispiel geht es allerdings etwas einfacher und man findet leicht die folgenden Booleschen Ausdrücke:
+%     $$ c(a,b) = \overline{a\wedge b}, \qquad d(a,b) = a \vee \overline{b}, \qquad f(a,b) =\mathrm{XOR}(x,y) = (x\wedge \overline{y}) \vee (\overline{x} \wedge y). $$
+%     Nun kann man mit den Ergebnissen aus Aufgabe \ref{uebng:NANDRules} die vorkommenden NEG-, OR- und AND-Funktionen der Reihe nach durch NAND-Verkettungen ersetzen. Für die Funktion $c(a,b)$ erhält man:
+%     \begin{align*}
+%         c(a,b)  & = \overline{a\wedge b} \\
+%                 & = \NAND(a,b)
+%                 % & = \overline{\NAND(\NAND(a,b), \NAND(a,b))} \\
+%                 % & = \NAND\left(\NAND(\NAND(a,b), \NAND(a,b)), \NAND(\NAND(a,b), \NAND(a,b)) \right).
+%     \end{align*}
+    
+%     Analog können auch die beiden anderen Funktionen nur mit NAND erzeugt werden:
+%     \begin{align*}
+%         d(a,b)  & = \NAND(\NAND(a, a) , b) \\
+%         f(a,b)  & = \NAND( \NAND(a, \NAND(b,b)), \NAND(\NAND(a,a),b)).
+%     \end{align*}
+
+
+
+% \end{bsp}
+
+% %Versuchen Sie es selbst:
+
+% % \begin{ueb}
+% %     {Boolesche Funktionen als eine Kombination von NANDs}{fromNAND2func}
+% %     Stellen Sie die folgenden Booleschen Funktionen als eine Verkettung von NAND-Funktionen dar. Tipp: Finden Sie in einem ersten Schritt für jede Funktion einen passenden Booleschen Ausdruck und ersetzen Sie die vorkommenden AND-, OR- und NEG-Funktionen durch NAND-Verkettungen gemäss Aufgabe \ref{uebng:NANDRules}.
+% %     \begin{enumerate}
+% %         \item $\XOR(x,y)$
+% %         \item NOR$(x,y)$
+% %         \item XNOR$(x,y)$
+% %         \item Die Funktion $f(x,y,z)$, die durch die folgende Wahrheitstabelle definiert ist:
+% %         \begin{center}
+% %             \begin{tabular}{c|c|c||c}
+% %                 $x$&$y$&$z$&$f(x,y,z)$ \\
+% %                 \hline
+% %                 0&0&0&0 \\
+% %                 0&0&1&1 \\
+% %                 0&1&0&0 \\
+% %                 0&1&1&0 \\
+% %                 1&0&0&0 \\
+% %                 1&0&1&0 \\
+% %                 1&1&0&1 \\
+% %                 1&1&1&0  
+% %             \end{tabular}
+% %         \end{center}
+
+% %     \end{enumerate}
+    
+% % \end{ueb}
+
+% \begin{zsf}{}{}
+%     Variablen, die nur zwei unterschiedliche Werte $0/1$ annehmen können, werden Boolesche Variablen genannt. Entsprechend nennt man Funktionen, die mit Booleschen Variablen operieren, Boolesche Funktionen. Sie können durch Angabe ihrer Wahrheitstabellen oder durch einen Booleschen Ausdruck definiert werden.
+
+%     Wichtige Boolesche Funktionen sind:
+%     \begin{itemize}
+%         \item AND$(x,y) = x\wedge y$. Der Output der AND-Funktion ist genau dann 1, wenn beide Inputs den Wert 1 aufweisen.
+%         \item OR$(x,y) = x\vee y$. Der Output der OR-Funktion ist genau dann 1, wenn mindestens ein Input den Wert 1 aufweist.
+%         \item NEG$(x) = \bar x$. Der Output der NEG-Funktion ist genau dann 1, wenn der Input 0 ist.
+%         \item NAND$(x,y)= \overline{x\wedge y}$. Der Output der NAND-Funktion ist genau dann 1, wenn mindestens einer der Inputs den Wert 0 hat.
+%         \item XOR$(x,y)$. Der Output der XOR-Funktion ist genau dann 1, wenn die Inputs unterschiedliche Werte aufweisen.
+%         \item XNOR$(x,y)$. Der Output der XNOR-Funktion ist genau dann 1, wenn die Inputs die gleichen Werte aufweisen.
+%     \end{itemize}
+
+%     Jede Boolesche Funktion lässt sich als eine Verkettung von NAND-Funktionen darstellen.
+% \end{zsf}
+
+
+
+
+
+
+\iftoggle{exerciseonly}{}{%
+	\clearpage
+
+	\section{Längere Lösungen}\label{sec:00_BoolscheLogik_Loesungen}
+
+	\begin{myanswer}[myexercise:EinstiegLogik]
+        Beginnen wir mit Damian. Um seine Spalte auszufüllen, muss man seine Aussage analysieren: \enquote{Ich komme, aber nur, falls Adam auch dabei ist, oder Bea zu Hause bleibt.} Im ersten Teil der Aussage wird deutlich, dass Damian immer dann mitkommt, wenn Adam auch dabei ist. Damit kann man bereits einen Teil der Tabelle ausfüllen:
+        \begin{center}
+            \begin{tabular}{ |c|c|c|c|c| } 
+            \hline
+            Adam & Bea & Chloé & Damian & Fiona \\ 
+            \hline
+            0 & 0 & 1 &  & \\ 
+            0 & 1 & 1 &  & \\
+            1 & 0 & 1 & \textcolor{red}{1} & \\
+            1 & 1 & 0 & \textcolor{red}{1} & \\ 
+            \hline
+            \end{tabular}
+        \end{center}
+        Dem zweiten Teil seiner Aussage entnimmt man, dass Damian auch dann teilnimmt, wenn Adam zwar nicht kommt, dafür Bea zu Hause bleibt. Nur im Fall, dass Bea ohne Adam erscheint, bleibt Damian zu Hause.
+        \begin{center}
+            \begin{tabular}{ |c|c|c|c|c| } 
+            \hline
+            Adam & Bea & Chloé & Damian & Fiona \\ 
+            \hline
+            0 & 0 & 1 &  \textcolor{red}{1} & \\ 
+            0 & 1 & 1 &   \textcolor{red}{0}& \\
+            1 & 0 & 1 &1 & \\
+            1 & 1 & 0 & 1 & \\ 
+            \hline
+            \end{tabular}
+        \end{center}
+        Auf dieselbe Art kann man auch Fionas Aussage auswerten und erhält schliesslich die vollständige Tabelle:
+        \begin{center}
+            \begin{tabular}{ |c|c|c|c|c| } 
+            \hline
+            Adam & Bea & Chloé & Damian & Fiona \\ 
+            \hline
+            0 & 0 & 1 & 1 & 0\\ 
+            0 & 1 & 1 & 0 & 1\\
+            1 & 0 & 1 & 1 & 1\\
+            1 & 1 & 0 & 1 & 0\\ 
+            \hline
+            \end{tabular}
+        \end{center}
+	\end{myanswer}
+}
