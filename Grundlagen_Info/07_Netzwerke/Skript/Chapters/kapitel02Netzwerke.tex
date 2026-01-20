@@ -1285,7 +1285,7 @@ Eine Ihnen bekannte Situation findet sich vor, wenn ein Client $\mathcal{C}$ ein
 	\item Sobald Sie Ihren Browser aufgerufen haben, geben Sie eine Web-Adresse ein. Eine solche Web-Adresse wird im Allgemeinen \gls{URL} genannt und besteht aus folgenden Komponenten:
 	      \[
 		      \underbrace{\text{\texttt{http://}}}_{\text{Protokoll}}
-		      \underbrace{\text{\texttt{www.}}}_{\text{Server}}
+		      \underbrace{\text{\texttt{www.}}}_{\text{Subdomain}}
 		      \underbrace{\text{\texttt{beispiel.}}}_{\text{Domain}}
 		      \underbrace{\text{\texttt{ch}}}_{\text{\acrshort{TLD}\tikzmark{tld}}}
 		      \underbrace{\text{\texttt{/dokumente/}}}_{\text{Ordner}}
@@ -1389,13 +1389,13 @@ Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige we
 	Versuchen Sie zunächst, den Webserver der ersten Person von der zweiten Person aus mit einem \commandbox*|ping|-Befehl zu erreichen. Öffnen Sie anschliessend den Webbrowser auf dem Client der zweiten Person und geben Sie die IP-Adresse des Webservers der ersten Person ein, um auf die Webseiten der ersten Person zuzugreifen.
 \end{mychallenge}
 
-\begin{myremark}[Modem vs. Router]
-	In Filius gibt es sowohl Modems als auch Router. Ein \textbf{Modem} (\textbf{Mo}dulator-\textbf{Dem}odulator) ist ein Gerät, das digitale Signale in analoge Signale umwandelt und umgekehrt, um die Kommunikation über Telefonleitungen oder Kabelverbindungen zu ermöglichen. Ein \textbf{Router} hingegen ist ein Gerät, das Datenpakete zwischen verschiedenen Netzwerken weiterleitet und den Datenverkehr innerhalb eines Netzwerks verwaltet. In Filius wird ein Modem verwendet, um eine Verbindung zu einem externen Netzwerk herzustellen, während ein Router verwendet wird, um den Datenverkehr innerhalb eines lokalen Netzwerks zu steuern. In Wirklichkeit sind viele moderne Geräte eine Kombination aus Modem und Router, die beide Funktionen in einem einzigen Gerät vereinen.
-\end{myremark}
-
 \begin{mychallenge}[\gls{HTML} genauer verstehen]
 	Besuchen Sie folgende Webseite: \url{https://www.w3schools.com/html} und lesen Sie die Grundlagen von \gls{HTML}. Erstellen Sie anschliessend eine einfache \gls{HTML}-Datei mit einem Titel, einer Überschrift und einem Absatz. Speichern Sie die Datei als \texttt{meine\_erste\_webseite.html} und öffnen Sie sie in Ihrem Webbrowser, um das Ergebnis zu sehen.
 \end{mychallenge}
+
+\begin{myremark}[Modem vs. Router]
+	In Filius gibt es sowohl Modems als auch Router. Ein \textbf{Modem} (\textbf{Mo}dulator-\textbf{Dem}odulator) ist ein Gerät, das digitale Signale in analoge Signale umwandelt und umgekehrt, um die Kommunikation über Telefonleitungen oder Kabelverbindungen zu ermöglichen. Ein \textbf{Router} hingegen ist ein Gerät, das Datenpakete zwischen verschiedenen Netzwerken weiterleitet und den Datenverkehr innerhalb eines Netzwerks verwaltet. In Filius wird ein Modem verwendet, um eine Verbindung zu einem externen Netzwerk herzustellen, während ein Router verwendet wird, um den Datenverkehr innerhalb eines lokalen Netzwerks zu steuern. In Wirklichkeit sind viele moderne Geräte eine Kombination aus Modem und Router, die beide Funktionen in einem einzigen Gerät vereinen.
+\end{myremark}
 
 \subsection{\texorpdfstring{\gls{DNS}-Server}{DNS-Server}}
 Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer Webseiten, aus der Angabe eines Servers und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (siehe \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Ein Beispiel einer solchen Tabelle ist in \cref{tab:dnsEntries} gezeigt.
@@ -1480,7 +1480,7 @@ Mit dem Terminal-Befehl \commandbox*|host [ipadress]| kann nachgeschaut werden, 
 \begin{myexercise}[\gls{IP}-Adresse einer Webseite herausfinden]
 	Verwenden Sie die Befehle \commandbox*|host| oder \commandbox*|nslookup| in der Befehlszeile, um herauszufinden, welche \gls{IP}-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese \gls{IP} im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
 	\begin{myanswer}
-		Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox*|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir auf der Seite der SBB.
+		Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox*|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir leider trotzdem nicht auf der Seite der SBB: Dies kann damit zu tun haben, dass der Webserver der SBB so konfiguriert ist, dass er nur Anfragen akzeptiert, die den Domain-Namen \texttt{sbb.ch} enthalten. Ein Server kann so eingestellt werden, dass mehrere Domainnamen gleichzeitig auf die gleiche IP-Adresse zeigen (dies wird als \textbf{Virtual Hosting} bezeichnet). In diesem Fall erwartet der Server, dass die Anfragen den korrekten Domain-Namen im \gls{HTTP}-Header enthalten, um die richtige Webseite auszuliefern. Wenn wir nur die IP-Adresse verwenden, fehlt diese Information, und der Server weiss nicht, welche Webseite er zurückgeben soll.
 	\end{myanswer}
 \end{myexercise}
 
