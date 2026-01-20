@@ -1379,6 +1379,10 @@ Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige we
 	Erstellen Sie in Filius eine Client-Server-Architektur, ähnlich derjenigen aus Video 5. Diesmal soll der Server jedoch als Web-Server fungieren, der das \gls{HTTP}-Protokoll unterstützt. Installieren Sie dazu auf dem Server einen \enquote{Webserver} und auf dem Client einen \enquote{Webbrowser}. Die Dateien, welche dem Client dargestellt werden sollen, befinden sich bereits auf dem Server. Installieren Sie auf dem Server zusätzlich die Software \enquote{Text-Editor} und öffnen Sie die Datei \texttt{index.html}, im Ordner \texttt{webserver}, um den Inhalt der Webseite anzupassen. Fügen Sie einen neuen Titel und Text hinzu, der auf der Webseite angezeigt werden soll, und testen Sie von einem anderen Client aus, ob die Änderungen korrekt angezeigt werden.
 \end{myexercise}
 
+\begin{mychallenge}[\gls{HTML} genauer verstehen]
+	Besuchen Sie folgende Webseite: \url{https://www.w3schools.com/html} und lesen Sie die Grundlagen von \gls{HTML}. Erstellen Sie anschliessend eine einfache \gls{HTML}-Datei mit einem Titel, einer Überschrift und einem Absatz. Speichern Sie die Datei als \texttt{meine\_erste\_webseite.html} und öffnen Sie sie in Ihrem Webbrowser, um das Ergebnis zu sehen.
+\end{mychallenge}
+
 \begin{mychallenge}[Filius-Anwendung: ``Echter'' Webserver via Modem (zu zweit)]
 	In Filius können Sie auch einen ``echten'' Webserver einrichten, der über ein Modem den anderen Rechnern im gleichen \gls{LAN} zur Verfügung steht. 
 	
@@ -1389,12 +1393,14 @@ Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige we
 	Versuchen Sie zunächst, den Webserver der ersten Person von der zweiten Person aus mit einem \commandbox*|ping|-Befehl zu erreichen. Öffnen Sie anschliessend den Webbrowser auf dem Client der zweiten Person und geben Sie die IP-Adresse des Webservers der ersten Person ein, um auf die Webseiten der ersten Person zuzugreifen.
 \end{mychallenge}
 
-\begin{mychallenge}[\gls{HTML} genauer verstehen]
-	Besuchen Sie folgende Webseite: \url{https://www.w3schools.com/html} und lesen Sie die Grundlagen von \gls{HTML}. Erstellen Sie anschliessend eine einfache \gls{HTML}-Datei mit einem Titel, einer Überschrift und einem Absatz. Speichern Sie die Datei als \texttt{meine\_erste\_webseite.html} und öffnen Sie sie in Ihrem Webbrowser, um das Ergebnis zu sehen.
-\end{mychallenge}
-
 \begin{myremark}[Modem vs. Router]
 	In Filius gibt es sowohl Modems als auch Router. Ein \textbf{Modem} (\textbf{Mo}dulator-\textbf{Dem}odulator) ist ein Gerät, das digitale Signale in analoge Signale umwandelt und umgekehrt, um die Kommunikation über Telefonleitungen oder Kabelverbindungen zu ermöglichen. Ein \textbf{Router} hingegen ist ein Gerät, das Datenpakete zwischen verschiedenen Netzwerken weiterleitet und den Datenverkehr innerhalb eines Netzwerks verwaltet. In Filius wird ein Modem verwendet, um eine Verbindung zu einem externen Netzwerk herzustellen, während ein Router verwendet wird, um den Datenverkehr innerhalb eines lokalen Netzwerks zu steuern. In Wirklichkeit sind viele moderne Geräte eine Kombination aus Modem und Router, die beide Funktionen in einem einzigen Gerät vereinen.
+\end{myremark}
+
+\begin{myremark}[\gls{HTTP} vs \gls{HTTPS}]
+	\gls{HTTP} steht für \textbf{Hypertext Transfer Protocol} und ist das grundlegende Protokoll, das für die Übertragung von Webseiten im Internet verwendet wird. Es definiert, wie Nachrichten formatiert und übertragen werden und wie Webserver und Browser auf verschiedene Befehle reagieren sollen.
+
+	\gls{HTTPS} steht für \textbf{Hypertext Transfer Protocol Secure} und ist eine sichere Version von \gls{HTTP}. Der Hauptunterschied zwischen \gls{HTTP} und \gls{HTTPS} besteht darin, dass \gls{HTTPS} eine Verschlüsselungsschicht (meistens \gls{TLS}) hinzufügt, um die Kommunikation zwischen dem Browser und dem Webserver zu schützen. Dies stellt sicher, dass die übertragenen Daten nicht von Dritten abgefangen oder manipuliert werden können, was besonders wichtig ist, wenn sensible Informationen wie Passwörter oder Kreditkartendaten übertragen werden. Nur weil Webseiten verschlüsselt übertragen werden, sind sie aber nicht automatisch sicher -- die Webseite selber kann immer noch Schadcode enthalten oder unsichere Praktiken verwenden. Daher ist in den letzten Jahren auch das Schlösschen-Symbol aus der Adressleite des Browsers verschwunden, da es fälschlicherweise suggeriert hat, dass die Webseite sicher sei.
 \end{myremark}
 
 \subsection{\texorpdfstring{\gls{DNS}-Server}{DNS-Server}}
@@ -1473,14 +1479,15 @@ Der Prozess der Beantwortung einer Frage nach der IP-Adresse einer Web-Adresse i
 \end{myexercise}
 
 
-Mit dem Terminal-Befehl \commandbox*|host [ipadress]| kann nachgeschaut werden, welche \gls{IP}-Adresse zu einer bestimmten Webseite gehört. Mit dem Befehl \commandbox*|nslookup [ipadress]| erhalten Sie dieselben Informationen und zusätzlich dazu noch die \gls{IP}-Adresse des \gls{DNS}-Servers, der Ihnen die Informationen geliefert hat.
 
+
+Mit dem Terminal-Befehl \commandbox*|nslookup [domainname]| erhalten im ersten Abschnitt die \gls{IP}-Adresse des \gls{DNS}-Servers, der die Anfrage beantwortet hat, sowie die \gls{IP}-Adresse des Webservers für die angefragte Webseite.
 
 
 \begin{myexercise}[\gls{IP}-Adresse einer Webseite herausfinden]
-	Verwenden Sie die Befehle \commandbox*|host| oder \commandbox*|nslookup| in der Befehlszeile, um herauszufinden, welche \gls{IP}-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese \gls{IP} im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
+	Verwenden Sie den Befehl \commandbox*|nslookup [domainname]| in der Befehlszeile (MacOS: Terminal, Windows: Powershell), um herauszufinden, welche \gls{IP}-Adresse zur Webseite \texttt{sbb.ch} gehört. Geben Sie diese \gls{IP} im URL-Fenster Ihres Browser ein und beobachten Sie, was passiert.
 	\begin{myanswer}
-		Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox*|host sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir leider trotzdem nicht auf der Seite der SBB: Dies kann damit zu tun haben, dass der Webserver der SBB so konfiguriert ist, dass er nur Anfragen akzeptiert, die den Domain-Namen \texttt{sbb.ch} enthalten. Ein Server kann so eingestellt werden, dass mehrere Domainnamen gleichzeitig auf die gleiche IP-Adresse zeigen (dies wird als \textbf{Virtual Hosting} bezeichnet). In diesem Fall erwartet der Server, dass die Anfragen den korrekten Domain-Namen im \gls{HTTP}-Header enthalten, um die richtige Webseite auszuliefern. Wenn wir nur die IP-Adresse verwenden, fehlt diese Information, und der Server weiss nicht, welche Webseite er zurückgeben soll.
+		Die IP-Adresse von \texttt{sbb.ch} kann mit dem Befehl \commandbox*|nslookup sbb.ch| ermittelt werden und ist \texttt{194.150.245.142}. Wenn wir die Adresse im Browser eingeben, landen wir leider trotzdem nicht auf der Seite der SBB: Dies kann damit zu tun haben, dass der Webserver der SBB so konfiguriert ist, dass er nur Anfragen akzeptiert, die den Domain-Namen \texttt{sbb.ch} oder einen anderen gültigen Domain-Namen enthalten. Ein Server kann so eingestellt werden, dass mehrere Domainnamen gleichzeitig auf die gleiche IP-Adresse zeigen (dies wird als \textbf{Virtual Hosting} bezeichnet). In diesem Fall erwartet der Server, dass die Anfragen den korrekten Domain-Namen im \gls{HTTP}-Header enthalten, um die richtige Webseite auszuliefern. Wenn wir nur die IP-Adresse verwenden, fehlt diese Information, und der Server weiss nicht, welche Webseite er zurückgeben soll.
 	\end{myanswer}
 \end{myexercise}
 
