@@ -1,9 +1,15 @@
 import socket
 
-SERVER_LOCAL_IP = "192.168.1.18"
+SERVER_LOCAL_IP = "192.168.0.15"
 
+# Erstelle einen TCP/IP-Socket (ein Socket ist ein Endpunkt für die Kommunikation). 
+# Sockets vs. Ports: Ein Socket ist eine Kombination aus IP-Adresse, Portnummer, und Protokoll (TCP oder UDP), die zusammen einen eindeutigen Endpunkt für die Kommunikation im Netzwerk bilden.
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("192.168.1.10", 12345))
+client.setsockopt(
+    socket.SOL_SOCKET, socket.SO_REUSEADDR, 1
+)  # Erlaube die Wiederverwendung des Ports (nützlich beim Neustart des Servers)
+client.connect((SERVER_LOCAL_IP, 12345))
+
 try:
     while True:
         nachricht = input("Nachricht an den Server: ")
