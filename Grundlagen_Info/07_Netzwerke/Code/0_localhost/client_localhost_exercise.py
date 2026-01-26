@@ -1,7 +1,7 @@
 import socket
 
-PORT = 12345
-IP_ADDRESS = "localhost"
+PORT = ...
+IP_ADDRESS = ...
 
 # Client-Socket erstellen und mit dem Server verbinden
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Erstelle einen TCP-IP Socket

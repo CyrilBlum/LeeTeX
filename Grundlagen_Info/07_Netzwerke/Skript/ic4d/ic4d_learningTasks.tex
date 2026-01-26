@@ -1,122 +1,180 @@
 \newcommand{\ipPlaceHolder}{
     \foreach \i in {1,...,3}{\TextField[name=ip\i, width=1.5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}.}\TextField[name=ip4, width=1.5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}
 }
+\chapter{Anwendung: Chat-Kommunikation über einen Relay-Server}
 
-\chapter{Lernaufgabe: Netzwerke}
-\textbf{Ziel:} Am Ende soll ein funktionsfähiges Programm stehen, mit dem die Lernenden in Echtzeit Nachrichten austauschen können.
+In diesem Kapitel werden wir die Kenntnisse des vorausgehenden Kapitels anwenden, um ein einfaches Chat-Programm zu entwickeln, das über einen Relay-Server kommuniziert. Ziel ist es, dass zwei oder mehr Clients Nachrichten über das Internet austauschen können.
 
-\textbf{Problembezug:} \enquote{Wie kann ich mit einer anderen Person eine Nachricht über das Internet austauschen?}
 
-\begin{mainBox}[title=Komplexe Lernaufgabe: Chat-Anwendung]
-    Die \textbf{Haupt-Lernaufgabe} lautet: Entwickeln Sie in Kleingruppen eine \textbf{funktionierende Chat-Anwendung} in Python, die über einen Relay-Server läuft. Am Ende sollen die Gruppen miteinander in Echtzeit Nachrichten austauschen können. Diese Haupt-Lernaufgabe ist in mehrere \textbf{Learning Tasks} unterteilt, die aufeinander aufbauen und jeweils durch unterstützende Informationen, Just-in-time Hilfen und Part-task Practice (Teilübungen) begleitet werden.
-\end{mainBox}
+% \chapter{Lernaufgabe: Netzwerke}
+% \textbf{Ziel:} Am Ende soll ein funktionsfähiges Programm stehen, mit dem die Lernenden in Echtzeit Nachrichten austauschen können.
 
-\begin{scaffoldBox}[title=Scaffolding der Lernaufgaben]
-    Die Unterrichtssequenz besteht aus drei aufeinander aufbauenden Learning Tasks, welche jeweils durch vorausgehende, unterstützende Informationen, Just-in-time Hilfen und Part-task Practice (Teilübungen) begleitet werden. Dieses \textit{Scaffolding} jedes Learning Tasks wird jeweils in einer blauen Box hervorgehoben, ebenso wie das fortschreitende Zurückweichen (\textit{Fading}) der Unterstützung.
-\end{scaffoldBox}
+% \textbf{Problembezug:} \enquote{Wie kann ich mit einer anderen Person eine Nachricht über das Internet austauschen?}
 
-\begin{table}[H]
-    \centering
-    \small
-    \renewcommand{\arraystretch}{1.2}
-    \begin{tabular}{p{0.33\linewidth}|p{0.33\linewidth}|p{0.33\linewidth}}
-        \textbf{Unterstützende Informationen}                                                  & \textbf{Just-in-time Informationen} & \textbf{Part-task Practice (Teilübungen)} \\
-        \midrule
+% \begin{mainBox}[title=Komplexe Lernaufgabe: Chat-Anwendung]
+%     Die \textbf{Haupt-Lernaufgabe} lautet: Entwickeln Sie in Kleingruppen eine \textbf{funktionierende Chat-Anwendung} in Python, die über einen Relay-Server läuft. Am Ende sollen die Gruppen miteinander in Echtzeit Nachrichten austauschen können. Diese Haupt-Lernaufgabe ist in mehrere \textbf{Learning Tasks} unterteilt, die aufeinander aufbauen und jeweils durch unterstützende Informationen, Just-in-time Hilfen und Part-task Practice (Teilübungen) begleitet werden.
+% \end{mainBox}
 
-        \begin{itemize}
-            \item Visualisierung der Client-Server-Architektur (Skript, Slides)
-            \item Einführung in grundlegende Begriffe: IP-Adresse, Port, Socket
-            \item Analogie: \enquote{Postsystem} (Adresse $\rightarrow$ Empfänger)
-            \item Infoblätter / Moodle-Materialien mit Hintergrundwissen
-        \end{itemize}                 &
-        \begin{itemize}
-            \item Code-Snippets für \lstinline|socket.connect|, \lstinline|send|, \lstinline|recv|
-            \item Anleitung zur Fehlerbehandlung bei Verbindungsabbrüchen
-            \item Debugging-Tipps, wenn Nachrichten nicht ankommen
-            \item Schritt-für-Schritt-Hilfekarten (nur bei Bedarf zugänglich)
-        \end{itemize} &
-        \begin{itemize}
-            \item \textbf{Erste Übung:} Zwei Python-Skripte auf demselben Rechner verbinden
-            \item Übung: Eine \enquote{Hallo}-Nachricht an den Server senden und Antwort empfangen
-            \item Fehlerübungen: Verbindungsfehler identifizieren und beheben
-            \item Mini-Tests zu IP/Port-Adressen und deren Bedeutung
-        \end{itemize}
-    \end{tabular}
-    \caption{Didaktische Struktur der Lernaufgabe: Chat-Kommunikation}
-\end{table}
+% \begin{scaffoldBox}[title=Scaffolding der Lernaufgaben]
+%     Die Unterrichtssequenz besteht aus drei aufeinander aufbauenden Learning Tasks, welche jeweils durch vorausgehende, unterstützende Informationen, Just-in-time Hilfen und Part-task Practice (Teilübungen) begleitet werden. Dieses \textit{Scaffolding} jedes Learning Tasks wird jeweils in einer blauen Box hervorgehoben, ebenso wie das fortschreitende Zurückweichen (\textit{Fading}) der Unterstützung.
+% \end{scaffoldBox}
 
-\section{Learning Task 1: Lokale Verbindung via \texorpdfstring{\texttt{localhost}}{localhost}}
+% \begin{table}[H]
+%     \centering
+%     \small
+%     \renewcommand{\arraystretch}{1.2}
+%     \begin{tabular}{p{0.33\linewidth}|p{0.33\linewidth}|p{0.33\linewidth}}
+%         \textbf{Unterstützende Informationen}                                                  & \textbf{Just-in-time Informationen} & \textbf{Part-task Practice (Teilübungen)} \\
+%         \midrule
 
-\begin{scaffoldBox}
-    \textbf{Vorausgehende Konzepte}: Die SuS kennen bereits die historischen Hintergründe von Netzwerken, die Grundkonzepte von Netzwerkschichten, IP-Adressen, Sequenzierung und Ports, sowie die Client-Server-Architektur aufgrund einer vorangehenden Unterrichtssequenz. In der Vorausgehenden Unterrichtssequenz haben sich die SuS mit den grundlegenden Funktionen und der Bedeutung von Netzwerken auseinandergesetzt, indem Sie ein Spiel gespielt haben, bei dem sie Nachrichten über ein simuliertes Netzwerk via ausgedruckte Kärtchen zusenden mussten (s. \cref{chapter:netzwerkspiel}). Dabei haben sie die Rolle von IP-Adressen und Ports kennengelernt und verstanden, wie Datenpakete in einem Netzwerk weitergeleitet werden.
+%         \begin{itemize}
+%             \item Visualisierung der Client-Server-Architektur (Skript, Slides)
+%             \item Einführung in grundlegende Begriffe: IP-Adresse, Port, Socket
+%             \item Analogie: \enquote{Postsystem} (Adresse $\rightarrow$ Empfänger)
+%             \item Infoblätter / Moodle-Materialien mit Hintergrundwissen
+%         \end{itemize}                 &
+%         \begin{itemize}
+%             \item Code-Snippets für \lstinline|socket.connect|, \lstinline|send|, \lstinline|recv|
+%             \item Anleitung zur Fehlerbehandlung bei Verbindungsabbrüchen
+%             \item Debugging-Tipps, wenn Nachrichten nicht ankommen
+%             \item Schritt-für-Schritt-Hilfekarten (nur bei Bedarf zugänglich)
+%         \end{itemize} &
+%         \begin{itemize}
+%             \item \textbf{Erste Übung:} Zwei Python-Skripte auf demselben Rechner verbinden
+%             \item Übung: Eine \enquote{Hallo}-Nachricht an den Server senden und Antwort empfangen
+%             \item Fehlerübungen: Verbindungsfehler identifizieren und beheben
+%             \item Mini-Tests zu IP/Port-Adressen und deren Bedeutung
+%         \end{itemize}
+%     \end{tabular}
+%     \caption{Didaktische Struktur der Lernaufgabe: Chat-Kommunikation}
+% \end{table}
 
-    \textbf{Neue Konzepte}: Client-Server-Architektur, IP-Adresse, Port, Socket, localhost.
+% \section{Learning Task 1: Lokale Verbindung via \texorpdfstring{\texttt{localhost}}{localhost}}
+\section{Lokale Chat-Kommunikation via \texorpdfstring{\texttt{localhost}}{localhost}}
 
-    Die neuen Begriffe werden zuerst anhand eines Videos (\href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Warriors of the Net}) und einer Analogie (Postsystem) eingeführt. Anschliessend wird die Grundstruktur eines Socket-Programms in Python vorgestellt. Die SuS lösen dabei einige vorbereitete Teilübungen (Part-task Practice), um die Konzepte zu verinnerlichen, und lösen danach die komplexe Lernaufgabe, bei der eine lokale Chat-Kommunikation über zwei Python-Skripte realisiert wird.
-\end{scaffoldBox}
+In dieser ersten Aufgabe machen wir uns mit Netzwerk-Programmierung in Python vertraut, indem wir eine einfache Chat-Kommunikation auf demselben Rechner implementieren. Wir verwenden dazu die Loopback-Adresse \texttt{localhost} (IP: \texttt{127.0.0.1}), welche auf den eigenen Rechner verweist. Dies ermöglicht es uns, die Grundlagen der Socket-Programmierung zu erlernen, ohne uns um Netzwerkverbindungen zwischen verschiedenen Geräten kümmern zu müssen.
+
+Ein \textbf{Socket} ist ein Endpunkt für die Kommunikation zwischen zwei Computern über ein Netzwerk, in welchem folgende Daten definiert werden müssen:
+\begin{itemize}
+    \item \textbf{IP-Adresse}: Die Adresse des Rechners, mit dem kommuniziert werden soll. Für lokale Tests verwenden wir \texttt{localhost} oder \texttt{127.0.0.1}.
+    \item \textbf{Port}: Eine Nummer, die einen spezifischen Dienst oder eine Anwendung auf dem Rechner identifiziert. Ports reichen von 0 bis 65535, wobei Ports unter 1024 oft für Systemdienste reserviert sind.
+    \item \textbf{Protokoll}: Das Kommunikationsprotokoll, das verwendet wird, z.B. \gls{TCP} (Transmission Control Protocol) für zuverlässige Verbindungen oder \gls{UDP} für schnellere, aber unzuverlässige Verbindungen.
+\end{itemize}
+
+% \begin{scaffoldBox}
+%     \textbf{Vorausgehende Konzepte}: Die SuS kennen bereits die historischen Hintergründe von Netzwerken, die Grundkonzepte von Netzwerkschichten, IP-Adressen, Sequenzierung und Ports, sowie die Client-Server-Architektur aufgrund einer vorangehenden Unterrichtssequenz. In der Vorausgehenden Unterrichtssequenz haben sich die SuS mit den grundlegenden Funktionen und der Bedeutung von Netzwerken auseinandergesetzt, indem Sie ein Spiel gespielt haben, bei dem sie Nachrichten über ein simuliertes Netzwerk via ausgedruckte Kärtchen zusenden mussten (s. \cref{chapter:netzwerkspiel}). Dabei haben sie die Rolle von IP-Adressen und Ports kennengelernt und verstanden, wie Datenpakete in einem Netzwerk weitergeleitet werden.
+
+%     \textbf{Neue Konzepte}: Client-Server-Architektur, IP-Adresse, Port, Socket, localhost.
+
+%     Die neuen Begriffe werden zuerst anhand eines Videos (\href{https://www.youtube.com/watch?v=PBWhzz_Gn10}{Warriors of the Net}) und einer Analogie (Postsystem) eingeführt. Anschliessend wird die Grundstruktur eines Socket-Programms in Python vorgestellt. Die SuS lösen dabei einige vorbereitete Teilübungen (Part-task Practice), um die Konzepte zu verinnerlichen, und lösen danach die komplexe Lernaufgabe, bei der eine lokale Chat-Kommunikation über zwei Python-Skripte realisiert wird.
+% \end{scaffoldBox}
 
 \begin{myexercise}[Chatten auf demselben Rechner]\label{ex:chat-localhost}
 
     \textbf{Aufgabe:} Schreiben Sie zwei Python-Programme, welche auf demselben Rechner laufen: \texttt{server\_localhost.py} und \texttt{client\_localhost.py}. Der Client verbindet sich mit dem Server und schickt eine kurze Nachricht: \enquote{Hallo Server, hier ist der Client}. Der Server empfängt die Nachricht und gibt sie auf der Konsole aus, zudem antwortet er an den Client \enquote{Hallo Client, hier ist der Server}.
 
-    \textbf{Verwenden Sie folgende Grundstruktur:}
+    Folgendes Video führt Sie durch alle Schritte: \href{https://youtu.be/1ECIEdc3TdA}{Link}. Alternativ finden Sie unten eine Schritt-für-Schritt-Anleitung.
 
-    \begin{lstlisting}[caption={server\_localhost.py}]
-import socket
+    \textbf{Verwenden Sie folgende Grundstruktur sowohl in den Dateien \texttt{server\_localhost.py} als auch \texttt{client\_localhost.py}:}
 
-PORT = ... # HIER Port-Nummer Ihrer Wahl einsetzen
+    \begin{lstlisting}
+import socket # sockets-Library importieren, damit wir Sockets erstellen können
 
-# Server-Socket erstellen
+PORT = ... # irgendein Port für den Server / Client definieren (z.B. 12345)
+IP_ADDRESS = ... # lokale IP-Adresse des eigenen Computers ("localhost" oder "127.0.0.1")
+    \end{lstlisting}
+
+    Danach können Sie den Server-Socket und Client-Socket erstellen. Ein Socket wird mit \lstinline|socket.socket()| erstellt. Die Argumente geben den Adresstyp und das Protokoll an. In unserem Fall bedeutet \lstinline|socket.AF_INET|, dass IPv4-Adressen verwendet werden, und \lstinline|socket.SOCK_STREAM| steht für eine \gls{TCP}-Verbindung.
+
+    \begin{lstlisting}
+# Erstelle einen TCP-IP Socket
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("localhost", PORT))   # lokale IP, Port 12345
-server.listen(1)
-print("Warte auf Verbindung...")
+    \end{lstlisting}
 
-# Verbindung akzeptieren
-conn, addr = server.accept()
-print(f"Verbunden mit {addr[0]} über Port {addr[1]}")
+    Danach muss der Server-Socket an eine IP-Adresse und einen Port gebunden werden, damit er auf eingehende Verbindungen lauschen kann. Dies geschieht mit der Methode \lstinline|bind()|.
+    \begin{lstlisting}
+# Binde den Socket an localhost und den definierten Port
+server.bind((IP_ADDRESS, PORT))
+    \end{lstlisting}
 
-# Nachricht empfangen
-nachricht = conn.recv(1024).decode()
-print(f"Empfangen: {nachricht}")
+    Der Server muss dann auf eingehende Verbindungen warten, was mit der Methode \lstinline|listen()| geschieht. Danach kann eine Verbindung mit \lstinline|accept()| akzeptiert werden.
+    \begin{lstlisting}
+server.listen(1)  # Warte auf eingehende Verbindungen (maximal 1 in der Warteschlange)
+conn, addr = server.accept()  # Akzeptiere eine eingehende Verbindung
+    \end{lstlisting}
 
-# Antwort an den Client senden
-conn.send("Hallo Client, hier ist der Server!".encode())
-
+    Der Client verbindet sich mit dem Server mittels der Methode \lstinline|connect()|:
+    \begin{lstlisting}
+# Verbinde den Socket mit dem Server auf localhost und dem definierten Port
+client.connect((IP_ADDRESS, PORT))
+    \end{lstlisting}
+    Nun können Sie im Server und im Client Nachrichten senden und empfangen, indem Sie die Methoden \lstinline|send()| und \lstinline|recv()| verwenden. Zuerst müssen Sie jedoch Ihre Nachricht als String definieren:
+    \begin{lstlisting}
+# Beispiel-Nachricht
+nachricht = "Hallo Server, hier ist der Client"
+    \end{lstlisting}
+    Danach kann diese Nachricht an den Server gesendet werden (verwenden Sie \texttt{.encode()}, um den String in Bytes umzuwandeln):
+    \begin{lstlisting}
+client.send(nachricht.encode())  # Sende die Nachricht an den Server
+    \end{lstlisting}
+    Um eine Nachricht zu empfangen, verwenden Sie die Methode \lstinline|recv()|, welche die Anzahl der Bytes angibt, die empfangen werden sollen (z.B. 1024 Bytes):
+    \begin{lstlisting}
+empfangene_nachricht = conn.recv(1024).decode()  # Empfange bis zu 1024 Bytes
+print(f"Empfangen: {empfangene_nachricht}")  # Zeige die empfangene Nachricht an
+    \end{lstlisting}
+    \textbf{Hinweis:} Vergessen Sie nicht, die Sockets am Ende mit \lstinline|close()| zu schliessen, um Ressourcen freizugeben:
+    \begin{lstlisting}
 conn.close()
 server.close()
-\end{lstlisting}
-
-    \begin{lstlisting}[caption={client\_localhost.py}]
-import socket
-
-PORT = ... # HIER Port-Nummer Ihrer Wahl einsetzen
-
-# Client-Socket erstellen und mit dem Server verbinden
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("localhost", 12345))
-
-# Nachricht an den Server senden
-client.send("Hallo Server, hier ist der Client!".encode())
-
-# Antwort vom Server empfangen
-antwort = client.recv(1024).decode()
-print("Antwort vom Server:", antwort)
-
 client.close()
-\end{lstlisting}
-
-\lstinline|socket.AF_INET| bedeutet, dass IPv4-Adressen verwendet werden, und \lstinline|socket.SOCK_STREAM| steht für eine TCP-Verbindung. Andere, gängige Optionen sind \lstinline|socket.SOCK_DGRAM| für UDP-Verbindungen und \lstinline|socket.AF_INET6| für IPv6-Adressen.
-
-    Wählen Sie einen geeigneten Port (zwischen 1024 und 65535) und ersetzen Sie die Platzhalter in beiden Programmen.
+    \end{lstlisting}
 
     Lassen Sie \texttt{server\_localhost.py} auf der Konsole laufen und führen Sie dann \texttt{client\_localhost.py} aus, indem Sie in VS Code auf den Dropdown-Button rechts vom Run-Button clicken und \enquote{Run Python File in Dedicated Terminal} anklicken.
+    \begin{figure}[H]
+        \begin{tikzpicture}[
+                base/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, text=white, rounded corners, text width=2.8cm, align=center, inner sep=8pt},
+                server/.style={base, fill=RoyalBlue},
+                client/.style={base, fill=ForestGreen},
+                arrow/.style={-Stealth, thick, rounded corners},
+                code/.style={font=\ttfamily\small}
+            ]
 
-    Erweitern Sie nun Ihr Programm, indem der Client eine Nachricht schickt, und der Server antwortet mit \enquote{Nachricht erhalten!}.
-    \begin{myanswer}
-        \lstinputlisting[caption={server\_localhost.py}]{Grundlagen_Info/07_Netzwerke/Code/0_localhost/server_localhost.py}
-        \lstinputlisting[caption={client\_localhost.py}]{Grundlagen_Info/07_Netzwerke/Code/0_localhost/client_localhost.py}
-    \end{myanswer}
+            % Nodes
+            \node[client] (client) at (0, 0) {Client\\\texttt{localhost:54321}};
+            \node[server] (server) at (10, 0) {Server\\\texttt{localhost:12345}};
+
+            % Arrows with labels
+            \draw[arrow, loop, min distance=2cm, in=120, out=60] (server.north) to node[above, yshift=8pt, code] {bind(), listen(), accept()} (server.north);
+            \draw[arrow] (client) to[bend left=20] node[above, yshift=3pt, code] {connect()} (server);
+            \draw[arrow] (client) -- node[below, code] {send("Hallo Server...")} (server);
+            \draw[arrow, dashed] (server) -- node[above, yshift=3pt, code, xshift=10pt] {recv()} (client);
+            \draw[arrow, dashed, bend left=20] (server.south) to node[below, yshift=-8pt, code, xshift=-10pt] {send("Hallo Client...")} (client.south);
+
+            % State boxes
+            \node[rectangle, draw, fill=gray!10, below=3cm of client.east, text width=7cm, align=left, font=\small] (client_state) {
+                \textbf{Client:} \\
+                1. Socket erstellen (\texttt{.socket()})\\
+                2. Mit Server-Socket verbinden (\texttt{.connect()}) \\
+                3. Nachricht senden (\texttt{.send()})\\
+                4. Antwort empfangen (\texttt{.recv()})\\
+            };
+
+            \node[rectangle, draw, fill=gray!10, below=3cm of server.east, xshift=-2cm, text width=7cm, align=left, font=\small] (server_state) {
+                \textbf{Server:} \\
+                1. Socket erstellen (\texttt{.socket(), .bind()})\\
+                2. Warten auf Verbindungen (\texttt{.listen()}) \\
+                3. Accept Verbindung (\texttt{.accept()}) \\
+                4. Nachricht empfangen (\texttt{.recv()}) \\
+                5. Antwort senden (\texttt{.send()})
+            };
+        \end{tikzpicture}
+        \centering
+        \caption{Ablauf einer Socket-Kommunikation zwischen Client und Server auf \texttt{localhost}}
+    \end{figure}
+\end{myexercise}
+
+\begin{myexercise}
+    Erweitern Sie nun Ihr Programm, indem der Client eine Nachricht schickt, und der Server antwortet mit \enquote{Nachricht erhalten!}. Sie können hierfür den Befehl \lstinline|send()| verwenden, um die Antwort zu senden, und \lstinline|recv()|, um die Antwort im Client zu empfangen und anzuzeigen.
 \end{myexercise}
 
 \begin{myattention}[Gebundene Ports]
@@ -127,7 +185,7 @@ server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     Fügen Sie diese Zeile direkt nach der Erstellung des Server-Sockets ein, also nach folgender Zeile:
     \begin{lstlisting}
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    \end{lstlisting}   
+    \end{lstlisting}
 \end{myattention}
 
 \begin{myexercise}[Verständnisfragen]
@@ -149,71 +207,72 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
 \begin{myexercise}[Reflexionsfragen (formatives Assessment)]
-    Notiere nach Abschluss von Learning Task 1 (max. 5 Minuten) kurze Antworten ins Lernjournal. Tausche dich danach mit einer Person aus und ergänze fehlende Punkte.
+    Notieren Sie nach Abschluss aller vorausgehenden Aufgaben kurze Antworten in Ihr Lernjournal. Tauschen Sie sich danach mit einer Person aus und ergänzen Sie fehlende Punkte.
 
     \textbf{Fragen:}
     \begin{enumerate}
-        \item Erkläre in \emph{eigenen Worten}: Was ist ein Socket? Welche zwei Operationen hast du verwendet?
-        \item Unterschied Socket vs. Port?
-        \item Unterschied \gls{IP}-Adresse vs. Port (verwende die Post-Analogie).
-        \item Warum muss der Server vor dem Client gestartet werden? Welche konkrete Fehlermeldung erscheint sonst?
-        \item Weshalb muss \lstinline|bind()| nur einmal aufgerufen werden?
-        \item Skizziere den Ablauf deiner Nachricht (Methodenaufrufe in Reihenfolge) vom Client zum Server.
-        \item Nenne mindestens einen Debugging-Schritt, falls keine Antwort zurückkommt.
-        \item Formuliere eine mögliche Ursache für \texttt{ConnectionRefusedError}.
-        \item Kurzer Selbstcheck (Ja/Nein):
-              \begin{itemize}
+        \item Erklären Sie in \emph{eigenen Worten}: Was ist ein Socket? Welche zwei Operationen haben Sie verwendet?
+            \item Unterschied Socket vs. Port?
+            \item Unterschied \gls{IP}-Adresse vs. Port (verwenden Sie die Post-Analogie).
+            \item Warum muss der Server vor dem Client gestartet werden? Welche konkrete Fehlermeldung erscheint sonst?
+            \item Weshalb muss \lstinline|bind()| nur einmal aufgerufen werden?
+            \item Skizzieren Sie den Ablauf Ihrer Nachricht (Methodenaufrufe in Reihenfolge) vom Client zum Server.
+            \item Nennen Sie mindestens einen Debugging-Schritt, falls keine Antwort zurückkommt.
+            \item Formulieren Sie eine mögliche Ursache für \texttt{ConnectionRefusedError}.
+            \item Kurzer Selbstcheck (Ja/Nein):
+                  \begin{itemize}
                   \item Ich kann den Code ohne Vorlage erneut schreiben.
                   \item Ich verstehe jede Zeile von \texttt{server.py}.
                   \item Ich weiss, wann \texttt{recv} blockiert.
-              \end{itemize}
-        \item Formulieren Sie ein persönliches Lernziel für Task 2 (ein Satz).
-    \end{enumerate}
+                  \end{itemize}
+            \item Formulieren Sie ein persönliches Lernziel für Task 2 (ein Satz).
+            \end{enumerate}
 
-    \begin{myanswer}
-        \begin{itemize}
-            \item Socket: Endpunkt einer TCP-Verbindung; genutzt: \texttt{socket()}, \texttt{bind()}, \texttt{listen()}, \texttt{accept()}, \texttt{connect()}, \texttt{send()}, \texttt{recv()}, \texttt{close()}.
-            \item Socket = Verbindungspunkt (Python-Objekt); Port = Nummer zur Identifikation eines Dienstes auf einem Rechner.
-            \item \gls{IP} = Adresse des Rechners; Port = „Tür“/Dienst auf diesem Rechner (Post: Hausnummer vs. Zimmernummer).
-            \item Server zuerst: Sonst kein Prozess lauscht $\rightarrow$ \texttt{ConnectionRefusedError: [Errno 61] Connection refused}.
-            \item \texttt{bind()} weist Socket eine Adresse/Port zu; nur einmal nötig, da Socket danach gebunden ist.
-            \item Ablauf: 
+            \begin{myanswer}
             \begin{itemize}
-                \item \textbf{Client}: \texttt{socket()} $\rightarrow$ \texttt{connect()} $\rightarrow$ \texttt{send()}; 
-                \item \textbf{Server}: \texttt{socket()} $\rightarrow$ \texttt{bind()} $\rightarrow$ \texttt{listen()} $\rightarrow$ \texttt{accept()} $\rightarrow$ \texttt{recv()} $\rightarrow$ (optional \texttt{send()} Antwort).
+                \item Socket: Endpunkt einer TCP-Verbindung; genutzt: \texttt{socket()}, \texttt{bind()}, \texttt{listen()}, \texttt{accept()}, \texttt{connect()}, \texttt{send()}, \texttt{recv()}, \texttt{close()}.
+                \item Socket = Verbindungspunkt (Python-Objekt); Port = Nummer zur Identifikation eines Dienstes auf einem Rechner.
+                \item \gls{IP} = Adresse des Rechners; Port = „Tür"/Dienst auf diesem Rechner (Post: Hausnummer vs. Zimmernummer).
+                \item Server zuerst: Sonst kein Prozess lauscht $\rightarrow$ \texttt{ConnectionRefusedError: [Errno 61] Connection refused}.
+                \item \texttt{bind()} weist Socket eine Adresse/Port zu; nur einmal nötig, da Socket danach gebunden ist.
+                \item Ablauf:
+                  \begin{itemize}
+                      \item \textbf{Client}: \texttt{socket()} $\rightarrow$ \texttt{connect()} $\rightarrow$ \texttt{send()};
+                      \item \textbf{Server}: \texttt{socket()} $\rightarrow$ \texttt{bind()} $\rightarrow$ \texttt{listen()} $\rightarrow$ \texttt{accept()} $\rightarrow$ \texttt{recv()} $\rightarrow$ (optional \texttt{send()} Antwort).
+                  \end{itemize}
+
+                \item Debugging: Prüfen Port, laufender Server, Firewall, Print-Statements vor/nach \texttt{send/recv}, \texttt{netstat} zur Belegung.
+                \item Ursache \texttt{ConnectionRefusedError}: Server nicht gestartet / falscher Port / Firewall blockiert.
+                \item Blockierendes \texttt{recv}: Wartet bis Daten eintreffen oder Gegenstelle schliesst.
+                \item Lernziel-Beispiel: „Ich möchte in Task 2 mehrere Nachrichten nacheinander austauschen können."
             \end{itemize}
-            
-            \item Debugging: Prüfen Port, laufender Server, Firewall, Print-Statements vor/nach \texttt{send/recv}, \texttt{netstat} zur Belegung.
-            \item Ursache \texttt{ConnectionRefusedError}: Server nicht gestartet / falscher Port / Firewall blockiert.
-            \item Blockierendes \texttt{recv}: Wartet bis Daten eintreffen oder Gegenstelle schliesst.
-            \item Lernziel-Beispiel: „Ich möchte in Task 2 mehrere Nachrichten nacheinander austauschen können.“
-        \end{itemize}
-    \end{myanswer}
-\end{myexercise}
+            \end{myanswer}
+        \end{myexercise}
 
-\section{Learning Task 2: Chat-Kommunikation über ein lokales Netzwerk}
+% \section{Learning Task 2: Chat-Kommunikation über ein lokales Netzwerk}
+\section{Chat-Kommunikation über ein lokales Netzwerk (LAN)}
 
-\begin{scaffoldBox}
-    \textbf{Neue Konzepte}: IP-Adresse im lokalen Netzwerk, Firewall-Einstellungen.
+% \begin{scaffoldBox}
+%     \textbf{Neue Konzepte}: IP-Adresse im lokalen Netzwerk, Firewall-Einstellungen.
 
-    Die SuS lernen, wie sie die eigene IP-Adresse im lokalen Netzwerk ermitteln können (z. B. über den Befehl \texttt{ipconfig} in der Windows-Eingabeaufforderung oder \texttt{ifconfig} im Terminal auf macOS/Linux). Zudem wird erklärt, wie Firewall-Einstellungen den Datenverkehr beeinflussen können. Die Teilübungen (Part-task Practice) helfen den SuS, ihre Programme anzupassen und Verbindungsprobleme zu lösen. Am Ende steht die komplexe Lernaufgabe, bei der die Chat-Kommunikation über zwei Geräte im selben Netzwerk realisiert wird.
+%     Die SuS lernen, wie sie die eigene IP-Adresse im lokalen Netzwerk ermitteln können (z. B. über den Befehl \texttt{ipconfig} in der Windows-Eingabeaufforderung oder \texttt{ifconfig} im Terminal auf macOS/Linux). Zudem wird erklärt, wie Firewall-Einstellungen den Datenverkehr beeinflussen können. Die Teilübungen (Part-task Practice) helfen den SuS, ihre Programme anzupassen und Verbindungsprobleme zu lösen. Am Ende steht die komplexe Lernaufgabe, bei der die Chat-Kommunikation über zwei Geräte im selben Netzwerk realisiert wird.
 
-    \textbf{Technische Herausforderungen}: Die Lehrperson sollte vorab testen, ob die Firewall-Einstellungen auf den Schulrechnern die Kommunikation über Sockets erlauben. Gegebenenfalls müssen Ausnahmen für die verwendeten Ports eingerichtet werden oder ein eigenes Netzwerk (z. B. über einen mobilen Hotspot oder einen eigenen WLAN-fähigen Router) genutzt werden.
-\end{scaffoldBox}
+%     \textbf{Technische Herausforderungen}: Die Lehrperson sollte vorab testen, ob die Firewall-Einstellungen auf den Schulrechnern die Kommunikation über Sockets erlauben. Gegebenenfalls müssen Ausnahmen für die verwendeten Ports eingerichtet werden oder ein eigenes Netzwerk (z. B. über einen mobilen Hotspot oder einen eigenen WLAN-fähigen Router) genutzt werden.
+% \end{scaffoldBox}
 
 \begin{myexercise}[Meine Öffentliche \gls{IP}-Adresse herausfinden]
-Finden Sie die lokale \gls{IP}-Adresse Ihres Laptops heraus. Dies ist die IP, welche Sie innerhalb des lokalen Netzwerks (z.B. Schul-WLAN) verwenden. Verwenden Sie dazu die Anleitungen in \cref{ex:meine-ip}.
+    Finden Sie die lokale \gls{IP}-Adresse Ihres Laptops heraus. Dies ist die IP, welche Sie innerhalb des lokalen Netzwerks (z.B. Schul-WLAN) verwenden. Verwenden Sie dazu die Anleitungen in \cref{ex:meine-ip}.
 
-Ihre private \gls{IP}-Adresse sollte in etwa so aussehen: \texttt{192.168.x.x} oder \texttt{10.x.x.x}.
+    Ihre private \gls{IP}-Adresse sollte in etwa so aussehen: \texttt{192.168.x.x} oder \texttt{10.x.x.x}.
 
-Meine private \gls{IP}-Adresse ist: \ipPlaceHolder
+    Meine private \gls{IP}-Adresse ist: \ipPlaceHolder
 
-Notieren Sie sich auch noch ihre öffentliche \gls{IP}-Adresse, welche Sie im Internet verwenden. Diese finden Sie z.B. auf der Webseite \url{https://www.whatismyip.com/}.
+    Notieren Sie sich auch noch ihre öffentliche \gls{IP}-Adresse, welche Sie im Internet verwenden. Diese finden Sie z.B. auf der Webseite \url{https://www.whatismyip.com/}.
 
-Meine öffentliche \gls{IP}-Adresse ist: \ipPlaceHolder
+    Meine öffentliche \gls{IP}-Adresse ist: \ipPlaceHolder
 \end{myexercise}
 
-\begin{myexercise}[Chatten im lokalen Netzwerk]
+\begin{myexercise}[Chatten im lokalen Netzwerk]\label{ex:chat-localnet}
 
     \textbf{Aufgabe:} Erweitern Sie Ihre Codes aus \cref{ex:chat-localhost}, so dass ihre Programme auf \textbf{verschiedenen Rechnern im selben lokalen Netzwerk} laufen. Der Server lauscht auf seiner eigenen, lokalen \gls{IP}-Adresse und einem Port (z.B. 12345). Der Client verbindet sich mit der \gls{IP}-Adresse des Servers und schickt eine kurze Nachricht (\enquote{Hallo Server}). Der Server empfängt die Nachricht und gibt sie auf der Konsole aus.
 
@@ -224,13 +283,10 @@ Meine öffentliche \gls{IP}-Adresse ist: \ipPlaceHolder
         \item Starten Sie \texttt{server.py} auf Rechner A und \texttt{client.py} auf Rechner B.
     \end{enumerate}
 
-    \begin{myanswer}
-        \lstinputlisting[caption={\texttt{chat\_localnet\_client.py}}]{Grundlagen_Info/07_Netzwerke/Code/1_LAN/chat_localnet_client.py}
-        \lstinputlisting[caption={\texttt{chat\_localnet\_server.py}}]{Grundlagen_Info/07_Netzwerke/Code/1_LAN/chat_localnet_server.py}
-    \end{myanswer}
+
 \end{myexercise}
 
-\begin{myexercise}[Endlos-Chat]
+\begin{myexercise}[Endlos-Chat]\label{ex:endlos-chat}
     Im echten Leben wollen wir nicht nur eine einzige Nachricht austauschen, sondern mehrere Nachrichten hin- und herschicken. Erweitern Sie Ihre Programme so, dass der Client und der Server in einer Endlosschleife Nachrichten austauschen können, bis einer der beiden die Verbindung mit \texttt{Strg + C} abbricht. Verwenden Sie dafür folgende Grundstruktur:
     \begin{lstlisting}
 try:
@@ -240,10 +296,6 @@ except KeyboardInterrupt:
     print("Verbindung wird geschlossen.")
     # Socket schliessen
 \end{lstlisting}
-    \begin{myanswer}
-        \lstinputlisting[caption={\texttt{chat\_localnet\_client\_loop.py}}]{Grundlagen_Info/07_Netzwerke/Code/1_LAN/chat_localnet_client_loop.py}
-        \lstinputlisting[caption={\texttt{chat\_localnet\_server\_loop.py}}]{Grundlagen_Info/07_Netzwerke/Code/1_LAN/chat_localnet_server_loop.py}
-    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Reflexionsfragen (formatives Assessment)]
@@ -318,16 +370,16 @@ Ein Chat-Client verbindet sich über das Internet mit einem Server, also einem C
             server/.style={base, fill=RoyalBlue},
             client/.style={base, fill=ForestGreen},
             arrow/.style={-Stealth, thick, rounded corners, text width=4cm, align=center}
-            ]
+        ]
 
-            % Nodes
-            \node[client] (client1) {Client 1\\\texttt{192.168.0.20}};
-            \node[server, below right=of client1] (relay) {Relay-Server\\\texttt{192.168.0.40}};
-            \node[client, above right=of relay] (client2) {Client 2\\\texttt{192.168.0.21}};
+        % Nodes
+        \node[client] (client1) {Client 1\\\texttt{192.168.0.20}};
+        \node[server, below right=of client1] (relay) {Relay-Server\\\texttt{192.168.0.40}};
+        \node[client, above right=of relay] (client2) {Client 2\\\texttt{192.168.0.21}};
 
-            % Arrows
-            \draw[arrow] (client1) -- node[midway, left] {\texttt{192.168.0.21:Hallo!}} (relay);
-            \draw[arrow] (relay) -- node[midway, right] {\texttt{192.168.0.21:Hallo!}} (client2);
+        % Arrows
+        \draw[arrow] (client1) -- node[midway, left] {\texttt{192.168.0.21:Hallo!}} (relay);
+        \draw[arrow] (relay) -- node[midway, right] {\texttt{192.168.0.21:Hallo!}} (client2);
 
     \end{tikzpicture}
     \centering
@@ -338,53 +390,53 @@ Im folgenden werden wir die Kommunikation über einen Relay-Server umsetzen. So 
 \subsection{Aufgaben: Schritt für Schritt zum Chat-Client}
 
 \begin{myexercise}[Nachricht zusammensetzen]
-Schreiben Sie ein Python-Programm, das folgende Variablen definiert:
-\begin{itemize}
-  \item \texttt{ip}: die lokale IP-Adresse Ihres Mitschülers/Ihrer Mitschülerin als Text
-  \item \texttt{message}: die Nachricht, die Sie schicken möchten
-  \item \texttt{combined}: die kombinierte Chat-Nachricht im Format \texttt{ip:message}
-\end{itemize}
-Geben Sie den Wert von \texttt{combined} mit \texttt{print()} aus.
-\begin{myanswer}
-\begin{lstlisting}
+    Schreiben Sie ein Python-Programm, das folgende Variablen definiert:
+    \begin{itemize}
+        \item \texttt{ip}: die lokale IP-Adresse Ihres Mitschülers/Ihrer Mitschülerin als Text
+        \item \texttt{message}: die Nachricht, die Sie schicken möchten
+        \item \texttt{combined}: die kombinierte Chat-Nachricht im Format \texttt{ip:message}
+    \end{itemize}
+    Geben Sie den Wert von \texttt{combined} mit \texttt{print()} aus.
+    \begin{myanswer}
+        \begin{lstlisting}
 ip = "20.161.75.213"
 message = "Hallo Bob!"
 combined = ip + ":" + message
 print(combined)
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Benutzereingabe und Schleife]
 
-Erweitern Sie Ihr Programm so, dass die IP-Adresse und die Nachricht jeweils per \texttt{input()} eingegeben werden. Kombinieren Sie beide wie oben und geben Sie das Ergebnis aus. Bauen Sie eine Endlosschleife ein, damit Sie beliebig viele Nachrichten verschicken können.
-\begin{myanswer}
-\begin{lstlisting}[language=Python]
+    Erweitern Sie Ihr Programm so, dass die IP-Adresse und die Nachricht jeweils per \texttt{input()} eingegeben werden. Kombinieren Sie beide wie oben und geben Sie das Ergebnis aus. Bauen Sie eine Endlosschleife ein, damit Sie beliebig viele Nachrichten verschicken können.
+    \begin{myanswer}
+        \begin{lstlisting}[language=Python]
 while True:
     ip = input("Empfänger-IP: ")
     message = input("Nachricht: ")
     combined = ip + ":" + message
     print(combined)
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Server-IP und Port definieren]
-Definieren Sie die IP-Adresse und den Port des Chat-Servers als Variablen \lstinline|server_ip| und \lstinline|port| (siehe Tabelle unten).
-\begin{myanswer}
-\begin{lstlisting}
+    Definieren Sie die IP-Adresse und den Port des Chat-Servers als Variablen \lstinline|server_ip| und \lstinline|port| (siehe Tabelle unten).
+    \begin{myanswer}
+        \begin{lstlisting}
 server_ip = "88.198.193.239"
 port = 43223
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Verbindung zum Server herstellen]
 
-Das Paket \texttt{socket} ist in Python standardmässig bereits installiert und dient dazu, um Netzwerkverbindungen herzustellen. Importieren Sie das Paket und erstellen Sie eine Funktion \lstinline|sende|, die sich mit dem Server verbindet und eine Nachricht sendet. Die Funktion soll die IP-Adresse des Servers, den Port und die Nachricht als Parameter entgegennehmen. Die Antwort des Servers soll ausgegeben werden.
+    Das Paket \texttt{socket} ist in Python standardmässig bereits installiert und dient dazu, um Netzwerkverbindungen herzustellen. Importieren Sie das Paket und erstellen Sie eine Funktion \lstinline|sende|, die sich mit dem Server verbindet und eine Nachricht sendet. Die Funktion soll die IP-Adresse des Servers, den Port und die Nachricht als Parameter entgegennehmen. Die Antwort des Servers soll ausgegeben werden.
 
-Verwenden Sie folgende Code-Vorlage: Innerhalb Ihrer Definition:
-\begin{lstlisting}[language=Python]
+    Verwenden Sie folgende Code-Vorlage: Innerhalb Ihrer Definition:
+    \begin{lstlisting}[language=Python]
 import socket
 
 # IHR BISHERIGER CODE HIER
@@ -396,8 +448,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: # Socket erstellen 
     print('Antwort vom Server:', data.decode())
 \end{lstlisting}
 
-\begin{myanswer}
-\begin{lstlisting}[language=Python]
+    \begin{myanswer}
+        \begin{lstlisting}[language=Python]
 import socket
 
 def send_message(server_ip, port, message):
@@ -407,14 +459,14 @@ def send_message(server_ip, port, message):
         data = s.recv(1024)
         print('Antwort vom Server:', data.decode())
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}[Chat-Client zusammenbauen und testen]
 
-Kombinieren Sie alles zu einem vollständigen Chat-Client, so dass Sie in einer Endlosschleife Nachrichten eingeben und an den Server schicken können. Die Antwort des Servers wird ausgegeben.
-\begin{myanswer}
-\begin{lstlisting}[language=Python]
+    Kombinieren Sie alles zu einem vollständigen Chat-Client, so dass Sie in einer Endlosschleife Nachrichten eingeben und an den Server schicken können. Die Antwort des Servers wird ausgegeben.
+    \begin{myanswer}
+        \begin{lstlisting}[language=Python]
 import socket
 
 server_ip = "116.203.99.55"
@@ -430,7 +482,7 @@ while True:
         data = s.recv(1024)
         print('Antwort vom Server:', data.decode())
 \end{lstlisting}
-\end{myanswer}
+    \end{myanswer}
 \end{myexercise}
 
 \noindent
@@ -440,13 +492,13 @@ Der Client schickt eine Nachricht im Format \texttt{IP:Nachricht} an den Server.
 
 Bis jetzt haben wir nur wenige Nachrichten innerhalb des lokalen Netzwerks ausgetauscht. In der Praxis möchten wir jedoch oft mit Personen kommunizieren, die sich an einem anderen Ort befinden, also über das Internet. Zudem möchten wir einen Endlos-Fluss an Nachrichten senden und empfangen können, ohne dass die Verbindung nach jeder Nachricht getrennt wird. In diesem Kapitel lernen wir, wie dieses mit einem Relay-Server im lokalen Netzwerk sowie Python realisiert werden kann.
 
-\begin{scaffoldBox}
-    \textbf{Neue Konzepte}: Öffentliche IP-Adresse, NAT, Port-Forwarding, Relay-Server, DNS (Domain Name System).
+% \begin{scaffoldBox}
+%     \textbf{Neue Konzepte}: Öffentliche IP-Adresse, NAT, Port-Forwarding, Relay-Server, DNS (Domain Name System).
 
-    Die SuS lernen, wie sie die öffentliche IP-Adresse ihres Netzwerks ermitteln können (z. B. über Websites wie \href{https://whatismyipaddress.com/}{whatismyipaddress.com}). Zudem wird das Konzept von NAT (Network Address Translation) und Port-Forwarding erklärt, um zu verstehen, warum direkte Verbindungen oft nicht möglich sind. Zusätzlich wird das Domain Name System (DNS) eingeführt: DNS übersetzt menschenlesbare Domain-Namen (wie \texttt{chat.example.com}) in IP-Adressen, damit Programme Server im Internet finden können. Die Teilübungen (Part-task Practice) helfen den SuS, ihre Programme anzupassen und Verbindungsprobleme zu lösen. Am Ende steht die komplexe Lernaufgabe, bei der die Chat-Kommunikation über einen Relay-Server realisiert wird.
+%     Die SuS lernen, wie sie die öffentliche IP-Adresse ihres Netzwerks ermitteln können (z. B. über Websites wie \href{https://whatismyipaddress.com/}{whatismyipaddress.com}). Zudem wird das Konzept von NAT (Network Address Translation) und Port-Forwarding erklärt, um zu verstehen, warum direkte Verbindungen oft nicht möglich sind. Zusätzlich wird das Domain Name System (DNS) eingeführt: DNS übersetzt menschenlesbare Domain-Namen (wie \texttt{chat.example.com}) in IP-Adressen, damit Programme Server im Internet finden können. Die Teilübungen (Part-task Practice) helfen den SuS, ihre Programme anzupassen und Verbindungsprobleme zu lösen. Am Ende steht die komplexe Lernaufgabe, bei der die Chat-Kommunikation über einen Relay-Server realisiert wird.
 
-    \textbf{Technische Herausforderungen}: Die Lehrperson sollte vorab testen, ob die Firewall-Einstellungen auf den Schulrechnern die Kommunikation über Sockets erlauben. Gegebenenfalls müssen Ausnahmen für die verwendeten Ports eingerichtet werden oder ein eigenes Netzwerk (z. B. über einen mobilen Hotspot oder einen eigenen WLAN-fähigen Router) genutzt werden.
-\end{scaffoldBox}
+%     \textbf{Technische Herausforderungen}: Die Lehrperson sollte vorab testen, ob die Firewall-Einstellungen auf den Schulrechnern die Kommunikation über Sockets erlauben. Gegebenenfalls müssen Ausnahmen für die verwendeten Ports eingerichtet werden oder ein eigenes Netzwerk (z. B. über einen mobilen Hotspot oder einen eigenen WLAN-fähigen Router) genutzt werden.
+% \end{scaffoldBox}
 
 \begin{myexercise}[Chatten über einen öffentlichen Relay-Server]
 
@@ -455,7 +507,7 @@ Bis jetzt haben wir nur wenige Nachrichten innerhalb des lokalen Netzwerks ausge
     \textbf{Schritte:}
     \begin{enumerate}
         \item Öffnen Sie \texttt{client.py} und passen Sie die \texttt{connect}-Zeile an:
-\begin{lstlisting}[language=Python]
+              \begin{lstlisting}[language=Python]
 client.connect(("88.198.193.239", 12345))
 \end{lstlisting}
         \item Senden Sie eine Nachricht (z.B. \enquote{Hallo an alle!}) an den Server.
@@ -532,7 +584,6 @@ while True:
 
 client.close()
         \end{lstlisting}
-        \textbf{Hinweis:} Der Server muss die Namen der verbundenen Clients verwalten und Nachrichten entsprechend weiterleiten. So können Sie gezielt Nachrichten an einzelne Personen schicken.
     \end{myanswer}
     \begin{myanswer}
         \begin{lstlisting}[caption=\texttt{server.py}]
@@ -571,7 +622,7 @@ while True:
     print(f"{name} hat sich verbunden.")
     threading.Thread(target=handle_client, args=(client,), daemon=True).start()
 server.close()
-            \end{lstlisting}
+        \end{lstlisting}
     \end{myanswer}
 \end{myexercise}
 
@@ -605,3 +656,20 @@ server.close()
         \end{itemize}
     \end{myanswer}
 \end{myexercise}
+
+\clearpage
+\section{Lösugen der längeren Code-Aufgaben}
+\begin{myanswer}[ex:chat-localhost]
+    \lstinputlisting[caption={server\_localhost.py}]{Grundlagen_Info/07_Netzwerke/Code/0_localhost/server_localhost.py}
+    \lstinputlisting[caption={client\_localhost.py}]{Grundlagen_Info/07_Netzwerke/Code/0_localhost/client_localhost.py}
+\end{myanswer}
+\newpage
+\begin{myanswer}[ex:chat-localnet]
+    \lstinputlisting[caption={\texttt{chat\_localnet\_client.py}}]{Grundlagen_Info/07_Netzwerke/Code/1_LAN/chat_localnet_client.py}
+    \lstinputlisting[caption={\texttt{chat\_localnet\_server.py}}]{Grundlagen_Info/07_Netzwerke/Code/1_LAN/chat_localnet_server.py}
+\end{myanswer}
+\newpage
+\begin{myanswer}[ex:endlos-chat]
+    \lstinputlisting[caption={\texttt{chat\_localnet\_client\_loop.py}}]{Grundlagen_Info/07_Netzwerke/Code/1_LAN/chat_localnet_client_loop.py}
+    \lstinputlisting[caption={\texttt{chat\_localnet\_server\_loop.py}}]{Grundlagen_Info/07_Netzwerke/Code/1_LAN/chat_localnet_server_loop.py}
+\end{myanswer}
