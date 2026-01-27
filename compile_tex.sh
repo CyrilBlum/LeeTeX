@@ -195,6 +195,7 @@ beamer_topics=(
     "05_Slides_Game:Grundlagen_Info/06_Datenbanken/Slides/05_Slides_Game"
     "Netzwerke_L00:Grundlagen_Info/07_Netzwerke/Slides/00_Netzwerke_Geschichte"
     "Netzwerke_L01:Grundlagen_Info/07_Netzwerke/Slides/01_Netzwerke_Intro" 
+    "Netzwerke_L02:Grundlagen_Info/07_Netzwerke/Slides/02_Netzwerke_Sockets" 
     "correlation_causation:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/correlation_causation"
     "linear_regression:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/linear_regression"
     "markov_chains:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_chains"
