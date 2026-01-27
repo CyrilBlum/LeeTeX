@@ -180,22 +180,27 @@ client.close()
             \centering
             \caption{Ablauf einer Socket-Kommunikation zwischen Client und Server auf \texttt{localhost}}
         \end{figure}
- Ein Client kann auch innerhalb eines Programms mehrere Sockets öffnen, um mit verschiedenen Servern oder Diensten gleichzeitig zu kommunizieren. Jeder Socket repräsentiert eine separate Verbindung. Im folgenden Beispiel sehen Sie, wie ein Client zwei Sockets öffnet, um bidirektional zu kommunizieren:
+ Ein Host kann auch gleichzeitig einen Server-Dienst und einen Client-Dienst ausführen, um mit sich selber zu kommunizieren -- denn letztlich ist ein Server nur ein Programm, das auf Anfragen von Clients wartet. In der folgenden Abbildung sehen Sie einen Client, der zwei Sockets verwendet, um bidirektional mit sich selber zu kommunizieren:
         \begin{figure}[H]
             \begin{tikzpicture}[
-                    base/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, text=white, rounded corners, text width=2.8cm, align=center, inner sep=8pt},
-                    client/.style={base, fill=ForestGreen},
-                    socket/.style={circle, draw, fill=yellow!70, minimum size=0.6cm}
-                ]
+                base/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, text=white, rounded corners, text width=2.8cm, align=center, inner sep=8pt},
+                client/.style={base, fill=ForestGreen},
+                socket/.style={circle, draw, fill=yellow!10, minimum size=0.6cm},
+                arrow/.style={-Stealth, thick, rounded corners}
+            ]
 
-                \node[client] (client) at (5, 0) {Client};
-                \node[socket] (socket1) at (3.5, 0) {};
-                \node[socket] (socket2) at (6.5, 0) {};
-
-                \draw[->] (socket1) to[bend left=60] (socket2);
-                \draw[->] (socket2) to[bend left=60] (socket1);
-
-            \end{tikzpicture}
+            \node[client] (client) at (5, 0) {Client\\\texttt{localhost:54321}};
+            \node[socket] (socket1) at (3.5, 0) {};
+            \node[socket] (socket2) at (6.5, 0) {};
+            \draw[arrow] (socket1) to[bend left=60] (socket2);
+            \draw[arrow] (socket2) to[bend left=60] (socket1);
+            \node[rectangle, draw, fill=yellow!5, above right=.2cm and .6cm of socket1, minimum width=2.2cm, minimum height=1.2cm, font=\small, align=center] {
+                \textbf{Socket:}\\
+                IP: \texttt{localhost}\\
+                Port: \texttt{54321}\\
+                Protocol: \texttt{TCP}
+            };
+        \end{tikzpicture}
             \centering
             \caption{Client mit zwei Sockets für bidirektionale Kommunikation}
         \end{figure}
