@@ -13,7 +13,6 @@ print(5 + 7 * 3)  # äquivalent zu 5 + (7 * 3) = 26
 8 * 5  # 40
 # Division
 10 / 4  # 2.5
-
 # Potenz
 2**4  # 16
 
