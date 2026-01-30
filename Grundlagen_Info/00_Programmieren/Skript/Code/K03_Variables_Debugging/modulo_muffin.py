@@ -1,3 +1,4 @@
 p = 4  # Beispielwert, Anzahl Personen
-s = 33  # Beispielwert
-uebrige_stuecke = s % p  # übriggebliebene Muffins
+m = 33  # Beispielwert, Anzahl Muffins
+uebrige_muffins = m % p  # übriggebliebene Muffins
+print("Anzahl übriggebliebene Muffins:", uebrige_muffins)
