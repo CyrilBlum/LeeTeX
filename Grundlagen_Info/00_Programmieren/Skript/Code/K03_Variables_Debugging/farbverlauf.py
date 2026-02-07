@@ -1,12 +1,12 @@
 ﻿import turtle as t
 
-# der folgende Befehl sorgt dafür, 
+# der folgende Befehl sorgt dafür,
 # dass die RGB Werte von 0 bis 255 angegeben werden können
 # anstatt von 0 bis 1
 t.colormode(255)
 
 
-#setze die Turtle etwas nach links
+# setze die Turtle etwas nach links
 t.teleport(-250, 0)
 
 # Anfangsfarbe grün
@@ -19,13 +19,13 @@ b = 0
 durchmesser = 500
 
 for _ in range(50):
-    t.pencolor(r,g,b)
+    t.pencolor(r, g, b)
     t.dot(durchmesser)
     durchmesser -= 10
     r -= 5
     b += 5
 
-#setze die Turtle etwas nach rechts
+# setze die Turtle etwas nach rechts
 t.teleport(250, 0)
 
 # Anfangsfarbe grün
@@ -38,7 +38,7 @@ b = 0
 durchmesser = 500
 
 for _ in range(50):
-    t.pencolor(r,g,b)
+    t.pencolor(r, g, b)
     t.dot(durchmesser)
     durchmesser -= 10
     r += 5

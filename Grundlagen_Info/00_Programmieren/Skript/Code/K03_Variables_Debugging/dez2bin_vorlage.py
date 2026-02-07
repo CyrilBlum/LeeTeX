@@ -1,7 +1,7 @@
-﻿'''
+﻿"""
 Dieses Programm wandelt Dezimalzahlen in Binärzahlen um.
 Die eingegebene Dezimalzahl muss kleiner als 1023 sein.
-'''
+"""
 
 # Die folgende Dezimalzahl soll umgewandelt werden
 zahl = 892
@@ -18,6 +18,6 @@ for _ in range(10):
 
     #  Welche Zahl muss durch die weiteren Basisgrössen abgedeckt werden?
     zahl -= ziffer * basisgroesse
-    
+
     # Basisgrösse wird auf die nächst kleinere Basisgrösse gesetzt.
-    basisgroesse //= 2    
+    basisgroesse //= 2

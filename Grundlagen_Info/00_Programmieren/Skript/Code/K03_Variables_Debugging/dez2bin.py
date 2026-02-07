@@ -1,7 +1,7 @@
-﻿'''
-Dieses Programm wandelt Dezimalzahlen in Binärzahlen um 
+﻿"""
+Dieses Programm wandelt Dezimalzahlen in Binärzahlen um
 Die eingegebene Dezimalzahl muss kleiner als 1024 sein.
-'''
+"""
 
 # die folgende Dezimalzahl soll umgewandelt werden
 zahl = int(input("Welche Zahl soll umgewandelt werden? "))
@@ -22,9 +22,9 @@ for _ in range(16):
 
     #  Welche Zahl muss durch die weiteren Basisgrössen abgedeckt werden?
     zahl -= ziffer * basisgroesse
-    
+
     # Basisgrösse wird auf die nächst kleinere Basisgrösse gesetzt.
-    basisgroesse //= 2 
+    basisgroesse //= 2
 
 # Ausgabe der Binärzahl
 print(f"Die binäre Darstellung der eingegebenen Zahl ist: {binaerzahl}")
