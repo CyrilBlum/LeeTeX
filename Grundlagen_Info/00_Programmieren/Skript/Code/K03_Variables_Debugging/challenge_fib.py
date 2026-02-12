@@ -11,15 +11,15 @@ anzahl_halbkreise = 8
 anzahl_ecken_viertel = 40
 
 # Startwerte der Fibonacci-Folge
-f0 = 0
-f1 = 1
+f_0 = 0
+f_1 = 1
 
 for _ in range(anzahl_halbkreise):
-    # f2 ist die nächste Zahl der Fibonacci-Folge
-    f2 = f0 + f1
+    # f_2 ist die nächste Zahl der Fibonacci-Folge
+    f_2 = f_0 + f_1
 
     # Kreis
-    radius = f2 * 10
+    radius = f_2 * 10
     umfang = 2 * radius * math.pi
 
     # Kantenlänge des Vielecks
@@ -37,7 +37,7 @@ for _ in range(anzahl_halbkreise):
         t.rt(90 / anzahl_ecken_viertel)
 
     # Update der Vorgänger
-    f0 = f1
-    f1 = f2
+    f_0 = f_1
+    f_1 = f_2
 
 t.done()

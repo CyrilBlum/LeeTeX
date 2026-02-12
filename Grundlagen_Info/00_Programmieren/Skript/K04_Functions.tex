@@ -233,7 +233,7 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
 \end{figure}
 \end{myexample}
 
-\begin{myoverview}[Nomenklatur bei Python-Funktionen]\label{myoverview:NomenklaturFunktion}
+\begin{myoverview}[Begrifflichkeiten bei Python-Funktionen]\label{myoverview:NomenklaturFunktion}
 	Wir haben in diesem Kapitel mehrere wichtige Begriffe im Zusammenhang mit Funktionen in Python kennengelernt. Diese Begriffe wollen wir hier anhand eines Beispiels übersichtlich darstellen:
 	\begin{lstlisting}
     def produkt(x, y):
@@ -244,31 +244,33 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
     \end{lstlisting}
 	\bigskip
 	\begin{description}
-		\item[Name der Funktion]: \lstinline|produkt|\\
+		\item[Name der Funktion:] \lstinline|produkt|\\
 		      Das ist der Name (Bezeichner) der Funktion, mit dem sie definiert und aufgerufen wird.
-		\item[Parameter der Funktion]: \lstinline|x|, \lstinline|y|\\
+		\item[Parameter der Funktion:] \lstinline|x|, \lstinline|y|\\
 		      Das sind die Platzhalter in der Funktionsdefinition, die beim Aufruf der Funktion mit Werten (Argumenten) belegt werden.
-		\item[Argumente der Funktion]: \lstinline|5|, \lstinline|3|\\
+		\item[Argumente der Funktion:] \lstinline|5|, \lstinline|3|\\
 		      Das sind die tatsächlichen Werte, die beim Aufruf an die Funktion übergeben werden.
-		\item[Funktionsaufruf]: \lstinline|produkt(5, 3)|\\
+		\item[Funktionsaufruf:] \lstinline|produkt(5, 3)|\\
 		      Das ist der Ausdruck, mit dem die Funktion ausgeführt wird.
-		\item[Funktionssignatur]: \lstinline|produkt(x, y)|\\
+		\item[Funktionssignatur:] \lstinline|produkt(x, y)|\\
 		      Das ist die Kombination aus dem Funktionsnamen und der Parameterliste, also wie die Funktion definiert ist und wie sie verwendet werden soll.
-		\item[Körper der Funktion]: \lstinline|print(x * y)|\\
+		\item[Körper der Funktion:] \lstinline|print(x * y)|\\
 		      Der Anweisungsblock innerhalb der Funktion. Er definiert, was die Funktion macht.
+		\item[Funktion:] \lstinline|def produkt(x, y): ...|\\
+		      Das ist die gesamte Struktur, die eine Funktion definiert, einschliesslich des Namens, der Parameter und des Körpers. Typischerweise beginnt sie mit dem Keyword \lstinline|def|, gefolgt von der Funktionssignatur und einem Doppelpunkt, und der Körper ist eingerückt darunter.
 	\end{description}
 
 	\medskip
 	Die allgemeine Form einer Funktion in Python sieht also so aus:
 	\begin{lstlisting}
-	# Definition einer Funktion
-	def funktionsname(parameter1, parameter2, ...):
+	# Funktion (Funktionsdefinition)
+	def funktionsname(parameter_1, parameter_2, ...):
 		# Körper der Funktion
 		...
 	
 
-	# Funktionsaufruf
-	funktionsname(argument1, argument2, ...)
+	# Funktionsaufruf (nicht mehr Teil der Funktionsdefinition)
+	funktionsname(argument_1, argument_2, ...)
 	\end{lstlisting}
 \end{myoverview}
 
@@ -279,13 +281,13 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
 \begin{myexercise}
 	Erstellen Sie die Funktionen mit den folgenden Signaturen:
 	\begin{itemize}
-		\item \lstinline|def summiere(x1, x2)|: Berechnet die Summe der zwei Parameter \lstinline|x1| und \lstinline|x2| und gibt das Resultat mittels \lstinline|print| auf der Konsole aus.
-		\item \lstinline|def summe_quadrate(x, y)|: Berechnet die Summe \(x^2 + y^2\) und gibt diese mittels \lstinline{print} auf der Konsole aus.
+		\item \lstinline|def summiere(x_1, x_2)|: Berechnet die Summe der zwei Parameter \lstinline|x_1| und \lstinline|x_2| und gibt das Resultat mittels \lstinline|print| im Terminal aus.
+		\item \lstinline|def summe_quadrate(x, y)|: Berechnet die Summe \(x^2 + y^2\) und gibt diese mittels \lstinline{print} im Terminal aus.
 	\end{itemize}
 	% TODO implement on Moodle
 \end{myexercise}
 
-\subsection{Lebensdauer (\textit{scope}) einer Variable}
+\subsection{Lebensdauer (\textit{scope}) einer Variablen}
 Im Code aus \cref{ex:params} wird bei \textit{jedem Aufruf} der Definition \lstinline|quadrat| eine neue Variable \texttt{laenge} erstellt, welche nur \textit{innerhalb} der Funktion existiert und welche jedes Mal einen anderen Wert hat. Den Wert erhält die Variable zum Zeitpunkt des \textit{Aufrufs} der Funktion, also auf den Zeilen 8, 9 und 10!
 
 Die Variable \lstinline|laenge| existiert also nur innerhalb der Definition \lstinline|quadrat|. Wenn wir nach Zeile 6 im Hauptprogramm (nicht eingerückt) den Befehl \lstinline|print(laenge)| eingeben würden, würden wir eine Fehlermeldung erhalten, da es die Variable nicht mehr gibt. Parameter sind also immer \textbf{\textit{lokale} Variablen}, ebenso wie Variablen, welche wir innerhalb von Funktion erstellen. Diese Variablen \enquote{sterben} nach Ausführung der Definition, daher spricht man auch von der Lebensdauer einer Variable, bzw. von deren Reichweite (Englisch: \textit{scope})
@@ -321,20 +323,19 @@ Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden:
 
 Dies kann nützlich sein, wenn sie eine Aufgabe mehrmals und in unterschiedlichen Varianten ausführen wollen, wie beispielsweise in \cref{ex:multiple-params}.
 
-Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen und auf der Konsole drucken konnten, allerdings verschwinden alle Parameter und lokalen Variablen nach der Ausführung einer Funktion.  Dies bedeutet, dass alle Variablen, die wir je in einer Definition erstellt haben, nur in dieser Definition \enquote{lebten}. Wir konnten jedoch nicht mehr auf Parameter oder lokale Variablen zugreifen, nachdem das Programm beendet wurde.
+Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen und im Terminal ausgeben konnten, allerdings verschwinden alle Parameter und lokalen Variablen nach der Ausführung einer Funktion.  Dies bedeutet, dass alle Variablen, die wir je in einer Definition erstellt haben, nur in dieser Definition \enquote{lebten}. Wir konnten jedoch nicht mehr auf Parameter oder lokale Variablen zugreifen, nachdem das Programm beendet wurde.
 
 \begin{myexample}\label{ex:sum-noreturn}
 Betrachten Sie folgenden Code. Weshalb führt er zu einer Fehlermeldung?
 \begin{lstlisting}[numbers=left]
-def summiere(x1, x2):
-    summe = x1 + x2
+def summiere(x_1, x_2):
+    summe = x_1 + x_2
     
 summiere(3, 5)
 print(summe)
 \end{lstlisting}
-Die Konsole gibt folgende Meldung aus: \texttt{[Zeile: 5] NameError: name 'summe' is not defined}. Dies bedeutet, dass die Variable \lstinline|summe| auf Zeile 5 nicht existiert. Die Fehlermeldung erklärt sich dadurch, dass alle Variablen, die innerhalb einer Definition erstellt werden, nur innerhalb dieser Definition \enquote{\textit{leben}}, also existieren. Dass Variablen mittels dem Befehl \lstinline|return| auch an das Hauptprogramm \enquote{zurückgegeben} werden können, lernen wir in diesem Kapitel.
+Das Terminal gibt folgende Meldung aus: \texttt{[Zeile: 5] NameError: name 'summe' is not defined}. Dies bedeutet, dass der Ausdruck / der Name \lstinline|summe| auf Zeile 5 nicht existiert. Die Fehlermeldung erklärt sich dadurch, dass alle Variablen, die innerhalb einer Definition erstellt werden, nur innerhalb dieser Definition \enquote{\textit{leben}}, also existieren. Dass Variablen mittels dem Befehl \lstinline|return| auch an das Hauptprogramm \enquote{zurückgegeben} werden können, lernen wir in diesem Kapitel.
 \end{myexample}
-
 
 Funktionen können jedoch auch Werte an das Hauptprogramm zurückgeben: In diesem Kapitel lernen wir, wie Funktionen, ähnlich wie \enquote{Sous-Chefs} (Hilfs-Köche) in einer komplexen Küche Zutaten (Parameter) entgegennehmen und Resultate an andere \enquote{Sous-Chefs} (Funktionen) via das Hauptprogramm weitergeben werden können.
 
@@ -360,12 +361,12 @@ Betrachten Sie nochmals den folgenden, leicht modifizierten Code aus \cref{ex:su
 \begin{figure}[H] % not really a figure, just acts as non-floating container
 	\begin{minipage}{\linewidth}
 		\begin{lstlisting}[numbers=left]
-def summiere(x1, x2):
-    summe = x1 + x2
+def summiere(x_1, x_2):
+    summe = x_1 + x_2
     return (*@\colorbox{RoyalBlue!50}{sum\tikzmark{arrowFromEx01}me}@*)
 
 
-	
+
 (*@\colorbox{ForestGreen!50}{re\tikzmark{arrowToEx02}s}@*)=(*@\colorbox{RoyalBlue!50}{summie\tikzmark{arrowToEx01}re(3, 5)}@*)
 print(res)
 \end{lstlisting}
@@ -419,7 +420,6 @@ print(res)
 		\lstinline|return|-Ausdrücke ergeben vor allem dann sinn, wenn mit einem Wert, welcher in einer Funktion berechnet wurde, \textit{ausserhalb der Funktion weitergerechnet} werden soll. In allen anderen Fällen reicht ein \lstinline|print| meist aus. Auch bei \cref{ex:quadrat-return} und \cref{ex:dreieck-return} würde ein einfaches \lstinline|print| reichen.
 	\end{myanswer}
 \end{myexercise}
-
 
 \subsection{Mehrere Funktionen}
 Wie Sie in \cref{ex:print-vs-return} gesehen haben, ist ein \lstinline|return| in vielen Fällen nicht notwendig, ein einfaches \lstinline|print| reicht in vielen Fällen aus. Wozu kann ein \lstinline|return| eigentlich nützlich sein? Wenn Sie Code schreiben, wird dieser oftmals schnell komplizierter. Somit kann es hilfreich sein, die einzelnen Schritte in Unter-Programme aufzuteilen. Dies erleichtert zudem die \textbf{Modularisierung} und \textbf{Wiederverwendbarkeit} von Code: Beispielsweise könnte eine Funktion, die das Maximum einer Liste berechnet, an verschiedenen Orten in einem längeren Programm mehrmals zum Einsatz kommen
@@ -578,7 +578,7 @@ def notenskala(maxPunkte, erreichtePunkte):
 % \subsection{Level 1}
 % \subsection{Level 2}
 % \subsection{Level 3}
-\begin{myexercise}\label{myexercise:kaufpreis_haus}
+\begin{mychallenge}\label{mychallenge:kaufpreis_haus}
 Sie wollen ein Haus in der Schweiz kaufen. Der Kaufpreis beträgt $k$ Franken. Sie kaufen das Haus mit $E$ Franken Ihres gesparten Geldes (Eigenkapital) und der Restbetrag wird durch die Aufnahme einer Hypothek von $h := k - E$ Franken gedeckt. 
 
 Die Tragbarkeitsrechnung in der Schweiz prüft, ob die Kosten einer Immobilie langfristig finaziell tragbar (bezahlbar) sind. Banken und andere Kreditinstitute verwenden diese (sehr grobe) Berechnung, um sicherzustellen, dass Sie Ihre Hypothek auch dann noch bezahlen könnten, falls die Zinsen steigen würden. Als Faustregel gilt, dass die jährlichen (kalkulatorischen\footnote{Der Begriff \textit{Kalkulatorisch} bedeutet in diesem Zusammenhang, dass dieser Betrag nach bestimmten Vorgaben berechnet wird und überhaupt nicht den tatsächlichen Kosten entsprechen muss.}) Wohnkosten nicht mehr als $1 / 3$ Ihres \textcolor{ForestGreen}{Bruttojahreseinkommens} ($b$) ausmachen dürfen.
@@ -617,43 +617,43 @@ Nun gibt es für den Kaufpreis $k$ noch eine weitere Zusatzbedingung: \textbf{De
 \begin{myanswer}
 	Diese Musterlösung finden Sie in \cref{sec:K04_sol}.
 \end{myanswer}
-\end{myexercise}
+\end{mychallenge}
 
 \iftoggle{exerciseonly}{}{%
 	\clearpage
 
 	\section{Längere Lösungen}\label{sec:K04_sol}
 
-		\begin{myanswer}[myexercise:kaufpreis_haus]
-			\begin{enumerate}
-				\item 
+	\begin{myanswer}[mychallenge:kaufpreis_haus]
+		\begin{enumerate}
+			\item 
 
-		Wir ignorieren zunächst die Bedingung $k \leq 5E$ und betrachten die Ungleichung \ref{eq:Ungleichung_k}. Dabei unterscheiden wir zwei Fälle:
+	Wir ignorieren zunächst die Bedingung $k \leq 5E$ und betrachten die Ungleichung \ref{eq:Ungleichung_k}. Dabei unterscheiden wir zwei Fälle:
 
-		\begin{description}
-			\item[Fall 0: $\max\lrc{0, -E + k/3} = 0$, also $k \leq 3E$ (keine Amortisationspflicht):] Die Ungleichung \ref{eq:Ungleichung_k} vereinfacht sich in diesem Fall zu
-\begin{align*}
-\frac{b}{3} &\geq \alpha(k - E) + \beta k \\
-\frac{b}{3} &\geq \alpha k - \alpha E + \beta k \\
-\frac{b}{3} + \alpha E &\geq k(\alpha + \beta) \\
-k &\leq \frac{b/3 + \alpha E}{\alpha + \beta} := \textcolor{Salmon}{k_0}
-\end{align*}
-\item[Fall 1:$\max\lrc{0, -E + k/3} = -E + k/3$, also $k > 3E$ (Amortisationspflicht):] In diesem Fall ist $\max\lrc{0, -E + k/3} = -E + k/3$. Die Ungleichung vereinfacht sich in diesem Fall zu
-\begin{align*}
-\frac{b}{3} &\geq \alpha\lr{k - E} + \beta k + \frac{k/3 - E}{15} \\
-\frac{b}{3} &\geq \alpha k - \alpha E + \beta k + \frac{k}{45} - \frac{E}{15} \\
-\frac{b}{3} + \alpha E + \frac{E}{15} &\geq k\lr{\alpha + \beta + \frac{1}{45}} \\
-\frac{15b + 45\alpha E + 3E}{45} &\geq k\lr{\frac{45\alpha + 45\beta + 1}{45}} \\
-15b + 45\alpha E + 3E &\geq k\lr{45\alpha + 45\beta + 1} \\
-k &\leq \frac{15b + 45\alpha E + 3E}{45\alpha + 45\beta + 1} := \textcolor{Goldenrod}{k_1}
-\end{align*}
-\end{description}
-Damit $k$ die ursprüngliche Ungleichung \ref{eq:Ungleichung_k} erfüllt, muss $k$ kleiner oder gleich dem kleineren der beiden Beträge $\textcolor{Salmon}{k_0}$ und $\textcolor{Goldenrod}{\textcolor{Goldenrod}{k_1}}$ sein. Also finden wir unter der Berücksichtigung der bislang ignorierten Bedingung $k \leq 5E$:
+	\begin{description}
+		\item[Fall 0: $\max\lrc{0, -E + k/3} = 0$, also $k \leq 3E$ (keine Amortisationspflicht):] Die Ungleichung \ref{eq:Ungleichung_k} vereinfacht sich in diesem Fall zu
+		\begin{align*}
+		\frac{b}{3} &\geq \alpha(k - E) + \beta k \\
+		\frac{b}{3} &\geq \alpha k - \alpha E + \beta k \\
+		\frac{b}{3} + \alpha E &\geq k(\alpha + \beta) \\
+		k &\leq \frac{b/3 + \alpha E}{\alpha + \beta} := \textcolor{Salmon}{k_0}
+		\end{align*}
+		\item[Fall 1:$\max\lrc{0, -E + k/3} = -E + k/3$, also $k > 3E$ (Amortisationspflicht):] In diesem Fall ist $\max\lrc{0, -E + k/3} = -E + k/3$. Die Ungleichung vereinfacht sich in diesem Fall zu
+		\begin{align*}
+		\frac{b}{3} &\geq \alpha\lr{k - E} + \beta k + \frac{k/3 - E}{15} \\
+		\frac{b}{3} &\geq \alpha k - \alpha E + \beta k + \frac{k}{45} - \frac{E}{15} \\
+		\frac{b}{3} + \alpha E + \frac{E}{15} &\geq k\lr{\alpha + \beta + \frac{1}{45}} \\
+		\frac{15b + 45\alpha E + 3E}{45} &\geq k\lr{\frac{45\alpha + 45\beta + 1}{45}} \\
+		15b + 45\alpha E + 3E &\geq k\lr{45\alpha + 45\beta + 1} \\
+		k &\leq \frac{15b + 45\alpha E + 3E}{45\alpha + 45\beta + 1} := \textcolor{Goldenrod}{k_1}
+		\end{align*}
+	\end{description}
+	Damit $k$ die ursprüngliche Ungleichung \ref{eq:Ungleichung_k} erfüllt, muss $k$ kleiner oder gleich dem kleineren der beiden Beträge $\textcolor{Salmon}{k_0}$ und $\textcolor{Goldenrod}{\textcolor{Goldenrod}{k_1}}$ sein. Also finden wir unter der Berücksichtigung der bislang ignorierten Bedingung $k \leq 5E$:
 	\begin{align*}
 		k := \min\lrc{\min\lrc{\textcolor{Salmon}{k_0}, \textcolor{Goldenrod}{k_1}}, 5E}.
 	\end{align*}
 
-Beachten Sie, dass Fall 0 die Beziehung $k < E$ nicht ausschliesst. In diesem Fall wäre aber $k - E < 0$ und die Hypothek wäre somit negativ. Eine negative Hypothek wäre dann eher als Guthaben zu verstehen und natürlich macht die Tragbarkeitssberechnung für ein Guthaben keinen Sinn. In diesem Fall ist der maximale Kaufpreis $E$ (wir bezhalen einfach alles mit Eigenkapital und nehmen gar keine Hypothek auf). Die Gleichung $\frac{b/3 + \alpha E}{\alpha + \beta} \stackrel{!}{=} E$ (aufgelöst nach $b$) zeigt, dass sich der maximal tragbare Kaufpreis mit steigendem Lohn $b$ nicht erhöht, solange noch $b \leq 3\alpha$ ist.
+	Beachten Sie, dass Fall 0 die Beziehung $k < E$ nicht ausschliesst. In diesem Fall wäre aber $k - E < 0$ und die Hypothek wäre somit negativ. Eine negative Hypothek wäre dann eher als Guthaben zu verstehen und natürlich macht die Tragbarkeitssberechnung für ein Guthaben keinen Sinn. In diesem Fall ist der maximale Kaufpreis $E$ (wir bezhalen einfach alles mit Eigenkapital und nehmen gar keine Hypothek auf). Die Gleichung $\frac{b/3 + \alpha E}{\alpha + \beta} \stackrel{!}{=} E$ (aufgelöst nach $b$) zeigt, dass sich der maximal tragbare Kaufpreis mit steigendem Lohn $b$ nicht erhöht, solange noch $b \leq 3\alpha$ ist.
 
 	Um den Spezialfall $k - E < 0$ (negative Hypothek) auszuschliessen, müssen wir noch das Maximum zwischen $k$ und $E$ nehmen, also
 	\begin{mysummary}
@@ -678,8 +678,5 @@ Beachten Sie, dass Fall 0 die Beziehung $k < E$ nicht ausschliesst. In diesem Fa
 	
 	\lstinline[basicstyle=\ttfamily\scriptsize]{MAX(MIN(MIN((A2/3 + A3 * A1) / (A3 + A4), (15 * A2 + 45 * A3 * A1 + 3 * A1) / (45 * A3 + 45 * A4 + 1)), 5 * A1), A1)}
 	\end{enumerate}
-
-
 	\end{myanswer}
-
 } %

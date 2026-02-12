@@ -1,23 +1,40 @@
 def dynamisches_schachbrett(anzahl_felder, feld_groesse, upper_left):
-    if anzahl_felder <= 0 or anzahl_felder % 2 != 0 or feld_groesse < 1:
-        print(
-            "anzahl_felder muss eine positive gerade Zahl sein und feld_groesse muss >= 1 sein."
-        )
-        return
+    # 1. Die beiden Grund-Strings für die Felder erstellen
+    s = "1" * feld_groesse
+    w = "0" * feld_groesse
 
-    # Bestimme die Startfarbe
-    startfarbe = 1 if upper_left == "black" else 0
+    # 2. Die zwei verschiedenen Zeilen-Muster vorbereiten
+    # Muster 1 beginnt mit s, Muster 2 beginnt mit w
+    # Wir wiederholen das Paar (s+w) so oft wie nötig
+    wiederholungen = anzahl_felder // 2
+    zeile_1 = (s + w) * wiederholungen
+    zeile_2 = (w + s) * wiederholungen
 
-    # Erzeuge das Schachbrettmuster
-    for zeile in range(anzahl_felder):
-        # Bestimme die Farbe der ersten Zelle in der Zeile
-        zeilenstartfarbe = (startfarbe + zeile) % 2
+    # Falls anzahl_felder ungerade ist, müssen wir noch ein halbes Paar anhängen
+    # (gemäss Aufgabenstellung ist die Anzahl Felder aber garantiert gerade)
+    if anzahl_felder % 2 != 0:
+        zeile_1 += s
+        zeile_2 += w
+
+    # 3. Start-Muster festlegen
+    if upper_left == "black":
+        start = zeile_1
+        alternative = zeile_2
+    else:
+        start = zeile_2
+        alternative = zeile_1
+
+    # 4. Das Schachbrett ausgeben
+    for i in range(anzahl_felder):
+        # Wähle abwechselnd das start- oder alternative Muster
+        if i % 2 == 0:
+            aktuelle_zeile = start
+        else:
+            aktuelle_zeile = alternative
+
+        # Drucke die Zeile so oft, wie die feld_groesse es verlangt
         for _ in range(feld_groesse):
-            zeile_muster = ""
-            for spalte in range(anzahl_felder):
-                zellenfarbe = (zeilenstartfarbe + spalte) % 2
-                zeile_muster += str(zellenfarbe) * feld_groesse
-            print(zeile_muster)
+            print(aktuelle_zeile)
 
 
 # Beispielaufruf
