@@ -1,0 +1,171 @@
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+
+% default settings for listings
+\lstset{style=python, basicstyle=\ttfamily\footnotesize}
+
+\title[Programmieren]{Programmieren: Klassen}
+
+\subtitle{Klassen}
+
+\author[Graf, Thomas] % (optional)
+{Thomas Graf}
+
+\institute[KLW] % (optional)
+{
+	Fachschaft Informatik\\
+	Kantonsschule im Lee
+}
+
+\date[\today] % (optional)
+
+\logo{\includegraphics[width=2cm]{Logos/LeeLogo}}
+
+\titlegraphic{\vspace{-.7cm}\includegraphics[width=\textwidth]{"Grundlagen_Info/06_Datenbanken/Figures/title-emojis"}}
+
+\frame{\titlepage}
+
+\begin{frame}[fragile]{Endliche Automaten: Einführung}
+    \begin{itemize}[<+->]
+        \item Ein endlicher Automat (EA) ist ein abstraktes Modell für die Verarbeitung von Informationen.
+        \item Er besteht aus einer endlichen Anzahl von Zuständen, einem Startzustand, einem Satz von Eingabesymbolen und Übergangsregeln.
+        \item EAs werden verwendet, um formale Sprachen zu erkennen und zu verarbeiten.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Alphabete, Wörter und Sprachen (Lernziele)}
+    \begin{itemize}[<+->]
+        \item Ich kenne die Begriffe \textbf{Alphabet}, \textbf{Wort} und \textbf{Sprache} und kann zu jedem Begriff Beispiele nennen.
+        \item Ich kann die Begriffe \textbf{leeres Wort} und \textbf{leere Sprache} erklären und Beispiele nennen.
+        \item Ich verstehe die Bedeutung des Symbols $\Sigma^*$ und kann es in eigenen Worten erklären.
+        \item Ich kenne die Bedeutung der Iteration eines Wortes und kann sie in eigenen Worten erklären.
+        \item Ich kann die Begriffe \textbf{Kleene'scher Stern} und \textbf{Iteration eines Wortes} erklären und Beispiele nennen.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Alphabete}
+\begin{mydefinition}[Alphabet]\label{mydefinition:Alphabet}
+Eine \textbf{endliche nichtleere} Menge $\Sigma$ heisst \textit{Alphabet}. Die \textit{Elemente eines Alphabets} werden \textit{Buchstaben} (\textit{Zeichen, Symbole}) genannt.
+\end{mydefinition}
+\end{frame}
+
+\begin{frame}[fragile]{Beispiel: Alphabete}
+Wir listen nun einige der Alphabete auf, die in der Mathematik und Informatik häufig verwendet werden.
+\begin{myexample}
+	\phantom{1}
+\begin{itemize}[<+->]
+	\item $\Sigma_{\text{bool}} = \lrc{0,1}$ ist das Boole'sche Alphabet, mit dem digitale Rechner arbeiten.
+	\item $\Sigma_{\text{lat}} = \lrc{a,b,c,\ldots ,z,A,B,\ldots ,Z}$ ist das lateinische Alphabet.
+	\item $\Sigma_{\text{Tastatur}} = \lrc{a,b,c,\ldots ,z,A,B,C,\ldots ,Z,\text{\textvisiblespace}\,,>,<,(,),\ldots ,\#,?,!}$ ist das Alphabet aller Symbole, die mit der englischen Tastatur getippt werden können. Dabei ist \textvisiblespace\ das Symbol für das Leerzeichen / Leersymbol.
+\end{itemize}
+\end{myexample}
+\end{frame}
+
+\begin{frame}[fragile]{Wörter}
+\textit{Wörter} werden wir als endliche Folgen von Buchstaben ansehen.
+\begin{mydefinition}[Wort]\label{mydefinition:Wort}
+Sei $\Sigma$ ein Alphabet. Ein \textit{Wort} über $\Sigma$ ist eine endliche (möglicherweise leere) Folge von Buchstaben aus $\Sigma$. Das \textit{leere Wort} $\lambda$ ist die leere Buchstabenfolge.
+Die \textit{Länge} $|w|$ eines Wortes $w$ ist die Länge des Wortes als Folge, das heisst die Anzahl der Vorkommen von Buchstaben in $w$.
+\end{mydefinition}
+\end{frame}
+
+\begin{frame}[fragile]{Beispiel: Wörter}
+\begin{myexample}
+\begin{itemize}[<+->]
+	\item $w = 1,0,0,1,0$ ist ein Wort über dem Alphabet $\Sigma_{\text{bool}}$ und $\abs{w} = 5$, da $w$ eine Folge von $5$ Buchstaben ist.
+	\item $u = M,\text{\textvisiblespace}\,, j$ ist ein Wort über $\Sigma_{\text{Tastatur}}$ und $\abs{u} = 3$, da $u$ eine Folge von $3$ Buchstaben ist.
+	\item Das leere Wort $\lambda$ ist ein Wort über jedem Alphabet und es gilt $\abs{\lambda} = 0$.
+\end{itemize}
+\end{myexample}
+\end{frame}
+
+\begin{frame}[fragile]{Stern-Operator}
+\begin{mydefinition}[Stern-Operator]
+Sei $\Sigma$ ein Alphabet. $\Sigma^*$ (gesprochen: \textit{Sigma Stern}) ist \textbf{die Menge aller Wörter} über $\Sigma$, also die Menge aller endlichen Folgen von Symbolen aus $\Sigma$. Man nennt $\Sigma^{*}$ auch den \textbf{Kleene'schen Stern}\footnote{benannt nach dem US-Amerikanischen Mathematiker Stephen Cole Kleene} von $\Sigma$. % $\Sigma^+ = \Sigma^*\setminus\lrc{\lambda}$ ist die Menge aller Wörter über $\Sigma$ ohne das leere Wort.
+\end{mydefinition}
+\end{frame}
+
+\begin{frame}[fragile]
+Wir werden im Folgenden Wörter ohne Kommmas schreiben. Anstelle von $1,0,0,1,0$ werden wir lediglich $10010$ schreiben. Allgemein, werden wir anstelle von $x_1,x_2,\ldots ,x_n$ einfach $x_1x_2\ldots x_n$ schreiben.
+\begin{myremark}
+	In der deutschen Sprache existieren die zwei Ausdrücke \enquote{Wörter} und \enquote{Worte}. Dies sind keine Synonyme. \textit{Wörter} bezeichnet den Plural von \textit{Wort} (\enquote{Im Duden stehen viele Wörter}). Der Ausdruck \textit{Worte} bezieht sich auf Gedankenkonstrukte (\enquote{Sie sprach weise Worte}).
+\end{myremark}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{myexercise}\label{myexercise:0202}
+	In Definition \ref{mydefinition:Wort}, haben wir ein Wort als endliche Folge von Buchstaben definiert. Nun enthält zum Beispiel die Menge $\lrc{1}^{*}$ aber Wörter beliebiger Länge. Erklären Sie, warum dies kein Widerspruch ist.
+\end{myexercise}
+\end{frame}
+
+\begin{frame}[fragile]{Beispiel: Sprachen}
+    \begin{myexample}
+Die folgenden Mengen sind Beispiele von Sprachen über $\Sigma = \lrc{a,b}$.
+\begin{itemize}[<+->]
+	\item $L_1 = \emptyset$
+	\item $L_2 = \lrc{\lambda}$
+	\item $L_3 = \Sigma^* = \lrc{\lambda, a,b,aa,\ldots }$
+	\item $L_5 = \Sigma$
+	\item $L_6 = \setcm{a^p}{p\;\text{ist eine Primzahl}}$
+	\item $L_5 = \lrc{a}^* = \lrc{\lambda, a, aa, aaa, aaaa, \ldots }$
+	\item $\Sigma^2 = \lrc{aa,ab,ba,bb}$
+\end{itemize}
+\end{myexample}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{myexample}\leavevmode
+\begin{itemize}
+	\item Die Menge aller grammatikalisch korrekten englischen Texte ist eine Sprache über $\Sigma_{\text{Tastatur}}$.
+	\item Die Menge aller syntaktisch korrekten Programme in {\tt C++} ist auch eine Sprache über $\Sigma_{\text{Tastatur}}$.
+\end{itemize}
+\end{myexample}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{mydefinition}[Iteration eines Wortes]\label{mydefinition:Iteration_Wort}
+Sei $\Sigma$ ein Alphabet. Für alle $x\in\Sigma^*$ und alle $i\in\mathbb{N}$ definieren wir die $i$-te \textbf{Iteration} $x^i$ von $x$ als
+\begin{align*}
+	x^0 = \lambda,\quad x^1 = x, \quad x^i = xx^{i-1}.
+\end{align*}
+\end{mydefinition}
+\begin{myexample}
+Sei $\Sigma = \lrc{a,b,c}$. Wir können nun schreiben:
+\begin{align*}
+	aa       & = a^2                 \\
+	abababab & = (ab)^4              \\
+	cbbbbbab & = cb^5ab = c(bb)^2bab
+\end{align*}
+\end{myexample}
+\end{frame}
+
+\begin{frame}[fragile]
+Mit der folgenden Definition wollen wir den Begriff \textit{Teilwort}, für den wir eine gute Intuition haben, formalisieren. Ein Teilwort eines Wortes $x$ ist ein zusammenhängender Teil von $x$.
+\begin{mydefinition}[Teilwörter]\label{mydefinition:Teilwort}
+Seien $u,w\in\Sigma^*$ für ein Alphabet $\Sigma$.
+\begin{itemize}
+	\item $v$ heisst \textbf{Teilwort} von $w$ $\Leftrightarrow$ es existieren $x,y\in\Sigma^*$, sodass $w = xvy$
+	\item $v$ heisst \textbf{Präfix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, sodass $w = vx$
+	\item $v$ heisst \textbf{Suffix} von $w$ $\Leftrightarrow$ es existiert $x\in\Sigma^*$, sodass $w = xv$
+	\item $v\neq \lambda$ heisst \textbf{echtes} Teilwort (Präfix, Suffix) von $w$ $\Leftrightarrow$ $v\neq w$ und $v$ ein Teilwort (Präfix, Suffix) von $w$ ist
+\end{itemize}
+\end{mydefinition}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{myexercise}\label{myexercise:0299}
+	Es seien $\Sigma := \lrc{a,b,c}$ und $w := abc$ ein Wort über $\Sigma$. Bestimmen Sie alle Teilwörter von $w$. Welche dieser Teilwörter sind auch Präfixe von $w$?
+\end{myexercise}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{myexample}
+Sei $\Sigma = \lrc{a,b,c}$. Das Wort $abc$ ist ein echtes Teilwort, echtes Präfix und ein echtes Suffix von $(abc)^3$. Das leere Wort $\lambda$ ist Teilwort von jedem Wort. Jedes Wort ist Teilwort von sich selbst (aber kein echtes Teilwort).
+\end{myexample}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{mychallenge}\label{mychallenge:0207}
+	Es sei $x$ ein Wort der Länge $n\in\N$, welches aus lauter verschiedenen Buchstaben besteht (also aus $n$ verschiedenen Buchstaben). Wie viele verschiedene Teilwörter hat $x$?
+\end{mychallenge}
+\end{frame}
