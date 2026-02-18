@@ -329,11 +329,20 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     Im echten Leben wollen wir nicht nur eine einzige Nachricht austauschen, sondern mehrere Nachrichten hin- und herschicken. Erweitern Sie Ihre Programme so, dass der Client und der Server in einer Endlosschleife Nachrichten austauschen können, bis einer der beiden die Verbindung mit \keys{\cmd + C} (MacOS) bzw. \keys{\ctrl + C} (Windows) abbricht. Verwenden Sie dafür folgende Grundstruktur:
     \begin{lstlisting}
 try:
+    # Endlosschleife für den Nachrichtenaustausch
     while True:
-        # Nachricht senden / empfangen
+        # Nachricht empfangen
+        nachricht = conn.recv(1024).decode()
+        print("Empfangen:", nachricht)
+
+        # Nachricht senden
+        antwort = input("Antwort an den Client: ")
+        conn.send(antwort.encode())
 except KeyboardInterrupt:
     print("Verbindung wird geschlossen.")
     # Socket schliessen
+    conn.close()
+    server.close()
 \end{lstlisting}
 \end{myexercise}
 
@@ -365,7 +374,8 @@ except KeyboardInterrupt:
     \end{myanswer}
 
 \end{myexercise}
-\section{Learning Task 3: Chat-Kommunikation über das LAN, mittels Relay-Server}
+\section{Chat-Kommunikation über das LAN, mittels Relay-Server}
+% \section{Learning Task 3: Chat-Kommunikation über das LAN, mittels Relay-Server}
 % \begin{scaffoldBox}
 %     \textbf{Neue Konzepte}: Relay-Server, Client-Identifikation.
 
@@ -521,7 +531,8 @@ while True:
 \noindent
 Der Client schickt eine Nachricht im Format \texttt{IP:Nachricht} an den Server. Der Echo-Server schickt exakt dieselbe Nachricht zurück. So können Sie testen, ob Ihr Client korrekt funktioniert.
 
-\section{Learning Task 4: Chat-Kommunikation über das Internet, mittels Relay-Server}
+% \section{Learning Task 4: Chat-Kommunikation über das Internet, mittels Relay-Server}
+\section{Chat-Kommunikation über das Internet, mittels Relay-Server}
 
 Bis jetzt haben wir nur wenige Nachrichten innerhalb des lokalen Netzwerks ausgetauscht. In der Praxis möchten wir jedoch oft mit Personen kommunizieren, die sich an einem anderen Ort befinden, also über das Internet. Zudem möchten wir einen Endlos-Fluss an Nachrichten senden und empfangen können, ohne dass die Verbindung nach jeder Nachricht getrennt wird. In diesem Kapitel lernen wir, wie dieses mit einem Relay-Server im lokalen Netzwerk sowie Python realisiert werden kann.
 

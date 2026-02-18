@@ -20,7 +20,8 @@ nachricht = conn.recv(1024).decode()  # Empfange bis zu 1024 Bytes
 print(f"Empfangen: {nachricht}")  # Zeige die empfangene Nachricht an
 
 # Antwort an den Client senden
-conn.send("Hallo Client, hier ist der Server!".encode())  # Sende eine Antwort zurück an den Client
+nachricht = input("Nachricht an den Client eingeben: ")  # Lese eine Nachricht von der Konsole ein
+conn.send(nachricht.encode())  # Sende die eingegebene Nachricht an den Client
 
 conn.close()
 server.close()

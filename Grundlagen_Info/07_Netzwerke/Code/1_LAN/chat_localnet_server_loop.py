@@ -1,21 +1,23 @@
 import socket
 
-SERVER_LOCAL_IP = "192.168.1.18"
+PORT = 12345
 
-# Erstelle einen TCP/IP-Socket (ein Socket ist ein Endpunkt für die Kommunikation). 
-# Sockets vs. Ports: Ein Socket ist eine Kombination aus IP-Adresse, Portnummer, und Protokoll (TCP oder UDP), die zusammen einen eindeutigen Endpunkt für die Kommunikation im Netzwerk bilden.
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # AF_INET steht für IPv4, SOCK_STREAM steht für TCP
+# Server-Socket erstellen
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Erstelle einen TCP/IP Socket
 server.setsockopt(
     socket.SOL_SOCKET, socket.SO_REUSEADDR, 1
 )  # Erlaube die Wiederverwendung des Ports (nützlich beim Neustart des Servers)
-server.bind((SERVER_LOCAL_IP, 12345))
-server.listen(1)
-print("Warte auf Verbindung...")
+server.bind(("localhost", PORT))  # Binde den Socket an localhost und den definierten Port
+server.listen(1)  # Warte auf eingehende Verbindungen (maximal 1 in der Warteschlange)
+print("Warte auf Verbindung...")  # Server wartet auf Verbindungen
 
-conn, addr = server.accept()
-print("Verbunden mit:", addr)
+# Verbindung akzeptieren
+conn, addr = server.accept()  # Akzeptiere eine eingehende Verbindung
+print(f"Verbunden mit {addr[0]} über Port {addr[1]}")  # Zeige die Adresse und den Port des verbundenen Clients an
 
+# Nachricht vom Client empfangen
 try:
+    # Endlosschleife für den Nachrichtenaustausch
     while True:
         nachricht = conn.recv(1024).decode()
         print("Empfangen:", nachricht)
@@ -26,3 +28,4 @@ except KeyboardInterrupt as e:
     print(f"Verbindung zu {addr} getrennt.")
     conn.close()
     server.close()
+

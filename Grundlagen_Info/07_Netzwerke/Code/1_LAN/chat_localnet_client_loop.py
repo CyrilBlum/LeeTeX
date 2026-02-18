@@ -1,16 +1,15 @@
 import socket
 
-SERVER_LOCAL_IP = "192.168.0.15"
+PORT = 12345
+IP_ADDRESS = "10.62.90.171" # IP-Adresse des Servers im lokalen Netzwerk
 
-# Erstelle einen TCP/IP-Socket (ein Socket ist ein Endpunkt für die Kommunikation). 
-# Sockets vs. Ports: Ein Socket ist eine Kombination aus IP-Adresse, Portnummer, und Protokoll (TCP oder UDP), die zusammen einen eindeutigen Endpunkt für die Kommunikation im Netzwerk bilden.
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.setsockopt(
-    socket.SOL_SOCKET, socket.SO_REUSEADDR, 1
-)  # Erlaube die Wiederverwendung des Ports (nützlich beim Neustart des Servers)
-client.connect((SERVER_LOCAL_IP, 12345))
+# Client-Socket erstellen und mit dem Server verbinden
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Erstelle einen TCP-IP Socket
+client.connect((IP_ADDRESS, PORT))  # Verbinde den Socket mit dem Server auf localhost und dem definierten Port
+
 
 try:
+    # Endlosschleife für den Nachrichtenaustausch
     while True:
         nachricht = input("Nachricht an den Server: ")
         client.send(nachricht.encode())
@@ -18,5 +17,6 @@ try:
         antwort = client.recv(1024).decode()
         print("Antwort vom Server:", antwort)
 except KeyboardInterrupt:
-    print(f"Verbindung zum Server ({SERVER_LOCAL_IP}) wird getrennt.")
+    print(f"Verbindung zum Server ({IP_ADDRESS}) wird getrennt.")
     client.close()
+

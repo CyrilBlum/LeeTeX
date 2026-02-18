@@ -1,12 +1,18 @@
 import socket
 
-# Erstelle einen TCP/IP-Socket (ein Socket ist ein Endpunkt für die Kommunikation). 
-# Sockets vs. Ports: Ein Socket ist eine Kombination aus IP-Adresse, Portnummer, und Protokoll (TCP oder UDP), die zusammen einen eindeutigen Endpunkt für die Kommunikation im Netzwerk bilden.
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # AF_INET steht für IPv4, SOCK_STREAM steht für TCP
-client.connect(("192.168.0.15", 12345))
-client.send("Hallo Server im LAN!".encode())
+PORT = 12345
+IP_ADDRESS = "10.62.90.171" # IP-Adresse des Servers im lokalen Netzwerk
 
-antwort = client.recv(1024).decode()
-print("Antwort vom Server:", antwort)
+# Client-Socket erstellen und mit dem Server verbinden
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Erstelle einen TCP-IP Socket
+client.connect((IP_ADDRESS, PORT))  # Verbinde den Socket mit dem Server auf localhost und dem definierten Port
+
+# Nachricht vom Benutzer einlesen und an den Server senden
+nachricht = input("Nachricht an den Server eingeben: ")
+client.send(nachricht.encode())  # Sende die eingegebene Nachricht an den Server
+
+# Antwort vom Server empfangen
+antwort = client.recv(1024).decode()  #  Empfange bis zu 1024 Bytes
+print("Antwort vom Server:", antwort)  # Zeige die Antwort des Servers an
 
 client.close()

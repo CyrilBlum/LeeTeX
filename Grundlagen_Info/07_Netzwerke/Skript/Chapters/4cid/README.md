@@ -1,0 +1,1 @@
+This folder contains additional sub-chapters for networks, created within workshops centered around the 4C/ID didactic method at Kantonsschule Dübendorf. This entire directory and its contents may be ignored safely.
