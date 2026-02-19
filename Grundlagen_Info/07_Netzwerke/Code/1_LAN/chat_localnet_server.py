@@ -1,13 +1,14 @@
 import socket
 
 PORT = 12345
+IP_ADDRESS = "192.168.178.20"  # IP-Adresse des Servers
 
 # Server-Socket erstellen
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Erstelle einen TCP/IP Socket
 server.setsockopt(
     socket.SOL_SOCKET, socket.SO_REUSEADDR, 1
 )  # Erlaube die Wiederverwendung des Ports (nützlich beim Neustart des Servers)
-server.bind(("localhost", PORT))  # Binde den Socket an localhost und den definierten Port
+server.bind((IP_ADDRESS, PORT))  # Binde den Socket an IP und den definierten Port
 server.listen(1)  # Warte auf eingehende Verbindungen (maximal 1 in der Warteschlange)
 print("Warte auf Verbindung...")  # Server wartet auf Verbindungen
 
