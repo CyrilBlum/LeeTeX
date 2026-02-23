@@ -34,6 +34,11 @@ def handle_client(client_socket, client_ip):
         # Hauptschleife zum Empfangen von Nachrichten vom Client und Weiterleiten an den Empfänger
         while True:
             message = client_socket.recv(1024).decode().strip()
+            
+            # Wenn die Nachricht leer ist, hat der Client die Verbindung getrennt
+            if not message:
+                print(f"Client {client_ip} hat die Verbindung getrennt.")
+                break
 
             try:
                 # Versuche, die Nachricht im Format "IP-Adresse:Nachricht" zu parsen

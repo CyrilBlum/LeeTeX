@@ -2,7 +2,7 @@ import socket
 import threading # wird benötigt, um Nachrichten gleichzeitig senden sowie empfangen zu können.
 
 SERVER_IP = "192.168.1.23"  # IP-Adresse des Relay-Servers im LAN
-SERVER_PORT = 43223
+SERVER_PORT = 12345
 
 # Client-Socket erstellen und mit dem Server verbinden
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Erstelle einen TCP-IP Socket
@@ -14,9 +14,16 @@ def receive_messages(sock):
     while True:
         try:
             nachricht = sock.recv(1024).decode()
-            sender_ip, msg = nachricht.split(":", 1)  # Nachricht in Sender-IP und eigentliche Nachricht aufteilen
             if nachricht:
-                print(f"\nNachricht erhalten von {sender_ip}: {msg}")
+                # Prüfe ob die Nachricht vom Format "From IP: msg" ist (echte Chat-Nachricht)
+                if nachricht.startswith("From "):
+                    # Entferne "From " am Anfang und splitte bei erstem ":"
+                    nachricht = nachricht[5:]  # Entferne "From "
+                    sender_ip, msg = nachricht.split(":", 1)
+                    print(f"\nNachricht erhalten von {sender_ip.strip()}: {msg.strip()}")
+                else:
+                    # Server-Nachricht (Intro, Fehler, etc.)
+                    print(f"\n{nachricht}")
             else:
                 print("\nVerbindung zum Server verloren.")
                 break
@@ -30,14 +37,10 @@ threading.Thread(target=receive_messages, args=(client), daemon=True).start()
 try:
     # Endlosschleife für den Nachrichtenaustausch
     while True:
-        
-
         nachricht = input("Nachricht: ")
         nachricht = f"{EMPFAENGER_IP}:{nachricht}"
         client.send(nachricht.encode())
-
-        antwort = client.recv(1024).decode()
-        print("Antwort vom Server:", antwort)
+        # Antworten vom Server werden vom receive_messages Thread empfangen
 
 except KeyboardInterrupt:
     print(f"Verbindung zum Server ({SERVER_IP}) wird getrennt.")
