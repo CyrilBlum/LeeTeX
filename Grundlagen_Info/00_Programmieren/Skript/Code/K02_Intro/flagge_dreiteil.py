@@ -1,20 +1,42 @@
 import turtle as t
 
-# dies ist eine spezielle syntax, welche es uns erlaubt, einmal "red", einmal "white" und einmal "blue" für c einzusetzen!
-for c in ["red", "white", "blue"]:
-    # Fenster einrichten
-    t.fillcolor(c)
+t.speed(10)
+t.penup()
 
-    t.begin_fill()
-    # Stift einstellen
-    for _ in range(2):
-        t.fd(50)
-        t.lt(90)
-        t.fd(100)
-        t.lt(90)
-    t.end_fill()
+# Farben von Italien gemäss Wikipedia
+t.fillcolor(0, 140 / 255, 69 / 255)
 
-    t.fd(50)
+t.begin_fill()
+for _ in range(2):
+    t.forward(100)
+    t.left(90)
+    t.forward(200)
+    t.left(90)
+t.end_fill()
 
-# Fertig
+t.forward(100)
+
+t.fillcolor(244 / 255, 245 / 255, 240 / 255)
+
+t.begin_fill()
+for _ in range(2):
+    t.forward(100)
+    t.left(90)
+    t.forward(200)
+    t.left(90)
+t.end_fill()
+
+t.forward(100)
+
+t.fillcolor(205 / 255, 33 / 255, 42 / 255)
+
+t.begin_fill()
+for _ in range(2):
+    t.forward(100)
+    t.left(90)
+    t.forward(200)
+    t.left(90)
+t.end_fill()
+
+
 t.done()

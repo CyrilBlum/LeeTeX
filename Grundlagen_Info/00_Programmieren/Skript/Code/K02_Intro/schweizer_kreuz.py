@@ -1,23 +1,48 @@
+"""
+Aus Wikipedia:
+
+Für das Schweizerkreuz gilt
+Das Verhältnis von Breite und Länge beträgt
+bei den Kreuzarmen 6 zu 7 und
+bei den ganzen Kreuzbalken 6 zu 20.
+
+Der Abstand zwischen Kreuz und Fahnenrand
+beträgt auf jeder Seite eine Balkenbreite.
+
+Das Verhältnis der Länge der Kreuzbalken
+zur gesamten Seitenlänge der Fahne
+beträgt somit 5 zu 8.
+"""
+
 import turtle as t
 
-# Fenster einrichten
-t.bgcolor("red")
+t.speed(10)
+t.teleport(-160, -160)
+t.penup()
 
-t.pu()
-t.bk(75)
-t.pd()
-
-t.fillcolor("white")
+# Rotes Quadrat
+t.fillcolor("red")
 t.begin_fill()
-# Stift einstellen
 for _ in range(4):
-    t.fd(50)
-    t.lt(90)
-    t.fd(50)
-    t.rt(90)
-    t.fd(50)
-    t.rt(90)
+    t.forward(320)
+    t.left(90)
 t.end_fill()
 
-# Fertig
+# turtle verschieben
+t.forward(130)
+t.left(90)
+t.forward(60)
+
+# weisses Kreuz
+t.fillcolor("white")
+t.begin_fill()
+for _ in range(4):
+    t.forward(70)
+    t.left(90)
+    t.forward(70)
+    t.right(90)
+    t.forward(60)
+    t.right(90)
+t.end_fill()
+
 t.done()
