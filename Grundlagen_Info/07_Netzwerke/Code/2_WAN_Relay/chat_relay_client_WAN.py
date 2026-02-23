@@ -3,6 +3,7 @@ import threading # wird benötigt, um Nachrichten gleichzeitig senden sowie empf
 # library importieren, um verzögerung (abwarten) zu ermöglichen, damit der Server Zeit hat, die Nachricht zu verarbeiten und zu senden, bevor der Client versucht, sie zu empfangen.
 import time
 
+
 SERVER_IP = socket.gethostbyname("cblum.ch")
 print(f"cblum.ch wird auf der IP-Adresse {SERVER_IP} aufgelöst.")
 SERVER_PORT = 12345
