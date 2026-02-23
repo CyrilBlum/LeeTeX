@@ -1,3 +1,8 @@
+"""
+Dieses Skript sammelt und zeigt die Netzwerkkonfigurationen eines Geräts an, einschließlich der MAC-Adresse, der lokalen IP-Adresse und der globalen IP-Adresse. Es verwendet die `uuid`-Bibliothek, um die MAC-Adresse zu ermitteln, die `socket`-Bibliothek, um die lokale IP-Adresse zu erhalten, und die `requests`-Bibliothek, um die globale IP-Adresse von einem externen Dienst abzurufen.
+"""
+
+
 # Gibt die MAC-Adresse, lokale und globale IP-Adresse des Geräts aus.
 import uuid
 import socket

@@ -1,11 +1,11 @@
 import socket
 
-PORT = 12345
-IP_ADDRESS = "10.62.90.171" # IP-Adresse des Servers im lokalen Netzwerk
+SERVER_IP = "192.168.0.23" # IP-Adresse des Servers im lokalen Netzwerk
+SERVER_PORT = 12345
 
 # Client-Socket erstellen und mit dem Server verbinden
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Erstelle einen TCP-IP Socket
-client.connect((IP_ADDRESS, PORT))  # Verbinde den Socket mit dem Server auf localhost und dem definierten Port
+client.connect((SERVER_IP, SERVER_PORT)) # Verbinde den Socket mit dem Server
 
 # Nachricht vom Benutzer einlesen und an den Server senden
 nachricht = input("Nachricht an den Server eingeben: ")

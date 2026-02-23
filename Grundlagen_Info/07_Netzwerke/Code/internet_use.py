@@ -1,3 +1,8 @@
+"""
+Dieses Skript visualisiert die Internetnutzung weltweit und nach Einkommensklassen. Es liest Daten von der Weltbank, bereitet sie auf und erstellt zwei Grafiken: eine Liniendiagramm, das die Entwicklung der Internetnutzung über die Jahre für verschiedene Einkommensklassen zeigt, und eine Weltkarte, die den Prozentsatz der Internetnutzer pro Land für ein bestimmtes Jahr darstellt.
+"""
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import geopandas as gpd
