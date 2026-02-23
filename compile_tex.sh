@@ -137,17 +137,16 @@ article_topics=(
 
 beamer_topics=(
     # Grundlagenfach Informatik
-    "K01Intro:Grundlagen_Info/00_Programmieren/Slides/K01Intro"
-    "K01aZeichenketten:Grundlagen_Info/00_Programmieren/Slides/K01aZeichenketten"
-    "K02aDefinitionen:Grundlagen_Info/00_Programmieren/Slides/K02aDefinitionen"
-    "K02bAnimationen:Grundlagen_Info/00_Programmieren/Slides/K02bAnimationen"
-    "K03aParameter:Grundlagen_Info/00_Programmieren/Slides/K03aParameter"
-    "K03bVariablen:Grundlagen_Info/00_Programmieren/Slides/K03bVariablen"
-    "K03cZeitTabellen:Grundlagen_Info/00_Programmieren/Slides/K03cZeitTabellen"
-    "K03dInput:Grundlagen_Info/00_Programmieren/Slides/K03dInput"
+    # Programmieren
+    "K01K02Intro:Grundlagen_Info/00_Programmieren/Slides/K01K02Intro"
+    "K03aVariablen:Grundlagen_Info/00_Programmieren/Slides/K03aVariablen"
+    "K03bInput:Grundlagen_Info/00_Programmieren/Slides/K03bInput"
+    "K03cModulo:Grundlagen_Info/00_Programmieren/Slides/K03cModulo"
+    "K04bParameter:Grundlagen_Info/00_Programmieren/Slides/K04bParameter"
+    "K04aFunktionen:Grundlagen_Info/00_Programmieren/Slides/K04aFunktionen"
     "K04aFunktionenEinzelne:Grundlagen_Info/00_Programmieren/Slides/K04aFunktionenEinzelne"
     "K04bFunktionenMehrere:Grundlagen_Info/00_Programmieren/Slides/K04bFunktionenMehrere"
-    "K04zModulo:Grundlagen_Info/00_Programmieren/Slides/K04zModulo"
+    "K04ZeitTabellen:Grundlagen_Info/00_Programmieren/Slides/K04ZeitTabellen"
     "K05aIfElifElse:Grundlagen_Info/00_Programmieren/Slides/K05aIfElifElse"
     "K05bLogischeOperatoren:Grundlagen_Info/00_Programmieren/Slides/K05bLogischeOperatoren"
     "K05cNegation:Grundlagen_Info/00_Programmieren/Slides/K05cNegation"
@@ -160,6 +159,8 @@ beamer_topics=(
     "K06fSets:Grundlagen_Info/00_Programmieren/Slides/K06fSets"
     "K07Klassen:Grundlagen_Info/00_Programmieren/Slides/K07Klassen"
     "TurtleGrafik:Grundlagen_Info/00_Programmieren/Slides/TurtleGrafik"
+
+    # Zahlendarstellungen und Kodierungen
     "Zahlensysteme_L01:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L01"
     "Zahlensysteme_L02:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L02"
     "Zahlensysteme_L03:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L03"
