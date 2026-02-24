@@ -11,7 +11,7 @@
 % default settings for listings
 \lstset{style=python}
 
-\title[Internet]{Internet}
+\title{Chat-Programmierung mit Sockets}
 
 %\subtitle{Schichtenmodell und Protokolle}
 
@@ -32,6 +32,7 @@
 
 \frame{\titlepage}
 
+\section{Client-to-Server über localhost}
 \begin{frame}[fragile]{Sockets}{Client-to-Server}
     \resizebox{\textwidth}{!}{
         \begin{tikzpicture}[
@@ -45,12 +46,12 @@
 
             % Socket symbol inside server rectangle
             \node[client] (client) at (0, 0) {Client\\\texttt{198.168.0.10}};
-            \node[server] (server) at (10, 0) {Server\\\texttt{198.168.0.11}};            
+            \node[server] (server) at (10, 0) {Server\\\texttt{198.168.0.11}};
             \pause
             \node[socket] (server_socket) at (server.north west) {\large \emoji{pig-nose}};
 
             % Arrows with labels
-            
+
             \node[rectangle, draw, fill=yellow!5, above right=.2cm and .6cm of server_socket, minimum width=2.2cm, minimum height=1.2cm, font=\small, align=center] {
                 \textbf{Socket:}\\
                 IP: \texttt{198.168.0.11}\\
@@ -59,7 +60,7 @@
             };
             \pause
             \draw[arrow, loop, min distance=2cm, in=120, out=60] (server_socket.north) to node[above, yshift=10pt, code, align=center, text width=2cm] {bind()\\ listen()\\ accept()} (server_socket.north);
-            
+
             \pause
             \node[socket] (client_socket) at (client.north east) {};
             \draw[arrow] (client_socket) to[bend left=40] node[above, yshift=3pt, code] {connect() \faPlug{}} (server_socket);
@@ -115,54 +116,72 @@
                 Protocol: \texttt{TCP}
             };
         \end{tikzpicture}
-    }
-    
+    }s
+
 \end{frame}
 
-\begin{frame}{Auftrag (Skript Netzwerke)}
-        \aufgabebox{2.2 - 2.4}
-    
+\begin{frame}{Auftrag (Skript Netzwerke)}{Client-to-Server über \texttt{localhost}}
+    \aufgabebox{2.2 - 2.4}
 \end{frame}
 
+\begin{frame}{Auftrag (Skript Netzwerke)}{Client-to-Server über \acrshort{LAN}}
+    \aufgabebox{2.5 - 2.8}
+\end{frame}
+
+\section{Client-to-Client über Relay-Server}
 \begin{frame}[fragile]{Sockets}{Client-to-Client (Relay-Server)}
     \resizebox{\textwidth}{!}{
         \begin{tikzpicture}[
                 base/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, text=white, rounded corners, text width=2.8cm, align=center, inner sep=8pt},
-                server/.style={base, fill=RoyalBlue},
-                client/.style={base, fill=ForestGreen},
+                server/.style={base, fill=RoyalBlue, font=\scriptsize},
+                client/.style={base, fill=ForestGreen, font=\scriptsize},
                 arrow/.style={-Stealth, thick, rounded corners},
-                code/.style={font=\ttfamily\small},
+                code/.style={font=\ttfamily\scriptsize},
                 socket/.style={circle, draw, fill=yellow!10, minimum size=0.5cm}
             ]
 
             % Socket symbol inside server rectangle
-            \node[server] (server) at (6, 0) {Relay-Server\\\texttt{localhost:12345}};
-            
-            \node[client] (client1) at (0, 2) {Client 1\\\texttt{localhost:54321}};
-            \node[client] (client2) at (0, -2) {Client 2\\\texttt{localhost:54322}};
+            \node[server] (server) at (6, -1) {Relay-Server\\\texttt{88.198.193.239:12345}};
+
+            \node[client] (client1) at (0, 2) {Client 1 (Alice)\\\texttt{51.154.56.61}};
+            \node[client] (client2) at (0, -2) {Client 2 (Bob)\\\texttt{51.154.56.61}};
             \pause
             \node[socket] (server_socket) at (server.north west) {\large \emoji{pig-nose}};
 
             % Arrows with labels
-            \draw[arrow, loop, min distance=2cm, in=120, out=60] (server_socket.north) to node[above, yshift=8pt, code, align=center, text width=2cm] {bind()\\ listen()\\ accept()} (server_socket.north);
+            \draw[arrow, loop, min distance=2cm, in=120, out=60] (server_socket.north) to node[pos=.25, right, code, align=center, text width=1.5cm] {bind()\\listen()\\accept()} (server_socket.north);
             \pause
             \node[socket] (client1_socket) at (client1.north east) {};
-            \draw[arrow] (client1_socket) to[bend left=20] node[above, yshift=3pt, code] {connect() \faPlug{}} (server_socket);
+            \draw[arrow] (client1_socket) to[bend left=20] node[above, pos=.3, code, sloped] {connect()} (server_socket);
             \pause
             \node[socket] (client2_socket) at (client2.south east) {};
-            \draw[arrow] (client2_socket) to[bend right=40] node[below, yshift=-3pt, code] {connect() \faPlug{}} (server_socket);
+            \draw[arrow] (client2_socket) to[bend right=40] node[below, pos=.3, code, sloped] {connect()} (server_socket);
             \pause
-            \draw[arrow] (client1_socket) -- node[below, code] {send("Hallo Client 2...")} (server_socket);
+            \draw[arrow] (client1_socket) -- node[pos=0.7, below, font=\ttfamily\scriptsize, align=center, sloped] {\only<6>{\textcolor{red}{\faExclamationTriangle}} \only<5-6>{send("Hallo Client 2...")}\only<7->{send("Mein Name ist Alice.") \\ send("Bob:Hallo Bob...")}} (server_socket);
             \pause
             \draw[arrow, dashed] (server_socket) -- node[above, yshift=3pt, code, xshift=10pt] {recv()} (client2_socket);
             \pause
-            \draw[arrow, dashed] (server_socket.south) -- node[below, yshift=-3pt, code, xshift=-10pt] {send("Hallo Client 1...")} (client1_socket.south);
         \end{tikzpicture}
     }
-
+\end{frame}
+\begin{frame}{Client-to-Client über Relay-Server}
+    Einige wichtie Neuerungen im Code:
+    \begin{itemize}[<+->]
+        \item Server...
+              \begin{itemize}
+                  \item muss Verbindungsanfragen von mehreren Clients akzeptieren (z.B. mit \textbf{Threads})
+                  \item muss Nachrichten von einem Client empfangen und an den anderen weiterleiten
+              \end{itemize}
+        \item Clients...
+              \begin{itemize}
+                  \item Müssen mit dem Relay-Server kommunizieren, anstatt direkt miteinander
+                  \item Verwenden nicht die IP-Adresse des anderen Clients, sondern die des Relay-Servers, um sich zu verbinden
+                  \item Adressieren ihre Nachrichten an den Namen des anderen Clients, damit der Relay-Server weiss, an wen er die Nachricht weiterleiten soll
+                  \item Verwenden ebenfalls \textbf{Threads}, um gleichzeitig Nachrichten vom Relay-Server empfangen und senden zu können
+              \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Auftrag (Skript Netzwerke)}
-        \aufgabebox{2.5 - 2.8}
-    
+\begin{frame}{Relay-Server}{Client-to-Client über Relay-Server}
+    \aufgabebox{2.9 - 2.11}
 \end{frame}
