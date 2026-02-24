@@ -51,27 +51,27 @@ Wir werden im Folgenden Wörter ohne Kommmas schreiben. Anstelle von $1,0,0,1,0$
 \end{myremark}
 
 Wir können Wörter benutzen, um mathematische Objekte wie Zahlen, Formeln, Graphen und Computerprogramme darzustellen. Ein Wort $x = x_1x_2\ldots x_n\in \lr{\Sigma_{\text{bool}}}^*$ kann als binäre Darstellung der Zahl
-\begin{align}\label{eq:Nummer}
-	\text{Nummer}(x)=\displaystyle\sum_{k=1}^n x_k\cdot 2^{n-k}
+\begin{align}\label{eq:dec}
+	\text{dec}(x):=\displaystyle\sum_{k=1}^n x_k\cdot 2^{n-k}
 \end{align}
 betrachtet werden.
 
 \begin{myexercise}\label{myexercise:0298}
-	Sei $x = 1011$. Berechnen Sie $\text{Nummer}(x)$.
+	Sei $x = 1011$. Berechnen Sie $\text{dec}(x)$.
 \end{myexercise}
-Für eine Zahl $m\in\N\setminus\lrc{0}$ wird mit $\text{Bin}(m)\in \lr{\Sigma_{\text{bool}}}^*$ die kürzeste binäre Darstellung von $m$ bezeichnet, also gilt $\text{Nummer}\lr{\text{Bin}(m)} = m$. Man setzt $\text{Bin}(0) = 0$.
+Für eine Zahl $m\in\N\setminus\lrc{0}$ wird mit $\text{bin}(m)\in \lr{\Sigma_{\text{bool}}}^*$ die kürzeste binäre Darstellung von $m$ bezeichnet, also gilt $\text{dec}\lr{\text{bin}(m)} = m$. Man setzt $\text{bin}(0) = 0$.
 
 % \begin{myexercise}%[difficulty={1}]
-% 	Sei $m\in\mathbb{N}-\lrc{0}$. Welche Bedingung muss gelten, damit $\text{Bin}(m)$ die \textbf{kürzeste} binäre Darstellung von $m$ ist.\\
+% 	Sei $m\in\mathbb{N}-\lrc{0}$. Welche Bedingung muss gelten, damit $\text{bin}(m)$ die \textbf{kürzeste} binäre Darstellung von $m$ ist.\\
 % \end{myexercise}
 % \begin{myanswer}
 % 	Die Bedingung ist lediglich, dass die Darstellung mit dem Symbol $1$ beginnt, da führende Nullen die Bedeutung der Darstellung nicht verändern, sondern die Darstellung lediglich länger machen. Zum Beispiel beschreiben $101$, $0101$ und $000000101$ dieselbe Zahl. Die erste ist aber die kürzeste Darstellung.
 % \end{myanswer}
 %
 % \begin{theo}[Länge der binären Darstellung]{theo:laenge_binaer}
-% 	Sei $m\in\mathbb{N}-\lrc{0}$. Dann ist die Länge $|\text{Bin}(m)|$ der kürzesten binären Darstellung von $m$ gegeben durch
+% 	Sei $m\in\mathbb{N}-\lrc{0}$. Dann ist die Länge $|\text{bin}(m)|$ der kürzesten binären Darstellung von $m$ gegeben durch
 % 	\begin{align*}
-% 		|\text{Bin}(m)| = \ceil{\log_2(m+1)}
+% 		|\text{bin}(m)| = \ceil{\log_2(m+1)}
 % 	\end{align*}
 % \end{theo}
 % Dabei bezeichnet für eine reelle Zahl $x$ der Ausdruck $\ceil{x}$ die nächste ganze Zahl $\geq x$. Genauer: Sei $x$ eine reelle Zahl, dann definiert man
@@ -103,7 +103,7 @@ Für eine Zahl $m\in\N\setminus\lrc{0}$ wird mit $\text{Bin}(m)\in \lr{\Sigma_{\
 
 % 	Tipp:
 % 	\begin{itemize}
-% 		\item Setzen Sie $k = |\text{Bin}(m)|$.
+% 		\item Setzen Sie $k = |\text{bin}(m)|$.
 % 		\item Erklären Sie, warum die Sandwich Beziehung $2^k-1 \geq m > 2^{k-1} - 1$ gilt, indem Sie folgende Fragen beantworten:
 % 		      \begin{itemize}
 % 			      \item Was ist der Dezimalwert der kleinsten binären Zahl der Länge $k+1$ (ohne führende Nullen)?
@@ -112,9 +112,9 @@ Für eine Zahl $m\in\N\setminus\lrc{0}$ wird mit $\text{Bin}(m)\in \lr{\Sigma_{\
 % 	\end{itemize}
 % \end{myexercise}
 % \begin{myanswer}
-% 	Sei $k = |\text{Bin}(m)|$. Wir wollen $k$ ermitteln.
+% 	Sei $k = |\text{bin}(m)|$. Wir wollen $k$ ermitteln.
 %
-% 	Die kleinste binäre Zahl der Länge $k+1$ ist $1\underbrace{00\ldots 0}_{k\;\text{mal}}$. Diese hat gemäss der Gleichung \cref{eq:Nummer} den dezimalen Wert (Nummer) $2^{k}$. Dann kann der Dezimalwert der grössten binäre Zahl der Länge $k$ höchstens $2^{k-1}-1$ sein ($1$ weniger). Damit ist $2^k-1 \geq m$ begründet.
+% 	Die kleinste binäre Zahl der Länge $k+1$ ist $1\underbrace{00\ldots 0}_{k\;\text{mal}}$. Diese hat gemäss der Gleichung \cref{eq:dec} den dezimalen Wert (dec) $2^{k}$. Dann kann der Dezimalwert der grössten binäre Zahl der Länge $k$ höchstens $2^{k-1}-1$ sein ($1$ weniger). Damit ist $2^k-1 \geq m$ begründet.
 %
 % 	Die kleinste binäre Zahl der Länge $k$ ist $1\underbrace{00\ldots 0}_{(k-1)\;\text{mal}}$, was dem dezimalen Wert $2^{k-1}$ entspricht. Also muss auch $m > 2^{k-1} - 1$ gelten, was die Sandwich-Beziehung aus dem Tipp begründet.\\
 %
@@ -278,13 +278,13 @@ Ist $L$ eine Sprache über $\Sigma$, so definieren wir die Iterationen
 \begin{myexample}
 Die folgenden Mengen sind Beispiele von Sprachen über $\Sigma = \lrc{a,b}$.
 \begin{itemize}
-	\item $L_1 = \emptyset$
-	\item $L_2 = \lrc{\lambda}$
-	\item $L_3 = \Sigma^* = \lrc{\lambda, a,b,aa,\ldots }$
-	\item $L_4 = \Sigma^+ = \lrc{a,b,aa,\ldots }$
-	\item $L_5 = \Sigma$
-	\item $L_6 = \setcm{a^p}{p\;\text{ist eine Primzahl}}$
-	\item $L_5 = \lrc{a}^* = \lrc{\lambda, a, aa, aaa, aaaa, \ldots }$
+	\item $\emptyset$
+	\item $\lrc{\lambda}$
+	\item $\Sigma^* = \lrc{\lambda, a,b,aa,\ldots }$
+	\item $\Sigma^+ = \lrc{a,b,aa,\ldots }$
+	\item $\Sigma$
+	\item $\setcm{a^p}{p\;\text{ist eine Primzahl}}$
+	\item $\lrc{a}^* = \lrc{\lambda, a, aa, aaa, aaaa, \ldots }$
 	\item $\Sigma^2 = \lrc{aa,ab,ba,bb}$
 \end{itemize}
 \end{myexample}
@@ -321,7 +321,7 @@ Man beachte, dass $\Sigma^i = \setcm{x\in\Sigma^*}{\abs{x} = i}$ für eine natü
 
 \begin{myanswer}[myexercise:0298]
 	\begin{align*}
-		\text{Nummer}(x) = \text{Nummer}(\red{1}\blue{0}\green{1}\orange{1}) = \displaystyle\sum_{k=1}^4 x_k\cdot 2^{4-k} = \red{1}\cdot 2^3+\blue{0}\cdot 2^2 + \green{1}\cdot 2^1+\orange{1}\cdot 2^0 = 8 + 2 + 1 = 11
+		\text{dec}(x) = \text{dec}(\red{1}\blue{0}\green{1}\orange{1}) = \displaystyle\sum_{k=1}^4 x_k\cdot 2^{4-k} = \red{1}\cdot 2^3+\blue{0}\cdot 2^2 + \green{1}\cdot 2^1+\orange{1}\cdot 2^0 = 8 + 2 + 1 = 11
 	\end{align*}
 \end{myanswer}
 
@@ -505,7 +505,7 @@ Man beachte, dass $\Sigma^i = \setcm{x\in\Sigma^*}{\abs{x} = i}$ für eine natü
 	\begin{aenum}
 		\item das Teilwort $01$ nicht enthalten.
 		\item weder das Teilwort $01$ noch das Teilwort $00$ enthalten.
-		\item das Teilwort $00$ nicht enthalten (schwierig!).
+		\item das Teilwort $00$ nicht enthalten (schwierig, ohne Musterlösungen).
 	\end{aenum}
 \end{myexercise}
 
