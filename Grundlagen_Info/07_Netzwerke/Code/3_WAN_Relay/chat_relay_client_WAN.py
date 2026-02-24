@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 SERVER_IP = socket.gethostbyname("cblum.ch")
 NAME = input("Gib deinen Namen ein: ")
@@ -22,12 +23,14 @@ def receive_messages():
             break
 
 threading.Thread(target=receive_messages, daemon=True).start()
+time.sleep(1)  # Kurze Pause, um sicherzustellen, dass der Empfangsthread gestartet ist
 
 try:
     while True:
         empfaenger = input("Empfänger: ")
         nachricht = input("Nachricht: ")
         client.send(f"{empfaenger}:{nachricht}".encode())
+        time.sleep(0.1)  # Kurze Pause, bevor die nächste Nachricht gesendet werden kann
 except KeyboardInterrupt:
     print(f"\nVerbindung zum Server ({SERVER_IP}) wird getrennt.")
     client.close()

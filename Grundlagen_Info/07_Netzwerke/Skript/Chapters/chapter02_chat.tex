@@ -490,6 +490,8 @@ while True:
     In einem echten Chat-Programm möchten jederzeit parallel, also gleichzeitig, Nachrichten senden und empfangen können. Dafür können wir in Python sogenannte \textit{Threads} verwenden, um zwei Aufgaben parallel auszuführen: eine zum Senden von Nachrichten und eine zum Empfangen von Nachrichten. Verwenden Sie folgende Code-Vorlage, um zwei Threads zu erstellen, die parallel laufen:
     \begin{lstlisting}[language=Python]
 import threading
+import time
+
 # Ihre Server-Einstellungen (socket-Einstellungen, connect etc.) hier
 
 def receive_messages():
@@ -505,12 +507,14 @@ def receive_messages():
             break
 
 threading.Thread(target=receive_messages, daemon=True).start()
+time.sleep(1)  # Kurze Pause, um sicherzustellen, dass der Empfangsthread gestartet ist
 
 try:
     while True:
         empfaenger = input("Empfänger-IP: ")
         nachricht = input("Nachricht: ")
         client.send(f"{empfaenger}:{nachricht}".encode())
+        time.sleep(0.1)  # Kurze Pause, bevor die nächste Nachricht gesendet werden kann
 except KeyboardInterrupt:
     print(f"\nVerbindung zum Server ({SERVER_IP}) wird getrennt.")
     client.close()
