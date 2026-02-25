@@ -51,23 +51,26 @@
             \node[socket] (server_socket) at (server.north west) {\large \emoji{pig-nose}};
 
             % Arrows with labels
-
-            \node[rectangle, draw, fill=yellow!5, above right=.2cm and .6cm of server_socket, minimum width=2.2cm, minimum height=1.2cm, font=\small, align=center] {
+            \node[rectangle, draw, fill=yellow!5, above right=.2cm and .6cm of server_socket, minimum width=2.2cm, minimum height=1.2cm, font=\small, align=center, rounded corners] (server_socket_text){
                 \textbf{Socket:}\\
                 IP: \texttt{198.168.0.11}\\
                 Port: \texttt{12345}\\
-                Protocol: \texttt{TCP}
+                Protokoll: \texttt{TCP}
             };
+
+            % draw dotted line from (server_socket) to (server_socket_text)
+            \draw[dashed] (server_socket) -- (server_socket_text);
+
             \pause
-            \draw[arrow, loop, min distance=2cm, in=120, out=60] (server_socket.north) to node[above, yshift=10pt, code, align=center, text width=2cm] {bind()\\ listen()\\ accept()} (server_socket.north);
+            \draw[arrow, loop, min distance=2cm, in=120, out=60] (server_socket.north) to node[above, code, align=center, text width=2cm] {bind()\\ listen()\\ accept()} (server_socket.north);
 
             \pause
             \node[socket] (client_socket) at (client.north east) {};
             \draw[arrow] (client_socket) to[bend left=40] node[above, yshift=3pt, code] {connect() \faPlug{}} (server_socket);
             \pause
-            \draw[arrow] (client_socket) -- node[below, code] {send("Hallo Server...")} (server_socket);
+            \draw[arrow, bend left=10] (client_socket) to node[above, code] {send("Hallo Server...")} (server_socket);
             \pause
-            \draw[arrow, dashed] (server_socket) -- node[above, yshift=3pt, code, xshift=10pt] {recv()} (client_socket);
+            \draw[arrow, dashed, bend left=10] (server_socket) to node[below, yshift=3pt, code, xshift=10pt] {recv()} (client_socket);
             \pause
             \draw[arrow, dashed, bend left=40] (server_socket.south) to node[below, yshift=-8pt, code, xshift=-10pt] {send("Hallo Client...")} (client_socket.south);
             \pause
@@ -187,4 +190,11 @@
         \item \aufgabebox{LAN: 2.10 - 2.14}
         \item \aufgabebox{WAN: 2.15 - 2.17}
     \end{itemize}
+    \textbf{Tipps}:
+    \begin{itemize}
+        \item Bearbeiten Sie nur \texttt{client.py}
+        \item Passwort für \texttt{Mein sicheres Netzwerk}: \textbf{\texttt{CVW-1234}}
+        \item IP-Adresse des Relay-Servers: \texttt{192.168.0.}\TextField[name=ip-relay, width=1.5cm,print,borderwidth=0, backgroundcolor={0.9 0.9 0.9}]{}
+    \end{itemize}
+
 \end{frame}

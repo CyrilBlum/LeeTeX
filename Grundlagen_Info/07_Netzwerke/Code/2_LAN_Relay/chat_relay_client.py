@@ -3,9 +3,10 @@ import threading
 import time
 
 SERVER_IP = "172.20.10.5"
+PORT = 12345
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect((SERVER_IP, 12345))
+client.connect((SERVER_IP, PORT))
 
 def receive_messages():
     while True:
