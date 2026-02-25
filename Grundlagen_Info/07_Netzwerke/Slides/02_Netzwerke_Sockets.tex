@@ -32,94 +32,18 @@
 
 \frame{\titlepage}
 
-\section{Client-to-Server über localhost}
+\section{Client-to-Server}
 \begin{frame}[fragile]{Sockets}{Client-to-Server}
     \resizebox{\textwidth}{!}{
-        \begin{tikzpicture}[
-                base/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, text=white, rounded corners, text width=2.8cm, align=center, inner sep=8pt},
-                server/.style={base, fill=RoyalBlue},
-                client/.style={base, fill=ForestGreen},
-                arrow/.style={-Stealth, thick, rounded corners},
-                code/.style={font=\ttfamily\small},
-                socket/.style={circle, draw, fill=yellow!10, minimum size=0.5cm}
-            ]
-
-            % Socket symbol inside server rectangle
-            \node[client] (client) at (0, 0) {Client\\\texttt{198.168.0.10}};
-            \node[server] (server) at (10, 0) {Server\\\texttt{198.168.0.11}};
-            \pause
-            \node[socket] (server_socket) at (server.north west) {\large \emoji{pig-nose}};
-
-            % Arrows with labels
-            \node[rectangle, draw, fill=yellow!5, above right=.2cm and .6cm of server_socket, minimum width=2.2cm, minimum height=1.2cm, font=\small, align=center, rounded corners] (server_socket_text){
-                \textbf{Socket:}\\
-                IP: \texttt{198.168.0.11}\\
-                Port: \texttt{12345}\\
-                Protokoll: \texttt{TCP}
-            };
-
-            % draw dotted line from (server_socket) to (server_socket_text)
-            \draw[dashed] (server_socket) -- (server_socket_text);
-
-            \pause
-            \draw[arrow, loop, min distance=2cm, in=120, out=60] (server_socket.north) to node[above, code, align=center, text width=2cm] {bind()\\ listen()\\ accept()} (server_socket.north);
-
-            \pause
-            \node[socket] (client_socket) at (client.north east) {};
-            \draw[arrow] (client_socket) to[bend left=40] node[above, yshift=3pt, code] {connect() \faPlug{}} (server_socket);
-            \pause
-            \draw[arrow, bend left=10] (client_socket) to node[above, code] {send("Hallo Server...")} (server_socket);
-            \pause
-            \draw[arrow, dashed, bend left=10] (server_socket) to node[below, yshift=3pt, code, xshift=10pt] {recv()} (client_socket);
-            \pause
-            \draw[arrow, dashed, bend left=40] (server_socket.south) to node[below, yshift=-8pt, code, xshift=-10pt] {send("Hallo Client...")} (client_socket.south);
-            \pause
-            % State boxes
-            \node[rectangle, draw, fill=gray!10, below=3cm of client.east, text width=7cm, align=left, font=\small] (client_state) {
-                \textbf{Client:} \\
-                1. Socket erstellen (\texttt{.socket()})\\
-                2. Mit Server-Socket verbinden (\texttt{.connect()}) \\
-                3. Nachricht senden (\texttt{.send()})\\
-                4. Antwort empfangen (\texttt{.recv()})\\
-            };
-
-            \node[rectangle, draw, fill=gray!10, below=3cm of server.east, xshift=-2cm, text width=7cm, align=left, font=\small] (server_state) {
-                \textbf{Server:} \\
-                1. Socket erstellen (\texttt{.socket(), .bind()})\\
-                2. Warten auf Verbindungen (\texttt{.listen()}) \\
-                3. Accept Verbindung (\texttt{.accept()}) \\
-                4. Nachricht empfangen (\texttt{.recv()}) \\
-                5. Antwort senden (\texttt{.send()})
-            };
-        \end{tikzpicture}
+        \input{Grundlagen_Info/07_Netzwerke/Skript/Includes/kapitel02Netzwerke_fig_chat_clientserver.tex}
     }
 \end{frame}
 
-\begin{frame}[fragile]{Sockets}{Client-to-Client (localhost)}
+\begin{frame}[fragile]{Sockets}{Client-to-Client (\texttt{localhost})}
+    \centering
     \resizebox{.8\textwidth}{!}{
-        \begin{tikzpicture}[
-                base/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, text=white, rounded corners, text width=2.8cm, align=center, inner sep=8pt},
-                client/.style={base, fill=ForestGreen},
-                socket/.style={circle, draw, fill=yellow!10, minimum size=0.6cm},
-                arrow/.style={-Stealth, thick, rounded corners}
-            ]
-
-            \node[client] (client) at (5, 0) {Client\\\texttt{localhost:54321}};
-            \node[socket] (socket1) at (3.5, 0) {};
-            \pause
-            \node[socket] (socket2) at (6.5, 0) {};
-            \pause
-            \draw[arrow] (socket1) to[bend left=60] (socket2);
-            \pause
-            \draw[arrow] (socket2) to[bend left=60] (socket1);
-            \node[rectangle, draw, fill=yellow!5, above right=.2cm and .6cm of socket1, minimum width=2.2cm, minimum height=1.2cm, font=\small, align=center] {
-                \textbf{Socket:}\\
-                IP: \texttt{localhost}\\
-                Port: \texttt{54321}\\
-                Protocol: \texttt{TCP}
-            };
-        \end{tikzpicture}
-    }s
+        \input{Grundlagen_Info/07_Netzwerke/Skript/Includes/kapitel02Netzwerke_fig_chat_clientserver_localhost.tex}
+    }
 
 \end{frame}
 
@@ -144,10 +68,11 @@
             ]
 
             % Socket symbol inside server rectangle
-            \node[server] (server) at (6, -1) {Relay-Server\\\texttt{88.198.193.239:12345}};
-
             \node[client] (client1) at (0, 2) {Client 1 (Alice)\\\texttt{51.154.56.61}};
             \node[client] (client2) at (0, -2) {Client 2 (Bob)\\\texttt{51.154.56.61}};
+            \node[server] (server) at (7, -2) {Relay-Server\\\texttt{88.198.193.239:12345}};
+
+
             \pause
             \node[socket] (server_socket) at (server.north west) {\large \emoji{pig-nose}};
 
@@ -158,11 +83,11 @@
             \draw[arrow] (client1_socket) to[bend left=20] node[above, pos=.3, code, sloped] {connect()} (server_socket);
             \pause
             \node[socket] (client2_socket) at (client2.south east) {};
-            \draw[arrow] (client2_socket) to[bend right=40] node[below, pos=.3, code, sloped] {connect()} (server_socket);
+            \draw[arrow] (client2_socket) to[bend right=40] node[below, pos=.3, code, sloped] {\lstinline|connect()|} (server_socket);
             \pause
-            \draw[arrow] (client1_socket) -- node[pos=0.7, below, font=\ttfamily\scriptsize, align=center, sloped] {\only<6>{\textcolor{red}{\faExclamationTriangle}} \only<5-6>{send("Hallo Client 2...")}\only<7->{send("Mein Name ist Alice.") \\ send("Bob:Hallo Bob...")}} (server_socket);
+            \draw[arrow] (client1_socket) -- node[below, font=\ttfamily\scriptsize, align=center, sloped] {\only<6>{\textcolor{red}{\faExclamationTriangle}} \only<5-6>{\lstinline|send("Hallo Client 2...")|}\only<7->{\lstinline|send("Mein Name ist Alice.")| \\ \lstinline|send("Bob:Hallo Bob...")|}} (server_socket);
             \pause
-            \draw[arrow, dashed] (server_socket) -- node[above, yshift=3pt, code, xshift=10pt] {recv()} (client2_socket);
+            \draw[arrow, dashed] (server_socket) -- node[above, yshift=3pt, code, xshift=10pt] {\lstinline|recv()|} (client2_socket);
             \pause
         \end{tikzpicture}
     }

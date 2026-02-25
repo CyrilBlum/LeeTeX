@@ -1,0 +1,36 @@
+\begin{tikzpicture}[
+                base/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, text=white, rounded corners, text width=2.8cm, align=center, inner sep=8pt},
+                client/.style={base, fill=ForestGreen},
+                socket/.style={circle, draw, fill=yellow!10, minimum size=0.6cm, fill opacity=0.7},
+                arrow/.style={-Stealth, thick, rounded corners}
+            ]
+
+            \node[client] (client) at (5, 0) {Client\\\texttt{localhost:54321}};
+            \node[socket] (socket2) at (client.east) {\large \emoji{pig-nose}};
+            
+            % socket description
+            \node[rectangle, draw, fill=yellow!5, above right=.2cm and .6cm of socket2, minimum width=2.2cm, minimum height=1.2cm, font=\small, rounded corners, align=center] (server_socket_text) {
+                \textbf{Socket:}\\
+                IP: \texttt{localhost}\\
+                Port: \texttt{54321}\\
+                Protocol: \texttt{TCP}
+            };
+
+            % draw dotted line from (server_socket) to (server_socket_text)
+            \draw[dashed] (socket2) -- (server_socket_text);
+
+            \iftoggle{beamer}{\pause}{}
+
+            \node[socket] (socket1) at (client.west) {};
+            
+            \iftoggle{beamer}{\pause}{}
+            \draw[arrow] (socket1) to[bend left=60] (socket2);
+
+            \iftoggle{beamer}{\pause}{}
+            \draw[arrow] (socket2) to[bend left=60] (socket1);
+            
+
+            
+
+
+        \end{tikzpicture}
