@@ -25,8 +25,7 @@ try:
 
         antwort = input("Antwort an den Client: ")
         conn.send(antwort.encode())
-except KeyboardInterrupt as e:
+except KeyboardInterrupt:
     print(f"Verbindung zu {addr} getrennt.")
     conn.close()
     server.close()
-
