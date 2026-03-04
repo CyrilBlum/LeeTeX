@@ -117,11 +117,14 @@
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{d.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/d.py}
 
-	Wie oft wird die Zeile 4 (\lstinline{while}-Konditional) \textbf{ungefähr} ausgeführt?
+	Wie oft wird die Zeile \lstinline{i *= 2} ungefähr ausgeführt?
 \end{frame}
 
 \begin{frame}
-	\textbf{Antwort:} Wir beginnen mit \lstinline{i = 1} und \lstinline{i} wird im jedem Durchlauf der \lstinline{while}-Schleife verdoppelt. Wie häufig können wir den Wert von \lstinline{i} verdopplen, bis die \lstinline{while}-Bedingung \lstinline{i <= n} nicht mehr erfüllt ist? Ungefähr also $\log_2(n) + 1$ mal.
+	\textbf{Antwort:} Wir beginnen mit \lstinline{i = 1} und \lstinline{i} wird im jedem Durchlauf der \lstinline{while}-Schleife verdoppelt. Wie häufig können wir den Wert von \lstinline{i} verdopplen, bis die \lstinline{while}-Bedingung \lstinline{i <= n} nicht mehr erfüllt ist? Ungefähr also $\log_2(n)$ mal.
+
+	\vspace{1cm}
+	Genaue Analyse: Die Zeile \lstinline{i *= 2} wird $\ceil{\log_2(n)} + 1$ mal ausgeführt, wobei für jede reelle Zahl $x$ mit $m := \ceil{x}$ die grösste ganze Zahl $m \leq x$ bezeichnet wird (Abrundeklammern).
 \end{frame}
 
 % \begin{frame}
@@ -388,46 +391,46 @@
 	wobei $\tilde{a}, \tilde{b}, \tilde{c}$ Konstanten sind und $\tilde{a}\neq 0$
 \end{frame}
 
-\begin{frame}{Das Modell der Random Access Machine (RAM)}
-	Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Modell: die \textbf{Random Access Machine (RAM)}.
-\end{frame}
+% \begin{frame}{Das Modell der Random Access Machine (RAM)}
+% 	Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Modell: die \textbf{Random Access Machine (RAM)}.
+% \end{frame}
 
-\begin{frame}{Das Random Access Machine (RAM) Modell}
-	\begin{itemize}[<+->]
-	\item Bisher haben wir in unseren Komplexitätsanalysen jeder Zeile eine Variable für die Ausführungszeit zugewiesen (Kosten $c_i$ für die $i$-te Zeile). Dies ist zwar sehr rigoros und formal korrekt, aber auch sehr aufwendig und nur wenig konkret.
-	\item Um die Analyse zu vereinfachen, verwenden wir das \textbf{Random Access Machine (RAM)} Modell.
-	\item In diesem Modell nehmen wir an, dass jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) genau \textbf{einen Zeitschritt} benötigt.
-	\item Dies ermöglicht es uns, die Laufzeit eines Algorithmus einfach durch das Zählen der ausgeführten elementaren Operationen zu bestimmen.
-	\end{itemize}
-\end{frame}
+% \begin{frame}{Das Random Access Machine (RAM) Modell}
+% 	\begin{itemize}[<+->]
+% 	\item Bisher haben wir in unseren Komplexitätsanalysen jeder Zeile eine Variable für die Ausführungszeit zugewiesen (Kosten $c_i$ für die $i$-te Zeile). Dies ist zwar sehr rigoros und formal korrekt, aber auch sehr aufwendig und nur wenig konkret.
+% 	\item Um die Analyse zu vereinfachen, verwenden wir das \textbf{Random Access Machine (RAM)} Modell.
+% 	\item In diesem Modell nehmen wir an, dass jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) genau \textbf{einen Zeitschritt} benötigt.
+% 	\item Dies ermöglicht es uns, die Laufzeit eines Algorithmus einfach durch das Zählen der ausgeführten elementaren Operationen zu bestimmen.
+% 	\end{itemize}
+% \end{frame}
 
-\begin{frame}{Das Random Access Machine (RAM) Modell}
-	\begin{itemize}[<+->]
-		\item Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Modell: die \textbf{Random Access Machine (RAM)}.
-		\item Die RAM ist ein idealisierter Computer, der dem Von-Neumann-Architektur-Prinzip ähnelt.
-		\item \textbf{Wichtige Eigenschaften:}
-		\begin{itemize}
-			\item \textbf{Speicher:} Unendlich viele Speicherzellen\footnote{Natürlich wird jeder Algorithmus, welcher seine Arbeit nach endlich vielen Schritten beendet, nur endlich viele Speicherzellen benötigen.}, auf die direkt zugegriffen werden kann (Random Access).
-			\item \textbf{Register:} Jede Zelle kann eine beliebig grosse ganze Zahl speichern.
-			\item \textbf{Programm:} Eine Folge von einfachen Befehlen, die sequentiell abgearbeitet werden.
-		\end{itemize}
-	\end{itemize}
-\end{frame}
+% \begin{frame}{Das Random Access Machine (RAM) Modell}
+% 	\begin{itemize}[<+->]
+% 		\item Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Modell: die \textbf{Random Access Machine (RAM)}.
+% 		\item Die RAM ist ein idealisierter Computer, der dem Von-Neumann-Architektur-Prinzip ähnelt.
+% 		\item \textbf{Wichtige Eigenschaften:}
+% 		\begin{itemize}
+% 			\item \textbf{Speicher:} Unendlich viele Speicherzellen\footnote{Natürlich wird jeder Algorithmus, welcher seine Arbeit nach endlich vielen Schritten beendet, nur endlich viele Speicherzellen benötigen.}, auf die direkt zugegriffen werden kann (Random Access).
+% 			\item \textbf{Register:} Jede Zelle kann eine beliebig grosse ganze Zahl speichern.
+% 			\item \textbf{Programm:} Eine Folge von einfachen Befehlen, die sequentiell abgearbeitet werden.
+% 		\end{itemize}
+% 	\end{itemize}
+% \end{frame}
 
-\begin{frame}{Kostenmodell der RAM}
-	\begin{itemize}[<+->]
-		\item Wie messen wir die \enquote{Zeit} in diesem Modell?
-		\item \textbf{Einheitskostenmodell (Uniform Cost Model):}
-		\begin{itemize}
-			\item Jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) benötigt genau \textbf{einen Zeitschritt}.
-			\item Die Grösse der Operanden spielt dabei keine Rolle (vereinfachende Annahme).
-		\end{itemize}
-		\item \textbf{Bedeutung für die Analyse:}
-		\begin{itemize}
-			\item Die Laufzeit eines Algorithmus entspricht der Anzahl der ausgeführten elementaren Operationen.
-		\end{itemize}
-	\end{itemize}
-\end{frame}
+% \begin{frame}{Kostenmodell der RAM}
+% 	\begin{itemize}[<+->]
+% 		\item Wie messen wir die \enquote{Zeit} in diesem Modell?
+% 		\item \textbf{Einheitskostenmodell (Uniform Cost Model):}
+% 		\begin{itemize}
+% 			\item Jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) benötigt genau \textbf{einen Zeitschritt}.
+% 			\item Die Grösse der Operanden spielt dabei keine Rolle (vereinfachende Annahme).
+% 		\end{itemize}
+% 		\item \textbf{Bedeutung für die Analyse:}
+% 		\begin{itemize}
+% 			\item Die Laufzeit eines Algorithmus entspricht der Anzahl der ausgeführten elementaren Operationen.
+% 		\end{itemize}
+% 	\end{itemize}
+% \end{frame}
 
 \begin{frame}{Motivation für die asymptotische Analyse}
 	\begin{itemize}[<+->]

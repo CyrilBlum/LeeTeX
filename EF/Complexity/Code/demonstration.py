@@ -22,4 +22,4 @@ print(f"Merge Sort benötigte: {duration_merge:.4f} Sekunden")
 # Vergleich der Laufzeiten
 if duration_merge > 0:
     faktor = duration_bubble / duration_merge
-    print(f"merge_sort war {faktor:.1f}-mal so schnell wie bubble_sort.")
+    print(f"merge_sort war {faktor:.1f} mal so schnell wie bubble_sort.")
