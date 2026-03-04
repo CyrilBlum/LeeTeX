@@ -4,7 +4,7 @@
 % default settings for listings
 \lstset{style=python, basicstyle=\ttfamily\footnotesize}
 
-\title[Programmieren]{Komplexitätstheorie}
+\title[Algorithmen]{Komplexitätstheorie}
 
 \author[Graf, Thomas] % (optional)
 {Thomas Graf}
@@ -12,7 +12,7 @@
 \institute[KLW] % (optional)
 {
 	Fachschaft Informatik\\
-	Kantonsschule im Lee
+	Kantonsschule Im Lee
 }
 
 \date[\today] % (optional)
@@ -23,32 +23,158 @@
 
 \frame{\titlepage}
 
-\begin{frame}{Berechenbarkeit}
+\begin{frame}{Motivation}
 	\begin{itemize}[<+->]
-		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch lösbar}}, wenn ein Algorithmus zur Lösung dieses Problems existiert, und ein Problem ist \textbf{\textcolor{Red}{algorithmisch unlösbar}}, wenn kein Algorithmus für dieses Problem existiert.
-		\item Wir werden uns in diesem Thema auf \textbf{\textcolor{Green}{algorithmisch lösbare}} Probleme beschränken.
-		\item Könnt ihr euch noch an ein Beispiel eines algorithmisch unlösbaren Problems erinnern?
+		\item Bislang stand für uns hauptsächlich die Frage
+		\begin{center}
+			{\small
+			\enquote{Wie können wir ein Problem \textbf{überhaupt} algorithmisch lösen?}
+			}
+		\end{center}
+		im Zentrum.
+		\item Dabei haben wir uns (grob gesagt)\textbf{mit jeder korrekten algorithmischen Lösung begnügt}.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Komplexitätstheorie}
+
+\begin{frame}{Diskussion im Plenum}
+	Welche Aspekte eines Algorithmus könnten uns (neben seiner Korrektheit) noch interessieren?
 	\begin{itemize}[<+->]
+		\item Eleganz?
+		\item Effizienz?
+		\item Lesbarkeit und Verständlichkeit?
+		\item Länge des Codes? (Anzahl Zeilen)
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Diskussion im Plenum}
+	Welche Aspekte eines Algorithmus könnten uns (neben seiner Korrektheit) noch interessieren?
+	\begin{itemize}
+		\item Eleganz
+		\item \textcolor{Red}{\textbf{Effizienz}} $\leftarrow$ unser Fokus für heute
+		\item Lesbarkeit und Verständlichkeit
+		\item Länge des Codes (Anzahl Zeilen)
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Effizienz (Laufzeit) ist eine wichtige Eigenschaft eines Algorithmus}
+	\begin{itemize}[<+->]
+		\item Demonstration: Vergleich der Laufzeiten von \texttt{bubble\_sort} und \texttt{merge\_sort}
+		\item Google: Loading times longer than a blink of an eye (or 400 milliseconds) are too long:\\
+		\url{https://current360.com/400-milliseconds-or-the-blink-of-an-eye/}
 		\item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche rechnerunterstützte Lösung des Problems darstellt!
-		\item Es waren zahlreiche praxisrelevante algorithmische Probleme bekannt, die zwar grundsätzlich algorithmisch lösbar waren, aber für die alle entworfenen Programme tagelang auf gegebenen Eingaben ohne Erfolg arbeiteten. Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
-		\item Die Komplexitätstheorie strebt eine feinere Einteilung der algorithmisch lösbaren Probleme an.
+		\item Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Komplexitätstheorie}
+\begin{frame}{Lernziele}
 	\begin{itemize}[<+->]
-		\item Es stellte sich die Frag, ob dieser Misserfolg eine Folge unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
-		\item Dies führte dazu, dass man begann, die Schwierigkeit der algorithmisch lösbaren Probleme bezüglich des Rechenaufwands zu messen, um so die Probleme nach deren Schwierigkeitsgrad zu klassifizieren.
+		\item TODO
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Komplexitätstheorie}
-	Die Komplexitätstheorie ist die Theorie der quantitativen Gesetze und Grenzen der algorithmischen Informationsverarbeitung. Diese Theorie hat auch eine physikalische Dimension: Zum Beispiel hält man ein zwar berechenbares Problem sicherlich für \enquote{praktisch unlösbar}, wenn die Ausführung eines Algorithmus zur Lösung des Problems mehr Energie bräuchte, als im bekannten Universum vorhanden ist.
+
+\begin{frame}{Bestimmung der Laufzeit \faStar\faStar[regular]\faStar[regular]\faStar[regular]\faStar[regular]}
+    \lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{a.py},label=listing:bubble_sort]{EF/Complexity/Code/a.py}
+    
+    Wie oft wird die Funktion \lstinline{print} aufgerufen?
+    
+    \pause % The slide stops here until the next click
+    
+    \textbf{Antwort:} Die Funktion wird $5\cdot 4 = 20$ mal aufgerufen.
 \end{frame}
+
+\begin{frame}{Bestimmung der Laufzeit \faStar\faStar[regular]\faStar[regular]\faStar[regular]\faStar[regular]}
+	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{b.py},label=listing:bubble_sort]{EF/Complexity/Code/b.py}
+
+	Wie oft wird die Funktion \lstinline{print} aufgerufen?
+
+	\pause
+	
+	\textbf{Antwort:} Die Funktion wird $nm$ mal aufgerufen.
+\end{frame}
+
+\begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
+	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{c.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/c.py}
+
+	Wie oft wird die Zeile 3 (\lstinline{if}-Konditional) ausgeführt? \emoji{thinking-face}
+\end{frame}
+
+\begin{frame}
+	\textbf{Antwort:} Die genaue Anzahl hängt von der Probleminstanz --- in diesem Fall von der gegebenen Liste \lstinline{L} und dem gesuchten Element \lstinline{x} --- ab. Wir unterscheiden zwei extreme Fälle:
+	\begin{description}[<+->]
+		\item[günstigster Fall:] Das erste Element (\lstinline{L[0]}) ist bereits das gesuchte Element \lstinline{x} $\Rightarrow$ Zeile 3 wird nur einmal ausgeführt.
+		\item[teuerster Fall:] Das gesuchte Element \lstinline{x} ist entweder das letzte Element der Liste oder kommt in der Liste gar nicht vor $\Rightarrow$ Zeile 3 wird \lstinline{len(L)} mal ausgeführt (jedes Element von \lstinline{L} muss überprüft werden).
+	\end{description}
+
+	\pause
+	Natürlich können auch alle Fälle zwischen diesen beiden Extremfällen (1 Ausführungen und \lstinline{len(L)} Ausführungen) auftreten.
+\end{frame}
+
+
+\begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
+	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{d.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/d.py}
+
+	Wie oft wird die Zeile 4 (\lstinline{while}-Konditional) \textbf{ungefähr} ausgeführt?
+\end{frame}
+
+\begin{frame}
+	\textbf{Antwort:} Wir beginnen mit \lstinline{i = 1} und \lstinline{i} wird im jedem Durchlauf der \lstinline{while}-Schleife verdoppelt. Wie häufig können wir den Wert von \lstinline{i} verdopplen, bis die \lstinline{while}-Bedingung \lstinline{i <= n} nicht mehr erfüllt ist? Ungefähr also $\log_2(n) + 1$ mal.
+\end{frame}
+
+% \begin{frame}
+% \begin{figure}[H]
+% 	\def\lvld{1.2}                  % Choose level distance
+% 	\pgfmathsetmacro\shft{-6*\lvld} % Calculate the yshift for the green tree
+% 	\centering
+% 	\begin{tikzpicture}[
+% 			level distance=\lvld cm,
+% 			level 1/.style={sibling distance=4cm},
+% 			level 2/.style={sibling distance=2cm},
+% 			level 3/.style={sibling distance=1cm},
+% 			edgedown/.style={edge from parent/.style={draw=red,thick,-latex}},
+% 			edgeup/.style={edge from parent/.style={draw=green!50!black,thick,latex-}},
+% 			block/.style={rectangle split, rectangle split parts=#1, draw, fill=blue!20}
+% 		]
+% 		\node[block=7,label={Eingabe}] (A) {3 \nodepart{two} 2 \nodepart{three} 0 \nodepart{four} 3 \nodepart{five} 9 \nodepart{six}8 \nodepart{seven}1}
+% 		[grow=down,edgedown];
+% 		\node[block=7,below=1cm of A,label={Ausgabe}] (B) {0 \nodepart{two} 1 \nodepart{three} 2 \nodepart{four} 3 \nodepart{five} 3 \nodepart{six}8 \nodepart{seven}9}
+% 		[grow=down,edgedown];
+% 	\end{tikzpicture}
+% 	\caption{Eingabe und Ausgabe eines kleinen Sortierproblems mit ganzen Zahlen}
+% 	\label{fig:bsp1}
+% \end{figure}
+% \end{frame}
+
+
+% \begin{frame}{Berechenbarkeit}
+% 	\begin{itemize}[<+->]
+% 		\item Die Theorie der Berechenbarkeit liefert uns Methoden zur Klassifizierung von Problemen bezüglich ihrer algorithmischen Lösbarkeit. Danach ist ein Problem \textbf{\textcolor{Green}{algorithmisch lösbar}}, wenn ein Algorithmus zur Lösung dieses Problems existiert, und ein Problem ist \textbf{\textcolor{Red}{algorithmisch unlösbar}}, wenn kein Algorithmus für dieses Problem existiert.
+% 		\item Wir werden uns in diesem Thema auf \textbf{\textcolor{Green}{algorithmisch lösbare}} Probleme beschränken.
+% 		\item Könnt ihr euch noch an ein Beispiel eines algorithmisch unlösbaren Problems erinnern?
+% 	\end{itemize}
+% \end{frame}
+
+% \begin{frame}{Komplexitätstheorie}
+% 	\begin{itemize}[<+->]
+% 		\item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche rechnerunterstützte Lösung des Problems darstellt!
+% 		\item Es waren zahlreiche praxisrelevante algorithmische Probleme bekannt, die zwar grundsätzlich algorithmisch lösbar waren, aber für die alle entworfenen Programme tagelang auf gegebenen Eingaben ohne Erfolg arbeiteten. Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
+% 		\item Die Komplexitätstheorie strebt eine feinere Einteilung der algorithmisch lösbaren Probleme an.
+% 	\end{itemize}
+% \end{frame}
+
+% \begin{frame}{Komplexitätstheorie}
+% 	\begin{itemize}[<+->]
+% 		\item Es stellte sich die Frag, ob dieser Misserfolg eine Folge unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
+% 		\item Dies führte dazu, dass man begann, die Schwierigkeit der algorithmisch lösbaren Probleme bezüglich des Rechenaufwands zu messen, um so die Probleme nach deren Schwierigkeitsgrad zu klassifizieren.
+% 	\end{itemize}
+% \end{frame}
+
+% \begin{frame}{Komplexitätstheorie}
+% 	Die Komplexitätstheorie ist die Theorie der quantitativen Gesetze und Grenzen der algorithmischen Informationsverarbeitung. Diese Theorie hat auch eine physikalische Dimension: Zum Beispiel hält man ein zwar berechenbares Problem sicherlich für \enquote{praktisch unlösbar}, wenn die Ausführung eines Algorithmus zur Lösung des Problems mehr Energie bräuchte, als im bekannten Universum vorhanden ist.
+% \end{frame}
 
 \begin{frame}{Fallstudie: \texttt{insertion\_sort} und \texttt{bubble\_sort}}
 	Wir wollen uns die beiden Sortieralgorithmen \texttt{insertion\_sort} und \texttt{bubble\_sort} anschauen und deren Laufzeiten analysieren.
