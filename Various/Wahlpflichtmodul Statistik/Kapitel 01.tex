@@ -1,0 +1,519 @@
+\chapter{Statistik: Daten verstehen und beschreiben}
+
+\section{Wozu Statistik?}
+
+Statistik hilft uns, aus Daten sinnvolle Aussagen zu gewinnen, ohne uns von Einzelfällen, Ausreissern oder geschickt gestalteten Grafiken täuschen zu lassen.
+In diesem Kapitel arbeiten wir mit kleinen, realistischen Datensätzen und üben das Zusammenspiel von
+\begin{center}
+\textbf{Daten \ $\rightarrow$\ Kennzahlen \ $\rightarrow$\ Visualisierung \ $\rightarrow$\ Interpretation}.
+\end{center}
+
+\begin{myattention}
+	Statistik ist keine Rechenakrobatik, sondern vor allem \textbf{sauberes Denken}:
+	Welche Daten liegen vor? Was darf man damit berechnen? Und was bedeutet das Ergebnis in Worten?
+\end{myattention}
+
+\section{Daten und Skalenniveaus}
+
+\subsection{Was sind Daten?}
+Daten sind beobachtete oder erhobene Werte zu einer Fragestellung.
+Oft stammen sie aus Umfragen, Messungen, Protokollen oder Apps (z.B.\ Schlaftracking).
+
+\begin{mydefinition}\label{mydefinition:variable}
+	Eine \textbf{Variable} ist eine Eigenschaft, die bei verschiedenen Personen oder Objekten unterschiedliche Werte annehmen kann.
+\end{mydefinition}
+
+\begin{myexample}
+	Die Variable \textit{Schlafdauer} kann für verschiedene Personen unterschiedliche Werte (z.B.\ $6.5$ Stunden, $7.2$ Stunden, \dots) annehmen.
+\end{myexample}
+
+\subsection{Skalenniveaus (Skalenwerte)}
+Das \textbf{Skalenniveau} (auch: Messniveau) bestimmt, welche Aussagen und Rechnungen sinnvoll sind.
+
+\begin{mydefinition}\label{mydefinition:skalenniveau}
+	Ein \textbf{Skalenniveau} beschreibt, welche Struktur eine Variable besitzt (nur Kategorien? Rangordnung? Abstände? echter Nullpunkt?)
+	und legt damit fest, welche Kennzahlen und Diagramme sinnvoll sind.
+\end{mydefinition}
+
+\begin{myremark}
+	Wenn das Skalenniveau unklar ist, helfen zwei Fragen:
+	\begin{itemize}
+		\item Gibt es eine \textbf{Reihenfolge} (mehr/weniger)?
+		\item Sind \textbf{Abstände} oder sogar \textbf{Verhältnisse} (doppelt so viel) sinnvoll?
+	\end{itemize}
+\end{myremark}
+
+\begin{mydefinition}\label{mydefinition:nominalskala}
+	\textbf{Nominalskala:} Kategorien ohne Ordnung.
+
+    \textbf{Beispiele}: Lieblingsfach, Wohnort, Musikgenre.
+\end{mydefinition}
+
+\begin{mydefinition}\label{mydefinition:ordinalskala}
+    \textbf{Ordinalskala:} Kategorien mit Rangordnung, aber die Abstände zwischen Werten sind nicht sinnvoll interpretierbar.
+    
+    \textbf{Beispiele}: Zufriedenheit (1--5), Schulnoten, Ranglisten.
+\end{mydefinition}
+
+\begin{mydefinition}\label{mydefinition:intervallskala}
+	\textbf{Intervallskala:} Gleiche Abstände sind sinnvoll, aber es gibt keinen echten Nullpunkt.
+    
+    \textbf{Beispiel}: Temperatur in \textdegree C (0\textdegree C bedeutet nicht ``keine Temperatur'').
+\end{mydefinition}
+
+\begin{mydefinition}\label{mydefinition:verhältnisskala}
+	\textbf{Verhältnisskala (Ratioskala):} Gleiche Abstände \textbf{und} echter Nullpunkt.
+	\textbf{Beispiele}: Länge, Gewicht, Zeitdauer, Temperatur in Kelvin.
+\end{mydefinition}
+
+\subsection{Übersicht der Skalenniveaus}
+
+\begin{table}[H]
+	\centering
+	\small
+	\begin{tabular}{|l|c|c|c|c|c|}
+		\hline
+		\textbf{Skalenniveau} & \textbf{Ordnung} & \textbf{Abstände} & \textbf{Nullpunkt} & \textbf{Lagemaße} & \textbf{Streuungsmaße} \\ \hline\hline
+		Nominal & \xmark & \xmark & \xmark & Modus & --- \\ \hline
+		Ordinal & \cmark & \xmark & \xmark & Median, Modus & IQR \\ \hline
+		Intervall & \cmark & \cmark & \xmark & Mittelwert, Median & SD, IQR \\ \hline
+		Verhältnis & \cmark & \cmark & \cmark & Mittelwert, Median & SD, IQR \\ \hline
+	\end{tabular}
+	\caption{Übersicht der Skalenniveaus und geeignete statistische Kennzahlen}
+	\label{table:skalenniveaus}
+\end{table}
+
+\begin{myremark}
+	Je höher das Skalenniveau, desto mehr Rechenoperationen und statistische Verfahren sind möglich.
+	Bei Unsicherheit: Lieber ein niedrigeres Niveau wählen (konservativer Ansatz).
+\end{myremark}
+
+\begin{myexercise}\label{myexercise:skalenniveaus-zuordnen}
+	Ordnen Sie den folgenden Variablen ein Skalenniveau zu (Nominal / Ordinal / Intervall / Verhältnis):
+	\begin{itemize}
+		\item Schlafdauer in Stunden
+		\item Temperatur in \textdegree C
+		\item Anzahl Nachrichten pro Tag
+		\item Zufriedenheit (1--5)
+		\item Lieblingsmusikgenre
+	\end{itemize}
+	\begin{myanswer}
+		\begin{itemize}
+			\item Schlafdauer: Verhältnisskala
+			\item Temperatur in \textdegree C: Intervallskala
+			\item Anzahl Nachrichten: Verhältnisskala
+			\item Zufriedenheit (1--5): Ordinalskala
+			\item Lieblingsmusikgenre: Nominalskala
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
+
+\section{Univariate deskriptive Statistik}
+
+\subsection{Zentrale Lage}
+Wir beschreiben, wo ``die Mitte'' der Daten liegt.
+
+\begin{mydefinition}\label{mydefinition:mittelwert}
+	Der \textbf{Mittelwert} (arithmetisches Mittel) einer Datenreihe $x_1,\dots,x_n$ ist
+	\[
+	\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i.
+	\]
+\end{mydefinition}
+
+\begin{mydefinition}\label{mydefinition:median}
+	Der \textbf{Median} ist der mittlere Wert der sortierten Daten.
+	Bei gerader Anzahl ist er der Mittelwert der beiden mittleren Werte.
+\end{mydefinition}
+
+\begin{myattention}
+	Der Mittelwert reagiert stark auf Ausreisser. Der Median ist robust.
+\end{myattention}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_mean_vs_median.pdf}
+	\caption{Vergleich: Mittelwert und Median bei symmetrischer vs. schiefer Verteilung}
+	\label{fig:mean_vs_median}
+\end{figure}
+
+\begin{myexercise}\label{myexercise:median-mean-ausreisser}
+	Betrachten Sie die Daten (z.B.\ monatliches Taschengeld in CHF):
+	\[
+	20,\ 25,\ 25,\ 30,\ 30,\ 35,\ 40,\ 400.
+	\]
+	\begin{enumerate}
+		\item Bestimmen Sie den Median.
+		\item Schätzen Sie den Mittelwert (grob reicht).
+		\item Welche Kennzahl beschreibt das ``typische'' Taschengeld besser? Begründen Sie.
+	\end{enumerate}
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Sortiert sind die Werte bereits. Median ist der Mittelwert des 4.\ und 5.\ Wertes: $(30+30)/2=30$.
+			\item Mittelwert: Summe $=605$, geteilt durch $8$ ergibt ca.\ $75.6$.
+			\item Median, weil der Ausreisser $400$ den Mittelwert stark nach oben zieht.
+		\end{enumerate}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_median_calculation.pdf}
+	\caption{Visualisierung der Median-Berechnung und des Ausreisser-Effekts}
+	\label{fig:median_calculation}
+\end{figure}
+
+\subsection{Streuung}
+Streuung beschreibt, wie stark Daten um die zentrale Lage variieren.
+
+\begin{mydefinition}\label{mydefinition:spannweite}
+	Die \textbf{Spannweite} ist $\max(x)-\min(x)$.
+\end{mydefinition}
+
+\begin{mydefinition}\label{mydefinition:quartile-iqr}
+	\textbf{Quartile:} $Q1$ ist das 25\%-Quantil, $Q3$ das 75\%-Quantil. Quartile teilen die Daten in vier gleich grosse Teile. Damit dies möglich ist, müssen die Daten sortiert werden. Damit Daten überhaupt sortierbar sind, müssen sie mindestens auf einer Ordinalskala vorliegen.
+	Der \textbf{Interquartilsabstand (IQR)} ist $IQR=Q3-Q1$.
+\end{mydefinition}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_quartiles.pdf}
+	\caption{Quartile teilen die sortierten Daten in vier gleich grosse Teile}
+	\label{fig:quartiles}
+\end{figure}
+
+\begin{mydefinition}\label{mydefinition:standardabweichung}
+	Die \textbf{Standardabweichung} (Stichprobe) ist
+	\[
+	s=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}.
+	\]
+\end{mydefinition}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_standard_deviation.pdf}
+	\caption{Standardabweichung: Streuung um den Mittelwert bei Normalverteilung}
+	\label{fig:standard_deviation}
+\end{figure}
+
+\begin{myremark}
+	Typische Paarung:
+	\begin{itemize}
+		\item \textbf{Median} zusammen mit \textbf{IQR}
+		\item \textbf{Mittelwert} zusammen mit \textbf{Standardabweichung}
+	\end{itemize}
+\end{myremark}
+
+\section{Darstellungen: Tabelle, Text, Grafik}
+
+\subsection{Welche Darstellung wofür?}
+
+\begin{myexample}
+	Ein \textbf{Histogramm} zeigt die Verteilung einer metrischen Variable (z.B.\ Schlafdauer).
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_histogram.pdf}
+        \caption{Beispiel eines Histogramms}
+    \end{figure}
+    
+	Ein \textbf{Boxplot} zeigt Median, Quartile und mögliche Ausreisser kompakt.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_boxplot.pdf}
+        \caption{Beispiel eines Boxplots}
+    \end{figure}
+\end{myexample}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_boxplot_anatomy.pdf}
+	\caption{Anatomie eines Boxplots: Alle Komponenten erklärt}
+	\label{fig:boxplot_anatomy}
+\end{figure}
+
+\subsection{Formen von Verteilungen}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_distribution_shapes.pdf}
+	\caption{Verschiedene Verteilungsformen und ihre Eigenschaften}
+	\label{fig:distribution_shapes}
+\end{figure}
+
+\begin{myremark}
+	Die Form einer Verteilung gibt wichtige Hinweise:
+	\begin{itemize}
+		\item \textbf{Symmetrisch}: Mittelwert $\approx$ Median
+		\item \textbf{Rechtsschief}: Wenige hohe Ausreisser, Mittelwert $>$ Median
+		\item \textbf{Linksschief}: Wenige niedrige Ausreisser, Mittelwert $<$ Median
+		\item \textbf{Bimodal}: Hinweis auf zwei unterschiedliche Gruppen in den Daten
+	\end{itemize}
+\end{myremark}
+
+
+\begin{myattention}
+	Beim Lesen von Grafiken immer prüfen:
+	\begin{itemize}
+		\item Startet die Achse bei 0 (Gefahr von Verzerrung)?
+		\item Sind Kategorien gleich breit (Gefahr von visueller Überinterpretation einzelner Kategorien)?
+		\item Fehlen Werte oder Gruppen (Gefahr von inhaltlichen Interpretationen)?
+	\end{itemize}
+\end{myattention}
+
+\begin{myexercise}\label{myexercise:grafik-checkliste}
+	Eine Zeitung zeigt ein Balkendiagramm: Die y-Achse startet bei 60 statt bei 0.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_misleading_axes.pdf}
+		\caption{Vergleich: Irreführende vs. korrekte Darstellung der Y-Achse}
+	\end{figure}
+	
+	\begin{enumerate}
+		\item Welchen Effekt hat das auf die Wirkung der Grafik?
+		\item Formulieren Sie eine sachliche Kritik in einem Satz.
+	\end{enumerate}
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Unterschiede wirken viel grösser und dramatischer als sie tatsächlich sind.
+			\item ``Da die y-Achse nicht bei 0 startet, werden die Unterschiede optisch übertrieben dargestellt.''
+		\end{enumerate}
+	\end{myanswer}
+\end{myexercise}
+
+\section{Arbeiten mit CODAP und Datensätzen}
+
+\subsection{Datensatz bereitstellen}
+Sie erhalten zwei Datensätze als CSV-Dateien, die Sie (oder Ihre Lehrperson) bereitstellen:
+\begin{itemize}
+	\item \texttt{sleep\_focus.csv} (Schlaf, Smartphone, Stress, Fokus)
+	\item \texttt{music\_study.csv} (optional: Kontingenztabelle, siehe Challenge)
+\end{itemize}
+
+\begin{myattention}
+	Import in CODAP: \href{https://codap.concord.org/app/static/dg/de/cert/index.html}{\texttt{codap.concord.org}} $\rightarrow$ Oben links $\rightarrow$ Öffnen $\rightarrow$ Lokale Datei.
+\end{myattention}
+
+\subsection{Datensatz 1: Schlaf und Fokus}
+Der Datensatz \texttt{sleep\_focus.csv} enthält pro Person:
+\begin{itemize}
+	\item \texttt{SleepHours} (Stunden Schlaf)
+	\item \texttt{PhoneMinutes} (Smartphone-Minuten)
+	\item \texttt{Coffee} (0--4, ordinal)
+	\item \texttt{Stress} (1--5, ordinal)
+	\item \texttt{FocusScore} (Punktzahl 0--100)
+\end{itemize}
+
+\begin{table}[H]
+	\centering
+	\caption{Beispiel: Erste Zeilen des Datensatzes \texttt{sleep\_focus.csv}}
+	\small
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		\textbf{Person} & \textbf{SleepHours} & \textbf{PhoneMinutes} & \textbf{Coffee} & \textbf{Stress} & \textbf{FocusScore} \\ \hline\hline
+		1 & 7.5 & 120 & 2 & 3 & 78 \\ \hline
+		2 & 6.0 & 200 & 3 & 4 & 62 \\ \hline
+		3 & 8.2 & 45 & 1 & 2 & 85 \\ \hline
+		4 & 5.5 & 310 & 4 & 5 & 54 \\ \hline
+		5 & 7.0 & 150 & 2 & 3 & 72 \\ \hline
+		\dots & \dots & \dots & \dots & \dots & \dots \\ \hline
+	\end{tabular}
+	\label{table:sleep_focus_example}
+\end{table}
+
+\begin{myexercise}\label{myexercise:codap-lage-streuung}
+	Importieren Sie \texttt{sleep\_focus.csv} in CODAP.
+	\begin{enumerate}
+		\item Erstellen Sie ein Histogramm von \texttt{SleepHours}. Beschreiben Sie die Form der Verteilung in zwei Sätzen.
+		\item Bestimmen Sie Median und Mittelwert von \texttt{SleepHours}. Sind sie ähnlich? Begründen Sie kurz.
+		\item Erstellen Sie einen Boxplot von \texttt{PhoneMinutes}. Gibt es Ausreisser?
+	\end{enumerate}
+	\begin{myanswer}
+		Beispielhafte Beobachtungen (können je nach Darstellung leicht variieren):
+		\begin{enumerate}
+			\item Ungefähr unimodale Verteilung, die meisten Werte zwischen ca.\ 6 und 8 Stunden; einzelne kurze Nächte als Randwerte.
+			\item Median und Mittelwert liegen nahe beieinander, weil die Verteilung nicht extrem schief ist (Ausreisser sind begrenzt).
+			\item Bei \texttt{PhoneMinutes} fallen sehr hohe Werte (z.B.\ um 300+ Minuten) als mögliche Ausreisser auf.
+		\end{enumerate}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{myexercise:codap-zusammenhang}
+	Erstellen Sie in CODAP einen Scatterplot: \texttt{SleepHours} (x-Achse) gegen \texttt{FocusScore} (y-Achse).
+	\begin{enumerate}
+		\item Beschreiben Sie den Zusammenhang: eher positiv, negativ oder keiner?
+		\item Ist der Zusammenhang stark oder eher schwach? Begründen Sie anhand der Punktwolke.
+		\item Nennen Sie zwei mögliche Gründe, warum man aus diesem Datensatz \textbf{keine} sichere Ursache-Wirkung-Aussage machen darf.
+	\end{enumerate}
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Eher positiver Zusammenhang: mehr Schlaf geht tendenziell mit höherem \texttt{FocusScore} einher.
+			\item Eher schwach bis mittel: die Punkte streuen sichtbar, es gibt keine perfekte Linie.
+			\item Beispiele: Drittvariablen (z.B.\ Stress), Messfehler/ungenaue Angaben, Selbstselektion, umgekehrte Ursache (guter Fokus beeinflusst Schlaf), kleine Stichprobe.
+		\end{enumerate}
+	\end{myanswer}
+\end{myexercise}
+
+\subsection{Optional: Korrelation bei ordinalen Daten}
+Wenn eine Variable ordinal ist (z.B.\ \texttt{Stress} 1--5), sind Rangmethoden oft sinnvoller.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_correlation_examples.pdf}
+	\caption{Beispiele für verschiedene Arten von Korrelationen}
+	\label{fig:correlation_examples}
+\end{figure}
+
+\begin{mydefinition}\label{mydefinition:spearman}
+	Die \textbf{Spearman-Korrelation} misst den Zusammenhang zwischen den \textbf{Rangplätzen} zweier Variablen.
+	Sie ist besonders geeignet bei ordinalen Daten oder wenn Zusammenhänge nicht linear sind.
+\end{mydefinition}
+
+\begin{myremark}
+	Das Ziel hier ist konzeptuell: \textbf{Ordinal} $\Rightarrow$ lieber \textbf{Rang} statt exakte Abstände interpretieren.
+\end{myremark}
+
+\section{Doppellektion (90 Minuten): Ablauf und Aufgaben}
+
+\subsection{Übersicht}
+In der Doppellektion arbeiten Sie mit \texttt{sleep\_focus.csv} in CODAP und üben das Interpretieren von Kennzahlen und Grafiken.
+
+\begin{myexercise}\label{myexercise:90min-ablauf}
+	Lesen Sie den Ablaufplan und markieren Sie in jeder Phase, welches Ziel im Vordergrund steht:
+	\begin{itemize}
+		\item Daten verstehen
+		\item Kennzahlen bilden
+		\item Visualisieren
+		\item Interpretieren und kritisch lesen
+	\end{itemize}
+	\begin{myanswer}
+		\begin{itemize}
+			\item Einstieg/Fragestellung: Daten verstehen
+			\item Skalenniveaus: Daten verstehen
+			\item Lage/Streuung: Kennzahlen bilden
+			\item Histogramm/Boxplot: Visualisieren
+			\item Scatterplot und Interpretation: Interpretieren
+			\item Grafik-Kritik: kritisch lesen
+		\end{itemize}
+	\end{myanswer}
+\end{myexercise}
+
+\subsection{Konkreter Ablauf (Minutenplan)}
+\begin{myexample}
+	\textbf{0--10 min:} Einstieg mit Leitfrage ``Wie hängt Schlaf mit Konzentration zusammen?'' \\
+	\textbf{10--20 min:} Skalenniveaus wiederholen und Variablen zuordnen \\
+	\textbf{20--35 min:} Lagekennzahlen in CODAP (Median/Mittelwert, Min/Max) \\
+	\textbf{35--45 min:} Streuung (IQR, Boxplot, Ausreisser) \\
+	\textbf{45--60 min:} Histogramm (Form der Verteilung, Schiefe) \\
+	\textbf{60--75 min:} Scatterplot und Interpretation (Zusammenhang, keine Kausalität) \\
+	\textbf{75--85 min:} Grafik-Kritik (Achsen, Auswahl, Mittelwert vs Median) \\
+	\textbf{85--90 min:} Abschlussfrage: ``Wann Median statt Mittelwert?''
+\end{myexample}
+
+\subsection{Aufgabenpaket für die SuS}
+
+\begin{myexercise}\label{myexercise:aufgabenpaket-1}
+	\textbf{Teil A: Kennzahlen (Einzelarbeit)} \\
+	Arbeiten Sie mit \texttt{sleep\_focus.csv}.
+	\begin{enumerate}
+		\item Bestimmen Sie für \texttt{SleepHours} Median, Mittelwert, Minimum und Maximum.
+		\item Entscheiden Sie: Würden Sie für \texttt{PhoneMinutes} eher Median oder Mittelwert berichten? Begründen Sie.
+		\item Nennen Sie eine Situation, in der der Mittelwert sinnvoll ist, und eine, in der der Median sinnvoller ist.
+	\end{enumerate}
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Werte in CODAP ablesen (je nach Anzeige). Wichtig ist die Interpretation: typische Schlafdauer liegt im Bereich um 7 Stunden; Minimum/Maximum zeigen Spannweite.
+			\item Eher Median, weil einzelne sehr hohe Nutzungszeiten den Mittelwert stark beeinflussen können.
+			\item Mittelwert: symmetrische, ausreisserarme Daten (z.B.\ Körpergrössen). Median: schiefe Verteilungen oder Ausreisser (z.B.\ Einkommen).
+		\end{enumerate}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}\label{myexercise:aufgabenpaket-2}
+	\textbf{Teil B: Visualisierung und Interpretation (Partnerarbeit)}
+	\begin{enumerate}
+		\item Erstellen Sie ein Histogramm von \texttt{SleepHours}. Beschreiben Sie die Verteilung (unimodal? schief? Ausreisser?).
+		\item Erstellen Sie einen Boxplot von \texttt{PhoneMinutes}. Notieren Sie Q1, Median und Q3 (oder lesen Sie sie ab).
+		\item Erstellen Sie einen Scatterplot \texttt{SleepHours} vs \texttt{FocusScore}. Formulieren Sie eine vorsichtige Aussage in einem Satz.
+	\end{enumerate}
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Unimodal, die meisten Werte zwischen etwa 6 und 8 Stunden, einzelne kurze Nächte als Randwerte.
+			\item Q1/Median/Q3 je nach CODAP-Ablesung; wichtig: IQR beschreibt typische Streuung ohne Ausreisser.
+			\item ``Im Datensatz zeigt sich tendenziell: Wer mehr schläft, hat häufig einen höheren Fokus-Score; der Zusammenhang ist aber nicht perfekt.''
+		\end{enumerate}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}\label{mychallenge:kontingenztabelle}
+	\textbf{Challenge (optional): Kontingenztabelle} \\
+	Importieren Sie zusätzlich \texttt{music\_study.csv}.
+	Dieser Datensatz enthält zwei kategoriale Variablen (z.B.\ Musik beim Lernen: ja/nein und Lernmodus: alleine/Gruppe).
+	\begin{enumerate}
+		\item Erstellen Sie eine Kontingenztabelle (Häufigkeitstabelle) der beiden Variablen.
+		\item Rechnen Sie die Tabelle in \textbf{relative Häufigkeiten} (Prozente) um.
+		\item Formulieren Sie zwei Aussagen, die durch die Tabelle gestützt werden, und eine Aussage, die \textbf{nicht} zulässig ist.
+	\end{enumerate}
+	
+	\begin{table}[H]
+		\centering
+		\caption{Beispiel einer Kontingenztabelle: Musik beim Lernen vs. Lernmodus}
+		\begin{tabular}{|l|c|c|c|}
+			\hline
+			& \textbf{Alleine} & \textbf{Gruppe} & \textbf{Summe} \\ \hline\hline
+			\textbf{Mit Musik} & 45 (56\%) & 25 (31\%) & 70 \\ \hline
+			\textbf{Ohne Musik} & 35 (44\%) & 55 (69\%) & 90 \\ \hline
+			\textbf{Summe} & 80 & 80 & 160 \\ \hline
+		\end{tabular}
+		\label{table:kontingenztabelle}
+	\end{table}
+	
+	\begin{myanswer}
+		\begin{enumerate}
+			\item Kontingenztabelle: Zeilen und Spalten sind Kategorien, Einträge sind Häufigkeiten.
+			\item Relative Häufigkeiten erlauben fairen Vergleich, auch wenn Gruppen unterschiedlich gross sind.
+			\item Zulässig: ``In dieser Stichprobe hört die Gruppe X häufiger Musik als Gruppe Y.'' Nicht zulässig: ``Musik verursacht besseres Lernen.'' (Kausalität)
+		\end{enumerate}
+	\end{myanswer}
+\end{mychallenge}
+
+\section{Mini-Checkliste: Statistik in Texten und Grafiken}
+
+\begin{myexercise}\label{myexercise:checkliste}
+	Sie lesen einen Artikel, der eine Statistik-Grafik enthält. Kreuzen Sie an, was Sie prüfen würden:
+	\begin{itemize}
+		\item[$\square$] Woher stammen die Daten (Quelle)?
+		\item[$\square$] Wie gross ist die Stichprobe?
+		\item[$\square$] Wird Median oder Mittelwert verwendet und passt das?
+		\item[$\square$] Startet die Achse bei 0?
+		\item[$\square$] Werden Prozente mit absoluten Zahlen verwechselt?
+	\end{itemize}
+	\begin{myanswer}
+		Alle Punkte sind sinnvoll. Besonders häufige Fehler sind Achsentricks, kleine Stichproben und unpassende Kennzahlen.
+	\end{myanswer}
+\end{myexercise}
+
+\section{Zusammenfassung: Entscheidungstabelle}
+
+\begin{table}[H]
+	\centering
+	\caption{Übersicht: Statistische Kennzahlen und Visualisierungen nach Skalenniveau}
+	\small
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		\textbf{Skalenniveau} & \textbf{Zentrale Lage} & \textbf{Streuung} & \textbf{Visualisierung} \\ \hline\hline
+		Nominal & Modus & --- & Balken-, Kreisdiagramm \\ \hline
+		Ordinal & Median, Modus & IQR & Boxplot, Balkendiagramm \\ \hline
+		Intervall & Mittelwert, Median & SD, IQR & Histogramm, Boxplot \\ \hline
+		Verhältnis & Mittelwert, Median & SD, IQR & Histogramm, Boxplot, Scatterplot \\ \hline
+	\end{tabular}
+	\label{table:decision_summary}
+\end{table}
+
+\begin{myremark}
+	\textbf{Faustregel bei Ausreissern oder schiefen Verteilungen:}
+	\begin{itemize}
+		\item Verwenden Sie \textbf{Median} und \textbf{IQR} (robust)
+		\item Mittelwert und Standardabweichung können irreführend sein
+	\end{itemize}
+\end{myremark}

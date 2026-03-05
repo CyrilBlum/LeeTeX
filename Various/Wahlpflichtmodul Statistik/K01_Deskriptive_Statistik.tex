@@ -1,0 +1,371 @@
+\begin{frame}
+    \centering
+    \begin{figure}[H]
+        \includegraphics[keepaspectratio, width=0.7\paperwidth, height=\paperheight]{Logos/LeeLogo}
+    \end{figure}
+    Statistik: Daten verstehen und beschreiben\\
+    \emoji{chart-increasing} Kapitel 1: \textbf{Deskriptive Statistik}
+\end{frame}
+
+\fboxsep=.6pt
+
+\begin{frame}{Wozu Statistik?}
+    \begin{itemize}[<+->]
+        \item Statistik hilft uns, aus Daten sinnvolle Aussagen zu gewinnen
+        \item Schützt vor Täuschung durch Einzelfälle, Ausreisser und geschickte Grafiken
+        \item Das Zusammenspiel:
+              \begin{center}
+                  \textbf{Daten\ $\rightarrow$\ Kennzahlen\ $\rightarrow$\ Visualisierung\ $\rightarrow$\ Interpretation}
+              \end{center}
+    \end{itemize}
+    
+    \vspace{1em}
+    \begin{block}{Wichtig}
+        Statistik ist keine Rechenakrobatik, sondern vor allem \textbf{sauberes Denken}:\\
+        Welche Daten liegen vor? Was darf man damit berechnen? Was bedeutet das Ergebnis?
+    \end{block}
+\end{frame}
+
+\begin{frame}{Skalenniveaus: Überblick}
+    \begin{itemize}[<+->]
+        \item Das \textbf{Skalenniveau} bestimmt, welche Rechnungen sinnvoll sind
+        \item Zwei wichtige Fragen:
+              \begin{enumerate}
+                  \item Gibt es eine \textbf{Reihenfolge} (mehr/weniger)?
+                  \item Sind \textbf{Abstände} oder \textbf{Verhältnisse} sinnvoll?
+              \end{enumerate}
+    \end{itemize}
+    
+    \vspace{1em}
+    \only<4->{
+        \begin{table}[H]
+            \centering
+            \tiny
+            \begin{tabular}{|l|c|c|c|l|}
+                \hline
+                \textbf{Niveau}      & \textbf{Ordnung} & \textbf{Abstände} & \textbf{Nullpunkt} & \textbf{Beispiele}                    \\ \hline\hline
+                Nominal               & \xmark           & \xmark            & \xmark             & Wohnort, Musikgenre                    \\ \hline
+                Ordinal               & \cmark           & \xmark            & \xmark             & Schulnoten, Zufriedenheit (1--5)       \\ \hline
+                Intervall             & \cmark           & \cmark            & \xmark             & Temperatur in °C                       \\ \hline
+                Verhältnis (Ratio) & \cmark           & \cmark            & \cmark             & Länge, Gewicht, Zeit, Temp. in Kelvin \\ \hline
+            \end{tabular}
+        \end{table}
+    }
+\end{frame}
+
+\begin{frame}{Skalenniveaus: Statistische Verfahren}
+    \begin{table}[H]
+        \centering
+        \scriptsize
+        \begin{tabular}{|l|l|l|l|}
+            \hline
+            \textbf{Niveau} & \textbf{Zentrale Lage} & \textbf{Streuung} & \textbf{Visualisierung}   \\ \hline\hline
+            Nominal          & Modus                   & ---                & Balken-, Kreisdiagramm     \\ \hline
+            Ordinal          & Median, Modus           & IQR                & Boxplot, Balkendiagramm    \\ \hline
+            Intervall        & Mittelwert, Median      & SD, IQR            & Histogramm, Boxplot        \\ \hline
+            Verhältnis    & Mittelwert, Median      & SD, IQR            & Histogramm, Boxplot, Scatter \\ \hline
+        \end{tabular}
+    \end{table}
+    
+    \vspace{1em}
+    \begin{block}{Merke}
+        Je höher das Skalenniveau, desto mehr Rechenoperationen sind möglich.\\
+        Bei Unsicherheit: Lieber ein niedrigeres Niveau wählen (konservativer Ansatz).
+    \end{block}
+\end{frame}
+
+\begin{frame}{Zentrale Lage: Mittelwert und Median}
+    \begin{minipage}[c]{0.48\linewidth}
+        \textbf{Mittelwert} (arithmetisches Mittel):
+        \[
+            \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
+        \]
+        \begin{itemize}
+            \item Alle Werte werden berücksichtigt
+            \item Reagiert stark auf Ausreisser
+        \end{itemize}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.48\linewidth}
+        \textbf{Median}:
+        \begin{itemize}
+            \item Mittlerer Wert der sortierten Daten
+            \item Bei gerader Anzahl: Mittelwert der zwei mittleren Werte
+            \item Robust gegen Ausreisser
+        \end{itemize}
+    \end{minipage}
+    
+    \vspace{1em}
+    \begin{alertblock}{Wichtig}
+        Der Mittelwert reagiert stark auf Ausreisser. Der Median ist robust.
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Mittelwert vs. Median: Visueller Vergleich}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_mean_vs_median.pdf}
+    \end{figure}
+    \begin{itemize}
+        \item \textbf{Links}: Symmetrisch $\Rightarrow$ Mittelwert $\approx$ Median
+        \item \textbf{Rechts}: Schief mit Ausreissern $\Rightarrow$ Mittelwert $>$ Median
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Beispiel: Taschengeld mit Ausreisser}
+    \textbf{Daten} (monatliches Taschengeld in CHF): 20, 25, 25, 30, 30, 35, 40, 400
+    
+    \vspace{0.5em}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.85\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_median_calculation.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Streuung: Wie stark variieren die Daten?}
+    \begin{itemize}[<+->]
+        \item \textbf{Spannweite}: $\max(x) - \min(x)$
+              \begin{itemize}
+                  \item Einfach, aber stark von Extremwerten abhängig
+              \end{itemize}
+        \item \textbf{Interquartilsabstand (IQR)}: $Q3 - Q1$
+              \begin{itemize}
+                  \item Mittlere 50\% der Daten
+                  \item Robust gegen Ausreisser
+              \end{itemize}
+        \item \textbf{Standardabweichung (SD)}:
+              \[
+                  s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}
+              \]
+              \begin{itemize}
+                  \item Misst durchschnittliche Abweichung vom Mittelwert
+                  \item Reagiert auf Ausreisser
+              \end{itemize}
+    \end{itemize}
+    
+    \vspace{0.5em}
+    \only<4>{
+        \begin{block}{Typische Paarungen}
+            Median + IQR \quad oder \quad Mittelwert + SD
+        \end{block}
+    }
+\end{frame}
+
+\begin{frame}{Quartile: Daten in vier Teile teilen}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_quartiles.pdf}
+    \end{figure}
+    \begin{itemize}
+        \item Q1 = 25\%-Quantil, Q2 = Median, Q3 = 75\%-Quantil
+        \item IQR = Q3 - Q1 (mittlere 50\% der Daten)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Standardabweichung bei Normalverteilung}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_standard_deviation.pdf}
+    \end{figure}
+    \begin{itemize}
+        \item \textbf{68\%} der Daten liegen innerhalb von $\pm 1$ SD
+        \item \textbf{95\%} innerhalb von $\pm 2$ SD
+        \item \textbf{99.7\%} innerhalb von $\pm 3$ SD
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Visualisierung: Histogramm}
+    \begin{minipage}[c]{0.48\linewidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_histogram.pdf}
+        \end{figure}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.48\linewidth}
+        \textbf{Histogramm}:
+        \begin{itemize}
+            \item Zeigt Verteilung von Daten
+            \item Für metrische Variablen
+            \item Balken = Häufigkeit in Intervallen
+            \item Zeigt Form der Verteilung
+        \end{itemize}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Visualisierung: Boxplot}
+    \begin{minipage}[c]{0.48\linewidth}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_boxplot.pdf}
+        \end{figure}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.48\linewidth}
+        \textbf{Boxplot}:
+        \begin{itemize}
+            \item Kompakte Darstellung
+            \item Zeigt Median, Q1, Q3
+            \item Whiskers = Datenbereich
+            \item Punkte = Ausreisser
+            \item Gut zum Vergleichen
+        \end{itemize}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Boxplot: Anatomie}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.75\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_boxplot_anatomy.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Verteilungsformen}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_distribution_shapes.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Verteilungsformen: Interpretation}
+    \begin{itemize}[<+->]
+        \item \textbf{Symmetrisch}: Mittelwert $\approx$ Median
+              \begin{itemize}
+                  \item Daten gleichmässig um die Mitte verteilt
+              \end{itemize}
+        \item \textbf{Rechtsschief}: Mittelwert $>$ Median
+              \begin{itemize}
+                  \item Wenige hohe Ausreisser ziehen Mittelwert nach rechts
+                  \item Beispiel: Einkommen, Immobilienpreise
+              \end{itemize}
+        \item \textbf{Linksschief}: Mittelwert $<$ Median
+              \begin{itemize}
+                  \item Wenige niedrige Ausreisser
+              \end{itemize}
+        \item \textbf{Bimodal}: Zwei Gipfel
+              \begin{itemize}
+                  \item Hinweis auf zwei verschiedene Gruppen
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Vorsicht: Irreführende Grafiken!}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_misleading_axes.pdf}
+    \end{figure}
+    
+    \begin{alertblock}{Checkliste beim Lesen von Grafiken}
+        \begin{itemize}
+            \item Startet die Achse bei 0?
+            \item Sind Kategorien gleich breit?
+            \item Fehlen Werte oder Gruppen?
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Zusammenhänge: Korrelation}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.95\textwidth]{Various/Wahlpflichtmodul Statistik/Figures/plots_correlation_examples.pdf}
+    \end{figure}
+    \begin{itemize}
+        \item \textbf{Positiv}: X steigt $\Rightarrow$ Y steigt
+        \item \textbf{Negativ}: X steigt $\Rightarrow$ Y sinkt
+        \item \textbf{Keine}: Kein systematischer Zusammenhang
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Korrelation $\neq$ Kausalität}
+    \begin{alertblock}{Wichtigste Regel}
+        \textbf{Korrelation bedeutet nicht Kausalität!}
+    \end{alertblock}
+    
+    \vspace{1em}
+    \textbf{Warum keine sichere Ursache-Wirkung-Aussage?}
+    \begin{itemize}[<+->]
+        \item \textbf{Drittvariablen}: Eine versteckte Variable beeinflusst beide
+              \begin{itemize}
+                  \item Beispiel: Eis-Verkauf und Badeunfälle (beide durch Temperatur)
+              \end{itemize}
+        \item \textbf{Umgekehrte Kausalität}: Y könnte X beeinflussen
+        \item \textbf{Zufall}: Bei kleinen Stichproben können zufällige Muster entstehen
+        \item \textbf{Messfehler}: Ungenaue oder verzerrte Datenerhebung
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Kontingenztabelle: Kategoriale Daten}
+    \textbf{Beispiel}: Musik beim Lernen vs. Lernmodus
+    
+    \vspace{0.5em}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|l|c|c|c|}
+            \hline
+                         & \textbf{Alleine} & \textbf{Gruppe} & \textbf{Summe} \\ \hline\hline
+            \textbf{Mit Musik}  & 45 (56\%)        & 25 (31\%)       & 70              \\ \hline
+            \textbf{Ohne Musik} & 35 (44\%)        & 55 (69\%)       & 90              \\ \hline
+            \textbf{Summe}      & 80                & 80               & 160             \\ \hline
+        \end{tabular}
+    \end{table}
+    
+    \vspace{0.5em}
+    \begin{itemize}
+        \item \textbf{Zulässig}: \"In dieser Stichprobe hören mehr Einzellerner Musik\"
+        \item \textbf{Nicht zulässig}: \"Musik verursacht besseres Lernen\" (Kausalität!)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Entscheidungshilfe: Welche Kennzahl?}
+    \begin{table}[H]
+        \centering
+        \scriptsize
+        \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{Situation}               & \textbf{Zentrale Lage} & \textbf{Streuung} \\ \hline\hline
+            Symmetrisch, keine Ausreisser     & Mittelwert              & SD                 \\ \hline
+            Schief oder Ausreisser            & Median                  & IQR                \\ \hline
+            Ordinale Daten                    & Median                  & IQR                \\ \hline
+            Nominale Daten                    & Modus                   & ---                \\ \hline
+        \end{tabular}
+    \end{table}
+    
+    \vspace{1em}
+    \begin{block}{Faustregel bei Unsicherheit}
+        \textbf{Median + IQR} sind fast immer eine sichere Wahl (robust!)
+    \end{block}
+\end{frame}
+
+\begin{frame}{Kritisches Lesen von Statistiken}
+    \textbf{Checkliste beim Lesen von Statistik-Grafiken:}
+    \begin{itemize}[<+->]
+        \item[$\square$] Woher stammen die Daten (Quelle)?
+        \item[$\square$] Wie gross ist die Stichprobe?
+        \item[$\square$] Wird Median oder Mittelwert verwendet -- passt das?
+        \item[$\square$] Startet die Achse bei 0?
+        \item[$\square$] Werden Prozente mit absoluten Zahlen verwechselt?
+        \item[$\square$] Fehlen wichtige Informationen oder Gruppen?
+    \end{itemize}
+    
+    \vspace{1em}
+    \only<7->{
+        \begin{alertblock}{Merke}
+            Die häufigsten Tricks: Achsenmanipulation, kleine Stichproben, unpassende Kennzahlen
+        \end{alertblock}
+    }
+\end{frame}
+
+\begin{frame}{Zusammenfassung}
+    \textbf{Das Wichtigste in Kürze:}
+    \begin{enumerate}
+        \item \textbf{Skalenniveau} bestimmt, welche Analysen möglich sind
+        \item \textbf{Median + IQR} sind robust gegen Ausreisser
+        \item \textbf{Mittelwert + SD} bei symmetrischen Verteilungen ohne Ausreisser
+        \item \textbf{Visualisierungen} helfen, Muster zu erkennen
+        \item \textbf{Kritisch denken}: Korrelation $\neq$ Kausalität
+        \item \textbf{Grafiken prüfen}: Achsen, Quelle, Stichprobengrösse
+    \end{enumerate}
+    
+    \vspace{1em}
+    \begin{center}
+        \Large
+        \textbf{Daten\ $\rightarrow$\ Kennzahlen\ $\rightarrow$\ Visualisierung\ $\rightarrow$\ Interpretation}
+    \end{center}
+\end{frame}
