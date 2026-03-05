@@ -89,7 +89,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 output_path = os.path.join(script_dir, 'plots_quartiles.pdf')
 
 # Als PDF exportieren
-plt.savefig(output_path, format='pdf', bbox_inches='tight', transparent=True)
+plt.savefig(output_path, format='pdf', bbox_inches='tight')
 plt.close()
 
 print(f"Quartile-Illustration wurde als {output_path} exportiert")

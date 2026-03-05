@@ -72,9 +72,9 @@ ax.text(mu - 2.5*sigma, 0.007, '2.1%', ha='center', fontsize=10, color='darkblue
 ax.text(mu + 2.5*sigma, 0.007, '2.1%', ha='center', fontsize=10, color='darkblue')
 
 ax.set_xlabel('Werte', fontsize=12, fontweight='bold')
-ax.set_ylabel('Wahrscheinlichkeitsdichte', fontsize=12, fontweight='bold')
+ax.yaxis.set_visible(False)
 ax.set_title('Standardabweichung (σ): Streuung um den Mittelwert\nEmpirische Regel bei Normalverteilung', 
-             fontsize=13, fontweight='bold', pad=15)
+             fontsize=13, fontweight='bold', pad=35)
 ax.legend(loc='upper right', fontsize=10)
 ax.grid(True, alpha=0.3, axis='y')
 ax.set_xlim(30, 110)

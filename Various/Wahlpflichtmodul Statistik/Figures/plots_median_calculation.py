@@ -24,8 +24,8 @@ for i, val in enumerate(data):
     size = 200 if val == 400 else 150
     ax.scatter(val, y_position, s=size, color=color, edgecolors='black', 
                linewidths=2, zorder=3, alpha=0.8)
-    ax.text(val, y_position - 0.15, f'{val} CHF', ha='center', va='top', 
-            fontsize=11, fontweight='bold' if val == 400 else 'normal')
+#     ax.text(val, y_position - 0.15, f'{val} CHF', ha='center', va='top', 
+        #     fontsize=11, fontweight='bold' if val == 400 else 'normal')
 
 # Median-Markierung
 ax.axvline(median_val, ymin=0.3, ymax=0.7, color='green', linestyle='-', 
@@ -74,7 +74,7 @@ ax.set_ylim(0, 1)
 ax.set_xlim(-10, 430)
 ax.set_yticks([])
 ax.legend(loc='upper left', fontsize=12, framealpha=0.9)
-ax.grid(True, alpha=0.3, axis='x')
+# ax.grid(True, alpha=0.8, axis='x')
 
 # Fazit-Box
 textstr = 'FAZIT: Der Median (30 CHF) beschreibt\ndas "typische" Taschengeld besser,\nweil er robust gegen Ausreisser ist.'
@@ -89,7 +89,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 output_path = os.path.join(script_dir, 'plots_median_calculation.pdf')
 
 # Als PDF exportieren
-plt.savefig(output_path, format='pdf', bbox_inches='tight', transparent=True)
+plt.savefig(output_path, format='pdf', bbox_inches='tight')
 plt.close()
 
 print(f"Median-Berechnung wurde als {output_path} exportiert")
