@@ -111,6 +111,9 @@ book_topics=(
     # Geographie
     "Stadtgeografie:Geografie/Stadtgeografie/Skript/Skript.tex"
     "Geomorphologie:Geografie/Geomorphologie/Skript/Skript.tex"
+
+    # Various
+    "Wahlpflichtmodul_Statistik:Various/Wahlpflichtmodul Statistik/Skript.tex"
 )
 
 article_topics=(
@@ -206,6 +209,9 @@ beamer_topics=(
     "complexity:EF/Complexity/complexity"
     # LaTeX
     "LaTeX:EF/LaTeX/Slides/Slides_0"
+
+    # Various
+    "K01_Deskriptive_Statistik:Various/Wahlpflichtmodul Statistik/K01_Deskriptive_Statistik.tex"
 )
 
 root_dir=$(pwd)
