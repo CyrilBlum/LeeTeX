@@ -5,6 +5,68 @@ CHANGED_FILES_CSV="$1"
 # Parse changed files into an array (if provided)
 IFS=',' read -r -a CHANGED_FILES <<<"$CHANGED_FILES_CSV"
 
+# Return success if a path appears in the changed-files list.
+path_changed_in_commit() {
+    local candidate="$1"
+    for changed in "${CHANGED_FILES[@]}"; do
+        if [[ "$candidate" == "$changed" ]] || [[ "$candidate" == */"$changed" ]] || [[ "$changed" == */"$candidate" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Resolve the TeX root input file path to an existing .tex file when possible.
+resolve_root_tex_file() {
+    local input_path="$1"
+    if [ -f "$input_path" ]; then
+        echo "$input_path"
+        return
+    fi
+    if [ -f "${input_path}.tex" ]; then
+        echo "${input_path}.tex"
+        return
+    fi
+    echo "$input_path"
+}
+
+# Print direct TeX dependencies referenced via \input{...} or \include{...}.
+collect_direct_tex_dependencies() {
+    local root_tex_file="$1"
+    local line include_path candidate root_dir
+
+    [ -f "$root_tex_file" ] || return 0
+    root_dir="$(dirname "$root_tex_file")"
+
+    while IFS= read -r line; do
+        # Ignore comments after '%'
+        line="${line%%\%*}"
+
+        if [[ "$line" =~ \\input\{([^}]*)\} ]]; then
+            include_path="${BASH_REMATCH[1]}"
+        elif [[ "$line" =~ \\include\{([^}]*)\} ]]; then
+            include_path="${BASH_REMATCH[1]}"
+        else
+            continue
+        fi
+
+        if [[ "$include_path" != *.tex ]]; then
+            include_path="${include_path}.tex"
+        fi
+
+        if [ -f "$include_path" ]; then
+            candidate="$include_path"
+        else
+            candidate="$root_dir/$include_path"
+        fi
+
+        candidate="${candidate#./}"
+        if [ -f "$candidate" ]; then
+            echo "$candidate"
+        fi
+    done <"$root_tex_file"
+}
+
 # Helper to check if PDF exists on remote server using sshpass and ls -l
 remote_pdf_exists() {
     local remote_pdf_path="$1"
@@ -37,6 +99,7 @@ remote_pdf_exists() {
 should_build_topic() {
     local input_path="$1"
     local remote_pdf_path="$2"
+    local root_tex_file dep_file
     echo "::group::Check if topic should be built (PDF does not exist or input changed)"
     echo "::notice::should_build_topic called with:"
     echo "::notice::  input_path: $input_path"
@@ -49,14 +112,26 @@ should_build_topic() {
         echo "::endgroup::"
         return 0
     fi
-    for changed in "${CHANGED_FILES[@]}"; do
-        echo "::notice::    Checking changed file: $changed"
-        if [[ "$input_path" == *"$changed"* ]] || [[ "$changed" == *"$input_path"* ]]; then
-            echo "::notice::    Match found: $input_path <-> $changed"
+
+    root_tex_file="$(resolve_root_tex_file "$input_path")"
+    echo "::notice::  resolved root tex file: $root_tex_file"
+
+    if path_changed_in_commit "$input_path" || path_changed_in_commit "$root_tex_file"; then
+        echo "::notice::  Root input changed: $input_path"
+        echo "::endgroup::"
+        return 0
+    fi
+
+    while IFS= read -r dep_file; do
+        [ -n "$dep_file" ] || continue
+        echo "::notice::    Checking dependency: $dep_file"
+        if path_changed_in_commit "$dep_file"; then
+            echo "::notice::    Dependency changed: $dep_file"
             echo "::endgroup::"
             return 0
         fi
-    done
+    done < <(collect_direct_tex_dependencies "$root_tex_file")
+
     # If not in changed files, check if PDF exists on remote
     if remote_pdf_exists "$remote_pdf_path"; then
         echo "::notice::  PDF exists on remote, skipping build."
