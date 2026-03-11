@@ -1,6 +1,6 @@
 import random
 import time
-from bubble_sort import bubbleSort
+from bubble_sort import bubble_sort
 from merge_sort import merge_sort
 
 # Erstelle eine Liste von n ganzen Zahlen
@@ -9,7 +9,7 @@ random_numbers = [random.randint(0, 1000000) for _ in range(n)]
 
 # Timing Bubble Sort
 start_time = time.time()
-bubbleSort(random_numbers.copy())
+bubble_sort(random_numbers.copy())
 duration_bubble = time.time() - start_time
 print(f"Bubble Sort benötigte: {duration_bubble:.4f} Sekunden")
 

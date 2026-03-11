@@ -1,6 +1,7 @@
-def c(L, x):
-    # wir suchen das Element x in der Liste L
-    for element in L:
-        if element == x:
+def c(L):
+    n = len(L) # Grösse der Probleminstanz
+    x = 7
+    for k in range(n):
+        if L[k] == x:
             return True
     return False

@@ -1,4 +1,4 @@
-def b(n, m):
+def b(n):
     for _ in range(n):
-        for _ in range(m):
+        for _ in range(n):
             print("Laufzeitkomplexität")

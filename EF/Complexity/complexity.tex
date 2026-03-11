@@ -43,7 +43,7 @@
 		\item Eleganz?
 		\item Effizienz?
 		\item Lesbarkeit und Verständlichkeit?
-		\item Länge des Codes? (Anzahl Zeilen)
+		\item Länge des Codes? (Anzahl Zeilen / Zeichen)
 	\end{itemize}
 \end{frame}
 
@@ -64,21 +64,22 @@
 		\item Demonstration: Vergleich der Laufzeiten von \texttt{bubble\_sort} und \texttt{merge\_sort}
 		\item Google: Loading times longer than a blink of an eye (or 400 milliseconds) are too long:\\
 		\url{https://current360.com/400-milliseconds-or-the-blink-of-an-eye/}
-		\item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche rechnerunterstützte Lösung des Problems darstellt!
+		\item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche Computerberechnung des Problems darstellt!
 		\item Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Lernziele}
 	\begin{itemize}[<+->]
-		\item TODO
+		\item Sie können die Laufzeit einfach Algorithmen bestimmen.
+		\item Sie können die Begriffe \emph{worst-case} und \emph{best-case} erklären.
+		\item Sie besitzen eine intuitve Vorstellung für die Komplexität alltäglicher algorithmischer Szenarien.
 	\end{itemize}
 \end{frame}
 
-
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar[regular]\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-    \lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{a.py},label=listing:bubble_sort]{EF/Complexity/Code/a.py}
+    \lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{a.py},label=listing:a]{EF/Complexity/Code/a.py}
     
     Wie oft wird die Funktion \lstinline{print} aufgerufen?
 	\end{myexercise}
@@ -92,7 +93,7 @@
 
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar[regular]\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{b.py},label=listing:bubble_sort]{EF/Complexity/Code/b.py}
+	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{b.py},label=listing:b]{EF/Complexity/Code/b.py}
 
 	Wie oft wird die Funktion \lstinline{print} aufgerufen?
 	\end{myexercise}
@@ -100,25 +101,25 @@
 
 \begin{frame}
 \begin{myanswer}
-	Die Funktion \lstinline{print} wird $nm$ mal aufgerufen.
+	Die Funktion \lstinline{print} wird $n^2$ mal aufgerufen.
 \end{myanswer}
 \end{frame}
 
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{c.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/c.py}
+	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{c.py},label=listing:c,numbers=left]{EF/Complexity/Code/c.py}
 
-	Wie oft wird die Zeile 4 (\lstinline{if}-Konditional) ausgeführt? \emoji{thinking-face}
+	Wie oft wird das \lstinline{if}-Statement ausgeführt? \emoji{thinking-face}
 	\end{myexercise}
 \end{frame}
 
 \begin{frame}
 \begin{myanswer}
-	Die genaue Anzahl hängt von der Probleminstanz --- in diesem Fall von der gegebenen Liste \lstinline{L} und dem gesuchten Element \lstinline{x} --- ab. Wir unterscheiden zwei extreme Fälle:
+	Die genaue Anzahl hängt von der konkreten \textbf{Probleminstanz} --- in diesem Fall von der gegebenen Liste \lstinline{L} --- ab. Wir unterscheiden zwei extreme Fälle:
 	\pause
 	\begin{description}[<+->]
-		\item[günstigster Fall:] Das erste Element (\lstinline{L[0]}) ist bereits das gesuchte Element \lstinline{x} $\Rightarrow$ Zeile 3 wird nur einmal ausgeführt.
-		\item[teuerster Fall:] Das gesuchte Element \lstinline{x} ist entweder das letzte Element der Liste oder kommt in der Liste gar nicht vor $\Rightarrow$ Zeile 3 wird \lstinline{len(L)} mal ausgeführt (jedes Element von \lstinline{L} muss überprüft werden).
+		\item[günstigster Fall:] Das erste Element (\lstinline{L[0]}) ist bereits das gesuchte Element \lstinline{x} $\Rightarrow$ das \lstinline{if}-Statement wird nur einmal ausgeführt.
+		\item[teuerster Fall:] Das gesuchte Element \lstinline{x} ist entweder das letzte Element der Liste oder kommt in der Liste gar nicht vor $\Rightarrow$ das \lstinline{if}-Statement wird \lstinline{n = len(L)} mal ausgeführt (jedes Element von \lstinline{L} muss überprüft werden).
 	\end{description}
 
 	\pause
@@ -126,9 +127,24 @@
 \end{myanswer}
 \end{frame}
 
+\begin{frame}{\emph{worst-case} und \emph{best-case}}
+	\begin{itemize}[<+->]
+		\item Die \emph{worst-case} Laufzeit $T_{\text{worst}}(n)$ ist die Anzahl der Operationen, welcher ein Algorithmus $A$ für die teuerste Eingabe (Probleminstanz) der Grösse $n$ benötigt.
+		\item Die \emph{best-case} Laufzeit $T_{\text{best}}(n)$ ist die Anzahl der Operationen, welcher ein Algorithmus $A$ für die günstigste Eingabe (Probleminstanz) der Grösse $n$ benötigt.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{myremark}
+	\begin{itemize}[<+->]
+		\item $T_{worst}(n)$ ist die \textbf{minimale} Anzahl der Rechenoperationen mit der Algorithmus $A$ jede (noch so schwierige) Probleminstanz der Grösse $n$ löst.
+	\end{itemize}
+\end{myremark}
+\end{frame}
+
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{d.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/d.py}
+	\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{d.py},label=listing:d,numbers=left]{EF/Complexity/Code/d.py}
 
 	Wie oft wird die Zeile \lstinline{i *= 2} ungefähr ausgeführt?
 	\end{myexercise}
@@ -136,20 +152,23 @@
 
 \begin{frame}
 	\begin{myanswer}
-	Wir beginnen mit \lstinline{i = 1} und \lstinline{i} wird im jedem Durchlauf der \lstinline{while}-Schleife verdoppelt. Wie häufig können wir den Wert von \lstinline{i} verdoppeln, bis die \lstinline{while}-Bedingung \lstinline{i <= n} nicht mehr erfüllt ist? Ungefähr $\log_2(n)$ mal.
-
-	\pause
-	\vspace{1cm}
-	Exakte Analyse: Die Zeile \lstinline{i *= 2} wird $\ceil{\log_2(n)} + 1$ mal ausgeführt.
+	Wir beginnen mit \lstinline{i = 1} und \lstinline{i} wird im jedem Durchlauf der \lstinline{while}-Schleife verdoppelt. Wie häufig können wir den Wert von \lstinline{i} verdoppeln, bis die \lstinline{while}-Bedingung \lstinline{i <= n} nicht mehr erfüllt ist? Ungefähr also $\log_2(n)$ mal.
+	% \pause
+	% \vspace{1cm}
+	% {\small
+	% Exakte Analyse: Die Zeile \lstinline{i *= 2} wird $\ceil{\log_2(n)} + 1$ mal ausgeführt.
+	% }
 	\end{myanswer}
 \end{frame}
+
+
 
 \begin{frame}{Aufgaben auf Moodle}
 	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
 	\pause
 	\begin{itemize}
-		\item Lösen Sie den Test \emph{Laufzeitkomplexität 1} (Bearbeitungszeit: 10 Minuten).
-		\item Bearbeiten Sie diese Aufgabe alleine für sich.
+		\item Lösen Sie die Übungsaufgaben \emph{Laufzeitkomplexität 1} (Bearbeitungszeit: 15 Minuten).
+		\item Bearbeiten Sie die Aufgaben alleine.
 	\end{itemize}
 \end{frame}
 
@@ -169,25 +188,27 @@ Welche Frage hat die grösste Mühe bereitet?
 \begin{myanswer}
 {\scriptsize
     Die Funktion \lstinline{print} wird
-	\begin{itemize}[<+->]
-		\item im ersten Durchlauf der äusseren Schleife (Fall \lstinline{i = 0}) genau $n-1$ mal,
-		\item im zweiten Durchlauf der äusseren Schleife (Fall \lstinline{i = 1}) genau $n-2$ mal,
-		\item $\ldots$,
-		\item im letzten Durchlauf der äusseren Schleife (Fall \lstinline{i = n - 2}) genau $1$ mal
-	\end{itemize}
-	aufgerufen.
+    \begin{itemize}[<+->]
+        \item im ersten Durchlauf der äusseren Schleife (Fall \lstinline{i = 0}) genau {\color{orange} $n-1$} mal,
+        \item im zweiten Durchlauf der äusseren Schleife (Fall \lstinline{i = 1}) genau {\color{cyan} $n-2$} mal,
+        \item $\ldots$,
+        \item im letzten Durchlauf der äusseren Schleife (Fall \lstinline{i = n - 2}) genau {\color{magenta} $1$} mal
+    \end{itemize}
+    \pause
+    aufgerufen.
 
-	\pause
-	Total haben wir also
-	\[1 + 2 + 3 + \ldots + (n-2) + (n-1) \stackrel{\text{Gaußsche Summenformel}}{=} \frac{n(n-1)}{2}\]
-	Aufrufe von \lstinline{print}.
+    \pause
+    Total haben wir also
+    \[ {\color{magenta} 1} + 2 + 3 + \ldots + {\color{cyan} (n-2)} + {\color{orange} (n-1)} \stackrel{\text{Gaußsche Summenformel}}{=} \frac{n(n-1)}{2} \]
+    Aufrufe von \lstinline{print}.
 }
 \end{myanswer}
 \end{frame}
 
+
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-    \lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{bubble\_sort\_simple.py},label=listing:bubble_sort_simple]{EF/Complexity/Code/bubble_sort_simple.py}
+    \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort\_simple.py},label=listing:bubble_sort_simple]{EF/Complexity/Code/bubble_sort_simple.py}
 	\end{myexercise}
 \end{frame}
 
