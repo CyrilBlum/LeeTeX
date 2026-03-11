@@ -1,0 +1,194 @@
+% Paket laden, falls das Dokument mindestens ein Zitat enthält
+\usepackage[maxbibnames=99,sorting=none,style=numeric,backend=biber]{biblatex}
+% Option aktivieren, um das Literaturverzeichnis als nummerierten Unterabschnitt auszugeben
+\defbibheading{bibsubsection}[\bibname]{%
+  \subsection{#1}%
+}
+\addbibresource{refs.bib}
+
+
+\begin{document}
+
+
+
+%% Project-specific Preambles 
+\settoggle{includelogo}{true}
+
+\newcommand{\thesubject}{Informatik}
+\newcommand{\thetopic}{MA-Richtlinien}
+\newcommand{\theplace}{Winterthur}
+\newcommand{\thelogo}{Logos/LeeLogo}
+\newcommand{\logosize}{.5\textwidth}
+
+\settoggle{oneauthor}{true}
+\settoggle{twomainauthors}{false}
+\def\mainauthors{
+	Cyril Wendl/cyril.wendl@edu.zh.ch,
+}
+
+\lhead[ \leftmark ]{Informatik, Maturitätsarbeit}
+\rhead[Informatik]{Cyril Wendl, \today, Winterthur}
+
+\def\arrayB{"grinning-face","bar-chart","laptop","technologist","robot","woman-student","hundred-points"}
+\maketitlepage{Maturitätsarbeit}{Leitfaden}
+\newpage
+\tableofcontents\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+
+\section{Einleitung}
+
+Dieses Dokument dient als \enquote{Sidecar}, also als ergänzendes Begleitdokument zum offiziellen Vademecum für das Verfassen Ihrer \gls{MA}. Das Dokument setzt voraus, dass Sie das Vademecum bereits gelesen haben, und konzentriert sich auf die wichtigsten Aspekte, die Sie beim Schreiben Ihrer \gls{MA} im Fach Informatik beachten sollten.
+
+Ihre \gls{MA} soll bestimmte Qualitäts- und Formalitätskriterien erfüllen. Dieses Dokument soll Lernende im Schreibprozess unterstützen, indem es die wichtigsten Aspekte zusammenfasst, ohne Anspruch auf Vollständigkeit.
+
+\section{Textsatzwerkzeug}
+Im Allgemeinen empfehlen wir für fast alle \gls{MA}-Arbeiten den Einsatz von \LaTeX{}, da damit nahezu alle unten genannten Formatierungs- und Stilanforderungen automatisch erfüllt werden. Ein Lern-Tutorial zu \LaTeX{} finden Sie hier: \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{Overleaf-Tutorial}. Zum Bearbeiten von \LaTeX{}-Code empfehlen wir die \gls{IDE} \href{https://www.texstudio.org}{TeXstudio}.
+
+Wir empfehlen ausserdem, Ihren \LaTeX{}-Code auf \url{https://github.com} zu versionieren. Mehr dazu, warum Versionsverwaltung wichtig ist und wie sie funktioniert, finden Sie in \href{https://docs.github.com/en/get-started/start-your-journey/about-github-and-git}{diesem Tutorial}. Für einen einfachen und schnellen Einstieg können Sie \href{https://desktop.github.com/download/}{GitHub Desktop} installieren; das Programm bietet eine intuitive \gls{UI}.
+
+Falls Sie dennoch Microsoft Word oder ein anderes (\href{https://de.wikipedia.org/wiki/WYSIWYG}{WYSIWYG})-Textsatzwerkzeug bevorzugen, halten Sie sich bitte an die folgenden allgemeinen Regeln:
+
+\begin{itemize}
+	\item \textbf{Blocksatz}: Blocksatz mit Silbentrennung
+	\item \textbf{Seitenränder}: Links und rechts ungefähr 3 cm
+	\item \textbf{Schriftgrösse}: 11--12 pt
+	\item \textbf{Zeilenabstand}: Eine Seite sollte ungefähr 25--30 Textzeilen enthalten.
+	\item \textbf{Titel und Nummerierung}: Analog zu diesem Dokument, z. B. \enquote{1 [Abschnittsname 1], 2 [Abschnittsname 2], 3 [Abschnittsname 3]} für Abschnitte und \enquote{1.1 [Unterabschnittsname 1]}, \enquote{1.2 [Unterabschnittsname 2]}, \enquote{1.3 [Unterabschnittsname 3]} für Unterabschnitte. Ab dem Anhang werden die Abschnitte mit A, B, C usw. nummeriert, die Unterabschnitte entsprechend mit A.1, A.2, A.3 usw. Wenn Sie \LaTeX{} verwenden, müssen Sie sich um die meisten dieser Punkte keine Gedanken machen (siehe \cref{sec:latex} unten für eine Liste mit \LaTeX{}-Tipps), da vieles automatisch erledigt wird. Dieses Dokument, das selbst mit \LaTeX{} erstellt wurde, zeigt ein entsprechendes Beispiel.
+	\item \textbf{Seitennummerierung}: Keine Seitenzahlen auf dem Titelblatt und im \gls{TOC}. Die Nummerierung beginnt auf der ersten Seite Ihrer \gls{MA} mit eigentlichem Inhalt.
+\end{itemize}
+
+
+\section{Umfang \& Struktur}
+
+Der Umfang der MA soll durch das Thema bestimmt werden. Typischerweise umfasst die Arbeit etwa 10--20 reine Textseiten, ohne Titelblatt, Inhaltsverzeichnis, Literaturverzeichnis, Abbildungs- und Tabellenverzeichnis sowie weitere Anhänge.
+
+Ihre Arbeit sollte logisch und selbsterklärend aufgebaut sein. Eine typische Struktur könnte wie folgt aussehen:
+\begin{itemize}
+	\item \textbf{Titelblatt}: Titel, ggf. Untertitel, Autorin/Autor, Betreuungsperson, Schule, Klassenbezeichnung, \enquote{Maturitätsarbeit}, Ort und Datum
+	\item \textbf{\acrlong{TOC}}: Übersicht über die Abschnitte und Unterabschnitte Ihrer Arbeit (in \LaTeX{} genügt eine Zeile: \lstinline|\tableofcontents|).
+	\item \textbf{Einleitung} (ab hier beginnt die Nummerierung: 1(.1, .2), 2(.2, .3) usw.): Fragestellung/Zielsetzung, Motivation, Vorgehen.
+	\item \textbf{Methodik}: Überblick über mögliche Ansätze zur Bearbeitung der Fragestellung und vertiefte Darstellung Ihres Vorgehens, \textit{ohne}(!) bereits Resultate zu präsentieren oder zu diskutieren. Wenn möglich, definieren Sie zudem ein Erfolgskriterium (z. B. eine zu maximierende Kennzahl, kann aber auch subjektiv sein), um den Erfolg Ihrer Arbeit zu beurteilen.
+	\item \textbf{Resultate}: Darstellung der Ergebnisse Ihrer Arbeit
+	\item \textbf{Diskussion}: Einordnung und Diskussion der Resultate.
+	\item \textbf{Ausblick}: Was könnte oder sollte mit mehr verfügbarer Zeit verbessert werden? Sei dabei nicht übermässig selbstkritisch; vielmehr soll sichtbar werden, dass es immer weiteres Potenzial für Arbeit gibt (und bei wissenschaftlichen Arbeiten auch weitere Fördermittel).
+	\item \textbf{Fazit}: Zusammenfassung der wichtigsten Ergebnisse und persönlichen Erfahrungen im Prozess. Weitere Gedanken zum Thema können ebenfalls hier aufgenommen werden.
+	\item \textbf{Anhänge} (nummeriert als Anhang A(.1, .2), B(.1, .2) usw.): Selbstständigkeitserklärung (siehe Vademecum) sowie weitere Anhangsdokumente wie Fragebögen, Codelistings, zusätzliche Abbildungen/Tabellen, Dokumente usw.
+	\item \textbf{Literaturverzeichnis}: Auflistung aller Materialien und Quellen inklusive Online-Quellen (in \LaTeX{} genügt eine Zeile: \lstinline|\printbibliography|; siehe Paket \lstinline|biblatex|: \href{https://de.overleaf.com/learn/latex/Bibliography_management_with_biblatex}{Link}). Denken Sie daran, dass das Literaturverzeichnis zuerst kompiliert werden muss, bevor es im Dokument erscheint (in TeXstudio mit \keys{F8}).
+	\item \textbf{Abbildungsverzeichnis} (in \LaTeX{} genügt eine Zeile: \lstinline|\tableoffigures|).
+	\item \textbf{Tabellenverzeichnis} (in \LaTeX{} genügt eine Zeile: \lstinline|\tableoftables|)
+	\item \textbf{Glossar}: Liste der Abkürzungen, falls im Text viele Abkürzungen verwendet werden (in \LaTeX{} genügt eine Zeile: \lstinline|\printglossaries|; siehe Paket \lstinline|glossaries|: \href{https://www.overleaf.com/learn/latex/Glossaries}{Link}). Ein Beispielglossar finden Sie am Ende dieses Dokuments. Auch das Glossar muss vor der Anzeige im Dokument kompiliert werden (in TeXstudio mit \keys{F9}).
+
+\end{itemize}
+
+
+\section{Zitierstil}
+Alle inhaltlichen Beiträge zu Ihrem Thema müssen durch korrektes Zitieren der verwendeten Quellen nachvollziehbar sein. Zudem kann es  sinnvoll sein, gerade bei komplexeren Themen, welche ihr Thema nur am Rand behandeln, den Leser auf weiterführende Literatur zu verweisen.
+
+Auch beim Zitieren erleichtert \LaTeX{} die Arbeit deutlich. Wir empfehlen, das folgende Tutorial gründlich zu lesen: \href{https://de.overleaf.com/learn/latex/Bibliography_management_with_biblatex}{Link}. Wenn Sie mitten in einem Satz wörtlich zitieren (immer mit Anführungszeichen), setzen Sie die Quelle direkt nach dem Zitat, auch wenn der Satz noch nicht abgeschlossen ist. In allen anderen Fällen, also bei sinngemässen Aussagen ohne wörtliches Zitat, kommt die Quelle ans Satzende, vor dem Satzzeichen.
+
+\begin{tcolorbox}[title=Beispiel]
+	\begin{quotation}
+		Die jüngsten Durchbrüche in \gls{ML} und \gls{AI} sowie bei der Rechenleistung haben in vielen Computer-Vision-Aufgaben neue Genauigkeitsstandards gesetzt, darunter medizinische Anwendungen, autonomes Fahren und Fernerkundung \cite{Volpi2017DenseSL, kampffmeyer, Zhu2017DeepLI, Shelhamer2015FullyCN}. [...]
+	\end{quotation}
+
+\end{tcolorbox}
+
+Wenn Sie Autorinnen oder Autoren direkt im Satz nennen, verwenden Sie den Befehl \lstinline|\textcite| statt \lstinline|\cite|: Während \lstinline|\cite| nur die Nummer der Quelle ausgibt, ergänzt \lstinline|\textcite| zusätzlich den Namen der Autorenschaft.
+
+In der Regel stehen alle Zitations-Metadaten wie Titel, Erscheinungsjahr, Autorenschaft usw. in einer \texttt{.bib}-Datei (mehr dazu im \href{https://de.overleaf.com/learn/latex/Bibliography_management_with_biblatex}{Tutorial}). Angaben zu Büchern oder Artikeln lassen sich oft automatisch im \LaTeX{}-Format aus Datenbanken wie \url{https://www.semanticscholar.org} übernehmen. Online-Quellen fügen Sie ebenfalls dort ein, beginnend mit einem \lstinline|@online{...}|-Eintrag, und zitieren sie danach wie andere Quellen, z. B. so: \cite{Datenstrukturen}. Bei Online-Quellen geben Sie immer mindestens Autorin/Autor oder Institution, den Titel der Webseite bzw. des Videos, die \gls{URL} sowie das Datum des letzten Zugriffs an (Feld \lstinline|urldate| in der \texttt{.bib}-Datei).
+
+\section{Einsatz von ChatGPT und anderen \acrshort{AI}-basierten Schreibwerkzeugen}
+
+Der starke Aufschwung von \gls{AI}-basierten Schreibwerkzeugen, insbesondere von \glspl{LLM} wie ChatGPT, eröffnet neue Möglichkeiten zur Beschleunigung des Schreibprozesses, besonders bei wissenschaftlichen Arbeiten. Gleichzeitig gibt es erhebliche Grenzen, da solche Werkzeuge oft oberflächliche und teils irreführende oder falsche Antworten liefern. Bitte beachten Sie deshalb die folgenden Empfehlungen für den Einsatz von ChatGPT und ähnlichen Tools in Ihrer \gls{MA}:
+
+\begin{enumerate}
+	\item Sie können ChatGPT selbstverständlich zur Inspiration, für Recherche, zur prägnanteren Umformulierung von Sätzen, für Feedback zu Ideen und Schreibprozess oder zur Effizienzsteigerung nutzen. Beachten Sie aber, dass Antworten von ChatGPT falsch oder irreführend sein können und dadurch mitunter mehr Aufwand entsteht als bei einer klassischen Internetrecherche.
+	\item Wenn Sie ChatGPT im Schreibprozess verwenden (z. B. für Umformulierungen oder Rechtschreibprüfung, ebenso für die Generierung von Code), deklarieren Sie dies klar in Ihrer \textit{Selbstständigkeitserklärung} (s. Vademecum für weitere Informationen).
+	\item Es gibt derzeit keine zuverlässige Methode, eindeutig nachzuweisen, ob ein Satz von \glspl{LLM} wie ChatGPT verfasst wurde. Dennoch raten wir ausdrücklich davon ab, ganze Sätze durch ChatGPT generieren zu lassen, da dies eigenständiges Denken und Recherchieren beeinträchtigen kann und oft zu weniger kreativen sowie weniger innovativen Lösungen führt.
+\end{enumerate}
+
+
+\section{Schreibstil}
+\subsection{Passivstil}
+Verwende nach Möglichkeit passive Satzkonstruktionen und vermeide die Wörter \enquote{ich} und \enquote{wir}. Das ist in wissenschaftlichen Texten üblich, weil es eine objektivere Ausdrucksweise fördert.
+
+\begin{tcolorbox}[title=Beispiel]
+	Statt zu schreiben:
+	\begin{quotation}
+		Nach einer Internetrecherche zeigte sich, dass es viele Möglichkeiten gibt, \textit{xyz} umzusetzen...
+	\end{quotation}
+	Können Sie schreiben:
+	\begin{quotation}
+		Um \textit{xyz} zu erreichen, sind offenbar verschiedene Ansätze möglich (Quellen einfügen!).
+	\end{quotation}
+\end{tcolorbox}
+
+\subsection{Abbildungen und Tabellen}
+Alle Abbildungen und Tabellen sollen dem Text einen Mehrwert geben. Das bedeutet: Sie enthalten nicht nur relevante Informationen, sondern auch eine klare und informative Beschriftung, aus der ersichtlich wird, was genau dargestellt ist. Zudem müssen alle Abbildungen und Tabellen im Text explizit referenziert werden (in \LaTeX{} mit \lstinline|\label{...}| und \lstinline|\ref{...}|). Verweise auf andere Abschnitte funktionieren nach demselben Prinzip. Weitere Informationen finden Sie im Overleaf-\href{https://www.overleaf.com/learn/latex/Cross_referencing_sections%2C_equations_and_floats}{Tutorial zu Querverweisen}.
+
+Wenn Sie nicht jedes Mal ``siehe \textit{Abbildung} \lstinline|\ref{...}|'' oder ``siehe \textit{Tabelle} \lstinline|\ref{...}|'' schreiben möchten, können Sie das Paket \texttt{cleverref} verwenden. Dann genügt ``siehe \lstinline|\cref{...}|''.
+
+\subsection{Grammatikprüfung}
+Für die Prüfung von Grammatik und Rechtschreibung empfehlen wir Folgendes:
+\begin{itemize}
+	\item Lassen Sie Ihre \gls{MA} von mindestens 2--3 nahestehenden Personen gegenlesen, die über sehr gute Englischkenntnisse verfügen.
+	\item Nutzen Sie Online-Tools wie \url{https://www.grammarly.com/grammar-check} oder ChatGPT (aber verfassen Sie nicht die ganze Arbeit damit, da dies die Kreativität stark einschränkt. Beachten Sie ausserdem, dass Plagiatsprüfungen durchgeführt werden).
+\end{itemize}
+
+\newpage
+
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\counterwithin{figure}{subsection}
+\counterwithin{table}{subsection}
+\pagebreak
+\appendix
+\section{Anhänge}
+
+\subsection{\LaTeX{}-Hinweise}
+\label{sec:latex}
+
+\subsubsection{\LaTeX{}-Tutorials}
+Online gibt es viele gute \LaTeX{}-Tutorials. Besonders die von Overleaf bereitgestellten \href{https://www.google.com/search?client=safari&rls=en&q=overleaf+tutorial&ie=UTF-8&oe=UTF-8}{Tutorials} sind ein guter Einstieg.
+
+\subsubsection{Abschnittsnummerierung im Anhang}
+Um die Abschnittsnummerierung nach \lstinline|\appendix| von numerisch (Zahlen) auf alphabetisch (Buchstaben) umzustellen, verwende die folgenden Zeilen:
+
+\begin{lstlisting}
+% folgende Zeile in die Präambel einfügen: \usepackage{chngcntr}
+\newpage
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\counterwithin{figure}{subsection}
+\counterwithin{table}{subsection}
+\pagebreak  
+
+\section{Anhänge}
+
+\subsection{Code-Dokumentation}
+% Inhalte hier einfügen
+\end{lstlisting}
+
+
+
+\subsubsection{Optionen für das Literaturverzeichnis}
+Für Literaturverzeichnisse in \LaTeX{} empfehlen wir das relevante \href{https://de.overleaf.com/learn/latex/Bibliography_management_with_biblatex}{Overleaf-Tutorial} sowie die folgenden Parameter für Zitate:
+
+\begin{lstlisting}
+\usepackage[sorting=none,style=numeric,backend=biber]{biblatex}
+\end{lstlisting}
+
+\subsection{\LaTeX{}-Code dieses Dokuments}
+Das folgende Listing enthält den \LaTeX{}-Code zur Kompilierung dieses Dokuments (ohne Präambel, da diese zu lang wäre). Wenn Sie auch die Präambel sehen oder die unten gezeigte \texttt{.tex}-Datei erhalten möchten, können Sie sich gerne an die Autorinnen und Autoren dieses Dokuments wenden.
+\lstinputlisting[firstline=9]{Various/MA Thesis/MA Thesis Guidelines.tex}
+
+\subsection{\LaTeX{}-Code zur Erstellung des Titelblatts dieses Dokuments}
+Das folgende Listing enthält Präambel und Pakete zur Erstellung des Titelblatts. Sie können selbstverständlich auch ein anderes oder einfacheres Titelblatt verwenden, sofern alle erforderlichen Angaben enthalten sind. Um die unten gezeigte \texttt{.tex}-Datei zu erhalten, können Sie sich an die Autorinnen und Autoren dieses Dokuments wenden.
+
+% \lstinputlisting[firstline=9]{Various/MA Thesis/titlepage_standalone.tex}
+
+\newpage
+\printbibliography
+
+\newpage
+\printglossaries
+\end{document}

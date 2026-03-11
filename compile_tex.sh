@@ -208,6 +208,7 @@ article_topics=(
     "Semesterplanung:Grundlagen_Info/Various/Semesterplanung"
     "Benotung:Grundlagen_Info/Various/Benotung"
     "MA_Thesis_Guidelines:Various/MA Thesis/MA Thesis Guidelines.tex"
+    "MA_Thesis_Guidelines_de:Various/MA Thesis/MA Thesis Guidelines de.tex"
     "Filme:Various/Filme.tex"
     "Tabu:Various/Tabu.tex"
     "Fun_Quotes:Various/Fun_Quotes"
