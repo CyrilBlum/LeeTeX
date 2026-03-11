@@ -1,5 +1,5 @@
 \chapter{Turingmaschinen}
-
+\section{Turing-Maschinen}
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -60,45 +60,88 @@
 	\label{fig:xdfdadf}
 \end{figure}
 
+\section{Halteproblem}
+\begin{mydefinition}[Halteproblem]\label{mydefinition:halteproblem}
+Das Problem, für jedes beliebge Programm $M$ und eine dazugehörige Eingabe $x$ zu entscheiden, ob $M$ auf $x$ hält oder nicht, wird \emph{Halteproblem} genannt.
+\end{mydefinition}
+
+\begin{mytheorem}[Halteproblem]
+Das Halteproblem kann von keinem Algorithmus entschieden werden.
+\end{mytheorem}
+
+\begin{myremark}\label{myremark:H_lambda}
+	Es lässt sich leicht zeigen, dass auch das Problem, für jedes beliebige Programm $M$ zu entscheiden, ob $M$ auf der Eingabe $\lambda$ (leeres Wort) hält, nicht berechenbar ist.
+\end{myremark}
 
 
-% \begin{figure}[H]
-% \centering
-% \begin{tikzpicture}
-%     \begin{scope}[start chain, node distance=-0.15mm]
-%         \node [tmtapehend] (inputbegin) {};
-%         \node [tmtape] {$a_1$};
-%         \node [tmtape] {$a_2$};
-%         \node [tmtape, minimum width=2\tmtapesize] {$\ldots $};
-%         \node [tmtape] (inputcursor) {};
-%         \node [tmtape, minimum width=2\tmtapesize] {$\ldots $};
-%         \node [tmtapehend] (inputend) {};
-%     \end{scope}
+\section{Berechenbare Zahlen (Computable Numbers)}
+\begin{mydefinition}[Berechenbare Zahl (informell)]\label{mydefinition:comp_numb}
+	Eine reelle Zahl $x$ heisst berechenbar, wenn ein Algorithmus $A(n)$ existiert, der zu beliebigem natürlichen $n$ die Zahl $x$ auf mindestens $n$ Nachkommastellen genau berechnet.
+\end{mydefinition}
 
-%     \begin{scope}[start chain=going below, node distance=-0.15mm]
-%         \node [tmtapevend, below=1cm of inputend] {};
-%         \node [tmtape] (stackcursor) {$D$};
-%         \node [tmtape] {$C$};
-%         \node [tmtape] {$B$};
-%         \node [tmtape] {$A$};
-%         \node [tmtape] (stackend) {$\#$};
-%     \end{scope}
+\begin{myexample}[$\sqrt{2}$ ist berechenbar]
+Im Folgenden skizzieren wir einen Algorithmus, der die Berechenbarkeit von $x:=\sqrt{2}$​ belegt. Am Beispiel der Genauigkeitsanforderung $n:=3$ demonstrieren wir das Verfahren der Intervallhalbierung, um die ersten drei Dezimalstellen von $\sqrt{2}$ (abgeschnitten) zu bestimmen.
 
-%     \node [tmtapecursor] (inputcursor) at (inputcursor) {};
-%     \node [tmtapecursor] (stackcursor) at (stackcursor) {};
+Startintervall:
+\[
+\sqrt{2} \in \lrs{1,2},
+\qquad
+1^2 = 1 < 2,\quad 2^2 = 4 > 2.
+\]
 
-%     \node [draw, align=center, inner sep=3mm] (control) [left=2cm of stackcursor] {endliche Kontrolle\\(Zustand)};
-%     \node [align=center, font=\scriptsize, inner sep=0pt, above=2mm of inputcursor] {Lesekkopf, bewegt\\sich nach rechts};
-%     \node [align=left, font=\scriptsize, inner sep=0pt, right=2mm of stackcursor] {Lesekkopf, steht immer auf\\dem obersten Kellersymbol};
+\textbf{1. Schritt}
+\[
+m=\frac{1+2}{2}=1.5,\qquad 1.5^2=2.25>2 \Rightarrow \sqrt{2}\in\lrs{1,1.5}.
+\]
 
-%     \node [inner sep=0pt, above right=2mm and -\tmtapesize of inputbegin] {Eingabeband};
-%     \node [inner sep=0pt, below=3mm of stackend] {Keller};
+\textbf{2. Schritt}
+\[
+m=\frac{1+1.5}{2}=1.25,\qquad 1.25^2=1.5625<2 \Rightarrow \sqrt{2}\in\lrs{1.25,1.5}.
+\]
 
-%     \begin{scope}[->, >=stealth', shorten >=1pt, auto]
-%         \draw (control) edge (stackcursor);
-%         \draw (control.north) -- ++(0,0.75) -| (inputcursor);
-%     \end{scope}
-% \end{tikzpicture}
-% \caption{blablablup}
-% \label{fig:asgagfsa}
-% \end{figure}
+\textbf{3. Schritt}
+\[
+m=\frac{1.25+1.5}{2}=1.375,\qquad 1.375^2=1.890625<2 \Rightarrow \sqrt{2}\in\lrs{1.375,1.5}.
+\]
+
+\textbf{4. Schritt}
+\[
+m=\frac{1.375+1.5}{2}=1.4375,\qquad 1.4375^2>2 \Rightarrow \sqrt{2}\in\lrs{1.375,1.4375}.
+\]
+
+Nach weiteren Halbierungen erhält man beispielsweise
+\[
+\sqrt{2}\in\lrs{1.4140625,\,1.41455078125}.
+\]
+
+Nun betrachten wir die abgeschnittenen Werte auf drei Dezimalstellen:
+\[
+\floor{1000\cdot 1.4140625} = 1414,
+\qquad
+\floor{1000\cdot 1.41455078125} = 1414.
+\]
+
+Da beide Intervallgrenzen denselben abgeschnittenen Wert liefern, folgt
+\[
+\floor{1000\sqrt{2}} = 1414.
+\]
+
+Damit ist
+\[
+\sqrt{2}=1.414\ldots
+\]
+
+und die auf drei Dezimalstellen abgeschnittene Darstellung lautet
+\[
+1.414.
+\]
+Ein entsprechendes Python-Programm ist in \cref{listing:n_digit_sqrt_2} in \cref{ch:appendix} zu finden.
+\end{myexample}
+
+\begin{myexample}
+Für jede natürliche Zahl $n$ definieren wir die Funktion $f$ wie folgt: $f(n) = 1$, falls die $n$-te Turingmaschine auf dem Input $\lambda$ (leeres Wort) hält und $f(0) = 0$ sonst. Die reelle Zahl
+\begin{align*}
+	r := \sum{n\in\N}f(n)\cdot 2^{-n}
+\end{align*}
+wird \emph{Haltezahl} genannt. Es ist klar, dass die Haltezahl nicht berechenbar ist. Könnten wir sie berechnen, könnten wir auch das Halteproblem entscheiden (siehe auch \cref{myremark:H_lambda}).
+\end{myexample}
