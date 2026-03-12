@@ -1,6 +1,3 @@
-def beschreibe_wetter(temperatur):
-    if temperatur >= 30:
-        print("Es ist heiss")
-
-
-beschreibe_wetter(33)
+temperatur = 33
+if temperatur >= 30:
+    print("Es ist heiss")
