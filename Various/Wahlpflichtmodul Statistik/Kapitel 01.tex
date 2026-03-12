@@ -73,7 +73,7 @@ und legt damit fest, welche Kennzahlen und Diagramme sinnvoll sind.
 	\small
 	\begin{tabular}{l c c c c c}
 		\toprule
-		\textbf{Skalenniveau} & \textbf{Ordnung} & \textbf{Abstände} & \textbf{Nullpunkt} & \textbf{Lagemaße}  & \textbf{Streuungsmaße} \\
+		\textbf{Skalenniveau} & \textbf{Ordnung} & \textbf{Abstände} & \textbf{Nullpunkt} & \textbf{Lagemasse}  & \textbf{Streuungsmasse} \\
 		\midrule
 		Nominal               & \xmark           & \xmark            & \xmark             & Modus              & ---                    \\
 		Ordinal               & \cmark           & \xmark            & \xmark             & Median, Modus      & IQR                    \\
@@ -115,6 +115,15 @@ und legt damit fest, welche Kennzahlen und Diagramme sinnvoll sind.
 \subsection{Zentrale Lage}
 Wir beschreiben, wo ``die Mitte'' der Daten liegt.
 
+\begin{mydefinition}\label{mydefinition:modus}
+Der \textbf{Modus} ist der Wert, der in den Daten am häufigsten vorkommt.
+\end{mydefinition}
+
+\begin{mydefinition}\label{mydefinition:median}
+Der \textbf{Median} ist der mittlere Wert der sortierten Daten.
+Bei gerader Anzahl ist er der Mittelwert der beiden mittleren Werte.
+\end{mydefinition}
+
 \begin{mydefinition}\label{mydefinition:mittelwert}
 Der \textbf{Mittelwert} (arithmetisches Mittel) einer Datenreihe $x_1,\dots,x_n$ ist
 \[
@@ -122,10 +131,7 @@ Der \textbf{Mittelwert} (arithmetisches Mittel) einer Datenreihe $x_1,\dots,x_n$
 \]
 \end{mydefinition}
 
-\begin{mydefinition}\label{mydefinition:median}
-Der \textbf{Median} ist der mittlere Wert der sortierten Daten.
-Bei gerader Anzahl ist er der Mittelwert der beiden mittleren Werte.
-\end{mydefinition}
+
 
 \begin{myattention}
 	Der Mittelwert reagiert stark auf Ausreisser. Der Median ist robust.
@@ -372,40 +378,6 @@ Der Datensatz \texttt{sleep\_focus.csv} enthält pro Person:
 	\label{table:sleep_focus_example}
 \end{table}
 
-\begin{myexercise}\label{myexercise:codap-lage-streuung}
-	Importieren Sie \texttt{sleep\_focus.csv} in CODAP.
-	\begin{enumerate}
-		\item Erstellen Sie ein Histogramm von \texttt{SleepHours}. Beschreiben Sie die Form der Verteilung in zwei Sätzen.
-		\item Bestimmen Sie Median und Mittelwert von \texttt{SleepHours}. Sind sie ähnlich? Begründen Sie kurz.
-		\item Erstellen Sie einen Boxplot von \texttt{PhoneMinutes}. Gibt es Ausreisser?
-	\end{enumerate}
-	\begin{myanswer}
-		Beispielhafte Beobachtungen (können je nach Darstellung leicht variieren):
-		\begin{enumerate}
-			\item Ungefähr unimodale Verteilung, die meisten Werte zwischen ca.\ 6 und 8 Stunden; einzelne kurze Nächte als Randwerte.
-			\item Median und Mittelwert liegen nahe beieinander, weil die Verteilung nicht extrem schief ist (Ausreisser sind begrenzt).
-			\item Bei \texttt{PhoneMinutes} fallen sehr hohe Werte (z.B.\ um 300+ Minuten) als mögliche Ausreisser auf.
-		\end{enumerate}
-	\end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}\label{myexercise:codap-zusammenhang}
-	Erstellen Sie in CODAP einen Scatterplot: \texttt{SleepHours} (x-Achse) gegen \texttt{FocusScore} (y-Achse).
-	\begin{enumerate}
-		\item Beschreiben Sie den Zusammenhang: eher positiv, negativ oder keiner?
-		\item Ist der Zusammenhang stark oder eher schwach? Begründen Sie anhand der Punktwolke.
-		\item Nennen Sie zwei mögliche Gründe, warum man aus diesem Datensatz \textbf{keine} sichere Ursache-Wirkung-Aussage machen darf.
-	\end{enumerate}
-	\begin{myanswer}
-		\begin{enumerate}
-			\item Eher positiver Zusammenhang: mehr Schlaf geht tendenziell mit höherem \texttt{FocusScore} einher.
-			\item Eher schwach bis mittel: die Punkte streuen sichtbar, es gibt keine perfekte Linie.
-			\item Beispiele: Drittvariablen (z.B.\ Stress), Messfehler/ungenaue Angaben, Selbstselektion, umgekehrte Ursache (guter Fokus beeinflusst Schlaf), kleine Stichprobe.
-		\end{enumerate}
-	\end{myanswer}
-\end{myexercise}
-
-
 \subsection{Aufgabenpaket für die SuS}
 
 \begin{myexercise}\label{myexercise:aufgabenpaket-1}
@@ -441,44 +413,46 @@ Der Datensatz \texttt{sleep\_focus.csv} enthält pro Person:
 	\end{myanswer}
 \end{myexercise}
 
+\begin{myexample}
+\textbf{Beispiel einer Kontingenztabelle: Musik beim Lernen vs. Lernmodus}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l c c c}
+		\toprule
+		                    & \textbf{Alleine} & \textbf{Gruppe} & \textbf{Summe} \\
+		\midrule
+		\textbf{Mit Musik}  & 45 (56\%)        & 25 (31\%)       & 70             \\
+		\textbf{Ohne Musik} & 35 (44\%)        & 55 (69\%)       & 90             \\
+		\textbf{Summe}      & 80               & 80              & 160            \\
+		\bottomrule
+	\end{tabular}
+	\caption{Beispiel einer Kontingenztabelle: Musik beim Lernen vs. Lernmodus}
+	\label{table:kontingenztabelle}
+\end{table}
+
+Aus dieser Tabelle darf man z.B. beschreiben, welche Kombinationen in der Stichprobe häufiger vorkommen. Man darf daraus aber noch keine Ursache-Wirkung-Aussage ableiten.
+\end{myexample}
+
 \begin{mychallenge}\label{mychallenge:kontingenztabelle}
 	\textbf{Challenge (optional): Kontingenztabelle} \\
-	Importieren Sie zusätzlich \texttt{music\_study.csv}.
-	Dieser Datensatz enthält zwei kategoriale Variablen (z.B.\ Musik beim Lernen: ja/nein und Lernmodus: alleine/Gruppe).
+	Arbeiten Sie mit der Kontingenztabelle aus dem Beispiel oben (ohne Computer).
 	\begin{enumerate}
-		\item Erstellen Sie eine Kontingenztabelle (Häufigkeitstabelle) der beiden Variablen.
-		\item Rechnen Sie die Tabelle in \textbf{relative Häufigkeiten} (Prozente) um.
-		\item Formulieren Sie zwei Aussagen, die durch die Tabelle gestützt werden, und eine Aussage, die \textbf{nicht} zulässig ist.
+		\item Formulieren Sie zwei Aussagen, die durch die Tabelle gestützt werden.
+		\item Formulieren Sie eine Aussage, die \textbf{nicht} zulässig ist, und begründen Sie kurz, warum.
 	\end{enumerate}
 
-	\begin{table}[H]
-		\centering
-		\caption{Beispiel einer Kontingenztabelle: Musik beim Lernen vs. Lernmodus}
-		\begin{tabular}{l c c c}
-			\toprule
-			                    & \textbf{Alleine} & \textbf{Gruppe} & \textbf{Summe} \\
-			\midrule
-			\textbf{Mit Musik}  & 45 (56\%)        & 25 (31\%)       & 70             \\
-			\textbf{Ohne Musik} & 35 (44\%)        & 55 (69\%)       & 90             \\
-			\textbf{Summe}      & 80               & 80              & 160            \\
-			\bottomrule
-		\end{tabular}
-		\label{table:kontingenztabelle}
-	\end{table}
-
 	\begin{myanswer}
-		\begin{enumerate}
-			\item Kontingenztabelle: Zeilen und Spalten sind Kategorien, Einträge sind Häufigkeiten.
-			\item Relative Häufigkeiten erlauben fairen Vergleich, auch wenn Gruppen unterschiedlich gross sind.
-			\item Zulässig: ``In dieser Stichprobe hört die Gruppe X häufiger Musik als Gruppe Y.'' Nicht zulässig: ``Musik verursacht besseres Lernen.'' (Kausalität)
-		\end{enumerate}
+			Zulässig sind beschreibende Aussagen zur Stichprobe, z.B.\ ``In dieser Stichprobe lernen Personen ohne Musik häufiger in Gruppen als Personen mit Musik.''. Eine weitere zulässige Aussage könnte sein: ``Insgesamt lernen 70 Personen mit Musik, 90 Personen ohne Musik.''.
+			
+			Nicht zulässig sind kausale Aussagen wie ``Musik verbessert das Lernen.''
 	\end{myanswer}
 \end{mychallenge}
 
 \section{Mini-Checkliste: Statistik in Texten und Grafiken}
 
 \begin{myexercise}\label{myexercise:checkliste}
-	Sie lesen einen Artikel, der eine Statistik-Grafik enthält. Kreuzen Sie an, was Sie prüfen würden:
+	Finden Sie einen Online-Artikel, der eine Statistik-Grafik enthält. Überprüfen Sie die Grafik kritisch anhand der folgenden Checkliste:
 	\begin{itemize}
 		\item[$\square$] Woher stammen die Daten (Quelle)?
 		\item[$\square$] Wie gross ist die Stichprobe?
@@ -486,7 +460,4 @@ Der Datensatz \texttt{sleep\_focus.csv} enthält pro Person:
 		\item[$\square$] Startet die Achse bei 0?
 		\item[$\square$] Werden Prozente mit absoluten Zahlen verwechselt?
 	\end{itemize}
-	\begin{myanswer}
-		Alle Punkte sind sinnvoll. Besonders häufige Fehler sind Achsentricks, kleine Stichproben und unpassende Kennzahlen.
-	\end{myanswer}
 \end{myexercise}
