@@ -161,8 +161,6 @@
 	\end{myanswer}
 \end{frame}
 
-
-
 \begin{frame}{Aufgaben auf Moodle}
 	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
 	\pause
@@ -178,7 +176,7 @@ Welche Frage hat die grösste Mühe bereitet?
 
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-    \lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{anstossen.py},label=listing:anstossen]{EF/Complexity/Code/anstossen.py}
+    \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{anstossen.py},label=listing:anstossen]{EF/Complexity/Code/anstossen.py}
     
     Wie oft wird die Funktion \lstinline{print} aufgerufen?
 	\end{myexercise}
@@ -191,7 +189,7 @@ Welche Frage hat die grösste Mühe bereitet?
     \begin{itemize}[<+->]
         \item im ersten Durchlauf der äusseren Schleife (Fall \lstinline{i = 0}) genau {\color{orange} $n-1$} mal,
         \item im zweiten Durchlauf der äusseren Schleife (Fall \lstinline{i = 1}) genau {\color{cyan} $n-2$} mal,
-        \item $\ldots$,
+        \item $\vdots$,
         \item im letzten Durchlauf der äusseren Schleife (Fall \lstinline{i = n - 2}) genau {\color{magenta} $1$} mal
     \end{itemize}
     \pause
@@ -206,17 +204,98 @@ Welche Frage hat die grösste Mühe bereitet?
 \end{frame}
 
 
-\begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
-	\begin{myexercise}
-    \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort\_simple.py},label=listing:bubble_sort_simple]{EF/Complexity/Code/bubble_sort_simple.py}
-	\end{myexercise}
+\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} für Problemgrösse $n$, \textcolor{Red}{worst-case}}
+\begin{itemize}[<+->]
+	\item Wir bezeichnen mit $w_k(n)$ die totale Anzahl der Ausführungen der $k$-ten Programmzeile in Abhängigkeit von $n$.
+	\item Lassen Sie uns $w_k(n)$ für jede Zeile von \texttt{bubble\_sort} bestimmen.
+\end{itemize}
+
+\pause
+\begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily,numbers=left]
+def bubble_sort(A): !\tikzmark{c1end}! 									!\tikzmark{c1start}!
+    n = len(A) !\tikzmark{c2end}! 										!\tikzmark{c2start}!
+    for i in range(n): !\tikzmark{c3end}! 								!\tikzmark{c3start}!
+        for j in range(0, n - i - 1): !\tikzmark{c4end}! 					!\tikzmark{c4start}!
+            if A[j] > A[j + 1]:	!\tikzmark{c5end}! 						!\tikzmark{c5start}!
+				A[j], A[j + 1] = A[j + 1], A[j] !\tikzmark{c6end}! 		!\tikzmark{c6start}!
+    return A !\tikzmark{c7end}!											!\tikzmark{c7start}!	
+\end{lstlisting}
+\begin{tikzpicture}[overlay, remember picture,
+        every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
+    % Each arrow will appear one after another on mouse click
+    \only<2->{\drawArrow{c1end}{c1start}{\tiny $w_1(n) = 1$}{green!35!white};}
+    \only<3->{\drawArrow{c2end}{c2start}{\tiny $w_2(n) = 1$}{green!35!white};}
+    \only<4->{\drawArrow{c3end}{c3start}{\tiny $w_3(n) = n+1$}{green!35!white};}
+    \only<8->{\drawArrow{c4end}{c4start}{\tiny $w_4(n) = w_5(n) + n$}{green!35!white};}
+    \only<5->{\drawArrow{c5end}{c5start}{\tiny $w_5(n)$}{green!35!white};}
+    \only<6->{\drawArrow{c6end}{c6start}{\tiny $w_6(n)$}{red!55!white};}
+    \only<7->{\drawArrow{c7end}{c7start}{\tiny $w_7(n) = 1$}{green!35!white};}
+\end{tikzpicture}
+\pause
+\begin{itemize}[<+->]
+	\item Im \textcolor{Red}{worst-case} müssen die Elemente in \textbf{jedem} inneren Schleifendurchlauf getauscht werden $\Rightarrow w_6(n) = w_5(n)$.
+	\item Für jeden der $n$ Durchläufe der äusseren Schleife muss im Kopf der inneren Schleife am Ende noch einmal die Abbruch-Bedingung überprüft werden $\Rightarrow w_4(n) = w_5(n) + n$.
+\end{itemize}
 \end{frame}
 
-\begin{frame}
-\begin{myanswer}
-TODO
-\end{myanswer}
+\begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{worst-case}}
+\lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/bubble_sort.py}
+Wir müssen die totale Anzahl der Ausführungen von Zeile 5, also $w_5(n)$, bestimmen:
+\pause
+\begin{itemize}[<+->]
+	\item Wenn \lstinline{i = 0}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n-2} $\Rightarrow$ $(n-1)$ Mal
+	\item Wenn \lstinline{i = 1}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n-3} $\Rightarrow$ $(n-2)$ Mal
+	\item $\vdots$
+	\item Wenn \lstinline{i = n-2}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{0} $\Rightarrow$ $1$ Mal
+	\item Wenn \lstinline{i = n-1}, ist der Bereich \lstinline{range(0, 0)} $\Rightarrow$ $0$ Mal
+\end{itemize}
+\pause
+Wir erhalten die bekannte Summe:
+{\footnotesize
+\begin{align*}
+	w_5(n) = (n-1) + (n-2) + \ldots + 1 + 0 \stackrel{\text{Gaußsche Summenformel}}{=} \frac{n(n-1)}{2}
+\end{align*}
+}
 \end{frame}
+
+
+\begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{worst-case}}
+\begin{itemize}[<+->]
+	\item Wir bezeichnen mit $c_k$ die Kosten (\textbf{c}ost) einer einmaligen Ausführung von Programmzeile $k$.
+	\item Wir nehmen an, dass die $c_k$ unabhängig von $n$ sind.
+\end{itemize}
+\pause
+{\footnotesize
+\begin{align*}
+	T_{\text{worst}}(n) &= c_1w_1(n) + c_2w_2(n) + \ldots + c_7w_7(n) = \sum_{k=1}^{7}c_kw_k(n) =\\
+	&= c_1 + c_2 + c_3(n+1) + c_4(w_5(n) + n) + c_5w_5(n) + c_6w_5(n) + c_7 = \\
+	&= c_1 + c_2 + c_3n + c_4\lr{\frac{n(n-1)}{2}+n} + \lr{c_5 + c_6}\lr{\frac{n(n-1)}{2}} + c_7n
+\end{align*}
+}
+\end{frame}
+
+\begin{frame}[fragile]{Genaue Analyse}
+	Wir vereinfachen die Terme und Gruppieren nach den Potenzen von $n$, um den folgenden Ausdruck zu erhalten:
+	\pause
+{\footnotesize
+\begin{align*}
+T_{\text{worst}}(n) &= \underbrace{\lr{\frac{c_4 + c_5 + c_6}{2}}}_{=:\textcolor{Red}{a}} n^2 + \underbrace{\lr{c_3 + c_7 + \frac{c_4 - c_5 - c_6}{2}}}_{=:\textcolor{RoyalBlue}{b}}n + \underbrace{(c_1 + c_2)}_{=:\textcolor{ForestGreen}{c}} = \\
+&= \textcolor{Red}{a}n^2 + \textcolor{RoyalBlue}{b}n + \textcolor{ForestGreen}{c}
+\end{align*}}
+\end{frame}
+
+
+% \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
+% 	\begin{myexercise}
+%     \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort]{EF/Complexity/Code/bubble_sort.py}
+% 	\end{myexercise}
+% \end{frame}
+
+% \begin{frame}
+% \begin{myanswer}
+% TODO
+% \end{myanswer}
+% \end{frame}
 
 % \begin{frame}{Berechenbarkeit}
 % 	\begin{itemize}[<+->]
@@ -296,16 +375,16 @@ TODO
 %         return A !\tikzmark{c9end}!                               !\tikzmark{c9start}!
 % 	\end{lstlisting}
 % 	\begin{tikzpicture}[overlay, remember picture,
-% 			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
-% 		\only<2->{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!50!white};}
-% 		\only<3->{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n-1$}{green!50!white};}
-% 		\only<4->{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!50!white};}
-% 		\only<5->{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!50!white};}
-% 		\only<6->{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!50!white};}
-% 		\only<7->{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!50!white};}
-% 		\only<8->{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!50!white};}
-% 		\only<9->{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!50!white};}
-% 		\only<10->{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!50!white};}
+% 			every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
+% 		\only<2->{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!35!white};}
+% 		\only<3->{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n-1$}{green!35!white};}
+% 		\only<4->{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!35!white};}
+% 		\only<5->{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!35!white};}
+% 		\only<6->{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!35!white};}
+% 		\only<7->{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!35!white};}
+% 		\only<8->{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!35!white};}
+% 		\only<9->{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!35!white};}
+% 		\only<10->{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!35!white};}
 % 	\end{tikzpicture}
 % \end{frame}
 
@@ -322,16 +401,16 @@ TODO
 %         return A !\tikzmark{c9end}!                               !\tikzmark{c9start}!
 % 	\end{lstlisting}
 % 	\begin{tikzpicture}[overlay, remember picture,
-% 			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
-% 		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!50!white};}
-% 		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n-1$}{green!50!white};}
-% 		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!50!white};}
-% 		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!50!white};}
-% 		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!50!white};}
-% 		{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!50!white};}
-% 		{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!50!white};}
-% 		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!50!white};}
-% 		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!50!white};}
+% 			every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
+% 		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!35!white};}
+% 		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n-1$}{green!35!white};}
+% 		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!35!white};}
+% 		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!35!white};}
+% 		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!35!white};}
+% 		{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!35!white};}
+% 		{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!35!white};}
+% 		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!35!white};}
+% 		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!35!white};}
 % 	\end{tikzpicture}
 % \end{frame}
 
@@ -431,18 +510,18 @@ TODO
 %         return A !\tikzmark{c11end}!                                            !\tikzmark{c11start}!
 % 	\end{lstlisting}
 % 	\begin{tikzpicture}[overlay, remember picture,
-% 			every node/.style={draw=green!50,fill=green!50!white,text=black,rounded corners}]
-% 		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; \tilde{c}_1, \text{W:}\; 1$}{green!50!white};}
-% 		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; \tilde{c}_2, \text{W:}\; 1$}{green!50!white};}
-% 		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; \tilde{c}_3, \text{W:}\; n$}{green!50!white};}
-% 		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; \tilde{c}_4, \text{W:}\; n$}{green!50!white};}
-% 		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; \tilde{c}_5, \text{W:}\; i$}{green!50!white};}
-% 		{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; \tilde{c}_6, \text{W:}\; i$}{green!50!white};}
-% 		{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; \tilde{c}_7, \text{W:}\; i$}{green!50!white};}
-% 		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; \tilde{c}_8, \text{W:}\; i$}{green!50!white};}
-% 		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; \tilde{c}_9, \text{W:}\; n$}{green!50!white};}
-% 		{\drawArrow{c10end}{c10start}{\tiny $\text{K:}\; \tilde{c}_{10}, \text{W:}\; 0$}{green!50!white};}
-% 		{\drawArrow{c11end}{c11start}{\tiny $\text{K:}\; \tilde{c}_{11}, \text{W:}\; 1$}{green!50!white};}
+% 			every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
+% 		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; \tilde{c}_1, \text{W:}\; 1$}{green!35!white};}
+% 		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; \tilde{c}_2, \text{W:}\; 1$}{green!35!white};}
+% 		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; \tilde{c}_3, \text{W:}\; n$}{green!35!white};}
+% 		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; \tilde{c}_4, \text{W:}\; n$}{green!35!white};}
+% 		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; \tilde{c}_5, \text{W:}\; i$}{green!35!white};}
+% 		{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; \tilde{c}_6, \text{W:}\; i$}{green!35!white};}
+% 		{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; \tilde{c}_7, \text{W:}\; i$}{green!35!white};}
+% 		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; \tilde{c}_8, \text{W:}\; i$}{green!35!white};}
+% 		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; \tilde{c}_9, \text{W:}\; n$}{green!35!white};}
+% 		{\drawArrow{c10end}{c10start}{\tiny $\text{K:}\; \tilde{c}_{10}, \text{W:}\; 0$}{green!35!white};}
+% 		{\drawArrow{c11end}{c11start}{\tiny $\text{K:}\; \tilde{c}_{11}, \text{W:}\; 1$}{green!35!white};}
 % 	\end{tikzpicture}
 % \end{frame}
 
