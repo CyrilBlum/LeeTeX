@@ -379,7 +379,7 @@ while running:
             "",
             "Power-Ups:",
             'Gelber Kreis mit "Health +": +25 Leben beim Einsammeln',
-            f"© Cyril Wendl, {datetime.now().year}",
+            f"© Cyril Blum, {datetime.now().year}",
         ]
         pad = 8
         x = 20

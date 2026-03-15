@@ -26,7 +26,7 @@ with connect("school.db") as con:
         VALUES
            ('{}', '{}', {}, {})
     """.format(
-        "Cyril", "Wendl", 20 + 2, "1992-11-07"
+        "Cyril", "Blum", 20 + 2, "1992-11-07"
     )
 
     cursor.execute(sql)

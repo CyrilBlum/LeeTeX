@@ -157,7 +157,7 @@ while running:
             "Rohrwinkel: Pfeil Hoch / Runter",
             "Springen: P",
             "Schiessen: ENTER",
-            f"© Cyril Wendl, {datetime.now().year}",
+            f"© Cyril Blum, {datetime.now().year}",
         ]
         pad = 8
         x = 20
