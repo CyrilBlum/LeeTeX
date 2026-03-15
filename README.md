@@ -37,5 +37,5 @@ Please let the authors know if you'd like to contribute.
 Please let us know if you'd like to use contents of this project or yourself (see email addresses below).
 
 ## Contact
-- [Thomas Graf](mailto:thomas.grf@edu.zh.ch), Kantonsschule Im Lee
-- [Cyril Wendl](mailto:cyril.wendl@edu.zh.ch), Kantonsschule Im Lee
+- [Thomas Graf](mailto:thomas.grf@edu.zh.ch), Kantonsschule Im Lee (KST)
+- [Cyril Blum](mailto:cyril.blum@edu.zh.ch), Kantonsschule Im Lee (KST), Kantonsschule Stadelhofen Filiale Dübendorf (KSTfDü)
