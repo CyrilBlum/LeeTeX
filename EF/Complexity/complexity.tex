@@ -61,11 +61,12 @@
 
 \begin{frame}{Effizienz (Laufzeit) ist eine wichtige Eigenschaft eines Algorithmus}
 	\begin{itemize}[<+->]
-		\item Demonstration: Vergleich der Laufzeiten von \texttt{bubble\_sort} und \texttt{merge\_sort}
+		\item Kollisionserkennung: Unterschied in der Framerate
 		\item Google: Loading times longer than a blink of an eye (or 400 milliseconds) are too long:\\
 		\url{https://current360.com/400-milliseconds-or-the-blink-of-an-eye/}
-		\item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche Computerberechnung des Problems darstellt!
-		\item Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
+		\item Demonstration: Vergleich der Laufzeiten von \texttt{bubble\_sort} und \texttt{merge\_sort}
+		% \item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche Computerberechnung des Problems darstellt!
+		% \item Die Rechner stürzten häufig ab, bevor sie die Berechnung beenden konnten.
 	\end{itemize}
 \end{frame}
 
@@ -161,7 +162,7 @@
 	\end{myanswer}
 \end{frame}
 
-\begin{frame}{Aufgaben auf Moodle}
+\begin{frame}{Aufgaben Teil 1 auf Moodle}
 	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
 	\pause
 	\begin{itemize}
@@ -203,6 +204,14 @@ Welche Frage hat die grösste Mühe bereitet?
 \end{myanswer}
 \end{frame}
 
+\begin{frame}{Aufgaben Teil 2 auf Moodle}
+	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
+	\pause
+	\begin{itemize}
+		\item Lösen Sie die Übungsaufgaben \emph{Laufzeitkomplexität 2} (Bearbeitungszeit: 15 Minuten).
+		\item Bearbeiten Sie die Aufgaben alleine oder zu zweit.
+	\end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} für Problemgrösse $n$, \textcolor{Red}{worst-case}}
 \begin{itemize}[<+->]
@@ -233,6 +242,7 @@ def bubble_sort(A): !\tikzmark{c1end}! 									!\tikzmark{c1start}!
 \end{tikzpicture}
 \pause
 \begin{itemize}[<+->]
+	\item Der \textcolor{Red}{worst-case} liegt vor, wenn die gegebene Liste \textbf{absteigend} sortiert ist (z.B. \lstinline{A = [9, 5, 3, 0]}).
 	\item Im \textcolor{Red}{worst-case} müssen die Elemente in \textbf{jedem} inneren Schleifendurchlauf getauscht werden $\Rightarrow w_6(n) = w_5(n)$.
 	\item Für jeden der $n$ Durchläufe der äusseren Schleife muss im Kopf der inneren Schleife am Ende noch einmal die Abbruch-Bedingung überprüft werden $\Rightarrow w_4(n) = w_5(n) + n$.
 \end{itemize}
@@ -240,7 +250,7 @@ def bubble_sort(A): !\tikzmark{c1end}! 									!\tikzmark{c1start}!
 
 \begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{worst-case}}
 \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/bubble_sort.py}
-Wir müssen die totale Anzahl der Ausführungen von Zeile 5, also $w_5(n)$, bestimmen:
+Wir müssen nun die totale Anzahl der Ausführungen von Zeile 5, also $w_5(n)$, bestimmen:
 \pause
 \begin{itemize}[<+->]
 	\item Wenn \lstinline{i = 0}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n-2} $\Rightarrow$ $(n-1)$ Mal
@@ -257,7 +267,6 @@ Wir erhalten die bekannte Summe:
 \end{align*}
 }
 \end{frame}
-
 
 \begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{worst-case}}
 \begin{itemize}[<+->]
@@ -284,6 +293,46 @@ T_{\text{worst}}(n) &= \underbrace{\lr{\frac{c_4 + c_5 + c_6}{2}}}_{=:\textcolor
 \end{align*}}
 \end{frame}
 
+\begin{frame}[fragile]{Analyse von \texttt{insertion\_sort}}
+	\begin{myexercise}
+		{\small
+		Führen Sie eine vollständige Laufzeitanalyse von \texttt{insertion\_sort} durch:
+		}
+		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort.py},numbers=left]{EF/Complexity/Code/insertion_sort.py}
+	\end{myexercise}
+\end{frame}
+
+
+\begin{frame}[fragile]{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
+\begin{myanswer}
+\begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily,numbers=left]
+def insertion_sort(A): !\tikzmark{c1end}! 						!\tikzmark{c1start}!
+    n = len(A) !\tikzmark{c2end}! 								!\tikzmark{c2start}!
+    for j in range(1, n): !\tikzmark{c3end}! 						!\tikzmark{c3start}!
+        key = A[j] !\tikzmark{c4end}! 							!\tikzmark{c4start}!
+        i = j - 1	!\tikzmark{c5end}! 							!\tikzmark{c5start}!
+		while i >= 0 and A[i] > key: !\tikzmark{c6end}! 			!\tikzmark{c6start}!
+			A[i + 1] =  A[i] !\tikzmark{c7end}! 					!\tikzmark{c7start}!
+		i -= 1 !\tikzmark{c8end}! 								!\tikzmark{c8start}!
+		A[i + 1] = key !\tikzmark{c9end}!	 						!\tikzmark{c9start}!
+    return A !\tikzmark{c10end}!									!\tikzmark{c10start}!
+\end{lstlisting}
+\begin{tikzpicture}[overlay, remember picture,
+        every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
+    % Each arrow will appear one after another on mouse click
+    \only<2->{\drawArrow{c1end}{c1start}{\tiny $w_1(n) = 1$}{green!35!white};}
+    \only<3->{\drawArrow{c2end}{c2start}{\tiny $w_2(n) = 1$}{green!35!white};}
+    \only<4->{\drawArrow{c3end}{c3start}{\tiny $w_3(n) = n$}{green!35!white};}
+    \only<5->{\drawArrow{c4end}{c4start}{\tiny $w_4(n) = n-1$}{green!35!white};}
+    \only<6->{\drawArrow{c5end}{c5start}{\tiny $w_5(n) = n-1$}{green!35!white};}
+    \only<7->{\drawArrow{c6end}{c6start}{\tiny $w_6(n) = ?$}{green!35!white};}
+    \only<8->{\drawArrow{c7end}{c7start}{\tiny $w_7(n) = ?$}{green!35!white};}
+    \only<9->{\drawArrow{c8end}{c8start}{\tiny $w_8(n) = ?$}{green!35!white};}
+    \only<10->{\drawArrow{c9end}{c9start}{\tiny $w_9(n) = ?$}{green!35!white};}
+    \only<11->{\drawArrow{c10end}{c10start}{\tiny $w_{10}(n) = 1$}{green!35!white};}
+\end{tikzpicture}
+\end{myanswer}
+\end{frame}
 
 % \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 % 	\begin{myexercise}
