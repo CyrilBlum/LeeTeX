@@ -177,8 +177,8 @@ Welche Frage hat die grösste Mühe bereitet?
 
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-    \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{anstossen.py},label=listing:anstossen]{EF/Complexity/Code/anstossen.py}
-    
+    \lstinputlisting[basicstyle=\tiny\ttfamily,language=Python,caption=\texttt{anstossen.py},label=listing:anstossen]{EF/Complexity/Code/anstossen.py}
+ 
     Wie oft wird die Funktion \lstinline{print} aufgerufen?
 	\end{myexercise}
 \end{frame}
@@ -296,14 +296,19 @@ T_{\text{worst}}(n) &= \underbrace{\lr{\frac{c_4 + c_5 + c_6}{2}}}_{=:\textcolor
 \begin{frame}[fragile]{Analyse von \texttt{insertion\_sort}}
 	\begin{myexercise}
 		{\small
-		Führen Sie eine vollständige Laufzeitanalyse von \texttt{insertion\_sort} durch:
+		Führen Sie eine vollständige Laufzeitanalyse von \texttt{insertion\_sort} für den \textbf{worst-case} durch:
 		}
 		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort.py},numbers=left]{EF/Complexity/Code/insertion_sort.py}
 	\end{myexercise}
 \end{frame}
 
+\begin{frame}
+	\begin{myanswer}
+		Im worst-case muss jedes Element mit allen vorherigen Elementen verglichen werden. Das Element bei Index $j$ wird $j+1$ Mal in der \lstinline{while}-Bedingung überprüft.
+	\end{myanswer}
+\end{frame}
 
-\begin{frame}[fragile]{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
+\begin{frame}[fragile]
 \begin{myanswer}
 \begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily,numbers=left]
 def insertion_sort(A): !\tikzmark{c1end}! 						!\tikzmark{c1start}!
@@ -313,7 +318,7 @@ def insertion_sort(A): !\tikzmark{c1end}! 						!\tikzmark{c1start}!
         i = j - 1	!\tikzmark{c5end}! 							!\tikzmark{c5start}!
 		while i >= 0 and A[i] > key: !\tikzmark{c6end}! 			!\tikzmark{c6start}!
 			A[i + 1] =  A[i] !\tikzmark{c7end}! 					!\tikzmark{c7start}!
-		i -= 1 !\tikzmark{c8end}! 								!\tikzmark{c8start}!
+			i -= 1 !\tikzmark{c8end}! 							!\tikzmark{c8start}!
 		A[i + 1] = key !\tikzmark{c9end}!	 						!\tikzmark{c9start}!
     return A !\tikzmark{c10end}!									!\tikzmark{c10start}!
 \end{lstlisting}
@@ -325,12 +330,49 @@ def insertion_sort(A): !\tikzmark{c1end}! 						!\tikzmark{c1start}!
     \only<4->{\drawArrow{c3end}{c3start}{\tiny $w_3(n) = n$}{green!35!white};}
     \only<5->{\drawArrow{c4end}{c4start}{\tiny $w_4(n) = n-1$}{green!35!white};}
     \only<6->{\drawArrow{c5end}{c5start}{\tiny $w_5(n) = n-1$}{green!35!white};}
-    \only<7->{\drawArrow{c6end}{c6start}{\tiny $w_6(n) = ?$}{green!35!white};}
-    \only<8->{\drawArrow{c7end}{c7start}{\tiny $w_7(n) = ?$}{green!35!white};}
-    \only<9->{\drawArrow{c8end}{c8start}{\tiny $w_8(n) = ?$}{green!35!white};}
-    \only<10->{\drawArrow{c9end}{c9start}{\tiny $w_9(n) = ?$}{green!35!white};}
+    \only<7->{\drawArrow{c6end}{c6start}{\tiny $w_6(n) = w_7(n) + (n-1)$}{green!35!white};}
+    \only<8->{\drawArrow{c7end}{c7start}{\tiny $w_7(n) = w_7(n)$}{green!35!white};}
+    \only<9->{\drawArrow{c8end}{c8start}{\tiny $w_8(n) = w_7(n)$}{green!35!white};}
+    \only<10->{\drawArrow{c9end}{c9start}{\tiny $w_9(n) = n-1$}{green!35!white};}
     \only<11->{\drawArrow{c10end}{c10start}{\tiny $w_{10}(n) = 1$}{green!35!white};}
 \end{tikzpicture}
+\end{myanswer}
+\end{frame}
+
+\begin{frame}
+\begin{myanswer}
+\begin{align*}
+w_7(n) = 1 + 2 + \ldots + (n-1) = \frac{n(n-1)}{2}
+\end{align*}
+Für jeden der $n-1$ Durchläufe der äusseren Schleife muss im Kopf der \lstinline{while}-Schleife am Ende noch einmal die Abbruch-Bedingung überprüft werden $\Rightarrow w_6(n) = w_7(n) + (n-1)$.
+\end{myanswer}
+\end{frame}
+
+\begin{frame}
+\begin{myanswer}
+Zusammengefasst erhalten wir:
+{\scriptsize
+\begin{align*}
+\tilde{T}_{\text{worst}}(n) &= \tilde{c}_1w_1(n) + \tilde{c}_2w_2(n) + \ldots + \tilde{c}_{10}w_{10}(n) = \sum_{k=1}^{10}\tilde{c}_kw_k(n) = \\
+&= \tilde{c}_1 + \tilde{c}_2 + \tilde{c}_3n + \tilde{c}_4(n-1) + \tilde{c}_5(n-1) +\\
+&+ \tilde{c}_6\lr{\frac{n(n-1)}{2}+n} + \tilde{c}_7\lr{\frac{n(n-1)}{2}} +\\
+&+ \tilde{c}_8\lr{\frac{n(n-1)}{2}} + \tilde{c}_9(n-1) + \tilde{c}_{10}
+\end{align*}
+}
+\end{myanswer}
+\end{frame}
+
+
+\begin{frame}
+\begin{myanswer}
+{\scriptsize
+\begin{align*}
+\tilde{T}_{\text{worst}}(n) = \underbrace{\lr{\frac{\tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8}{2}}}_{=:\textcolor{Red}{\tilde{a}}} n^2 +\\
+&+ \underbrace{\lr{\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_5 + \frac{\tilde{c}_6 - \tilde{c}_7 - \tilde{c}_8}{2} + \tilde{c}_9}}_{=:\textcolor{RoyalBlue}{\tilde{b}}}n +\\
+&+ \underbrace{\lr{\tilde{c}_1 + \tilde{c}_2 - \tilde{c}_4 - \tilde{c}_5 - \tilde{c}_9 + \tilde{c}_{10}}}_{=:\textcolor{ForestGreen}{\tilde{c}}}=\\
+&= \textcolor{Red}{\tilde{a}}n^2 + \textcolor{RoyalBlue}{\tilde{b}} + \textcolor{ForestGreen}{\tilde{c}}
+\end{align*}
+}
 \end{myanswer}
 \end{frame}
 
