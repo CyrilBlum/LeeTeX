@@ -82,6 +82,29 @@ collect_direct_tex_dependencies() {
     done <"$root_tex_file"
 }
 
+# Build a consistent folder name from an input path segment.
+normalize_folder_segment() {
+    local segment="$1"
+    segment="$(echo "$segment" | sed -e 's/Ä/Ae/g' -e 's/Ö/Oe/g' -e 's/Ü/Ue/g' -e 's/ä/ae/g' -e 's/ö/oe/g' -e 's/ü/ue/g' -e 's/ß/ss/g')"
+    segment="$(echo "$segment" | sed -E 's/^[0-9]+_//')"
+    segment="$(echo "$segment" | sed -E 's/[[:space:]]+/_/g')"
+    segment="$(echo "$segment" | sed -E 's/([a-z])([A-Z])/\1_\2/g')"
+    echo "$segment"
+}
+
+# Derive the collection folder from the second path segment for all topics.
+derive_collection_folder() {
+    local input_path="$1"
+    local second_segment
+    second_segment="$(echo "$input_path" | cut -d'/' -f2)"
+
+    if [ -z "$second_segment" ]; then
+        second_segment="$(echo "$input_path" | cut -d'/' -f1)"
+    fi
+
+    normalize_folder_segment "$second_segment"
+}
+
 # Helper to check if PDF exists on remote server using sshpass and ls -l
 remote_pdf_exists() {
     local remote_pdf_path="$1"
@@ -344,6 +367,8 @@ for i in "${!classes[@]}"; do
     for entry in "${topics[@]}"; do
         topic="${entry%%:*}"
         input_path="${entry#*:}"
+        topic_folder="$(normalize_folder_segment "$topic")"
+        collection_folder="$(derive_collection_folder "$input_path")"
         # Extract LEVEL as the first directory in input_path
         LEVEL=$(echo "$input_path" | cut -d'/' -f1)
         # Determine output directory and file names, distinguishing between book variants
@@ -351,30 +376,24 @@ for i in "${!classes[@]}"; do
             # Check if this is the exerciseonly variant
             if echo "$class_command" | grep -q "exerciseonly"; then
                 book_variant="ohne_loesungen"
-                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/Skript_${book_variant}/"
-                output_file="${root_dir}/output_${class}_${book_variant}_${topic// /_}.tex"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic_folder}/Skript_${book_variant}/"
+                output_file="${root_dir}/output_${class}_${book_variant}_${topic_folder}.tex"
             else
                 book_variant="mit_loesungen"
-                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/Skript_${book_variant}/"
-                output_file="${root_dir}/output_${class}_${book_variant}_${topic// /_}.tex"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${topic_folder}/Skript_${book_variant}/"
+                output_file="${root_dir}/output_${class}_${book_variant}_${topic_folder}.tex"
             fi
         elif [ "$class" != "book" ]; then
-            # Group by main topic after Grundlagen_Info/ for beamer
+            # Group all beamer outputs by a single generic path rule.
             if [ "$class" = "beamer" ]; then
-                # Extract main topic (e.g. Programmieren, Theoretische Informatik, etc.)
-                main_topic=$(echo "$input_path" | sed -E 's|Grundlagen_Info/([^/]+)/.*|\1|' | sed -E 's/^[0-9_]+//')
-                # Convert CamelCase to "Camel Case"
-                main_topic=$(echo "$main_topic" | sed -E 's/([a-z])([A-Z])/\1 \2/g')
-                # Convert ASCII umlauts to actual umlauts
-                main_topic=$(echo "$main_topic" | sed -e 's/ae/ä/g' -e 's/oe/ö/g' -e 's/ue/ü/g' -e 's/Ae/Ä/g' -e 's/Oe/Ö/g' -e 's/Ue/Ü/g')
-                latex_dir="${root_dir}/PDFs/${LEVEL}/${main_topic}/Slides/${topic}/"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${collection_folder}/Slides/${topic_folder}/"
             else
-                latex_dir="${root_dir}/PDFs/${LEVEL}/${class}/${topic}/"
+                latex_dir="${root_dir}/PDFs/${LEVEL}/${class}/${topic_folder}/"
             fi
-            output_file="${root_dir}/output_${class}_${topic// /_}.tex"
+            output_file="${root_dir}/output_${class}_${topic_folder}.tex"
         else
-            latex_dir="${root_dir}/PDFs/${LEVEL}/${topic}/${class}/"
-            output_file="${root_dir}/output_${class}_${topic// /_}.tex"
+            latex_dir="${root_dir}/PDFs/${LEVEL}/${topic_folder}/${class}/"
+            output_file="${root_dir}/output_${class}_${topic_folder}.tex"
         fi
         mkdir -p "$latex_dir"
 
@@ -400,11 +419,11 @@ for i in "${!classes[@]}"; do
         # Determine expected PDF name and remote path for remote existence check
         pdf_name="$(basename "$output_file" .tex).pdf"
         if [ "$class" = "book" ]; then
-            remote_pdf_path="web/PDFs/${LEVEL}/${topic}/Skript_${book_variant}/$pdf_name"
+            remote_pdf_path="web/PDFs/${LEVEL}/${topic_folder}/Skript_${book_variant}/$pdf_name"
         elif [ "$class" = "beamer" ]; then
-            remote_pdf_path="web/PDFs/${LEVEL}/${main_topic}/Slides/${topic}/$pdf_name"
+            remote_pdf_path="web/PDFs/${LEVEL}/${collection_folder}/Slides/${topic_folder}/$pdf_name"
         else
-            remote_pdf_path="web/PDFs/${LEVEL}/${class}/${topic}/$pdf_name"
+            remote_pdf_path="web/PDFs/${LEVEL}/${class}/${topic_folder}/$pdf_name"
         fi
 
         # Only build if the topic's input_path matches a changed file or PDF is missing on remote
