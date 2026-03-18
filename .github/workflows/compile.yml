@@ -24,12 +24,14 @@ jobs:
       - name: Echo test
         run: echo "Runner is alive!"
 
-  # This workflow contains a single job called "compile", which compiles all TeX files and sends them to a server folder via rsync
-  compile:
-    name: Compile TeX files
+  # Prepares repository state and determines changed files once for all compile jobs
+  prepare-compile:
+    name: Prepare compile context
     # The type of runner that the job will run on
     runs-on: self-hosted
     needs: [test-runner]
+    outputs:
+      changed_files: ${{ steps.changed_files.outputs.files }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -93,20 +95,77 @@ jobs:
           fi
           echo "files=$(cat changed_files.txt)" >> $GITHUB_OUTPUT
         fi
-    # Runs compile_tex.sh per document class
+  compile-book:
+    name: Compile TeX files (book)
+    runs-on: self-hosted
+    needs: [prepare-compile]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Ensure latest version
+      shell: bash
+      run: |
+        git fetch --all
+        git reset --hard origin/main
+
     - name: Compile book
       shell: bash
       run: |
-        mkdir PDFs
-        ./compile_tex.sh "${{ steps.changed_files.outputs.files }}" "book"
+        mkdir -p PDFs
+        ./compile_tex.sh "${{ needs.prepare-compile.outputs.changed_files }}" "book"
+
+    - name: Upload likely culprit file
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: last_failed_file
+        path: last_failed_file.txt
+        if-no-files-found: ignore
+
+  compile-article:
+    name: Compile TeX files (article)
+    runs-on: self-hosted
+    needs: [compile-book, prepare-compile]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Ensure latest version
+      shell: bash
+      run: |
+        git fetch --all
+        git reset --hard origin/main
 
     - name: Compile article
       shell: bash
-      run: ./compile_tex.sh "${{ steps.changed_files.outputs.files }}" "article"
+      run: ./compile_tex.sh "${{ needs.prepare-compile.outputs.changed_files }}" "article"
+
+    - name: Upload likely culprit file
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: last_failed_file
+        path: last_failed_file.txt
+        if-no-files-found: ignore
+
+  compile-beamer:
+    name: Compile TeX files (beamer)
+    runs-on: self-hosted
+    needs: [compile-article, prepare-compile]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Ensure latest version
+      shell: bash
+      run: |
+        git fetch --all
+        git reset --hard origin/main
 
     - name: Compile beamer
       shell: bash
-      run: ./compile_tex.sh "${{ steps.changed_files.outputs.files }}" "beamer"
+      run: ./compile_tex.sh "${{ needs.prepare-compile.outputs.changed_files }}" "beamer"
 
     - name: Upload likely culprit file
       if: failure()
@@ -118,7 +177,7 @@ jobs:
   notify:
     name: Send email if anything fails
     runs-on: ubuntu-latest
-    needs: [test-runner, compile]
+    needs: [test-runner, prepare-compile, compile-book, compile-article, compile-beamer]
     if: failure()
     steps:
       - name: Download likely culprit file
@@ -177,7 +236,7 @@ jobs:
   notify-success:
     name: Send email on success
     runs-on: ubuntu-latest
-    needs: [test-runner, compile]
+    needs: [test-runner, prepare-compile, compile-book, compile-article, compile-beamer]
     if: success()
     steps:
       - name: Send email
