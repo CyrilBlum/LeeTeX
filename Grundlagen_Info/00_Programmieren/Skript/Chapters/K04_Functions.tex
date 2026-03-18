@@ -194,7 +194,7 @@ t.done()
 
 \section{Parameter}\label{sec:Parameter}
 
-Stellen Sie sich vor, sie wollen drei unterschiedlich grosse Quadrate zeichnen. Sie könnten folgendermassen vorgehen:
+Stellen Sie sich vor, Sie wollen drei unterschiedlich grosse Quadrate zeichnen. Sie könnten folgendermassen vorgehen:
 
 \lstinputlisting[language=Python,caption=\texttt{squares\_noparams.py},label=listing:squares_noparams]{Grundlagen_Info/00_Programmieren/Skript/Code/K04_Functions/squares_noparams.py}
 
@@ -292,7 +292,7 @@ In folgendem Beispiel kann nicht nur die Anzahl Ecken, sondern auch die Farbe ei
 \subsection{Lebensdauer (\textit{scope}) einer Variablen}
 Im Code aus \cref{ex:params} wird bei \textit{jedem Aufruf} der Definition \lstinline|quadrat| eine neue Variable \texttt{laenge} erstellt, welche nur \textit{innerhalb} der Funktion existiert und welche jedes Mal einen anderen Wert hat. Den Wert erhält die Variable zum Zeitpunkt des \textit{Aufrufs} der Funktion, also auf den Zeilen 8, 9 und 10!
 
-Die Variable \lstinline|laenge| existiert also nur innerhalb der Definition \lstinline|quadrat|. Wenn wir nach Zeile 6 im Hauptprogramm (nicht eingerückt) den Befehl \lstinline|print(laenge)| eingeben würden, würden wir eine Fehlermeldung erhalten, da es die Variable nicht mehr gibt. Parameter sind also immer \textbf{\textit{lokale} Variablen}, ebenso wie Variablen, welche wir innerhalb von Funktion erstellen. Diese Variablen \enquote{sterben} nach Ausführung der Definition, daher spricht man auch von der Lebensdauer einer Variable, bzw. von deren Reichweite (Englisch: \textit{scope})
+Die Variable \lstinline|laenge| existiert also nur innerhalb der Definition \lstinline|quadrat|. Wenn wir nach Zeile 6 im Hauptprogramm (nicht eingerückt) den Befehl \lstinline|print(laenge)| eingeben würden, würden wir eine Fehlermeldung erhalten, da es die Variable nicht mehr gibt. Parameter sind also immer \textbf{\textit{lokale} Variablen}, ebenso wie Variablen, welche wir innerhalb von Funktionen erstellen. Diese Variablen \enquote{sterben} nach Ausführung der Definition, daher spricht man auch von der Lebensdauer einer Variable, bzw. von deren Reichweite (Englisch: \textit{scope}).
 
 Variablen, welche im Hauptprogramm (nicht eingerückt) erstellt werden, sind sogenannte \textbf{\textit{globale} Variablen}.
 
@@ -325,7 +325,7 @@ Wie Sie bereits wissen, können Definitionen mit Kochrezepten verglichen werden:
 
 Dies kann nützlich sein, wenn sie eine Aufgabe mehrmals und in unterschiedlichen Varianten ausführen wollen, wie beispielsweise in \cref{ex:multiple-params}.
 
-Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen und im Terminal ausgeben konnten, allerdings verschwinden alle Parameter und lokalen Variablen nach der Ausführung einer Funktion.  Dies bedeutet, dass alle Variablen, die wir je in einer Definition erstellt haben, nur in dieser Definition \enquote{lebten}. Wir konnten jedoch nicht mehr auf Parameter oder lokale Variablen zugreifen, nachdem das Programm beendet wurde.
+Eine wichtige Limitation von Definitionen war bisher, dass Sie zwar Dinge berechnen und im Terminal ausgeben konnten, allerdings verschwinden alle Parameter und lokalen Variablen nach der Ausführung einer Funktion.  Dies bedeutet, dass alle Variablen, die wir je in einer Definition erstellt haben, nur in dieser Definition \enquote{lebten}. Wir konnten jedoch nicht mehr auf Parameter oder lokale Variablen zugreifen, nachdem die Funktion beendet wurde.
 
 \begin{myexample}\label{ex:sum-noreturn}
 Betrachten Sie folgenden Code. Weshalb führt er zu einer Fehlermeldung?
@@ -341,7 +341,7 @@ Das Terminal gibt folgende Meldung aus: \texttt{[Zeile: 5] NameError: name 'summ
 
 Funktionen können jedoch auch Werte an das Hauptprogramm zurückgeben: In diesem Kapitel lernen wir, wie Funktionen, ähnlich wie \enquote{Sous-Chefs} (Hilfs-Köche) in einer komplexen Küche Zutaten (Parameter) entgegennehmen und Resultate an andere \enquote{Sous-Chefs} (Funktionen) via das Hauptprogramm weitergeben werden können.
 
-Eine Funktion kann man sich vorstellen wie ein Kochrezept, das einige Zutaten entgegennimmt und ein Resultat (Gericht) zurückgibt. Die Zutaten, oder \enquote{Inputs}, werden dabei häufig als \enquote{\textbf{Parameter}} bezeichnet, währenddem das fertige Gericht, oder \enquote{Resultat} häufig als \enquote{\textbf{\lstinline|return|-Wert}} bezeichnet wird. Diese Idee ist in \cref{fig:funktion-einzeln}) veranschaulicht.
+Eine Funktion kann man sich vorstellen wie ein Kochrezept, das einige Zutaten entgegennimmt und ein Resultat (Gericht) zurückgibt. Die Zutaten, oder \enquote{Inputs}, werden dabei häufig als \enquote{\textbf{Parameter}} bezeichnet, währenddem das fertige Gericht, oder \enquote{Resultat} häufig als \enquote{\textbf{\lstinline|return|-Wert}} bezeichnet wird. Diese Idee ist in \cref{fig:funktion-einzeln} veranschaulicht.
 
 \begin{figure}[H]
 	\centering
@@ -382,7 +382,7 @@ print(res)
 \end{figure}
 
 \begin{myattention}
-	Man muss sich diesen Code wie folgt vorstellen: Auf Zeile 7 wird die Funktion \lstinline|summiere| aufgerufen, die Werte 3 und 5 werden für die Parameter \lstinline|x1| und \lstinline|x2| übergeben. Zeile 2 berechnet nun die Summe dieser beiden Werte. Auf Zeile 3 wird \textcolor{red}{nicht} die Variable \lstinline|summe| an das Hauptprogramm zurückgegeben, sondern deren Wert (in diesem Fall: 8). Dies ist sehr wichtig: Nur weil wir \lstinline|return summe| schreiben, heisst dass nicht, dass wir ausserhalb der Funktion \lstinline|summiere| auf eine Variable \lstinline|summe| zugreifen können. Vielmehr kann man sich vorstellen, dass der blau markierte Bereich auf Zeile 7 nun \enquote{ersetzt} wird durch den Wert 8, welcher vom Unterprogramm an das Hauptprogramm zurückgegeben wird. Zeile 7 liest sich also nach der Ausführung des Unterprogramms so als ob man \lstinline|res = 8| geschrieben hätte. Man könnte selbstverständlich auch einen anderen Variablenname statt \lstinline|res| auswählen, z.B. \lstinline|x|, \lstinline|y|, \lstinline|resultat| (kurz  \lstinline|res|) oder einfach \lstinline|summe|. In letzterem Falle wäre \lstinline|summe| auf Zeile 7 eine globale Variable und somit gänzlich unterschiedlich von der lokalen Variable \lstinline|summe| auf Zeile 2.
+	Man muss sich diesen Code wie folgt vorstellen: Auf Zeile 7 wird die Funktion \lstinline|summiere| aufgerufen, die Werte 3 und 5 werden für die Parameter \lstinline|x1| und \lstinline|x2| übergeben. Zeile 2 berechnet nun die Summe dieser beiden Werte. Auf Zeile 3 wird \textcolor{red}{nicht} die Variable \lstinline|summe| an das Hauptprogramm zurückgegeben, sondern deren Wert (in diesem Fall: 8). Dies ist sehr wichtig: Nur weil wir \lstinline|return summe| schreiben, heisst das nicht, dass wir ausserhalb der Funktion \lstinline|summiere| auf eine Variable \lstinline|summe| zugreifen können. Vielmehr kann man sich vorstellen, dass der blau markierte Bereich auf Zeile 7 nun \enquote{ersetzt} wird durch den Wert 8, welcher vom Unterprogramm an das Hauptprogramm zurückgegeben wird. Zeile 7 liest sich also nach der Ausführung des Unterprogramms so als ob man \lstinline|res = 8| geschrieben hätte. Man könnte selbstverständlich auch einen anderen Variablenname statt \lstinline|res| auswählen, z.B. \lstinline|x|, \lstinline|y|, \lstinline|resultat| (kurz  \lstinline|res|) oder einfach \lstinline|summe|. In letzterem Falle wäre \lstinline|summe| auf Zeile 7 eine globale Variable und somit gänzlich unterschiedlich von der lokalen Variable \lstinline|summe| auf Zeile 2.
 \end{myattention}
 \end{myexample}
 
@@ -402,7 +402,7 @@ print(res)
 \end{myexercise}
 
 \begin{myexercise}\label{ex:quadrat-return}
-	Geben sei eine ganze Zahl \(n\). Schreiben Sie eine Funktion \lstinline|square(n)|, welche das Quadrat von \(n\) berechnet und mit \lstinline|return| zurückgibt. Testen Sie die Funktion mit dem Wert 5, speichern Sie das Resultat in einer Variable \lstinline|result| und geben Sie deren Wert per \lstinline|print| \textit{nach dem Funktionsaufruf} (im Hauptprogramm) aus.
+	Gegeben sei eine ganze Zahl \(n\). Schreiben Sie eine Funktion \lstinline|square(n)|, welche das Quadrat von \(n\) berechnet und mit \lstinline|return| zurückgibt. Testen Sie die Funktion mit dem Wert 5, speichern Sie das Resultat in einer Variable \lstinline|result| und geben Sie deren Wert per \lstinline|print| \textit{nach dem Funktionsaufruf} (im Hauptprogramm) aus.
 
 	Überprüfen Sie die Korrektheit Ihrer Funktion, indem Sie sie auf Moodle hochladen.
 	\begin{myanswer}
@@ -477,7 +477,7 @@ Stellen Sie sich vor, Sie arbeiten für einen Supermarkt und sollten den Preis I
 Folgender Code berechnet den Endpreis, für den Sie ihre Waren verkaufen werden, indem folgende zwei Funktionen aufgerufen werden:
 \begin{enumerate}
 	\item \lstinline|berechne_rabatt| berechnet den Preis nach Abzug eines Rabatts für ein Produkt.
-	\item \lstinline|berechnet_gesamtpreis| ruft \lstinline|berechne_rabatt| auf und fügt zum rabattierten Preis die Mehrwertsteuer hinzu.
+	\item \lstinline|berechne_gesamtpreis| ruft \lstinline|berechne_rabatt| auf und fügt zum rabattierten Preis die Mehrwertsteuer hinzu.
 \end{enumerate}
 
 \begin{minipage}{\linewidth}
@@ -575,7 +575,7 @@ def notenskala(maxPunkte, erreichtePunkte):
 \end{myexercise}
 
 \begin{myexercise}[Boxenstopp \emoji{fuelpump}]
-	Ein Formel-1-Rennteam möchte die Gesamtzeit eines Rennens inklusive Boxenstopps berechnen. Gegeben sind die Gesamtstrecke in Km, die Durchschnittsgeschindigkeit in Km/h, die Anzahl Stopps sowie die Dauer pro Stopp in Sekunden.
+	Ein Formel-1-Rennteam möchte die Gesamtzeit eines Rennens inklusive Boxenstopps berechnen. Gegeben sind die Gesamtstrecke in Kk, die Durchschnittsgeschwindigkeit in km/h, die Anzahl Stopps sowie die Dauer pro Stopp in Sekunden.
 
 	Schreiben Sie zwei Funktionen:
 
@@ -583,7 +583,7 @@ def notenskala(maxPunkte, erreichtePunkte):
 
 	\lstinline|def gesamtzeit(strecke, kmh, stopps, stoppdauer)|: Berechnet zuerst die Fahrzeit ohne Stopps (mit der ersten Funktion) und berechnet dann die Gesamtzeit mit Stopps, indem zur Fahrzeit ohne Stopps die Anzahl Boxenstopps mal die Dauer eines Boxenstopps (in Sekunden) hinzugefügt wird. Das Resultat soll ebenfalls per \lstinline|return| zurückgegeben werden.
 
-	Formel 1: Fahrzeit (Sekunden) = Strecke (Km) / Geschindigkeit (Km/h) * 3600
+	Formel 1: Fahrzeit (Sekunden) = Strecke (km) / Geschindigkeit (km/h) * 3600
 
 	Formel 2: Gesamtzeit (Sekunden) = Fahrzeit + (Anzahl Stopps $\times$ Stoppdauer)
 
