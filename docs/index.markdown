@@ -1,12 +1,13 @@
 ---
 layout: home
 title: LeeTeX Docs
+nav_exclude: true
 ---
 
 # LeeTeX Documentation
 
 Welcome!
 
-- [Installation]({{ '/installation/' | relative_url }})
+- [Skripte und Slides]({{ '/compiled-files/' | relative_url }})
 - [VS Code + Python Setup]({{ '/vscode-python-setup/' | relative_url }})
-- [Usage]({{ '/usage/' | relative_url }})
+- [About]({{ '/about/' | relative_url }})
