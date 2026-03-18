@@ -9,6 +9,11 @@
 
 LeeTeX collects educational resources sharing a common typesetting setup.
 
+## GitHub Page
+
+The project documentation is available on GitHub Pages:
+https://cyrilblum.github.io/LeeTeX/
+
 ## Compiling LeeTeX
 
 To compile this project, navigate to `main.tex` and chose to run either a `book`, `article`, `exam`, `beamer` or `flashcard` documentclass, using the toggles. Uncomment a line to compile a certain project. 
@@ -37,5 +42,5 @@ Please let the authors know if you'd like to contribute.
 Please let us know if you'd like to use contents of this project or yourself (see email addresses below).
 
 ## Contact
-- [Thomas Graf](mailto:thomas.grf@edu.zh.ch), Kantonsschule Im Lee (KST)
-- [Cyril Blum](mailto:cyril.blum@edu.zh.ch), Kantonsschule Im Lee (KST), Kantonsschule Stadelhofen Filiale Dübendorf (KSTfDü)
+- [Thomas Graf](mailto:thomas.grf@edu.zh.ch), Kantonsschule Im Lee (KLW)
+- [Cyril Blum](mailto:cyril.blum@edu.zh.ch), Kantonsschule Im Lee (KLW), Kantonsschule Stadelhofen Filiale Dübendorf (KSTfDü)
