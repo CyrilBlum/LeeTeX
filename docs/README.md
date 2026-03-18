@@ -1,0 +1,1 @@
+This is the folder for github pages, which can be accessed through cyrilblum.github.io/leetex.

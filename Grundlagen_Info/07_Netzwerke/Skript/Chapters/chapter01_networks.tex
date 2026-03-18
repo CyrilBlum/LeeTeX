@@ -1083,7 +1083,7 @@ Die Daten, die zwischen zwei Computern übertragen werden, werden häufig auch a
 Einige der wichtigsten Metadaten sind:
 
 \begin{itemize}
-	\item \textbf{Der Port} (von engl. \textit{port} = Hafen): Dies ist eine Zahl, mit der der Computer weiss, welche Anwendung (z.B. Mail, Browser, Gaming-Programm etc.) Daten verschickt. Ein Computer kann, wie Sie vermutlich wissen, gleichzeitig über mehrere Programme Daten von anderen Computern empfangen und an sie schicken: sie können beispielsweise gleichzeitig eine Nachricht über WhatsApp schicken und ein Video schauen. Damit der Computer weiss, welche Anwendung die Daten verschickt, verseht er die Daten typischerweise mit einem Port. Obschon Ports für jedes Programm frei gewählt werden können, werden für bekannte Protokolle typischerweise Standard-Portnummern verwendet (siehe \cref{tab:tcpPorts}).
+	\item \textbf{Der Port} (von engl. \textit{port} = Hafen): Dies ist eine Zahl, mit der der Computer weiss, welche Anwendung (z.B. Mail, Browser, Gaming-Programm etc.) Daten verschickt. Ein Computer kann, wie Sie vermutlich wissen, gleichzeitig über mehrere Programme Daten von anderen Computern empfangen und an sie schicken: sie können beispielsweise gleichzeitig eine Nachricht über WhatsApp schicken und ein Video schauen. Damit der Computer weiss, welche Anwendung die Daten verschickt, versieht er die Daten typischerweise mit einem Port. Obschon Ports für jedes Programm frei gewählt werden können, werden für bekannte Protokolle typischerweise Standard-Portnummern verwendet (siehe \cref{tab:tcpPorts}).
 	      \begin{table}[H]
 		      \centering
 		      \begin{tabular}{c||c|c}
@@ -1107,7 +1107,7 @@ Einige der wichtigsten Metadaten sind:
 		      \label{tab:tcpPorts}
 	      \end{table}
 	      Sowohl der \textit{Client} wie auch der \textit{Server} versehen die Daten mit jeweils einer Zahl, die für den Ursprungs-Port (\textit{Source Port}), respektive den Ziel-Port (\textit{Destination Port}) stehen.
-	\item \textbf{Ziffern} für die \textit{Sequence} (Sequenz) und \textit{Acknowledgement} (Anerkennung) von Paketen, die die richtige Reihenfolge der gesendeten und erhaltenen Daten gerantieren.
+	\item \textbf{Ziffern} für die \textit{Sequence} (Sequenz) und \textit{Acknowledgement} (Anerkennung) von Paketen, die die richtige Reihenfolge der gesendeten und erhaltenen Daten garantieren.
 	\item Weitere Daten, die für den Transport notwendig sind.
 \end{itemize}
 
@@ -1139,7 +1139,7 @@ Folgende Schritte des Drei-Wege-Handschlags werden in \cref{fig:threewayHandshak
 \begin{enumerate}
 	\item \textbf{Schritt 1 (\texttt{SYN}):} Computer A (\textit{Client}, \texttt{10.0.0.1}) möchte eine Verbindung zu Computer B (\textit{Server}, \texttt{10.0.0.2}) aufbauen und sendet deshalb ein \gls{TCP}-Segment mit gesetztem \texttt{SYN}-Flag. Damit signalisiert der Client, dass er die Kommunikation starten möchte, und teilt zugleich mit, mit welcher initialen Sequenznummer (\texttt{SEQ}) er seine Segmente nummeriert.
 	\item \textbf{Schritt 2 (\texttt{SYN + ACK}):} Computer B antwortet auf die Anfrage mit einem Segment, bei dem \texttt{SYN} und \texttt{ACK} gesetzt sind. Das \texttt{ACK}-Flag bestätigt den Empfang des vorherigen Segments von Computer A (inklusive dessen Sequenznummer plus 1), und das \texttt{SYN}-Flag gibt an, mit welcher eigenen initialen Sequenznummer der Server seine Segmente starten wird.
-	\item \textbf{Schritt 3 (\texttt{}ACK):} Computer A bestätigt diese Antwort abschliessend mit einem Segment mit gesetztem \texttt{ACK}-Flag. Damit ist der Verbindungsaufbau abgeschlossen: Beide Computer haben die Start-Sequenznummern synchronisiert und können nun über eine zuverlässige \gls{TCP}-Verbindung mit dem eigentlichen Datentransfer beginnen.
+	\item \textbf{Schritt 3 (\texttt{ACK}):} Computer A bestätigt diese Antwort abschliessend mit einem Segment mit gesetztem \texttt{ACK}-Flag. Damit ist der Verbindungsaufbau abgeschlossen: Beide Computer haben die Start-Sequenznummern synchronisiert und können nun über eine zuverlässige \gls{TCP}-Verbindung mit dem eigentlichen Datentransfer beginnen.
 \end{enumerate}
 Somit ist die \gls{TCP}-Verbindung ist nun erstellt und die beiden Maschinen können miteinander kommunizieren. Die Sequenznummern werden im Folgenden immer nach folgender Logik erhöht:
 
@@ -1358,7 +1358,7 @@ Wir können den Ablauf einer Abfrage etwas detaillierter aufzeigen, indem wir ei
 
 		% nodes for server
 		\node[entity, right=of browserStart] (serverStart) {Interpretiert die Anfrage und sucht die Dateien};
-		\node[entity, right=of browserEnd] (serverEnd) {Sendet den Status der Suche und die Datein der Webseite};
+		\node[entity, right=of browserEnd] (serverEnd) {Sendet den Status der Suche und die Dateien der Webseite};
 		% Draw a 2D rectangle around the users
 		\node[fit=(serverStart) (serverEnd), inner sep=4pt, red, text=black, dotted, draw, line width=1pt,rounded corners](server) {Web Server\\ \faServer};
 
@@ -1400,16 +1400,16 @@ Damit der User die Nachricht jedoch tatsächlich erhält, müssen noch einige we
 \begin{myremark}[\gls{HTTP} vs \gls{HTTPS}]
 	\gls{HTTP} steht für \textbf{Hypertext Transfer Protocol} und ist das grundlegende Protokoll, das für die Übertragung von Webseiten im Internet verwendet wird. Es definiert, wie Nachrichten formatiert und übertragen werden und wie Webserver und Browser auf verschiedene Befehle reagieren sollen.
 
-	\gls{HTTPS} steht für \textbf{Hypertext Transfer Protocol Secure} und ist eine sichere Version von \gls{HTTP}. Der Hauptunterschied zwischen \gls{HTTP} und \gls{HTTPS} besteht darin, dass \gls{HTTPS} eine Verschlüsselungsschicht (meistens \gls{TLS}) hinzufügt, um die Kommunikation zwischen dem Browser und dem Webserver zu schützen. Dies stellt sicher, dass die übertragenen Daten nicht von Dritten abgefangen oder manipuliert werden können, was besonders wichtig ist, wenn sensible Informationen wie Passwörter oder Kreditkartendaten übertragen werden. Nur weil Webseiten verschlüsselt übertragen werden, sind sie aber nicht automatisch sicher -- die Webseite selber kann immer noch Schadcode enthalten oder unsichere Praktiken verwenden. Daher ist in den letzten Jahren auch das Schlösschen-Symbol aus der Adressleite des Browsers verschwunden, da es fälschlicherweise suggeriert hat, dass die Webseite sicher sei.
+	\gls{HTTPS} steht für \textbf{Hypertext Transfer Protocol Secure} und ist eine sichere Version von \gls{HTTP}. Der Hauptunterschied zwischen \gls{HTTP} und \gls{HTTPS} besteht darin, dass \gls{HTTPS} eine Verschlüsselungsschicht (meistens \gls{TLS}) hinzufügt, um die Kommunikation zwischen dem Browser und dem Webserver zu schützen. Dies stellt sicher, dass die übertragenen Daten nicht von Dritten abgefangen oder manipuliert werden können, was besonders wichtig ist, wenn sensible Informationen wie Passwörter oder Kreditkartendaten übertragen werden. Nur weil Webseiten verschlüsselt übertragen werden, sind sie aber nicht automatisch sicher -- die Webseite selber kann immer noch Schadcode enthalten oder unsichere Praktiken verwenden. Daher ist in den letzten Jahren auch das Schlösschen-Symbol aus der Adressleiste des Browsers verschwunden, da es fälschlicherweise suggeriert hat, dass die Webseite sicher sei.
 \end{myremark}
 
 \subsection{\texorpdfstring{\gls{DNS}-Server}{DNS-Server}}
-Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer Webseiten, aus der Angabe eines Servers und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels dem \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (siehe \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontakteliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswending merken müssen, ist eine \gls{DNS} essentiell eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Datein speichern. Ein Beispiel einer solchen Tabelle ist in \cref{tab:dnsEntries} gezeigt.
+Wie wir bereits gesehen haben, besteht eine \gls{URL}, also eine Adresse einer Webseite, aus der Angabe eines Servers und einem Dateipfad. Diese Datei fordert der Client von einem Server mittels \gls{HTTP}- oder \gls{HTTPS}-Protokoll an (siehe \cref{fig:http-request}). Allerdings möchte man sich nicht für jeden Server die IP-Adresse merken müssen: ähnlich Ihrer Kontaktliste auf dem Mobiltelefon, welche dazu dient, dass Sie sich nicht alle Telefonnummern auswendig merken müssen, ist ein \gls{DNS} im Wesentlichen eine Liste von merkbaren Webseiten-Namen (wie beispielsweise \texttt{sbb.ch}) und deren dazugehörigen \gls{IP}-Adressen, also den \gls{IP}-Adressen der Server, die die Webseiten-Dateien speichern. Ein Beispiel einer solchen Tabelle ist in \cref{tab:dnsEntries} gezeigt.
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c|c}
-		\textbf{Domain Name} & \textbf{IP-Addresse} \\
+		\textbf{Domain Name} & \textbf{IP-Adresse} \\
 		\midrule\midrule
 		\texttt{beispiel.ch} & 192.168.0.11         \\
 		\midrule
