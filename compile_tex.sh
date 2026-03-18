@@ -1,6 +1,21 @@
 #!/bin/bash
 # At the top of compile_tex.sh
 CHANGED_FILES_CSV="$1"
+CLASS_FILTER="$2"
+
+if [ -n "$CLASS_FILTER" ]; then
+    case "$CLASS_FILTER" in
+        book|article|beamer)
+            echo "::notice::Running compile_tex.sh with class filter: $CLASS_FILTER"
+            ;;
+        *)
+            echo "::error::Invalid class filter '$CLASS_FILTER'. Allowed values: book, article, beamer"
+            exit 1
+            ;;
+    esac
+else
+    echo "::notice::Running compile_tex.sh for all document classes."
+fi
 
 # Parse changed files into an array (if provided)
 IFS=',' read -r -a CHANGED_FILES <<<"$CHANGED_FILES_CSV"
@@ -311,6 +326,11 @@ fi
 # Loop over each document class
 for i in "${!classes[@]}"; do
     class="${classes[$i]}"
+
+    if [ -n "$CLASS_FILTER" ] && [ "$class" != "$CLASS_FILTER" ]; then
+        continue
+    fi
+
     toggle="${toggles[$i]}"
     class_command="${class_commands[$i]}"
     topics_var="${class}_topics[@]"
@@ -468,4 +488,8 @@ for i in "${!classes[@]}"; do
     done
 done
 
-echo "::notice::Compilation of all document types complete."
+if [ -n "$CLASS_FILTER" ]; then
+    echo "::notice::Compilation complete for document class: $CLASS_FILTER"
+else
+    echo "::notice::Compilation of all document types complete."
+fi

@@ -93,12 +93,21 @@ jobs:
           fi
           echo "files=$(cat changed_files.txt)" >> $GITHUB_OUTPUT
         fi
-    # Runs the compile_tex.sh script
-    - name: Run compile_tex.sh
+    # Runs compile_tex.sh per document class
+    - name: Compile book
       shell: bash
       run: |
         mkdir PDFs
-        ./compile_tex.sh "${{ steps.changed_files.outputs.files }}"
+        ./compile_tex.sh "${{ steps.changed_files.outputs.files }}" "book"
+
+    - name: Compile article
+      shell: bash
+      run: ./compile_tex.sh "${{ steps.changed_files.outputs.files }}" "article"
+
+    - name: Compile beamer
+      shell: bash
+      run: ./compile_tex.sh "${{ steps.changed_files.outputs.files }}" "beamer"
+
     - name: Upload likely culprit file
       if: failure()
       uses: actions/upload-artifact@v4
