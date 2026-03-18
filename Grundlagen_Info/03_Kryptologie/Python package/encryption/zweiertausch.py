@@ -9,8 +9,7 @@ def zweiertausch(klartext):
         # Klartexte ungerader Länge
         geheimtext += klartext[len(klartext) - 1]
 
-
-print(geheimtext)
+    print(geheimtext)
 
 # Verwendung:
 # zweiertausch("KANTONSSCHULE")
