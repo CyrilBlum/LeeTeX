@@ -39,6 +39,7 @@
 
 \begin{frame}{Diskussion im Plenum}
 	Welche Aspekte eines Algorithmus könnten uns (neben seiner Korrektheit) noch interessieren?
+	\pause
 	\begin{itemize}[<+->]
 		\item Eleganz?
 		\item Effizienz?
@@ -170,13 +171,64 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Besprechung der Aufgaben}
-Welche Frage hat die grösste Mühe bereitet?
+\begin{frame}[fragile]{Typisches Problem: \enquote{alle mit allen}}
+	\begin{itemize}[<+->]
+		\item Stellen Sie sich vor, $n$ Personen stossen bei einem Fest miteinander an.
+		\item Jede Person stösst mit jeder anderen Person \textbf{genau einmal} an.
+		\item Wie viele \enquote{Kling}-Geräusche (Begegnungen) gibt es insgesamt?
+	\end{itemize}
+	\pause
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=0.8]
+			\foreach \i in {1,...,5} {
+				\node[circle,fill=RoyalBlue!20,draw=RoyalBlue,thick,minimum size=0.6cm] (p\i) at ({72*(\i-1)+90}:2cm) {\tiny \i};
+			}
+			\only<4>{
+				\foreach \i in {1,...,4} {
+					\pgfmathtruncatemacro{\nextj}{\i+1}
+					\foreach \j in {\nextj,...,5} {
+						\draw[gray!30,thin] (p\i) -- (p\j);
+					}
+				}
+			}
+			\only<5>{
+				\draw[Red,thick] (p1) -- (p2);
+				\draw[Red,thick] (p1) -- (p3);
+				\draw[Red,thick] (p1) -- (p4);
+				\draw[Red,thick] (p1) -- (p5);
+				\node[anchor=west] at (2.5,1) {\textcolor{Red}{Person 1: $n-1$ Anstösse}};
+			}
+			\only<6>{
+				\foreach \j in {2,3,4,5} \draw[gray!30,thin] (p1) -- (p\j);
+				\draw[Orange,thick] (p2) -- (p3);
+				\draw[Orange,thick] (p2) -- (p4);
+				\draw[Orange,thick] (p2) -- (p5);
+				\node[anchor=west] at (2.5,0) {\textcolor{Orange}{Person 2: $n-2$ neue Anstösse}};
+			}
+			\only<7>{
+			    \foreach \j in {2,...,5} \draw[gray!30,thin] (p1) -- (p\j);
+			    \foreach \j in {3,...,5} \draw[gray!30,thin] (p2) -- (p\j);
+			    \draw[ForestGreen,thick] (p3) -- (p4);
+			    \draw[ForestGreen,thick] (p3) -- (p5);
+			    \node[anchor=west] at (2.5,-1) {\textcolor{ForestGreen}{Person 3: $n-3$ neue Anstösse}};
+			}
+			\only<8>{
+			    \foreach \j in {2,...,5} \draw[gray!30,thin] (p1) -- (p\j);
+			    \foreach \j in {3,...,5} \draw[gray!30,thin] (p2) -- (p\j);
+			    \foreach \j in {4,...,5} \draw[gray!30,thin] (p3) -- (p\j);
+			    \draw[Violet,thick] (p4) -- (p5);
+			    \node[anchor=west] at (2.5,-2) {\textcolor{Violet}{Person 4: $n-4$ neue Anstösse}};
+			}
+		\end{tikzpicture}
+	\end{figure}
+	% \pause
+	% Insgesamt haben wir also $(n-1) + (n-2) + (n-3) + \ldots + 1$ Paarungen.
 \end{frame}
 
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-    \lstinputlisting[basicstyle=\tiny\ttfamily,language=Python,caption=\texttt{anstossen.py},label=listing:anstossen]{EF/Complexity/Code/anstossen.py}
+    \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{anstossen.py},label=listing:anstossen]{EF/Complexity/Code/anstossen.py}
  
     Wie oft wird die Funktion \lstinline{print} aufgerufen?
 	\end{myexercise}
@@ -218,51 +270,97 @@ Welche Frage hat die grösste Mühe bereitet?
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} für Problemgrösse $n$, \textcolor{Red}{Worst-Case}}
-\begin{itemize}[<+->]
-	\item Wir bezeichnen mit $w_k(n)$ die totale Anzahl der Ausführungen der $k$-ten Programmzeile in Abhängigkeit von $n$.
-	\item Lassen Sie uns $w_k(n)$ für jede Zeile von \texttt{bubble\_sort} bestimmen.
-\end{itemize}
+\begin{frame}{Exakte Analyse eines Algorithmus}
+	\begin{mydefinition}[Anzahl Wiederholungen pro Zeile]\label{mydefinition:wk}
+	Bei einem gegebenen Algorithmus $A$, bezeichnen wir mit $w_k(n)$ die Anzahl der Ausführungen von Zeile $k$ bei Eingabegrösse $n$.
+	\end{mydefinition}
+\end{frame}
 
-\pause
+\begin{frame}[fragile]{Beispiel einer exakten Analyse (Problemgrösse $n$)}
+    Wir analysieren ein einfaches Programm, das die Summe der ersten $n$ natürlichen Zahlen berechnet:
 \begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily,numbers=left]
-def bubble_sort(A): !\tikzmark{c1end}! 									!\tikzmark{c1start}!
-    n = len(A) !\tikzmark{c2end}! 										!\tikzmark{c2start}!
-    for i in range(n): !\tikzmark{c3end}! 								!\tikzmark{c3start}!
-        for j in range(0, n - i - 1): !\tikzmark{c4end}! 					!\tikzmark{c4start}!
-            if A[j] > A[j + 1]:	!\tikzmark{c5end}! 						!\tikzmark{c5start}!
-				A[j], A[j + 1] = A[j + 1], A[j] !\tikzmark{c6end}! 		!\tikzmark{c6start}!
-    return A !\tikzmark{c7end}!											!\tikzmark{c7start}!	
+def berechne_summe(n): !\tikzmark{s1end}!                !\tikzmark{s1start}!
+    s = 0 !\tikzmark{s2end}!                             !\tikzmark{s2start}!
+    for i in range(n): !\tikzmark{s3end}!                !\tikzmark{s3start}!
+        s = s + i !\tikzmark{s4end}!                     !\tikzmark{s4start}!
+    return s !\tikzmark{s5end}!                          !\tikzmark{s5start}!
 \end{lstlisting}
 \begin{tikzpicture}[overlay, remember picture,
         every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
-    % Each arrow will appear one after another on mouse click
-    \only<2->{\drawArrow{c1end}{c1start}{\tiny $w_1(n) = 1$}{green!35!white};}
-    \only<3->{\drawArrow{c2end}{c2start}{\tiny $w_2(n) = 1$}{green!35!white};}
-    \only<4->{\drawArrow{c3end}{c3start}{\tiny $w_3(n) = n+1$}{green!35!white};}
-    \only<8->{\drawArrow{c4end}{c4start}{\tiny $w_4(n) = w_5(n) + n$}{green!35!white};}
-    \only<5->{\drawArrow{c5end}{c5start}{\tiny $w_5(n)$}{green!35!white};}
-    \only<6->{\drawArrow{c6end}{c6start}{\tiny $w_6(n)$}{red!55!white};}
-    \only<7->{\drawArrow{c7end}{c7start}{\tiny $w_7(n) = 1$}{green!35!white};}
+    \only<2->{\drawArrow{s1end}{s1start}{\tiny $w_1(n) = 1$}{green!35!white};}
+    \only<3->{\drawArrow{s2end}{s2start}{\tiny $w_2(n) = 1$}{green!35!white};}
+    \only<4->{\drawArrow{s3end}{s3start}{\tiny $w_3(n) = n + 1$}{green!35!white};}
+    \only<5->{\drawArrow{s4end}{s4start}{\tiny $w_4(n) = n$}{green!35!white};}
+    \only<6->{\drawArrow{s5end}{s5start}{\tiny $w_5(n) = 1$}{green!35!white};}
 \end{tikzpicture}
-\pause
-\begin{itemize}[<+->]
-	\item Der \textcolor{Red}{Worst-Case} liegt vor, wenn die gegebene Liste \textbf{absteigend} sortiert ist (z.\,B. \lstinline{A = [9, 5, 3, 0]}).
-	\item Im \textcolor{Red}{Worst-Case} müssen die Elemente in \textbf{jedem} inneren Schleifendurchlauf getauscht werden $\Rightarrow w_6(n) = w_5(n)$.
-	\item Für jeden der $n$ Durchläufe der äusseren Schleife muss im Kopf der inneren Schleife am Ende noch einmal die Abbruch-Bedingung überprüft werden $\Rightarrow w_4(n) = w_5(n) + n$.
+
+\begin{itemize}[<7->]
+    \item $w_3(n) = n+1$, da die \lstinline{for}-Schleife $n$ mal läuft und am Ende einmal die Abbruchbedingung prüft.
+	\item Wir bezeichnen mit $c_k$ die Kosten (\textbf{c}ost) einer einmaligen Ausführung von Programmzeile $k$.
+	\item Wir nehmen an, dass die $c_k$ unabhängig von $n$ sind.
+    \item Die Gesamtlaufzeit $T(n)$ ergibt sich aus den Kosten $c_k$ pro Zeile:
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{Worst-Case}}
+\begin{frame}{Beispiel einer exakten Analyse (Fortsetzung)}
+    Wir stellen die Formel für $T(n)$ auf:
+    \pause
+    {\footnotesize
+    \begin{align*}
+        T(n) &= c_1w_1(n) + c_2w_2(n) + c_3w_3(n) + c_4w_4(n) + c_5w_5(n) \\
+        &= c_1(1) + c_2(1) + c_3(n+1) + c_4(n) + c_5(1) \\
+        &= (c_3 + c_4)n + (c_1 + c_2 + c_3 + c_5) \\
+        &= \textcolor{RoyalBlue}{a}n + \textcolor{ForestGreen}{b}
+    \end{align*}
+    }
+    \pause
+    \begin{myremark}
+        Dieses Programm hat eine \textbf{lineare Laufzeit}.
+    \end{myremark}
+\end{frame}
+
+\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} für Problemgrösse $n$, \textcolor{Red}{Worst-Case}}
+\begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily,numbers=left]
+def bubble_sort(A): !\tikzmark{c1end}! 								!\tikzmark{c1start}!
+    n = len(A) !\tikzmark{c2end}! 									!\tikzmark{c2start}!
+    for i in range(n): !\tikzmark{c3end}! 							!\tikzmark{c3start}!
+        for j in range(n - i - 1): !\tikzmark{c4end}! 				!\tikzmark{c4start}!
+            if A[j] > A[j + 1]:	!\tikzmark{c5end}! 					!\tikzmark{c5start}!
+                A[j], A[j+1] = A[j+1], A[j] !\tikzmark{c6end}! 		!\tikzmark{c6start}!
+    return A !\tikzmark{c7end}!										!\tikzmark{c7start}!
+\end{lstlisting}
+\begin{tikzpicture}[overlay, remember picture,
+        every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
+    % Each arrow will appear one after another
+    \only<2->{\drawArrow{c1end}{c1start}{\tiny $w_1(n) = 1$}{green!35!white};}
+    \only<3->{\drawArrow{c2end}{c2start}{\tiny $w_2(n) = 1$}{green!35!white};}
+    \only<4->{\drawArrow{c3end}{c3start}{\tiny $w_3(n) = n + 1$}{green!35!white};}
+    \only<8->{\drawArrow{c4end}{c4start}{\tiny $w_4(n) = w_5(n) + n$}{green!35!white};}
+    \only<5->{\drawArrow{c5end}{c5start}{\tiny $w_5(n)$}{green!35!white};}
+    \only<6->{\drawArrow{c6end}{c6start}{\tiny $w_6(n) = w_5(n)$}{red!55!white};}
+    \only<7->{\drawArrow{c7end}{c7start}{\tiny $w_7(n) = 1$}{green!35!white};}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} für Problemgrösse $n$, \textcolor{Red}{Worst-Case}}
+\begin{itemize}[<+->]
+	\item Der \textcolor{Red}{Worst-Case} liegt vor, wenn die gegebene Liste \textbf{absteigend} sortiert ist (z.\,B. \lstinline{A = [9, 5, 3, 0]}).
+	\item Im \textcolor{Red}{Worst-Case} müssen die Elemente in \textbf{jedem} inneren Schleifendurchlauf getauscht werden $\Rightarrow w_6(n) = w_5(n)$.
+	\item $w_4(n)$ ist höher als $w_5(n)$, da die \lstinline{for}-Bedingung pro äusserem Durchlauf einmal öfter geprüft wird (Abbruchprüfung).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Genaue Analyse von \texttt{bubble\_sort}, \textcolor{Red}{Worst-Case}}
 \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/bubble_sort.py}
+{\footnotesize
 Wir müssen nun die totale Anzahl der Ausführungen von Zeile 5, also $w_5(n)$, bestimmen:
 \pause
 \begin{itemize}[<+->]
-	\item Wenn \lstinline{i = 0}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n-2} $\Rightarrow$ $(n-1)$ Mal
-	\item Wenn \lstinline{i = 1}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n-3} $\Rightarrow$ $(n-2)$ Mal
+	\item Wenn \lstinline{i = 0}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n - 2} $\Rightarrow$ $(n-1)$ Mal
+	\item Wenn \lstinline{i = 1}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n - 3} $\Rightarrow$ $(n-2)$ Mal
 	\item $\vdots$
-	\item Wenn \lstinline{i = n-2}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{0} $\Rightarrow$ $1$ Mal
-	\item Wenn \lstinline{i = n-1}, ist der Bereich \lstinline{range(0, 0)} $\Rightarrow$ $0$ Mal
+	\item Wenn \lstinline{i = n - 2}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{0} $\Rightarrow$ $1$ Mal
+	\item Wenn \lstinline{i = n - 1}, ist der Bereich \lstinline{range(0, 0)} $\Rightarrow$ $0$ Mal
 \end{itemize}
 \pause
 Wir erhalten die bekannte Summe:
@@ -271,14 +369,11 @@ Wir erhalten die bekannte Summe:
 	w_5(n) = (n-1) + (n-2) + \ldots + 1 + 0 \stackrel{\text{Gausssche Summenformel}}{=} \frac{n(n-1)}{2} = \frac{n^2}{2} - \frac{n}{2}.
 \end{align*}
 }
+}
 \end{frame}
 
-\begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{Worst-Case}}
-\begin{itemize}[<+->]
-	\item Wir bezeichnen mit $c_k$ die Kosten (\textbf{c}ost) einer einmaligen Ausführung von Programmzeile $k$.
-	\item Wir nehmen an, dass die $c_k$ unabhängig von $n$ sind.
-\end{itemize}
-\pause
+\begin{frame}[fragile]{Genaue Analyse von \texttt{bubble\_sort}, \textcolor{Red}{Worst-Case}}
+\phantom{1}
 {\footnotesize
 \begin{align*}
 	T_{\text{worst}}(n) &= c_1w_1(n) + c_2w_2(n) + \ldots + c_7w_7(n) = \sum_{k=1}^{7}c_kw_k(n) =\\
@@ -288,7 +383,7 @@ Wir erhalten die bekannte Summe:
 }
 \end{frame}
 
-\begin{frame}[fragile]{Genaue Analyse}
+\begin{frame}[fragile]{Genaue Analyse von \texttt{bubble\_sort}}
 	Wir vereinfachen die Terme und gruppieren nach den Potenzen von $n$, um den folgenden Ausdruck zu erhalten:
 	\pause
 {\footnotesize
@@ -335,11 +430,11 @@ def insertion_sort(A): !\tikzmark{c1end}! 						!\tikzmark{c1start}!
     \only<4->{\drawArrow{c3end}{c3start}{\tiny $w_3(n) = n$}{green!35!white};}
     \only<5->{\drawArrow{c4end}{c4start}{\tiny $w_4(n) = n-1$}{green!35!white};}
     \only<6->{\drawArrow{c5end}{c5start}{\tiny $w_5(n) = n-1$}{green!35!white};}
-    \only<7->{\drawArrow{c6end}{c6start}{\tiny $w_6(n) = w_7(n) + (n-1)$}{green!35!white};}
-    \only<8->{\drawArrow{c7end}{c7start}{\tiny $w_7(n) = w_7(n)$}{green!35!white};}
-    \only<9->{\drawArrow{c8end}{c8start}{\tiny $w_8(n) = w_7(n)$}{green!35!white};}
-    \only<10->{\drawArrow{c9end}{c9start}{\tiny $w_9(n) = n-1$}{green!35!white};}
-    \only<11->{\drawArrow{c10end}{c10start}{\tiny $w_{10}(n) = 1$}{green!35!white};}
+    \only<11->{\drawArrow{c6end}{c6start}{\tiny $w_6(n) = w_7(n) + (n-1)$}{green!35!white};}
+    \only<7->{\drawArrow{c7end}{c7start}{\tiny $w_7(n)$}{green!35!white};}
+    \only<8->{\drawArrow{c8end}{c8start}{\tiny $w_8(n) = w_7(n)$}{green!35!white};}
+    \only<9->{\drawArrow{c9end}{c9start}{\tiny $w_9(n) = n-1$}{green!35!white};}
+    \only<10->{\drawArrow{c10end}{c10start}{\tiny $w_{10}(n) = 1$}{green!35!white};}
 \end{tikzpicture}
 \end{myanswer}
 \end{frame}
@@ -360,7 +455,7 @@ Zusammengefasst erhalten wir:
 \begin{align*}
 \tilde{T}_{\text{worst}}(n) &= \tilde{c}_1w_1(n) + \tilde{c}_2w_2(n) + \ldots + \tilde{c}_{10}w_{10}(n) = \sum_{k=1}^{10}\tilde{c}_kw_k(n) = \\
 &= \tilde{c}_1 + \tilde{c}_2 + \tilde{c}_3n + \tilde{c}_4(n-1) + \tilde{c}_5(n-1) +\\
-&+ \tilde{c}_6\lr{\frac{n(n-1)}{2}+n} + \tilde{c}_7\lr{\frac{n(n-1)}{2}} +\\
+&+ \tilde{c}_6\lr{\frac{n(n-1)}{2}+(n-1)} + \tilde{c}_7\lr{\frac{n(n-1)}{2}} +\\
 &+ \tilde{c}_8\lr{\frac{n(n-1)}{2}} + \tilde{c}_9(n-1) + \tilde{c}_{10}
 \end{align*}
 }
@@ -374,7 +469,7 @@ Wir vereinfachen die Terme und gruppieren nach den Potenzen von $n$, um den folg
 \begin{align*}
 \tilde{T}_{\text{worst}}(n) &= \underbrace{\lr{\frac{\tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8}{2}}}_{=:\textcolor{Red}{\tilde{a}}} n^2 +\\
 &+ \underbrace{\lr{\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_5 + \frac{\tilde{c}_6 - \tilde{c}_7 - \tilde{c}_8}{2} + \tilde{c}_9}}_{=:\textcolor{RoyalBlue}{\tilde{b}}}n +\\
-&+ \underbrace{\lr{\tilde{c}_1 + \tilde{c}_2 - \tilde{c}_4 - \tilde{c}_5 - \tilde{c}_9 + \tilde{c}_{10}}}_{=:\textcolor{ForestGreen}{\tilde{c}}}=\\
+&+ \underbrace{\lr{\tilde{c}_1 + \tilde{c}_2 - \tilde{c}_4 - \tilde{c}_5 - \tilde{c}_6 - \tilde{c}_9 + \tilde{c}_{10}}}_{=:\textcolor{ForestGreen}{\tilde{c}}}=\\
 &= \textcolor{Red}{\tilde{a}}n^2 + \textcolor{RoyalBlue}{\tilde{b}} + \textcolor{ForestGreen}{\tilde{c}}
 \end{align*}
 }

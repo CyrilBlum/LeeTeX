@@ -6,4 +6,4 @@ def jeder_mit_jedem(personen):
     n = len(personen)
     for i in range(n - 1):
         for j in range(i + 1, n):
-            print(personen[i], "und", personen[j], "stossen an.")
+            print(personen[i], "mit", personen[j])
