@@ -48,15 +48,22 @@ tkinter für turtle-Grafik installieren:
 brew install python-tk
 ```
 
+SafeExamBrowser für spätere Prüfungen installieren:
+
+```bash
+brew install --cask safe-exam-browser
+```
+
 Nun sollten VS Code und Python installiert sein. Falls VS Code beim ersten Start von macOS blockiert wird, geben Sie das Programm in den macOS-Sicherheitseinstellungen frei.
 
 ### Anleitung für Windows
 
-Öffnen Sie PowerShell als Administrator und führen Sie die folgenden Befehle nacheinander aus:
+Öffnen Sie PowerShell als Administrator und führen Sie die folgenden Befehle nacheinander aus, um Python, VS Code (Entwicklungsumgebung) sowie SafeExamBrowser (Prüfungsbrowser) zu installieren:
 
 ```powershell
 winget install -e --id Microsoft.VisualStudioCode --scope machine --silent --accept-package-agreements --accept-source-agreements
 winget install -e --id Python.Python.3.14 --scope machine --silent --accept-package-agreements --accept-source-agreements
+winget install -e --id ETHZurich.SafeExamBrowser --scope machine --silent --accept-package-agreements --accept-source-agreements
 ```
 
 Wenn beim Einfügen Leerzeichen fehlen, ergänzen Sie diese vor dem Ausführen manuell.
