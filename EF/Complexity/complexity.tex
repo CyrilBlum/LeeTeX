@@ -4,7 +4,7 @@
 % default settings for listings
 \lstset{style=python, basicstyle=\ttfamily\footnotesize}
 
-\title[Algorithmen]{Komplexitätstheorie}
+\title[Algorithmen]{Laufzeitkomplexität}
 
 \author[Graf, Thomas] % (optional)
 {Thomas Graf}
@@ -50,6 +50,7 @@
 
 \begin{frame}{Diskussion im Plenum}
 	Welche Aspekte eines Algorithmus könnten uns (neben seiner Korrektheit) noch interessieren?
+	\pause
 	\begin{itemize}
 		\item Eleganz
 		\item \textcolor{Red}{\textbf{Effizienz}} $\leftarrow$ unser Fokus für heute
@@ -61,7 +62,7 @@
 
 \begin{frame}{Effizienz (Laufzeit) ist eine wichtige Eigenschaft eines Algorithmus}
 	\begin{itemize}[<+->]
-		\item Kollisionserkennung: Unterschied in der Framerate
+		\item Kollisionserkennung: Unterschiede in den Framerates
 		\item Google: Loading times longer than a blink of an eye (or 400 milliseconds) are too long:\\
 		\url{https://current360.com/400-milliseconds-or-the-blink-of-an-eye/}
 		\item Demonstration: Vergleich der Laufzeiten von \texttt{bubble\_sort} und \texttt{merge\_sort}
@@ -72,9 +73,9 @@
 
 \begin{frame}{Lernziele}
 	\begin{itemize}[<+->]
-		\item Sie können die Laufzeit einfach Algorithmen bestimmen.
-		\item Sie können die Begriffe \emph{worst-case} und \emph{best-case} erklären.
-		\item Sie besitzen eine intuitve Vorstellung für die Komplexität alltäglicher algorithmischer Szenarien.
+		\item Sie können die Laufzeit einfacher Algorithmen bestimmen.
+		\item Sie können die Begriffe \emph{Worst-Case} und \emph{Best-Case} erklären.
+		\item Sie besitzen eine intuitive Vorstellung für die Komplexität alltäglicher algorithmischer Szenarien.
 	\end{itemize}
 \end{frame}
 
@@ -116,30 +117,28 @@
 
 \begin{frame}
 \begin{myanswer}
-	Die genaue Anzahl hängt von der konkreten \textbf{Probleminstanz} --- in diesem Fall von der gegebenen Liste \lstinline{L} --- ab. Wir unterscheiden zwei extreme Fälle:
+	Die genaue Anzahl hängt von der konkreten \textbf{Probleminstanz} – in diesem Fall von der gegebenen Liste \lstinline{L} – ab. Wir unterscheiden zwei extreme Fälle:
 	\pause
 	\begin{description}[<+->]
-		\item[günstigster Fall:] Das erste Element (\lstinline{L[0]}) ist bereits das gesuchte Element \lstinline{x} $\Rightarrow$ das \lstinline{if}-Statement wird nur einmal ausgeführt.
-		\item[teuerster Fall:] Das gesuchte Element \lstinline{x} ist entweder das letzte Element der Liste oder kommt in der Liste gar nicht vor $\Rightarrow$ das \lstinline{if}-Statement wird \lstinline{n = len(L)} mal ausgeführt (jedes Element von \lstinline{L} muss überprüft werden).
+		\item[Günstigster Fall (Best-Case):] Das erste Element (\lstinline{L[0]}) ist bereits das gesuchte Element \lstinline{x} $\Rightarrow$ das \lstinline{if}-Statement wird nur einmal ausgeführt.
+		\item[Teuerster Fall (Worst-Case):] Das gesuchte Element \lstinline{x} ist entweder das letzte Element der Liste oder kommt in der Liste gar nicht vor $\Rightarrow$ das \lstinline{if}-Statement wird \lstinline{n = len(L)} mal ausgeführt (jedes Element von \lstinline{L} muss überprüft werden).
 	\end{description}
 
 	\pause
-	Natürlich können auch alle Fälle zwischen diesen beiden Extremfällen (1 Ausführung und \lstinline{len(L)} Ausführungen) auftreten.
+	Natürlich können auch alle Fälle zwischen diesen beiden Extremfällen (1 bis \lstinline{len(L)} Ausführungen) auftreten.
 \end{myanswer}
 \end{frame}
 
-\begin{frame}{\emph{worst-case} und \emph{best-case}}
+\begin{frame}{\emph{Worst-Case} und \emph{Best-Case}}
 	\begin{itemize}[<+->]
-		\item Die \emph{worst-case} Laufzeit $T_{\text{worst}}(n)$ ist die Anzahl der Operationen, welcher ein Algorithmus $A$ für die teuerste Eingabe (Probleminstanz) der Grösse $n$ benötigt.
-		\item Die \emph{best-case} Laufzeit $T_{\text{best}}(n)$ ist die Anzahl der Operationen, welcher ein Algorithmus $A$ für die günstigste Eingabe (Probleminstanz) der Grösse $n$ benötigt.
+		\item Die \emph{Worst-Case} Laufzeit $T_{\text{worst}}(n)$ ist die maximale Anzahl der Operationen, die ein Algorithmus $A$ für eine Eingabe (Probleminstanz) der Grösse $n$ benötigt.
+		\item Die \emph{Best-Case} Laufzeit $T_{\text{best}}(n)$ ist die minimale Anzahl der Operationen, die ein Algorithmus $A$ für eine Eingabe (Probleminstanz) der Grösse $n$ benötigt.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
 \begin{myremark}
-	\begin{itemize}[<+->]
-		\item $T_{worst}(n)$ ist die \textbf{minimale} Anzahl der Rechenoperationen mit der Algorithmus $A$ jede (noch so schwierige) Probleminstanz der Grösse $n$ löst.
-	\end{itemize}
+	$T_{\text{worst}}(n)$ ist die \textbf{obere Schranke}: Sie garantiert, dass der Algorithmus $A$ für \textbf{jede} Probleminstanz der Grösse $n$ nach spätestens dieser Anzahl an Operationen fertig ist.
 \end{myremark}
 \end{frame}
 
@@ -153,7 +152,7 @@
 
 \begin{frame}
 	\begin{myanswer}
-	Wir beginnen mit \lstinline{i = 1} und \lstinline{i} wird im jedem Durchlauf der \lstinline{while}-Schleife verdoppelt. Wie häufig können wir den Wert von \lstinline{i} verdoppeln, bis die \lstinline{while}-Bedingung \lstinline{i <= n} nicht mehr erfüllt ist? Ungefähr also $\log_2(n)$ mal.
+	Wir beginnen mit \lstinline{i = 1} und \lstinline{i} wird in jedem Durchlauf der \lstinline{while}-Schleife verdoppelt. Wie häufig können wir den Wert von \lstinline{i} verdoppeln, bis die \lstinline{while}-Bedingung \lstinline{i <= n} nicht mehr erfüllt ist? Ungefähr $\log_2(n)$ mal.
 	% \pause
 	% \vspace{1cm}
 	% {\small
@@ -165,7 +164,7 @@
 \begin{frame}{Aufgaben Teil 1 auf Moodle}
 	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
 	\pause
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item Lösen Sie die Übungsaufgaben \emph{Laufzeitkomplexität 1} (Bearbeitungszeit: 15 Minuten).
 		\item Bearbeiten Sie die Aufgaben alleine.
 	\end{itemize}
@@ -183,24 +182,30 @@ Welche Frage hat die grösste Mühe bereitet?
 	\end{myexercise}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
 \begin{myanswer}
 {\scriptsize
     Die Funktion \lstinline{print} wird
     \begin{itemize}[<+->]
-        \item im ersten Durchlauf der äusseren Schleife (Fall \lstinline{i = 0}) genau {\color{orange} $n-1$} mal,
-        \item im zweiten Durchlauf der äusseren Schleife (Fall \lstinline{i = 1}) genau {\color{cyan} $n-2$} mal,
-        \item $\vdots$,
-        \item im letzten Durchlauf der äusseren Schleife (Fall \lstinline{i = n - 2}) genau {\color{magenta} $1$} mal
+        \item im ersten Durchlauf der äusseren Schleife (Fall \lstinline{i = 0}) genau \textcolor{orange}{$n-1$} mal,
+        \item im zweiten Durchlauf der äusseren Schleife (Fall \lstinline{i = 1}) genau \textcolor{cyan}{$n-2$} mal,
+        \item $\vdots$
+        \item im letzten Durchlauf der äusseren Schleife (Fall \lstinline{i = n - 2}) genau \textcolor{magenta}{$1$} mal
     \end{itemize}
     \pause
     aufgerufen.
 
     \pause
     Total haben wir also
-    \[ {\color{magenta} 1} + 2 + 3 + \ldots + {\color{cyan} (n-2)} + {\color{orange} (n-1)} \stackrel{\text{Gaußsche Summenformel}}{=} \frac{n(n-1)}{2} \]
+    \begin{align*}
+		&\textcolor{magenta}{1} + 2 + 3 + \ldots + \textcolor{cyan}{(n-2)} + \textcolor{orange}{(n-1)} \stackrel{\text{Gausssche Summenformel}}{=} \frac{n(n-1)}{2} =\\
+		&= \frac{n^2}{2} - \frac{n}{2}
+	\end{align*}
+	\pause
     Aufrufe von \lstinline{print}.
-}
+	\pause
+	Bitte beachten Sie den quadratischen Term!
+}%
 \end{myanswer}
 \end{frame}
 
@@ -213,7 +218,7 @@ Welche Frage hat die grösste Mühe bereitet?
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} für Problemgrösse $n$, \textcolor{Red}{worst-case}}
+\begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} für Problemgrösse $n$, \textcolor{Red}{Worst-Case}}
 \begin{itemize}[<+->]
 	\item Wir bezeichnen mit $w_k(n)$ die totale Anzahl der Ausführungen der $k$-ten Programmzeile in Abhängigkeit von $n$.
 	\item Lassen Sie uns $w_k(n)$ für jede Zeile von \texttt{bubble\_sort} bestimmen.
@@ -242,13 +247,13 @@ def bubble_sort(A): !\tikzmark{c1end}! 									!\tikzmark{c1start}!
 \end{tikzpicture}
 \pause
 \begin{itemize}[<+->]
-	\item Der \textcolor{Red}{worst-case} liegt vor, wenn die gegebene Liste \textbf{absteigend} sortiert ist (z.B. \lstinline{A = [9, 5, 3, 0]}).
-	\item Im \textcolor{Red}{worst-case} müssen die Elemente in \textbf{jedem} inneren Schleifendurchlauf getauscht werden $\Rightarrow w_6(n) = w_5(n)$.
+	\item Der \textcolor{Red}{Worst-Case} liegt vor, wenn die gegebene Liste \textbf{absteigend} sortiert ist (z.\,B. \lstinline{A = [9, 5, 3, 0]}).
+	\item Im \textcolor{Red}{Worst-Case} müssen die Elemente in \textbf{jedem} inneren Schleifendurchlauf getauscht werden $\Rightarrow w_6(n) = w_5(n)$.
 	\item Für jeden der $n$ Durchläufe der äusseren Schleife muss im Kopf der inneren Schleife am Ende noch einmal die Abbruch-Bedingung überprüft werden $\Rightarrow w_4(n) = w_5(n) + n$.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{worst-case}}
+\begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{Worst-Case}}
 \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/bubble_sort.py}
 Wir müssen nun die totale Anzahl der Ausführungen von Zeile 5, also $w_5(n)$, bestimmen:
 \pause
@@ -261,14 +266,14 @@ Wir müssen nun die totale Anzahl der Ausführungen von Zeile 5, also $w_5(n)$, 
 \end{itemize}
 \pause
 Wir erhalten die bekannte Summe:
-{\footnotesize
+{\scriptsize
 \begin{align*}
-	w_5(n) = (n-1) + (n-2) + \ldots + 1 + 0 \stackrel{\text{Gaußsche Summenformel}}{=} \frac{n(n-1)}{2}
+	w_5(n) = (n-1) + (n-2) + \ldots + 1 + 0 \stackrel{\text{Gausssche Summenformel}}{=} \frac{n(n-1)}{2} = \frac{n^2}{2} - \frac{n}{2}.
 \end{align*}
 }
 \end{frame}
 
-\begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{worst-case}}
+\begin{frame}[fragile]{Genaue Analyse, \textcolor{Red}{Worst-Case}}
 \begin{itemize}[<+->]
 	\item Wir bezeichnen mit $c_k$ die Kosten (\textbf{c}ost) einer einmaligen Ausführung von Programmzeile $k$.
 	\item Wir nehmen an, dass die $c_k$ unabhängig von $n$ sind.
@@ -284,7 +289,7 @@ Wir erhalten die bekannte Summe:
 \end{frame}
 
 \begin{frame}[fragile]{Genaue Analyse}
-	Wir vereinfachen die Terme und Gruppieren nach den Potenzen von $n$, um den folgenden Ausdruck zu erhalten:
+	Wir vereinfachen die Terme und gruppieren nach den Potenzen von $n$, um den folgenden Ausdruck zu erhalten:
 	\pause
 {\footnotesize
 \begin{align*}
@@ -296,7 +301,7 @@ T_{\text{worst}}(n) &= \underbrace{\lr{\frac{c_4 + c_5 + c_6}{2}}}_{=:\textcolor
 \begin{frame}[fragile]{Analyse von \texttt{insertion\_sort}}
 	\begin{myexercise}
 		{\small
-		Führen Sie eine vollständige Laufzeitanalyse von \texttt{insertion\_sort} für den \textbf{worst-case} durch:
+		Führen Sie eine vollständige Laufzeitanalyse von \texttt{insertion\_sort} für den \textbf{Worst-Case} durch:
 		}
 		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort.py},numbers=left]{EF/Complexity/Code/insertion_sort.py}
 	\end{myexercise}
@@ -304,7 +309,7 @@ T_{\text{worst}}(n) &= \underbrace{\lr{\frac{c_4 + c_5 + c_6}{2}}}_{=:\textcolor
 
 \begin{frame}
 	\begin{myanswer}
-		Im worst-case muss jedes Element mit allen vorherigen Elementen verglichen werden. Das Element bei Index $j$ wird $j+1$ Mal in der \lstinline{while}-Bedingung überprüft.
+		Im Worst-Case muss jedes Element mit allen vorherigen Elementen verglichen werden. Das Element bei Index $j$ wird $j+1$ Mal in der \lstinline{while}-Bedingung überprüft.
 	\end{myanswer}
 \end{frame}
 
@@ -362,12 +367,12 @@ Zusammengefasst erhalten wir:
 \end{myanswer}
 \end{frame}
 
-
 \begin{frame}
 \begin{myanswer}
 {\scriptsize
+Wir vereinfachen die Terme und gruppieren nach den Potenzen von $n$, um den folgenden Ausdruck zu erhalten:
 \begin{align*}
-\tilde{T}_{\text{worst}}(n) = \underbrace{\lr{\frac{\tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8}{2}}}_{=:\textcolor{Red}{\tilde{a}}} n^2 +\\
+\tilde{T}_{\text{worst}}(n) &= \underbrace{\lr{\frac{\tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8}{2}}}_{=:\textcolor{Red}{\tilde{a}}} n^2 +\\
 &+ \underbrace{\lr{\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_5 + \frac{\tilde{c}_6 - \tilde{c}_7 - \tilde{c}_8}{2} + \tilde{c}_9}}_{=:\textcolor{RoyalBlue}{\tilde{b}}}n +\\
 &+ \underbrace{\lr{\tilde{c}_1 + \tilde{c}_2 - \tilde{c}_4 - \tilde{c}_5 - \tilde{c}_9 + \tilde{c}_{10}}}_{=:\textcolor{ForestGreen}{\tilde{c}}}=\\
 &= \textcolor{Red}{\tilde{a}}n^2 + \textcolor{RoyalBlue}{\tilde{b}} + \textcolor{ForestGreen}{\tilde{c}}
