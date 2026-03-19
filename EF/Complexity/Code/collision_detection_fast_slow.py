@@ -4,10 +4,10 @@ import time
 
 # --- KONFIGURATION ---
 WIDTH, HEIGHT = 1024, 768  # Etwas größeres Fenster für den Beamer
-PARTICLE_COUNT = 1500      # 1500 ist meist der "Sweet Spot" für den Lag-Effekt
+PARTICLE_COUNT = 1500  # 1500 ist meist der "Sweet Spot" für den Lag-Effekt
 PARTICLE_RADIUS = 3
 COLLISION_DISTANCE = 6
-USE_EFFICIENT_ALGO = False 
+USE_EFFICIENT_ALGO = False
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -15,8 +15,9 @@ pygame.display.set_caption("Laufzeit-Vergleich: Kollisionserkennung")
 
 # Schrift-Setup: Größer und Grün
 FONT_SIZE = 36
-TEXT_COLOR = (0, 255, 0) # Leuchtendes Grün
+TEXT_COLOR = (0, 255, 0)  # Leuchtendes Grün
 font = pygame.font.SysFont("Arial", FONT_SIZE, bold=True)
+
 
 class Particle:
     def __init__(self):
@@ -31,14 +32,15 @@ class Particle:
         self.y = (self.y + self.vy) % HEIGHT
         self.color = (255, 255, 255)
 
+
 particles = [Particle() for _ in range(PARTICLE_COUNT)]
 
 running = True
 clock = pygame.time.Clock()
 
 while running:
-    screen.fill((10, 10, 10)) # Dunkler Hintergrund für besseren Kontrast
-    
+    screen.fill((10, 10, 10))  # Dunkler Hintergrund für besseren Kontrast
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -60,7 +62,7 @@ while running:
                 checks += 1
                 dx = particles[i].x - particles[j].x
                 dy = particles[i].y - particles[j].y
-                if dx*dx + dy*dy < COLLISION_DISTANCE**2:
+                if dx * dx + dy * dy < COLLISION_DISTANCE**2:
                     particles[i].color = (255, 0, 0)
                     particles[j].color = (255, 0, 0)
     else:
@@ -69,9 +71,10 @@ while running:
         grid = {}
         for p in particles:
             cell = (int(p.x / grid_size), int(p.y / grid_size))
-            if cell not in grid: grid[cell] = []
+            if cell not in grid:
+                grid[cell] = []
             grid[cell].append(p)
-        
+
         for cell_coords, cell_particles in grid.items():
             cx, cy = cell_coords
             for i in range(len(cell_particles)):
@@ -80,11 +83,12 @@ while running:
                         neighbor_cell = (cx + dx_grid, cy + dy_grid)
                         if neighbor_cell in grid:
                             for p_other in grid[neighbor_cell]:
-                                if cell_particles[i] is p_other: continue
+                                if cell_particles[i] is p_other:
+                                    continue
                                 checks += 1
                                 dx = cell_particles[i].x - p_other.x
                                 dy = cell_particles[i].y - p_other.y
-                                if dx*dx + dy*dy < COLLISION_DISTANCE**2:
+                                if dx * dx + dy * dy < COLLISION_DISTANCE**2:
                                     cell_particles[i].color = (255, 0, 0)
 
     calc_time = (time.perf_counter() - start_time) * 1000
@@ -95,12 +99,18 @@ while running:
 
     # Info-Anzeige (Grün & Groß)
     mode_str = "EFFIZIENT (Grid)" if USE_EFFICIENT_ALGO else "INEFFIZIENT (Brute Force)"
-    
+
     # Texte rendern
     text_mode = font.render(f"MODUS: {mode_str}", True, TEXT_COLOR)
-    text_info = font.render(f"Teilchen: {PARTICLE_COUNT} | Vergleiche: {checks:,}", True, TEXT_COLOR)
-    text_perf = font.render(f"Zeit: {calc_time:.1f}ms | FPS: {int(clock.get_fps())}", True, TEXT_COLOR)
-    text_hint = font.render("LEERTASTE zum Wechseln", True, (200, 200, 200)) # Etwas dezenter
+    text_info = font.render(
+        f"Teilchen: {PARTICLE_COUNT} | Vergleiche: {checks:,}", True, TEXT_COLOR
+    )
+    text_perf = font.render(
+        f"Zeit: {calc_time:.1f}ms | FPS: {int(clock.get_fps())}", True, TEXT_COLOR
+    )
+    text_hint = font.render(
+        "LEERTASTE zum Wechseln", True, (200, 200, 200)
+    )  # Etwas dezenter
 
     # Auf den Screen blitten (Abstände vergrößert)
     screen.blit(text_mode, (20, 20))

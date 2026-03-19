@@ -7,17 +7,17 @@ from merge_sort import merge_sort
 n = 5000
 random_numbers = [random.randint(0, 1000000) for _ in range(n)]
 
-# Timing Bubble Sort
+# Timing bubble_sort
 start_time = time.time()
 bubble_sort(random_numbers.copy())
 duration_bubble = time.time() - start_time
-print(f"Bubble Sort benötigte: {duration_bubble:.4f} Sekunden")
+print(f"bubble_sort benötigte: {duration_bubble:.4f} Sekunden")
 
-# Timing Merge Sort
+# Timing merge_sort
 start_time = time.time()
 merge_sort(random_numbers.copy())
 duration_merge = time.time() - start_time
-print(f"Merge Sort benötigte: {duration_merge:.4f} Sekunden")
+print(f"merge_sort benötigte: {duration_merge:.4f} Sekunden")
 
 # Vergleich der Laufzeiten
 if duration_merge > 0:

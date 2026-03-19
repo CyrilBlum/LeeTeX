@@ -57,9 +57,9 @@ Beachten Sie, dass \cref{mydefinition:fac} der Fakultät selbst die Fakultät ve
 Das folgende Beispiel stammt aus \cite{Datenstrukturen}.
 
 \begin{mydefinition}[finde den Star]\label{mydefinition:star}
-In einem Raum befinden sich $n\in\N$ Personen mit $n\geq 2$. Wir wollen den \emph{Star} unter diesen $n$ Personen finden. Ein Star ist definiert als eine Person, welche niemanden anderen kennt, jedoch von allen gekannt wird. Die einzige erlaubte \emph{Operation}, um einen Star zu identifizieren, ist, eine Person $A$ zu fragen:
+In einem Raum befinden sich $n\in\N$ Personen mit $n\geq 2$. Wir wollen den \emph{Star} unter diesen $n$ Personen finden, falls er existiert. Ein Star ist definiert als eine Person, welche niemanden anderen kennt, jedoch von allen gekannt wird. Die einzige erlaubte \emph{Operation}, um einen Star zu identifizieren, ist, eine Person $A$ zu fragen:
 \begin{center}
-    \enquote{\textcolor{Red}{Kennst Du Person $B$?}},
+    \enquote{\textcolor{Red}{Hey, $A$! Kennst du Person $B$?}},
 \end{center}
 wobei $A\neq B$ gilt. Das Problem \tib{finde den Star} besteht nun darin, den Star unter den $n$ Personen in dem Raum zu identifizieren oder herauszufinden, dass es gar keinen Star unter diesen $n$ Personen gibt. Es ist also nicht garantiert, ob unter den $n$ Personen ein Star ist!
 \end{mydefinition}
@@ -96,9 +96,9 @@ Doch dieses Vorgehen können wir weiter fortsetzen und dieselbe Strategie auf da
     &2(n-1) + 2(n-2) + 2(n-3) + F(n-3) =\\
     &\quad\quad\quad\quad\quad\quad\quad\quad\quad\vdots \\
     &2(n-1) + 2(n-2) + 2(n-3) + 2(n-4) + \ldots + 2 =\\
-    &2(1 + 2 + 3 +\ldots + (n-2) + (n-1)) \stackrel{\text{kleiner Gauss}}{=} \\
+    &2(1 + 2 + 3 +\ldots + (n-2) + (n-1)) \stackrel{\text{Gausssche Summe}}{=} \\
     &2\lr{\frac{n(n-1)}{2}} = \\
-    &n(n-1).
+    &n(n-1) = n^2 - n.
 \end{align*}
 Somit haben wir gegenüber der ursprünglichen naiven Lösung (befrage alle zu allen) nichts gewonnen. Zum Glück ist es aber kein grosser Aufwand unseren Ansatz der konstruktiven Induktion stark zu verbessern und somit zu retten. Die Idee der Verbesserung besteht darin, sicherzustellen, dass die Person, welche wir aus dem Raum schicken, kein Star ist.
 \begin{myexercise}\label{myexercise:0351}
@@ -110,7 +110,7 @@ Zum Schluss bleiben zwei Personen, von denen möglicherweise eine Person $X$ der
     F(n) =
     \begin{cases}
         2, &\text{falls $n=2$,} \\
-        1 + F(n-1) + 2, & \text{falls  $n\geq 3$.}
+        1 + F(n-1) + 2, & \text{falls  $n\geq 3$. (1 Frage zur Reduktion, 2 zur Verifikation)}
       \end{cases}
 \end{align}
 Ähnlich wie bei unserer Betrachtung der Fakultät, sehen wir auch hier, dass sich die Bestimmung der Anzahl benötigter Fragen $F(n)$ bei $n$ Personen auf die Bestimmung des kleineren (aber analogen) Problems $F(n-1)$ reduzieren lässt.
@@ -239,7 +239,7 @@ Beispiele:
     \item Otto
     \item Lagerregal.
 \end{itemize}
-Das \textit{leere Wort}, also das Wort der Länge $0$, ist ebenfalls ein Palindrom. Schreiben Sie ein rekursives Python-Programm, welches entscheidet, ob ein gegebenes Wort \verb|w| ein Palindrom ist oder nicht.
+Das \textit{leere Wort}, also das Wort der Länge $0$, ist ebenfalls ein Palindrom. Schreiben Sie ein rekursives Python-Programm, welches entscheidet, ob ein gegebenes Wort \lstinline|w| ein Palindrom ist oder nicht.
 \end{myexercise}
 
 \begin{myexercise}\label{myexercise:0308}
@@ -397,19 +397,12 @@ Ausgaben:
 Sie sind gerne eingeladen, an dieser Stelle vorerst nicht weiterzulesen und den Algorithmus selbst zu schreiben.
 
 Unser Vorschlag für einen entsprechenden rekursiven Algorithmus ist in \cref{listing:binary} gegeben.
-\begin{lstlisting}[language=Python,caption=binaryStrings,label=listing:binary]
-def binaryStrings(n, w = ''):
-    if n == 0:
-        print(w)
-        return
-    binaryStrings(n-1, w + '0')
-    binaryStrings(n-1, w + '1')
-    #return # optional
-\end{lstlisting}
-Zur Vereinfachung und Konkretisierung der Beschreibung der technischen Realisation rekursiver Algorithmen werden wir sämtliche Betrachtungen dieses Abschnitts auf den Algorithmus in \cref{listing:binary} beziehen. Der Algorithmus beginnt mit dem leeren String und baut alle gesuchten Strings durch systematisches \enquote{Anhängen} von Nullen und Einsen auf. Zur Abkürzung schreiben wir anstelle von \verb|binaryString(...)| im Folgenden \verb|f(...)|.
+\lstinputlisting[language=Python,caption=binary\_strings.py,label=listing:binary,numbers=left]{EF/Induktion_und_Rekursion/binary_strings.py}
+
+Zur Vereinfachung und Konkretisierung der Beschreibung der technischen Realisation rekursiver Algorithmen werden wir sämtliche Betrachtungen dieses Abschnitts auf den Algorithmus in \cref{listing:binary} beziehen. Der Algorithmus beginnt mit dem leeren String und baut alle gesuchten Strings durch systematisches \enquote{Anhängen} von Nullen und Einsen auf. Zur Abkürzung schreiben wir anstelle von \lstinline|binaryString(...)| im Folgenden \lstinline|f(...)|.
 
 \noindent
-Betrachten wir den Aufruf \verb|f(2,'')|, um alle Strings der Länge $2$ auszugeben. Die Arbeitsschritte, welche der Funktionsaufruf \verb|f(2,'')| einleitet, sind in \cref{fig:binary} dargestellt. Die \textcolor{Green!55}{grünen} Knoten stellen Funktionsaufrufe (Aufrufe von \verb|f|) dar. Die \textcolor{Gold!85}{goldenen} Knoten stellen Aufrufe der Python-Funktion \verb|print| dar. Beim Schritt mit Nummer $\textcolor{Blue}{0}$ erfolgt der anfängliche Aufruf \verb|f(2,'')|. In diesem Aufruf wird in Programmzeile $5$ der Funktionsaufruf \verb|f(1,'0')| ausgelöst (Schritt $\textcolor{Blue}{1}$). Beachten Sie, dass der ursprüngliche Aufruf \verb|f(2,'')| seine Arbeit noch nicht abgeschlossen hat! In Programmzeile $5$ des Funktionsaufrufs \verb|f(1,'0')| wird nun der Aufruf \verb|f(0,'00')| ausgelöst. In diesem Aufruf ist die \verb|if|-Bedingung auf Programmzeile $2$ erfüllt, sodass die Ausgabe \verb|print('00')| erfolgt (Schritt $3$) und der \verb|return|-Aufruf auf Programmzeile $4$ erfolgt. Der Aufruf \verb|f(0,'00')| ist beendet und er springt zurück zum Aufruf \verb|f(1,'0')| (Schritt $\textcolor{Red}{4}$). Der Funktionsaufruf \verb|f(1,'0')| kann nun (endlich) zu Programmzeile $6$ gelangen und den Aufruf \verb|f(0,'01')| auslösen (Schritt $\textcolor{Blue}{5}$).
+Betrachten wir den Aufruf \lstinline|f(2,"")|, um alle Strings der Länge $2$ auszugeben. Die Arbeitsschritte, welche der Funktionsaufruf \lstinline|f(2,"")| einleitet, sind in \cref{fig:binary} dargestellt. Die \textcolor{Green!55}{grünen} Knoten stellen Funktionsaufrufe (Aufrufe von \lstinline|f|) dar. Die \textcolor{Gold!85}{goldenen} Knoten stellen Aufrufe der Python-Funktion \lstinline|print| dar. Beim Schritt mit Nummer $\textcolor{Blue}{0}$ erfolgt der anfängliche Aufruf \lstinline|f(2,"")|. In diesem Aufruf wird in Programmzeile $5$ der Funktionsaufruf \lstinline|f(1,"0")| ausgelöst (Schritt $\textcolor{Blue}{1}$). Beachten Sie, dass der ursprüngliche Aufruf \lstinline|f(2,"")| seine Arbeit noch nicht abgeschlossen hat! In Programmzeile $5$ des Funktionsaufrufs \lstinline|f(1,"0")| wird nun der Aufruf \lstinline|f(0,"00")| ausgelöst. In diesem Aufruf ist die \lstinline|if|-Bedingung auf Programmzeile $2$ erfüllt, sodass die Ausgabe \lstinline|print("00")| erfolgt (Schritt $3$) und der \lstinline|return|-Aufruf auf Programmzeile $4$ erfolgt. Der Aufruf \lstinline|f(0,"00")| ist beendet und er springt zurück zum Aufruf \lstinline|f(1,"0")| (Schritt $\textcolor{Red}{4}$). Der Funktionsaufruf \lstinline|f(1,"0")| kann nun (endlich) zu Programmzeile $6$ gelangen und den Aufruf \lstinline|f(0,"01")| auslösen (Schritt $\textcolor{Blue}{5}$).
 
 \begin{figure}[H]
 \centering
@@ -417,17 +410,17 @@ Betrachten wir den Aufruf \verb|f(2,'')|, um alle Strings der Länge $2$ auszuge
     ->, >=stealth', shorten >=1pt, auto, node distance=2.5cm, semithick]
     \tikzstyle{every state}=[fill=Green!10,draw=black,text=black]
     
-    \node[state] (f2-leer) {\verb|f(2,'')|};
-    \node[state] (f1-0) [below left=1.5cm and 3.4cm of f2-leer] {\verb|f(1,'0')|};
-    \node[state] (f0-00) [below left=1.5cm and 1cm of f1-0] {\verb|f(0,'00')|};
-    \node[state,fill=Gold!15] (p-00) [below=1.5cm of f0-00] {\verb|print('00')|};
-    \node[state] (f0-01) [below right=1.5cm and 1cm of f1-0] {\verb|f(0,'01')|};
-    \node[state,fill=Gold!15] (p-01) [below=1.5cm of f0-01] {\verb|print('01')|};
-    \node[state] (f1-1) [below right=1.5cm and 3.4cm of f2-leer] {\verb|f(1,'1')|};
-    \node[state] (f0-10) [below left=1.5cm and 1cm of f1-1] {\verb|f(0,'10')|};
-    \node[state,fill=Gold!15] (p-10) [below=1.5cm of f0-10] {\verb|print('10')|};
-    \node[state] (f0-11) [below right=1.5cm and 1cm of f1-1] {\verb|f(0,'11')|};
-    \node[state,fill=Gold!15] (p-11) [below=1.5cm of f0-11] {\verb|print('11')|};
+    \node[state] (f2-leer) {\lstinline|f(2,"")|};
+    \node[state] (f1-0) [below left=1.5cm and 3.4cm of f2-leer] {\lstinline|f(1,"0")|};
+    \node[state] (f0-00) [below left=1.5cm and 1cm of f1-0] {\lstinline|f(0,"00")|};
+    \node[state,fill=Gold!15] (p-00) [below=1.5cm of f0-00] {\lstinline|print("00")|};
+    \node[state] (f0-01) [below right=1.5cm and 1cm of f1-0] {\lstinline|f(0,"01")|};
+    \node[state,fill=Gold!15] (p-01) [below=1.5cm of f0-01] {\lstinline|print("01")|};
+    \node[state] (f1-1) [below right=1.5cm and 3.4cm of f2-leer] {\lstinline|f(1,"1")|};
+    \node[state] (f0-10) [below left=1.5cm and 1cm of f1-1] {\lstinline|f(0,"10")|};
+    \node[state,fill=Gold!15] (p-10) [below=1.5cm of f0-10] {\lstinline|print("10")|};
+    \node[state] (f0-11) [below right=1.5cm and 1cm of f1-1] {\lstinline|f(0,"11")|};
+    \node[state,fill=Gold!15] (p-11) [below=1.5cm of f0-11] {\lstinline|print("11")|};
 
     \node[above=0.2cm of f2-leer] {\textcolor{Blue}{$0$ (anfänglicher Aufruf)}};
 
@@ -454,13 +447,13 @@ Betrachten wir den Aufruf \verb|f(2,'')|, um alle Strings der Länge $2$ auszuge
 \label{fig:binary}
 \end{figure}
 \noindent
-Erst nachdem auch \verb|f(0,'01')| seine Arbeit beendet hat (Schritte $6$ und $\textcolor{Red}{7}$), erreicht der Aufruf \verb|f(1,'0')| seine Programmzeile $7$ und springt zurück zum ursprünglichen Aufruf \verb|f(2,'')| (Schritt $\textcolor{Red}{7}$). Dieser erreicht nun Programmzeile $6$ und ruft \verb|f(1,'1')| auf (Schritt $\textcolor{Blue}{9}$). Die Schritte in dieser \enquote{rechten} Hälfte von \cref{fig:binary} lassen sich nun analog beschreiben. Erst nach der Rückgabe des Aufrufs \verb|f(1,'1')| in Schritt $\textcolor{Red}{16}$ kann schliesslich der ursprüngliche Aufruf \verb|f(2,'')| seine Arbeit beenden.
+Erst nachdem auch \lstinline|f(0, "01")| seine Arbeit beendet hat (Schritte $6$ und $\textcolor{Red}{7}$), erreicht der Aufruf \lstinline|f(1, "0")| seine Programmzeile $7$ und springt zurück zum ursprünglichen Aufruf \lstinline|f(2, "")| (Schritt $\textcolor{Red}{7}$). Dieser erreicht nun Programmzeile $6$ und ruft \lstinline|f(1, "1")| auf (Schritt $\textcolor{Blue}{9}$). Die Schritte in dieser \enquote{rechten} Hälfte von \cref{fig:binary} lassen sich nun analog beschreiben. Erst nach der Rückgabe des Aufrufs \lstinline|f(1, "1")| in Schritt $\textcolor{Red}{16}$ kann schliesslich der ursprüngliche Aufruf \lstinline|f(2, "")| seine Arbeit beenden.
 
 \clearpage
 \begin{mysummary}{Wie werden rekursive Programme in Computern realisiert?}
 In Computern wird für jeden Funktionsaufruf (Prozedur) ein Abschnitt im Speicher angelegt. Dieser Speicherabschnitt wird \textit{Stack-Frame} genannt. Darin darf die Funktion Speicherplatz zum Beispiel für lokale Variablen belegen. Deshalb benötigen rekursive Programme mit zahlreichen rekursiven Aufrufen viel Platz im Speicher.
 
-Ruft eine Prozedur \verb|A| eine andere Prozedur \verb|B| auf, so wird im Stack-Frame von Prozedur \verb|B| eine sogenannte \textit{Rücksprung-Adresse} gespeichert. Diese Adresse gibt an, wo im Speicher die Prozedur \verb|A| beginnt. Dadurch wird ermöglicht, dass Prozedur \verb|B| zu Prozedur \verb|A| \enquote{zurückspringen} kann (\textit{jump and link}). Mehr Details bezüglich der Funktionsweise von Computern und rekursiven Programmen finden Sie in den hervorragenden Texten \cite{Malvino} und \cite{Sauter}.
+Ruft eine Prozedur \lstinline|A| eine andere Prozedur \lstinline|B| auf, so wird im Stack-Frame von Prozedur \lstinline|B| eine sogenannte \textit{Rücksprung-Adresse} gespeichert. Diese Adresse gibt an, wo im Speicher die Prozedur \lstinline|A| beginnt. Dadurch wird ermöglicht, dass Prozedur \lstinline|B| zu Prozedur \lstinline|A| \enquote{zurückspringen} kann (\textit{jump and link}). Mehr Details bezüglich der Funktionsweise von Computern und rekursiven Programmen finden Sie in den hervorragenden Texten \cite{Malvino} und \cite{Sauter}.
 \end{mysummary}
 
 \clearpage
@@ -653,19 +646,19 @@ Die folgende Python-Funktion startet zur Berechnung von $F_n$ bei den Startwerte
 \begin{lstlisting}[language=Python,caption=iterative Berechnung der Fibonacci-Folge]
 def fibonacci_fast(n):
     # Startwerte
-    f0 = 0
+    f_0 = 0
     f1 = 1
     if n == 0:
-        return f0
+        return f_0
     elif n == 1:
         return f1
     
     for k in range(n-1):
-        f2 = f1 + f0
+        f_2 = f1 + f_0
         # Update
-        f0 = f1
-        f1 = f2
-    return f2
+        f_0 = f1
+        f1 = f_2
+    return f_2
 \end{lstlisting}
 Mithilfe dieser Funktion berechnen wir (in sehr kurzer Zeit)
 \begin{align*}
