@@ -8,7 +8,7 @@ def zeichne_vieleck():
         for _ in range(4):
             t.forward(100)
             t.right(90)
-    elif n >= 2 and n <= 6:
+    elif 2 <= n <= 6:
         t.color("green")
         for _ in range(6):
             t.forward(100)

@@ -65,7 +65,7 @@ def plot_2d_max_kaufpreis(alpha, beta):
 
     # Speichert den Plot als Datei im aktuellen Verzeichnis
     plt.savefig(
-        "Grundlagen_Info/00_Programmieren/Skript/Code/K04_Functions/max_kaufpreis_2d_plot.pdf"
+        "Grundlagen_Info/00_Programmieren/Skript/Code/K05_Functions/max_kaufpreis_2d_plot.pdf"
     )
 
     plt.show()
@@ -115,7 +115,7 @@ def plot_3d_max_kaufpreis(alpha, beta):
 
     # Speichert den Plot als Datei im aktuellen Verzeichnis
     plt.savefig(
-        "Grundlagen_Info/00_Programmieren/Skript/Code/K04_Functions/max_kaufpreis_3d_plot.pdf"
+        "Grundlagen_Info/00_Programmieren/Skript/Code/K05_Functions/max_kaufpreis_3d_plot.pdf"
     )
 
     plt.show()
