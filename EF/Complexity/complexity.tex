@@ -64,7 +64,7 @@
 \begin{frame}{Effizienz (Laufzeit) ist eine wichtige Eigenschaft eines Algorithmus}
 	\begin{itemize}[<+->]
 		\item Kollisionserkennung: Unterschiede in den Framerates
-		\item Google: Loading times longer than a blink of an eye (or 400 milliseconds) are too long:\\
+		\item Google: \enquote{Loading times longer than a blink of an eye (or 400 milliseconds) are too long}:\\
 		\url{https://current360.com/400-milliseconds-or-the-blink-of-an-eye/}
 		\item Demonstration: Vergleich der Laufzeiten von \texttt{bubble\_sort} und \texttt{merge\_sort}
 		% \item In den sechziger Jahren stellte man fest, dass alleine die Existenz eines Algorithmus zur Lösung eines Problems noch keine Garantie für eine erfolgreiche Computerberechnung des Problems darstellt!
@@ -74,9 +74,9 @@
 
 \begin{frame}{Lernziele}
 	\begin{itemize}[<+->]
-		\item Sie können die Laufzeit einfacher Algorithmen bestimmen.
-		\item Sie können die Begriffe \emph{Worst-Case} und \emph{Best-Case} erklären.
 		\item Sie besitzen eine intuitive Vorstellung für die Komplexität alltäglicher algorithmischer Szenarien.
+		\item Sie können die Begriffe \emph{Worst-Case} und \emph{Best-Case} erklären.
+		\item Sie können die Laufzeit einfacher Algorithmen bestimmen.
 	\end{itemize}
 \end{frame}
 
@@ -124,7 +124,6 @@
 		\item[Günstigster Fall (Best-Case):] Das erste Element (\lstinline{L[0]}) ist bereits das gesuchte Element \lstinline{x} $\Rightarrow$ das \lstinline{if}-Statement wird nur einmal ausgeführt.
 		\item[Teuerster Fall (Worst-Case):] Das gesuchte Element \lstinline{x} ist entweder das letzte Element der Liste oder kommt in der Liste gar nicht vor $\Rightarrow$ das \lstinline{if}-Statement wird \lstinline{n = len(L)} mal ausgeführt (jedes Element von \lstinline{L} muss überprüft werden).
 	\end{description}
-
 	\pause
 	Natürlich können auch alle Fälle zwischen diesen beiden Extremfällen (1 bis \lstinline{len(L)} Ausführungen) auftreten.
 \end{myanswer}
@@ -166,7 +165,7 @@
 	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
 	\pause
 	\begin{itemize}[<+->]
-		\item Lösen Sie die Übungsaufgaben \emph{Laufzeitkomplexität 1} (Bearbeitungszeit: 15 Minuten).
+		\item Lösen Sie die \textcolor{Blue}{\textbf{Aufgaben Teil 1}} (Bearbeitungszeit: 20 Minuten).
 		\item Bearbeiten Sie die Aufgaben alleine.
 	\end{itemize}
 \end{frame}
@@ -174,8 +173,8 @@
 \begin{frame}[fragile]{Typisches Problem: \enquote{alle mit allen}}
 	\begin{itemize}[<+->]
 		\item Stellen Sie sich vor, $n$ Personen stossen bei einem Fest miteinander an.
-		\item Jede Person stösst mit jeder anderen Person \textbf{genau einmal} an.
-		\item Wie viele \enquote{Kling}-Geräusche (Begegnungen) gibt es insgesamt?
+		\item Jede Person stösst mit jeder anderen Person genau einmal an.
+		\item Wie viele Anstösse (Begegnungen) gibt es insgesamt?
 	\end{itemize}
 	\pause
 	\begin{figure}
@@ -213,7 +212,7 @@
 			    \draw[ForestGreen,thick] (p3) -- (p5);
 			    \node[anchor=west] at (2.5,-1) {\textcolor{ForestGreen}{Person 3: $n-3$ neue Anstösse}};
 			}
-			\only<8>{
+			\only<8->{
 			    \foreach \j in {2,...,5} \draw[gray!30,thin] (p1) -- (p\j);
 			    \foreach \j in {3,...,5} \draw[gray!30,thin] (p2) -- (p\j);
 			    \foreach \j in {4,...,5} \draw[gray!30,thin] (p3) -- (p\j);
@@ -222,13 +221,63 @@
 			}
 		\end{tikzpicture}
 	\end{figure}
-	% \pause
-	% Insgesamt haben wir also $(n-1) + (n-2) + (n-3) + \ldots + 1$ Paarungen.
+    \only<9->{
+	Insgesamt haben wir also $(n-1) + (n-2) + (n-3) + \ldots + 1$ Anstösse.
+    }
 \end{frame}
+
+\begin{frame}{\enquote{alle mit allen}}
+	\begin{itemize}[<+->]
+		\item Die Summe $(n-1) + (n-2) + (n-3) + \ldots + 1$ ist Ihnen wohlbekannt!
+		\item $(n-1) + (n-2) + (n-3) + \ldots + 1 \stackrel{\text{Gausssche Summenformel}}{=} \frac{n(n-1)}{2}$
+		\item Beachten Sie den \textcolor{Red}{quadratischen Term}: $\frac{n(n-1)}{2} = \frac{1}{2}\cdot\textcolor{Red}{n^2} - \frac{n}{2}$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Situation: \enquote{alle mit allen}}
+	\begin{myexercise}
+		Das Prinzip \enquote{Jeder mit Jedem} begegnet uns an vielen Stellen im täglichen Leben. Wo tritt dieses Muster noch auf? Nennen Sie drei konkrete Situationen, in denen alle Beteiligten untereinander in Kontakt stehen.
+	\end{myexercise}
+\end{frame}
+
+\begin{frame}
+	\begin{myanswer} 
+		{\small
+		\begin{itemize}
+			\item Tischtennisturnier: Jeder Spieler spielt genau einmal gegen jeden anderen Spieler.
+			\item Fotos von Zweierpaaren: In einer Gruppe von Personen werden Fotos von allen möglichen Zweierpaaren gemacht.
+			\item Freundschaftsnetzwerk: In einem sozialen Netzwerk schreibt jeder Nutzer eine Nachricht an jeden anderen Nutzer (vollständiger Graph):
+			\begin{center}
+				\begin{tikzpicture}[scale=0.6]
+					\foreach \i in {1,...,5} {
+						\node[circle,fill=RoyalBlue!20,draw=RoyalBlue,thick,minimum size=0.6cm] (p\i) at ({72*(\i-1)+90}:2cm) {\tiny \i};
+					}
+					\foreach \i in {1,...,4} {
+						\pgfmathtruncatemacro{\nextj}{\i+1}
+						\foreach \j in {\nextj,...,5} {
+							\draw[gray!30,thin] (p\i) -- (p\j);
+						}
+					}
+				\end{tikzpicture}
+			\end{center}
+		\end{itemize}
+		}
+	\end{myanswer}
+\end{frame}
+
+\begin{frame}{Aufgaben Teil 2 auf Moodle}
+	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
+	\pause
+	\begin{itemize}
+		\item Lösen Sie die \textcolor{Blue}{\textbf{Aufgaben Teil 2}} (Bearbeitungszeit: 20 Minuten).
+		\item Bearbeiten Sie die Aufgaben alleine oder zu zweit.
+	\end{itemize}
+\end{frame}
+
 
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
-    \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{anstossen.py},label=listing:anstossen]{EF/Complexity/Code/anstossen.py}
+    \lstinputlisting[basicstyle=\small\ttfamily,language=Python,caption=\texttt{anstossen.py},label=listing:anstossen]{EF/Complexity/Code/anstossen.py}
  
     Wie oft wird die Funktion \lstinline{print} aufgerufen?
 	\end{myexercise}
@@ -251,23 +300,12 @@
     Total haben wir also
     \begin{align*}
 		&\textcolor{magenta}{1} + 2 + 3 + \ldots + \textcolor{cyan}{(n-2)} + \textcolor{orange}{(n-1)} \stackrel{\text{Gausssche Summenformel}}{=} \frac{n(n-1)}{2} =\\
-		&= \frac{n^2}{2} - \frac{n}{2}
+		&= \frac{1}{2}\cdot\textcolor{Red}{n^2} - \frac{n}{2}
 	\end{align*}
 	\pause
     Aufrufe von \lstinline{print}.
-	\pause
-	Bitte beachten Sie den quadratischen Term!
 }%
 \end{myanswer}
-\end{frame}
-
-\begin{frame}{Aufgaben Teil 2 auf Moodle}
-	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
-	\pause
-	\begin{itemize}
-		\item Lösen Sie die Übungsaufgaben \emph{Laufzeitkomplexität 2} (Bearbeitungszeit: 15 Minuten).
-		\item Bearbeiten Sie die Aufgaben alleine oder zu zweit.
-	\end{itemize}
 \end{frame}
 
 \begin{frame}{Exakte Analyse eines Algorithmus}
@@ -304,20 +342,33 @@ def berechne_summe(n): !\tikzmark{s1end}!                !\tikzmark{s1start}!
 
 \begin{frame}{Beispiel einer exakten Analyse (Fortsetzung)}
     Wir stellen die Formel für $T(n)$ auf:
-    \pause
     {\footnotesize
     \begin{align*}
-        T(n) &= c_1w_1(n) + c_2w_2(n) + c_3w_3(n) + c_4w_4(n) + c_5w_5(n) \\
-        &= c_1(1) + c_2(1) + c_3(n+1) + c_4(n) + c_5(1) \\
-        &= (c_3 + c_4)n + (c_1 + c_2 + c_3 + c_5) \\
-        &= \textcolor{RoyalBlue}{a}n + \textcolor{ForestGreen}{b}
+        \onslide<2->{T(n) &= c_1w_1(n) + c_2w_2(n) + c_3w_3(n) + c_4w_4(n) + c_5w_5(n) \\
+        }
+        \onslide<3->{&= c_1(1) + c_2(1) + c_3(n+1) + c_4(n) + c_5(1) \\
+        }
+        \onslide<4->{&= \underbrace{(c_3 + c_4)}_{=:\textcolor{RoyalBlue}{a}}n + \underbrace{(c_1 + c_2 + c_3 + c_5)}_{=:\textcolor{ForestGreen}{b}} \\
+        }
+        \onslide<5->{&= \textcolor{RoyalBlue}{a}n + \textcolor{ForestGreen}{b}}
     \end{align*}
     }
-    \pause
+    \only<6->{
     \begin{myremark}
         Dieses Programm hat eine \textbf{lineare Laufzeit}.
     \end{myremark}
+    }
 \end{frame}
+
+\begin{frame}{Aufgaben Teil 3 auf Moodle}
+	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.
+	\pause
+	\begin{itemize}
+		\item Lösen Sie die \textcolor{Blue}{\textbf{Aufgaben Teil 3}} (Bearbeitungszeit: 8 Minuten).
+		\item Bearbeiten Sie die Aufgaben alleine oder zu zweit.
+	\end{itemize}
+\end{frame}
+
 
 \begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} für Problemgrösse $n$, \textcolor{Red}{Worst-Case}}
 \begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily,numbers=left]
@@ -346,9 +397,11 @@ def bubble_sort(A): !\tikzmark{c1end}! 								!\tikzmark{c1start}!
 \begin{itemize}[<+->]
 	\item Der \textcolor{Red}{Worst-Case} liegt vor, wenn die gegebene Liste \textbf{absteigend} sortiert ist (z.\,B. \lstinline{A = [9, 5, 3, 0]}).
 	\item Im \textcolor{Red}{Worst-Case} müssen die Elemente in \textbf{jedem} inneren Schleifendurchlauf getauscht werden $\Rightarrow w_6(n) = w_5(n)$.
-	\item $w_4(n)$ ist höher als $w_5(n)$, da die \lstinline{for}-Bedingung pro äusserem Durchlauf einmal öfter geprüft wird (Abbruchprüfung).
+	\item $w_4(n)$ ist grösser als $w_5(n)$, da die \lstinline{for}-Bedingung pro äusserem Durchlauf einmal öfter geprüft wird (Abbruchprüfung).
 \end{itemize}
 \end{frame}
+
+
 
 \begin{frame}[fragile]{Genaue Analyse von \texttt{bubble\_sort}, \textcolor{Red}{Worst-Case}}
 \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/bubble_sort.py}
@@ -376,9 +429,9 @@ Wir erhalten die bekannte Summe:
 \phantom{1}
 {\footnotesize
 \begin{align*}
-	T_{\text{worst}}(n) &= c_1w_1(n) + c_2w_2(n) + \ldots + c_7w_7(n) = \sum_{k=1}^{7}c_kw_k(n) =\\
-	&= c_1 + c_2 + c_3(n+1) + c_4(w_5(n) + n) + c_5w_5(n) + c_6w_5(n) + c_7 = \\
-	&= c_1 + c_2 + c_3n + c_4\lr{\frac{n(n-1)}{2}+n} + \lr{c_5 + c_6}\lr{\frac{n(n-1)}{2}} + c_7n
+	T_{\text{worst}}(n) &= c_1w_1(n) + c_2w_2(n) + \ldots + c_7w_7(n) \\
+	&= c_1(1) + c_2(1) + c_3(n+1) + c_4\left(w_5(n) + n\right) + c_5w_5(n) + c_6w_5(n) + c_7(1) \\
+	&= c_1 + c_2 + c_3(n+1) + c_4\left(\frac{n(n-1)}{2}+n\right) + (c_5+c_6)\left(\frac{n(n-1)}{2}\right) + c_7
 \end{align*}
 }
 \end{frame}
@@ -388,10 +441,17 @@ Wir erhalten die bekannte Summe:
 	\pause
 {\footnotesize
 \begin{align*}
-T_{\text{worst}}(n) &= \underbrace{\lr{\frac{c_4 + c_5 + c_6}{2}}}_{=:\textcolor{Red}{a}} n^2 + \underbrace{\lr{c_3 + c_7 + \frac{c_4 - c_5 - c_6}{2}}}_{=:\textcolor{RoyalBlue}{b}}n + \underbrace{(c_1 + c_2)}_{=:\textcolor{ForestGreen}{c}} = \\
+T_{\text{worst}}(n) &= \underbrace{\left(\frac{c_4 + c_5 + c_6}{2}\right)}_{=:\textcolor{Red}{a}} n^2 + \underbrace{\left(c_3 + \frac{c_4 - c_5 - c_6}{2}\right)}_{=:\textcolor{RoyalBlue}{b}}n + \underbrace{(c_1 + c_2 + c_3 + c_7)}_{=:\textcolor{ForestGreen}{c}} = \\
 &= \textcolor{Red}{a}n^2 + \textcolor{RoyalBlue}{b}n + \textcolor{ForestGreen}{c}
 \end{align*}}
 \end{frame}
+
+\begin{frame}{Challenge-Aufgaben auf Moodle}
+	Sie finden die Aufgaben unter \texttt{Moodle} $\rightarrow$ \texttt{Theorie} $\rightarrow$ \texttt{Laufzeitkomplexität}.\\
+	\vspace{1.0cm}	
+	Lösen Sie die \textcolor{Blue}{\textbf{Challenge-Aufgaben}}.
+\end{frame}
+
 
 \begin{frame}[fragile]{Analyse von \texttt{insertion\_sort}}
 	\begin{myexercise}
@@ -476,17 +536,6 @@ Wir vereinfachen die Terme und gruppieren nach den Potenzen von $n$, um den folg
 \end{myanswer}
 \end{frame}
 
-% \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
-% 	\begin{myexercise}
-%     \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort]{EF/Complexity/Code/bubble_sort.py}
-% 	\end{myexercise}
-% \end{frame}
-
-% \begin{frame}
-% \begin{myanswer}
-% TODO
-% \end{myanswer}
-% \end{frame}
 
 % \begin{frame}{Berechenbarkeit}
 % 	\begin{itemize}[<+->]
@@ -506,7 +555,7 @@ Wir vereinfachen die Terme und gruppieren nach den Potenzen von $n$, um den folg
 
 % \begin{frame}{Komplexitätstheorie}
 % 	\begin{itemize}[<+->]
-% 		\item Es stellte sich die Frag, ob dieser Misserfolg eine Folge unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
+% 		\item Es stellte sich die Frage, ob dieser Misserfolg eine Folge unserer Unfähigkeit ist, einen effizienten Ansatz zur Lösung des betrachteten Problems zu finden, oder aber, ob es sich um eine \textbf{inhärente Eigenschaft des Problems} handelt, die keine effiziente algorithmische Lösung des Problems zulässt.
 % 		\item Dies führte dazu, dass man begann, die Schwierigkeit der algorithmisch lösbaren Probleme bezüglich des Rechenaufwands zu messen, um so die Probleme nach deren Schwierigkeitsgrad zu klassifizieren.
 % 	\end{itemize}
 % \end{frame}
@@ -515,95 +564,6 @@ Wir vereinfachen die Terme und gruppieren nach den Potenzen von $n$, um den folg
 % 	Die Komplexitätstheorie ist die Theorie der quantitativen Gesetze und Grenzen der algorithmischen Informationsverarbeitung. Diese Theorie hat auch eine physikalische Dimension: Zum Beispiel hält man ein zwar berechenbares Problem sicherlich für \enquote{praktisch unlösbar}, wenn die Ausführung eines Algorithmus zur Lösung des Problems mehr Energie bräuchte, als im bekannten Universum vorhanden ist.
 % \end{frame}
 
-% \begin{frame}{Fallstudie: \texttt{insertion\_sort} und \texttt{bubble\_sort}}
-% 	Wir wollen uns die beiden Sortieralgorithmen \texttt{insertion\_sort} und \texttt{bubble\_sort} anschauen und deren Laufzeiten analysieren.
-% \end{frame}
-
-% \begin{frame}{Fallstudie: \texttt{insertion\_sort}}
-% 	Illustration und Idee von \texttt{insertion\_sort} zusammen im Plenum besprechen (Anhand des Sortierens von Spielkarten).
-% \end{frame}
-
-% \begin{frame}{\texttt{insertion\_sort} implementieren}
-% 	\begin{myexercise}[\texttt{insertion\_sort}]\label{myexercise:insertion_sort}
-% 		Implementiere den \texttt{insertion\_sort} Algorithmus. Kompletiere dazu die folgende Vorlage:
-% 		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort\_template.py},label=listing:insertion_sort,numbers=left]{EF/Complexity/Code/insertion_sort_template.py}
-% 	\end{myexercise}
-% \end{frame}
-
-% \begin{frame}
-% 	\begin{myanswer}
-% 		\lstinputlisting[language=Python,caption=\texttt{insertion\_sort.py},numbers=left]{EF/Complexity/Code/insertion_sort.py}
-% 	\end{myanswer}
-% \end{frame}
-
-% \begin{frame}{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
-% 	\begin{itemize}[<+->]
-% 		\item Mit $n$ bezeichnen wir die \textbf{Problemgrösse}, also die Grösse der Eingabe für unseren Algorithmus. Im Fall von \texttt{insertion\_sort} ist dies die Länge der zu sortierenden Liste.
-% 		\item Wir bezeichnen mit der Konstanten $c_i$ ($c$ steht für $cost$) die Zeit, welche zur einmaligen Ausführung der $i$-ten Zeile benötigt wird.
-% 		\item Für $j = 1, 2, \ldots, n - 1$ sei $t_j$ ($t$ steht für $times$) die Anzahl der Überprüfungen der \lstinline|while|-Bedingung (Zeile 5) in der $j$-ten Iteration der äusseren \lstinline|for|-Schleife (Zeile 2).
-% 		\item Die Anzahl $t_j$ hängt natürlich von der konkreten Probleminstanz ab.
-% 	\end{itemize}
-% \end{frame}
-
-% \begin{frame}{Analyse von \texttt{insertion\_sort} (Problemgrösse $n$)}
-% 	\begin{itemize}[<+->]
-% 		\item Betrachten wir eine \lstinline|while|-Schleife, welche ihre Arbeit erst aufgrund einer nicht mehr zutreffenden Schleifen-Bedingung beendet (die Schleife bricht also nicht bereits vorher ab).
-% 		\item Bei einer solchen Schleife über $m$ Wiederholungen, wird der Schleifenkörper genau $m$ mal ausgeführt. Nach der letzten Wiederholung des Schleifenkörpers muss die Schleifen-Bedingung allerdings noch genau ein weiteres Mal überprüft werden (die Schleife \enquote{weiss} zu dieser Zeit noch nicht, dass dies die letzte Wiederholung gewesen sein wird).
-% 		\item Die Schleifen-Bedingung der \lstinline|while|-Schleife wird genau $m+1$ überprüft. Also genau einmal mehr als der Schleifenkörper.
-% 	\end{itemize}
-% \end{frame}
-
-% \begin{frame}[fragile]{Analyse von \texttt{insertion\_sort}}
-% 	\begin{lstlisting}[escapechar=!]
-% 	def insertion_sort(A): !\tikzmark{c1end}!                     !\tikzmark{c1start}!
-%         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
-%             key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
-%             i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
-%             while i >= 0 and A[i] > key: !\tikzmark{c5end}!       !\tikzmark{c5start}!
-%                 A[i + 1] =  A[i] !\tikzmark{c6end}!               !\tikzmark{c6start}!
-%                 i -= 1 !\tikzmark{c7end}!                         !\tikzmark{c7start}!
-%             A[i + 1] = key !\tikzmark{c8end}!                     !\tikzmark{c8start}!
-%         return A !\tikzmark{c9end}!                               !\tikzmark{c9start}!
-% 	\end{lstlisting}
-% 	\begin{tikzpicture}[overlay, remember picture,
-% 			every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
-% 		\only<2->{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!35!white};}
-% 		\only<3->{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n-1$}{green!35!white};}
-% 		\only<4->{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!35!white};}
-% 		\only<5->{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!35!white};}
-% 		\only<6->{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!35!white};}
-% 		\only<7->{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!35!white};}
-% 		\only<8->{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!35!white};}
-% 		\only<9->{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!35!white};}
-% 		\only<10->{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!35!white};}
-% 	\end{tikzpicture}
-% \end{frame}
-
-% \begin{frame}[fragile]{Analyse von \texttt{insertion\_sort}}
-% 	\begin{lstlisting}[escapechar=!]
-% 	def insertion_sort(A): !\tikzmark{c1end}!                     !\tikzmark{c1start}!
-%         for j in range(1, len(A)): !\tikzmark{c2end}!             !\tikzmark{c2start}!
-%             key = A[j] !\tikzmark{c3end}!                         !\tikzmark{c3start}!
-%             i = j - 1 !\tikzmark{c4end}!                          !\tikzmark{c4start}!
-%             while i >= 0 and A[i] > key: !\tikzmark{c5end}!       !\tikzmark{c5start}!
-%                 A[i + 1] =  A[i] !\tikzmark{c6end}!               !\tikzmark{c6start}!
-%                 i -= 1 !\tikzmark{c7end}!                         !\tikzmark{c7start}!
-%             A[i + 1] = key !\tikzmark{c8end}!                     !\tikzmark{c8start}!
-%         return A !\tikzmark{c9end}!                               !\tikzmark{c9start}!
-% 	\end{lstlisting}
-% 	\begin{tikzpicture}[overlay, remember picture,
-% 			every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
-% 		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; c_1, \text{W:}\; 1$}{green!35!white};}
-% 		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; c_2, \text{W:}\; n-1$}{green!35!white};}
-% 		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; c_3, \text{W:}\; n-1$}{green!35!white};}
-% 		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; c_4, \text{W:}\; n-1$}{green!35!white};}
-% 		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; c_5, \text{W:}\; t_j$}{green!35!white};}
-% 		{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; c_6, \text{W:}\; t_j - 1$}{green!35!white};}
-% 		{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; c_7, \text{W:}\; t_j - 1$}{green!35!white};}
-% 		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; c_8, \text{W:}\; n-1$}{green!35!white};}
-% 		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; c_9, \text{W:}\; 1$}{green!35!white};}
-% 	\end{tikzpicture}
-% \end{frame}
 
 % \begin{frame}{worst-case}
 % 	Den schwierigsten / schlimmsten Probleminstanzen (Fällen) kommt in der Informatik eine besondere Bedeutung zu. Man spricht von der \textit{Laufzeit im Schlimmsten Fall} (englisch: \textit{worst-case running time}). Die Idee hinter diesem Ansatz ist offensichtlich: In der Zeit in der wir diese schlimmsten Fälle berechnen können, können wir erst recht alle anderen Fälle berechnen.
@@ -616,157 +576,34 @@ Wir vereinfachen die Terme und gruppieren nach den Potenzen von $n$, um den folg
 % 			T(n) = \max\lrc{\settt{Laufzeit von \texttt{insertion\_sort} auf $A$}{$A$ ist eine Liste der Länge $n$}}.
 % 		\end{align*}
 % 	}
-% \begin{myremark}
-% 	Wir möchten anmerken, dass $T(n)$ für jede natürliche Zahl $n$ die \textbf{minimale} Zeitkomplexität ist, mit der \texttt{insertion\_sort} jede Probleminstanz der Grösse $n$ löst.
-% \end{myremark}
 % \end{frame}
 
-% \begin{frame}{worst-case}
-% 	Für $T(n)$ gilt natürlich:
-% 	\begin{align*}
-% 		T(n) = c_1 + c_9 + (c_2 + c_3 + c_4 + c_8)(n-1) + \\
-% 		+ c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}}
-% 	\end{align*}
-% 	Doch wie lauten die Terme $t_j$?
-% \end{frame}
+\begin{frame}{Das Modell der Random Access Machine (RAM)}
+	\begin{itemize}[<+->]
+		\item Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Computermodell: die \textbf{Random Access Machine (RAM)}.
+		\item Bisher war unsere Analyse mit Kosten $c_k$ pro Zeile zwar exakt, aber auch aufwendig. Das RAM-Modell vereinfacht die Analyse erheblich.
+		\item Die RAM ist ein idealisierter Computer (ähnlich der Von-Neumann-Architektur) mit folgenden Eigenschaften:
+		\begin{itemize}
+			\item \textbf{Speicher:} Genügend viele Speicherzellen, auf die direkt zugegriffen werden kann (Random Access).
+			\item \textbf{Programm:} Eine Folge von einfachen Befehlen (elementare Operationen), die sequentiell abgearbeitet werden.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
 
-% \begin{frame}[fragile]{worst-case}
-% 	Im schlimmsten Fall ist die gegebene Liste absteigend (\enquote{falsch herum}) sortiert. In diesem Fall muss jedes Element \lstinline{A[j]} mit allen Elementen der Teilliste \lstinline{A[0...j-1]} verglichen werden, also mit $j$ vielen. Somit gilt also
-% 	\begin{align*}
-% 		t_j = j, \quad i = 1, 2, \ldots, n-1.
-% 	\end{align*}
-% \end{frame}
-
-% \begin{frame}[fragile]{worst-case}
-% 	Gauss-Summenformel:
-% 	\begin{align*}
-% 		\sum_{j=0}^{n} j = \sum_{j=1}^{n} j = \frac{n(n+1)}{2}
-% 	\end{align*}
-% \end{frame}
-
-% \begin{frame}
-% 	Mithilfe der Gauss-Summenformel finden wir:
-% 	\begin{align*}
-% 		\textcolor{RoyalBlue}{\sum_{j=1}^{n-1} t_j} & = \sum_{j=1}^{n-1} (j)  =                 \\
-% 		                                            & = \sum_{j=1}^{n} (j) - n =                \\
-% 		                                            & = \frac{n(n+1)}{2} - n =                  \\
-% 		                                            & = \textcolor{RoyalBlue}{\frac{n(n-1)}{2}}
-% 	\end{align*}
-% \end{frame}
-
-% \begin{frame}
-% 	und auch:
-% 	\begin{align*}
-% 		\textcolor{Magenta}{\sum_{j=1}^{n-1} (t_j - 1)} & = \sum_{j=1}^{n-1} (j - 1) =                    \\
-% 		                                                & = \sum_{j=1}^{n-1} (j) - \sum_{j=1}^{n-1} (1) = \\
-% 		                                                & = \sum_{j=1}^{n} (j) - n - (n-1) =              \\
-% 		                                                & = \frac{n(n+1)}{2} - n - (n-1) =                \\
-% 		                                                & = \textcolor{Magenta}{\frac{n^2 - 3n + 2}{2}}
-% 	\end{align*}
-% \end{frame}
-
-% \begin{frame}[fragile]
-% 	\begin{align*}
-% 		T(n) & = c_1 + c_9 + (c_2 + c_3 + c_4 + c_8)(n-1) +                                                                                                  \\
-% 		     & + c_5\textcolor{RoyalBlue}{\sum_{j=1}^{n-1}t_j} + (c_6 + c_7)\lr{\textcolor{Magenta}{\sum_{j=1}^{n-1}\lr{t_j - 1}}} =                          \\
-% 		     & = c_1 + c_9 + (c_2 + c_3 + c_4 + c_8)(n-1) +                                                                                                  \\
-% 		     & + c_5\lr{\textcolor{RoyalBlue}{\frac{n(n-1)}{2}}} + c_6\lr{\textcolor{Magenta}{\frac{n^2 - 3n + 2}{2}}} =                                      \\
-% 		     & = \underbrace{\lr{\frac{c_5}{2} + \frac{c_6}{2}}}_{=:a}n^2 + \underbrace{\lr{c_2 + c_3 + c_4 - \frac{c_5}{2} - \frac{3c_6}{2} + c_8}}_{=:b}n + \\
-% 		     & + \underbrace{\lr{c_1 + c_9 + c_6 - c_2 - c_3 - c_4 - c_8}}_{=:c} =                                                                                  \\
-% 		     & = an^2 + bn + c
-% 	\end{align*}
-% 	mit $a\neq 0$
-% \end{frame}
-
-% \begin{frame}{\texttt{bubble\_sort}}
-% 	\begin{myexercise}
-% 		Führen Sie die Laufzeitanalyse (im worst-case) von \\
-% 		\texttt{bubble\_sort} durch.
-% 		\lstinputlisting[basicstyle=\footnotesize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort]{EF/Complexity/Code/bubble_sort.py}
-% 	\end{myexercise}
-% \end{frame}
-
-% \begin{frame}[fragile]{Analyse von \texttt{bubble\_sort} (worst-case, Problemgrösse $n$)}
-% 	\begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily]
-% 	def bubble_sort(A): !\tikzmark{c1end}!                                     !\tikzmark{c1start}!
-%         n = len(A) !\tikzmark{c2end}!                                          !\tikzmark{c2start}!
-%         for i in reversed(range(n)): !\tikzmark{c3end}!                        !\tikzmark{c3start}!
-%             swapped = False !\tikzmark{c4end}!                                 !\tikzmark{c4start}!
-%             for j in range(i): !\tikzmark{c5end}!                              !\tikzmark{c5start}!
-%                 if A[j] > A[j + 1]: !\tikzmark{c6end}!                         !\tikzmark{c6start}!
-%                     swapped = True !\tikzmark{c7end}!                          !\tikzmark{c7start}!
-%                     A[j], A[j + 1] = A[j + 1], A[j] !\tikzmark{c8end}!         !\tikzmark{c8start}!
-%             if not swapped: !\tikzmark{c9end}!                                 !\tikzmark{c9start}!
-%                 break: !\tikzmark{c10end}!                                      !\tikzmark{c10start}!
-%         return A !\tikzmark{c11end}!                                            !\tikzmark{c11start}!
-% 	\end{lstlisting}
-% 	\begin{tikzpicture}[overlay, remember picture,
-% 			every node/.style={draw=green!50,fill=green!35!white,text=black,rounded corners}]
-% 		{\drawArrow{c1end}{c1start}{\tiny $\text{K:}\; \tilde{c}_1, \text{W:}\; 1$}{green!35!white};}
-% 		{\drawArrow{c2end}{c2start}{\tiny $\text{K:}\; \tilde{c}_2, \text{W:}\; 1$}{green!35!white};}
-% 		{\drawArrow{c3end}{c3start}{\tiny $\text{K:}\; \tilde{c}_3, \text{W:}\; n$}{green!35!white};}
-% 		{\drawArrow{c4end}{c4start}{\tiny $\text{K:}\; \tilde{c}_4, \text{W:}\; n$}{green!35!white};}
-% 		{\drawArrow{c5end}{c5start}{\tiny $\text{K:}\; \tilde{c}_5, \text{W:}\; i$}{green!35!white};}
-% 		{\drawArrow{c6end}{c6start}{\tiny $\text{K:}\; \tilde{c}_6, \text{W:}\; i$}{green!35!white};}
-% 		{\drawArrow{c7end}{c7start}{\tiny $\text{K:}\; \tilde{c}_7, \text{W:}\; i$}{green!35!white};}
-% 		{\drawArrow{c8end}{c8start}{\tiny $\text{K:}\; \tilde{c}_8, \text{W:}\; i$}{green!35!white};}
-% 		{\drawArrow{c9end}{c9start}{\tiny $\text{K:}\; \tilde{c}_9, \text{W:}\; n$}{green!35!white};}
-% 		{\drawArrow{c10end}{c10start}{\tiny $\text{K:}\; \tilde{c}_{10}, \text{W:}\; 0$}{green!35!white};}
-% 		{\drawArrow{c11end}{c11start}{\tiny $\text{K:}\; \tilde{c}_{11}, \text{W:}\; 1$}{green!35!white};}
-% 	\end{tikzpicture}
-% \end{frame}
-
-% \begin{frame}[fragile]
-% 	\begin{align*}
-% 		\tilde{T}(n) & = \tilde{c}_1 +  \tilde{c}_2 + \tilde{c}_{11} + (\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_9)n + \\
-% 		             & + (\tilde{c}_5 + \tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8) \sum_{i=0}^{n-1}i =                \\
-% 		             & = \tilde{c}_1 +  \tilde{c}_2 + \tilde{c}_{11} + (\tilde{c}_3 + \tilde{c}_4 + \tilde{c}_9)n + \\
-% 		             & + (\tilde{c}_5 + \tilde{c}_6 + \tilde{c}_7 + \tilde{c}_8) \frac{n(n-1)}{2} =                 \\
-% 		             & = \ldots = \tilde{a}n^2 + \tilde{b}n + \tilde{c},
-% 	\end{align*}
-% 	wobei $\tilde{a}, \tilde{b}, \tilde{c}$ Konstanten sind und $\tilde{a}\neq 0$
-% \end{frame}
-
-% \begin{frame}{Das Modell der Random Access Machine (RAM)}
-% 	Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Modell: die \textbf{Random Access Machine (RAM)}.
-% \end{frame}
-
-% \begin{frame}{Das Random Access Machine (RAM) Modell}
-% 	\begin{itemize}[<+->]
-% 	\item Bisher haben wir in unseren Komplexitätsanalysen jeder Zeile eine Variable für die Ausführungszeit zugewiesen (Kosten $c_i$ für die $i$-te Zeile). Dies ist zwar sehr rigoros und formal korrekt, aber auch sehr aufwendig und nur wenig konkret.
-% 	\item Um die Analyse zu vereinfachen, verwenden wir das \textbf{Random Access Machine (RAM)} Modell.
-% 	\item In diesem Modell nehmen wir an, dass jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) genau \textbf{einen Zeitschritt} benötigt.
-% 	\item Dies ermöglicht es uns, die Laufzeit eines Algorithmus einfach durch das Zählen der ausgeführten elementaren Operationen zu bestimmen.
-% 	\end{itemize}
-% \end{frame}
-
-% \begin{frame}{Das Random Access Machine (RAM) Modell}
-% 	\begin{itemize}[<+->]
-% 		\item Um die Laufzeit von Algorithmen präzise und unabhängig von konkreter Hardware zu analysieren, verwenden wir ein abstraktes Modell: die \textbf{Random Access Machine (RAM)}.
-% 		\item Die RAM ist ein idealisierter Computer, der dem Von-Neumann-Architektur-Prinzip ähnelt.
-% 		\item \textbf{Wichtige Eigenschaften:}
-% 		\begin{itemize}
-% 			\item \textbf{Speicher:} Unendlich viele Speicherzellen\footnote{Natürlich wird jeder Algorithmus, welcher seine Arbeit nach endlich vielen Schritten beendet, nur endlich viele Speicherzellen benötigen.}, auf die direkt zugegriffen werden kann (Random Access).
-% 			\item \textbf{Register:} Jede Zelle kann eine beliebig grosse ganze Zahl speichern.
-% 			\item \textbf{Programm:} Eine Folge von einfachen Befehlen, die sequentiell abgearbeitet werden.
-% 		\end{itemize}
-% 	\end{itemize}
-% \end{frame}
-
-% \begin{frame}{Kostenmodell der RAM}
-% 	\begin{itemize}[<+->]
-% 		\item Wie messen wir die \enquote{Zeit} in diesem Modell?
-% 		\item \textbf{Einheitskostenmodell (Uniform Cost Model):}
-% 		\begin{itemize}
-% 			\item Jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) benötigt genau \textbf{einen Zeitschritt}.
-% 			\item Die Grösse der Operanden spielt dabei keine Rolle (vereinfachende Annahme).
-% 		\end{itemize}
-% 		\item \textbf{Bedeutung für die Analyse:}
-% 		\begin{itemize}
-% 			\item Die Laufzeit eines Algorithmus entspricht der Anzahl der ausgeführten elementaren Operationen.
-% 		\end{itemize}
-% 	\end{itemize}
-% \end{frame}
+\begin{frame}{Kostenmodell der RAM}
+	\begin{itemize}[<+->]
+		\item Wie messen wir die \enquote{Zeit} in diesem Modell?
+		\item Wir verwenden das \textbf{Einheitskostenmodell (Uniform Cost Model):}
+		\begin{itemize}
+			\item Jede elementare Operation (Addition, Subtraktion, Vergleich, Zuweisung, Speicherzugriff) benötigt genau \textbf{einen Zeitschritt}.
+			\item Die Grösse der Operanden spielt dabei (vereinfachend) keine Rolle.
+		\end{itemize}
+		\item \textbf{Bedeutung für die Analyse:}
+		\begin{itemize}
+			\item Die Laufzeit eines Algorithmus entspricht der Anzahl der ausgeführten elementaren Operationen. Wir müssen also nur noch die Operationen zählen.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
 
 % \begin{frame}{Motivation für die asymptotische Analyse}
 % 	\begin{itemize}[<+->]
