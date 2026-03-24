@@ -1,12 +1,12 @@
 import turtle as t
 
 for _ in range(10):
-    # zeichne ein Viereck
+    # zeichne ein Quadrat
     for _ in range(4):
         t.fd(100)
         t.rt(360 / 4)
-    # leichte Rechtsdrehung
+    # Rechtsdrehung um 36 Grad
     t.rt(360 / 10)
 
-# Turtle-Zeichnung stehen lassen
+# Turtle-Zeichnung nicht schliessen
 t.done()
