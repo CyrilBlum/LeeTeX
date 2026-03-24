@@ -53,7 +53,7 @@ def visualize_normalized_data(df_correl, normalize=True, save=True, add_mean=Tru
         plt.axhline(0, color="black", linestyle="--", linewidth=1)
         plt.axvline(0, color="black", linestyle="--", linewidth=1)
 
-        # Add background colors for each quadrant using actual plot limits¨
+        # Add background colors for each quadrant using actual plot limits
         plt.axhspan(
             0,
             y_max,
