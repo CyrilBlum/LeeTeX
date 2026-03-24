@@ -78,6 +78,31 @@ Sie werden im Folgenden zuerst einige Aufgaben lösen, um mit dem Problem der k�
 
 \begin{myexercise}\label{aufgabe:202}
 	Vielleicht haben Sie sich in \cref{aufgabe:201} darüber gewundert, warum wir von \enquote{einem kürzesten Weg} und nicht von \enquote{dem kürzesten Weg} gesprochen haben. Zeichnen Sie einen Graphen mit einem Knoten, der von einem Startknoten $s$ durch mehr als einen kürzesten Weg erreichbar ist.
+	\begin{myanswer}\label{aufgabe:202-sol}
+		Dieser Graph hat offensichtlich zwei Wege der Länge $3$ von $s$ nach $u$.
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}[
+					node distance = 12mm and 14mm,
+					every state/.append style = {inner sep=0pt, fill=gray!10,
+							minimum size=11mm},
+					every edge/.style = {draw, -Triangle, bend angle=15},
+					auto=right,
+				]
+				\node (s) [state,align=center]         {$s$};
+				\node (u) [state, above right=of s,align=center]   {$u$};
+				\node (t) [state, below right=of v1,align=center]         {$t$};
+				% 
+				% \draw[gray!30, line width=5pt]
+				%         (s1) to                     (s2)
+				%         (s1) to [bend right=15]     (s6);
+				% 
+				\draw   (s) edge ["3"]             (u)
+				(s) edge ["1"]            (t)
+				(t) edge ["2"]              (u);
+			\end{tikzpicture}
+		\end{figure}
+	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}\label{aufgabe:203}
@@ -106,29 +131,7 @@ Sie werden im Folgenden zuerst einige Aufgaben lösen, um mit dem Problem der k�
 		\end{tikzpicture}
 	\end{figure}
 	\begin{myanswer}\label{aufgabe:202-sol}
-		Dieser Graph hat offensichtlich zwei Wege der Länge $3$ von $s$ nach $u$.
-		\begin{figure}[H]
-			\centering
-			\begin{tikzpicture}[
-					node distance = 12mm and 14mm,
-					every state/.append style = {inner sep=0pt, fill=gray!10,
-							minimum size=11mm},
-					every edge/.style = {draw, -Triangle, bend angle=15},
-					auto=right,
-				]
-				\node (s) [state,align=center]         {$s$};
-				\node (u) [state, above right=of s,align=center]   {$u$};
-				\node (t) [state, below right=of v1,align=center]         {$t$};
-				% 
-				% \draw[gray!30, line width=5pt]
-				%         (s1) to                     (s2)
-				%         (s1) to [bend right=15]     (s6);
-				% 
-				\draw   (s) edge ["3"]             (u)
-				(s) edge ["1"]            (t)
-				(t) edge ["2"]              (u);
-			\end{tikzpicture}
-		\end{figure}
+		Die Kantengewichte könnten die benötigte Energie für die Fahrt von einem Knoten zu anderen darstellen. Die Kante mit negativem Gewicht könnte beispielsweise eine Abfahrt darstellen, bei welcher Energie zurückgewonnen wird.
 	\end{myanswer}
 \end{myexercise}
 
@@ -766,27 +769,6 @@ Wir bezeichnen mit $d_s\lrs{v}$ die Länge des kürzesten \textbf{bisher} gefund
 	\item Zu Beginn: $d_s\lrs{v} = \infty$ für alle Knoten des Graphen.
 	\item Ziel: Für jeden Knoten $v$ des Graphen soll am Ende $d_s\lrs{v}$ die Länge eines kürzesten Weges von $s$ nach $v$ sein.
 \end{itemize}
-\begin{lstlisting}[language=Python,numbers=none,escapeinside={(*}{*)}]
-## Initialisierung ##
-für alle Knoten u des Graphen setze:
-    (*$d_s[u] = \infty$*)
-(*$d_s[s] \leftarrow 0$*)
-(*$S \leftarrow \emptyset$*)
-(*$Q \leftarrow $*) alle Knoten des Graphen
-
-## Schritte ##
-solange (*$Q$*) nicht leer ist, mach:
-    (*$u\leftarrow$*) Knoten aus (*$Q$*) mit kleinstem (*$d_s[u]$*)
-    (*$S\leftarrow S \cup \lrc{u}$*)
-
-    für alle von (*$u$*) direkt erreichbaren Knoten (*$v$*) mach:
-        # ist der Weg von (*$s$*) nach (*$v$*) kürzer über (*$u$*)?
-        falls (*$d_s[u] + c(u,v) < d_s[v]$*) dann:
-            (*$d_s[v] \leftarrow d_s[u] + c(u,v)$*)
-\end{lstlisting}
-
-
-\clearpage
 \begin{lstlisting}[language=Python,numbers=none,escapeinside={(*}{*)}]
 ### Dijkstra-Algorithmus ###
 
