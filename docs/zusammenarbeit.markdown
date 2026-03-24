@@ -14,4 +14,4 @@ Repository-Link: [github.com/CyrilBlum/LeeTeX](https://github.com/CyrilBlum/LeeT
 - Bitte pushen Sie niemals direkt auf `main`, sondern erstellen Sie immer einen Branch und arbeiten Sie mit Pull Requests.
 - Bitte halten Sie für LaTeX (inklusive sinnvoller Inline-Kommentare) und Listings einen sauberen, polierten Stil ein und orientieren Sie sich am bestehenden Stil.
 - Bitte verwenden Sie keine kommerziellen oder nicht lizenzfreien Inhalte.
-- Bitte vermeiden Sie Screenshots und priorisieren Sie nativen LaTeX-Inhalt, zum Beispiel TikZ-Grafiken.
+- Bitte vermeiden Sie Screenshots und priorisieren Sie nativen LaTeX-Inhalt, zum Beispiel TikZ-Grafiken. Für Grafiken, die nicht in LaTeX erstellt werden können, verwenden Sie bitte Vektorgrafiken (z.B. SVG oder PDF) anstelle von Rastergrafiken (z.B. PNG oder JPG).
