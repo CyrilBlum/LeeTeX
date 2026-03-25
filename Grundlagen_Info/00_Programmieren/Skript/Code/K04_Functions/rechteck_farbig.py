@@ -3,9 +3,7 @@ import turtle as t
 
 def rechteck_farbig(x, y, farbe, breite, laenge):
     # Start-Position setzen
-    t.pu()
-    t.setpos(x, y)
-    t.pd()
+    t.teleport(x, y)
 
     # Farbiges Rechteck zeichnen
     t.color(farbe)
@@ -22,3 +20,5 @@ def rechteck_farbig(x, y, farbe, breite, laenge):
 rechteck_farbig(50, 100, "red", 20, 30)
 rechteck_farbig(-20, 30, "green", 50, 10)
 rechteck_farbig(90, 150, "yellow", 100, 70)
+
+t.done()
