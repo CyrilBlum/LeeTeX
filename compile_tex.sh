@@ -88,8 +88,8 @@ normalize_folder_segment() {
     segment="$(echo "$segment" | sed -e 's/Ä/Ae/g' -e 's/Ö/Oe/g' -e 's/Ü/Ue/g' -e 's/ä/ae/g' -e 's/ö/oe/g' -e 's/ü/ue/g' -e 's/ß/ss/g')"
     segment="$(echo "$segment" | sed -E 's/^[0-9]+_//')"
     segment="$(echo "$segment" | sed -E 's/[[:space:]]+/_/g')"
-    segment="$(echo "$segment" | sed -E 's/Und/und/g')"
     segment="$(echo "$segment" | sed -E 's/([a-z])([A-Z])/\1_\2/g')"
+    segment="$(echo "$segment" | sed -E 's/Und/und/g')"
     echo "$segment"
 }
 
