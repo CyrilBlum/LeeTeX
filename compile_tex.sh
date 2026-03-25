@@ -203,7 +203,7 @@ class_commands=(
 book_topics=(
     # Grundlagenfach Informatik
     "Programmieren:Grundlagen_Info/00_Programmieren/Skript/Skript.tex"
-    "Zahlendarstellungen_und_Kodierungen:Grundlagen_Info/01_TheoretischeInformatik/Skript/Skript.tex"
+    "Zahlendarstellungen_und_Kodierungen:Grundlagen_Info/13_ZahlendarstellungenUndKodierungen/Skript/Skript.tex"
     "Kryptologie:Grundlagen_Info/03_Kryptologie/Skript/Skript.tex"
     "Kompression:Grundlagen_Info/04_Kompression/Skript.tex"
     "Datenintegrität:Grundlagen_Info/05_Datenintegritaet/Skript/Skript"
@@ -279,12 +279,12 @@ beamer_topics=(
     "TurtleGrafik:Grundlagen_Info/00_Programmieren/Slides/TurtleGrafik"
 
     # Zahlendarstellungen und Kodierungen
-    "Zahlensysteme_L01:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L01"
-    "Zahlensysteme_L02:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L02"
-    "Zahlensysteme_L03:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L03"
-    "Zahlensysteme_L04:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L04"
-    "Zahlensysteme_L05:Grundlagen_Info/01_TheoretischeInformatik/Slides/Zahlensysteme_L05"
-    "Graphen_L01:Grundlagen_Info/02_Graphen/Graphen_L01"
+    "Zahlensysteme_L01:Grundlagen_Info/13_ZahlendarstellungenUndKodierungen/Slides/Zahlensysteme_L01"
+    "Zahlensysteme_L02:Grundlagen_Info/13_ZahlendarstellungenUndKodierungen/Slides/Zahlensysteme_L02"
+    "Zahlensysteme_L03:Grundlagen_Info/13_ZahlendarstellungenUndKodierungen/Slides/Zahlensysteme_L03"
+    "Zahlensysteme_L04:Grundlagen_Info/13_ZahlendarstellungenUndKodierungen/Slides/Zahlensysteme_L04"
+    "Zahlensysteme_L05:Grundlagen_Info/13_ZahlendarstellungenUndKodierungen/Slides/Zahlensysteme_L05"
+    "Graphen_L01:Grundlagen_Info/13_ZahlendarstellungenUndKodierungen/Slides/Graphen_L01"
     "Graphen_L02:Grundlagen_Info/02_Graphen/Graphen_L02"
     "Graphen_L03:Grundlagen_Info/02_Graphen/Graphen_L03"
     "AbstraktionDurchGraphen_Kapitel01:Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01"
