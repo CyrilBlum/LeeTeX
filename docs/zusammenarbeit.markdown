@@ -16,3 +16,4 @@ Repository-Link: [github.com/CyrilBlum/LeeTeX](https://github.com/CyrilBlum/LeeT
 - Bitte verwenden Sie keine kommerziellen oder nicht lizenzfreien Inhalte.
 - Bitte vermeiden Sie Screenshots und priorisieren Sie nativen LaTeX-Inhalt, zum Beispiel TikZ-Grafiken. Für Grafiken, die nicht in LaTeX erstellt werden können, verwenden Sie bitte Vektorgrafiken (z.B. SVG oder PDF) anstelle von Rastergrafiken (z.B. PNG oder JPG).
 - Bitte vermeiden Sie Fehler, Warnungen und Meldungen beim Bearbeiten von LaTeX-Dateien.
+- Aufgaben-Nummerierungen in den Slides werden nicht automatisch aktualisiert, wenn entsprechende Teile in den Skripts angepasst werden. Daher sollten Sie die Nummerierung in den Slides manuell anpassen, wenn Sie die entsprechenden Teile in den Skripts anpassen.
