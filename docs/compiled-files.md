@@ -1164,69 +1164,7 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 </details>
 
 <details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Theoretische Informatik</span> <span class="pdf-tree-count">(5 PDFs)</span></summary>
-<div class="pdf-tree-children">
-<details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(5 PDFs)</span></summary>
-<div class="pdf-tree-children">
-<details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L01</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
-<div class="pdf-tree-children">
-<ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Theoretische_Informatik/Slides/Zahlensysteme_L01/output_beamer_Zahlensysteme_L01.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L01</a></li>
-</ul>
-
-</div>
-</details>
-
-<details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L02</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
-<div class="pdf-tree-children">
-<ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Theoretische_Informatik/Slides/Zahlensysteme_L02/output_beamer_Zahlensysteme_L02.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L02</a></li>
-</ul>
-
-</div>
-</details>
-
-<details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L03</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
-<div class="pdf-tree-children">
-<ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Theoretische_Informatik/Slides/Zahlensysteme_L03/output_beamer_Zahlensysteme_L03.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L03</a></li>
-</ul>
-
-</div>
-</details>
-
-<details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L04</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
-<div class="pdf-tree-children">
-<ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Theoretische_Informatik/Slides/Zahlensysteme_L04/output_beamer_Zahlensysteme_L04.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L04</a></li>
-</ul>
-
-</div>
-</details>
-
-<details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L05</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
-<div class="pdf-tree-children">
-<ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Theoretische_Informatik/Slides/Zahlensysteme_L05/output_beamer_Zahlensysteme_L05.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L05</a></li>
-</ul>
-
-</div>
-</details>
-
-</div>
-</details>
-
-</div>
-</details>
-
-<details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlendarstellungen und Kodierungen</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlendarstellungen und Kodierungen</span> <span class="pdf-tree-count">(7 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <details class="pdf-tree-node">
 <summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
@@ -1244,6 +1182,62 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <ul class="pdf-tree-files">
 <li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Skript_ohne_loesungen/output_book_ohne_loesungen_Zahlendarstellungen_und_Kodierungen.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Zahlendarstellungen und Kodierungen</a></li>
 </ul>
+
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(5 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L01</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L01/output_beamer_Zahlensysteme_L01.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L01</a></li>
+</ul>
+
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L02</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L02/output_beamer_Zahlensysteme_L02.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L02</a></li>
+</ul>
+
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L03</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L03/output_beamer_Zahlensysteme_L03.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L03</a></li>
+</ul>
+
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L04</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L04/output_beamer_Zahlensysteme_L04.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L04</a></li>
+</ul>
+
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L05</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L05/output_beamer_Zahlensysteme_L05.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L05</a></li>
+</ul>
+
+</div>
+</details>
 
 </div>
 </details>
