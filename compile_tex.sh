@@ -88,6 +88,7 @@ normalize_folder_segment() {
     segment="$(echo "$segment" | sed -e 's/Ä/Ae/g' -e 's/Ö/Oe/g' -e 's/Ü/Ue/g' -e 's/ä/ae/g' -e 's/ö/oe/g' -e 's/ü/ue/g' -e 's/ß/ss/g')"
     segment="$(echo "$segment" | sed -E 's/^[0-9]+_//')"
     segment="$(echo "$segment" | sed -E 's/[[:space:]]+/_/g')"
+    segment="$(echo "$segment" | sed -E 's/Und/und/g')"
     segment="$(echo "$segment" | sed -E 's/([a-z])([A-Z])/\1_\2/g')"
     echo "$segment"
 }
@@ -367,10 +368,10 @@ for i in "${!classes[@]}"; do
     for entry in "${topics[@]}"; do
         topic="${entry%%:*}"
         input_path="${entry#*:}"
-        topic_folder="$(normalize_folder_segment "$topic")"
-        collection_folder="$(derive_collection_folder "$input_path")"
+        topic_folder="$(normalize_folder_segment "$topic")" # example: "Grundlagen_Info/00_Programmieren/Skript/Skript.tex" -> "Programmieren"
+        collection_folder="$(derive_collection_folder "$input_path")" # example: "Grundlagen_Info" from "Grundlagen_Info/00_Programmieren/Skript/Skript.tex"
         # Extract LEVEL as the first directory in input_path
-        LEVEL=$(echo "$input_path" | cut -d'/' -f1)
+        LEVEL=$(echo "$input_path" | cut -d'/' -f1) # example: "Grundlagen_Info" from "Grundlagen_Info/00_Programmieren/Skript/Skript.tex"
         # Determine output directory and file names, distinguishing between book variants
         if [ "$class" = "book" ]; then
             # Check if this is the exerciseonly variant
