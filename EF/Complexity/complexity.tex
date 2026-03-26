@@ -274,6 +274,50 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}
+\begin{myexercise}
+Gegeben sind zwei Algorithmen \(A\) und \(B\) für ein algorithmisches Problem.
+\begin{itemize}
+	\item Algorithmus \(A\): benötigt \(2^n\) Rechenoperationen,
+	\item Algorithmus \(B\): benötigt \(n^2\) Rechenoperationen
+\end{itemize}
+zur Berechnung einer Lösung für eine Problemgrösse \(n\).
+\vspace{0.3cm}
+
+Eine Operation dauert genau 1 Mikrosekunde.
+\vspace{0.5cm}
+
+Wie gross darf $n$ maximal sein, damit die Berechnung in 24 Stunden fertig ist? (für $A$ und $B$)
+\end{myexercise}
+\end{frame}
+
+\begin{frame}
+\begin{myanswer}
+\begin{itemize}[<+->]
+	\item Algorithmus \(A\): Wir müssen die Ungleichung \(2^n \leq 24 \cdot 60 \cdot 60 \cdot 10^6\) lösen, da es $24 \cdot 60 \cdot 60 \cdot 10^6$ Mikrosekunden in 24 Stunden gibt. Das ergibt \(n \leq \log_2\lr{24 \cdot 60 \cdot 60 \cdot 10^6} \approx 36.33\Rightarrow \text{gesuchte Problemgrösse: } 36 \).
+	\item Algorithmus \(B\): Wir müssen die Ungleichung \(n^2 \leq 24 \cdot 60 \cdot 60 \cdot 10^6\) lösen. Das ergibt \(n \leq \sqrt{24 \cdot 60 \cdot 60 \cdot 10^6} \approx 293938.77 \Rightarrow \text{gesuchte Problemgrösse: } 293938\).
+\end{itemize}
+\end{myanswer}
+\end{frame}
+
+\begin{frame}
+\begin{myexercise}
+Gegeben sind zwei Algorithmen \(A\) und \(B\) für ein algorithmisches Problem. In diesem Kontext existieren nur Problemgrössen \(n \in \N\), die \textbf{gerade} sind.
+\begin{itemize}
+	\item Algorithmus \(A\): benötigt \(4.5n + 15\) Rechenoperationen.
+	\item Algorithmus \(B\): benötigt \(0.5n^2 + n\) Rechenoperationen.
+\end{itemize}
+Hinweis: Wir gehen davon aus, dass jede Rechenoperation die gleiche Zeit beansprucht.
+\vspace{0.5cm}
+Was ist die kleinste gerade Zahl \(n > 0\), für welche Algorithmus \(A\) das Problem schneller löst (also weniger Rechenoperationen benötigt) als Algorithmus \(B\)?
+\end{myexercise}
+\end{frame}
+
+\begin{frame}
+\begin{myanswer}
+Wir müssen die Ungleichung \(4.5n + 15 < 0.5n^2 + n\) lösen. Das ergibt \(n^2 - 7n - 30 > 0\). Die Lösungen dieser Ungleichung sind \(n < -3\) sowie \(n > 10\). Da wir nur gerade Zahlen \(n > 0\) betrachten, ist die gesuchte Problemgrösse \(12\).
+\end{myanswer}
+\end{frame}
 
 \begin{frame}{Bestimmung der Laufzeit \faStar\faStar\faStar[regular]\faStar[regular]\faStar[regular]}
 	\begin{myexercise}
@@ -376,7 +420,7 @@ def berechne_summe(n): !\tikzmark{s1end}!                !\tikzmark{s1start}!
 \begin{lstlisting}[escapechar=!,basicstyle=\footnotesize\ttfamily,numbers=left]
 def bubble_sort(A): !\tikzmark{c1end}! 								!\tikzmark{c1start}!
     n = len(A) !\tikzmark{c2end}! 									!\tikzmark{c2start}!
-    for i in range(n): !\tikzmark{c3end}! 							!\tikzmark{c3start}!
+    for i in range(n - 1): !\tikzmark{c3end}! 						!\tikzmark{c3start}!
         for j in range(n - i - 1): !\tikzmark{c4end}! 				!\tikzmark{c4start}!
             if A[j] > A[j + 1]:	!\tikzmark{c5end}! 					!\tikzmark{c5start}!
                 A[j], A[j+1] = A[j+1], A[j] !\tikzmark{c6end}! 		!\tikzmark{c6start}!
@@ -387,8 +431,8 @@ def bubble_sort(A): !\tikzmark{c1end}! 								!\tikzmark{c1start}!
     % Each arrow will appear one after another
     \only<2->{\drawArrow{c1end}{c1start}{\tiny $w_1(n) = 1$}{green!35!white};}
     \only<3->{\drawArrow{c2end}{c2start}{\tiny $w_2(n) = 1$}{green!35!white};}
-    \only<4->{\drawArrow{c3end}{c3start}{\tiny $w_3(n) = n + 1$}{green!35!white};}
-    \only<8->{\drawArrow{c4end}{c4start}{\tiny $w_4(n) = w_5(n) + n$}{green!35!white};}
+    \only<4->{\drawArrow{c3end}{c3start}{\tiny $w_3(n) = n$}{green!35!white};}
+    \only<8->{\drawArrow{c4end}{c4start}{\tiny $w_4(n) = w_5(n) + n - 1$}{green!35!white};}
     \only<5->{\drawArrow{c5end}{c5start}{\tiny $w_5(n)$}{green!35!white};}
     \only<6->{\drawArrow{c6end}{c6start}{\tiny $w_6(n) = w_5(n)$}{red!55!white};}
     \only<7->{\drawArrow{c7end}{c7start}{\tiny $w_7(n) = 1$}{green!35!white};}
@@ -403,8 +447,6 @@ def bubble_sort(A): !\tikzmark{c1end}! 								!\tikzmark{c1start}!
 \end{itemize}
 \end{frame}
 
-
-
 \begin{frame}[fragile]{Genaue Analyse von \texttt{bubble\_sort}, \textcolor{Red}{Worst-Case}}
 \lstinputlisting[basicstyle=\scriptsize\ttfamily,language=Python,caption=\texttt{bubble\_sort.py},label=listing:bubble_sort,numbers=left]{EF/Complexity/Code/bubble_sort.py}
 {\footnotesize
@@ -414,14 +456,13 @@ Wir müssen nun die totale Anzahl der Ausführungen von Zeile 5, also $w_5(n)$, 
 	\item Wenn \lstinline{i = 0}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n - 2} $\Rightarrow$ $(n-1)$ Mal
 	\item Wenn \lstinline{i = 1}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{n - 3} $\Rightarrow$ $(n-2)$ Mal
 	\item $\vdots$
-	\item Wenn \lstinline{i = n - 2}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{0} $\Rightarrow$ $1$ Mal
-	\item Wenn \lstinline{i = n - 1}, ist der Bereich \lstinline{range(0, 0)} $\Rightarrow$ $0$ Mal
+	\item Wenn \lstinline{i = n - 2}, läuft \lstinline{j} von \lstinline{0} bis \lstinline{0}, wegen \lstinline{range(0, 1)} $\Rightarrow$ $1$ Mal
 \end{itemize}
 \pause
 Wir erhalten die bekannte Summe:
 {\scriptsize
 \begin{align*}
-	w_5(n) = (n-1) + (n-2) + \ldots + 1 + 0 \stackrel{\text{Gausssche Summenformel}}{=} \frac{n(n-1)}{2} = \frac{n^2}{2} - \frac{n}{2}.
+	w_5(n) = (n-1) + (n-2) + \ldots + 1 = \frac{n(n-1)}{2} = \frac{n^2}{2} - \frac{n}{2}.
 \end{align*}
 }
 }
@@ -431,9 +472,9 @@ Wir erhalten die bekannte Summe:
 \phantom{1}
 {\footnotesize
 \begin{align*}
-	T_{\text{worst}}(n) &= c_1w_1(n) + c_2w_2(n) + \ldots + c_7w_7(n) \\
-	&= c_1(1) + c_2(1) + c_3(n+1) + c_4\left(w_5(n) + n\right) + c_5w_5(n) + c_6w_5(n) + c_7(1) \\
-	&= c_1 + c_2 + c_3(n+1) + c_4\left(\frac{n(n-1)}{2}+n\right) + (c_5+c_6)\left(\frac{n(n-1)}{2}\right) + c_7
+	T_{\text{worst}}(n) &= c_1w_1(n) + c_2w_2(n) + \ldots + c_7w_7(n) = \\
+	&= c_1 + c_2 + c_3(n) + c_4\left(w_5(n) + n-1\right) + c_5w_5(n) + c_6w_5(n) + c_7 = \\
+	&= c_1 + c_2 + c_3n + c_4\left(\frac{n(n-1)}{2}+n-1\right) + (c_5+c_6)\left(\frac{n(n-1)}{2}\right) + c_7
 \end{align*}
 }
 \end{frame}
@@ -443,7 +484,7 @@ Wir erhalten die bekannte Summe:
 	\pause
 {\footnotesize
 \begin{align*}
-T_{\text{worst}}(n) &= \underbrace{\left(\frac{c_4 + c_5 + c_6}{2}\right)}_{=:\textcolor{Red}{a}} n^2 + \underbrace{\left(c_3 + \frac{c_4 - c_5 - c_6}{2}\right)}_{=:\textcolor{RoyalBlue}{b}}n + \underbrace{(c_1 + c_2 + c_3 + c_7)}_{=:\textcolor{ForestGreen}{c}} = \\
+T_{\text{worst}}(n) &= \underbrace{\left(\frac{c_4 + c_5 + c_6}{2}\right)}_{=:\textcolor{Red}{a}} n^2 + \underbrace{\left(c_3 + \frac{c_4 - c_5 - c_6}{2}\right)}_{=:\textcolor{RoyalBlue}{b}}n + \underbrace{(c_1 + c_2 - c_4 + c_7)}_{=:\textcolor{ForestGreen}{c}} = \\
 &= \textcolor{Red}{a}n^2 + \textcolor{RoyalBlue}{b}n + \textcolor{ForestGreen}{c}
 \end{align*}}
 \end{frame}
