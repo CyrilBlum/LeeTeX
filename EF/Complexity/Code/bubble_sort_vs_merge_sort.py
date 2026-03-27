@@ -4,7 +4,7 @@ from bubble_sort import bubble_sort
 from merge_sort import merge_sort
 
 # Erstelle eine Liste von n ganzen Zahlen
-n = 5000
+n = 10000
 random_numbers = [random.randint(0, 1000000) for _ in range(n)]
 
 # Timing bubble_sort
