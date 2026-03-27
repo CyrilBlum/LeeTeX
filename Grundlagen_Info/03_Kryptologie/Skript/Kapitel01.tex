@@ -4,47 +4,25 @@
 
 \section{Einführung}\label{sec:intro}
 
-Alice möchte Bob eine wichtige Nachricht zukommen lassen, beispielsweise zu einem gesundheitlichen Problem oder um ihre Bankkontoverbindung mit Bob zu teilen. Da das Internet jedoch eine \textit{offene} und somit (grundsätzlich) unsichere Technologie ist, kann jedermann jede Nachricht mitlesen. Somit könnte eine bösartige Person, wie beispielsweise Eve, die Nachricht abhören, um sich Zugriff auf die Gesundheitsdaten oder das Bankkonto von Alice zu verschaffen.
+Alice möchte Bob eine vertrauliche Nachricht (z.\,B. Bankdaten, gesundheitliche Befunde) über das Internet zukommen lassen. Nun ist das Internet ein sehr grosses physisches Netzwerk, das sich über die ganze Welt erstreckt. 
+Es besteht aus unzähligen Kabeln, Routern, Servern, etc., die von verschiedenen Organisationen und Staaten betrieben werden. Wenn Alice eine Nachricht an Bob sendet, wird diese Nachricht über dieses Netzwerk transportiert und durchläuft dabei viele verschiedene Geräte und Verbindungsstrecken. 
+Es ist für Alice und Bob, praktisch gesprochen, unmöglich auszuschliessen, dass jemand die Nachricht mitlesen / mithören könnte, während sie über das Internet transportiert wird.
+\par
 
-Damit dies nicht passieren kann, muss Alice ihre Nachricht so verschlüsseln, dass nur Bob sie lesen kann. Dieses Problem hat sich bereits in der Antike (und vermutlich noch vorher gestellt) und entspricht einem grundsätzlichen, menschlichen Bedürfnis: Wie kann ein Feldherr seinen Soldaten Anweisungen geben, ohne dass der Gegner mithört? Oder, um eine andere Situation aufzugreifen: Wie können Sie sich mit Ihren Geschwistern austauschen, ohne dass Ihre Eltern verstehen, worum es geht?
+Die \emph{Kryptologie} befasst sich (unter anderem) mit der Frage, wie Alice ihre Nachricht so verschlüsseln kann, dass nur Bob sie lesen kann, selbst wenn jemand anderes die Nachricht mitliest. Es geht also darum, die Nachricht so zu verändern, dass sie für Dritte unverständlich wird, aber für Bob immer noch lesbar ist.
 
-In der Informatik spricht man hier davon, dass Alice aus ihrem \enquote{Klartext}, also dem für alle Menschen verständlichen Text, einen \enquote{Kryptotext} macht, also einen Text, den nur Bob entschlüsseln kann, d.h., nur Bob weiss, wie man aus diesem Text wieder einen verständlichen Text macht. Hierzu muss man sich auf eine Verschlüsselungsmethode einigen. In der Informatik spricht man hierbei von einem \textbf{Verschlüsselungs-Algorithmus} und \textbf{Entschlüsselungs-Algorithmus}. Die Methode, um eine Nachricht zu verschlüsseln, so dass sie für Dritte unlesbar ist, wird häufig auch \enquote{\textbf{Schlüssel}} genannt, und das Verfahren, um eine Nachricht unlesbar zu machen \enquote{Verschlüsselung} oder \enquote{Chiffrierung}. Im Allgemeinen wird der Bereich der Informatik, der sich mit Ver- und Entschlüsselung befasst, \enquote{Kryptografie} genannt und die verschiedenen Algorithmen und Ansätze werden häufig als \enquote{Kryptosysteme} bezeichnet.
-%
-% \begin{figure}[H]
-%     \centering
-%     \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
-%     \node[alice, minimum width=1.5cm, 
-%         label={[mylabel, anchor=west]north east:{}}, 
-%         label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Chiffrierung)}$\\
-%         \textcolor{Red}{Kryptotext}}}] (alice) {Alice (Sender)};
-%     \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
-%         label={[mylabel, anchor=east]north west:{}}, 
-%         label={[mylabel, anchor=west]north east:{\textcolor{Red}{Kryptotext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
-%         \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
-%     
-%     \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
-%     \textcolor{Red}{Kryptotext}} (aux-a-|bob.west);
-%
-%     \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
-%     \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
-%     \end{tikzpicture}
-%     \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger).}
-%     \label{fig:schemaGeheimtext}
-% \end{figure}
-% \clearpage
-%
-% \section{Geheimschriften}
-% \section{Kryptosysteme}
+Ein\textbf{Kryptosystem} besteht aus den Verfahren zur Ver- und Entschlüsselung sowie den zugehörigen Schlüsseln. Die ursprüngliche, lesbare Nachricht wird als \textbf{Klartext} bezeichnet. Durch den Vorgang der Verschlüsselung wird dieser in einen für Unbefugte unverständlichen \textbf{Kryptotext} umgewandelt. Durch Entschlüsselung mit dem passenden Schlüssel kann der Empfänger (mit moderatem Aufwand) daraus wieder den ursprünglichen Klartext gewinnen.
+
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
 		\node[alice, minimum width=1.5cm,
 		label={[mylabel, anchor=west]north east:{}},
 		label={[mylabel, anchor=east]north west:{\textcolor{Blue}{(Klartext, Schlüssel)} $\big\downarrow\text{\tiny (Verschlüsselung)}$\\
-		\textcolor{Red}{Kryptotext}}}] (alice) {Alice (Sender)};
+		\textcolor{Red}{\mbox{Kryptotext}}}}] (alice) {Alice (Sender)};
 		\node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
 		label={[mylabel, anchor=east]north west:{}},
-		label={[mylabel, anchor=west]north east:{\textcolor{Red}{(Kryptotext, Schlüssel)} $\big\downarrow\text{\tiny (Entschlüsselung)}$\\
+		label={[mylabel, anchor=west]north east:{\textcolor{Red}{(\mbox{Kryptotext}, Schlüssel)} $\big\downarrow\text{\tiny (Entschlüsselung)}$\\
 		\textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
 
 		\draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
@@ -53,36 +31,32 @@ In der Informatik spricht man hier davon, dass Alice aus ihrem \enquote{Klartext
 		\node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
 		\draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
 	\end{tikzpicture}
-	\caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems.}
+	\caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems. Der Name \emph{Eve} ist eine clevere Abkürzung für \emph{eavesdropper}, was auf Deutsch so viel wie \emph{Abhörer} bedeutet.}
 	\label{fig:schemaGeheimtext}
 \end{figure}
 
-Im Folgenden setzen wir uns zuerst mit einigen grundlegenden Verschlüsselungs-Methoden auseinander, um zu verstehen, was ein sicheres Kryptosystem auszeichnet. Der niederländische Kryptologe und Linguist Auguste Kerckhoffs stellte im Jahr 1883 sechs Grundsätze für sichere Verschlüsselungsverfahren auf:
+\section{Sicherheitsanforderungen an Kryptosysteme}
+
+Im Folgenden setzen wir uns zunächst mit einigen grundlegenden Kryptosystemen auseinander, um zu verstehen, was ein sicheres Kryptosystem auszeichnet. Der niederländische Kryptologe und Linguist \emph{Auguste Kerckhoffs} stellte im Jahr 1883 die folgende Anforderung an die Sicherheit von Kryptosystemen auf, die heute als \textbf{Kerckhoffs'sches Prinzip} bekannt ist: 
+
+\begin{myquote}\label{myquote:kerckhoffs}
+	\enquote{Ein Kryptosystem sollte auch dann sicher sein, wenn alles über das System bekannt ist, ausser dem Schlüssel.} -- Auguste Kerckhoffs, \emph{La cryptographie militaire} (1883)\footnote{Originalzitat: \enquote{Il faut qu'il n'exige pas le secret, et qu'il puisse sans inconvénient tomber entre les mains de l'ennemi.}}
+\end{myquote}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.3\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/kerckhoffs}
-	\caption{Auguste Kerckhoffs (1835-1903)}
+	\caption{Auguste Kerckhoffs (1835--1903)}
 	\label{fig:kerckhoffs}
 \end{figure}
 
-\begin{enumerate}
-	\item Das System muss \textbf{unentzifferbar} sein.
-	\item Das System darf \textbf{keiner Geheimhaltung} bedürfen.
-	\item Das System muss \textbf{leicht übermittelbar} sein und man muss sich die \textbf{Schlüssel ohne schriftliche Aufzeichnung merken} können.
-	\item Das System sollte \textbf{mit telegraphischer Kommunikation kompatibel} sein.
-	\item Das System muss \textbf{transportabel} sein und die Bedienung darf nicht mehr als eine Person erfordern.
-	\item Das System muss \textbf{einfach anwendbar} sein.
-\end{enumerate}
+Das Kerckhoffs'sche Prinzip besagt, dass die Sicherheit eines Kryptosystems nicht davon abhängen sollte, dass die Funktionsweise des Systems geheim gehalten wird. Stattdessen sollte die Sicherheit allein auf der Geheimhaltung des Schlüssels beruhen. Einem solchen System wird auch dann noch vertraut, wenn es öffentlich bekannt ist, da die Sicherheit nicht von der Geheimhaltung des Algorithmus abhängt, sondern von der Geheimhaltung des Schlüssels.
 
-Ein System, das diese Anforderungen erfüllt, gab es damals nicht. Von besonderer Wichtigkeit war seine Forderung nach Öffentlichkeit des Kryptosystems:
+\par
+Einen solchen System, welches das Kerckhoffs'sche Prinzip erfüllt, gegenüber stehen Verfahren, deren Sicherheit davon abhängt, dass die Funktionsweise des Systems geheim gehalten wird. Ein Beispiel für ein solches Verfahren ist eine Geheimschrift wie das Freimaurer-Alphabet, bei dem die Buchstaben des Klartexts durch Symbole ersetzt werden, die nur denjenigen bekannt sind, die das Geheimnis kennen. Solche Verfahren sind anfällig für Angriffe, da ein Angreifer, der die Funktionsweise des Systems herausfindet, in der Lage sein könnte, den Klartext zu entschlüsseln, ohne den Schlüssel zu kennen. In diesem Zusammenhang spricht man von \emph{Security through Obscurity}, also Sicherheit durch Verschleierung, was als eine unsichere Praxis angesehen wird, da sie auf der Annahme beruht, dass die Angreifer nicht in der Lage sein werden, die Funktionsweise des Systems zu verstehen oder zu entdecken.
 
-\begin{quote}
-	\enquote{Il faut qu'il n'exige pas le secret, et qu'il puisse sans inconvénient tomber entre les mains de l'ennemi.} -- Auguste Kerckhoffs, \textit{La cryptographie militaire} (1883)
-\end{quote}
 
-Demgegenüber steht die Auffassung, dass Kryptosysteme geheimgehalten werden sollten (\textit{Security through Obscurity}), eine Haltung, die häufiger von militärischen Institutionen sowie kommerziellen Anbietern von Verschlüsselungsmethoden verfechtet wird.
-
+\section{Sicherheitsanforderungen an moderne Kryptosysteme}
 Folgende Sicherheits-bezogenen Anforderungen können zusätzlich an moderne Kryptosysteme gestellt werden:
 \begin{enumerate}
 	\item \textbf{Vertraulichkeit}: Es soll sichergestellt sein, dass wirklich nur diejenige Person eine Nachricht lesen kann, für die diese bestimmt ist.
@@ -91,14 +65,17 @@ Folgende Sicherheits-bezogenen Anforderungen können zusätzlich an moderne Kryp
 	\item \textbf{Verbindlichkeit}: Die Verfasserin soll nicht abstreiten können, dass sie die Verfasserin der Nachricht ist.
 \end{enumerate}
 
+
+
+
 \chapter{Symmetrische Kryptosysteme}
 
 
-\section{Verschlüsselung per Transposition}
-In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die Buchstaben des Klartexts im Kryptotext erhalten, ändern aber die Reihenfolge.
+\section{Verschlüsselung durch Transposition}
+In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die Buchstaben des Klartexts im Kryptotext erhalten, ändern aber möglicherweise ihre Positionen.
 
 \begin{myexercise}\label{ex:zweiertausch}
-	Entziffern Sie den folgenden Kryptotext durch Ausprobieren:
+	Finden Sie zu den folgenden Kryptotexten die Klartexte (unverschlüsselte Nachrichten):
 	\begin{center}
 		\small
 		\begin{enumerate}
@@ -121,8 +98,8 @@ In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die 
 		Der Kryptotext entsteht durch Austauschen der Positionen der Buchstaben, wie gezeigt in \cref{fig:transposition-cipher}.
 		\begin{figure}[H]
 			\centering
-			\begin{subfigure}[b]{0.45\textwidth}
-				\begin{tikzpicture}
+			\begin{subfigure}[b]{0.48\textwidth}
+				\begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
 					% Parameters
 					\def\boxwidth{1} % Width of each box
 					\def\numboxes{6} % Total number of boxes
@@ -167,9 +144,9 @@ In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die 
 				\end{tikzpicture}
 				\caption{\enquote{Zweiertausch}}
 			\end{subfigure}
-			\hfill
-			\begin{subfigure}[b]{0.45\textwidth}
-				\begin{tikzpicture}
+			\hspace{0.1cm}
+			\begin{subfigure}[b]{0.48\textwidth}
+				\begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
 					% Parameters
 					\def\boxwidth{1} % Width of each box
 					\def\numboxes{6} % Total number of boxes
@@ -225,24 +202,27 @@ In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die 
 			\caption{\enquote{Zweiertausch} und \enquote{Dreiertausch}}
 			\label{fig:transposition-cipher}
 		\end{figure}
+		Beachten Sie, dass die Buchstaben des Klartexts im Kryptotext erhalten bleiben, aber ihre Reihenfolge geändert wird. Die Schlüssel für diese Kryptosystem sind die Anweisungen, wie die Buchstaben vertauscht werden, z.\,B. \enquote{Zweiertausch} oder \enquote{Dreiertausch}.
 	\end{myanswer}
 \end{myexercise}
 
 
-\subsection{Skytale}
-Das Kryptosystem \textit{Skytale} wurde bereits von den Griechen für militärische Zwecke verwendet. Der Verschlüsselungsalgorithmus kann wie folgt beschrieben werden:
+\subsection{SKYTALE}
+Das Kryptosystem \emph{SKYTALE} wurde bereits von den Griechen für militärische Zwecke verwendet. Der Verschlüsselungsalgorithmus kann wie folgt beschrieben werden:
 \begin{itemize}
 	\item Schreibe den Klartext zeilenweise in eine Tabelle (Matrix) von links nach rechts.
-	\item Allfällige leere Felder in der letzten Zeile der Tabelle werden mit beliebigen Buchstaben gefüllt.
+	\item Allfällige leere Felder in der letzten Zeile der Tabelle werden mit beliebigen (am besten zufällig gewählten) Buchstaben gefüllt.
 	\item Den Kryptotext erhalten wir, indem wir die Buchstaben Spalte für Spalte von links nach rechts und von oben nach unten lesen.
 \end{itemize}
 
-Praktisch umgesetzt werden kann dieser Algorithmus mit einem Stab und einem Band, siehe \cref{fig:skytale-band}. Die Anzahl Zeichen, die auf eine Windung des Bandes um den Stab passen, entspricht der Anzahl Zeilen in der Tabelle. Diese Anzahl, also die Anzahl Zeilen, entspricht dem Schlüssel des Skytale-Verschlüsselungsverfahrens.
+Die SKYTALE wird mit einem Stab und einem Band umgesetzt (\cref{fig:skytale-band}). Die Anzahl der Zeichen pro Windung entspricht dabei der Zeilenanzahl der Tabelle und bildet somit den Schlüssel.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/SkytaleWiki}
-	\caption{Praktische Umsetzung der Skytale-Verschlüsselung mit einem Stab und einem Band \href{https://commons.wikimedia.org/wiki/File:Skytale.png}{Quelle}}
+	\caption[SKYTALE]{Praktische Umsetzung der SKYTALE-Verschlüsselung mit einem Stab und einem Band. 
+	Die Anzahl Zeichen, die auf eine Windung des Bandes um den Stab passen, entspricht der Anzahl Zeilen in der Tabelle, also dem Schlüssel des Kryptosystems SKYTALE.}
+	{\small Quelle: \href{https://commons.wikimedia.org/wiki/File:Skytale.png}{Wikimedia Commons}}
 	\label{fig:skytale-band}
 \end{figure}
 
@@ -251,10 +231,10 @@ Praktisch umgesetzt werden kann dieser Algorithmus mit einem Stab und einem Band
 	\begin{center}
 		WNGIAEIEMATSMKRTTEAGIEINANINTUGNDOJEEENL
 	\end{center}
-	wurde mit einer Tabelle mit 5 Zeilen und 8 Spalten erzeugt. Wie lautet der Klartext?
+	wurde mit einer Tabelle mit 5 Zeilen und 8 Spalten erzeugt. Wie lautet der Klartext? Tipp: Nehmen Sie Ihr bevorzugtes Tabellenkalkulationsprogramm zuhilfe.
 	\begin{myanswer}
 
-		Wir beginnen mit einer leeren $5\times 8$ Tabelle und schreiben den Kryptotext zeilenweise (von links nach rechts und von oben nach unten) in die leere Tabelle. Damit erhalten wir:
+		Wir beginnen mit einer leeren $5\times 8$ Tabelle und schreiben den gegebenen Kryptotext spaltenweise von links nach rechts und von oben nach unten in die Tabelle ein:
 		\begin{table}[H]
 			\centering
 			\begin{tabular}{c|c|c|c|c|c|c|c}
@@ -269,7 +249,7 @@ Praktisch umgesetzt werden kann dieser Algorithmus mit einem Stab und einem Band
 		\begin{center}
 			Wettingen ist eine Gemeinde im Kanton Aargau
 		\end{center}
-		lässt sich nun einfach ablesen.
+		lässt sich nun einfach ablesen (Zeile für Zeile von links nach rechts).
 	\end{myanswer}
 \end{myexercise}
 
@@ -281,9 +261,9 @@ Praktisch umgesetzt werden kann dieser Algorithmus mit einem Stab und einem Band
 	\end{center}
 	Dabei konnten mit dem Klartext \textbf{alle Zeilen der Tabelle vollständig aufgefüllt} werden.
 	\begin{enumerate}
-		\item Welches ist hier der Schlüssel, d.h. die Anzahl Zeichen auf einer Windung (bzw. Anzahl Zeilen der Tabelle)? Tipp: Probieren Sie die Schlüssel 3 und 5 aus. Sie können \href{https://cryptbreaker.marcwidmer.xyz/solve}{diesen Link}, Entschlüsselungswerkzeug \enquote{Tabelle} dazu verwenden.
+		\item Wie viele verschiedene Schlüssel (Anzahl Zeilen) sind in dieser Siutation möglich?
+		\item Welcher Schlüssel wurde hier verwendet? Tipp: Sie können \href{https://cryptbreaker.marcwidmer.xyz/solve}{diesen Link} mit \emph{Analysewerkzeug} $\rightarrow$ \emph{Tabelle} dazu verwenden.
 		\item Wie lautet der Klartext?
-		\item Wie viele Schlüssel müssen im schlimmsten Fall ausprobiert werden, bis der korrekte Schlüssel gefunden wurde? Das heisst, wie viele potentielle Schlüssel gibt es? Es gilt immer noch, dass alle Zeilen der Tabelle vollständig befüllt waren.
 	\end{enumerate}
 
 	\begin{myanswer}
@@ -298,35 +278,34 @@ Praktisch umgesetzt werden kann dieser Algorithmus mit einem Stab und einem Band
 			\end{tabular}
 		\end{table}
 		\begin{enumerate}
-			\item Durch Ausprobieren finden wir, dass die Wahl des Schlüssels 5 zu einem sinnvollen Klartext führt, die Wahl des Schlüssels 3 jedoch nicht.
-
+			\item Wir müssen $75$ Buchstaben auf ein Rechteck verteilen. Damit kommen alle Teiler von $75$, also 1, 3, 5 und 75, als mögliche Schlüssel in Frage. 
+			\item Durch Ausprobieren finden wir, dass einzige der Schlüssel 5 zu einem sinnvollen Klartext führt.
 			\item
-			      Der Klartext lautet also:
+			      Der Klartext lautet:
 			      \begin{center}
 				      {\small
 					      EIN KLEINER SCHRITT FUER MICH ABER EIN GROSSER\\
 					      SPRUNG FUER DIE MENSCHHEIT NEIL ARMSTRONG}
 			      \end{center}
-			\item Wir müssen $75=3\cdot 5\cdot 5$ Buchstaben auf ein Rechteck verteilen. Damit könnten $3, 5, 15$ und $25$ mögliche Schlüssel sein. $1$ und $75$ sind keine Schlüssel, da der gegebene Text kein Klartext ist.
 		\end{enumerate}
 	\end{myanswer}
 
 
 \end{myexercise}
-\begin{mychallenge}
-	Sie möchten einen Klartext der Länge 87 mit Hilfe einer Tabelle mit 10 Zeilen chiffrieren. Wie viele Spalten benötigt diese Tabelle?
 
+\begin{myexercise}
+	Sie möchten einen Klartext der Länge 87 mit Hilfe einer Tabelle mit 10 Zeilen verschlüsseln. Wie viele Spalten benötigt diese Tabelle?
 	\begin{myanswer}
 		Die Tabelle benötigt 9 Spalten. Allgemein lässt sich die Anzahl benötigter Spalten berechnen durch
 		\begin{align*}
-			\ceil{\frac{\text{Länge des Textes}}{\text{Anzahl Zeilen}}}\quad(\text{``}\ceil{...}\text{''} bedeutet ``nach oben aufgerundet'').
+			\ceil{\frac{\text{Länge des Textes}}{\text{Anzahl Zeilen}}}, \qquad \text{wobei } \ceil{...} \text{ die Aufrundungsfunktion ist.}
 		\end{align*}
 	\end{myanswer}
-\end{mychallenge}
+\end{myexercise}
 
-\section{Caesar}
+\subsection{Caesar}
 \label{subsec:caesar}
-Eines der bekanntesten Verschlüsselungssysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dieses Verschlüsselungssystem besteht essentiell aus einer Verschiebung aller Buchstaben um eine vordefinierte Anzahl Positionen im Alphabet. Der \tib{Schlüssel} bezeichnet dabei die Anzahl Positionen, um die jeder Buchstabe verschoben wird. Ausgedrückt wird der Schlüssel auch als Buchstabe, der dem Buchstaben A entsprechen würde.
+Eines der bekanntesten Kryptosysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dieses Verschlüsselungssystem besteht essentiell aus einer Verschiebung aller Buchstaben um eine vordefinierte Anzahl Positionen. Der \tib{Schlüssel} ist dabei die Anzahl Positionen, um die jeder Buchstabe verschoben wird. Ausgedrückt wird der Schlüssel auch als Buchstabe, der dem Buchstaben A entsprechen würde.
 
 \begin{myexample}
 Mit dem Schlüssel \enquote{D} (3 Positionen) würde das Wort \enquote{HALLO} als \enquote{KDOOR} geschrieben:
