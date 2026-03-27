@@ -69,8 +69,6 @@ Folgende Sicherheits-bezogenen Anforderungen können zusätzlich an moderne Kryp
 
 
 \chapter{Symmetrische Kryptosysteme}
-
-
 \section{Verschlüsselung durch Transposition}
 In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die Buchstaben des Klartexts im Kryptotext erhalten, ändern aber möglicherweise ihre Positionen.
 
@@ -79,8 +77,8 @@ In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die 
 	\begin{center}
 		\small
 		\begin{enumerate}
-			\item RKPYOTOLIGEEMREOLGCITHEGEHMIINSSE
-			\item HCSFIRILTAHCZFUEBUHAWNERDNUKUZMMOINUEIZNER
+			\item \texttt{RKPYOTOLIGEEMREOLGCITHEGEHMIINSSE}
+			\item \texttt{HCSFIRILTAHCZFUEBUHAWNERDNUKUZMMOINUEIZNER}
 		\end{enumerate}
 		\normalsize
 	\end{center}
@@ -90,138 +88,136 @@ In einem mit Transposition (oder Permutation) verschlüsselten Text bleiben die 
 		\begin{center}
 			\small
 			\begin{enumerate}
-				\item KRYPTOLOGIE ERMOEGLICHT GEHEIMNISSE
-				\item SCHRIFTLICH AUFZUBEWAHREN UND ZU KOMMUNIZIEREN
+				\item \texttt{KRYPTOLOGIE ERMOEGLICHT GEHEIMNISSE}
+				\item \texttt{SCHRIFTLICH AUFZUBEWAHREN UND ZU KOMMUNIZIEREN}
 			\end{enumerate}
 			\normalsize
 		\end{center}
 		Der Kryptotext entsteht durch Austauschen der Positionen der Buchstaben, wie gezeigt in \cref{fig:transposition-cipher}.
 		\begin{figure}[H]
-			\centering
-			\begin{subfigure}[b]{0.48\textwidth}
-				\begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
-					% Parameters
-					\def\boxwidth{1} % Width of each box
-					\def\numboxes{6} % Total number of boxes
-					\pgfmathtruncatemacro{\lastindex}{\numboxes-2} % Compute the last valid index for swapping
-					\pgfmathtruncatemacro{\lastindexLet}{\numboxes-1} % Compute the last valid index for swapping
+            \centering
+            \begin{subfigure}[b]{0.48\textwidth}
+                \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8, font=\ttfamily}]
+                    % Parameters
+                    \def\boxwidth{1} % Width of each box
+                    \def\numboxes{6} % Total number of boxes
+                    \pgfmathtruncatemacro{\lastindex}{\numboxes-2} 
+                    \pgfmathtruncatemacro{\lastindexLet}{\numboxes-1} 
 
+                    % Draw the rectangle
+                    \draw[thick] (0, 0) rectangle (\numboxes*\boxwidth, 1);
+                    \foreach \i in {1,...,\numboxes} {
+                            \draw[thick] (\i*\boxwidth, 0) -- (\i*\boxwidth, 1);
+                        }
 
-					% Draw the rectangle (sequence of letters)
-					\draw[thick] (0, 0) rectangle (\numboxes*\boxwidth, 1);
-					\foreach \i in {1,...,\numboxes} {
-							\draw[thick] (\i*\boxwidth, 0) -- (\i*\boxwidth, 1);
-						}
+                    % Add ellipses
+                    \node at (-0.5, 0.5) {\dots};
+                    \node at (\numboxes*\boxwidth+0.5, 0.5) {\dots};
 
-					% Add ellipses on both sides
-					\node at (-0.5, 0.5) {\dots};
-					\node at (\numboxes*\boxwidth+0.5, 0.5) {\dots};
+                    % Add arrows for swapping
+                    \foreach \i in {0,2,...,\lastindex} {
+                            \pgfmathsetmacro{\xstart}{\i*\boxwidth + 0.5*\boxwidth}
+                            \pgfmathsetmacro{\xend}{\xstart + \boxwidth}
+                            \draw[thick, cyan, <->] (\xstart, -0.2) -- (\xstart, -0.6) -- (\xend, -0.6) -- (\xend, -0.2);
+                        }
 
-					% Add arrows for swapping
-					\foreach \i in {0,2,...,\lastindex} {
-							\pgfmathsetmacro{\xstart}{\i*\boxwidth + 0.5*\boxwidth}
-							\pgfmathsetmacro{\xend}{\xstart + \boxwidth}
-							\draw[thick, cyan, <->] (\xstart, -0.2) -- (\xstart, -0.6) -- (\xend, -0.6) -- (\xend, -0.2);
-						}
+                    % Add letters above
+                    \foreach \i in {0,...,\lastindexLet} {
+                            \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                            \pgfmathtruncatemacro{\letter}{65+\i} 
+                            \node at (\xpos, 1.2) {\char\letter};
+                        }
 
-					% Add letters above the boxes
-					\foreach \i in {0,...,\lastindexLet} {
-							\pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
-							\pgfmathtruncatemacro{\letter}{65+\i} % ASCII value of A is 65
-							\node at (\xpos, 1.2) {\char\letter};
-						}
+                    % Add swapped letters below
+                    \foreach \i in {0,...,\lastindexLet} {
+                            \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                            \ifodd\i
+                                \pgfmathtruncatemacro{\swapletter}{65+\i-1} 
+                            \else
+                                \pgfmathtruncatemacro{\swapletter}{65+\i+1} 
+                            \fi
+                            \node at (\xpos, -1) {\char\swapletter};
+                        }
+                \end{tikzpicture}
+                \caption{\enquote{Zweiertausch}}
+            \end{subfigure}
+            \hspace{0.1cm}
+            \begin{subfigure}[b]{0.48\textwidth}
+                \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8, font=\ttfamily}]
+                    % Parameters
+                    \def\boxwidth{1} 
+                    \def\numboxes{6} 
+                    \pgfmathtruncatemacro{\lastindex}{\numboxes-3} 
+                    \pgfmathtruncatemacro{\lastindexLet}{\numboxes-1} 
 
-					% Add swapped letters below the boxes
-					\foreach \i in {0,...,\lastindexLet} {
-							\pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
-							\ifodd\i
-								\pgfmathtruncatemacro{\swapletter}{65+\i-1} % ASCII value of A is 65
-							\else
-								\pgfmathtruncatemacro{\swapletter}{65+\i+1} % ASCII value of A is 65
-							\fi
-							\node at (\xpos, -1) {\char\swapletter};
-						}
-				\end{tikzpicture}
-				\caption{\enquote{Zweiertausch}}
-			\end{subfigure}
-			\hspace{0.1cm}
-			\begin{subfigure}[b]{0.48\textwidth}
-				\begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
-					% Parameters
-					\def\boxwidth{1} % Width of each box
-					\def\numboxes{6} % Total number of boxes
-					\pgfmathtruncatemacro{\lastindex}{\numboxes-3} % Compute the last valid index for swapping
-					\pgfmathtruncatemacro{\lastindexLet}{\numboxes-1} % Compute the last valid index for swapping
+                    % Draw the rectangle
+                    \draw[thick] (0, 0) rectangle (\numboxes*\boxwidth, 1);
+                    \foreach \i in {1,...,\numboxes} {
+                            \draw[thick] (\i*\boxwidth, 0) -- (\i*\boxwidth, 1);
+                        }
 
+                    % Add ellipses
+                    \node at (-0.5, 0.5) {\dots};
+                    \node at (\numboxes*\boxwidth+0.5, 0.5) {\dots};
 
-					% Draw the rectangle (sequence of letters)
-					\draw[thick] (0, 0) rectangle (\numboxes*\boxwidth, 1);
-					\foreach \i in {1,...,\numboxes} {
-							\draw[thick] (\i*\boxwidth, 0) -- (\i*\boxwidth, 1);
-						}
+                    % Add arrows for swapping
+                    \foreach \i in {0,3,...,\lastindex} {
+                            \pgfmathsetmacro{\xstart}{\i*\boxwidth + 0.5*\boxwidth}
+                            \pgfmathsetmacro{\xend}{\xstart + \boxwidth*2}
+                            \draw[thick, cyan, <->] (\xstart, -0.2) -- (\xstart, -0.6) -- (\xend, -0.6) -- (\xend, -0.2);
+                        }
 
-					% Add ellipses on both sides
-					\node at (-0.5, 0.5) {\dots};
-					\node at (\numboxes*\boxwidth+0.5, 0.5) {\dots};
+                    % Add letters above
+                    \foreach \i in {0,...,\lastindexLet} {
+                            \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                            \pgfmathtruncatemacro{\letter}{65+\i} 
+                            \node at (\xpos, 1.2) {\char\letter};
+                        }
 
-					% Add arrows for swapping
-					\foreach \i in {0,3,...,\lastindex} {
-							\pgfmathsetmacro{\xstart}{\i*\boxwidth + 0.5*\boxwidth}
-							\pgfmathsetmacro{\xend}{\xstart + \boxwidth*2}
-							\draw[thick, cyan, <->] (\xstart, -0.2) -- (\xstart, -0.6) -- (\xend, -0.6) -- (\xend, -0.2);
-						}
+                    % Add swapped letters below
+                    \foreach \i in {0,3,...,\lastindex} {
+                            \pgfmathtruncatemacro{\swapletter}{65+\i+2} 
+                            \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                            \node at (\xpos, -1) {\char\swapletter};
+                        }
 
-					% Add letters above the boxes
-					\foreach \i in {0,...,\lastindexLet} {
-							\pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
-							\pgfmathtruncatemacro{\letter}{65+\i} % ASCII value of A is 65
-							\node at (\xpos, 1.2) {\char\letter};
-						}
+                    \foreach \i in {2,5,...,\numboxes} {
+                            \pgfmathtruncatemacro{\swapletter}{65+\i-2} 
+                            \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                            \node at (\xpos, -1) {\char\swapletter};
+                        }
 
-					% Add swapped letters below the boxes
-					\foreach \i in {0,3,...,\lastindex} {
-							\pgfmathtruncatemacro{\swapletter}{65+\i+2} % ASCII value of A is 65
-							\pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
-							\node at (\xpos, -1) {\char\swapletter};
-						}
-
-					\foreach \i in {2,5,...,\numboxes} {
-							\pgfmathtruncatemacro{\swapletter}{65+\i-2} % ASCII value of A is 65
-							\pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
-							\node at (\xpos, -1) {\char\swapletter};
-						}
-
-					\foreach \i in {1,4,...,\lastindexLet} {
-							\pgfmathtruncatemacro{\swapletter}{65+\i} % ASCII value of A is 65
-							\pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
-							\node at (\xpos, -1) {\char\swapletter};
-						}
-				\end{tikzpicture}
-				\caption{\enquote{Dreiertausch}}
-			\end{subfigure}
-			\caption{\enquote{Zweiertausch} und \enquote{Dreiertausch}}
-			\label{fig:transposition-cipher}
-		\end{figure}
+                    \foreach \i in {1,4,...,\lastindexLet} {
+                            \pgfmathtruncatemacro{\swapletter}{65+\i} 
+                            \pgfmathsetmacro{\xpos}{\i*\boxwidth + 0.5*\boxwidth}
+                            \node at (\xpos, -1) {\char\swapletter};
+                        }
+                \end{tikzpicture}
+                \caption{\enquote{Dreiertausch}}
+            \end{subfigure}
+            \caption{\enquote{Zweiertausch} und \enquote{Dreiertausch}}
+            \label{fig:transposition-cipher}
+        \end{figure}
 		Beachten Sie, dass die Buchstaben des Klartexts im Kryptotext erhalten bleiben, aber ihre Reihenfolge geändert wird. Die Schlüssel für diese Kryptosystem sind die Anweisungen, wie die Buchstaben vertauscht werden, z.\,B. \enquote{Zweiertausch} oder \enquote{Dreiertausch}.
 	\end{myanswer}
 \end{myexercise}
 
 
-\subsection{SKYTALE}
-Das Kryptosystem \emph{SKYTALE} wurde bereits von den Griechen für militärische Zwecke verwendet. Der Verschlüsselungsalgorithmus kann wie folgt beschrieben werden:
+\subsection{Skytale}
+Das Kryptosystem \emph{Skytale} wurde bereits von den Griechen für militärische Zwecke verwendet. Der Verschlüsselungsalgorithmus kann wie folgt beschrieben werden:
 \begin{itemize}
 	\item Schreibe den Klartext zeilenweise in eine Tabelle (Matrix) von links nach rechts.
 	\item Allfällige leere Felder in der letzten Zeile der Tabelle werden mit beliebigen (am besten zufällig gewählten) Buchstaben gefüllt.
 	\item Den Kryptotext erhalten wir, indem wir die Buchstaben Spalte für Spalte von links nach rechts und von oben nach unten lesen.
 \end{itemize}
 
-Die SKYTALE wird mit einem Stab und einem Band umgesetzt (\cref{fig:skytale-band}). Die Anzahl der Zeichen pro Windung entspricht dabei der Zeilenanzahl der Tabelle und bildet somit den Schlüssel.
+Die Skytale wird mit einem Stab und einem Band umgesetzt (\cref{fig:skytale-band}). Die Anzahl der Zeichen pro Windung entspricht dabei der Zeilenanzahl der Tabelle und bildet somit den Schlüssel.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/SkytaleWiki}
-	\caption[SKYTALE]{Praktische Umsetzung der SKYTALE-Verschlüsselung mit einem Stab und einem Band. 
-	Die Anzahl Zeichen, die auf eine Windung des Bandes um den Stab passen, entspricht der Anzahl Zeilen in der Tabelle, also dem Schlüssel des Kryptosystems SKYTALE.}
+	\caption[Skytale]{Praktische Umsetzung der Skytale-Verschlüsselung mit einem Stab und einem Band. 
+	Die Anzahl Zeichen, die auf eine Windung des Bandes um den Stab passen, entspricht der Anzahl Zeilen in der Tabelle, also dem Schlüssel des Kryptosystems \emph{Skytale}.}
 	{\small Quelle: \href{https://commons.wikimedia.org/wiki/File:Skytale.png}{Wikimedia Commons}}
 	\label{fig:skytale-band}
 \end{figure}
@@ -229,7 +225,7 @@ Die SKYTALE wird mit einem Stab und einem Band umgesetzt (\cref{fig:skytale-band
 \begin{myexercise}
 	Der Kryptotext
 	\begin{center}
-		WNGIAEIEMATSMKRTTEAGIEINANINTUGNDOJEEENL
+		\texttt{WNGIAEIEMATSMKRTTEAGIEINANINTUGNDOJEEENL}
 	\end{center}
 	wurde mit einer Tabelle mit 5 Zeilen und 8 Spalten erzeugt. Wie lautet der Klartext? Tipp: Nehmen Sie Ihr bevorzugtes Tabellenkalkulationsprogramm zuhilfe.
 	\begin{myanswer}
@@ -237,27 +233,27 @@ Die SKYTALE wird mit einem Stab und einem Band umgesetzt (\cref{fig:skytale-band
 		Wir beginnen mit einer leeren $5\times 8$ Tabelle und schreiben den gegebenen Kryptotext spaltenweise von links nach rechts und von oben nach unten in die Tabelle ein:
 		\begin{table}[H]
 			\centering
-			\begin{tabular}{c|c|c|c|c|c|c|c}
-				W & E & T & T & I & N & G       & E       \\ \hline
-				N & I & S & T & E & I & N       & E       \\ \hline
-				G & E & M & E & I & N & D       & E       \\ \hline
-				I & M & K & A & N & T & O       & N       \\ \hline
-				A & A & R & G & A & U & \red{J} & \red{L} \\
+			\begin{tabular}{*{8}{C|}} % 8 Spalten vom Typ C (mit Linien)
+				W & E & T & T & I & N & G & E \\ \hline
+				N & I & S & T & E & I & N & E \\ \hline
+				G & E & M & E & I & N & D & E \\ \hline
+				I & M & K & A & N & T & O & N \\ \hline
+				A & A & R & G & A & U & \textcolor{Red}{J} & \textcolor{Red}{L}
 			\end{tabular}
 		\end{table}
 		Der Klartext
 		\begin{center}
-			Wettingen ist eine Gemeinde im Kanton Aargau
+			\texttt{Wettingen ist eine Gemeinde im Kanton Aargau}
 		\end{center}
 		lässt sich nun einfach ablesen (Zeile für Zeile von links nach rechts).
 	\end{myanswer}
 \end{myexercise}
 
 \begin{myexercise}
-	Der folgende Kryptotext der Länge 75 wurde mit SKYTALE verschlüsselt:
+	Der folgende Kryptotext der Länge 75 wurde mit Skytale verschlüsselt:
 	\begin{center}
-		ETIFIITNUTNFGENKURRELEODIERSILIMSEANIE\\
-		MRECREMRHSNSSAPSTCBRCRHEUHORRNHNIEGEG
+		\texttt{ETIFIITNUTNFGENKURRELEODIERSILIMSEANIE}\\
+		\texttt{MRECREMRHSNSSAPSTCBRCRHEUHORRNHNIEGEG}
 	\end{center}
 	Dabei konnten mit dem Klartext \textbf{alle Zeilen der Tabelle vollständig aufgefüllt} werden.
 	\begin{enumerate}
@@ -267,30 +263,28 @@ Die SKYTALE wird mit einem Stab und einem Band umgesetzt (\cref{fig:skytale-band
 	\end{enumerate}
 
 	\begin{myanswer}
-		\begin{table}[H]
-			\centering
-			\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
-				E & I & N & K & L & E & I & N & E & R & S & C & H & R & I \\ \hline
-				T & T & F & U & E & R & M & I & C & H & A & B & E & R & E \\ \hline
-				I & N & G & R & O & S & S & E & R & S & P & R & U & N & G \\ \hline
-				F & U & E & R & D & I & E & M & E & N & S & C & H & H & E \\ \hline
-				I & T & N & E & I & L & A & R & M & S & T & R & O & N & G \\
-			\end{tabular}
-		\end{table}
+	\begin{table}[H]
+		\centering
+		% *{15}{C|} bedeutet: 15-mal den Typ 'C' mit Trennlinie
+		\begin{tabular}{*{15}{C|}} 
+			E & I & N & K & L & E & I & N & E & R & S & C & H & R & I \\ \hline
+			T & T & F & U & E & R & M & I & C & H & A & B & E & R & E \\ \hline
+			I & N & G & R & O & S & S & E & R & S & P & R & U & N & G \\ \hline
+			F & U & E & R & D & I & E & M & E & N & S & C & H & H & E \\ \hline
+			I & T & N & E & I & L & A & R & M & S & T & R & O & N & G
+		\end{tabular}
+	\end{table}
 		\begin{enumerate}
 			\item Wir müssen $75$ Buchstaben auf ein Rechteck verteilen. Damit kommen alle Teiler von $75$, also 1, 3, 5 und 75, als mögliche Schlüssel in Frage. 
 			\item Durch Ausprobieren finden wir, dass einzige der Schlüssel 5 zu einem sinnvollen Klartext führt.
-			\item
-			      Der Klartext lautet:
+			\item Der Klartext lautet:
 			      \begin{center}
 				      {\small
-					      EIN KLEINER SCHRITT FUER MICH ABER EIN GROSSER\\
-					      SPRUNG FUER DIE MENSCHHEIT NEIL ARMSTRONG}
+					      \texttt{EIN KLEINER SCHRITT FUER MICH ABER EIN GROSSER}\\
+					      \texttt{SPRUNG FUER DIE MENSCHHEIT NEIL ARMSTRONG}}
 			      \end{center}
 		\end{enumerate}
 	\end{myanswer}
-
-
 \end{myexercise}
 
 \begin{myexercise}
@@ -305,29 +299,43 @@ Die SKYTALE wird mit einem Stab und einem Band umgesetzt (\cref{fig:skytale-band
 
 \subsection{Caesar}
 \label{subsec:caesar}
-Eines der bekanntesten Kryptosysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dieses Verschlüsselungssystem besteht essentiell aus einer Verschiebung aller Buchstaben um eine vordefinierte Anzahl Positionen. Der \tib{Schlüssel} ist dabei die Anzahl Positionen, um die jeder Buchstabe verschoben wird. Ausgedrückt wird der Schlüssel auch als Buchstabe, der dem Buchstaben A entsprechen würde.
+Eines der bekanntesten Kryptosysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. Dabei wird jeder Buchstabe des Klartexts um eine feste Anzahl von Positionen im Alphabet verschoben. Die Anzahl der Positionen, um die verschoben wird, bildet den Schlüssel des Kryptosystems.
 
-\begin{myexample}
-Mit dem Schlüssel \enquote{D} (3 Positionen) würde das Wort \enquote{HALLO} als \enquote{KDOOR} geschrieben:
-\begin{figure}[H]
+\begin{myremark}[Buchstaben als Zahlen]\label{myremark:buchstaben_als_zahlen}
+Häufig wird die Verschiebung nicht direkt als Zahl angegeben, sondern als Buchstabe, der die Anzahl der Positionen angibt. So steht beispielsweise der Schlüssel \texttt{A} für eine Verschiebung um 0 Positionen (also keine Verschiebung), \texttt{B} für eine Verschiebung um 1 Position, \texttt{C} für eine Verschiebung um 2 Positionen, \texttt{D} für eine Verschiebung um 3 Positionen und so weiter:
+\begin{center}
+	\texttt{A} $\leftrightarrow$ 0 Positionen, \texttt{B} $\leftrightarrow$ 1 Position, \texttt{C} $\leftrightarrow$ 2 Positionen, \dots , \texttt{Z} $\leftrightarrow$ 25 Positionen.
+\end{center}
+\end{myremark}
+
+\begin{mydefinition}[Ordnung eines Buchstabens]\label{mydefinition:ordnung_buchstabe}
+Die \textbf{Ordnung} eines Buchstabens ist die Anzahl der Positionen, die dieser Buchstabe im Alphabet von \texttt{A} entfernt ist. Wir definieren
+\begin{center}
+	$\text{Ord}(\texttt{A}) = 0$, $\text{Ord}(\texttt{B}) = 1$, $\text{Ord}(\texttt{C}) = 2$, \dots, $\text{Ord}(\texttt{Z}) = 25$.
+\end{center}
+\end{mydefinition}
+
+\begin{myexample}[Caesar mit Schlüssel \texttt{D}]
+Mit dem Schlüssel \texttt{D} (3 Positionen, da $\text{Ord}(\texttt{D}) = 3$)  wird aus dem Klartet \texttt{HALLO} der Kryptotext \texttt{KDOOR}:
+\begin{figure}[H]\label{fig:caesar_3}
 	\centering
 	\caesar[3]
 \end{figure}
+Dabei haben wir die innere Scheibe um 3 Positionen im Uhrzeigersinn gedreht, um die Verschlüsselung durchzuführen. Zur Entschlüsselung
+\begin{itemize}
+	\item lesen wir die Drehscheibe, genau so wie sie in \cref{fig:caesar_3} angeordnet ist, von \enquote{aussen nach innen}
+	\item oder drehen die innere Scheibe um 3 Positionen gegen den Uhrzeigersinn zurück in die Ausgangsposition (\texttt{A} $\leftrightarrow$ \texttt{A}) und dann nochmals um 3 Positionen gegen den Uhrzeigersinn. Dann können wir die Drehscheibe wieder von \enquote{innen nach aussen} lesen, um den Klartext zu erhalten.
+\end{itemize}
 \end{myexample}
 
-Der Schlüssel \enquote{B} bedeutet also eine Verschiebung um 1 Position, \enquote{C} um 2 Positionen, \enquote{D} um drei Positionen usw. Im Allgemeinen lässt sich die Verschiebung folgendermassen schreiben:
-
-$\text{Verschiebung = Ord}(\square)$, wobei $\text{Ord}(A)=0$.
-
 \begin{myexample}
-Folgender Text wurde mit dem Schlüssel \enquote{G} (6 Positionen) verschlüsselt:
+Folgender Text wurde mit dem Schlüssel \texttt{G} (6 Positionen) verschlüsselt:
 
 \begin{verbatim}
-  Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
- Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
+Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
+Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
 Kryptotext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 \end{verbatim}
-
 \end{myexample}
 
 \begin{myexercise}
@@ -335,14 +343,15 @@ Kryptotext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 	\begin{center}
 		\texttt{X G T Y G P F G U E J N W G U U G N B Y G K}
 	\end{center}
-	wurde mit CAESAR verschlüsselt, der Schlüssel ist aber unbekannt.
+	wurde mit Caesar verschlüsselt, der Schlüssel ist aber unbekannt.
 	Entschlüsseln Sie den Kryptotext, ohne alle Schlüssel auszuprobieren, wenn Sie wissen, dass der häufigste Buchstabe im Klartext \texttt{E} ist.
 	\begin{myanswer}
-		Der häufigste Buchstabe im Kryptotext ist \enquote{G} Wir können den Text mithilfe der folgenden Verschiebung entschlüsseln (G $\rightarrow$ E) :
+		Der häufigste Buchstabe im Kryptotext ist \texttt{G}. Wir vermuten also, dass die \texttt{G}'s im gegebenen Kryptotext aus den \texttt{E}'s im Klartext entstanden. Dies entspricht einer Verschlüsslung mit dem Schlüssel 2 bzw. \texttt{C}. Wir können den Text mithilfe der Verschiebung \texttt{G} $\rightarrow$ \texttt{E} entschlüsseln:
 		\begin{center}
 			\caesar[2]\\
 			\texttt{V E R W E N D E D E N S C H L U E S S E L Z W E I}
 		\end{center}
+	Dazu lesen wir von \enquote{aussen nach innen} (Entschlüsselung).
 	\end{myanswer}
 \end{myexercise}
 
@@ -356,9 +365,9 @@ Kryptotext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 % \end{myanswer}
 % \end{mychallenge}
 
-\subsection{Knacken von Caesar}
+\subsection{Kryptoanalyse von Caesar}
 \begin{itemize}
-	\item Einerseits reicht es, alle 25 möglichen Verschiebungen auszuprobieren. Ein moderner Computer hat dies in einigen Milisekunden erledigt.
+	\item Einerseits reicht es, alle 26 (0 bis 25) möglichen Verschiebungen auszuprobieren. Ein moderner Computer hat dies in einigen Milisekunden erledigt. Natürlich muss ein Angreifer auch die Möglichkeit haben, den Klartext zu erkennen, wenn er ihn sieht, z.\,B. durch die Erkennung von sinnvollen Wortteilen (e.g. Abgleich mit einem deutschen Wörterbuch).
 	\item Andererseits kann, wenn der Text genügend lange ist, anhand der Häufigkeit der verschlüsselten Buchstaben mittels Häufigkeitsanalyse in kürzester Zeit bestimmt werden, was der Schlüssel war. \cref{fig:caesar-freq} zeigt die Häufigkeiten der Buchstaben eines langen, mit Caesar verschlüsselten Texts im Kryptotext.
 \end{itemize}
 
@@ -375,7 +384,7 @@ Die durchschnittlichen Häufigkeiten von Buchstaben, Bi- und Tri-Grammen in deut
 	\centering
 	\begin{subtable}[t]{0.3\textwidth}
 		\centering
-		\begin{tabular}{c|p{1.9cm}}
+		\begin{tabular}{C|p{1.9cm}}
 			\textbf{Buchstabe} & Relative Häufigkeit (\%) \\ \midrule
 			E                  & 17.40                    \\ \midrule
 			N                  & 9.78                     \\ \midrule
@@ -393,7 +402,7 @@ Die durchschnittlichen Häufigkeiten von Buchstaben, Bi- und Tri-Grammen in deut
 	\hspace{0.5cm}
 	\begin{subtable}[t]{0.3\textwidth}
 		\centering
-		\begin{tabular}{c|p{1.9cm}}
+		\begin{tabular}{C|p{1.9cm}}
 			\textbf{Bigramm} & Relative Häufigkeit (\%) \\ \midrule
 			ER               & 3.94                     \\ \midrule
 			EN               & 3.07                     \\ \midrule
@@ -411,7 +420,7 @@ Die durchschnittlichen Häufigkeiten von Buchstaben, Bi- und Tri-Grammen in deut
 	\hspace{0.5cm}
 	\begin{subtable}[t]{0.3\textwidth}
 		\centering
-		\begin{tabular}{c|p{1.9cm}}
+		\begin{tabular}{C|p{1.9cm}}
 			\textbf{Trigramm} & Relative Häufigkeit (\%) \\ \midrule
 			DER               & 1.44                     \\ \midrule
 			SCH               & 1.21                     \\ \midrule
@@ -440,21 +449,21 @@ Die durchschnittlichen Häufigkeiten von Buchstaben, Bi- und Tri-Grammen in deut
 	\texttt{WMILEFIRIWKIWGLEJJXHMIWIRXIBXDYOREGOIR}
 
 	\begin{myanswer}
-		Offensichtlich ist der häufigste Buchstabe im Kryptotext \enquote{I} und der häufigste Buchstabe in deutschen Texten ist der Buchstabe \enquote{E}, wir haben hier also vermutlich eine Verschiebung von \enquote{E} zu ``I'', also eine Verschiebung um 4 Stellen. Der Klartext lautet daher: \texttt{SIEHABENESGESCHAFFTDIESENTEXTZUKNACKEN}
+		Offensichtlich ist der häufigste Buchstabe im Kryptotext \texttt{I} und der häufigste Buchstabe in deutschen Texten ist der Buchstabe \texttt{E}, wir haben hier also vermutlich eine Verschiebung von \texttt{E} zu \texttt{I}, also eine Verschiebung um 4 Stellen. Der Klartext lautet daher: \texttt{SIEHABENESGESCHAFFTDIESENTEXTZUKNACKEN}
 	\end{myanswer}
 \end{myexercise}
 
 \begin{mychallenge}
 	Kann man immer wie in \cref{ex:caesar} vorgehen? In welchen Fällen funktioniert dieses Vorgehen eventuell nicht?
 	\begin{myanswer}
-		Falls der Text zu kurz ist, funktioniert die Häufigkeitsanalyse nicht immer, da der häufigste Buchstabe im Originaltext nicht immer der Buchstabe ``E'' ist. Dies wird beispielsweise im Wort ``Wort'' illustriert, das keinen Buchstaben ``E'' enthält. In diesem Fall müsste man alle 26 möglichen Verschiebungen durchprobieren.
+		Falls der Text zu kurz ist, funktioniert die Häufigkeitsanalyse nicht immer, da der häufigste Buchstabe im Originaltext nicht immer der Buchstabe \texttt{E} ist. Dies wird beispielsweise im Klartext \texttt{WORT} illustriert, das keinen Buchstaben \texttt{E} enthält. In diesem Fall müsste man alle 26 möglichen Verschiebungen durchprobieren.
 	\end{myanswer}
 \end{mychallenge}
 
 \begin{mychallenge}
 	Um zu verschlüsseln, liest man die Caesar-Scheibe von innen (Klartext) nach aussen (Kryptotext). Um zu entschlüsseln, liest man von aussen (Kryptotext) nach innen (Klartext). Gibt es Schlüssel bei Caesar, bei denen es sowohl für die Ver- wie Entschlüsselung keine Rolle spielt, in welche Richtung man die Scheiben liest?
 	\begin{myanswer}
-		Ja, dies tritt bei Schlüsseln 0 (A, keine Verschlüsselung) und 13 (N, die Hälfte des Alphabets) auf.
+		Ja, dies tritt bei Schlüsseln 0 (\texttt{A}, keine Verschlüsselung) und 13 (\texttt{N}, die Hälfte des Alphabets) auf.
 	\end{myanswer}
 \end{mychallenge}
 
@@ -486,13 +495,13 @@ Wir wissen, dass er per monoalphabetische Verschlüsselung erstellt wurde, wie b
 KRYPTOTEXT: MUMMUXJUQYMHQOUSUTUQNGWTJQVHUMXQUXQJSUVYPPUM
 KLARTEXT:   NENNE--EI-N-I-E-E-EI-----I--EN-IE-I--E----EN
     \end{verbatim}
-	\item Nun könnten wir weiterfahren, indem wir die häufigsten Trigramme anschauen. Dabei suchen wir im bisherigen Klartext nach Klartext-Teilen, wo wir Trigramme einsetzen könnten. Laut \cref{tab:alle-haeufigkeiten} ist ein häufiges Trigramm in deutschen Texten \texttt{``DIE''}. Dieses probieren wir einzusetzen (D=X):
+	\item Nun könnten wir weiterfahren, indem wir die häufigsten Trigramme anschauen. Dabei suchen wir im bisherigen Klartext nach Klartext-Teilen, wo wir Trigramme einsetzen könnten. Laut \cref{tab:alle-haeufigkeiten} ist ein häufiges Trigramm in deutschen Texten \texttt{DIE}. Dieses probieren wir einzusetzen (D=X):
 
 	      \begin{verbatim}
 KRYPTOTEXT: MUMMUXJUQYMHQOUSUTUQNGWTJQVHUMXQUXQJSUVYPPUM
 KLARTEXT:   NENNED-EI-N-I-E-E-EI-----I--ENDIEDI--E----EN
     \end{verbatim}
-	\item Der Klartext nimmt langsam Form an und wir können nun damit beginnen, verbleibende Worte zu erraten. Könnte es sich beim ersten Wort um das Wort ``\texttt{DREI}'' handeln? Wir setzen ein:
+	\item Der Klartext nimmt langsam Form an und wir können nun damit beginnen, verbleibende Worte zu erraten. Könnte es sich beim ersten Wort um das Wort \texttt{DREI} handeln? Wir setzen ein:
 	      \begin{verbatim}
 KRYPTOTEXT: MUMMUXJUQYMHQOUSUTUQNGWTJQVHUMXQUXQJSUVYPPUM
 KLARTEXT:   NENNEDREI-N-I-E-E-EI----RI--ENDIEDIR-E----EN
@@ -512,14 +521,14 @@ Je länger ein Text ist, desto zuverlässiger funktioniert das Erraten der Buchs
 \end{myexample}
 
 \begin{myexercise}
-	Entschlüsseln Sie den Text ``\texttt{ECRRCKZVRAZCRZK}'' mit dem Schlüssel aus \cref{fig:monoalph-subst}.
+	Entschlüsseln Sie den Text \texttt{ECRRCKZVRAZCRZK} mit dem Schlüssel aus \cref{fig:monoalph-subst}.
 	\begin{myanswer}
 		BESSERALSCAESAR
 	\end{myanswer}
 \end{myexercise}
 
 \begin{mychallenge}
-	Lösen Sie eine Knobelaufgabe aus dem Kapitel ``\href{https://cryptbreaker.marcwidmer.xyz/problems/substitution}{Substitution}''.
+	Lösen Sie eine Knobelaufgabe in dem online-Kapitel \emph{\href{https://cryptbreaker.marcwidmer.xyz/problems/substitution}{Substitution}}.
 \end{mychallenge}
 
 
@@ -533,14 +542,14 @@ Je länger ein Text ist, desto zuverlässiger funktioniert das Erraten der Buchs
 \section{Vigenère}
 Wie wir in \cref{ex:caesar} gesehen haben, ist es extrem einfach, Texte, die mit Caesar verschlüsselt worden sind, anzugreifen, entweder mittels Buchstabenhäufigkeitsanalyse oder indem man einfach alle 25 möglichen Verschiebungen ausprobiert. Auch weitere monoalphabetische Substitutions-Verfahren wie \cref{fig:monoalph-subst} können durch etwas Knobeln relativ einfach geknackt werden.
 
-Vigenère hatte eine andere Idee: Statt den ganzen Text mit einem einzigen Schlüssel zu verschlüsseln, verwendete er ein Wort, mit welchem er den Text ``zyklisch'', also gruppenweise verschlüsselte.
+Vigenère hatte eine andere Idee: Statt den ganzen Text mit einem einzigen Schlüssel zu verschlüsseln, verwendete er ein Wort, mit welchem er den Text \emph{zyklisch}, also gruppenweise verschlüsselte.
 
 \begin{myexample}\label{ex:vigenere}
-Wenn der Schlüssel beispielsweise ``KEY'' war, wurden die Buchstaben folgendermassen verschlüsselt (siehe Beispiel unterhalb):
+Wenn der Schlüssel beispielsweise \texttt{KEY} war, wurden die Buchstaben folgendermassen verschlüsselt (siehe Beispiel unterhalb):
 \begin{itemize}
-	\item Buchstaben 1, 4, 7, 10 etc. mit ``K''
-	\item Buchstaben 2, 5, 8, 11 etc. mit ``E''
-	\item Buchstaben 3, 6, 9, 12 etc. mit ``Y''
+	\item Buchstaben 1, 4, 7, 10 etc. mit \texttt{K}
+	\item Buchstaben 2, 5, 8, 11 etc. mit \texttt{E}
+	\item Buchstaben 3, 6, 9, 12 etc. mit \texttt{Y}
 \end{itemize}
 
 \begin{figure}[H]
@@ -551,7 +560,7 @@ Kryptotext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
 \end{verbatim}
 \end{figure}
 
-Im Vergleich dazu wird bei Caesar jeder Buchstabe durch \textit{denselben} Schlüssel verschlüsselt, beispielsweise:
+Im Vergleich dazu wird bei Caesar jeder Buchstabe durch \emph{denselben} Schlüssel verschlüsselt, beispielsweise:
 \begin{verbatim}
   Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
  Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
@@ -559,7 +568,7 @@ Kryptotext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
 \end{verbatim}
 \end{myexample}
 
-Wie Sie wissen, ist der Buchstabe ``E'' der häufigste Buchstabe in deutschen Texten. Diese Eigenschaft haben wir uns in \cref{ex:caesar} zunutze gemacht, um den Text zu knacken. Da bei Vigenère jedoch der Buchstabe nun nicht mehr immer mit demselben Schlüssel verschlüsselt ist, sondern je nach Position mit dem Schlüssel ``K'', ``E'', oder ``Y'', wird der Buchstabe ``E'' im Kryptotext nun breiter auf andere Buchstaben verteilt (siehe \cref{fig:ex-vigenere-e}). Anders gesagt, ein Buchstabe im Kryptotext repräsentiert nun nicht mehr immer den gleichen Buchstaben im Klartext, sondern kann einen von drei Buchstaben repräsentieren.
+Wie Sie wissen, ist der Buchstabe \texttt{E} der häufigste Buchstabe in deutschen Texten. Diese Eigenschaft haben wir uns in \cref{ex:caesar} zunutze gemacht, um den Text zu knacken. Da bei Vigenère jedoch der Buchstabe nun nicht mehr immer mit demselben Schlüssel verschlüsselt ist, sondern je nach Position mit dem Schlüssel \texttt{K}, \texttt{E} oder \texttt{Y}, wird der Buchstabe \texttt{E} im Kryptotext nun breiter auf andere Buchstaben verteilt (siehe \cref{fig:ex-vigenere-e}). Anders gesagt, ein Buchstabe im Kryptotext repräsentiert nun nicht mehr immer den gleichen Buchstaben im Klartext, sondern kann einen von drei Buchstaben repräsentieren.
 
 \begin{figure}[H]
 	\centering
@@ -603,11 +612,11 @@ Wie Sie wissen, ist der Buchstabe ``E'' der häufigste Buchstabe in deutschen Te
 			\node[align=center] at (4, -2.5) {Kryptotext};
 		\end{tikzpicture}
 	\end{subfigure}
-	\caption{Verschlüsselungs-Möglichkeiten mit Vigenère, mit dem Schlüssel ``KEY'' aus \cref{ex:vigenere}}
+	\caption{Verschlüsselungs-Möglichkeiten mit Vigenère, mit dem Schlüssel \texttt{KEY} aus \cref{ex:vigenere}}
 	\label{fig:ex-vigenere-e}
 \end{figure}
 
-Diese Verschlüsselungsmethode galt während mehreren Jahrhunderten als sicher und war der Gold-Standard in vielen militärischen Verschlüsselungs-Anwendungen. Um einen Text zu verschlüsseln, wurde jeder Buchstabe im Klartext einzeln verschlüsselt, und je nach Schlüssel (z.B. ``K'', ``E'' oder ``Y'' in \cref{ex:vigenere}) wurde der entsprechende Buchstabe des Kryptotexts aus einer Tabelle herausgelesen (siehe \cref{tab:vigenere}).
+Diese Verschlüsselungsmethode galt während mehreren Jahrhunderten als sicher und war der Gold-Standard in vielen militärischen Verschlüsselungs-Anwendungen. Um einen Text zu verschlüsseln, wurde jeder Buchstabe im Klartext einzeln verschlüsselt, und je nach Schlüssel (z.B. \texttt{K}, \texttt{E} oder \texttt{Y} in \cref{ex:vigenere}) wurde der entsprechende Buchstabe des Kryptotexts aus einer Tabelle herausgelesen (siehe \cref{tab:vigenere}).
 
 
 \cref{fig:langer-text-vig-caesar} zeigt die Buchstabenhäufigkeit im Kryptotext für einen langen Text, welcher einmal mit Caesar und einmal mit Vigenère verschlüsselt wurde.
@@ -629,11 +638,11 @@ Diese Verschlüsselungsmethode galt während mehreren Jahrhunderten als sicher u
 	\label{fig:langer-text-vig-caesar}
 \end{figure}
 
-\cref{fig:langer-text-vig-caesar} zeigt, dass Vigenère zu einer insgesamt homogeneren Verteilung aller Buchstaben im Kryptotext führt. Dies kommt daher, dass bei Vigenère jeder Klartext-Buchstaben auf \textit{mehrere} Kryptotext-Buchstaben verteilt wird, währenddem bei Caesar jeder Klartext-Buchstaben durch genau \textit{einen} Buchstaben im Kryptotext kodiert wird. \cref{tab:vigenere} zeigt die Vigenère-Tabelle, mithilfe welcher man einen Text mit der Vigenère-Methode ver- sowie entschlüsseln kann, sofern der Schlüssel bekannt ist. Folgende zwei Beispiele zeigen auf, wie diese Tabelle genutzt werden kann:
+\cref{fig:langer-text-vig-caesar} zeigt, dass Vigenère zu einer insgesamt homogeneren Verteilung aller Buchstaben im Kryptotext führt. Dies kommt daher, dass bei Vigenère jeder Klartext-Buchstaben auf \emph{mehrere} Kryptotext-Buchstaben verteilt wird, währenddem bei Caesar jeder Klartext-Buchstaben durch genau \emph{einen} Buchstaben im Kryptotext kodiert wird. \cref{tab:vigenere} zeigt die Vigenère-Tabelle, mithilfe welcher man einen Text mit der Vigenère-Methode ver- sowie entschlüsseln kann, sofern der Schlüssel bekannt ist. Folgende zwei Beispiele zeigen auf, wie diese Tabelle genutzt werden kann:
 
 \begin{enumerate}
-	\item \textbf{Verschlüsselung}: Soll beispielsweise der Klartext-Buchstabe \enquote{E} mit dem Schlüsselteil \enquote{K} verschlüsselt werden, so findet man in der Tabelle den entsprechenden Kryptotext-Buchstaben \enquote{O}.
-	\item \textbf{Entschlüsselung}: Soll beispielsweise der Kryptotext-Buchstabe \enquote{O} mit dem Schlüsselteil \enquote{K} entschlüsselt werden, so sucht man in der Tabelle nach dem Klartext-Buchstaben, der mit \enquote{O} und \enquote{K} korrespondiert. Dies ist in diesem Fall der Buchstabe \enquote{E}.
+	\item \textbf{Verschlüsselung}: Soll beispielsweise der Klartext-Buchstabe \texttt{E} mit dem Schlüsselteil \texttt{K} verschlüsselt werden, so findet man in der Tabelle den entsprechenden Kryptotext-Buchstaben \texttt{O}.
+	\item \textbf{Entschlüsselung}: Soll beispielsweise der Kryptotext-Buchstabe \texttt{O} mit dem Schlüsselteil \texttt{K} entschlüsselt werden, so sucht man in der Tabelle nach dem Klartext-Buchstaben, der mit \texttt{O} und \texttt{K} korrespondiert. Dies ist in diesem Fall der Buchstabe \texttt{E}.
 \end{enumerate}
 
 \begin{table}[H]
@@ -662,7 +671,7 @@ Diese Verschlüsselungsmethode galt während mehreren Jahrhunderten als sicher u
 
 
 \begin{myexercise}
-	\textbf{Entschlüsseln} Sie folgenden Text von Hand, wenn Sie wissen, dass er mit dem Schlüssel \enquote{\textcolor{red}{\texttt{TOP}}} und mit der Methode von Vigenère verschlüsselt worden ist:
+	\textbf{Entschlüsseln} Sie folgenden Text von Hand, wenn Sie wissen, dass er mit dem Schlüssel \textcolor{red}{\texttt{TOP}} und mit der Methode von Vigenère verschlüsselt worden ist:
 
 	\texttt{UFPOCVNHVXAPVVI}
 	\begin{myanswer}
@@ -671,7 +680,7 @@ Diese Verschlüsselungsmethode galt während mehreren Jahrhunderten als sicher u
 \end{myexercise}
 
 \begin{myexercise}
-	\textbf{Verschlüsseln} Sie folgenden Text von Hand, mit dem Schlüssel \enquote{\textcolor{red}{\texttt{YES}}} und mit der Methode von Vigenère:
+	\textbf{Verschlüsseln} Sie folgenden Text von Hand, mit dem Schlüssel \textcolor{red}{\texttt{YES}} und mit der Methode von Vigenère:
 
 	\textcolor{blue}{\texttt{NIEMANDKANNDASLESEN}}
 	\begin{myanswer}
@@ -709,17 +718,17 @@ Dabei erkennen wir, dass die häufigsten Buchstaben pro Gruppe \textcolor{Forest
 	\centering
 	\resizebox{.65\textwidth}{!}{\caesar[8] \caesar[2] \caesar[7]}
 \end{figure}
-Der Schlüssel muss demnach ``ICH'' sein und wir können den Text somit entschlüsseln.
+Der Schlüssel muss demnach \texttt{ICH} sein und wir können den Text somit entschlüsseln.
 \end{myexample}
 
 \begin{myexercise}
 
-	Kopieren Sie den folgenden Kryptotext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz/solve}{Analysetool} zu entziffern, wenn Sie wissen, dass die Schlüssellänge drei ist. Schauen Sie sich die Buchstabenhäufigkeiten für jede der 3 Gruppen an, indem Sie unter \enquote{Analysewerkzeug} die Häufigkeitsanalyse auswählen und \textit{stride} (Schrittgrösse) 3. Unterhalb der Grafiken kann man zwischen jeder der drei Gruppen hin- und herwechseln. Probieren Sie den wahrscheinlichsten Schlüssel aus, indem Sie beim \enquote{Entschlüsselungswerkzeug} \enquote{Vigenère} auswählen und den Schlüssel eingeben.
+	Kopieren Sie den folgenden Kryptotext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz/solve}{Analysetool} zu entziffern, wenn Sie wissen, dass die Schlüssellänge drei ist. Schauen Sie sich die Buchstabenhäufigkeiten für jede der 3 Gruppen an, indem Sie unter \emph{Analysewerkzeug} die Häufigkeitsanalyse auswählen und \emph{stride} (Schrittgrösse) 3. Unterhalb der Grafiken kann man zwischen jeder der drei Gruppen hin- und herwechseln. Probieren Sie den wahrscheinlichsten Schlüssel aus, indem Sie beim \emph{Entschlüsselungswerkzeug} die Methode \emph{Vigenère} auswählen und den Schlüssel eingeben.
 
 	\texttt{\colorstring[black]{WORBHHHLUQOWWLDSYSQOWOUKSUDSNEGAAZAEBKISMRILHGPCVLIBZTRLMHYUSIEBILWJKULZSPGHCEFZUQOIQOWCOLSBCVKISZMOSFSZTNBHOSTSUFILHZPCVTEWUHSYZBVCVQEBLMKHHBNEBLIUAIVYDFHEBNTSBCVGUBBNUBTGVMCLGHPHFDAZAEBDISPHFHUGKUBZTIUDBLBSSUATIQOSHLIUAMSPNPBS}}
 
 	\begin{myanswer}
-		Mit dem Schlüssel ``\texttt{OHA}'' kommen wir auf folgende Lösung:
+		Mit dem Schlüssel \texttt{OHA} kommen wir auf folgende Lösung:
 
 		\texttt{\colorstring[black]{IHRNAHTEUCHWIEDERSCHWANKENDEGESTALTENDIEFRUEHSICHEINSTDEMTRUEBENBLICKGEZEIGTVERSUCHICHWOHLEUCHDIESMALFESTZUHALTENFUEHLICHMEINHERZNOCHJENEMWAHNGENEIGTIHRDRAENGTEUCHZUNUNGUTSOMOEGTIHRWALTENWIEIHRAUSDUNSTUNDNEBELUMMICHSTEIGTMEINBUS}}
 	\end{myanswer}
@@ -734,7 +743,7 @@ Der Schlüssel muss demnach ``ICH'' sein und wir können den Text somit entschl�
 		\begin{enumerate}
 			\item Finden Sie zuerst die häufigsten Buchstaben pro Gruppe heraus (Gruppe 3 ist bereits gemacht, s. unten). Seien Sie genau, ansonsten müssen Sie später wieder von vorne beginnen!
 			      \notiz{4}
-			\item Finden Sie danach den Schlüssel heraus, indem Sie annehmen, dass der häufigste Buchstabe im Geheimtext den Buchstaben \enquote{\texttt{E}} im Klartext repräsentiert. Für Gruppe 3 ist die Lösung bereits vorgegeben.
+			\item Finden Sie danach den Schlüssel heraus, indem Sie annehmen, dass der häufigste Buchstabe im Geheimtext den Buchstaben \texttt{E} im Klartext repräsentiert. Für Gruppe 3 ist die Lösung bereits vorgegeben.
 			      \begin{table}[H]
 				      \centering
 				      \begin{tabular}{c||c|c}
@@ -766,13 +775,13 @@ Der Schlüssel muss demnach ``ICH'' sein und wir können den Text somit entschl�
 \end{myexercise}
 \end{minipage}
 \begin{mychallenge}
-	Versuchen Sie, auf diesem Link eine weitere Challenge-Aufgabe zu lösen, indem Sie die Werkzeuge \enquote{Frequency} (Häufigkeit) und \enquote{Vigenère} verwenden:
+	Versuchen Sie, auf diesem Link eine weitere Challenge-Aufgabe zu lösen, indem Sie die Werkzeuge \emph{Frequency} (Häufigkeit) und \emph{Vigenère} verwenden:
 
 	\qrcode[height=2cm]{https://cryptbreaker.marcwidmer.xyz/problems/vigenere}
 \end{mychallenge}
 
 \subsubsection{Bestimmung der Schlüssellänge mit dem Kasiski-Test}
-Wie Sie gesehen haben, kann man Vigenère \textit{gruppenweise} mit denselben Methoden knacken, die wir benutzt haben, um Caesar zu knacken. Falls die Schlüssellänge unbekannt ist, können sowohl der Kasiski-Test wie auch die Friedmansche Charakteristik verwendet werden, um diese zu erraten. In diesem Unterabschnitt schauen wir uns zunächst den Kasiski-Test an.
+Wie Sie gesehen haben, kann man Vigenère \emph{gruppenweise} mit denselben Methoden knacken, die wir benutzt haben, um Caesar zu knacken. Falls die Schlüssellänge unbekannt ist, können sowohl der Kasiski-Test wie auch die Friedmansche Charakteristik verwendet werden, um diese zu erraten. In diesem Unterabschnitt schauen wir uns zunächst den Kasiski-Test an.
 
 Friedrich Kasiski war ein preussischer Infanteriemajor (1805 - 1868), welcher mit seinem Kasiski-Test massgeblich zum Knacken der Vigenère-Verschlüsselung beigetragen hat. Den Kasiski-Test veröffentlichte er 1863 in seinem Buch \enquote{Die Geheimschriften und die Dechiffrir-Kunst} (siehe \cref{fig:kasiski-test-book}).
 
@@ -783,12 +792,12 @@ Friedrich Kasiski war ein preussischer Infanteriemajor (1805 - 1868), welcher mi
 	\label{fig:kasiski-test-book}
 \end{figure}
 
-Die Grundidee hinter dem Kasiski-Test ist: Wenn ein Wort oder ein Wortteil im Klartext mehrmals vorkommen, so wird dieser möglicherweise auch im Kryptotext mehrmals vorkommen. Wenn beispielsweise die Buchstaben \enquote{\texttt{DIE}} mehrmals mit dem Schlüssel \enquote{\texttt{KEY}} verschlüsselt werden, dann wird der Text \enquote{\texttt{LIV}} mehrmals im Geheimtext auftauchen. Wenn das Wort \enquote{\texttt{DIE}} also zweimal im Klartext vorkommt \textbf{und} auf denselben Schlüsselteil (\enquote{\texttt{KEY}}, \enquote{\texttt{EYK}} oder \enquote{\texttt{YKE}}) fällt, wird z.B. \enquote{\texttt{LIV}} auch zweimal im Kryptotext gleich verschlüsselt sein.
+Die Grundidee hinter dem Kasiski-Test ist: Wenn ein Wort oder ein Wortteil im Klartext mehrmals vorkommen, so wird dieser möglicherweise auch im Kryptotext mehrmals vorkommen. Wenn beispielsweise die Buchstaben \enquote{\texttt{DIE}} mehrmals mit dem Schlüssel \texttt{KEY} verschlüsselt werden, dann wird der Text \texttt{LIV} mehrmals im Geheimtext auftauchen. Wenn das Wort \texttt{DIE} also zweimal im Klartext vorkommt \textbf{und} auf denselben Schlüsselteil (\texttt{KEY}, \texttt{EYK} oder \texttt{YKE}) fällt, wird z.B. \texttt{LIV} auch zweimal im Kryptotext gleich verschlüsselt sein.
 
 Wenn wir also im Kryptotext nach wiederholten Sequenzen suchen, können wir daraus die Schlüssellänge ableiten.
 
 \begin{myexample}\label{ex:kasiskiTest}
-In folgendem Beispiel ist der Klartext auf der ersten Zeile. Der Schlüssel ``\text{CODE}'' wird verwendet, um den Geheimtext (auf der dritten Zeile) zu erzeugen:
+In folgendem Beispiel ist der Klartext auf der ersten Zeile. Der Schlüssel \texttt{CODE} wird verwendet, um den Geheimtext (auf der dritten Zeile) zu erzeugen:
 
 \texttt{M\gold{EIN}KL\red{EIN}ERREIMSCH\red{EIN}TK\green{EIN}ERZUS\green{EIN}}
 
@@ -798,7 +807,7 @@ In folgendem Beispiel ist der Klartext auf der ersten Zeile. Der Schlüssel ``\t
 
 Der Kasiski-Test erlaubt uns, Hinweise auf die Schlüssellänge zu erhalten, ohne den Schlüssel zu kennen:
 \begin{itemize}
-	\item Die Sequenzen \enquote{\texttt{HMP}} und \enquote{\texttt{IKB}} erscheinen jeweils zweimal im Geheimtext.
+	\item Die Sequenzen \texttt{HMP} und \texttt{IKB} erscheinen jeweils zweimal im Geheimtext.
 	\item Die Sequenz \texttt{HMP} befindet sich an den Positionen 7 und 19. Die Differenz zwischen diesen Positionen beträgt 12, was sich als $2\times2\times3$ in Primfaktoren zerlegen lässt.
 	      \begin{tcolorbox}
 		      $\mathbf{\underset{\text{Position 1 \texttt{HMP}}}{7}+\underset{\text{Codewort-Länge!}}{\blue{4}}\times \underset{\text{Anzahl Codewörter}}{3} = \underset{\text{Position 2 \texttt{HMP}}}{19}}$
@@ -835,7 +844,7 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 			      \item Finden Sie den \textbf{grössten gemeinsamen Teiler} dieser Primfaktoren, um die Schlüssellänge zu erraten.
 		      \end{enumerate}
 		\item Wenn Sie die Schlüssellänge haben, färben Sie den Text abwechslungsweise ein, wie in \cref{ex:vigHaufigkeitGruppen}. Teilen Sie sich zu dritt auf, so dass jede Person eine Gruppe von Buchstaben entschlüsselt (gleich wie in \cref{ex:vigHaufigkeitGruppen}).
-		\item \textbf{Tipp}: Der letzte Teil des Schlüssels ist ``\texttt{D}''. Der Schlüssel ergibt ein Wort. Entschlüsseln Sie den Text nun mit der \href{https://inventwithpython.com/cipherwheel/}{Caesar-Drehscheibe}! Entschlüsseln Sie zuerst nur die erste Zeile, um zu überprüfen, ob ihr Schlüssel stimmt und zu einem sinnvollen Text führt.
+		\item \textbf{Tipp}: Der letzte Teil des Schlüssels ist \texttt{D}. Der Schlüssel ergibt ein Wort. Entschlüsseln Sie den Text nun mit der \href{https://inventwithpython.com/cipherwheel/}{Caesar-Drehscheibe}! Entschlüsseln Sie zuerst nur die erste Zeile, um zu überprüfen, ob ihr Schlüssel stimmt und zu einem sinnvollen Text führt.
 	\end{itemize}
 	\begin{myanswer}
 		Positionen der Anfangs-Trigramme: 4, 13, 67, 106, 115, 130, 136. Abstände und Primfaktoren sind beispielsweise:
@@ -861,14 +870,14 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 
 	Verwenden Sie dazu folgendes Online-Tool: \url{https://cryptbreaker.marcwidmer.xyz/solve}
 	\begin{enumerate}
-		\item Verwenden Sie das Analyse-Werkzeug \enquote{Kasiski-Analyse}, um die Abstände der sich wiederholenden Sequenzen der Länge 4 zu bestimmen.
+		\item Verwenden Sie das Analyse-Werkzeug \emph{Kasiski-Analyse}, um die Abstände der sich wiederholenden Sequenzen der Länge 4 zu bestimmen.
 		      \begin{itemize}
 			      \item Notieren Sie sich die Positionen und Abstände der sich wiederholenden Sequenzen der Länge 4.
 			      \item Zerlegen Sie die Abstände in Primfaktoren.
 			      \item Finden Sie den grössten gemeinsamen Teiler der Abstände, um die Schlüssellänge zu erraten.
 		      \end{itemize}
-		\item Überprüfen Sie Ihre Vermutung, indem Sie im Analyse-Werkzeug die Häufigkeitsanalyse mit der Schrittweite (\textit{stride}) gleich der vermuteten Schlüssellänge durchführen.
-		\item Entschlüsseln Sie den Text mit dem \enquote{Vigenère}-Entschlüsselungswerkzeug.
+		\item Überprüfen Sie Ihre Vermutung, indem Sie im Analyse-Werkzeug die Häufigkeitsanalyse mit der Schrittweite (\emph{stride}) gleich der vermuteten Schlüssellänge durchführen.
+		\item Entschlüsseln Sie den Text mit dem \emph{Vigenère}-Entschlüsselungswerkzeug.
 	\end{enumerate}
 
 	\begin{myanswer}
@@ -887,7 +896,7 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 
 \begin{myexercise}
 	\begin{enumerate}
-		\item Erklären Sie kurz: Dopplungen im Klartext (z.B. \enquote{EIN}) führen nicht unbedingt zu Dopplungen im Geheimtext.
+		\item Erklären Sie kurz: Dopplungen im Klartext (z.B. \texttt{EIN}) führen nicht unbedingt zu Dopplungen im Geheimtext.
 		\item Erklären Sie kurz: Dopplungen im Geheimtext müssen nicht in jedem Fall aus Dopplungen im Klartext stammen; sie können auch zufällig entstehen.
 	\end{enumerate}
 
@@ -895,7 +904,7 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 		Kurzbegründungen:
 		\begin{itemize}
 			\item Bei polyalphabetischer Verschlüsselung werden gleiche Trigramme an verschiedenen Textpositionen oft mit verschiedenen Schlüsselzeichen verschlüsselt, sodass Wiederholungen im Klartext nicht zwangsläufig gleiche Geheimtrigramme ergeben (s. z.B. \cref{ex:kasiskiTest}).
-			\item Geheimtext-Dopplungen können aber auch zufällig entstehen (z.B. ``\texttt{OML}''), wenn verschiedene Klartextfolgen unter unterschiedlichen Schlüsselteilen zufällig identische Geheimfolgen produzieren. Beispiel:
+			\item Geheimtext-Dopplungen können aber auch zufällig entstehen (z.B. \texttt{OML}), wenn verschiedene Klartextfolgen unter unterschiedlichen Schlüsselteilen zufällig identische Geheimfolgen produzieren. Beispiel:
 			      \begin{itemize}
 				      \item Klartext: \texttt{EIN} mit Schlüsselteil \texttt{KEY} $\rightarrow$ Geheimtext: \texttt{OML}
 				      \item Klartext: \texttt{KOB} mit Schlüsselteil \texttt{EYK} $\rightarrow$ Geheimtext: \texttt{OML}
@@ -922,7 +931,7 @@ William Friedman (1891-1969) war ein russisch-amerikanischer Kryptologe und Pion
 	\label{fig:william-friedman}
 \end{figure}
 
-Die Friedmansche Charakteristik macht sich zunutze, dass Buchstaben im Klartext ungleich verteilt sind. Falls jeder Buchstabe gleich häufig vorkommen würde, wäre die erwartete Häufigkeit jedes Buchstabens genau $1/26$. In keiner natürlichen Sprache besitzen alle Buchstaben dieselbe relative Häufigkeit. Die Häufigkeitsverteilung der Buchstaben in deutschen Texten haben wir bereits in \cref{tab:alle-haeufigkeiten} gesehen. Die relative Häufigkeit des Buchstabens \enquote{E} in deutschen Texten ist beispielsweise ca. 17.4\%. Die relative Häufigkeit eines Buchstabens $\square$ in einem Text $T$ bezeichnen wir mit $h_\square(T)$.
+Die Friedmansche Charakteristik macht sich zunutze, dass Buchstaben im Klartext ungleich verteilt sind. Falls jeder Buchstabe gleich häufig vorkommen würde, wäre die erwartete Häufigkeit jedes Buchstabens genau $1/26$. In keiner natürlichen Sprache besitzen alle Buchstaben dieselbe relative Häufigkeit. Die Häufigkeitsverteilung der Buchstaben in deutschen Texten haben wir bereits in \cref{tab:alle-haeufigkeiten} gesehen. Die relative Häufigkeit des Buchstabens \texttt{E} in deutschen Texten ist beispielsweise ca. 17.4\%. Die relative Häufigkeit eines Buchstabens $\square$ in einem Text $T$ bezeichnen wir mit $h_\square(T)$.
 
 Die Friedmansche Charakteristik berechnet, wie ungleich alle Buchstaben in einem Text verteilt sind, indem sie die quadrierte Differenz der relativen Häufigkeit jedes Buchstabens zu $1/26$ berechnet. Diese quadrierten Abweichungen werden danach alle aufsummiert (siehe \cref{eq:fc}).
 
@@ -950,7 +959,7 @@ Eine stark ungleiche Verteilung von Buchstaben in einem Text $T$ führt also zu 
 
 Je grösser die blauen Pfeile in \cref{fig:vig-subgroup-1-avg}, desto höher die Friedmansche Charakteristik.
 
-Wir können nun folgenden \textit{Brute-Force}-Ansatz verwenden, um die Schlüssellänge mit der Friedmanschen Charakteristik zu bestimmen:
+Wir können nun folgenden \emph{Brute-Force}-Ansatz verwenden, um die Schlüssellänge mit der Friedmanschen Charakteristik zu bestimmen:
 
 \begin{itemize}
 	\item Alle möglichen Schlüsselwortlängen von 1 bis zu einer beliebig gewählten Zahl $n$ ausprobieren, wobei $n$ praktisch nie über 10 gewählt wird.
@@ -1034,12 +1043,12 @@ Aus \cref{fig:fc} lässt sich ablesen, dass die Schlüssellänge vermutlich 3 se
 
 \begin{myexercise}
 
-	Kopieren Sie den folgenden Kryptotext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz}{Analysetool} zu entziffern, indem Sie zuerst das Tool ``Friedman'' und danach das Tool ``Frequency'' verwenden. Wie lautet der Schlüssel?
+	Kopieren Sie den folgenden Kryptotext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz}{Analysetool} zu entziffern, indem Sie zuerst das Tool \emph{Friedman} und danach das Tool \emph{Frequency} verwenden. Wie lautet der Schlüssel?
 
 	\texttt{\colorstring[black]{FZNZKVEDZFCRRZVFZTZFLVIOVBKMZWOVGVBAVSZSMVEDBHVNJANVNBZFZCCRFESPSTJEITSLECZJEGNAPIGZBEZEDQIDIOUBEZZAIVRUSOXEIWFJSZWDYBDBBCLZWOLNYTSVUZAJTHHSJEENZFSEIGJEDDSTVRBSHVNYRJVFPSSJOGQIVSZSMVNBSTTHVTGVNDGUNIZRJVMZWOVIXVCZNNCHCUZQLCIXVNVIIPFJTZFTFGVBAZNYSNXEAIFYLZJPERPVJXEHRBJEDBWVRNIOBEIRBJSHSJEEFIOJTYOSLNOSSCEDRFKIXVLFEIBUVJZHAKNDQIKZZWDYNZBOZCCHFZNZBTKRDQILNYPJENDSFZNBFPVSNSSVRHOMVRBSXVSZBBCSDBEZENSORUBSOSLDQLVNRSOEDVGMZEWSURLPANZCCRBDPAHVEDYWFYOCSTFNISBEDZFPSEMTMREXVFUEMIOUUMQIURDBHCIXVFEFDBTKEMBJJMZWOVSROMUENFVYTPBEEUMSJEZZZOVSOFBYLZBTZCCWOUANWOEEMSIVIGWHKUHGUVHGSOZCCRBENDAIFHZBHIANSBDFVZMVNYSOSAXVFCIZUFLNYBBVHZFBEDZFFIDZHBLSZBEDAIBJXFVZUZGZUSRENQIVNHWSDEMYXLEMRJXWZFEVNRSOEIXVERSRWNDEGBEVRFZFZNZBXVLONXZSXVFEHVZNVNYWFLNUOFYLDUFEUISSXRPSOULDQIVNBSTKAGHFEDZFXLEMADYEIRFIMPSDBCCSOEAZVFIAIAFZNZAIVRUSOWUZVMVUIRGLECZFUIZUFXEIKBITYSTRLGABVCCHJXEIRFIUIGORCCGFZNZACZLYSTTHPTERSRSIVNYSTRLGWFSEIRFEDZFVESDBFNIBSSNOIBFJCCKFSEIRUIAZUULNYSSYAZZUDEDBGIEPBENEIBTUAIBVDMZWOVAPUFEDVSNDEMHVEDYWFNEGHVDMDQIYEMIOUDZFIZMHSMXAINJEMZWOVRNSFCEMIIEWDSEZEBSTKAGHFZNZFHVLDSCKEIRBENNSIEEDQIDIXVPWTPBEUEIYFRCCYPVNIHFJTYIERSRWFUEMOVJDMIFTKZBLFEIBUVSORVUEHDBGIZFFUANSJEHVIDYEIKBJSJJPCLNCXRRHWOUIMZFSTYOTJENKVVRYSEVRNDJVGZZEVIISSJEZZFNIZRFZNZGFVLZWTKDZFTGIZUFCDZGVEEIRMZCCSOXOOHFJMZWOWRZIOUAWSSZCCUFYEYOSLEWSSQUBFVEDZWDYEMZJVGZIOKEMRFIGZKBCTYSSYEMFMZCCYFZTYWFJEMSSJCCSJEUIUFEEDBFNUIRFIBVFFYEDHFIKZWUYAOAFZNZUBEZZGFVLZSJEGZBPDMZBHCEDQIUEIGVVSNSOWRPSICIIUTDOMUFEDDSJTHHWUXAINFDHZFAVNBSOZENGFZCCPJEAGZFZNPBEWRZIFDIXVNVIISTCEWSOJIIRJVSZFHVGZBEUIZTVVRNCMTHZGFVLZBHVSXVBWFZBJJTRWFUIZAFZNZWDYBDBTFGGIFTKGWDYMZWOSENHFISJU}}
 
 	\begin{myanswer}
-		Der Schlüssel lautet ``\texttt{BRAVO}''.
+		Der Schlüssel lautet \texttt{BRAVO}.
 	\end{myanswer}
 \end{myexercise}
 
@@ -1073,7 +1082,7 @@ Aus \cref{fig:fc} lässt sich ablesen, dass die Schlüssellänge vermutlich 3 se
 \end{mychallenge}
 
 \begin{mychallenge}
-	Lösen Sie drei ``beliebige Probleme'' auf der \href{https://cryptbreaker.marcwidmer.xyz}{Analyse-Webseite}.
+	Lösen Sie drei \emph{beliebige Probleme} auf der \href{https://cryptbreaker.marcwidmer.xyz}{Analyse-Webseite}.
 \end{mychallenge}
 
 
@@ -1083,10 +1092,10 @@ Der Fortschritt in der Mathematik und das neu dazugekommene Wissen machten Vigen
 
 Vigenère und dessen Kryptoanalyse haben wir bereits besprochen. Wir haben gesehen, dass eine Kryptoanalyse vor allem dann leicht ist, wenn der verwendete Schlüssel zu kurz gewählt wird, denn die wesentliche Schwäche von Vigenère ist die Wiederholung der Muster im Kryptotext bei zu kurz gewähltem Schlüssel. Betrachten wir als Beispiel einen Kryptotext aus 1000 Buchstaben, der mit einem Schlüssel der Länge fünf verschlüsselt ist. Das bedeutet, dass jeder fünfte Buchstabe und somit insgesamt je 200 Buchstaben anhand der gleichen Zeile der Vigenère-Tabelle verschlüsselt sind. Das heisst, dass je 200 Buchstaben mit dem gleichen Schlüsselbuchstaben verschlüsselt sind. Durch eine Häufigkeitsanalyse von 200 Buchstaben kann ein Kryptoanalytiker bereits den entsprechenden Buchstaben des Schlüssels bestimmen. Was wäre aber, wenn der verwendete Schlüssel aus 50 Buchstaben bestehen würde? Dann muss eine Häufigkeitsanalyse von 50 Teilen zu je 20 Buchstaben gemacht werden. Es ist nicht garantiert, dass man aus nur 20 Buchstaben eine repräsentative Häufigkeitsverteilung erhält. Gehen wir noch einen Schritt weiter und wählen einen Schlüssel, der genau gleich lang ist wie der Klartext. Nun ist eine Häufigkeitsanalyse völlig unmöglich, da wir es mit 1000 Teilen zu je nur einem Buchstaben zu tun haben.
 
-Die One-Time-Pad-Verschlüsselungsmethode (\gls{OTP}, deutsch ``Einmalschlüssel-Verfahren'') funktioniert im Prinzip identisch wie die Vigenère-Methode, mit folgenden drei Unterschieden:
+Die One-Time-Pad-Verschlüsselungsmethode (\gls{OTP}, deutsch \emph{Einmalschlüssel-Verfahren}) funktioniert im Prinzip identisch wie die Vigenère-Methode, mit folgenden drei Unterschieden:
 \begin{enumerate}
-	\item Der Schlüssel besteht auf einer \textit{zufälligen} Folge von Buchstaben
-	\item Der Schlüssel ist \textit{genau gleich lang} wie der Klartext/Kryptotext
+	\item Der Schlüssel besteht auf einer \emph{zufälligen} Folge von Buchstaben
+	\item Der Schlüssel ist \emph{genau gleich lang} wie der Klartext/Kryptotext
 	\item Der Schlüssel wird nur für genau eine Botschaft verwendet
 \end{enumerate}
 
@@ -1151,10 +1160,10 @@ gegebenen Kryptotext \verb|GVRCL| verschlüsseln würde.
 
 Jeder dieser Texte kann also durch den angegebenen Schlüssel zum Kryptotext \verb|GVRCL| verschlüsselt werden. Welcher Text entspricht nun der richtigen Nachricht? Alice und Bob haben ihren geheimen Schlüssel zufällig bestimmt, das heisst, jeder mögliche Schlüssel kann mit der gleichen Wahrscheinlichkeit ausgewählt werden. Eve hat daher keine Möglichkeit herauszufinden, welche dieser fünf möglichen Klartexte der geheimen Nachricht entspricht. Es ist auch möglich, dass der richtige Klartext nicht in der Liste steht. Somit hat Eve keine Chance irgendeinen Teil des Klartextes oder des Schlüssels zu erfahren.
 
-Ein Hauptproblem aller symmetrischen Verschlüsselungsverfahren besteht jedoch darin, dass der Schlüssel erst einmal über einen \textit{sicheren} Kanal ausgetauscht werden muss. Vor dem Internet erfolgte dies durch einen Postboten, heute ist dies allerdings nicht mehr praktikabel. Dies werden wir im nächsten Kapitel besprechen.
+Ein Hauptproblem aller symmetrischen Verschlüsselungsverfahren besteht jedoch darin, dass der Schlüssel erst einmal über einen \emph{sicheren} Kanal ausgetauscht werden muss. Vor dem Internet erfolgte dies durch einen Postboten, heute ist dies allerdings nicht mehr praktikabel. Dies werden wir im nächsten Kapitel besprechen.
 
 \begin{myexercise}
-	Wie viele mögliche Schlüssel hat der \gls{OTP} für eine Nachricht der Länge \textit{n}?
+	Wie viele mögliche Schlüssel hat der \gls{OTP} für eine Nachricht der Länge $n$?
 	\begin{myanswer}
 		$26^n$.
 	\end{myanswer}
@@ -1307,7 +1316,7 @@ Die Verschlüsselung mit dem binären \gls{OTP} erfolgt nun, indem Bit für Bit 
 			\begin{align*}
 				a\oplus b = 1\oplus 0 = 1 = 0\oplus 1 = b\oplus a.
 			\end{align*}
-			Damit sagt man, dass die Operation $\oplus$ \textit{kommutativ} ist. Die Reihenfolge der Operanden spielt bei der Operation $\oplus$ keine Rolle.
+			Damit sagt man, dass die Operation $\oplus$ \emph{kommutativ} ist. Die Reihenfolge der Operanden spielt bei der Operation $\oplus$ keine Rolle.
 		\end{aenum}
 	\end{myanswer}
 \end{myexercise}
@@ -1326,7 +1335,7 @@ Die Verschlüsselung mit dem binären \gls{OTP} erfolgt nun, indem Bit für Bit 
 		\end{aenum}
 	\end{myanswer}
 \end{myexercise}
-Es lässt sich beweisen, dass die Operation $\oplus$ auch \textit{assoziativ} ist. Die Klammerung der Terme spielt also keine Rolle. Für beliebige binäre Folgen $a,b$ und $c$ derselben Länge gilt also
+Es lässt sich beweisen, dass die Operation $\oplus$ auch \emph{assoziativ} ist. Die Klammerung der Terme spielt also keine Rolle. Für beliebige binäre Folgen $a,b$ und $c$ derselben Länge gilt also
 \begin{align*}
 	(a\oplus b) \oplus c = a\oplus (b\oplus c).
 \end{align*}
@@ -1544,15 +1553,15 @@ Wenn der Angreifer (Eve) alle drei Kryptotexte ($k_A, k_{AB}, k_B$) abfangen kan
 \subsection*{Sicherheit des \gls{DHM}-Protokolls}
 Das \gls{DHM}-Protokoll ist sicher, weil es (bisher) keinen effizienten Algorithmus gibt, um das diskrete Logarithmusproblem zu lösen. Ein Kryptoanalyst (Eve) kann zwar die öffentlichen Werte $p, g, x$ und $y$ in Erfahrung bringen, aber um daraus den gemeinsamen Schlüssel $s_{AB}$ zu berechnen, müsste sie entweder die geheime Zahl $a$ von Alice oder die geheime Zahl $b$ von Bob bestimmen. Dies entspricht dem Lösen des diskreten Logarithmusproblems, was (bisher) als schwierig gilt.
 
-Allerdings ist das DHM-Protokoll nicht gegen einen Man-in-the-Middle-Angriff geschützt. Ein Angreifer (Eve) könnte sich zwischen Alice und Bob schalten und so tun, als ob sie Alice wäre, wenn sie mit Bob kommuniziert, und umgekehrt. Dadurch könnte Eve sowohl mit Alice als auch mit Bob jeweils einen eigenen gemeinsamen Schlüssel vereinbaren und so die Kommunikation zwischen den beiden belauschen. Diese Schwäche kann durch die Verwendung von digitalen Signaturen behoben werden, welche die Authentizität der Kommunikationspartner sicherstellen. Ein Beispiel eines solchen Signaturverfahrens ist das \gls{RSA}-Kryptosystem (s. Kapitel \cref{subsec:rsa}).
+Allerdings ist das DHM-Protokoll nicht gegen einen Man-in-the-Middle-Angriff geschützt. Ein Angreifer (Eve) könnte sich zwischen Alice und Bob schalten und so tun, als ob sie Alice wäre, wenn sie mit Bob kommuniziert, und umgekehrt. Dadurch könnte Eve sowohl mit Alice als auch mit Bob jeweils einen eigenen gemeinsamen Schlüssel vereinbaren und so die Kommunikation zwischen den beiden belauschen. Diese Schwäche kann durch die Verwendung von digitalen Signaturen behoben werden, welche die Authentizität der Kommunikationspartner sicherstellen. Ein Beispiel eines solchen Signaturverfahrens ist das \gls{RSA}-Kryptosystem (siehe \cref{subsec:rsa}).
 
 \chapter{Asymmetrische Kryptosysteme}
 
-In den bisher angeschauten Verschlüsselungsverfahren haben wir festgestellt, dass derselbe Schlüssel zur Ver- und Entschlüsselung verwendet wird. Daher spricht man bei diesen Verfahren von \textit{symmetrischen} Verschlüsselungsmethoden. Zudem haben wir gesehen, dass diese entweder unsicher (Caesar, Vigenère) sind, wenn der Schlüssel einfach geknackt werden kann, oder unpraktikabel (\gls{OTP}), wenn der Schlüssel zuerst übertragen werden muss. Diffie \& Hellman kamen daher 1975 auf die Idee, \textit{asymmetrische} Verschlüsselungsverfahren zu erschaffen, welche nach einem anderen Prinzip funktionieren. Im Gegensatz zu symmetrischen Verfahren kann man bei asymmetrischen Verfahren \textit{nicht} von der verschlüsselten Nachricht auf den Schlüssel schliessen, da unterschiedliche Schlüssel zum Ver- und Entschlüsseln verwendet werden.
+In den bisher angeschauten Verschlüsselungsverfahren haben wir festgestellt, dass derselbe Schlüssel zur Ver- und Entschlüsselung verwendet wird. Daher spricht man bei diesen Verfahren von \emph{symmetrischen} Verschlüsselungsmethoden. Zudem haben wir gesehen, dass diese entweder unsicher (Caesar, Vigenère) sind, wenn der Schlüssel einfach geknackt werden kann, oder unpraktikabel (\gls{OTP}), wenn der Schlüssel zuerst übertragen werden muss. Diffie \& Hellman kamen daher 1975 auf die Idee, \emph{asymmetrische} Verschlüsselungsverfahren zu erschaffen, welche nach einem anderen Prinzip funktionieren. Im Gegensatz zu symmetrischen Verfahren kann man bei asymmetrischen Verfahren \emph{nicht} von der verschlüsselten Nachricht auf den Schlüssel schliessen, da unterschiedliche Schlüssel zum Ver- und Entschlüsseln verwendet werden.
 
 Die Grundidee hinter asymmetrischen Verschlüsselungsmethoden ist folgende:
 
-Alice (\emoji{woman-technologist}) und Bob (\emoji{man-technologist}) möchten auf verschlüsselte Weise Nachrichten austauschen, die den Anforderungen an sichere Kryptosysteme genügen (siehe \cref{sec:intro}). Bei der asymmetrischen Verschlüsselung generieren sowohl Alice wie Bob jeweils ein Schlüsselpaar, einen sogenannten \textbf{öffentlichen Schlüssel} (\emoji{key}), der von allen Personen gesehen und verwendet werden kann, sowie einen \textbf{privaten Schlüssel} (\emoji{lock}), der nur im Besitz von Alice bzw. Bob ist. Wenn Alice eine Nachricht an Bob senden will, verwendet sie Bobs \textit{öffentlichen} Schlüssel, um die Nachricht zu verschlüsseln. Die Nachricht kann jedoch mit dem öffentlichen Schlüssel nicht entschlüsselt werden, es handelt sich hier sozusagen um eine ``Einweg''-Funktion. Stattdessen muss Bob seinen \textit{privaten} Schlüssel zur Entschlüsselung verwenden, also den Schlüssel, auf den \textit{nur} Bob Zugriff hat (siehe \cref{fig:public-key-encryption}). Dies funktioniert in den meisten Fällen auch in die andere Richtung: eine Nachricht, die mit Bobs privatem Schlüssel verschlüsselt worden ist, kann nur mit Bobs öffentlichem Schlüssel entschlüsselt werden. Die Schlüssel sind mathematisch so konstruiert, dass es beinahe unmöglich ist, vom öffentlichen Schlüssel auf den privaten Schlüssel zu schliessen.
+Alice (\emoji{woman-technologist}) und Bob (\emoji{man-technologist}) möchten auf verschlüsselte Weise Nachrichten austauschen, die den Anforderungen an sichere Kryptosysteme genügen (siehe \cref{sec:intro}). Bei der asymmetrischen Verschlüsselung generieren sowohl Alice wie Bob jeweils ein Schlüsselpaar, einen sogenannten \textbf{öffentlichen Schlüssel} (\emoji{key}), der von allen Personen gesehen und verwendet werden kann, sowie einen \textbf{privaten Schlüssel} (\emoji{lock}), der nur im Besitz von Alice bzw. Bob ist. Wenn Alice eine Nachricht an Bob senden will, verwendet sie Bobs \emph{öffentlichen} Schlüssel, um die Nachricht zu verschlüsseln. Die Nachricht kann jedoch mit dem öffentlichen Schlüssel nicht entschlüsselt werden, es handelt sich hier sozusagen um eine \emph{Einweg}-Funktion. Stattdessen muss Bob seinen \emph{privaten} Schlüssel zur Entschlüsselung verwenden, also den Schlüssel, auf den \emph{nur} Bob Zugriff hat (siehe \cref{fig:public-key-encryption}). Dies funktioniert in den meisten Fällen auch in die andere Richtung: eine Nachricht, die mit Bobs privatem Schlüssel verschlüsselt worden ist, kann nur mit Bobs öffentlichem Schlüssel entschlüsselt werden. Die Schlüssel sind mathematisch so konstruiert, dass es beinahe unmöglich ist, vom öffentlichen Schlüssel auf den privaten Schlüssel zu schliessen.
 
 
 Durch den Aufbau asymmetrischer Verschlüsselungsverfahren entfällt die Problematik der Übermittlung des Schlüssels: jede Person generiert ihr eigenes Schlüsselpaar und stellt einen öffentlichen Schlüssel zur Verfügung. Ein Nachteil hierbei ist, dass die Verschlüsselung häufig mathematisch und bezüglich Rechenleistung anspruchsvoller ist, was insbesondere problematisch sein kann bei längeren Nachrichten oder wenn die Antwortzeit minimal sein soll.
@@ -1611,8 +1620,8 @@ Das \acrfull{RSA}-Verfahren ist ein asymmetrisches Kryptosystem, das sowohl für
 		      \item Wählen Sie zwei (möglichst grosse) Primzahlen \( p \) und \( q \).
 		      \item Berechnen Sie das \gls{RSA}-Modul \( n = p \cdot q \).
 		      \item Berechnen Sie die Eulersche Funktion \( \varphi(n) = (p-1)(q-1) \).
-		      \item Wählen Sie den \textit{Verschlüsselungsexponenten} \( e \), so dass dieser teilerfremd zu \( \varphi(n) \) und kleiner als $\varphi(n)$ ist. Dies bedeutet, dass der \gls{GGT} von $e$ und $\varphi(n)$ 1 ist ($\operatorname{ggT}(e, \varphi(n)) = 1$).
-		      \item Berechnen Sie den \textit{Entschlüsselungsexponenten} \( d \), so dass \( (e \cdot d) \mod \varphi(n) = 1  \) (privater Schlüssel). Dies bedeutet, dass, wenn man $d$ mit $e$ multipliziert und dieses Produkt Modulo $\varphi(n)$ rechnet, man die Zahl 1 erhält.
+		      \item Wählen Sie den \emph{Verschlüsselungsexponenten} \( e \), so dass dieser teilerfremd zu \( \varphi(n) \) und kleiner als $\varphi(n)$ ist. Dies bedeutet, dass der \gls{GGT} von $e$ und $\varphi(n)$ 1 ist ($\operatorname{ggT}(e, \varphi(n)) = 1$).
+		      \item Berechnen Sie den \emph{Entschlüsselungsexponenten} \( d \), so dass \( (e \cdot d) \mod \varphi(n) = 1  \) (privater Schlüssel). Dies bedeutet, dass, wenn man $d$ mit $e$ multipliziert und dieses Produkt Modulo $\varphi(n)$ rechnet, man die Zahl 1 erhält.
 		      \item Die Zahlen $p$, $q$ und $\varphi(n)$ werden nun nicht mehr benötigt und können gelöscht werden.
 	      \end{itemize}
 	\item \textbf{Verschlüsselung:}
@@ -1656,7 +1665,7 @@ Um \gls{RSA} besser zu verstehen, rechnen wir ein einfaches Beispiel mit kleinen
 	\item Der öffentliche Schlüssel ist \( (e, n) = (3, 33) \), der private Schlüssel \( (d, n) = (7, 33) \).
 \end{enumerate}
 
-\textbf{Verschlüsselung:} Die Nachricht sei das Wort ``Code'', welches wir darstellen durch die Position der Buchstaben im Alphabet \( m = 3, 15, 4, 5 \). Berechne für jeden Buchstaben (hier nur für ``C'', also 3, gezeigt):
+\textbf{Verschlüsselung:} Die Nachricht sei der Klartext \texttt{Code}, welches wir darstellen durch die Position der Buchstaben im Alphabet \( m = 3, 15, 4, 5 \). Berechne für jeden Buchstaben (hier nur für \texttt{C}, also 3, gezeigt):
 \begin{align*}
 	c & = m^e \mod n  \\
 	  & = 3^3 \mod 33 \\
