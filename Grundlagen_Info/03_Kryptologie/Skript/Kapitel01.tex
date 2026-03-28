@@ -9,9 +9,93 @@ Es besteht aus unzähligen Kabeln, Routern, Servern, etc., die von verschiedenen
 Es ist für Alice und Bob, praktisch gesprochen, unmöglich auszuschliessen, dass jemand die Nachricht mitlesen / mithören könnte, während sie über das Internet transportiert wird.
 \par
 
-Die \emph{Kryptologie} befasst sich (unter anderem) mit der Frage, wie Alice ihre Nachricht so verschlüsseln kann, dass nur Bob sie lesen kann, selbst wenn jemand anderes die Nachricht mitliest. Es geht also darum, die Nachricht so zu verändern, dass sie für Dritte unverständlich wird, aber für Bob immer noch lesbar ist.
+Die \emph{Kryptologie} befasst sich (unter anderem) mit der Frage, wie Alice ihre ursprüngliche Nachricht (\emph{Klartext}) vor der Übertragung so verändern kann, dass es nur für den vorgesehenen Empfänger Bob, jedoch nicht für einen unbefugten Angreifer, möglich ist, aus der veränderten Nachricht den Klartext rekonstruieren. Der Angreifer würde im Idealfall also lediglich einen unverständlichen \enquote{Wortsalat} mitlesen, der für ihn unverständlich ist.
 
-Ein\textbf{Kryptosystem} besteht aus den Verfahren zur Ver- und Entschlüsselung sowie den zugehörigen Schlüsseln. Die ursprüngliche, lesbare Nachricht wird als \textbf{Klartext} bezeichnet. Durch den Vorgang der Verschlüsselung wird dieser in einen für Unbefugte unverständlichen \textbf{Kryptotext} umgewandelt. Durch Entschlüsselung mit dem passenden Schlüssel kann der Empfänger (mit moderatem Aufwand) daraus wieder den ursprünglichen Klartext gewinnen.
+\section{Geheimschriften}\label{sec:geheimschriften}
+Sicherlich haben Sie als Kind schon einmal eine Geheimschrift erfunden, um geheime Nachrichten mit Ihren Freunden auszutauschen.
+
+\begin{myexample}[Geheimschrift der Freimaurer]
+Recht bekannt ist das \emph{Freimaurer-Alphabet}. Bei dieser Geheimschrift werden die lateinischen Grossbuchstaben des Klartexts durch neue Symbole ersetzt. 
+Die Sicherheit dieses Verfahrens beruht allein darauf, dass die Regeln der Übersetzung geheim gehalten werden (\emph{Security through Obscurity}). 
+In \cref{fig:Freimaurer} sehen Sie, wie die Geheimschrift der Freimaurer aufgebaut ist und wie die Symbole den Buchstaben zugeordnet werden.
+\par
+Dem Buchstaben \texttt{A} im Klartext wird zum Beispiel das Symbol {\pigpenfont A} zugeordnet, dem Buchstaben \texttt{B} das Symbol {\pigpenfont B}, dem Buchstaben \texttt{C} das Symbol {\pigpenfont C}, und so weiter. So wird zum Beispiel aus dem Klartext \texttt{HALLO} der Geheimtext {\pigpenfont HALLO}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+		\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Freimaurer-Alphabet.pdf} 
+        \caption{Die Geheimschrift der Freimaurer.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Freimaurer-Buchstaben.pdf}
+        \caption{Zuordnung der Symbole.}
+    \end{subfigure}
+    \caption[Freimaurer]{Freimaurer-Geheimschrift: Beispiel für ein Verfahren, dessen Sicherheit von der Geheimhaltung des Systems abhängt. \\ {\small Quelle: \href{https://de.wikipedia.org/wiki/Freimaurer-Alphabet}{Wikimedia Commons}}}
+    \label{fig:Freimaurer}
+\end{figure}
+\end{myexample}
+
+Das allgemeine Schema der Verwendung einer Geheimschrift ist in \cref{fig:schemaGeheimschrift} dargestellt. Alice (Sender) \emph{chiffriert} den Klartext, um den Geheimtext zu erhalten, und übermittelt diesen über einen unsicheren Kanal (z.\,B. Internet, Telefonie) an Bob (Empfänger). 
+Bob \emph{dechiffriert} den Geheimtext, um wieder den Klartext zu erhalten. Ein Angreifer (Eve) könnte versuchen, den Geheimtext abzufangen und zu dechiffrieren, um den Klartext zu erfahren.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+    \node[alice, minimum width=1.5cm, 
+        label={[mylabel, anchor=west]north east:{}}, 
+        label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Chiffrierung)}$\\
+        \textcolor{Red}{Geheimtext}}}] (alice) {Alice (Sender)};
+    \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
+        label={[mylabel, anchor=east]north west:{}}, 
+        label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
+        \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
+    
+    \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
+    \textcolor{Red}{Geheimtext}} (aux-a-|bob.west);
+
+    \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
+    \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+    \end{tikzpicture}
+    \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung einer Geheimschrift. Der Name \emph{Eve} ist eine clevere Abkürzung für \emph{eavesdropper}, was auf Deutsch so viel wie \emph{Abhörer} bedeutet.}
+    \label{fig:schemaGeheimschrift}
+\end{figure}
+
+\begin{mydefinition}[Geheimschrift]\label{mydefinition:geheimschrift}
+Eine \textbf{Geheimschrift} realisiert eine Transformation (\emph{Chiffrierung}) von einem Klartext in einen Geheimtext. 
+Die Umkehrung dieser Transformation (\emph{Dechiffrierung}) ermöglicht es, den Klartext aus dem Geheimtext (typischerweise eindeutig) zu rekonstruieren:
+\begin{align*}
+	&\text{Chiffrierung}(\text{Klartext}) = \text{Geheimtext} \\
+	&\text{Dechiffrierung}(\text{Geheimtext}) = \text{Klartext}.
+\end{align*}
+Beispielsweise:
+\begin{align*}
+    &\text{Freimaurer\_Chiffrierung}(\texttt{HALLO}) = \text{\pigpenfont HALLO} \\
+    &\text{Freimaurer\_Dechiffrierung}(\text{\pigpenfont HALLO}) = \texttt{HALLO}.
+\end{align*}
+\end{mydefinition}
+
+
+\section{Von Geheimschriften zu Kryptosystemen}
+Geheimschriften haben eine lange Geschichte und wurden in verschiedenen Kulturen und Epochen verwendet, um geheime Nachrichten zu übermitteln. Sie sind ein wichtiger Bestandteil der Kryptologie, da sie die Grundlage für die Entwicklung der modernen Kryptoverfahren bilden. 
+Die Verwendung von Geheimschriften hat aber einen entscheidenden Nachteil: Wenn die Regeln der Geheimschrift bekannt werden, kann jeder, der den Geheimtext abfängt, diesen dechiffrieren und den Klartext lesen. Daher sind Geheimschriften allein nicht ausreichend, um die Vertraulichkeit von Nachrichten zu gewährleisten, insbesondere in einer Welt, in der Informationen leicht zugänglich und verbreitet werden können.
+
+\begin{myremark}[\emph{Security through Obscurity}]
+\emph{Security through Obscurity} (Sicherheit durch Verschleierung) bezeichnet die Praxis, die Sicherheit eines Systems dadurch zu gewährleisten, dass die Funktionsweise des Systems geheim gehalten wird. 
+Die Praxis der \emph{Security through Obscurity} wird als unsicher angesehen, da sie auf der Annahme beruht, dass Angreifer nicht in der Lage sein werden, die Funktionsweise des Systems zu verstehen oder zu entdecken.
+\end{myremark}
+
+\begin{myidea}[Kryptosystem]
+Wir wollen daher von Geheimschriften zu sogenannten \textbf{Kryptosystemen} übergehen, die so konstruiert sind, dass sie auch dann sicher sind, wenn die grundlegende Funktionsweise des Systems öffentlich bekannt ist. 
+Ein solches System kennen Sie bereits aus dem Alltag: Wir wissen alle, wie eine Türschloss grundsätzlich mit einem Schlüssel zu öffnen ist, aber dennoch können wir unsere Türen sicher verschliessen, da die Sicherheit nicht von der Geheimhaltung des Mechanismus abhängt, sondern von der Geheimhaltung des Schlüssels.
+\end{myidea}
+
+Wir werden im Folgenden einige einfache Kryptosysteme kennenlernen, um zu verstehen, was ein sicheres Kryptosystem auszeichnet.
+
+\section{Beispiele einfacher Kryptosysteme}
 
 \begin{figure}[H]
 	\centering
@@ -31,12 +115,11 @@ Ein\textbf{Kryptosystem} besteht aus den Verfahren zur Ver- und Entschlüsselung
 		\node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
 		\draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
 	\end{tikzpicture}
-	\caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems. Der Name \emph{Eve} ist eine clevere Abkürzung für \emph{eavesdropper}, was auf Deutsch so viel wie \emph{Abhörer} bedeutet.}
-	\label{fig:schemaGeheimtext}
+	\caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems. Bob benötigt den Schlüssel, um den Kryptotext zu entschlüsseln.}
+	\label{fig:schemaKryptosystem}
 \end{figure}
 
 \section{Sicherheitsanforderungen an Kryptosysteme}
-
 Im Folgenden setzen wir uns zunächst mit einigen grundlegenden Kryptosystemen auseinander, um zu verstehen, was ein sicheres Kryptosystem auszeichnet. Der niederländische Kryptologe und Linguist \emph{Auguste Kerckhoffs} stellte im Jahr 1883 die folgende Anforderung an die Sicherheit von Kryptosystemen auf, die heute als \textbf{Kerckhoffs'sches Prinzip} bekannt ist: 
 
 \begin{myquote}\label{myquote:kerckhoffs}
@@ -53,7 +136,25 @@ Im Folgenden setzen wir uns zunächst mit einigen grundlegenden Kryptosystemen a
 Das Kerckhoffs'sche Prinzip besagt, dass die Sicherheit eines Kryptosystems nicht davon abhängen sollte, dass die Funktionsweise des Systems geheim gehalten wird. Stattdessen sollte die Sicherheit allein auf der Geheimhaltung des Schlüssels beruhen. Einem solchen System wird auch dann noch vertraut, wenn es öffentlich bekannt ist, da die Sicherheit nicht von der Geheimhaltung des Algorithmus abhängt, sondern von der Geheimhaltung des Schlüssels.
 
 \par
-Einen solchen System, welches das Kerckhoffs'sche Prinzip erfüllt, gegenüber stehen Verfahren, deren Sicherheit davon abhängt, dass die Funktionsweise des Systems geheim gehalten wird. Ein Beispiel für ein solches Verfahren ist eine Geheimschrift wie das Freimaurer-Alphabet, bei dem die Buchstaben des Klartexts durch Symbole ersetzt werden, die nur denjenigen bekannt sind, die das Geheimnis kennen. Solche Verfahren sind anfällig für Angriffe, da ein Angreifer, der die Funktionsweise des Systems herausfindet, in der Lage sein könnte, den Klartext zu entschlüsseln, ohne den Schlüssel zu kennen. In diesem Zusammenhang spricht man von \emph{Security through Obscurity}, also Sicherheit durch Verschleierung, was als eine unsichere Praxis angesehen wird, da sie auf der Annahme beruht, dass die Angreifer nicht in der Lage sein werden, die Funktionsweise des Systems zu verstehen oder zu entdecken.
+Einen solchen System, welches das Kerckhoffs'sche Prinzip erfüllt, gegenüber stehen Verfahren, deren Sicherheit davon abhängt, dass die Funktionsweise des Systems geheim gehalten wird. Ein Beispiel für ein solches Verfahren ist eine Geheimschrift wie das Freimaurer-Alphabet, bei dem die Buchstaben des Klartexts durch Symbole ersetzt werden, die nur denjenigen bekannt sind, die das Geheimnis kennen (siehe \cref{fig:Freimaurer}). Solche Verfahren sind anfällig für Angriffe, da ein Angreifer, der die Funktionsweise des Systems herausfindet, in der Lage sein könnte, den Klartext zu entschlüsseln, ohne den Schlüssel zu kennen. In diesem Zusammenhang spricht man von \emph{Security through Obscurity}, also Sicherheit durch Verschleierung, was als eine unsichere Praxis angesehen wird, da sie auf der Annahme beruht, dass die Angreifer nicht in der Lage sein werden, die Funktionsweise des Systems zu verstehen oder zu entdecken.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Freimaurer-Alphabet.pdf}
+		\caption{Die Geheimschrift der Freimaurer.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Freimaurer-Buchstaben.pdf}
+		\caption{Die Zuordnung der Symbole zu den Buchstaben in der Geheimschrift der Freimaurer.}
+	\end{subfigure}
+	\caption[Freimaurer]{Diese Geheimschrift ist ein Beispiel für ein Verfahren, dessen Sicherheit davon abhängt, dass die Funktionsweise des Systems geheim gehalten wird.}
+	{\small Quelle: \href{https://de.wikipedia.org/wiki/Freimaurer-Alphabet}{Wikimedia Commons}}
+	\label{fig:Freimaurer}
+\end{figure}
 
 
 \section{Sicherheitsanforderungen an moderne Kryptosysteme}
@@ -323,8 +424,8 @@ Mit dem Schlüssel \texttt{D} (3 Positionen, da $\text{Ord}(\texttt{D}) = 3$)  w
 \end{figure}
 Dabei haben wir die innere Scheibe um 3 Positionen im Uhrzeigersinn gedreht, um die Verschlüsselung durchzuführen. Zur Entschlüsselung
 \begin{itemize}
-	\item lesen wir die Drehscheibe, genau so wie sie in \cref{fig:caesar_3} angeordnet ist, von \enquote{aussen nach innen}
-	\item oder drehen die innere Scheibe um 3 Positionen gegen den Uhrzeigersinn zurück in die Ausgangsposition (\texttt{A} $\leftrightarrow$ \texttt{A}) und dann nochmals um 3 Positionen gegen den Uhrzeigersinn. Dann können wir die Drehscheibe wieder von \enquote{innen nach aussen} lesen, um den Klartext zu erhalten.
+	\item lesen wir die Drehscheiben, genau so wie sie in \cref{fig:caesar_3} angeordnet sind, von \enquote{aussen nach innen}
+	\item oder drehen die innere Scheibe um 3 Positionen gegen den Uhrzeigersinn zurück in die Ausgangsposition (\texttt{A} $\leftrightarrow$ \texttt{A}) und dann nochmals um 3 Positionen gegen den Uhrzeigersinn. Dann können wir die Drehscheiben wieder von \enquote{innen nach aussen} lesen, um den Klartext zu erhalten.
 \end{itemize}
 \end{myexample}
 
@@ -461,7 +562,7 @@ Die durchschnittlichen Häufigkeiten von Buchstaben, Bi- und Tri-Grammen in deut
 \end{mychallenge}
 
 \begin{mychallenge}
-	Um zu verschlüsseln, liest man die Caesar-Scheibe von innen (Klartext) nach aussen (Kryptotext). Um zu entschlüsseln, liest man von aussen (Kryptotext) nach innen (Klartext). Gibt es Schlüssel bei Caesar, bei denen es sowohl für die Ver- wie Entschlüsselung keine Rolle spielt, in welche Richtung man die Scheiben liest?
+	Um zu verschlüsseln, liest man die Caesar-Drehscheiben von innen (Klartext) nach aussen (Kryptotext). Um zu entschlüsseln, liest man von aussen (Kryptotext) nach innen (Klartext). Gibt es Schlüssel bei Caesar, bei denen es sowohl für die Ver- wie Entschlüsselung keine Rolle spielt, in welche Richtung man die Scheiben liest?
 	\begin{myanswer}
 		Ja, dies tritt bei Schlüsseln 0 (\texttt{A}, keine Verschlüsselung) und 13 (\texttt{N}, die Hälfte des Alphabets) auf.
 	\end{myanswer}
@@ -753,7 +854,7 @@ Der Schlüssel muss demnach \texttt{ICH} sein und wir können den Text somit ent
 					      \textbf{\textcolor{Crimson}{Gruppe 3}}     & \texttt{(E $\rightarrow$) G}                    &  \texttt{(A $\rightarrow$) C} (=2 Verschiebungen)    \\
 				      \end{tabular}
 			      \end{table}
-			\item Entschlüsseln Sie nun den Geheimtext, indem Sie die \href{https://inventwithpython.com/cipherwheel/}{Caesar-Drehscheibe} verwenden (Tipp: Machen Sie jeweils eine Farbgruppe pro Mal).
+			\item Entschlüsseln Sie nun den Geheimtext, indem Sie die \href{https://inventwithpython.com/cipherwheel/}{Caesar-Drehscheiben} verwenden (Tipp: Machen Sie jeweils eine Farbgruppe pro Mal).
 		\end{enumerate}
 
 		\colorstringunderline[ForestGreen,RoyalBlue,Crimson]{ECHTESICHERHEITENTSTEHTERSTWENNJEDERERKENNTWIEELEMENTAREINEVERLAESSLICHEVERSCHLUESSELUNGFUERUNSEREFREIHEITIST}
@@ -792,7 +893,7 @@ Friedrich Kasiski war ein preussischer Infanteriemajor (1805 - 1868), welcher mi
 	\label{fig:kasiski-test-book}
 \end{figure}
 
-Die Grundidee hinter dem Kasiski-Test ist: Wenn ein Wort oder ein Wortteil im Klartext mehrmals vorkommen, so wird dieser möglicherweise auch im Kryptotext mehrmals vorkommen. Wenn beispielsweise die Buchstaben \enquote{\texttt{DIE}} mehrmals mit dem Schlüssel \texttt{KEY} verschlüsselt werden, dann wird der Text \texttt{LIV} mehrmals im Geheimtext auftauchen. Wenn das Wort \texttt{DIE} also zweimal im Klartext vorkommt \textbf{und} auf denselben Schlüsselteil (\texttt{KEY}, \texttt{EYK} oder \texttt{YKE}) fällt, wird z.B. \texttt{LIV} auch zweimal im Kryptotext gleich verschlüsselt sein.
+Die Grundidee hinter dem Kasiski-Test ist: Wenn ein Wort oder ein Wortteil im Klartext mehrmals vorkommen, so wird dieser möglicherweise auch im Kryptotext mehrmals vorkommen. Wenn beispielsweise die Buchstaben \texttt{DIE} mehrmals mit dem Schlüssel \texttt{KEY} verschlüsselt werden, dann wird der Text \texttt{LIV} mehrmals im Geheimtext auftauchen. Wenn das Wort \texttt{DIE} also zweimal im Klartext vorkommt \textbf{und} auf denselben Schlüsselteil (\texttt{KEY}, \texttt{EYK} oder \texttt{YKE}) fällt, wird z.B. \texttt{LIV} auch zweimal im Kryptotext gleich verschlüsselt sein.
 
 Wenn wir also im Kryptotext nach wiederholten Sequenzen suchen, können wir daraus die Schlüssellänge ableiten.
 
@@ -844,7 +945,7 @@ VRQZCKKSP\(\underset{\makebox[\widthof{\texttt{X}}][c]{\footnotesize\texttt{\red
 			      \item Finden Sie den \textbf{grössten gemeinsamen Teiler} dieser Primfaktoren, um die Schlüssellänge zu erraten.
 		      \end{enumerate}
 		\item Wenn Sie die Schlüssellänge haben, färben Sie den Text abwechslungsweise ein, wie in \cref{ex:vigHaufigkeitGruppen}. Teilen Sie sich zu dritt auf, so dass jede Person eine Gruppe von Buchstaben entschlüsselt (gleich wie in \cref{ex:vigHaufigkeitGruppen}).
-		\item \textbf{Tipp}: Der letzte Teil des Schlüssels ist \texttt{D}. Der Schlüssel ergibt ein Wort. Entschlüsseln Sie den Text nun mit der \href{https://inventwithpython.com/cipherwheel/}{Caesar-Drehscheibe}! Entschlüsseln Sie zuerst nur die erste Zeile, um zu überprüfen, ob ihr Schlüssel stimmt und zu einem sinnvollen Text führt.
+		\item \textbf{Tipp}: Der letzte Teil des Schlüssels ist \texttt{D}. Der Schlüssel ergibt ein Wort. Entschlüsseln Sie den Text nun mit den \href{https://inventwithpython.com/cipherwheel/}{Caesar-Drehscheiben}! Entschlüsseln Sie zuerst nur die erste Zeile, um zu überprüfen, ob ihr Schlüssel stimmt und zu einem sinnvollen Text führt.
 	\end{itemize}
 	\begin{myanswer}
 		Positionen der Anfangs-Trigramme: 4, 13, 67, 106, 115, 130, 136. Abstände und Primfaktoren sind beispielsweise:
