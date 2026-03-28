@@ -1,14 +1,14 @@
-\input{Grundlagen_Info/03_Kryptologie/Makros}
+% command to make sure colorboxes don't create whitespace between code lines
+\fboxsep=.6pt
+% default settings for listings
+\lstset{style=python, basicstyle=\scriptsize\ttfamily}
 
-\lstset{style=Python, basicstyle=\ttfamily\scriptsize}
+\input{Grundlagen_Info/03_Kryptologie/Makros}
 
 \title[Kryptologie]{Kryptologie}
 
 % \author[Graf, Thomas] % (optional)
 % {Thomas Graf}
-
-% command to make sure colorboxes don't create whitespace between code lines
-\fboxsep=.6pt
 
 % default settings for listings
 \lstset{style=python, basicstyle=\ttfamily\footnotesize}
@@ -51,7 +51,7 @@
             \includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Zodiac_Z340_cypher.jpg}
         \end{column}
         \begin{column}{0.5\textwidth}
-            Die Z340-Chiffre (cypher) wurde 1969 vom Zodiac-Killer verschickt und blieb über 50 Jahre lang ungelöst. Erst 2020 gelang es einem internationalen Team, die komplexe \textbf{Transpositions-Substitution-Verschlüsselung} mit Hilfe von Supercomputern zu knacken.
+            Die Z340-Chiffre (cypher) wurde 1969 vom Zodiac-Killer verschickt und blieb über 50 Jahre lang ungelöst. Erst 2020 gelang es einem internationalen Team, die komplexe \textbf{Transpositions-Substitution-Verschlüsselung} mit Hilfe von Supercomputern zu entschlüsseln.
         \end{column}
     \end{columns}
 \end{frame}
@@ -64,7 +64,7 @@
             \includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/enigma.jpg}
         \end{column}
         \begin{column}{0.5\textwidth}
-            Die Enigma war eine elektromechanische Rotormaschine, die im Zweiten Weltkrieg zur Verschlüsselung des deutschen Nachrichtenverkehrs eingesetzt wurde. Das Knacken der Enigma in Bletchley Park gilt als entscheidender Wendepunkt der modernen \textbf{Kryptoanalyse}.
+            Die Enigma war eine elektromechanische Rotormaschine, die im Zweiten Weltkrieg zur Verschlüsselung des deutschen Nachrichtenverkehrs eingesetzt wurde. Das entschlüsseln der Enigma in Bletchley Park gilt als entscheidender Wendepunkt der modernen \textbf{Kryptoanalyse}.
         \end{column}
     \end{columns}
 \end{frame}
@@ -246,17 +246,22 @@ Eines der bekanntesten Kryptosysteme der Antike ist die Caesar-Verschlüsselung,
 \end{frame}
 
 
-\begin{frame}\leavevmode
-    \begin{myexample}[Caesar mit Schlüssel \texttt{D}]
-    Mit dem Schlüssel \texttt{D} (3 Positionen, da $\text{Ord}(\texttt{D}) = 3$) wird aus dem Klartext \texttt{HALLO} der Kryptotext \texttt{KDOOR}:
-    \begin{figure}[H]
-        \centering
-        \centering\scalebox{.6}{\caesar[3]}
-        \label{fig:caesar_3}
-    \end{figure}
-    Dabei haben wir die innere Scheibe um 3 Positionen im Uhrzeigersinn gedreht, um die Verschlüsselung (\enquote{lesen von innen nach aussen}) durchzuführen. 
-    Zur Entschlüsselung lesen wir von \enquote{aussen nach innen}.
-    \end{myexample}
+\begin{frame}
+    \frametitle{Caesar mit Schlüssel \texttt{D}}
+    \begin{minipage}{.5\textwidth}
+        Mit dem Schlüssel \texttt{D} (3 Positionen, da $\text{Ord}(\texttt{D}) = 3$) wird aus dem Klartext \texttt{HALLO} der Kryptotext \texttt{KDOOR}.
+        \vfill
+        Dabei haben wir die innere Scheibe um 3 Positionen im Uhrzeigersinn gedreht, um die Verschlüsselung (\enquote{lesen von innen nach aussen}) durchzuführen. 
+        \vfill
+        Zur Entschlüsselung lesen wir von \enquote{aussen nach innen}.
+    \end{minipage}%
+    \hspace{0.05\textwidth}%
+    \begin{minipage}{.45\textwidth}
+        \begin{figure}[H]
+            \centering
+            \resizebox{\linewidth}{!}{\caesar[3]}
+        \end{figure}
+    \end{minipage}
 \end{frame}
 
 
@@ -320,9 +325,115 @@ Die Entschlüsselung (bei Schlüssel 3) kann auch erfolgen, indem man die innere
 }
 \end{frame}
 
+
 \begin{frame}
     \begin{myremark}[Geheimschrift als Spezialfall eines Kryptosystems]
         Eine Geheimschrift ist ein Spezialfall eines Kryptosystems, bei dem die Schlüsselmenge nur ein einziges Element enthält, nämlich die Anweisung, wie die Buchstaben vertauscht werden. 
         Umgekehrt, kann ein Kryptosystem als eine Sammlung von Geheimschriften betrachtet werden, wobei für jede mögliche Schlüssel eine Geheimschrift definiert ist, die die Buchstaben entsprechend der Verschlüsselungsregel vertauscht.
     \end{myremark}
 \end{frame}
+
+
+\begin{frame}[fragile]{Kerckhoffs'sches Prinzip}
+Der niederländische Kryptologe und Linguist \emph{Auguste Kerckhoffs} stellte im Jahr 1883 die folgende Anforderung an die Sicherheit von Kryptosystemen auf, die heute als \textbf{Kerckhoffs'sches Prinzip} bekannt ist: 
+
+\begin{myquote}\label{myquote:kerckhoffs}
+	\enquote{Ein Kryptosystem sollte auch dann sicher sein, wenn alles über das System bekannt ist, ausser dem Schlüssel.} -- Auguste Kerckhoffs, \emph{La cryptographie militaire} (1883)\footnote{Originalzitat: \enquote{Il faut qu'il n'exige pas le secret, et qu'il puisse sans inconvénient tomber entre les mains de l'ennemi.}}
+\end{myquote}
+\end{frame}
+
+
+
+
+
+% \begin{frame}[fragile,label=caesar]{Kryptoanalyse von Caesar}
+% 	\begin{minipage}[c]{.45\linewidth}
+% 		\begin{itemize}[<+->]
+% 			\item Extrem unsichere Verschlüsselung: Nur 26 mögliche Schlüssel.
+%             \item Ein Angreifer könnte einfach alle 26 möglichen Schlüssel ausprobieren, um den Klartext zu erhalten (Brute-Force-Angriff).
+% 		\end{itemize}
+% 	\end{minipage}
+% 	\begin{minipage}[c]{.45\linewidth}
+% 		\begin{figure}[H]
+% 			\centering
+% 			\resizebox{\linewidth}{!}{\caesar[3]}
+% 		\end{figure}
+% 	\end{minipage}
+% \end{frame}
+
+% \begin{frame}[fragile]{Auftrag}
+% 	Skript (auf Moodle)
+% 	\begin{itemize}
+% 		\item \aufgabebox{Aufgaben 1.5, 1.6}
+% 	\end{itemize}
+% \end{frame}
+
+
+% \begin{frame}[label=caesarex, fragile]{Kryptoanalyse von Caesar}
+% 	\centering
+% 	Wie finden wir hier den Klartext?\\[.5cm]
+% 	\defverbatim{\verbOne}{
+% 		\small\begin{verbatim}
+% Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+% \end{verbatim}
+% 	}
+% 	\defverbatim{\verbTwo}{
+% 		\small\begin{verbatim}
+%   Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
+%  Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
+% Geheimtext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+% 	      \end{verbatim}
+% 	}
+% 	\only<1-5>{\verbOne}
+% 	\only<2-4>{
+% 		Häufigster Buchstabe im obigen Geheimtext: \texttt{K}\\
+% 		Häufigster Buchstabe im deutschen Alphabet: \texttt{E}
+% 	}
+
+% 	\only<3-5>{
+% 		\begin{itemize}
+% 			\item<3-5> \texttt{E}: Buchstabe mit Ordnung 4
+% 			\item<4-5> \texttt{K}: Buchstabe mit Ordnung 10
+% 			\item<5> Schlüssel $=$ Verschiebung von $10-4= 6 =$ Buchstabe \texttt{G}
+% 		\end{itemize}
+% 	}
+% 	\only<5-6>{
+% 		\centering\scalebox{.6}{\caesar[6]}
+% 	}
+
+% 	\only<6>{\verbTwo}
+% \end{frame}
+
+
+% \begin{frame}[label=caesarex, fragile]{Angriff auf Caesar}
+% 	\centering
+% 	Wie finden wir hier den Klartext? \\[.5cm]
+% 	\small\begin{verbatim}
+% NGKALOMYZKXHAINYZGHKOTJKAZYINKTZKDZKTOYZSKOYZKTYK...
+% \end{verbatim}
+
+% 	\begin{itemize}[<+->]
+% 		\item Häufigster Buchstabe \textcolor{ForestGreen}{im deutschen Alphabet}: \texttt{E} ($=$ Buchstabe mit Ordnung 5)
+% 		\item Häufigster Buchstabe im obigen \textcolor{RoyalBlue}{Geheimtext}: \texttt{K} ($=$ Buchstabe mit Ordnung 11)
+% 		\item Verschiebung von $11 - 5 = 6$
+% 		\item Schlüssel $=$ 6 ($=$ Buchstabe \texttt{G})
+% 	\end{itemize}
+
+% 	\begin{columns}\begin{column}{.27\textwidth}\foreach \i in {1,...,7} {
+% 					\pgfmathtruncatemacro{\j}{\i + 3}
+% 					\pgfmathtruncatemacro{\shiftCaesar}{\i - 1}
+% 					\only<\j>{\centering\scalebox{.7}{\caesarreverse[\shiftCaesar]}}
+% 				}\end{column}
+% 		\begin{column}{.7\textwidth}
+% 			\only<10->{	Auftrag:
+% 				\begin{itemize}
+% 					\item \aufgabebox{Erste 10 Zeichen des Klartexts finden}
+% 					\item \challengebox{Den gesamten Klartext finden (Schnelle)}
+% 				\end{itemize}}
+% 		\end{column}
+% 	\end{columns}
+% 	\only<11->{
+% 	\begin{center}
+% 	Wie könnte dieser Code trotzdem geknackt werden, wenn \texttt{E} im Klartext selten oder gar nicht vorkommt?
+% 	\end{center}}
+% \end{frame}

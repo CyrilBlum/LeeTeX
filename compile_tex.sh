@@ -290,6 +290,7 @@ beamer_topics=(
     "Graphen_L03:Grundlagen_Info/02_Graphen/Graphen_L03"
     "AbstraktionDurchGraphen_Kapitel01:Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel01"
     "AbstraktionDurchGraphen_Kapitel02:Grundlagen_Info/02_Graphen/AbstraktionDurchGraphen/Slides_Kapitel02"
+    "Slides_Kryptologie_Gf:Grundlagen_Info/03_Kryptologie/Slides/Slides_Kryptologie_Gf"
     "Kryptologie_L01:Grundlagen_Info/03_Kryptologie/Slides/Kryptologie_L01"
     "Kryptologie_L01prog:Grundlagen_Info/03_Kryptologie/Slides/Kryptologie_L01prog"
     "L02a_Kryptoanalyse_Caesar:Grundlagen_Info/03_Kryptologie/Slides/L02a_Kryptoanalyse_Caesar"
