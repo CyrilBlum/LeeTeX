@@ -1,13 +1,17 @@
+\input{Grundlagen_Info/03_Kryptologie/Makros}
+
+\lstset{style=Python, basicstyle=\ttfamily\scriptsize}
+
+\title[Kryptologie]{Kryptologie}
+
+% \author[Graf, Thomas] % (optional)
+% {Thomas Graf}
+
 % command to make sure colorboxes don't create whitespace between code lines
 \fboxsep=.6pt
 
 % default settings for listings
 \lstset{style=python, basicstyle=\ttfamily\footnotesize}
-
-\title[Algorithmen]{Laufzeitkomplexität}
-
-% \author[Graf, Thomas] % (optional)
-% {Thomas Graf}
 
 \institute[KLW] % (optional)
 {
@@ -37,4 +41,288 @@
             \includegraphics[width=0.6\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/mining-rig.png}
         \end{column}
     \end{columns}
+\end{frame}
+
+
+\begin{frame}{Zodiac-Killer (Z340 Chiffre)}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Zodiac_Z340_cypher.jpg}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            Die Z340-Chiffre (cypher) wurde 1969 vom Zodiac-Killer verschickt und blieb über 50 Jahre lang ungelöst. Erst 2020 gelang es einem internationalen Team, die komplexe \textbf{Transpositions-Substitution-Verschlüsselung} mit Hilfe von Supercomputern zu knacken.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Enigma}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/enigma.jpg}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            Die Enigma war eine elektromechanische Rotormaschine, die im Zweiten Weltkrieg zur Verschlüsselung des deutschen Nachrichtenverkehrs eingesetzt wurde. Das Knacken der Enigma in Bletchley Park gilt als entscheidender Wendepunkt der modernen \textbf{Kryptoanalyse}.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Signal-Protokoll}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=0.8\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Signal-Logo.pdf}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            Moderne Messenger wie \emph{Signal} nutzen eine \textbf{Ende-zu-Ende-Verschlüsselung}. Dabei werden Nachrichten direkt auf dem Gerät des Senders verschlüsselt und können nur vom Empfänger gelesen werden --- selbst der Dienstanbieter hat keinen Zugriff auf den Klartext.\\
+
+            Der Quellcode ist offengelegt und kann von jedem überprüft werden, was das Vertrauen in die Sicherheit des Protokolls stärkt:\\
+            \url{https://github.com/signalapp}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Kryptowährungen \& Mining}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/mining-rig.png}\\[0.5cm]
+    Die Kryptologie ist das Fundament von Kryptowährungen wie Bitcoin. Hier werden kryptographische \textbf{Hash-Funktionen} und digitale Signaturen genutzt, um Transaktionen abzusichern und neue Blöcke in der Blockchain durch \enquote{Mining} zu verifizieren. Ein Mining-Rig wertet kryptographische Hash-Funktionen aus.
+\end{frame}
+
+
+\begin{frame}{Freimaurer-Geheimschrift}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+		\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Freimaurer-Alphabet.pdf} 
+        \caption{Die Geheimschrift der Freimaurer.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Freimaurer-Buchstaben.pdf}
+        \caption{Zuordnung der Symbole.}
+    \end{subfigure}
+    \caption[Freimaurer]{Freimaurer-Geheimschrift: Beispiel für ein Verfahren, dessen Sicherheit von der Geheimhaltung des Systems abhängt. \\ {\small Quelle: \href{https://de.wikipedia.org/wiki/Freimaurer-Alphabet}{Wikimedia Commons}}}
+    \label{fig:Freimaurer}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \begin{center}
+    Nennen Sie weitere Beispiele von Geheimschriften.
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Schema: Kommunikation mittels Geheimschriften}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+    \node[alice, minimum width=1.5cm, 
+        label={[mylabel, anchor=west]north east:{}}, 
+        label={[mylabel, anchor=east]north west:{\textcolor{Blue}{Klartext} $\big\downarrow\text{\tiny (Chiffrierung)}$\\
+        \textcolor{Red}{Geheimtext}}}] (alice) {Alice (Sender)};
+    \node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
+        label={[mylabel, anchor=east]north west:{}}, 
+        label={[mylabel, anchor=west]north east:{\textcolor{Red}{Geheimtext} $\big\downarrow\text{\tiny (Dechiffrierung)}$\\
+        \textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
+    
+    \draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
+    \textcolor{Red}{Geheimtext}} (aux-a-|bob.west);
+
+    \node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
+    \draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+    \end{tikzpicture}
+    \caption{Dieses Schema zeigt die Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung einer Geheimschrift. Der Name \emph{Eve} ist eine clevere Abkürzung für \emph{eavesdropper}, was auf Deutsch so viel wie \emph{Abhörer} bedeutet.}
+    \label{fig:schemaGeheimschrift}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Geheimschriften}
+    \begin{mydefinition}[Geheimschrift]\label{mydefinition:geheimschrift}
+    Eine \textbf{Geheimschrift} realisiert eine Transformation (\emph{Chiffrierung}) von einem Klartext in einen Geheimtext. 
+    Die Umkehrung dieser Transformation (\emph{Dechiffrierung}) ermöglicht es, den Klartext aus dem Geheimtext (typischerweise eindeutig) zu rekonstruieren:
+    \begin{align*}
+        &\text{Chiffrierung}(\text{Klartext}) = \text{Geheimtext} \\
+        &\text{Dechiffrierung}(\text{Geheimtext}) = \text{Klartext}.
+    \end{align*}
+    Beispielsweise:
+    \begin{align*}
+        &\text{Freimaurer\_Chiffrierung}(\texttt{HALLO}) = \text{\pigpenfont HALLO} \\
+        &\text{Freimaurer\_Dechiffrierung}(\text{\pigpenfont HALLO}) = \texttt{HALLO}.
+    \end{align*}
+    \end{mydefinition}
+\end{frame}
+
+
+\begin{frame}{Limitierung von Geheimschriften}
+    \begin{myremark}[\emph{Security through Obscurity}]
+    \emph{Security through Obscurity} (Sicherheit durch Verschleierung) bezeichnet die Praxis, die Sicherheit eines Systems dadurch zu gewährleisten, dass die Funktionsweise des Systems geheim gehalten wird. 
+    Die Praxis der \emph{Security through Obscurity} wird als unsicher angesehen, da sie auf der Annahme beruht, dass Angreifer nicht in der Lage sein werden, die Funktionsweise des Systems zu verstehen oder zu entdecken.
+    \end{myremark}
+\end{frame}
+
+
+\begin{frame}
+    \begin{center}
+        Kennen Sie Sicherheitsvorkehrungen, von denen wir alle genau wissen, wie sie funktionieren, die aber dennoch als sicher gelten?
+        \pause
+        \par
+        Tipp: Was tun Sie normalerweise, wenn Sie die Wohnung als letzte Person verlassen?
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Von Geheimschriften zu Kryptosystemen}
+    \begin{myidea}[Kryptosystem]
+        Wir wollen von Geheimschriften zu sogenannten \textbf{Kryptosystemen} übergehen, die so konstruiert sind, dass sie auch dann sicher sind, wenn die grundlegende Funktionsweise des Systems öffentlich bekannt ist. 
+        \par
+        Ein solches System kennen Sie bereits aus dem Alltag: Wir wissen alle, wie ein Türschloss grundsätzlich mit einem Schlüssel zu öffnen ist, aber dennoch können wir unsere Türen sicher verschliessen, da die Sicherheit nicht von der Geheimhaltung des Mechanismus abhängt, sondern von der Geheimhaltung (sicheren Aufbewahrung) des Schlüssels.
+    \end{myidea}
+\end{frame}
+
+
+\begin{frame}[fragile]{Kryptosystem \emph{Skytale}}
+\leavevmode
+{\small
+Das Kryptosystem \emph{Skytale} funktioniert wie folgt:
+\begin{itemize}[<+->]
+	\item Schreibe den Klartext zeilenweise in eine Tabelle (Matrix) von links nach rechts.
+	\item Allfällige leere Felder in der letzten Zeile der Tabelle werden mit beliebigen (am besten zufällig gewählten) Buchstaben gefüllt.
+	\item Den Kryptotext erhalten wir, indem wir die Buchstaben Spalte für Spalte von links nach rechts und von oben nach unten lesen.
+\end{itemize}
+}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.35\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/SkytaleWiki}
+	\caption[Skytale]{Praktische Umsetzung der Skytale-Verschlüsselung.}
+	\label{fig:skytale-band}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Auftrag}
+    \begin{itemize}
+        \item Lösen Sie die \aufgabebox{Aufgaben 1.1, 1.2}
+        \item Zeit: 15 Minuten
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Kryptosystem \emph{Caesar}}
+Eines der bekanntesten Kryptosysteme der Antike ist die Caesar-Verschlüsselung, die von Julius Caesar verwendet wurde. 
+    \begin{itemize}[<+->]
+        \item Dabei wird jeder Buchstabe des Klartexts um eine feste Anzahl von Positionen im Alphabet verschoben. 
+        \item Die Anzahl der Positionen, um die verschoben wird, bildet den Schlüssel des Kryptosystems.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \begin{myremark}[Buchstaben als Zahlen]\label{myremark:buchstaben_als_zahlen}
+        Häufig wird die Verschiebung nicht direkt als Zahl angegeben, sondern als Buchstabe, der die Anzahl der Positionen angibt. So steht beispielsweise der Schlüssel \texttt{A} für eine Verschiebung um 0 Positionen (keine Verschiebung), \texttt{B} für eine Verschiebung um 1 Position und so weiter:
+        \begin{center}
+            \texttt{A} $\leftrightarrow$ 0 Positionen, \texttt{B} $\leftrightarrow$ 1 Position, \texttt{C} $\leftrightarrow$ 2 Positionen, \dots , \\
+            \texttt{Z} $\leftrightarrow$ 25 Positionen.
+        \end{center}
+    \end{myremark}
+\end{frame}
+
+
+\begin{frame}
+    \begin{mydefinition}[Ordnung eines Buchstabens]\label{mydefinition:ordnung_buchstabe}
+        Die \textbf{Ordnung} eines Buchstabens ist die Anzahl der Positionen, die dieser Buchstabe im Alphabet von \texttt{A} entfernt ist. Wir definieren
+        \begin{center}
+            $\text{Ord}(\texttt{A}) = 0$, $\text{Ord}(\texttt{B}) = 1$, $\text{Ord}(\texttt{C}) = 2$, \dots, $\text{Ord}(\texttt{Z}) = 25$.
+        \end{center}
+    \end{mydefinition}
+\end{frame}
+
+
+\begin{frame}\leavevmode
+    \begin{myexample}[Caesar mit Schlüssel \texttt{D}]
+    Mit dem Schlüssel \texttt{D} (3 Positionen, da $\text{Ord}(\texttt{D}) = 3$) wird aus dem Klartext \texttt{HALLO} der Kryptotext \texttt{KDOOR}:
+    \begin{figure}[H]
+        \centering
+        \centering\scalebox{.6}{\caesar[3]}
+        \label{fig:caesar_3}
+    \end{figure}
+    Dabei haben wir die innere Scheibe um 3 Positionen im Uhrzeigersinn gedreht, um die Verschlüsselung (\enquote{lesen von innen nach aussen}) durchzuführen. 
+    Zur Entschlüsselung lesen wir von \enquote{aussen nach innen}.
+    \end{myexample}
+\end{frame}
+
+
+\begin{frame}
+\url{https://www.101computing.net/cipher-wheel.html}{Hier} finden Sie ein interaktives Werkzeug, um die Caesar-Verschlüsselung und -Entschlüsselung durchzuführen.
+
+\vspace{0.5cm}
+Die Entschlüsselung (bei Schlüssel 3) kann auch erfolgen, indem man die innere in die Ausgangsposition zurückdreht und dann nochmals um 3 Positionen gegen den Uhrzeigersinn dreht (dies können wir um eine Verschiebung um $-3$ Positionen anschauen). Mit diesem Vorgehen können wir die Drehscheiben wieder von \enquote{innen nach aussen} lesen, um den Klartext zu erhalten.
+\end{frame}
+
+\begin{frame}{Auftrag}
+    \begin{itemize}
+        \item Lösen Sie die \aufgabebox{Aufgabe TODO}
+        \item Zeit: 5 Minuten
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Schema: Kommunikation mittels Kryptosystemen}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[mylabel/.style={text width=20mm, align=center},scale=0.8, every node/.style={scale=0.8}]
+		\node[alice, minimum width=1.5cm,
+		label={[mylabel, anchor=west]north east:{}},
+		label={[mylabel, anchor=east]north west:{\textcolor{Blue}{(Klartext, Schlüssel)} $\big\downarrow\text{\tiny (Verschlüsselung)}$\\
+		\textcolor{Red}{\mbox{Kryptotext}}}}] (alice) {Alice (Sender)};
+		\node[bob, minimum width=1.5cm, right=5cm of alice, mirrored,
+		label={[mylabel, anchor=east]north west:{}},
+		label={[mylabel, anchor=west]north east:{\textcolor{Red}{(\mbox{Kryptotext}, Schlüssel)} $\big\downarrow\text{\tiny (Entschlüsselung)}$\\
+		\textcolor{Blue}{Klartext}}}] (bob) {Bob (Empfänger)};
+
+		\draw[->, thick, black] ([yshift=0mm]alice.east) coordinate(aux-a)-- coordinate[near start] (aux) node[above, text width=3cm, align=center]{Übermittlung über unsicheren Kanal e.g. Internet, Telefonie \\
+				\textcolor{Red}{Kryptotext}} (aux-a-|bob.west);
+
+		\node[devil, minimum width=1.5cm, below right=13mm and 1.6cm of alice] (eve) {Eve (Gegner / Abhörer)};
+		\draw[<-, gray] (eve)--(aux) node[midway,right]{abhören};
+	\end{tikzpicture}
+	\caption{Kommunikation zwischen Alice (Sender) und Bob (Empfänger) unter Verwendung eines Kryptosystems. Bob benötigt den Schlüssel, um den Kryptotext zu entschlüsseln.}
+	\label{fig:schemaKryptosystem}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}\leavevmode
+{\small
+\begin{mydefinition}[Kryptosystem]\label{mydefinition:kryptosystem}
+    Ein \textbf{Kryptosystem} realisiert eine Transformation (\emph{Verschlüsselung}) von einem Klartext in einen Kryptotext, die von einem Schlüssel abhängt. 
+    Die Menge aller möglichen Schlüssel wird \emph{Schlüsselmenge} des Kryptosystems genannt.
+    Die Umkehrung dieser Transformation (\emph{Entschlüsselung}) ermöglicht es, den Klartext aus dem Kryptotext zu rekonstruieren, wenn man den Schlüssel kennt:
+    \begin{align*}
+        &\text{Verschlüsselung}(\text{Klartext}, \text{Schlüssel}) = \text{Kryptotext} \\
+        &\text{Entschlüsselung}(\text{Kryptotext}, \text{Schlüssel}) = \text{Klartext}.
+    \end{align*}
+    Beispielsweise (mit Caesar):
+    \begin{align*}
+        &\text{Verschlüsselung}(\texttt{HALLO}, 3) = \texttt{KDOOR} \\
+        &\text{Entschlüsselung}(\texttt{KDOOR}, 3) = \texttt{HALLO}.
+    \end{align*}
+    Schlüsselmenge Caesar: $\lrc{0, 1, \dots, 25}$ oder $\lrc{\texttt{A}, \texttt{B}, \dots, \texttt{Z}}$.	
+\end{mydefinition}
+}
+\end{frame}
+
+\begin{frame}
+    \begin{myremark}[Geheimschrift als Spezialfall eines Kryptosystems]
+        Eine Geheimschrift ist ein Spezialfall eines Kryptosystems, bei dem die Schlüsselmenge nur ein einziges Element enthält, nämlich die Anweisung, wie die Buchstaben vertauscht werden. 
+        Umgekehrt, kann ein Kryptosystem als eine Sammlung von Geheimschriften betrachtet werden, wobei für jede mögliche Schlüssel eine Geheimschrift definiert ist, die die Buchstaben entsprechend der Verschlüsselungsregel vertauscht.
+    \end{myremark}
 \end{frame}
