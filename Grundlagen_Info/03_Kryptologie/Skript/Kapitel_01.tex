@@ -23,16 +23,16 @@ Dem Buchstaben \texttt{A} im Klartext wird zum Beispiel das Symbol {\pigpenfont 
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[c]{0.4\textwidth}
         \centering
 		\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Freimaurer-Alphabet.pdf} 
-        \caption{Die Geheimschrift der Freimaurer.}
+        \caption{\enquote{Definition} des Freimaurer-Alphabets}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
+    \\[0.5cm]
+    \begin{subfigure}[c]{0.85\textwidth}
         \centering
         \includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/Freimaurer-Buchstaben.pdf}
-        \caption{Zuordnung der Symbole.}
+        \caption{Zuordnung der Symbole zu den lateinischen Grossbuchstaben}
     \end{subfigure}
     \caption[Freimaurer]{Freimaurer-Geheimschrift: Beispiel für ein Verfahren, dessen Sicherheit von der Geheimhaltung des Systems abhängt. \\ {\small Quelle: \href{https://de.wikipedia.org/wiki/Freimaurer-Alphabet}{Wikimedia Commons}}}
     \label{fig:Freimaurer}
@@ -83,7 +83,7 @@ Beispielsweise:
 Geheimschriften haben eine lange Geschichte und wurden in verschiedenen Kulturen und Epochen verwendet, um geheime Nachrichten zu übermitteln. Sie sind ein wichtiger Bestandteil der Kryptologie, da sie die Grundlage für die Entwicklung der modernen Kryptoverfahren bilden. 
 Die Verwendung von Geheimschriften hat aber einen entscheidenden Nachteil: Wenn die Regeln der Geheimschrift bekannt werden, kann jeder, der den Geheimtext abfängt, diesen dechiffrieren und den Klartext lesen. Daher sind Geheimschriften allein nicht ausreichend, um die Vertraulichkeit von Nachrichten zu gewährleisten, insbesondere in einer Welt, in der Informationen leicht zugänglich und verbreitet werden können.
 
-\begin{myremark}[\emph{Security through Obscurity}]
+\begin{myremark}[\emph{Security through Obscurity}]\label{myremark:security_through_obscurity}
 \emph{Security through Obscurity} (Sicherheit durch Verschleierung) bezeichnet die Praxis, die Sicherheit eines Systems dadurch zu gewährleisten, dass die Funktionsweise des Systems geheim gehalten wird. 
 Die Praxis der \emph{Security through Obscurity} wird als unsicher angesehen, da sie auf der Annahme beruht, dass Angreifer nicht in der Lage sein werden, die Funktionsweise des Systems zu verstehen oder zu entdecken.
 \end{myremark}
@@ -426,10 +426,10 @@ Das Schema in \cref{fig:schemaKryptosystem} zeigt die Kommunikation zwischen Ali
 	\end{align*}
 	Beispielsweise (mit Caesar):
 	\begin{align*}
-		&\text{Verschlüsselung}(\texttt{HALLO}, 3) = \texttt{KDOOR} \\
-		&\text{Entschlüsselung}(\texttt{KDOOR}, 3) = \texttt{HALLO}.
+		&\text{Caesar\_Verschlüsselung}(\texttt{HALLO}, 3) = \texttt{KDOOR} \\
+		&\text{Caesar\_Entschlüsselung}(\texttt{KDOOR}, 3) = \texttt{HALLO}.
 	\end{align*}
-	Schlüsselmenge Caesar: $\lrc{0, 1, \dots, 25}$ oder $\lrc{\texttt{A}, \texttt{B}, \dots, \texttt{Z}}$.	
+	Schlüsselmenge bei Caesar: $\lrc{0, 1, \dots, 25}$ beziehungsweise $\lrc{\text{Ord}(\texttt{A}), \text{Ord}(\texttt{B}), \dots, \text{Ord}(\texttt{Z})}$.
 \end{mydefinition}
 
 \begin{myremark}[Geheimschrift als Spezialfall eines Kryptosystems]
@@ -451,16 +451,16 @@ Der niederländische Kryptologe und Linguist \emph{Auguste Kerckhoffs} stellte i
 	\label{fig:kerckhoffs}
 \end{figure}
 
-Das Kerckhoffs'sche Prinzip besagt, dass die Sicherheit eines Kryptosystems nicht davon abhängen sollte, dass die Funktionsweise des Systems geheim gehalten wird. Stattdessen sollte die Sicherheit allein auf der Geheimhaltung des Schlüssels beruhen. Einem solchen System wird auch dann noch vertraut, wenn es öffentlich bekannt ist, da die Sicherheit nicht von der Geheimhaltung des Algorithmus abhängt, sondern von der Geheimhaltung des Schlüssels. Demgegenüber steht die Praxis der \emph{Security through Obscurity}, bei der die Sicherheit eines Systems dadurch gewährleistet wird, dass die Funktionsweise des Systems geheim gehalten wird. Diese Praxis wird als unsicher angesehen, da sie auf der Annahme beruht, dass Angreifer nicht in der Lage sein werden, die Funktionsweise des Systems zu verstehen oder zu entdecken (siehe \cref{myremark:security_through_obscurity}).
+Das Kerckhoffs'sche Prinzip besagt, dass die Sicherheit eines Kryptosystems nicht davon abhängen sollte, dass die Funktionsweise des Systems geheim gehalten wird. Stattdessen sollte die Sicherheit allein auf der Geheimhaltung des Schlüssels beruhen. Einem solchen System wird auch dann noch vertraut, wenn es öffentlich bekannt ist, da die Sicherheit nicht von der Geheimhaltung des Algorithmus abhängt, sondern von der Geheimhaltung des Schlüssels. Demgegenüber steht die Praxis der \emph{Security through Obscurity}, bei der die Sicherheit eines Systems dadurch gewährleistet wird, dass die Funktionsweise des Systems geheim gehalten wird. Diese Praxis wird als unsicher angesehen, da sie auf der Annahme beruht, dass Angreifer nicht in der Lage sein werden, die Funktionsweise des Systems zu verstehen oder zu entdecken (siehe auch \cref{myremark:security_through_obscurity}).
 
-\subsection{Sicherheitsanforderungen an moderne Kryptosysteme}
-Folgende Sicherheits-bezogenen Anforderungen können zusätzlich an moderne Kryptosysteme gestellt werden:
-\begin{enumerate}
-	\item \textbf{Vertraulichkeit}: Es soll sichergestellt sein, dass wirklich nur diejenige Person eine Nachricht lesen kann, für die diese bestimmt ist.
-	\item \textbf{Integrität}: Der Empfänger soll feststellen können, ob die Nachricht nach ihrer Erzeugung verändert wurde (wir wollen ja die originale Nachricht!).
-	\item \textbf{Authentizität}: Die Verfasserin einer Nachricht soll identifizierbar sein, bzw. der Empfänger soll nachprüfen können, wer die Verfasserin ist.
-	\item \textbf{Verbindlichkeit}: Die Verfasserin soll nicht abstreiten können, dass sie die Verfasserin der Nachricht ist.
-\end{enumerate}
+% \subsection{Sicherheitsanforderungen an moderne Kryptosysteme}
+% Folgende Sicherheits-bezogenen Anforderungen können zusätzlich an moderne Kryptosysteme gestellt werden:
+% \begin{enumerate}
+% 	\item \textbf{Vertraulichkeit}: Es soll sichergestellt sein, dass wirklich nur diejenige Person eine Nachricht lesen kann, für die diese bestimmt ist.
+% 	\item \textbf{Integrität}: Der Empfänger soll feststellen können, ob die Nachricht nach ihrer Erzeugung verändert wurde (wir wollen ja die originale Nachricht!).
+% 	\item \textbf{Authentizität}: Die Verfasserin einer Nachricht soll identifizierbar sein, bzw. der Empfänger soll nachprüfen können, wer die Verfasserin ist.
+% 	\item \textbf{Verbindlichkeit}: Die Verfasserin soll nicht abstreiten können, dass sie die Verfasserin der Nachricht ist.
+% \end{enumerate}
 
 
 % \begin{mychallenge}
@@ -494,7 +494,7 @@ Die durchschnittlichen Häufigkeiten von Buchstaben, Bi- und Tri-Grammen in deut
 	\centering
 	\begin{subtable}[t]{0.3\textwidth}
 		\centering
-		\begin{tabular}{C|p{1.9cm}}
+		\begin{tabular}{c|p{1.9cm}}
 			\textbf{Buchstabe} & Relative Häufigkeit (\%) \\ \midrule
 			E                  & 17.40                    \\ \midrule
 			N                  & 9.78                     \\ \midrule
@@ -512,7 +512,7 @@ Die durchschnittlichen Häufigkeiten von Buchstaben, Bi- und Tri-Grammen in deut
 	\hspace{0.5cm}
 	\begin{subtable}[t]{0.3\textwidth}
 		\centering
-		\begin{tabular}{C|p{1.9cm}}
+		\begin{tabular}{c|p{1.9cm}}
 			\textbf{Bigramm} & Relative Häufigkeit (\%) \\ \midrule
 			ER               & 3.94                     \\ \midrule
 			EN               & 3.07                     \\ \midrule
@@ -530,7 +530,7 @@ Die durchschnittlichen Häufigkeiten von Buchstaben, Bi- und Tri-Grammen in deut
 	\hspace{0.5cm}
 	\begin{subtable}[t]{0.3\textwidth}
 		\centering
-		\begin{tabular}{C|p{1.9cm}}
+		\begin{tabular}{c|p{1.9cm}}
 			\textbf{Trigramm} & Relative Häufigkeit (\%) \\ \midrule
 			DER               & 1.44                     \\ \midrule
 			SCH               & 1.21                     \\ \midrule
@@ -649,7 +649,7 @@ Je länger ein Text ist, desto zuverlässiger funktioniert das \enquote{Erraten}
 \begin{myexercise}
 	Entschlüsseln Sie den Text \texttt{ECRRCKZVRAZCRZK} mit dem Schlüssel aus \cref{fig:monoalph-subst}.
 	\begin{myanswer}
-		BESSERALSCAESAR
+		\texttt{BESSERALSCAESAR}
 	\end{myanswer}
 \end{myexercise}
 
