@@ -1,7 +1,7 @@
 import turtle as t
 
 
-def rechteck_farbig(x, y, farbe, breite, laenge):
+def rechteck_farbig(x, y, farbe, hoehe, breite):
     # Start-Position setzen
     t.teleport(x, y)
 
@@ -12,7 +12,7 @@ def rechteck_farbig(x, y, farbe, breite, laenge):
     for _ in range(2):
         t.fd(breite)
         t.rt(90)
-        t.fd(laenge)
+        t.fd(hoehe)
         t.rt(90)
     t.end_fill()
 
