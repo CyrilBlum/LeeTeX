@@ -1,8 +1,8 @@
-\chapter{Sortieren (*)}\label{ch:Kapitel05}
+\chapter{Sortieren}\label{ch:Kapitel05}
 
 Eines der häufigsten algorithmischen Probleme ist das \textit{Sortieren}.
-\begin{mydefinition}[Sortierproblem]{mydefinition:Sortierproblem}
-Sei $S$ eine Menge, deren Elemente durch die Relation $\leq$ verglichen werden können ($\leq$ heisst dann \textit{totale Ordnung} auf $S$). Das \tib{Sortierproblem}\index{Sortierproblem} lautet dann:
+\begin{mydefinition}[Sortierproblem]\label{mydefinition:Sortierproblem}
+Sei $S$ eine Menge, deren Elemente durch die Relation $\leq$ verglichen werden können ($\leq$ heisst dann \textit{totale Ordnung}\footnote{Eine Menge ist total geordnet, wenn für zwei beliebige Elemente $a, b$ aus der Menge immer gilt, dass entweder $a \leq b$ oder $b \leq a$ (oder beides, falls $a=b$).} auf $S$). Das \tib{Sortierproblem}\index{Sortierproblem} lautet dann:
 \begin{description}
 	\item[Eingabe:] Eine endliche Folge von $n\in\Nunit$ Elementen $a_1, a_2,\ldots, a_n$ aus $S$.
 	\item[Ausgabe:] Eine Umordnung $a_1', a_2', \ldots, a_n'$ der Eingabe, sodass $a_1'\leq a_2' \leq \ldots \leq a_n'$ (die Elemente der Eingabe sind nun aufsteigend sortiert).
@@ -23,10 +23,10 @@ Sei $S$ eine Menge, deren Elemente durch die Relation $\leq$ verglichen werden k
 			edgeup/.style={edge from parent/.style={draw=green!50!black,thick,latex-}},
 			block/.style={rectangle split, rectangle split parts=#1, draw, fill=blue!20}
 		]
-		\node[block=7,label={Eingabe}] (A) {3 \nodepart{two} 2 \nodepart{three} 0 \nodepart{four} 3 \nodepart{five} 9 \nodepart{six}8 \nodepart{seven}1}
-		[grow=down,edgedown];
-		\node[block=7,below=1cm of A,label={Ausgabe}] (B) {0 \nodepart{two} 1 \nodepart{three} 2 \nodepart{four} 3 \nodepart{five} 3 \nodepart{six}8 \nodepart{seven}9}
-		[grow=down,edgedown];
+		\node[block=7,label={Eingabe},rectangle split horizontal] (A) {3 \nodepart{two} 2 \nodepart{three} 0 \nodepart{four} 3 \nodepart{five} 9 \nodepart{six}8 \nodepart{seven}1};
+		
+		\node[block=7,right=2cm of A,label={Ausgabe},rectangle split horizontal] (B) {0 \nodepart{two} 1 \nodepart{three} 2 \nodepart{four} 3 \nodepart{five} 3 \nodepart{six}8 \nodepart{seven}9};
+		\draw[red,thick,-latex] (A) -- (B);
 	\end{tikzpicture}
 	\caption{Eingabe und Ausgabe eines kleinen Sortierproblems mit ganzen Zahlen}
 	\label{fig:bsp1}
@@ -45,17 +45,17 @@ Sei $S$ eine Menge, deren Elemente durch die Relation $\leq$ verglichen werden k
 			edgeup/.style={edge from parent/.style={draw=green!50!black,thick,latex-}},
 			block/.style={rectangle split, rectangle split parts=#1, draw, fill=blue!20}
 		]
-		\node[block=5,label={Eingabe}] (A) {$r$ \nodepart{two} $e$ \nodepart{three} $a$ \nodepart{four} $o$ \nodepart{five} $n$}
-		[grow=down,edgedown];
-		\node[block=5,below=1cm of A,label={Ausgabe}] (B) {$a$ \nodepart{two} $e$ \nodepart{three} $n$ \nodepart{four} $o$ \nodepart{five} $r$}
-		[grow=down,edgedown];
+		\node[block=5,label={Eingabe},rectangle split horizontal] (A) {$r$ \nodepart{two} $e$ \nodepart{three} $a$ \nodepart{four} $o$ \nodepart{five} $n$};
+		
+		\node[block=5,right=2cm of A,label={Ausgabe},rectangle split horizontal] (B) {$a$ \nodepart{two} $e$ \nodepart{three} $n$ \nodepart{four} $o$ \nodepart{five} $r$};
+		\draw[red,thick,-latex] (A) -- (B);
 	\end{tikzpicture}
 	\caption{Eingabe und Ausgabe eines kleinen Sortierproblems mit Kleinbuchstaben des lateinischen Alphabets. Dabei wurde die übliche alphabetische Ordnung $a\leq b\leq \ldots \leq z$ verwendet.}
 	\label{fig:bsp2}
 \end{figure}
 
-\section{Sortieren mit dem \textit{merge sort} Algorithmus}
-Natürlich ist das Bedürfnis nach schnellen Algorithmen besonders gross, falls diese Probleme lösen, die zeitkritisch sind und häufig auftreten. Mittlerweile sind viele Sortieralgorithmen bekannt. Ein berühmter Vertreter dieser Algorithmen ist \textit{merge sort}. Der Algorithmus \textit{merge sort} arbeitet rekursiv. Dabei macht er insbesondere von der Tatsache Gebrauch, dass sich zwei sortierte Listen recht effizient zu einer ebenfalls sortierten Liste zusammenfügen lassen. Es seien also zwei jeweils \textbf{bereits sortierte} Listen \lstinline|L| und \lstinline|R| gegeben. Diese Listen besitzen die Längen (Anzahl von Elementen) \lstinline|len(L)| und \lstinline|len(R)|. Es ist nun nicht besonders aufwändig, die beiden Listen \lstinline|L| und \lstinline|R| zu einer neuen \textbf{sortierten} Liste \lstinline|M| der Länge \lstinline|len(L) + len(R)| zu vereinen (englisch: \textit{to merge}).
+\section{Merge Sort}
+Natürlich ist das Bedürfnis nach schnellen Algorithmen besonders gross, falls diese Probleme lösen, die zeitkritisch sind und häufig auftreten. Mittlerweile sind viele Sortieralgorithmen bekannt. Ein berühmter Vertreter dieser Algorithmen ist \lstinline{merge_sort}. Der Algorithmus \lstinline{merge_sort} arbeitet rekursiv. Dabei macht er insbesondere von der Tatsache Gebrauch, dass sich zwei sortierte Listen recht effizient zu einer ebenfalls sortierten Liste zusammenfügen lassen. Es seien also zwei jeweils \textbf{bereits sortierte} Listen \lstinline|L| und \lstinline|R| gegeben. Diese Listen besitzen die Längen (Anzahl von Elementen) \lstinline|len(L)| und \lstinline|len(R)|. Es ist nun nicht besonders aufwändig, die beiden Listen \lstinline|L| und \lstinline|R| zu einer neuen \textbf{sortierten} Liste \lstinline|M| der Länge \lstinline|len(L) + len(R)| zu vereinen (englisch: \textit{to merge}).
 
 \begin{myexercise}\label{myexercise:0501}
 	Angenommen wir haben zwei jeweils \textbf{bereits sortierte} Listen \lstinline|L| und \lstinline|R| gegeben. Schreiben Sie eine Python-Funktion \lstinline|merge(L, R)|, welche \lstinline|L| und \lstinline|R| zu einer einzigen sortierten Liste vereint. Ihre Funktion soll unbedingt Gebrauch von der Tatsache machen, dass \lstinline|L| und \lstinline|R| bereits sortiert sind.
@@ -78,23 +78,28 @@ Ausgabe: [0, 1, 5, 10, 50, 100, 1000]
 \begin{myexercise}\label{myexercise:0502}
 	Analysieren Sie den Algorithmus, welchen Sie in \cref{myexercise:0501} geschrieben haben. Welche Laufzeit hat dieser Algorithmus in Abhängigkeit von \lstinline|n = len(L) + len(R)|?
 \end{myexercise}
-Der \textit{merge sort} Algorithmus teilt eine zu sortierende Liste rekursiv so lange in zwei Teile, bis nur noch Listen der Länge 1 vorliegen. Offensichtlich ist jede Liste der Länge 1 bereits sortiert. Schliesslich werden bereits sortierte Listen mithilfe des \textit{merge} Algorithmus zu der gesuchten sortierten Liste zusammengefügt. Mithilfe der bereits in \cref{myexercise:0501} erstellten Routine \textit{merge} lässt sich der berühmte \textit{merge sort} Algorithmus in nur wenigen Zeilen in Python beschreiben. Eine mögliche Implementation ist in \cref{listing:mergesort} gegeben.
-\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|merge_sort|,label=listing:mergesort]
+Der \lstinline{merge_sort} Algorithmus teilt eine zu sortierende Liste rekursiv so lange in zwei Teile, bis nur noch Listen der Länge 1 vorliegen. Offensichtlich ist jede Liste der Länge 1 bereits sortiert. Schliesslich werden bereits sortierte Listen mithilfe des \textit{merge} Algorithmus zu der gesuchten sortierten Liste zusammengefügt. Mithilfe der bereits in \cref{myexercise:0501} erstellten Routine \textit{merge} lässt sich der berühmte \lstinline{merge_sort} Algorithmus in nur wenigen Zeilen in Python beschreiben. Eine mögliche Implementation ist in \cref{listing:mergesort} gegeben.
+
+\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|merge_sort|,label=listing:mergesort,numbers=left]
 def merge_sort(A):
     # sortiert die Liste A
     if len(A) == 1: # Rekursionsanfang
         return A # Listen der Länge 1 sind schon sortiert.
 
-    # teile A in linke Hälfte und rechte Teile
+    # teile A in eine linke und rechte Hälfte auf
     if len(A) % 2 == 0: # falls len(A) gerade ist
         middle = len(A) // 2
     else: # falls len(A) ungerade ist
         middle = (len(A) // 2) + 1
+
     L = merge_sort(A[:middle])
     R = merge_sort(A[middle:])
     return merge(L, R)
 \end{lstlisting}
-Den \textit{merge sort} Algorithmus zu verstehen ist nicht einfach! Erfahrungsgemäss ist es sehr hilfreich, die einzelnen Schritte dieses Sortieralgorithmus für ein kleines Beispiel durchzugehen. Dazu haben wir die Schritte von \textit{merge sort} (\verb|ms|) beim Sortieren der Liste \lstinline|[3, 2, 1]| in \cref{fig:mergesort} schematisch dargestellt. Mit \verb|m| wird natürlich der Algorithmus \textit{merge} bezeichnet. Die schematische Darstellung ist analog zu den Ausführungen in \cref{technisch} zu verstehen.
+
+Den \lstinline{merge_sort} Algorithmus zu verstehen ist nicht einfach! Erfahrungsgemäss ist es sehr hilfreich, die einzelnen Schritte dieses Sortieralgorithmus für ein kleines Beispiel durchzugehen. 
+Dazu haben wir die Schritte von \lstinline{merge_sort} (\verb|ms|) beim Sortieren der Liste \lstinline|[3, 2, 1]| in \cref{fig:mergesort} schematisch dargestellt. 
+Mit \verb|m| wird natürlich der Algorithmus \lstinline{merge} bezeichnet. Die schematische Darstellung ist analog zu den Ausführungen in \cref{technisch} zu verstehen.
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7},
@@ -125,20 +130,20 @@ Den \textit{merge sort} Algorithmus zu verstehen ist nicht einfach! Erfahrungsge
 		(m231) edge [bend left=10, sloped, midway, above, Red] node {$12$} (ms321)
 		;
 	\end{tikzpicture}
-	\caption{schematische Darstellung der Arbeitsschritte von \textit{merge sort}}
+	\caption{schematische Darstellung der Arbeitsschritte von \lstinline{merge_sort}}
 	\label{fig:mergesort}
 \end{figure}
 
-\section{Analyse der Laufzeit von \textit{merge sort}}
+\section{Analyse der Laufzeit von \lstinline{merge_sort}}
 Beachten Sie, dass der in \cref{listing:mergesort} gegebene Algorithmus durchaus in der Lage ist, Listen beliebiger Längen $n\in\N$ zu sortieren. Für die nachfolgenden Untersuchungen wollen wir aber annehmen, dass die Problemgrösse $n$ stets eine Zweierpotenz ist, also $n = 2^k$ für ein $k\in\N$. Ohne diese Vereinfachungen werden in den Untersuchungen diverse Auf- und Abrundeoperationen notwendig sein und die Darstellung wird technischer und weniger instruktiv. Zusätzlich möchten wir den trivialen Fall $n = 0$ als Problemgrösse ausschliessen. Die folgenden Betrachtungen sind inspiriert durch die entsprechenden Abschnitte in dem herausragenden Buch \cite{IntroductionAlgo}.
 
-Die Laufzeit des \textit{merge sort} Algorithmus setzt sich aus drei einzelnen Teilen zusammen:
+Die Laufzeit des \lstinline{merge_sort} Algorithmus setzt sich aus drei einzelnen Teilen zusammen:
 \begin{description}
 	\item[Divide:] Dieser Teil berechnet lediglich die Mitte der zu sortierenden Liste. Dazu ist offensichtlich nur eine konstante Zeit $\Theta(1)$ notwendig.
-	\item[Conquer:] Beim Aufruf des \textit{merge sort} Algorithmus mit Problemgrösse $n$ werden rekursiv \textcolor{Blue}{zwei} Teilprobleme (derselben Art) mit jeweils halber Grösse $\textcolor{Green}{n/2}$ aufgerufen. Dies trägt $\textcolor{Blue}{2}T(\textcolor{Green}{n/2})$ zur Laufzeit bei.
-	\item[Combine:] Wie wir in \cref{myexercise:0502} bereits festgestellt haben, benötigt \textit{merge sort} die lineare Zeit $\Theta(n)$ für die Vereinigung zweier Listen mit summierter Länge \lstinline|n = len(L) + len(R)|.
+	\item[Conquer:] Beim Aufruf des \lstinline{merge_sort} Algorithmus mit Problemgrösse $n$ werden rekursiv \textcolor{Blue}{zwei} Teilprobleme (derselben Art) mit jeweils halber Grösse $\textcolor{Green}{n/2}$ aufgerufen. Dies trägt $\textcolor{Blue}{2}T(\textcolor{Green}{n/2})$ zur Laufzeit bei.
+	\item[Combine:] Wie wir in \cref{myexercise:0502} bereits festgestellt haben, benötigt \lstinline{merge_sort} die lineare Zeit $\Theta(n)$ für die Vereinigung zweier Listen mit summierter Länge \lstinline|n = len(L) + len(R)|.
 \end{description}
-Zusammengefasst ist die Laufzeit $T(n)$ von \textit{merge sort} im schlimmsten Fall also gegeben durch
+Zusammengefasst ist die Laufzeit $T(n)$ von \lstinline{merge_sort} im schlimmsten Fall also gegeben durch
 
 \begin{align}\label{eq:rek1}
 	T(n) =
@@ -169,16 +174,16 @@ da wir uns im Moment lediglich für eine obere Schranke für die Laufzeit $T(n)$
 
 Wir wollen nun die eindeutige Lösung von \cref{eq:rek3} durch intuitive Überlegungen finden. Betrachten Sie \cref{fig:mergesortBaum}.
 \begin{itemize}
-	\item In der \textcolor{Red}{obersten} \enquote{Etage} fallen die Kosten $cn$ für den \textit{merge} zu einer Liste der Länge $n$ an.
-	\item In der \textcolor{Blue}{zweitobersten} \enquote{Etage} fallen die Kosten $cn/2 + cn/2 = cn$ für zwei \textit{merges} zu Listen der Längen $n/2$ an.
+	\item In der \textcolor{Red}{obersten} \enquote{Etage} fallen die Kosten $cn$ für den \emph{merge} zu einer Liste der Länge $n$ an.
+	\item In der \textcolor{Blue}{zweitobersten} \enquote{Etage} fallen die Kosten $cn/2 + cn/2 = cn$ für zwei \emph{merges} zu Listen der Längen $n/2$ an.
 	\item Dies geht rekursiv so weiter.
 	\item In der untersten \enquote{Etage} wird überall der Rekursionsanfang erreicht und wir haben $n$-mal die Kosten $T(1) = c$, also $cn$.
 \end{itemize}
-Diese Überlegung zeigt, dass jede \enquote{Etage} genau $cn$ zu den Gesamtkosten von \textit{merge sort} beiträgt. Nun stellt sich lediglich noch die Frage, wie viele \enquote{Etagen} der Baum in \cref{fig:mergesortBaum} hat. Diese Frage ist aber mit der Frage verwandt, wie häufig eine Zweierpotenz $2^k$ halbiert werden muss, bis das Resultat der Division durch 2 identisch zu 1 ist. Dies ist aber genau das, was uns der Logarithmus zur Basis zwei beantwortet. Der Faktor 2 ist
+Diese Überlegung zeigt, dass jede \enquote{Etage} genau $cn$ zu den Gesamtkosten von \lstinline{merge_sort} beiträgt. Nun stellt sich lediglich noch die Frage, wie viele \enquote{Etagen} der Baum in \cref{fig:mergesortBaum} hat. Diese Frage ist aber mit der Frage verwandt, wie häufig eine Zweierpotenz $2^k$ halbiert werden muss, bis das Resultat der Division durch 2 identisch zu 1 ist. Dies ist aber genau das, was uns der Logarithmus zur Basis zwei beantwortet. Der Faktor 2 ist
 \begin{align*}
 	\log_2(n) = \log_2\lr{2^k} = k
 \end{align*}
-Male in $n$ enthalten. Das ist die Anzahl Teilungen. Der Baum hat somit $\log_2(n) + 1$ viele \enquote{Etagen}. Die Laufzeit von \textit{merge sort} ist also
+Male in $n$ enthalten. Das ist die Anzahl Teilungen. Der Baum hat somit $\log_2(n) + 1$ viele \enquote{Etagen}. Die Laufzeit von \lstinline{merge_sort} ist also
 \begin{align*}
 	cn\lr{\log_2(n) + 1}
 \end{align*}
@@ -263,7 +268,7 @@ und somit $\Theta\lr{n\log(n)}$.
 
 		\draw[Green!70!black,thick,decorate,decoration={brace,amplitude=10pt,mirror}] (b11.south west) --node [below=0.3cm] {$n$} (f12.south east);
 	\end{tikzpicture}
-	\caption{Laufzeitanalyse von \textit{merge sort}}
+	\caption{Laufzeitanalyse von \lstinline{merge_sort}}
 	\label{fig:mergesortBaum}
 \end{figure}
 
@@ -282,17 +287,58 @@ und somit $\Theta\lr{n\log(n)}$.
 	\]
 \end{myexercise}
 
-\begin{comment}
-\section{\textit{merge sort} ist optimal}
-Es lässt sich relativ leicht beweisen, dass \textit{merge sort} in einem gewissen Sinne eine optimaler (was die Laufzeit betrifft) Sortieralgorithmus ist. Dies ist einer der Gründe, warum der \textit{merge sort} Algorithmus in Schulen und Universitäten gerne untersucht wird. Was meinen wir mit \enquote{in einem gewissen Sinne}? Ein Sortieralgorithmus wird ein (reiner) \textit{vergleichsbasierter} Sortieralgorithmus genannt, falls der Algorithmus lediglich Vergleiche der Form $\leq$ verwendet, um Informationen über die Reihenfolge der zu sortierenden Elemente zu gewinnen. Wir wollen beweisen, dass jeder vergleichsbasiertere Sortieralgorithmus mindestens $n\log(n)$ Vergleiche benötigt, um $n$ Elemente zu sortieren. In diesem Abschnitt nehmen wir an, dass alle zu sortierenden Elemente unterschiedlich sind (ohne Beschränkung der Allgemeinheit).
+
+\section{Merge Sort ist asymptotisch optimal}
+Es lässt sich relativ leicht beweisen, dass \lstinline{merge_sort} in einem gewissen Sinne eine optimaler (was die Laufzeit betrifft) Sortieralgorithmus ist. 
+Dies ist einer der Gründe, warum der \lstinline{merge_sort} Algorithmus in Schulen und Universitäten gerne untersucht wird. 
+Was meinen wir mit \enquote{in einem gewissen Sinne}? Ein Sortieralgorithmus wird ein (reiner) \textit{vergleichsbasierter} Sortieralgorithmus genannt, falls der Algorithmus lediglich Vergleiche der Form $x \leq y$ verwendet, um Informationen über die Reihenfolge der zu sortierenden Elemente zu gewinnen. 
+Wir wollen beweisen, dass jeder vergleichsbasiertere Sortieralgorithmus mindestens $n\log(n)$ Vergleiche benötigt, um $n$ Elemente zu sortieren. In diesem Abschnitt nehmen wir an, dass alle zu sortierenden Elemente unterschiedlich sind (ohne Beschränkung der Allgemeinheit).
 
 Wir können die Arbeit vergleichsbasierter Sortieralgorithmen durch binäre Entscheidungsbäume illustrieren.
-\end{comment}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            % Erhöhte Distanz in Ebene 1, um Platz für die Unterbäume zu schaffen
+            level 1/.style={sibling distance=8cm},
+            % Ebene 2 braucht genug Platz für die Blätter der Ebene 3
+            level 2/.style={sibling distance=2.5cm},
+            % Ebene 3 verringert, da hier nur Text-Blätter ohne Kreise sind
+            level 3/.style={sibling distance=2cm},
+            state/.style={circle, draw, minimum size=1.3cm, inner sep=0pt, font=\small}
+        ]
+        \node[state] {$a_1 \leq a_2$}
+            child {node[state] {$a_2 \leq a_3$}
+                child {node {$a_1, a_2, a_3$}}
+                child {node[state] {$a_1 \leq a_3$}
+                    child {node {$a_1, a_3, a_2$}}
+                    child {node {$a_3, a_1, a_2$}}
+                }
+            }
+            child {node[state] {$a_1 \leq a_3$}
+                child {node[state] {$a_2 \leq a_3$}
+                    child {node {$a_2, a_1, a_3$}}
+                    child {node {$a_2, a_3, a_1$}}
+                }
+                child {node {$a_3, a_2, a_1$}}
+            };
+    \end{tikzpicture}
+    \caption{Entscheidungsbaum für das Sortieren von 3 Elementen.}
+    \label{fig:decisiontree}
+\end{figure}
+
+Ein solcher Baum für $n$ Elemente muss mindestens $n!$ (n Fakultät) Blätter besitzen, da es $n!$ verschiedene Möglichkeiten gibt, $n$ Elemente anzuordnen. Ein binärer Baum der Höhe $h$ hat maximal $2^h$ Blätter. Es muss also gelten:
+\begin{align*}
+	2^h \geq n! \implies h \geq \log_2(n!)
+\end{align*}
+Mithilfe der \textit{Stirling-Formel} ($\ln(n!) \approx n \ln n - n$) lässt sich zeigen, dass $\log_2(n!)$ in der Grössenordnung von $\Theta(n \log\lr{n})$ liegt. Somit benötigt jeder vergleichsbasierte Sortieralgorithmus im schlimmsten Fall $\Omega(n \log\lr{n})$ Vergleiche.
+
+Da \lstinline{merge_sort} eine Laufzeit von $\Theta(n \log\lr{n})$ aufweist, ist dieser Algorithmus asymptotisch optimal.
 
 
 \clearpage
 \section{Lösungen der Aufgaben}
-
 \begin{myanswer}[myexercise:0501]
 	\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|merge|,label=listing:merge]
 def merge(L, R):
@@ -353,6 +399,7 @@ def merge(L, R):
 	\end{align*}
 	Dies zeigt den Induktionsschritt.
 \end{myanswer}
+
 
 
 \clearpage
