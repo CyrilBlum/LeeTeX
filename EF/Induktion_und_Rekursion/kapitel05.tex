@@ -80,16 +80,16 @@ Ausgabe: [0, 1, 5, 10, 50, 100, 1000]
 \end{myexercise}
 Der \lstinline{merge_sort} Algorithmus teilt eine zu sortierende Liste rekursiv so lange in zwei Teile, bis nur noch Listen der Länge 1 vorliegen. Offensichtlich ist jede Liste der Länge 1 bereits sortiert. Schliesslich werden bereits sortierte Listen mithilfe des \textit{merge} Algorithmus zu der gesuchten sortierten Liste zusammengefügt. Mithilfe der bereits in \cref{myexercise:0501} erstellten Routine \textit{merge} lässt sich der berühmte \lstinline{merge_sort} Algorithmus in nur wenigen Zeilen in Python beschreiben. Eine mögliche Implementation ist in \cref{listing:mergesort} gegeben.
 
-\begin{lstlisting}[language=Python,caption=Implementation der Funktion \lstinline|merge_sort|,label=listing:mergesort,numbers=left]
+\begin{lstlisting}[language=Python,caption=Implementation von \lstinline|merge_sort|,label=listing:mergesort,numbers=left]
 def merge_sort(A):
     # sortiert die Liste A
-    if len(A) == 1: # Rekursionsanfang
-        return A # Listen der Länge 1 sind schon sortiert.
+    if len(A) == 1:  # Rekursionsanfang
+        return A  # Listen der Länge 1 sind schon sortiert.
 
     # teile A in eine linke und rechte Hälfte auf
-    if len(A) % 2 == 0: # falls len(A) gerade ist
+    if len(A) % 2 == 0:  # falls len(A) gerade ist
         middle = len(A) // 2
-    else: # falls len(A) ungerade ist
+    else:  # falls len(A) ungerade ist
         middle = (len(A) // 2) + 1
 
     L = merge_sort(A[:middle])
@@ -141,7 +141,7 @@ Die Laufzeit des \lstinline{merge_sort} Algorithmus setzt sich aus drei einzelne
 \begin{description}
 	\item[Divide:] Dieser Teil berechnet lediglich die Mitte der zu sortierenden Liste. Dazu ist offensichtlich nur eine konstante Zeit $\Theta(1)$ notwendig.
 	\item[Conquer:] Beim Aufruf des \lstinline{merge_sort} Algorithmus mit Problemgrösse $n$ werden rekursiv \textcolor{Blue}{zwei} Teilprobleme (derselben Art) mit jeweils halber Grösse $\textcolor{Green}{n/2}$ aufgerufen. Dies trägt $\textcolor{Blue}{2}T(\textcolor{Green}{n/2})$ zur Laufzeit bei.
-	\item[Combine:] Wie wir in \cref{myexercise:0502} bereits festgestellt haben, benötigt \lstinline{merge_sort} die lineare Zeit $\Theta(n)$ für die Vereinigung zweier Listen mit summierter Länge \lstinline|n = len(L) + len(R)|.
+	\item[Combine:] Wie wir in \cref{myexercise:0502} bereits festgestellt haben, benötigt \lstinline{merge} die lineare Zeit $\Theta(n)$ für die Vereinigung zweier Listen mit summierter Länge \lstinline|n = len(L) + len(R)|.
 \end{description}
 Zusammengefasst ist die Laufzeit $T(n)$ von \lstinline{merge_sort} im schlimmsten Fall also gegeben durch
 
@@ -255,7 +255,7 @@ und somit $\Theta\lr{n\log(n)}$.
 		\coordinate (nb1) at ($(g12)!.5!(e11)$);
 
 		\draw[black,thick,<->,]
-		(cd1) --node [fill=white] {$\log(n)$} (cd1|-z.east);
+		(cd1) --node [fill=white] {$\log(n) + 1$} (cd1|-z.east);
 
 		\draw[black,dashed,thick,->]
 		($(z.west)+(-1em,0)$) -- (ln1);
@@ -288,11 +288,12 @@ und somit $\Theta\lr{n\log(n)}$.
 \end{myexercise}
 
 
-\section{Merge Sort ist asymptotisch optimal}
+\section{Untere Schranke für das Sortieren}
 Es lässt sich relativ leicht beweisen, dass \lstinline{merge_sort} in einem gewissen Sinne eine optimaler (was die Laufzeit betrifft) Sortieralgorithmus ist. 
 Dies ist einer der Gründe, warum der \lstinline{merge_sort} Algorithmus in Schulen und Universitäten gerne untersucht wird. 
 Was meinen wir mit \enquote{in einem gewissen Sinne}? Ein Sortieralgorithmus wird ein (reiner) \textit{vergleichsbasierter} Sortieralgorithmus genannt, falls der Algorithmus lediglich Vergleiche der Form $x \leq y$ verwendet, um Informationen über die Reihenfolge der zu sortierenden Elemente zu gewinnen. 
-Wir wollen beweisen, dass jeder vergleichsbasiertere Sortieralgorithmus mindestens $n\log(n)$ Vergleiche benötigt, um $n$ Elemente zu sortieren. In diesem Abschnitt nehmen wir an, dass alle zu sortierenden Elemente unterschiedlich sind (ohne Beschränkung der Allgemeinheit).
+Wir wollen beweisen, dass jeder vergleichsbasiertere Sortieralgorithmus mindestens $\Theta(n\log(n))$ Vergleiche benötigt, um $n$ Elemente zu sortieren. 
+In diesem Abschnitt nehmen wir an, dass alle zu sortierenden Elemente unterschiedlich sind (ohne Beschränkung der Allgemeinheit).
 
 Wir können die Arbeit vergleichsbasierter Sortieralgorithmen durch binäre Entscheidungsbäume illustrieren.
 
@@ -328,12 +329,14 @@ Wir können die Arbeit vergleichsbasierter Sortieralgorithmen durch binäre Ents
     \label{fig:decisiontree}
 \end{figure}
 
-Ein solcher Baum für $n$ Elemente muss mindestens $n!$ (n Fakultät) Blätter besitzen, da es $n!$ verschiedene Möglichkeiten gibt, $n$ Elemente anzuordnen. Ein binärer Baum der Höhe $h$ hat maximal $2^h$ Blätter. Es muss also gelten:
+Ein solcher Baum für $n$ Elemente muss mindestens $n!$ ($n$ Fakultät) Blätter besitzen, da es $n!$ verschiedene Möglichkeiten gibt, $n$ Elemente anzuordnen. Ein binärer Baum der Höhe $h$ hat maximal $2^h$ Blätter. Es muss also gelten:
 \begin{align*}
-	2^h \geq n! \implies h \geq \log_2(n!)
+	2^h \geq n! \implies h \geq \log_2(n!) \quad (\text{da $\log$ monoton wachsend ist})
 \end{align*}
-Mithilfe der \textit{Stirling-Formel} ($\ln(n!) \approx n \ln n - n$) lässt sich zeigen, dass $\log_2(n!)$ in der Grössenordnung von $\Theta(n \log\lr{n})$ liegt. Somit benötigt jeder vergleichsbasierte Sortieralgorithmus im schlimmsten Fall $\Omega(n \log\lr{n})$ Vergleiche.
-
+Es gilt $\ln(n!) = n \ln n - n + O(\ln(n))$ und somit 
+\begin{align*}
+	h \geq \log_2(n!) = \Omega(n\log\lr{n}).
+\end{align*}
 Da \lstinline{merge_sort} eine Laufzeit von $\Theta(n \log\lr{n})$ aufweist, ist dieser Algorithmus asymptotisch optimal.
 
 
@@ -399,7 +402,6 @@ def merge(L, R):
 	\end{align*}
 	Dies zeigt den Induktionsschritt.
 \end{myanswer}
-
 
 
 \clearpage
