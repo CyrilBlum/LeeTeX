@@ -10,7 +10,7 @@ for _ in range(anzahl_pruef):
     max_p = float(input("Maximale Punkte der Prüfung " + str(pruef_nr) + "? "))
     erreicht_p = float(input("Erreichte Punkte an der Prüfung " + str(pruef_nr) + "? "))
     note = notenskala(max_p, erreicht_p)
-    print("Note an der " + str(pruef_nr) + "-te Prüfung: ", note)
+    print("Note an der " + str(pruef_nr) + "-te Prüfung: "+ str(note))
     summe_noten += note
     pruef_nr += 1
 
