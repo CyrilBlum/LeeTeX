@@ -213,6 +213,7 @@ book_topics=(
     "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
     "Tabellenkalkulation:Grundlagen_Info/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
     "Aus_Daten_Lernen:Grundlagen_Info/10_Aus_Daten_Lernen/Skript/Skript.tex"
+    "KI_und_Prompting:Grundlagen_Info/14_KI_und_Prompting/Skript/Skript.tex"
     
     # Ergänzungsfach Informatik
     "Endliche_Automaten:EF/Endliche_Automaten/skript_EA.tex"

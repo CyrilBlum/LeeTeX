@@ -1,0 +1,102 @@
+\setcounter{tocdepth}{2} % Show up to subsections in ToC
+
+% load package if document contains at least one citation
+\usepackage[maxbibnames=99,sorting=none,style=numeric,backend=biber]{biblatex}
+
+% Include PDF pages (for NZZ article placeholders)
+\usepackage{pdfpages}
+
+% Safe wrapper: include PDF if the file exists, otherwise show a placeholder box.
+% Usage: \includepdfifexists[options]{path/to/file.pdf}
+\newcommand{\includepdfifexists}[2][pages=-,scale=0.9]{%
+    \IfFileExists{#2}{%
+        \includepdf[#1]{#2}%
+    }{%
+        \begin{tcolorboxTemplate}[%
+            colback=gray!10,
+            colframe=gray!60,
+            coltitle=black,
+            title={\faFilePdf{} PDF-Platzhalter}]
+        \textit{Artikel-PDF noch nicht eingefügt.
+        Bitte die entsprechende PDF-Datei im Ordner
+        \texttt{Grundlagen\_Info/14\_KI\_und\_Prompting/Skript/Figures/} ablegen.}
+        \end{tcolorboxTemplate}%
+    }%
+}
+% enable option to print bibliography as a numbered subsection
+\defbibheading{bibsubsection}[\bibname]{%
+  \subsection{#1}%
+}
+
+\addbibresource{refs.bib}
+
+% Access metadata from the git distributed version control system
+\usepackage[grumpy,mark,maxdepth=8]{gitinfo2}
+
+\begin{document}
+%% Project-specific Preambles
+\settoggle{includelogo}{true}
+
+\newcommand{\thesubject}{Informatik}
+\newcommand{\thetopic}{KI und Prompting}
+\newcommand{\theplace}{Winterthur}
+\newcommand{\thelogo}{Logos/LeeLogo}
+\newcommand{\logosize}{.5\textwidth}
+
+\settoggle{oneauthor}{true}
+\settoggle{twomainauthors}{false}
+\def\mainauthors{
+	Cyril Blum/cyril.blum@edu.zh.ch
+}
+\def\firstmainauthor{Cyril Blum}
+\def\firstmainauthormail{cyril.blum@edu.zh.ch}
+
+\lhead[ \leftmark ]{\thetopic}
+\rhead[\thesubject]{\textcopyleft{} \thesubject, \the\year}
+
+\def\arrayB{"robot","brain","sparkles","globe-with-meridians","lock","briefcase","bar-chart"}
+\maketitlepage{\thetopic}{}
+\tableofcontents
+\clearpage
+
+%% Datenschutz-Hinweis am Anfang
+\begin{mycaution}[Datenschutz \& Eigenverantwortung]
+Beim Bearbeiten von Aufgaben in diesem Skript werden teilweise kommerzielle KI-Plattformen
+und Online-Dienste verwendet. Der Umgang mit diesen Plattformen liegt in der
+\textbf{eigenen Verantwortung} der Schülerinnen und Schüler (SuS).
+
+Bitte beachten Sie folgende Punkte:
+\begin{itemize}
+    \item Geben Sie \textbf{keine persönlichen Daten} (Name, Adresse, Passwörter etc.)
+          in externe KI-Tools ein.
+    \item Überprüfen Sie die \textbf{Nutzungsbedingungen} der jeweiligen Plattform,
+          bevor Sie diese verwenden.
+    \item Aufgaben, die die Verwendung kommerzieller Dienste voraussetzen, sind als
+          \textbf{optionale Challenge} \emoji{trophy} gekennzeichnet.
+    \item Schulinterne Alternativen (z.\,B. Fobizz, Brian) sind datenschutzkonform
+          und bevorzugt zu verwenden, sofern vorhanden.
+    \item Die Lehrperson übernimmt keine Haftung für Inhalte, die auf externen
+          Plattformen erstellt oder geteilt werden.
+\end{itemize}
+\end{mycaution}
+
+\clearpage
+
+%% content %%
+\input{Grundlagen_Info/14_KI_und_Prompting/Skript/Chapters/K01_Wie_funktioniert_KI.tex}
+\input{Grundlagen_Info/14_KI_und_Prompting/Skript/Chapters/K02_Aspekte_LLMs.tex}
+\input{Grundlagen_Info/14_KI_und_Prompting/Skript/Chapters/K03_Tools.tex}
+\input{Grundlagen_Info/14_KI_und_Prompting/Skript/Chapters/K04_Prompt_Thinking.tex}
+\input{Grundlagen_Info/14_KI_und_Prompting/Skript/Chapters/K05_Agenten.tex}
+\input{Grundlagen_Info/14_KI_und_Prompting/Skript/Chapters/K06_Datenschutz.tex}
+\input{Grundlagen_Info/14_KI_und_Prompting/Skript/Chapters/K07_Arbeitsmarkt.tex}
+
+\clearpage
+
+\appendix
+\input{Grundlagen_Info/14_KI_und_Prompting/Skript/Appendices/Appendix_Weitere_Themen.tex}
+
+\backmatter
+\printbibliography[heading=bibintoc]
+
+\end{document}
