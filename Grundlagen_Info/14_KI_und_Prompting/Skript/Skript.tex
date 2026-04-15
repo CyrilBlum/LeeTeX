@@ -2,6 +2,27 @@
 
 % load package if document contains at least one citation
 \usepackage[maxbibnames=99,sorting=none,style=numeric,backend=biber]{biblatex}
+
+% Include PDF pages (for NZZ article placeholders)
+\usepackage{pdfpages}
+
+% Safe wrapper: include PDF if the file exists, otherwise show a placeholder box.
+% Usage: \includepdfifexists[options]{path/to/file.pdf}
+\newcommand{\includepdfifexists}[2][pages=-,scale=0.9]{%
+    \IfFileExists{#2}{%
+        \includepdf[#1]{#2}%
+    }{%
+        \begin{tcolorboxTemplate}[%
+            colback=gray!10,
+            colframe=gray!60,
+            coltitle=black,
+            title={\faFilePdf{} PDF-Platzhalter}]
+        \textit{Artikel-PDF noch nicht eingefügt.
+        Bitte die entsprechende PDF-Datei im Ordner
+        \texttt{Grundlagen\_Info/14\_KI\_und\_Prompting/Skript/Figures/} ablegen.}
+        \end{tcolorboxTemplate}%
+    }%
+}
 % enable option to print bibliography as a numbered subsection
 \defbibheading{bibsubsection}[\bibname]{%
   \subsection{#1}%
