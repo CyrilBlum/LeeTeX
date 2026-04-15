@@ -1,0 +1,285 @@
+\chapter{Wie funktioniert KI? Wie funktionieren LLMs?}\label{ch:K01_KI_Grundlagen}
+
+\begin{myremark}
+Dieses Kapitel führt in die Grundlagen der Künstlichen Intelligenz (KI) und insbesondere
+in grosse Sprachmodelle (Large Language Models, LLMs) ein. Das Ziel ist ein intuitives,
+schülernahes Verständnis – ohne tiefgreifende mathematische Vorkenntnisse.
+\end{myremark}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Was ist Künstliche Intelligenz?}
+
+\begin{mydefinition}
+\textbf{Künstliche Intelligenz (KI)} bezeichnet Systeme, die Aufgaben ausführen, die
+bisher typischerweise menschliche Intelligenz erforderten – zum Beispiel Sprache
+verstehen, Bilder erkennen oder Entscheidungen treffen.
+
+KI ist \emph{kein} magisches Denken: Im Kern handelt es sich immer um mathematische
+Modelle, die aus Daten \enquote{lernen}.
+\end{mydefinition}
+
+\begin{myexample}
+Bekannte KI-Systeme im Alltag:
+\begin{itemize}
+    \item \textbf{Empfehlungssysteme}: Netflix schlägt Filme vor, Spotify kuratiert Playlists.
+    \item \textbf{Bilderkennungs-KI}: Das Smartphone entsperrt sich per Gesichtserkennung.
+    \item \textbf{Sprach-KI}: Siri, Google Assistant oder Alexa beantworten gesprochene Fragen.
+    \item \textbf{Große Sprachmodelle}: ChatGPT, Claude, Gemini führen Konversationen
+          und generieren Texte.
+\end{itemize}
+\end{myexample}
+
+\begin{myexercise}[– Brainstorming]
+Sammeln Sie in 3 Minuten alle KI-Anwendungen, die Sie kennen oder täglich nutzen.
+Vergleichen Sie anschliessend Ihre Liste mit einer Nachbarperson.
+Welche KI-Anwendungen überraschten Sie?
+\end{myexercise}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Maschinelles Lernen – Lernen aus Daten}
+
+\begin{mydefinition}
+\textbf{Maschinelles Lernen (ML)} ist ein Teilbereich der KI. Statt explizit
+programmiert zu werden, \emph{lernt} ein ML-Modell Muster aus Beispieldaten
+und kann danach Vorhersagen für neue, unbekannte Daten treffen.
+\end{mydefinition}
+
+\subsection{Ein einfaches Beispiel: Spam-Filter}
+
+\begin{myexample}
+Ein klassischer Spam-Filter wird nicht von Hand mit Regeln programmiert
+(\enquote{Falls der Betreff das Wort \enquote{Gratis} enthält, ist es Spam}).
+Stattdessen erhält das Modell tausende von E-Mails, die als \enquote{Spam} oder
+\enquote{kein Spam} beschriftet sind, und \emph{lernt selbst} Muster daraus.
+
+Dieses Prinzip nennt man \textbf{überwachtes Lernen} (supervised learning):
+\begin{enumerate}
+    \item \textbf{Trainingsdaten}: Viele beschriftete Beispiele (E-Mails mit Label).
+    \item \textbf{Training}: Das Modell passt seine internen Parameter an, um
+          möglichst viele Beispiele korrekt zu klassifizieren.
+    \item \textbf{Vorhersage}: Das Modell entscheidet für neue E-Mails,
+          ob es Spam ist oder nicht.
+\end{enumerate}
+\end{myexample}
+
+\begin{myexercise}[– Entscheidungsbaum per Hand]
+Stellen Sie sich vor, Sie möchten einem Kind erklären, wie es eine E-Mail als Spam
+erkennen kann. Zeichnen Sie einen einfachen Entscheidungsbaum (Flussdiagramm) mit
+mindestens drei Entscheidungsknoten und zwei möglichen Ausgaben (\enquote{Spam} /
+\enquote{Kein Spam}).
+
+Vergleichen Sie Ihre Lösung mit der Nachbarperson.
+Was sind Vor- und Nachteile eines solchen handgefertigten Entscheidungsbaums gegenüber
+einem maschinell gelernten Modell?
+\end{myexercise}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Neuronale Netze – vom Gehirn inspiriert}
+
+\begin{mydefinition}
+\textbf{Künstliche neuronale Netze} sind lose vom menschlichen Gehirn inspiriert.
+Sie bestehen aus \textbf{Knoten} (Neuronen) und \textbf{Verbindungen} (Gewichten).
+
+\begin{itemize}
+    \item Ein Neuron nimmt Eingaben entgegen, berechnet eine gewichtete Summe
+          und gibt einen Wert weiter.
+    \item Das Netz ist in \textbf{Schichten} aufgebaut:
+          Eingabeschicht → versteckte Schichten → Ausgabeschicht.
+    \item Die \textbf{Gewichte} werden durch Training angepasst, sodass das Netz
+          die richtigen Ausgaben liefert.
+\end{itemize}
+\end{mydefinition}
+
+\begin{myexample}[– Gewichte anpassen: ein Spielzeug-Neuron]
+Stellen Sie sich ein einzelnes Neuron vor, das entscheidet, ob jemand ein Velo kaufen
+wird. Es bekommt zwei Eingaben: \texttt{hat\_Geld} (0 oder 1) und
+\texttt{mag\_Sport} (0 oder 1). Die Gewichte seien $w_1 = 0.8$ und $w_2 = 0.3$.
+
+\[
+    \text{Ausgabe} = w_1 \cdot \texttt{hat\_Geld} + w_2 \cdot \texttt{mag\_Sport}
+\]
+
+Falls die Ausgabe $> 0.5$ ist, sagt das Neuron \enquote{Ja, kauft ein Velo}.
+
+Für eine Person mit Geld und Sportbegeisterung:
+\[
+    0.8 \cdot 1 + 0.3 \cdot 1 = 1.1 > 0.5 \quad \Rightarrow \quad \text{Ja}
+\]
+\end{myexample}
+
+\begin{myexercise}[– Neuron berechnen]
+Verwenden Sie das Spielzeug-Neuron aus dem Beispiel ($w_1 = 0.8$, $w_2 = 0.3$,
+Schwelle $= 0.5$). Berechnen Sie die Ausgabe für die folgenden drei Personen und
+entscheiden Sie, ob das Neuron \enquote{Ja} oder \enquote{Nein} sagt:
+
+\begin{enumerate}
+    \item Person A: hat Geld (\texttt{1}), mag Sport nicht (\texttt{0}).
+    \item Person B: hat kein Geld (\texttt{0}), mag Sport (\texttt{1}).
+    \item Person C: hat kein Geld (\texttt{0}), mag Sport nicht (\texttt{0}).
+\end{enumerate}
+
+Diskutieren Sie: Ist dieses Modell sinnvoll? Was würde sich ändern, wenn man
+$w_2 = 0.6$ setzt?
+\end{myexercise}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Wie funktionieren LLMs? – Grosse Sprachmodelle}
+
+\begin{mydefinition}
+\textbf{Large Language Models (LLMs)} sind sehr grosse neuronale Netze, die auf
+riesigen Mengen von Textdaten trainiert wurden. Sie lernen, das \emph{nächste Wort}
+(oder genauer: das nächste \textbf{Token}) in einem Text vorherzusagen.
+
+Bekannte LLMs: GPT-4 (OpenAI), Claude (Anthropic), Gemini (Google), Llama (Meta).
+\end{mydefinition}
+
+\subsection{Token – die Bausteine eines LLMs}
+
+\begin{mydefinition}
+Ein \textbf{Token} ist die kleinste Einheit, mit der ein LLM arbeitet. Ein Token
+entspricht ungefähr 3–4 Buchstaben oder einem kurzen Wort. Das Wort
+\enquote{Informatik} könnte z.\,B. als ein einziges Token dargestellt werden,
+während \enquote{unvorstellbar} in mehrere Tokens aufgeteilt werden kann.
+\end{mydefinition}
+
+\begin{myexample}[– Nächstes Token vorhersagen]
+Das LLM sieht den Anfang eines Satzes:
+\begin{center}
+    \textit{Die Sonne scheint und der Himmel ist \ldots}
+\end{center}
+und muss das nächste wahrscheinlichste Token vorhersagen.
+Mögliche Kandidaten und ihre geschätzten Wahrscheinlichkeiten:
+
+\begin{center}
+\begin{tabular}{ll}
+    \toprule
+    \textbf{Token} & \textbf{Wahrscheinlichkeit} \\
+    \midrule
+    blau           & 45\,\%                       \\
+    wolkenlos      & 25\,\%                       \\
+    klar           & 15\,\%                       \\
+    strahlend      & 10\,\%                       \\
+    grün           & 5\,\%                        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Das LLM wählt (meistens) das wahrscheinlichste Token – aber durch einen
+\textbf{Temperatur}-Parameter kann auch ein weniger wahrscheinliches Token
+gewählt werden, um kreativere Antworten zu erhalten.
+\end{myexample}
+
+\begin{myexercise}[– Nächstes Wort vorhersagen]
+\textbf{Spielen Sie selbst LLM!} Lesen Sie die folgenden Satzanfänge und schreiben
+Sie auf, welches Wort Sie als nächstes für am wahrscheinlichsten halten.
+Vergleichen Sie Ihre Antworten in der Gruppe.
+
+\begin{enumerate}
+    \item \textit{Der kürzeste Weg zwischen zwei Punkten ist \ldots}
+    \item \textit{In der Schweiz ist es verboten, \ldots}
+    \item \textit{Das beliebteste soziale Netzwerk bei Jugendlichen ist \ldots}
+    \item \textit{Wenn ich morgen krank bin, werde ich \ldots}
+\end{enumerate}
+
+Warum können Menschen dieses Spiel spielen? Was sagt das über LLMs aus?
+\end{myexercise}
+
+\subsection{Training von LLMs – wie lernen sie?}
+
+\begin{myprocedure}[Training eines LLMs (vereinfacht)]
+\begin{enumerate}
+    \item \textbf{Daten sammeln}: Texte aus dem Internet, Bücher, Wikipedia
+          (Billionen von Wörtern).
+    \item \textbf{Vortraining} (self-supervised): Das Modell lernt, das nächste
+          Token vorherzusagen. Fehler werden durch \textbf{Backpropagation}
+          korrigiert – die Gewichte des Netzes werden angepasst.
+    \item \textbf{Finetuning mit menschlichem Feedback (RLHF)}: Menschen bewerten
+          Antworten. Das Modell lernt, hilfreichere, sicherere Antworten zu generieren.
+    \item \textbf{Einsatz}: Das fertige Modell beantwortet Fragen in einem Chat.
+\end{enumerate}
+\end{myprocedure}
+
+\begin{myremark}
+Das Training grosser LLMs dauert \textbf{Monate} und kostet \textbf{Millionen von
+Franken}. Es werden spezialisierte Chips (GPUs/TPUs) in riesigen Rechenzentren
+verwendet. Einmal trainiert, kann das Modell allerdings von Millionen von Personen
+gleichzeitig genutzt werden.
+\end{myremark}
+
+\begin{myexercise}[– Partnerübung: Was kann ein LLM (nicht)?]
+Testen Sie folgende Aufgaben mit einem schulkonformen KI-Tool (z.\,B. Fobizz oder Brian)
+und halten Sie das Ergebnis fest. Diskutieren Sie in Paaren:
+
+\begin{enumerate}
+    \item Bitten Sie die KI, ein Gedicht über den Zürichsee zu schreiben.
+    \item Fragen Sie nach dem aktuellen Wetter in Ihrer Stadt.
+    \item Bitten Sie die KI, eine schwierige Mathe-Gleichung zu lösen:
+          $3x^2 - 5x + 2 = 0$.
+    \item Fragen Sie: \enquote{Was ist Ihre Lieblingsfarbe?}
+\end{enumerate}
+
+\textbf{Reflexionsfragen}:
+\begin{itemize}
+    \item Bei welchen Aufgaben ist die KI stark / schwach?
+    \item Was kann ein LLM prinzipiell \emph{nicht} wissen? Warum?
+    \item Was bedeutet es, dass ein LLM \emph{kein} Bewusstsein hat?
+\end{itemize}
+\end{myexercise}
+
+\subsection{Das Kontextfenster}
+
+\begin{mydefinition}
+Das \textbf{Kontextfenster} (context window) bestimmt, wie viel Text ein LLM auf
+einmal \enquote{sehen} kann. Ältere Modelle hatten ein Fenster von wenigen tausend
+Tokens. Moderne Modelle (z.\,B. Gemini 1.5 Pro) verarbeiten bis zu 1 Million Tokens –
+das entspricht etwa 700 Buchseiten.
+\end{mydefinition}
+
+\begin{myremark}
+Was \emph{ausserhalb} des Kontextfensters liegt, \enquote{vergisst} das Modell
+vollständig. Ein LLM hat kein dauerhaftes Gedächtnis zwischen verschiedenen
+Konversationen (ausser es wird explizit per Tool implementiert).
+\end{myremark}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Wie unterscheidet sich KI von menschlichem Denken?}
+
+\begin{myexercise}[– Gruppenvergleich]
+Bearbeiten Sie in Vierergruppen folgende Aufgabe: Vergleichen Sie menschliches Denken
+und das \enquote{Denken} eines LLMs anhand der folgenden Kriterien.
+Füllen Sie die Tabelle aus:
+
+\begin{center}
+\begin{tabular}{p{4cm}p{4.5cm}p{4.5cm}}
+    \toprule
+    \textbf{Kriterium}           & \textbf{Mensch} & \textbf{LLM} \\
+    \midrule
+    Lernen                       & &                              \\
+    Gedächtnis                   & &                              \\
+    Kreativität                  & &                              \\
+    Fehler machen                & &                              \\
+    Emotionen                    & &                              \\
+    Selbstbewusstsein            & &                              \\
+    Aktualität der Informationen & &                              \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Präsentieren Sie Ihre Ergebnisse der Klasse in 2 Minuten.
+\end{myexercise}
+
+\begin{mychallenge}[Erkunde einen Tokenizer]
+Besuchen Sie den öffentlich zugänglichen Tokenizer von OpenAI:
+\begin{center}
+    \url{https://platform.openai.com/tokenizer}
+\end{center}
+Geben Sie verschiedene Texte ein (Deutsch, Englisch, Emojis, Code) und beobachten Sie,
+wie der Text in Tokens aufgeteilt wird.
+
+\begin{enumerate}
+    \item Welches Wort braucht die meisten Tokens?
+    \item Warum braucht englischer Text im Allgemeinen weniger Tokens als
+          gleichwertiger deutscher Text?
+    \item Was passiert mit Emojis?
+\end{enumerate}
+\end{mychallenge}
