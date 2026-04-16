@@ -80,7 +80,11 @@ def _plot_decision_boundary(clf, title: str, out_file: str) -> None:
     x_min, x_max = X["Lernzeit_h"].min() - 0.5, X["Lernzeit_h"].max() + 0.5
     y_min, y_max = X["Fehlzeiten"].min() - 1, X["Fehlzeiten"].max() + 1
     xx, yy = np.meshgrid(np.linspace(x_min, x_max, 300), np.linspace(y_min, y_max, 300))
-    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
+    grid = pd.DataFrame(
+        np.c_[xx.ravel(), yy.ravel()],
+        columns=["Lernzeit_h", "Fehlzeiten"],
+    )
+    Z = clf.predict(grid).reshape(xx.shape)
 
     plt.figure(figsize=(7, 5))
     plt.contourf(xx, yy, Z, alpha=0.25, cmap="coolwarm")
@@ -109,12 +113,13 @@ def plot_regression_prediction() -> None:
     model = LinearRegression()
     model.fit(X, y)
 
-    x_line = np.linspace(X.min().iloc[0], X.max().iloc[0], 100).reshape(-1, 1)
-    y_line = model.predict(x_line)
+    x_line = np.linspace(X.min().iloc[0], X.max().iloc[0], 100)
+    x_line_df = pd.DataFrame({"Wohnflaeche_m2": x_line})
+    y_line = model.predict(x_line_df)
 
     plt.figure(figsize=(7, 5))
     plt.scatter(X, y, label="Datenpunkte")
-    plt.plot(x_line, y_line, color="red", label="Regressionslinie")
+    plt.plot(x_line_df["Wohnflaeche_m2"], y_line, color="red", label="Regressionslinie")
     plt.xlabel("Wohnfläche (m²)")
     plt.ylabel("Preis (CHF)")
     plt.title("Prediction mit linearer Regression")
