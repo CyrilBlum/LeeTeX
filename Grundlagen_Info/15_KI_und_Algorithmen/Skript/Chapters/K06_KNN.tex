@@ -1,0 +1,72 @@
+\chapter{DL\,06 – k-Nearest Neighbors (optional)}
+
+\begin{myremark}
+Diese Doppellektion ist \textbf{optional}. Sie setzt DL\,01--02 voraus.
+KNN ist ein besonders intuitiver Algorithmus und eignet sich gut als Einstieg in
+datenbasiertes Denken.
+\end{myremark}
+
+\section{Grundidee: Klassifizieren durch Ähnlichkeit}
+
+\begin{mydefinition}[k-Nearest Neighbors (KNN)]
+Beim \textbf{KNN}-Verfahren wird ein neuer Datenpunkt nicht durch ein gelerntes Modell,
+sondern durch die \textbf{$k$ ähnlichsten Punkte} (Nachbarn) im Trainingsset klassifiziert.
+Die häufigste Klasse in der Nachbarschaft bestimmt die Vorhersage.
+\end{mydefinition}
+
+\begin{myexample}
+$k = 3$: Der neue Punkt hat zwei Nachbarn der Klasse \enquote{A} und einen der Klasse \enquote{B}.
+Vorhersage: \enquote{A}.
+\end{myexample}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{Grundlagen_Info/15_KI_und_Algorithmen/Figures/knn_boundary.pdf}
+    \caption{KNN-Entscheidungsgrenze für verschiedene Werte von $k$}
+    \label{fig:knn-boundary-15}
+\end{figure}
+
+\section{Distanzmasse}
+
+Die Ähnlichkeit wird über eine \textbf{Distanz} gemessen. Gängig ist die \textbf{euklidische Distanz}:
+\[
+d(a, b) = \sqrt{\sum_{i=1}^{n} (a_i - b_i)^2}
+\]
+
+\begin{mycaution}
+Wenn Features sehr unterschiedliche Wertebereiche haben (z.\,B. Alter vs.\ Einkommen),
+dominiert das Feature mit grösseren Werten die Distanz.
+\textbf{Normalisierung} (vgl.\ DL\,02) ist daher bei KNN besonders wichtig.
+\end{mycaution}
+
+\section{Wahl von $k$}
+
+\begin{myexercise}[Einfluss von $k$]
+Beschreiben Sie den Unterschied zwischen kleinem und grossem $k$:
+\begin{itemize}
+    \item Wann reagiert KNN sehr empfindlich auf Ausreisser?
+    \item Wann wird die Entscheidungsgrenze sehr \enquote{glatt}?
+    \item Was passiert bei $k = 1$? Und bei $k = N$ (alle Trainingspunkte)?
+\end{itemize}
+\end{myexercise}
+
+\begin{mychallenge}[Optimales $k$ finden]
+Testen Sie im Notebook $k = 1, 3, 5, 9, 15$ und dokumentieren Sie:
+\begin{enumerate}
+    \item Trainingsgenauigkeit
+    \item Testgenauigkeit
+    \item Visualisierung der Entscheidungsgrenze
+\end{enumerate}
+Begründen Sie Ihre Wahl des besten $k$.
+\end{mychallenge}
+
+\section{KNN für Regression}
+
+KNN kann auch für \textbf{Prediction} eingesetzt werden:
+Anstelle der häufigsten Klasse wird der \textbf{Durchschnitt} der $k$ Nachbar-Ausgabewerte
+als Vorhersage verwendet.
+
+\begin{myremark}[Notebook]
+Praktische Umsetzung inkl. Übungen:
+\href{\notebookbaseurl04_KNN_Classification.ipynb}{\texttt{04\_KNN\_Classification.ipynb}}
+\end{myremark}

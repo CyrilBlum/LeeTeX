@@ -1,50 +1,82 @@
-\chapter{Von Daten zu Entscheidungen: Classification und Prediction}
+\chapter{DL\,01 – Einführung: Von Daten zu Entscheidungen}
 
 \begin{myremark}
-In diesem Skript lernen Sie zentrale Verfahren des Machine Learnings kennen:
-\textbf{Entscheidungsbäume}, \textbf{Random Forest}, \textbf{Support Vector Machines (SVM)} und \textbf{k-Nearest Neighbors (KNN)} für \textbf{Classification} sowie lineare \textbf{Prediction} für Zahlenwerte.
+In diesem Skript lernen Sie zentrale Verfahren des \textbf{überwachten Maschinellen Lernens} kennen.
+Je nach verfügbarer Zeit und Schwerpunkt können einzelne Doppellektionen weggelassen werden –
+jede DL ist für sich abgeschlossen.
 \end{myremark}
 
-\section{Classification vs. Prediction}
+\section{Was ist Machine Learning?}
 
-\begin{mydefinition}[Classification]
-Bei der \textbf{Classification} wird ein Datenpunkt einer \textbf{Kategorie} zugeordnet, z.\,B. \enquote{bestanden / nicht bestanden}.
-\end{mydefinition}
-
-\begin{mydefinition}[Prediction (Regression)]
-Bei der \textbf{Prediction} wird ein \textbf{Zahlenwert} vorhergesagt, z.\,B. eine erwartete Wohnungsmiete.
+\begin{mydefinition}[Machine Learning]
+\textbf{Machine Learning (ML)} ist ein Teilgebiet der Künstlichen Intelligenz.
+Anstatt explizite Regeln zu programmieren, \textbf{lernt} ein ML-Modell
+Muster direkt aus Daten.
 \end{mydefinition}
 
 \begin{myexample}
 \begin{itemize}
-    \item Classification: Ist eine E-Mail Spam oder kein Spam?
-    \item Prediction: Wie hoch ist der Stromverbrauch nächsten Monat?
+    \item Statt zu programmieren \enquote{Wenn Wort \texttt{Gewinn} vorkommt, dann Spam},
+          lernt ein Modell selbst aus Tausenden von Beispiel-E-Mails.
+    \item Statt Regeln für Handschrift, lernt ein Modell aus Millionen beschrifteter Ziffernbilder.
 \end{itemize}
 \end{myexample}
 
-\section{Datenbasis und Notebook-Umgebung}
+\section{Classification vs. Prediction}
 
-Für dieses Skript stehen zwei Datensätze zur Verfügung:
+\begin{mydefinition}[Classification]
+Bei der \textbf{Classification} (Klassifikation) wird ein Datenpunkt einer
+\textbf{Kategorie} zugeordnet, z.\,B. \enquote{bestanden / nicht bestanden} oder
+\enquote{Spam / kein Spam}.
+\end{mydefinition}
+
+\begin{mydefinition}[Prediction (Regression)]
+Bei der \textbf{Prediction} (Regression) wird ein \textbf{kontinuierlicher Zahlenwert}
+vorhergesagt, z.\,B. eine Wohnungsmiete oder der Stromverbrauch nächsten Monat.
+\end{mydefinition}
+
+\begin{myexample}
 \begin{itemize}
-    \item \texttt{learning\_style\_classifier.csv} (Classification)
-    \item \texttt{apartment\_prices.csv} (Prediction)
+    \item \textbf{Classification:} Ist eine E-Mail Spam oder kein Spam?
+    \item \textbf{Prediction:} Wie hoch wird die Miete für eine 80-m\textsuperscript{2}-Wohnung sein?
 \end{itemize}
-
-Die Jupyter-Notebooks mit Beispielen und Übungen finden Sie im Ordner
-\texttt{Grundlagen\_Info/15\_KI\_und\_Algorithmen/Code/}.
+\end{myexample}
 
 \begin{myexercise}[Warm-up: Problemtyp erkennen]
-Ordnen Sie zu, ob es sich um Classification oder Prediction handelt:
+Ordnen Sie zu, ob es sich um \textbf{Classification} oder \textbf{Prediction} handelt:
 \begin{enumerate}
-    \item Vorhersage der Temperatur morgen um 14:00 Uhr
-    \item Erkennung, ob ein Bild eine Katze zeigt
-    \item Schätzung des Verkaufspreises eines Velos
-    \item Erkennung, ob eine Transaktion verdächtig ist
+    \item Vorhersage der Aussentemperatur morgen um 14:00 Uhr
+    \item Erkennung, ob ein Bild eine Katze oder einen Hund zeigt
+    \item Schätzung des Wiederverkaufspreises eines Fahrrads
+    \item Erkennung, ob eine Transaktion betrügerisch ist
+    \item Prognose der Anzahl verkaufter Tickets für ein Konzert
+    \item Einordnung einer Filmkritik als positiv oder negativ
 \end{enumerate}
 \begin{myanswer}
-Prediction: 1, 3 \hspace{1cm} Classification: 2, 4
+Prediction: 1, 3, 5 \hspace{1cm} Classification: 2, 4, 6
 \end{myanswer}
 \end{myexercise}
+
+\section{Überblick: Modelle in diesem Skript}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3.8cm}p{2.4cm}p{2.2cm}}
+\toprule
+\textbf{Modell} & \textbf{Aufgabe} & \textbf{DL} \\
+\midrule
+Entscheidungsbaum & Classification & 03 \\
+Random Forest & Classification & 04 \\
+Support Vector Machine & Classification & 05\,(opt.) \\
+k-Nearest Neighbors & Classification & 06\,(opt.) \\
+Lineare Regression & Prediction & 07\,(opt.) \\
+Neuronales Netz & Beides & 08\,(opt.) \\
+\bottomrule
+\end{tabular}
+\caption{Modelle und ihre Doppellektionen}
+\label{tab:modelle-uebersicht-15}
+\end{table}
 
 \begin{figure}[H]
     \centering
@@ -52,3 +84,15 @@ Prediction: 1, 3 \hspace{1cm} Classification: 2, 4
     \caption{Übersicht: typische Modelle für Classification und Prediction}
     \label{fig:model-overview-15}
 \end{figure}
+
+\section{Datenbasis und Arbeitsumgebung}
+
+Für dieses Skript stehen zwei Datensätze zur Verfügung:
+\begin{itemize}
+    \item \texttt{learning\_style\_classifier.csv} (Classification)
+    \item \texttt{apartment\_prices.csv} (Prediction)
+\end{itemize}
+
+Die Jupyter-Notebooks befinden sich im Ordner
+\texttt{Grundlagen\_Info/15\_KI\_und\_Algorithmen/Code/}.
+Jede DL hat ein zugehöriges Notebook.

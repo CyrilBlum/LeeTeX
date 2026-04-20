@@ -1,0 +1,121 @@
+\chapter{DL\,08 – Neuronale Netze (optional)}
+
+\begin{myremark}
+Diese Doppellektion ist \textbf{optional} und anspruchsvoller als die übrigen.
+Sie setzt DL\,01--02 voraus. Mathematische Details (Backpropagation) werden
+konzeptuell behandelt, nicht formal bewiesen.
+\end{myremark}
+
+\section{Biologische Inspiration und das Perceptron}
+
+\begin{mydefinition}[Perceptron]
+Das \textbf{Perceptron} ist das einfachste künstliche Neuron.
+Es berechnet eine gewichtete Summe seiner Eingaben und gibt 0 oder 1 aus:
+\[
+\hat{y} = f\!\left(\sum_{i=1}^{n} w_i x_i + b\right)
+\]
+wobei $f$ eine \textbf{Aktivierungsfunktion} ist (z.\,B. Schwellenwert-Funktion).
+\end{mydefinition}
+
+\begin{myexample}
+Ein einzelnes Perceptron kann \enquote{UND} oder \enquote{ODER} lernen,
+aber \textbf{nicht} XOR – dafür braucht es mehrere Schichten.
+\end{myexample}
+
+\section{Mehrschichtiges Netz (MLP)}
+
+\begin{mydefinition}[Multilayer Perceptron (MLP)]
+Ein \textbf{MLP} besteht aus mehreren Schichten:
+\begin{itemize}
+    \item \textbf{Eingabeschicht:} nimmt die Features auf
+    \item \textbf{Versteckte Schichten:} lernen interne Repräsentationen
+    \item \textbf{Ausgabeschicht:} gibt die Vorhersage aus
+\end{itemize}
+\end{mydefinition}
+
+\begin{myexercise}[Architektur eines MLP]
+Ein MLP hat 3 Eingabe-Features, zwei versteckte Schichten mit je 8 Neuronen
+und eine Ausgabe.
+\begin{enumerate}
+    \item Zeichnen Sie (schematisch) die Netzarchitektur.
+    \item Wie viele Gewichte (Parameters) hat die Verbindung von Eingabeschicht zur ersten
+          versteckten Schicht?
+\end{enumerate}
+\begin{myanswer}
+2.\ $3 \times 8 = 24$ Gewichte (plus 8 Bias-Terme = 32 Parameter).
+\end{myanswer}
+\end{myexercise}
+
+\section{Aktivierungsfunktionen}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{2.8cm}p{4.2cm}p{4.2cm}}
+\toprule
+\textbf{Name} & \textbf{Formel} & \textbf{Verwendung} \\
+\midrule
+Sigmoid & $\sigma(z) = \frac{1}{1+e^{-z}}$ & Ausgabe (binäre Klass.) \\
+ReLU & $\text{ReLU}(z) = \max(0, z)$ & Versteckte Schichten \\
+Softmax & $\text{Softmax}(z_k) = \frac{e^{z_k}}{\sum_j e^{z_j}}$ & Ausgabe (Mehrklassen) \\
+\bottomrule
+\end{tabular}
+\caption{Häufige Aktivierungsfunktionen}
+\label{tab:aktivierung-15}
+\end{table}
+
+\section{Lernen: Backpropagation (konzeptuell)}
+
+\begin{mydefinition}[Backpropagation]
+Das Netz lernt durch \textbf{Gradientenabstieg}:
+\begin{enumerate}
+    \item Vorhersage berechnen (\emph{Forward Pass})
+    \item Fehler (Loss) messen
+    \item Fehler rückwärts durch das Netz propagieren (\emph{Backpropagation})
+    \item Gewichte in Richtung kleinerer Fehler anpassen
+\end{enumerate}
+Dieser Prozess wiederholt sich über viele \textbf{Epochen}.
+\end{mydefinition}
+
+\begin{myexercise}[Backpropagation intuitiv]
+Erklären Sie mit eigenen Worten:
+\begin{enumerate}
+    \item Warum müssen die Gewichte zuerst zufällig initialisiert werden?
+    \item Was passiert, wenn die \textbf{Lernrate} (learning rate) zu gross gewählt wird?
+    \item Was bedeutet es, wenn der Loss nach jeder Epoche sinkt?
+\end{enumerate}
+\end{myexercise}
+
+\section{Deep Learning}
+
+\begin{myremark}
+\textbf{Deep Learning} bezeichnet neuronale Netze mit \emph{vielen} versteckten Schichten.
+Sie sind besonders leistungsfähig bei Bildern, Sprache und Texten,
+benötigen aber \textbf{viele Daten} und \textbf{hohe Rechenleistung}.
+\end{myremark}
+
+\section{Grenzen: Black Box, Datenbedarf, Energie}
+
+\begin{myexercise}[Kritische Reflexion]
+Diskutieren Sie:
+\begin{enumerate}
+    \item Warum nennt man neuronale Netze oft eine \enquote{Black Box}?
+    \item In welchen Anwendungsfeldern ist diese Intransparenz problematisch?
+    \item Welche Alternative(n) würden Sie in diesen Fällen bevorzugen und warum?
+\end{enumerate}
+\end{myexercise}
+
+\begin{mychallenge}[Neuronales Netz trainieren]
+Trainieren Sie im Notebook ein einfaches MLP mit \texttt{sklearn.neural\_network.MLPClassifier}
+auf dem Lernstil-Datensatz:
+\begin{itemize}
+    \item Versuchen Sie verschiedene Architekturen (\texttt{hidden\_layer\_sizes}).
+    \item Vergleichen Sie die Testgenauigkeit mit dem Random Forest aus DL\,04.
+    \item Visualisieren Sie den Loss-Verlauf über die Trainingsepochen.
+\end{itemize}
+\end{mychallenge}
+
+\begin{myremark}[Notebook]
+Praktische Umsetzung:
+\href{\notebookbaseurl06_Neuronale_Netze.ipynb}{\texttt{06\_Neuronale\_Netze.ipynb}}
+\end{myremark}
