@@ -1,0 +1,108 @@
+\chapter{Naive Bayes: Filterung und Klassifikation}
+\label{chap:naivebayes}
+
+\begin{myremark}[Algorithmusart in diesem Kapitel]
+Funktionsart: \textbf{Filterung} (und Klassifikation). \\
+Umsetzungsart: \textbf{datengetrieben}, in einfachen Fällen auch regelnah interpretierbar.
+\end{myremark}
+
+\begin{myremark}
+Naive Bayes ist ein klassischer,
+sehr schneller Algorithmus für Text- und Spam-Filterung.
+Er eignet sich besonders, wenn viele Merkmale vorliegen (z.\,B. Wörter).
+\end{myremark}
+
+\section{Bayes-Idee in einem Satz}
+
+\begin{mydefinition}[Bayes-Theorem]
+Für Klasse $C$ und Merkmale $x$ gilt:
+\[
+P(C\mid x)=\frac{P(x\mid C)\,P(C)}{P(x)}
+\]
+
+Naive Bayes schätzt diese Wahrscheinlichkeit für jede Klasse und wählt
+die Klasse mit dem höchsten Posterior $P(C\mid x)$.
+\end{mydefinition}
+
+\section{Die \enquote{naive} Annahme}
+
+\begin{mydefinition}[Bedingte Unabhängigkeit]
+Naive Bayes nimmt an, dass die Merkmale innerhalb einer Klasse
+\textbf{bedingt unabhängig} sind:
+\[
+P(x_1,\ldots,x_n\mid C) \approx \prod_{i=1}^n P(x_i\mid C)
+\]
+Diese Annahme ist oft nicht exakt richtig, funktioniert in der Praxis
+aber erstaunlich gut.
+\end{mydefinition}
+
+\begin{mycaution}
+Wenn Merkmale stark voneinander abhängen, können Wahrscheinlichkeiten
+systematisch verzerrt sein. Daher sollten Ergebnisse immer validiert werden
+(vgl. Kapitel~\cref{chap:datenvorbereitung} mit Train-Test-Split und Metriken).
+\end{mycaution}
+
+\section{Mini-Beispiel: Spamfilter}
+
+\begin{myexercise}[Posterior vergleichen]
+Angenommen:
+\[
+P(\text{Spam})=0.4,\quad P(\text{KeinSpam})=0.6
+\]
+und für das Wort \enquote{gratis}:
+\[
+P(\text{gratis}\mid\text{Spam})=0.5,\quad
+P(\text{gratis}\mid\text{KeinSpam})=0.1
+\]
+
+\begin{enumerate}
+    \item Berechnen Sie die unnormalisierten Werte
+          $P(\text{gratis}\mid\text{Spam})P(\text{Spam})$ und
+          $P(\text{gratis}\mid\text{KeinSpam})P(\text{KeinSpam})$.
+    \item Welche Klasse ist wahrscheinlicher?
+\end{enumerate}
+\begin{myanswer}
+Spam: $0.5\cdot0.4=0.20$. \\
+KeinSpam: $0.1\cdot0.6=0.06$. \\
+Damit ist \enquote{Spam} wahrscheinlicher.
+\end{myanswer}
+\end{myexercise}
+
+\section{Laplace-Glättung}
+
+\begin{mydefinition}[Smoothing]
+Damit unbekannte Wörter nicht zu Wahrscheinlichkeit 0 führen,
+verwendet man oft \textbf{Laplace-Glättung}:
+\[
+P(w\mid C)=\frac{\text{count}(w,C)+\alpha}{\sum_v \text{count}(v,C)+\alpha\cdot |V|}
+\]
+mit $\alpha>0$ und Vokabulargrösse $|V|$.
+\end{mydefinition}
+
+\begin{myexercise}[Warum Glättung?]
+Erklären Sie anhand einer konkreten Beispiels-Berechnung, weshalb ohne Glättung ein einziges unbekanntes Wort
+in einer E-Mail den gesamten Klassen-Score dominieren kann.
+\begin{myanswer}
+Ohne Glättung würde ein unbekanntes Wort $w$ in Klasse $C$ zu $P(w\mid C)=0$ führen. Da Naive Bayes die Wahrscheinlichkeiten multipliziert, würde dies den gesamten Score für Klasse $C$ auf 0 setzen, unabhängig von anderen starken Indikatoren. Mit Glättung wird stattdessen eine kleine Wahrscheinlichkeit zugewiesen, wodurch der Score nicht vollständig eliminiert wird.
+\end{myanswer}
+\end{myexercise}
+
+\section{Reflexion: Chancen und Risiken}
+
+\begin{mychallenge}[Naive Bayes im Moderationssystem]
+Ein soziales Netzwerk filtert problematische Kommentare mit Naive Bayes.
+Diskutieren Sie:
+\begin{enumerate}
+    \item Welche False-Positive- und False-Negative-Fälle sind kritisch?
+    \item Welche Metrik ist wichtiger: Precision oder Recall?
+    \item Wie könnte man Transparenz gegenüber Nutzenden erhöhen?
+\end{enumerate}
+
+\begin{myanswer}
+    \begin{enumerate}
+        \item Falsch positive Fälle (harmlos als problematisch klassifiziert) können zu Frustration führen, während falsch negative Fälle (problematisch als harmlos klassifiziert) Schaden anrichten können. Beide sind kritisch, aber falsch negative Fälle könnten schwerwiegender sein, da sie schädliche Inhalte durchlassen.
+        \item In diesem Kontext könnte Recall wichtiger sein, um sicherzustellen, dass möglichst viele problematische Kommentare erkannt werden, auch wenn das bedeutet, dass einige harmlose Kommentare fälschlicherweise blockiert werden.
+        \item Transparenz könnte durch klare Richtlinien, Erklärungen zu den Filterkriterien und Möglichkeiten für Nutzer, Entscheidungen anzufechten oder Feedback zu geben, erhöht werden.
+    \end{enumerate}
+\end{myanswer}
+\end{mychallenge}

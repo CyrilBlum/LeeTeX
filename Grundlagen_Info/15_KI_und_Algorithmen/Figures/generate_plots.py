@@ -27,18 +27,6 @@ def _load_classification_data():
     return X, y
 
 
-def plot_model_overview() -> None:
-    categories = ["Classification", "Prediction"]
-    values = [4, 1]
-    plt.figure(figsize=(6, 4))
-    plt.bar(categories, values, color=["#4C72B0", "#55A868"])
-    plt.ylabel("Anzahl behandelter Modelle")
-    plt.title("Modellübersicht im Skript 15")
-    plt.tight_layout()
-    plt.savefig(FIG_DIR / "model_overview.pdf")
-    plt.close()
-
-
 def plot_decision_tree() -> None:
     X, y = _load_classification_data()
     model = DecisionTreeClassifier(max_depth=3, random_state=42)
@@ -130,7 +118,6 @@ def plot_regression_prediction() -> None:
 
 
 def main() -> None:
-    plot_model_overview()
     plot_decision_tree()
     plot_random_forest_importance()
     plot_svm_boundary()

@@ -1,0 +1,76 @@
+\chapter{Support Vector Machine (Bonus-Vertiefung)}
+\label{chap:svm}
+
+\begin{myremark}[Algorithmusart in diesem Kapitel]
+Funktionsart: \textbf{Klassifikation}. \\
+Umsetzungsart: \textbf{datengetrieben}.
+\end{myremark}
+
+\begin{myremark}
+Diese Bonus-Vertiefung ist \textbf{optional}. Sie setzt Kapitel~\cref{chap:einfuehrung} und Kapitel~\cref{chap:datenvorbereitung} voraus.
+\end{myremark}
+
+\section{Grundidee: Die optimale Trennebene}
+
+\begin{mydefinition}[Support Vector Machine]
+Eine \textbf{SVM} sucht eine Trennlinie (in 2D) bzw. Trennebene (in höheren Dimensionen),
+die zwei Klassen mit möglichst \textbf{grossem Rand (Margin)} trennt.
+Die Datenpunkte, die am nächsten an der Trennebene liegen, heissen \textbf{Support Vectors}.
+\end{mydefinition}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{Grundlagen_Info/15_KI_und_Algorithmen/Figures/svm_boundary.pdf}
+    \caption{SVM-Entscheidungsgrenze mit Margin und Support Vectors}
+    \label{fig:svm-boundary-15}
+\end{figure}
+
+\section{Warum der Margin wichtig ist}
+
+\begin{myexercise}[SVM intuitiv]
+Betrachten Sie \cref{fig:svm-boundary-15}:
+\begin{enumerate}
+    \item Warum kann ein grosser Margin helfen, neue Datenpunkte besser zu klassifizieren?
+          Erklären Sie in 3--4 Sätzen.
+    \item Was passiert mit dem Margin, wenn ein Ausreisser direkt an der Grenze liegt?
+\end{enumerate}
+\end{myexercise}
+
+\section{Soft Margin und der Parameter \texorpdfstring{$C$}{C}}
+
+In der Praxis sind Daten selten perfekt trennbar.
+Mit dem Parameter $C$ wird ein Kompromiss gesteuert:
+\begin{itemize}
+    \item \textbf{Grosses $C$:} enger Margin, wenige Fehler im Training (Overfitting-Risiko).
+    \item \textbf{Kleines $C$:} breiter Margin, mehr Fehler erlaubt (Underfitting-Risiko).
+\end{itemize}
+
+\section{Kernel-Trick (konzeptuell)}
+
+\begin{mydefinition}[Kernel-Trick]
+Wenn die Klassen nicht linear trennbar sind, bildet der \textbf{Kernel-Trick}
+die Daten in einen höher\-dimensionalen Raum ab, wo sie trennbar werden –
+ohne die Transformation explizit zu berechnen.
+Häufig verwendete Kernel: \textbf{RBF} (Radial Basis Function), Polynom.
+\end{mydefinition}
+
+\begin{myexercise}[Kernel und Dimensionserhöhung]
+Recherchieren Sie den RBF-Kernel und erklären Sie an einem Beispiel,
+warum zwei Klassen, die im 2D-Raum nicht linear trennbar sind,
+in einem höherdimensionalen Raum trennbar sein können.
+\end{myexercise}
+
+\begin{mychallenge}[SVM vs.\ Random Forest]
+Vergleichen Sie SVM und Random Forest bezüglich:
+\begin{itemize}
+    \item Interpretierbarkeit
+    \item Skalierbarkeit (grosse Datensätze)
+    \item Umgang mit vielen Features
+\end{itemize}
+Begründen Sie Ihre Aussagen mit Notebook-Experimenten.
+\end{mychallenge}
+
+\begin{myremark}[Notebook]
+Praktische Umsetzung inkl. Übungen:
+\href{\notebookbaseurl03_SVM_Classification.ipynb}{\texttt{03\_SVM.ipynb}}
+\end{myremark}

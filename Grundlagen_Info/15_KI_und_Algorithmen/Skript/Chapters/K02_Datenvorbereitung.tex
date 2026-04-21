@@ -1,0 +1,143 @@
+\chapter{Datenvorbereitung und Evaluation}
+\label{chap:datenvorbereitung}
+
+\begin{myremark}[Algorithmusart in dieser DL]
+Funktionsart: \textbf{Methodik- und Evaluationsbaustein} für Klassifikation, Filterung und andere datengetriebene Verfahren. \\
+Umsetzungsart: \textbf{algorithmusübergreifend}, kein eigener Vorhersagealgorithmus.
+\end{myremark}
+
+\begin{myremark}
+Bevor ein Modell trainiert werden kann, müssen die Daten vorbereitet werden.
+Ausserdem brauchen wir Werkzeuge, um die Qualität eines Modells zu messen.
+\end{myremark}
+
+\section{Trainings- und Testdaten}
+
+\begin{mydefinition}[Train-Test-Split]
+Die Daten werden in einen \textbf{Trainings\-datensatz} und einen
+\textbf{Testdatensatz} aufgeteilt (typisch: 80\,\% / 20\,\%).
+Das Modell wird \emph{nur} mit den Trainingsdaten trainiert und
+anschliessend auf den \emph{unseen} Testdaten bewertet.
+\end{mydefinition}
+
+\begin{mycaution}
+Wer das Modell auch auf den Trainingsdaten bewertet, misst lediglich,
+wie gut das Modell \enquote{auswendig gelernt} hat –
+das gibt keinen Aufschluss über die echte Leistung auf neuen Daten.
+\end{mycaution}
+
+\begin{myexercise}[Train-Test-Split nachvollziehen]
+Ein Datensatz enthält 500 Zeilen.
+\begin{enumerate}
+    \item Wie viele Zeilen enthält der Trainings- bzw. der Testdatensatz bei einem 80/20-Split?
+    \item Warum darf man die Testdaten \emph{nicht} für die Modellentwicklung verwenden?
+    \item Was ist \emph{Datenleckage} (data leakage) und warum ist sie problematisch?
+\end{enumerate}
+\begin{myanswer}
+1.\ 400 Training / 100 Test \quad
+2.\ Sonst misst man nur, ob das Modell die Testdaten auswendig kennt, nicht ob es generalisiert. \quad
+3.\ Information aus dem Testset fliesst in das Training – der gemessene Fehler unterschätzt den echten Fehler.
+\end{myanswer}
+\end{myexercise}
+
+\section{Merkmale und Zielvariable}
+
+\begin{mydefinition}[Features und Label]
+\begin{itemize}
+    \item \textbf{Features} (Merkmale): die Eingabevariablen $x_1, x_2, \ldots, x_n$
+    \item \textbf{Label} (Zielvariable): der Ausgabewert $y$, den das Modell vorhersagen soll
+\end{itemize}
+\end{mydefinition}
+
+\begin{myexample}
+Beim Datensatz \texttt{learning\_style\_classifier.csv}:
+\begin{itemize}
+    \item Features: Lernzeit, Schlafstunden, Anzahl Wiederholungen
+    \item Label: Lernstil (\enquote{visuell}, \enquote{auditiv}, \enquote{kinästhetisch})
+\end{itemize}
+\end{myexample}
+
+\section{Normalisierung}
+
+\begin{mydefinition}[Min-Max-Normalisierung]
+Features mit sehr unterschiedlichen Wertebereichen können Modelle verzerren.
+Die \textbf{Min-Max-Normalisierung} skaliert alle Werte auf $[0,\,1]$:
+\[
+x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}}
+\]
+\end{mydefinition}
+
+\begin{myexercise}[Normalisierung berechnen]
+Gegeben: Lernzeiten $\{2, 4, 6, 8, 10\}$ Stunden.
+\begin{enumerate}
+    \item Normalisieren Sie alle Werte mit Min-Max.
+    \item Welcher Wert entspricht nach der Normalisierung dem Wert 6?
+\end{enumerate}
+\begin{myanswer}
+$x_{\min}=2,\ x_{\max}=10$: 
+$\{0,\; 0.25,\; 0.5,\; 0.75,\; 1.0\}$. 
+Der Wert 6 wird zu $0.5$.
+\end{myanswer}
+\end{myexercise}
+
+\section{Gütemasse für Klassifikation}
+
+\begin{mydefinition}[Konfusionsmatrix]
+Die \textbf{Konfusionsmatrix} zeigt, wie oft das Modell richtig und falsch klassifiziert hat:
+
+\begin{center}
+\begin{tabular}{cc|cc}
+ & & \multicolumn{2}{c}{\textbf{Vorhergesagt}} \\
+ & & Positiv & Negativ \\
+\hline
+\multirow{2}{*}{\textbf{Tatsächlich}} & Positiv & TP & FN \\
+ & Negativ & FP & TN \\
+\end{tabular}
+\end{center}
+\end{mydefinition}
+
+\begin{mydefinition}[Accuracy, Precision, Recall]
+\[
+\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+\qquad
+\text{Precision} = \frac{TP}{TP + FP}
+\qquad
+\text{Recall} = \frac{TP}{TP + FN}
+\]
+
+Die \textbf{Accuracy} misst die Gesamtgenauigkeit des Modells.
+Die \textbf{Precision} misst, wie viele der als positiv vorhergesagten Fälle tatsächlich positiv sind.
+Der \textbf{Recall} misst, wie viele der tatsächlich positiven Fälle korrekt erkannt wurden.
+
+Die Begriffe ``Sensitivität'' und ``Spezifizität'' werden manchmal synonym zu Recall bzw. Precision verwendet.
+\end{mydefinition}
+
+\begin{myexercise}[Metriken berechnen]
+Ein Spam-Filter klassifiziert 200 E-Mails.
+Die Konfusionsmatrix ergibt: 
+\begin{center}
+\begin{tabular}{cc|cc}
+ & & \multicolumn{2}{c}{\textbf{Vorhergesagt}} \\
+ & & Spam & Kein Spam \\
+\hline
+\multirow{2}{*}{\textbf{Tatsächlich}} & Spam & 80 & 20 \\
+ & Kein Spam & 10 & 90 \\
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Berechnen Sie Accuracy, Precision und Recall.
+    \item Warum ist Recall besonders wichtig, wenn es darum geht, keinen Spam zu verpassen?
+\end{enumerate}
+\begin{myanswer}
+Accuracy $= \frac{80+90}{200} = 0.85$; \quad
+Precision $= \frac{80}{90} \approx 0.89$; \quad
+Recall $= \frac{80}{100} = 0.80$. \\
+Ein hoher Recall stellt sicher, dass möglichst wenig Spam als \enquote{kein Spam} durchrutscht (wenig FN).
+\end{myanswer}
+\end{myexercise}
+
+\begin{myremark}[Notebook]
+Praktische Umsetzung:
+\href{\notebookbaseurl00_Datenvorbereitung.ipynb}{\texttt{00\_Datenvorbereitung.ipynb}}
+\end{myremark}
