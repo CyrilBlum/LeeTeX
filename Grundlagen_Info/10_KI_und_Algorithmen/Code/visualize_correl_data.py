@@ -11,7 +11,7 @@ def vis_correl_data(df, x, y, file_name):
     plt.ylabel(y)
     plt.grid(True)
     plt.savefig(
-        "Grundlagen_Info/10_Aus_Daten_Lernen/Figures/" + file_name + ".pdf",
+        "Grundlagen_Info/10_KI_und_Algorithmen/Figures/" + file_name + ".pdf",
         bbox_inches="tight",
     )  # Save the plot to a PDF file with no white margins
     plt.tight_layout()

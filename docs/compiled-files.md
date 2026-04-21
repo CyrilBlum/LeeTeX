@@ -322,7 +322,7 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Aus_Daten_Lernen/Skript_mit_loesungen/output_book_mit_loesungen_Aus_Daten_Lernen.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Aus Daten Lernen</a></li>
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Skript_mit_loesungen/output_book_mit_loesungen_KI_und_Algorithmen.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Aus Daten Lernen</a></li>
 </ul>
 
 </div>
@@ -332,7 +332,7 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Aus_Daten_Lernen/Skript_ohne_loesungen/output_book_ohne_loesungen_Aus_Daten_Lernen.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Aus Daten Lernen</a></li>
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Skript_ohne_loesungen/output_book_ohne_loesungen_KI_und_Algorithmen.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Aus Daten Lernen</a></li>
 </ul>
 
 </div>
@@ -345,7 +345,7 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <summary class="pdf-tree-summary"><span class="pdf-tree-folder">correlation causation</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Aus_Daten_Lernen/Slides/correlation_causation/output_beamer_correlation_causation.pdf" target="_blank" rel="noopener">Folien: correlation causation</a></li>
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Slides/correlation_causation/output_beamer_correlation_causation.pdf" target="_blank" rel="noopener">Folien: correlation causation</a></li>
 </ul>
 
 </div>
@@ -355,7 +355,7 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <summary class="pdf-tree-summary"><span class="pdf-tree-folder">linear regression</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Aus_Daten_Lernen/Slides/linear_regression/output_beamer_linear_regression.pdf" target="_blank" rel="noopener">Folien: linear regression</a></li>
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Slides/linear_regression/output_beamer_linear_regression.pdf" target="_blank" rel="noopener">Folien: linear regression</a></li>
 </ul>
 
 </div>
@@ -365,7 +365,7 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <summary class="pdf-tree-summary"><span class="pdf-tree-folder">markov appendix</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Aus_Daten_Lernen/Slides/markov_appendix/output_beamer_markov_appendix.pdf" target="_blank" rel="noopener">Folien: markov appendix</a></li>
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Slides/markov_appendix/output_beamer_markov_appendix.pdf" target="_blank" rel="noopener">Folien: markov appendix</a></li>
 </ul>
 
 </div>
@@ -375,7 +375,7 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <summary class="pdf-tree-summary"><span class="pdf-tree-folder">markov chains</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Aus_Daten_Lernen/Slides/markov_chains/output_beamer_markov_chains.pdf" target="_blank" rel="noopener">Folien: markov chains</a></li>
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Slides/markov_chains/output_beamer_markov_chains.pdf" target="_blank" rel="noopener">Folien: markov chains</a></li>
 </ul>
 
 </div>

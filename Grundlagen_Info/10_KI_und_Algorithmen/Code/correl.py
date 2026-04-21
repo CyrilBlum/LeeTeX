@@ -120,7 +120,7 @@ def visualize_normalized_data(df_correl, normalize=True, save=True, add_mean=Tru
     plt.legend()
     if save:
         plt.savefig(
-            "Grundlagen_Info/10_Aus_Daten_Lernen/Figures/polizei_vs_kriminalitaet_correl"
+            "Grundlagen_Info/10_KI_und_Algorithmen/Figures/polizei_vs_kriminalitaet_correl"
             + ("_norm" if normalize else "")
             + ("_mean" if add_mean and not normalize else "")
             + ".pdf",
@@ -134,7 +134,7 @@ def visualize_normalized_data(df_correl, normalize=True, save=True, add_mean=Tru
 if __name__ == "__main__":
     df_pol = generiere_korrelationsdaten("polizei_vs_kriminalitaet", n=20)
     df_pol.to_csv(
-        "Grundlagen_Info/10_Aus_Daten_Lernen/Code/polizei_vs_kriminalitaet.csv",
+        "Grundlagen_Info/10_KI_und_Algorithmen/Code/polizei_vs_kriminalitaet.csv",
         index=False,
     )
 

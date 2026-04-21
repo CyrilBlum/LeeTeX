@@ -212,7 +212,7 @@ book_topics=(
     # "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
     "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
     "Tabellenkalkulation:Grundlagen_Info/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
-    "KI_und_Algorithmen:Grundlagen_Info/10_Aus_Daten_Lernen/Skript/Skript.tex"
+    "KI_und_Algorithmen:Grundlagen_Info/10_KI_und_Algorithmen/Skript/Skript.tex"
     "KI_und_Prompting:Grundlagen_Info/14_KI_und_Prompting/Skript/Skript.tex"
     
     # Ergänzungsfach Informatik
@@ -318,10 +318,10 @@ beamer_topics=(
     "Netzwerke_L00:Grundlagen_Info/07_Netzwerke/Slides/00_Netzwerke_Geschichte"
     "Netzwerke_L01:Grundlagen_Info/07_Netzwerke/Slides/01_Netzwerke_Intro" 
     "Netzwerke_L02:Grundlagen_Info/07_Netzwerke/Slides/02_Netzwerke_Sockets" 
-    "correlation_causation:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/correlation_causation"
-    "linear_regression:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/linear_regression"
-    "markov_chains:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_chains"
-    "markov_appendix:Grundlagen_Info/10_Aus_Daten_Lernen/Slides/markov_appendix"
+    "correlation_causation:Grundlagen_Info/10_KI_und_Algorithmen/Slides/correlation_causation"
+    "linear_regression:Grundlagen_Info/10_KI_und_Algorithmen/Slides/linear_regression"
+    "markov_chains:Grundlagen_Info/10_KI_und_Algorithmen/Slides/markov_chains"
+    "markov_appendix:Grundlagen_Info/10_KI_und_Algorithmen/Slides/markov_appendix"
 
     # Ergänzungsfach Informatik #
     "complexity:EF/Complexity/complexity"
