@@ -1,0 +1,131 @@
+\chapter{Priorisierung: Gewichtete Rankings und PageRank}
+ \label{chap:priorisierung}
+
+\begin{myremark}[Algorithmusart in diesem Kapitel]
+Funktionsart: \textbf{Priorisierung}. \\
+Umsetzungsart: \textbf{regelbasiert und datengetrieben}.
+\end{myremark}
+
+\begin{myremark}
+Dieses Kapitel behandelt Algorithmen, die nicht primär Kategorien
+oder Zahlen vorhersagen, sondern Elemente in eine \textbf{Reihenfolge} bringen.
+\end{myremark}
+
+\section{Grundidee: Ordnen statt klassifizieren}
+
+Bei einer Priorisierung wird nicht gefragt \enquote{Welche Klasse?} oder \enquote{Welcher Wert?},
+sondern \enquote{Was soll zuerst kommen?}. Das Ergebnis ist eine \textbf{Rangliste}.
+
+Typische Beispiele sind Suchmaschinen, Newsfeeds, Lernplattformen oder Support-Tickets.
+Die Qualität eines Priorisierungsalgorithmus hängt davon ab, wie sinnvoll die Reihenfolge ist.
+
+\section{Gewichtete Priorisierung}
+
+\begin{mydefinition}[Gewichtete Priorisierung]
+Bei einer gewichteten Priorisierung bekommt jedes Kriterium ein \textbf{Gewicht}.
+Aus den Teilwerten $z_1, z_2, \ldots, z_n$ und Gewichten $w_1, w_2, \ldots, w_n$ entsteht ein Score:
+\[
+\text{Score}(x) = \sum_{i=1}^{n} w_i z_i
+\]
+Oft gilt $\sum_i w_i = 1$ und alle Teilwerte sind auf $[0,1]$ normiert.
+\end{mydefinition}
+
+\begin{mycaution}
+Wenn Merkmale unterschiedliche Skalen haben, verzerren grosse Zahlen die Rangliste.
+Darum müssen die Werte vor dem Zusammenfassen oft normalisiert werden.
+Für negative Kriterien wie \enquote{Aufwand} oder \enquote{Kosten} wird der Wert invertiert,
+z.\,B. durch $1-z$.
+\end{mycaution}
+
+\begin{myexample}
+Drei Quellen für ein Schulprojekt werden nach vier Kriterien bewertet:
+Relevanz, Aktualität, Vertrauenswürdigkeit und geringer Aufwand.
+Die Gewichte seien $0.40$, $0.25$, $0.25$ und $0.10$.
+\end{myexample}
+
+\begin{myexercise}[Gewichtete Scores berechnen]
+Drei Lernquellen wurden bereits auf $[0,1]$ normiert:
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Quelle & Relevanz & Aktualität & Vertrauen & Aufwand \\
+\midrule
+A & 0.85 & 0.50 & 0.75 & 0.30 \\
+B & 0.75 & 0.85 & 0.70 & 0.20 \\
+C & 0.80 & 0.65 & 0.95 & 0.60 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Berechnen Sie den Score mit
+\[
+\text{Score} = 0.40\cdot R + 0.25\cdot A + 0.25\cdot V + 0.10\cdot(1-\text{Aufwand})
+\]
+und ordnen Sie die drei Quellen.
+\begin{myanswer}
+A: $0.40\cdot0.85 + 0.25\cdot0.50 + 0.25\cdot0.75 + 0.10\cdot0.70 = 0.7225$ \\
+B: $0.40\cdot0.75 + 0.25\cdot0.85 + 0.25\cdot0.70 + 0.10\cdot0.80 = 0.7675$ \\
+C: $0.40\cdot0.80 + 0.25\cdot0.65 + 0.25\cdot0.95 + 0.10\cdot0.40 = 0.7600$ \\
+Rangfolge: B, C, A.
+\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Gewichte diskutieren]
+Was verändert sich, wenn man Aktualität stärker gewichtet als Vertrauenswürdigkeit?
+Nennen Sie ein Beispiel, in dem diese Entscheidung sinnvoll sein kann.
+\end{myexercise}
+
+\section{PageRank: Priorisierung im Netzwerk}
+
+\begin{mydefinition}[PageRank]
+PageRank priorisiert Webseiten nicht nur nach der Anzahl eingehender Links,
+sondern auch nach der \textbf{Qualität} dieser Links.
+Eine Seite ist wichtig, wenn wichtige Seiten auf sie verweisen.
+\end{mydefinition}
+
+Die Grundidee ist ein \enquote{zufälliger Surfer}:
+Mit Wahrscheinlichkeit $d$ folgt er einem Link, mit Wahrscheinlichkeit $1-d$ springt er zufällig auf eine neue Seite.
+Der Score einer Seite $p$ ist dann:
+\[
+PR(p) = \frac{1-d}{N} + d \sum_{q \to p} \frac{PR(q)}{\text{outdeg}(q)}
+\]
+mit $N$ Seiten und Dämpfungsfaktor $d$ (typisch: $0.85$).
+
+\begin{mycaution}
+PageRank ist nicht neutral: Linkfarmen (also Seiten, die sich gegenseitig verlinken), gekaufte Links oder starke Netzwerke können die Rangfolge verzerren.
+Darum braucht man Missbrauchserkennung und zusätzliche Qualitätsmerkmale.
+\end{mycaution}
+
+\begin{myexercise}[PageRank intuitiv lesen]
+Betrachten Sie das Netzwerk:
+\begin{itemize}
+    \item A verlinkt auf B und C
+    \item B verlinkt auf C
+    \item C verlinkt auf A
+    \item D verlinkt auf C
+\end{itemize}
+Wenn alle Seiten mit gleichem PageRank starten und $d=0.85$ gilt:
+\begin{enumerate}
+    \item Welche Seite dürfte nach einem Rechenschritt am höchsten priorisiert sein?
+    \item Warum ist ein Link von einer Seite mit vielen Ausgängen weniger wert?
+\end{enumerate}
+\begin{myanswer}
+Nach einem Iterationsschritt ist C am höchsten priorisiert, weil A, B und D auf C verweisen.
+Ein Link von einer Seite mit vielen Ausgängen wird auf viele Ziele verteilt und zählt deshalb weniger stark.
+\end{myanswer}
+\end{myexercise}
+
+\begin{mychallenge}[Priorisierung vergleichen]
+Vergleichen Sie gewichtete Priorisierung und PageRank:
+\begin{enumerate}
+    \item Welche Methode ist leichter erklärbar?
+    \item Welche Methode ist anfälliger für Manipulation?
+    \item Wo würden Sie welche Methode im Schulkontext einsetzen?
+\end{enumerate}
+\end{mychallenge}
+
+\begin{myremark}[Notebook]
+Praktische Umsetzung inkl. Übungen:
+\href{\notebookbaseurl06_Priorisierung_PageRank.ipynb}{\texttt{06\_Priorisierung\_PageRank.ipynb}}
+\end{myremark}

@@ -1,9 +1,14 @@
-\chapter{DL\,01 – Einführung: Von Daten zu Entscheidungen}
+\chapter{Einführung: Von Daten zu Entscheidungen}
+\label{chap:einfuehrung}
+
+\begin{myremark}[Algorithmusart in dieser DL]
+Funktionsart: \textbf{Orientierung über Priorisierung, Klassifikation, Assoziation und Filterung}. \\
+Umsetzungsart: \textbf{vergleichend} zwischen regelbasiert und datengetrieben (ML).
+\end{myremark}
 
 \begin{myremark}
 In diesem Skript lernen Sie zentrale Verfahren des \textbf{überwachten Maschinellen Lernens} kennen.
-Je nach verfügbarer Zeit und Schwerpunkt können einzelne Doppellektionen weggelassen werden –
-jede DL ist für sich abgeschlossen.
+Die Kapitel sind thematisch gegliedert und bauen inhaltlich aufeinander auf.
 \end{myremark}
 
 \section{Was ist Machine Learning?}
@@ -22,28 +27,28 @@ Muster direkt aus Daten.
 \end{itemize}
 \end{myexample}
 
-\section{Classification vs. Prediction}
+\section{Klassifikation vs. Regression}
 
-\begin{mydefinition}[Classification]
-Bei der \textbf{Classification} (Klassifikation) wird ein Datenpunkt einer
+\begin{mydefinition}[Klassifikation]
+Bei der \textbf{Klassifikation} wird ein Datenpunkt einer
 \textbf{Kategorie} zugeordnet, z.\,B. \enquote{bestanden / nicht bestanden} oder
 \enquote{Spam / kein Spam}.
 \end{mydefinition}
 
-\begin{mydefinition}[Prediction (Regression)]
-Bei der \textbf{Prediction} (Regression) wird ein \textbf{kontinuierlicher Zahlenwert}
+\begin{mydefinition}[Regression]
+Bei der \textbf{Regression} wird ein \textbf{kontinuierlicher Zahlenwert}
 vorhergesagt, z.\,B. eine Wohnungsmiete oder der Stromverbrauch nächsten Monat.
 \end{mydefinition}
 
 \begin{myexample}
 \begin{itemize}
-    \item \textbf{Classification:} Ist eine E-Mail Spam oder kein Spam?
-    \item \textbf{Prediction:} Wie hoch wird die Miete für eine 80-m\textsuperscript{2}-Wohnung sein?
+    \item \textbf{Klassifikation:} Ist eine E-Mail Spam oder kein Spam?
+    \item \textbf{Regression:} Wie hoch wird die Miete für eine 80-m\textsuperscript{2}-Wohnung sein?
 \end{itemize}
 \end{myexample}
 
 \begin{myexercise}[Warm-up: Problemtyp erkennen]
-Ordnen Sie zu, ob es sich um \textbf{Classification} oder \textbf{Prediction} handelt:
+Ordnen Sie zu, ob es sich um \textbf{Klassifikation} oder \textbf{Regression} handelt:
 \begin{enumerate}
     \item Vorhersage der Aussentemperatur morgen um 14:00 Uhr
     \item Erkennung, ob ein Bild eine Katze oder einen Hund zeigt
@@ -53,7 +58,7 @@ Ordnen Sie zu, ob es sich um \textbf{Classification} oder \textbf{Prediction} ha
     \item Einordnung einer Filmkritik als positiv oder negativ
 \end{enumerate}
 \begin{myanswer}
-Prediction: 1, 3, 5 \hspace{1cm} Classification: 2, 4, 6
+Regression: 1, 3, 5 \hspace{1cm} Klassifikation: 2, 4, 6
 \end{myanswer}
 \end{myexercise}
 
@@ -62,35 +67,32 @@ Prediction: 1, 3, 5 \hspace{1cm} Classification: 2, 4, 6
 \begin{table}[H]
 \centering
 \small
-\begin{tabular}{p{3.8cm}p{2.4cm}p{2.2cm}}
+\begin{tabular}{p{3.8cm}p{2.4cm}l}
 \toprule
-\textbf{Modell} & \textbf{Aufgabe} & \textbf{DL} \\
+\textbf{Modell} & \textbf{Aufgabe} & \textbf{Kapitel} \\
 \midrule
-Entscheidungsbaum & Classification & 03 \\
-Random Forest & Classification & 04 \\
-Support Vector Machine & Classification & 05\,(opt.) \\
-k-Nearest Neighbors & Classification & 06\,(opt.) \\
-Lineare Regression & Prediction & 07\,(opt.) \\
-Neuronales Netz & Beides & 08\,(opt.) \\
+Entscheidungsbaum & Klassifikation & \cref{chap:entscheidungsbaum} \\
+Random Forest & Klassifikation & \cref{chap:randomforest} \\
+%Support Vector Machine & Klassifikation & \cref{chap:svm} \, (opt.) \\
+k-Nearest Neighbors & Klassifikation & \cref{chap:knn} \, (opt.) \\
+Lineare Regression & Regression & \cref{chap:regression} \, (opt.) \\
+Neuronales Netz & Klassifikation / Regression & \cref{chap:neuronale-netze} \, (opt.) \\
+Apriori & Assoziation & \cref{chap:apriori} \, (opt.) \\
+Naive Bayes & Filterung / Klassifikation & \cref{chap:naivebayes} \, (opt.) \\
+Priorisierungsalgorithmus & Priorisierung & \cref{chap:priorisierung} \, (opt.) \\
 \bottomrule
 \end{tabular}
-\caption{Modelle und ihre Doppellektionen}
+\caption{Modelle und ihre Kapitelzuordnung}
 \label{tab:modelle-uebersicht-15}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{Grundlagen_Info/15_KI_und_Algorithmen/Figures/model_overview.pdf}
-    \caption{Übersicht: typische Modelle für Classification und Prediction}
-    \label{fig:model-overview-15}
-\end{figure}
 
 \section{Datenbasis und Arbeitsumgebung}
 
 Für dieses Skript stehen zwei Datensätze zur Verfügung:
 \begin{itemize}
-    \item \texttt{learning\_style\_classifier.csv} (Classification)
-    \item \texttt{apartment\_prices.csv} (Prediction)
+    \item \texttt{learning\_style\_classifier.csv} (Klassifikation)
+    \item \texttt{apartment\_prices.csv} (Regression)
 \end{itemize}
 
 Die Jupyter-Notebooks befinden sich im Ordner

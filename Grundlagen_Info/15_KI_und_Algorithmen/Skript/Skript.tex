@@ -6,7 +6,7 @@
 \settoggle{includelogo}{true}
 
 \newcommand{\thesubject}{Informatik}
-\newcommand{\thetopic}{KI und Algorithmen: Classification \& Prediction}
+\newcommand{\thetopic}{KI und Algorithmen: Priorisierung, Klassifikation, Assoziation und Filterung}
 \newcommand{\theplace}{Winterthur}
 \newcommand{\thelogo}{Logos/LeeLogo}
 \newcommand{\logosize}{.5\textwidth}
@@ -25,39 +25,79 @@
 \def\arrayB{"robot","bar-chart","brain","crystal-ball","test-tube","abacus","chart-with-upwards-trend"}
 \maketitlepage{\thetopic}{}
 
-%% ----------------------------------------------------------------
-%% Lektions-Toggles: Jede Doppellektion (DL) kann einzeln
-%% ein- oder ausgeschaltet werden (true = eingeschlossen).
-%% ----------------------------------------------------------------
-\newtoggle{dlI}    \settoggle{dlI}{true}    % DL 01 – Einführung
-\newtoggle{dlII}   \settoggle{dlII}{true}   % DL 02 – Datenvorbereitung & Evaluation
-\newtoggle{dlIII}  \settoggle{dlIII}{true}  % DL 03 – Entscheidungsbaum
-\newtoggle{dlIV}   \settoggle{dlIV}{true}   % DL 04 – Random Forest
-\newtoggle{dlV}    \settoggle{dlV}{true}    % DL 05 – SVM            (optional)
-\newtoggle{dlVI}   \settoggle{dlVI}{true}   % DL 06 – KNN            (optional)
-\newtoggle{dlVII}  \settoggle{dlVII}{true}  % DL 07 – Regression     (optional)
-\newtoggle{dlVIII} \settoggle{dlVIII}{true} % DL 08 – Neuronale Netze(optional)
-\newtoggle{dlIX}   \settoggle{dlIX}{true}   % DL 09 – Modellvergleich
-\newtoggle{dlX}    \settoggle{dlX}{true}    % DL 10 – Transferaufgabe(optional)
-
 \tableofcontents
+\clearpage
+
+\chapter*{Orientierung: Arten von Algorithmen}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{p{2.1cm}p{2.5cm}p{2.2cm}p{2.0cm}p{1.3cm}p{1.5cm}p{2.4cm}l}
+\toprule
+\textbf{Funktionsart} & \textbf{Ziel / Frage} & \textbf{Typische Beispiele} & \textbf{Beispiel-Algorithmus} & \textbf{Regelbasiert möglich} & \textbf{Datengetrieben möglich} & \textbf{Typische\newline Risiken} &\textbf{Kapitel}\\
+\midrule
+Priorisierung & Was ist am wichtigsten? & Google-Ranking, Social Media Feed & gewichteter Ranking-Algorithmus & ja & ja & Manipulation, Verstärkung von Bias & \cref{chap:priorisierung} \\
+\midrule
+Klassifikation & Zu welcher Kategorie gehört etwas? & Kredit-Scoring, Spam-Erkennung & Random Forest & ja & ja & Diskriminierung, Fehlklassifikation & \cref{chap:entscheidungsbaum}, \cref{chap:randomforest}\\
+\midrule
+Assoziation & Was tritt häufig gemeinsam auf? & \enquote{Kunden kauften auch...}, Netflix & Apriori & selten & ja & Scheinkorrelationen & \cref{chap:apriori}\\
+\midrule
+Filterung & Was wird angezeigt / ausgeblendet? & Spamfilter, Content-Moderation & Naive Bayes & ja & ja & Filterblasen, Intransparenz & \cref{chap:naivebayes}\\
+\bottomrule
+\end{tabular}
+\caption{Erste Dimension: Funktionsart eines Algorithmus}
+\label{tab:algorithmus-funktionsarten-15}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3.0cm}p{5.1cm}p{2.5cm}p{3.0cm}}
+\toprule
+\textbf{Umsetzungsart} & \textbf{Beschreibung} & \textbf{Beispiel} & \textbf{Hauptproblem} \\
+\midrule
+Regelbasiert & Feste, explizite Wenn-Dann-Regeln & Keyword-Spamfilter & unflexibel, schwer skalierbar \\
+\midrule
+Datengetrieben (ML) & Lernen aus Daten, implizite Regeln & Random Forest, Naive Bayes & Bias, geringe Erklärbarkeit \\
+\bottomrule
+\end{tabular}
+\caption{Zweite Dimension (orthogonal): Umsetzungsart}
+\label{tab:algorithmus-umsetzungsarten-15}
+\end{table}
+
 \clearpage
 
 \lstset{style=python}
 \newcommand{\notebookbaseurl}{https://github.com/CyrilBlum/LeeTeX/blob/main/Grundlagen_Info/15_KI_und_Algorithmen/Code/}
 
 %% ----------------------------------------------------------------
-%% Inhalte – je nach Toggle eingebunden
+%% Inhalte – nach Algorithmusarten strukturiert
 %% ----------------------------------------------------------------
-\iftoggle{dlI}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K01_Einfuehrung.tex}}{}
-\iftoggle{dlII}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K02_Datenvorbereitung.tex}}{}
-\iftoggle{dlIII}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K03_Entscheidungsbaum.tex}}{}
-\iftoggle{dlIV}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K04_Random_Forest.tex}}{}
-\iftoggle{dlV}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K05_SVM.tex}}{}
-\iftoggle{dlVI}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K06_KNN.tex}}{}
-\iftoggle{dlVII}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K07_Regression.tex}}{}
-\iftoggle{dlVIII}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K08_Neuronale_Netze.tex}}{}
-\iftoggle{dlIX}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K09_Modellvergleich.tex}}{}
-\iftoggle{dlX}{\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K10_Transferaufgabe.tex}}{}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K01_Einfuehrung.tex}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K02_Datenvorbereitung.tex}
+
+\part{Priorisierung}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K13_Priorisierung.tex}
+
+\part{Klassifikation}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K03_Entscheidungsbaum.tex}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K04_Random_Forest.tex}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K06_KNN.tex}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K05_SVM.tex}
+
+\part{Assoziation}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K11_Apriori.tex}
+
+\part{Filterung}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K12_Naive_Bayes.tex}
+
+\part{Weitere Inhalte}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K07_Regression.tex}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K09_Modellvergleich.tex}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K10_Transferaufgabe.tex}
+
+\part{Zusatz}
+\input{Grundlagen_Info/15_KI_und_Algorithmen/Skript/Chapters/K08_Neuronale_Netze.tex}
 
 \end{document}

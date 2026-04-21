@@ -1,0 +1,96 @@
+\chapter{Apriori: Assoziationsregeln}
+\label{chap:apriori}
+
+\begin{myremark}[Algorithmusart in diesem Kapitel]
+Funktionsart: \textbf{Assoziation}. \\
+Umsetzungsart: \textbf{datengetrieben}.
+\end{myremark}
+
+\begin{myremark}
+Dieses Kapitel zeigt ein anderes Ziel als Klassifikation oder Regression:
+Wir suchen nicht primär eine Vorhersage, sondern \textbf{häufige Muster} und \textbf{Regeln}
+in Transaktionsdaten.
+\end{myremark}
+
+\section{Grundidee: Von häufigen Itemsets zu Regeln}
+
+\begin{mydefinition}[Apriori]
+Der \textbf{Apriori-Algorithmus} findet in Warenkörben (oder ähnlichen Datensätzen)
+\textbf{häufige Itemsets} und daraus \textbf{Assoziationsregeln} wie
+\enquote{Wenn A und B vorkommen, tritt oft auch C auf}.
+
+Die Kernidee lautet: Wenn ein Itemset häufig ist, dann sind auch alle seine Teilmengen häufig.
+Umgekehrt gilt: Ist eine Teilmenge nicht häufig, kann keine Obermenge häufig sein.
+\end{mydefinition}
+
+\section{Zentrale Kennzahlen}
+
+Für eine Regel $X \Rightarrow Y$ gelten:
+\[
+\text{Support}(X \Rightarrow Y) = P(X \cup Y)
+\]
+\[
+\text{Confidence}(X \Rightarrow Y) = \frac{P(X \cup Y)}{P(X)}
+\]
+\[
+\text{Lift}(X \Rightarrow Y) = \frac{P(X \cup Y)}{P(X)\,P(Y)}
+\]
+
+\begin{itemize}
+    \item \textbf{Support} misst, wie häufig die Kombination insgesamt ist.
+    \item \textbf{Confidence} misst, wie zuverlässig die Regel ist.
+    \item \textbf{Lift} misst, ob der Zusammenhang stärker ist als Zufall
+          (Lift $> 1$ spricht für positive Assoziation).
+\end{itemize}
+
+\begin{myexercise}[Kennzahlen berechnen]
+Ein Shop hat 200 Transaktionen:
+\begin{itemize}
+    \item In 50 Transaktionen sind \enquote{Pasta} und \enquote{Tomatensauce} gemeinsam enthalten.
+    \item \enquote{Pasta} kommt in 80 Transaktionen vor.
+    \item \enquote{Tomatensauce} kommt in 70 Transaktionen vor.
+\end{itemize}
+Berechnen Sie für die Regel
+\enquote{Pasta $\Rightarrow$ Tomatensauce}:
+\begin{enumerate}
+    \item Support
+    \item Confidence
+    \item Lift
+\end{enumerate}
+\begin{myanswer}
+Support $= \frac{50}{200}=0.25$. \\
+Confidence $= \frac{50}{80}=0.625$. \\
+Lift $= \frac{0.25}{0.4\cdot0.35}=1.79$ (deutlich über 1).
+\end{myanswer}
+\end{myexercise}
+
+\section{Warum Schwellenwerte wichtig sind}
+
+\begin{mycaution}
+Ohne sinnvolle Grenzwerte (z.\,B. \texttt{min\_support}, \texttt{min\_confidence})
+produziert Apriori sehr viele triviale oder zufällige Regeln.
+Das führt schnell zu \textbf{Scheinkorrelationen}.
+\end{mycaution}
+
+\begin{myexercise}[Regelqualität bewerten]
+Ein Data-Team meldet die Regel:
+\enquote{Energy-Drink $\Rightarrow$ Kopfhörer},
+Confidence $= 0.82$, aber Support $= 0.01$.
+\begin{enumerate}
+    \item Warum ist diese Regel trotz hoher Confidence kritisch zu prüfen?
+    \item Welche zusätzlichen Prüfungen würden Sie durchführen?
+\end{enumerate}
+\end{myexercise}
+
+\section{Anwendungsbezug}
+
+\begin{mychallenge}[Apriori in der Praxis]
+Skizzieren Sie ein Mini-Projekt für Apriori mit einem Datensatz aus Schule oder Alltag.
+Beantworten Sie:
+\begin{enumerate}
+    \item Was ist eine Transaktion?
+    \item Was sind die Items?
+    \item Welche Entscheidung soll mit den Regeln unterstützt werden?
+    \item Welche Risiken von Fehlinterpretationen sehen Sie?
+\end{enumerate}
+\end{mychallenge}
