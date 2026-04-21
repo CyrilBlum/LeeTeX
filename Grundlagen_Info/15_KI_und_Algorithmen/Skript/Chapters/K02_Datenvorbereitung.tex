@@ -1,29 +1,30 @@
 \chapter{Datenvorbereitung und Evaluation}
 \label{chap:datenvorbereitung}
 
-\begin{myremark}[Algorithmusart in dieser DL]
-Funktionsart: \textbf{Methodik- und Evaluationsbaustein} für Klassifikation, Filterung und andere datengetriebene Verfahren. \\
-Umsetzungsart: \textbf{algorithmusübergreifend}, kein eigener Vorhersagealgorithmus.
-\end{myremark}
+Bevor ein Modell trainiert werden kann, müssen die Daten vorbereitet werden. Ausserdem brauchen wir Werkzeuge, um die Qualität eines Modells zu messen. Die häufigsten Schritte in der Datenvorbereitung sind:
 
-\begin{myremark}
-Bevor ein Modell trainiert werden kann, müssen die Daten vorbereitet werden.
-Ausserdem brauchen wir Werkzeuge, um die Qualität eines Modells zu messen.
-\end{myremark}
+\begin{itemize}
+    \item \textbf{Train-Test-Split}: Aufteilung der Daten in Trainings- und Testdaten.
+    \item \textbf{Features und Label}: Definition der Eingabedaten (Features) und der Zielvariable (Label).
+    \item \textbf{Normalisierung}: Skalierung der Features, damit sie vergleichbar sind.
+    \item \textbf{Gütemasse}: Auswahl von Metriken, um die Leistung des Modells zu bewerten.
+\end{itemize}
+
+All diese Schritte werden in diesem Kapitel behandelt. 
 
 \section{Trainings- und Testdaten}
+
+Selbstlernende Modelle müssen auf Daten trainiert werden, um Muster zu erkennen. Um die Leistung eines Modells realistisch zu bewerten, ist es wichtig, dass es auf \textbf{ungesehenen} Daten getestet wird. Daher teilen wir die verfügbaren Daten in zwei Teile auf: den \textbf{Trainingsdatensatz} und den \textbf{Testdatensatz}.
 
 \begin{mydefinition}[Train-Test-Split]
 Die Daten werden in einen \textbf{Trainings\-datensatz} und einen
 \textbf{Testdatensatz} aufgeteilt (typisch: 80\,\% / 20\,\%).
 Das Modell wird \emph{nur} mit den Trainingsdaten trainiert und
-anschliessend auf den \emph{unseen} Testdaten bewertet.
+anschliessend auf den \emph{ungesehenen} Testdaten bewertet.
 \end{mydefinition}
 
 \begin{mycaution}
-Wer das Modell auch auf den Trainingsdaten bewertet, misst lediglich,
-wie gut das Modell \enquote{auswendig gelernt} hat –
-das gibt keinen Aufschluss über die echte Leistung auf neuen Daten.
+Wer das Modell auch auf den Trainingsdaten bewertet, misst lediglich, wie gut das Modell \enquote{auswendig gelernt} hat -- das gibt keinen Aufschluss über die echte Leistung auf neuen Daten.
 \end{mycaution}
 
 \begin{myexercise}[Train-Test-Split nachvollziehen]
@@ -31,18 +32,21 @@ Ein Datensatz enthält 500 Zeilen.
 \begin{enumerate}
     \item Wie viele Zeilen enthält der Trainings- bzw. der Testdatensatz bei einem 80/20-Split?
     \item Warum darf man die Testdaten \emph{nicht} für die Modellentwicklung verwenden?
-    \item Was ist \emph{Datenleckage} (data leakage) und warum ist sie problematisch?
+    \item Was könnte in diesem Kontext mit \emph{data leakage} gemeint sein und warum wäre dies problematisch?
 \end{enumerate}
 \begin{myanswer}
-1.\ 400 Training / 100 Test \quad
-2.\ Sonst misst man nur, ob das Modell die Testdaten auswendig kennt, nicht ob es generalisiert. \quad
-3.\ Information aus dem Testset fliesst in das Training – der gemessene Fehler unterschätzt den echten Fehler.
+\begin{enumerate}
+    \item 400 Training / 100 Test \quad
+    \item Sonst misst man nur, ob das Modell die Testdaten auswendig kennt, nicht ob es generalisiert. \quad
+    \item Information aus dem Testset fliesst in das Training -- der gemessene Fehler unterschätzt den echten Fehler.
+\end{enumerate}
 \end{myanswer}
 \end{myexercise}
 
 \section{Merkmale und Zielvariable}
-
+Im maschinellen Lernen werden die Eingabedaten als \textbf{Features} (Merkmale) bezeichnet, während die vorherzusagende Variable als \textbf{Label} (Zielvariable) bezeichnet wird.
 \begin{mydefinition}[Features und Label]
+    Essentielle Begriffe:
 \begin{itemize}
     \item \textbf{Features} (Merkmale): die Eingabevariablen $x_1, x_2, \ldots, x_n$
     \item \textbf{Label} (Zielvariable): der Ausgabewert $y$, den das Modell vorhersagen soll
@@ -53,7 +57,7 @@ Ein Datensatz enthält 500 Zeilen.
 Beim Datensatz \texttt{learning\_style\_classifier.csv}:
 \begin{itemize}
     \item Features: Lernzeit, Schlafstunden, Anzahl Wiederholungen
-    \item Label: Lernstil (\enquote{visuell}, \enquote{auditiv}, \enquote{kinästhetisch})
+    \item Label: Bestanden (1) oder nicht bestanden (0)
 \end{itemize}
 \end{myexample}
 
@@ -65,12 +69,13 @@ Die \textbf{Min-Max-Normalisierung} skaliert alle Werte auf $[0,\,1]$:
 \[
 x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}}
 \]
+Dies ist besonders wichtig für Algorithmen, die auf Abständen basieren (z.\,B. kNN, SVM). Ohne Normalisierung könnte ein Feature mit grösseren Werten die Distanzberechnung dominieren und somit die Modellleistung schmälern.
 \end{mydefinition}
 
 \begin{myexercise}[Normalisierung berechnen]
 Gegeben: Lernzeiten $\{2, 4, 6, 8, 10\}$ Stunden.
 \begin{enumerate}
-    \item Normalisieren Sie alle Werte mit Min-Max.
+    \item Normalisieren Sie alle Werte mit Min-Max. Sie können dazu das Python-Notebook verwenden: \href{\notebookbaseurl00_Datenvorbereitung.ipynb}{\texttt{00\_Datenvorbereitung.ipynb}}.
     \item Welcher Wert entspricht nach der Normalisierung dem Wert 6?
 \end{enumerate}
 \begin{myanswer}
@@ -109,7 +114,7 @@ Die \textbf{Accuracy} misst die Gesamtgenauigkeit des Modells.
 Die \textbf{Precision} misst, wie viele der als positiv vorhergesagten Fälle tatsächlich positiv sind.
 Der \textbf{Recall} misst, wie viele der tatsächlich positiven Fälle korrekt erkannt wurden.
 
-Die Begriffe ``Sensitivität'' und ``Spezifizität'' werden manchmal synonym zu Recall bzw. Precision verwendet.
+Die Begriffe \emph{Sensitivität} und \emph{Spezifizität} werden manchmal synonym zu Recall bzw. Precision verwendet.
 \end{mydefinition}
 
 \begin{myexercise}[Metriken berechnen]
@@ -126,18 +131,18 @@ Die Konfusionsmatrix ergibt:
 \end{center}
 
 \begin{enumerate}
-    \item Berechnen Sie Accuracy, Precision und Recall.
+    \item Berechnen Sie Accuracy, Precision und Recall. Sie können dazu das Python-Notebook verwenden: \href{\notebookbaseurl00_Datenvorbereitung.ipynb}{\texttt{00\_Datenvorbereitung.ipynb}}.
     \item Warum ist Recall besonders wichtig, wenn es darum geht, keinen Spam zu verpassen?
 \end{enumerate}
 \begin{myanswer}
-Accuracy $= \frac{80+90}{200} = 0.85$; \quad
-Precision $= \frac{80}{90} \approx 0.89$; \quad
-Recall $= \frac{80}{100} = 0.80$. \\
-Ein hoher Recall stellt sicher, dass möglichst wenig Spam als \enquote{kein Spam} durchrutscht (wenig FN).
+\begin{enumerate}
+    \item Berechnungen:
+    \begin{itemize}
+        \item Accuracy = $\frac{80 + 90}{200} = 0.85$
+        \item Precision = $\frac{80}{80 + 10} = 0.89$
+        \item Recall = $\frac{80}{80 + 20} = 0.80$
+    \end{itemize}
+    \item Ein hoher Recall bedeutet, dass die meisten Spam-E-Mails korrekt erkannt werden. Wenn der Recall niedrig ist, könnte der Filter viele Spam-Nachrichten durchlassen, was unerwünscht ist.
+\end{enumerate}
 \end{myanswer}
 \end{myexercise}
-
-\begin{myremark}[Notebook]
-Praktische Umsetzung:
-\href{\notebookbaseurl00_Datenvorbereitung.ipynb}{\texttt{00\_Datenvorbereitung.ipynb}}
-\end{myremark}

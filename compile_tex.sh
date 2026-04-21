@@ -454,21 +454,21 @@ for i in "${!classes[@]}"; do
         lualatex -synctex=1 -output-directory="$latex_dir" "$output_file" | grep -E "^(!|l\.)|Warning" || true
 
         # Compress final PDF
-        MAXDPI=200
-        pdf_input="${latex_dir}$(basename "$output_file" .tex).pdf"
-        pdf_tmp="${latex_dir}$(basename "$output_file" .tex)_compressed.pdf"
+        # MAXDPI=200
+        # pdf_input="${latex_dir}$(basename "$output_file" .tex).pdf"
+        # pdf_tmp="${latex_dir}$(basename "$output_file" .tex)_compressed.pdf"
 
-        echo "::notice::  step 6: compress PDF"
-        gs -sDEVICE=pdfwrite \
-           -dCompatibilityLevel=1.4 \
-           -dDownsampleColorImages=true -dColorImageResolution="$MAXDPI" \
-           -dDownsampleGrayImages=true  -dGrayImageResolution="$MAXDPI" \
-           -dDownsampleMonoImages=true  -dMonoImageResolution="$((MAXDPI*2))" \
-           -dNOPAUSE -dBATCH -dQUIET \
-           -sOutputFile="$pdf_tmp" \
-           "$pdf_input" || echo "::warning::PDF compression failed, keeping original."
+        # echo "::notice::  step 6: compress PDF"
+        # gs -sDEVICE=pdfwrite \
+        #    -dCompatibilityLevel=1.4 \
+        #    -dDownsampleColorImages=true -dColorImageResolution="$MAXDPI" \
+        #    -dDownsampleGrayImages=true  -dGrayImageResolution="$MAXDPI" \
+        #    -dDownsampleMonoImages=true  -dMonoImageResolution="$((MAXDPI*2))" \
+        #    -dNOPAUSE -dBATCH -dQUIET \
+        #    -sOutputFile="$pdf_tmp" \
+        #    "$pdf_input" || echo "::warning::PDF compression failed, keeping original."
 
-        mv "$pdf_tmp" "$pdf_input" 2>/dev/null || true
+        # mv "$pdf_tmp" "$pdf_input" 2>/dev/null || true
 
         # Check for LaTeX errors in the log file
         log_file="${latex_dir}$(basename "$output_file" .tex).log"

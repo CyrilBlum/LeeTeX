@@ -1,0 +1,153 @@
+\newgeometry{margin=.5cm}
+\pagestyle{empty}
+\raggedcolumns
+\footnotesize
+\newcommand{\cheatSheetColor}{RoyalBlue}
+
+\newtcolorbox{cheatSheetBox}[1][]{
+enhanced jigsaw,
+% breakable,
+colback=\cheatSheetColor!10,
+colframe=\cheatSheetColor,
+colbacktitle=\cheatSheetColor!30,
+fonttitle=\bfseries,
+parbox=false,
+attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
+coltitle=black,
+#1}
+
+\lstset{style=python, basicstyle=\ttfamily\footnotesize}
+
+\begin{landscape}
+\footnotesize
+\begin{multicols*}{4}
+\textcolor{\cheatSheetColor}{\begin{center}
+\section{Cheatsheet}
+\end{center}\hrule}
+
+\textcolor{\cheatSheetColor}{\subsection*{Orientierung}}
+
+\begin{cheatSheetBox}[title=Funktionsarten]
+\begin{itemize}
+    \item \textbf{Priorisierung:} Elemente werden nach Relevanz oder Wichtigkeit geordnet.
+    \item \textbf{Klassifikation:} Ein Datenpunkt wird einer Kategorie zugeordnet.
+    \item \textbf{Assoziation:} Häufig gemeinsam auftretende Muster werden gefunden.
+    \item \textbf{Filterung:} Inhalte werden zugelassen, sortiert oder ausgeblendet.
+\end{itemize}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Zentrale Formeln]
+\[
+\text{Score}(x)=\sum_{i=1}^{n} w_i z_i
+\qquad
+PR(p)=\frac{1-d}{N}+d\sum_{q\to p}\frac{PR(q)}{\text{outdeg}(q)}
+\qquad
+\text{Gini}(t)=1-\sum_k p_k^2
+\]
+Gewichte, Linkstruktur und Klassenanteile bestimmen die jeweilige Priorisierung oder Trennung.
+\end{cheatSheetBox}
+
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Klassifikation}}
+
+\begin{cheatSheetBox}[title=Entscheidungsbaum]
+Ein Baum stellt nacheinander Fragen an die Daten und teilt sie durch Schwellenwerte auf.
+Wichtige Begriffe sind Knoten, Kante, Blatt und Unreinheit.
+
+\[
+\text{Gini}(t)=1-\sum_k p_k^2
+\]
+
+Je reiner ein Knoten, desto kleiner ist der Gini-Wert.
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Random Forest]
+Random Forest kombiniert viele zufällige Bäume und entscheidet per Mehrheitsentscheid.
+Wichtige Einstellungen sind die Anzahl der Bäume, die Tiefe und die Blattgrösse.
+Er ist robuster als ein einzelner Baum, aber weniger direkt erklärbar.
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=KNN]
+KNN vergleicht einen neuen Punkt mit seinen nächsten Nachbarn und übernimmt deren Mehrheitsklasse.
+Wichtig ist die Normalisierung, weil Distanzen von der Skala der Features abhängen.
+
+\[
+d(a,b)=\sqrt{\sum_{i=1}^{n}(a_i-b_i)^2}
+\]
+
+Kleines $k$ reagiert empfindlich, grosses $k$ glättet die Entscheidung.
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=SVM als Bonus]
+Eine SVM sucht eine Trennlinie mit möglichst grossem Margin zwischen den Klassen.
+Der Parameter $C$ steuert die Fehlertoleranz: grosses $C$ für strenge Trennung, kleines $C$ für mehr Toleranz.
+Mit Kernels lassen sich auch nichtlinear trennbare Daten behandeln.
+\end{cheatSheetBox}
+
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Assoziation und Filterung}}
+
+\begin{cheatSheetBox}[title=Apriori]
+Apriori sucht häufige Itemsets und daraus Assoziationsregeln.
+
+\[
+\text{Support}(X\Rightarrow Y)=P(X\cup Y)
+\qquad
+\text{Confidence}(X\Rightarrow Y)=\frac{P(X\cup Y)}{P(X)}
+\qquad
+\text{Lift}(X\Rightarrow Y)=\frac{P(X\cup Y)}{P(X)P(Y)}
+\]
+
+Hohe Confidence allein genügt nicht; Support und Lift zeigen, ob die Regel wirklich sinnvoll ist.
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Naive Bayes]
+Naive Bayes kombiniert Bayes' Theorem mit der Annahme bedingter Unabhängigkeit der Merkmale.
+
+\[
+P(C\mid x)=\frac{P(x\mid C)P(C)}{P(x)}
+\qquad
+P(x_1,\ldots,x_n\mid C)\approx\prod_{i=1}^{n}P(x_i\mid C)
+\]
+
+Laplace-Glättung verhindert Nullwahrscheinlichkeiten und ist besonders wichtig bei Textdaten.
+\end{cheatSheetBox}
+
+\columnbreak\textcolor{\cheatSheetColor}{\subsection*{Regression und Evaluation}}
+
+\begin{cheatSheetBox}[title=Regression]
+Regression sagt einen kontinuierlichen Zahlenwert vorher.
+
+\[
+y=a_0+a_1x_1+a_2x_2+\cdots+a_nx_n
+\]
+
+\[
+\text{MAE}=\frac{1}{n}\sum_{i=1}^{n}|y_i-\hat{y}_i|
+\qquad
+\text{RMSE}=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}
+\]
+
+RMSE bestraft grosse Fehler stärker als MAE.
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Datenvorbereitung]
+\begin{itemize}
+    \item Train-Test-Split: typischerweise 80/20.
+    \item Features sind Eingaben, das Label ist die Zielvariable.
+    \item Datenleckage verfälscht die Bewertung.
+    \item Klassifikation: Accuracy, Precision, Recall.
+    \item Regression: MAE, RMSE.
+\end{itemize}
+\end{cheatSheetBox}
+
+\begin{cheatSheetBox}[title=Merksätze]
+\begin{itemize}
+    \item Erst Daten sauber vorbereiten, dann trainieren.
+    \item Ein Modell ohne gute Evaluation ist wertlos.
+    \item Interpretierbarkeit und Güte müssen zusammen betrachtet werden.
+\end{itemize}
+\end{cheatSheetBox}
+
+\end{multicols*}
+\end{landscape}
+\clearpage
+\restoregeometry
