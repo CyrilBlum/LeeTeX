@@ -15,8 +15,8 @@ parser.add_argument(
     "-n",
     "--rows",
     type=int,
-    default=200,
-    help="Anzahl zu generierender Zeilen (Default: 200)",
+    default=50,
+    help="Anzahl zu generierender Zeilen (Default: 50)",
 )
 parser.add_argument(
     "--seed",
@@ -198,9 +198,9 @@ linear_score = (
 
 interaction_score = args.interaction_strength * (
     0.7 * x1 * x3
-    - 0.8 * x2 * x4
-    + 0.45 * np.sin(1.8 * x1)
-    - 0.35 * (x2 ** 2)
+    # - 0.8 * x2 * x4
+    # + 0.45 * np.sin(1.8 * x1)
+    # - 0.35 * (x2 ** 2)
 )
 
 raw_score = linear_score + interaction_score + rng.normal(0, args.noise_std, n)

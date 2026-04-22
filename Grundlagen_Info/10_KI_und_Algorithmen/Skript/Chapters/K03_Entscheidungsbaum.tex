@@ -40,6 +40,56 @@ Ein Baum wählt an jedem Knoten jene Frage, die die Daten am besten aufteilt. Da
 wobei $p_k$ der Anteil der Klasse $k$ im Knoten $t$ ist.
 Ein Gini von 0 bedeutet: alle Datenpunkte gehören zur selben Klasse (\enquote{reiner} Knoten). Um den Gini-Koeffizienten an jeder möglichen Aufteilung zu berechnen, muss der Algorithmus alle Features und Schwellenwerte durchprobieren -- das kann bei vielen Features und Datenpunkten sehr rechenintensiv sein. Deshalb werden oft Heuristiken oder Einschränkungen (z.\,B. maximale Tiefe) verwendet, um die Suche zu beschleunigen.
 
+\begin{myexample}
+    Angenommen, wir möchten vorhersagen, ob eine Person sich ein Auto leisten kann, basierend auf zwei Features: \texttt{Einkommen} und \texttt{Alter}.
+
+    Die Daten könnten so aussehen:
+    \begin{center}
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{cc|c}
+                \toprule
+                Einkommen & Alter & Auto \\
+                \midrule
+                35k       & 21    & Nein \\
+                60k       & 26    & Ja   \\
+                45k       & 28    & Nein \\
+                30k       & 40    & Ja   \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+    \end{center}
+
+    Dass sich die 40-jährige Person mit 35k Einkommen ein Auto leisten kann, könnte auf den ersten Blick überraschend sein. Aber vielleicht hat sie andere Einkommensquellen (z.B. Gold, das sie eintauschen kann) oder lebt in einer günstigen Gegend.
+
+    Der Gini-Koeffizient für die Aufteilung bei \texttt{Einkommen > 50k?} wäre:
+    \begin{itemize}
+        \item Links (Einkommen $\leq$ 50k): 2 Nein, 1 Ja $\Rightarrow$ Gini = $1 - (2/3)^2 - (1/3)^2 = 1 - 4/9 - 1/9 = 4/9$
+        \item Rechts (Einkommen > 50k): 1 Ja $\Rightarrow$ Gini = $1 - (1^2) = 0$
+    \end{itemize}
+
+    Unterhalb des linken Knotens könnte eine weitere Aufteilung bei \texttt{Alter > 25?} erfolgen, um die Daten weiter zu trennen. So könnte der Baum schrittweise lernen, dass jüngere Personen mit niedrigerem Einkommen eher kein Auto haben, während ältere Personen mit ähnlichem Einkommen eher eines haben könnten.
+
+    Der fertige Entscheidungsbaum könnte dann so aussehen:
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[
+                sibling distance=12em,
+                level distance=6em,
+                every node/.style={draw, rounded corners, align=center, font=\small, inner sep=3pt}
+            ]
+            \node[label={[align=center,font=\scriptsize]below:Einkommen > 50k?}] {Ja: 2, Nein: 2\\Gini = 0.50}
+            child { node[label={[align=center,font=\scriptsize]below:Alter > 25?}] {Ja: 1, Nein: 2\\Gini = 0.44}
+                    child { node {Ja: 0, Nein: 1\\Gini = 0.00} edge from parent node[midway, left, draw=none, fill=none, font=\scriptsize] {nein} }
+                    child { node {Ja: 1, Nein: 1\\Gini = 0.50} edge from parent node[midway, right, draw=none, fill=none, font=\scriptsize] {ja} }
+                    edge from parent node[midway, left, draw=none, fill=none, font=\scriptsize] {nein}
+                }
+            child { node {Ja: 1, Nein: 0\\Gini = 0.00} edge from parent node[midway, right, draw=none, fill=none, font=\scriptsize] {ja} };
+        \end{tikzpicture}
+        \caption{Beispiel eines Entscheidungsbaums für die Klassifikation per Entscheidungsbaum}
+        \label{fig:tree-15-example}
+    \end{figure}
+\end{myexample}
 
 \begin{myexercise}[Gini-Koeffizienten von Hand berechnen]
     Betrachten Sie folgende Tabelle, die die Verteilung von Klassen in einem Knoten zeigt:
@@ -63,53 +113,83 @@ Ein Gini von 0 bedeutet: alle Datenpunkte gehören zur selben Klasse (\enquote{r
     \end{myanswer}
 \end{myexercise}
 
-\begin{myexercise}[Bestimmen der besten Aufteilung]
-    Angenommen, Sie haben ein Feature \texttt{Lernzeit} mit den Werten $\{2, 4, 6, 8, 10\}$ Stunden und die folgenden Klassenlabels:
+\begin{myexercise}[Erstellung eines Entscheidungsbaums mittels Gini-Koeffizienten]
+    \label{ex:tree-15}
+    Angenommen, Sie möchten vorhersagen, ob jemand eine Prüfung besteht anhand der Features \texttt{Lernzeit} und \texttt{Anwesenheit}. Sie haben dazu folgende Daten von eienem Kurs gesammelt:
     \begin{center}
-        \begin{tabular}{cc}
+        \begin{tabular}{cc|c}
             \toprule
-            Lernzeit (h) & Bestanden \\
+            Lernzeit (h) & Anwesenheit (\%) & Besteht Prüfung? \\
             \midrule
-            2            & nein      \\
-            4            & nein      \\
-            6            & ja      \\
-            8            & ja      \\
-            10           & ja      \\
+            6            & 30               & Nein             \\
+            9            & 90               & Ja               \\
+            2            & 85               & Nein             \\
+            4            & 95               & Nein             \\
+            7            & 95               & Ja               \\
+            10           & 10               & Nein             \\
             \bottomrule
         \end{tabular}
     \end{center}
-    Zur Einfachheit nennen wir die Klassen \enquote{nein} als Klasse A und \enquote{ja} als Klasse B. Berechnen Sie den Gini-Koeffizienten für die Aufteilung bei $Lernzeit < 5$ und $Lernzeit < 7$ und bestimmen Sie, welche Aufteilung besser ist.
-    
+    Wählen Sie einen möglichst guten ersten Split aus basierend auf den Gini-Koeffizienten, und fahren Sie danach im gleichen Prinzip weiter, bis Sie einen vollständigen Baum haben. Berechnen Sie die Gini-Koeffizienten für ihre gewählten Aufteilungen bei \texttt{Lernzeit} und \texttt{Anwesenheit} und entscheiden Sie, welcher Split besser ist. Zeichnen Sie den resultierenden Baum (Tiefe 2) und geben Sie die dazugehörigen Gini-Koeffizienten wie in \cref{fig:tree-15-example}.
+
     \begin{myanswer}
         \begin{itemize}
-            \item Für $Lernzeit < 5$:
-            \begin{itemize}
-                \item Links: Klasse A (2 Punkte), Gini = $1 - (1^2) = 0$
-                \item Rechts: Klasse B (3 Punkte), Gini = $1 - (1^2) = 0$
-                \item Gesamter Gini = $(5/5) * 0 + (0/5) * 0 = 0$
-            \end{itemize}
-            \item Für $Lernzeit < 7$:
-            \begin{itemize}
-                \item Links: Klasse A (2 Punkte), Klasse B (1 Punkt), Gini = $1 - (2/3)^2 - (1/3)^2 = 1 - (4/9 + 1/9) = 1 - 5/9 = 4/9$
-                \item Rechts: Klasse B (2 Punkte), Gini = $1 - (1^2) = 0$
-                \item Gesamter Gini = $(3/5) * (4/9) + (2/5) * 0 = (12/45) + 0 = 4/15$
-            \end{itemize}
-            \item Die Aufteilung bei $Lernzeit < 5$ ist besser, da sie einen niedrigeren Gini-Koeffizienten von $0$ im Vergleich zu $4/15$ hat.
+            \item Split bei \texttt{Lernzeit > 5h?}:
+                  \begin{itemize}
+                      \item Links (Lernzeit $\leq$ 5h): 3 Nein, 0 Ja $\Rightarrow$ Gini = $1 - (1^2) = 0$
+                      \item Rechts (Lernzeit > 5h): 2 Nein, 2 Ja $\Rightarrow$ Gini = $1 - (2/4)^2 - (2/4)^2 = 1 - 1/4 - 1/4 = 1/2$
+                  \end{itemize}
+            \item Unter-Split im rechten Knoten bei \texttt{Anwesenheit > 80\%?}:
+                  \begin{itemize}
+                      \item Links (Anwesenheit $\leq$ 80\%): 4 Nein, 0 Ja $\Rightarrow$ Gini = $1 - (4/4)^2 = 0$
+                      \item Rechts (Anwesenheit > 80\%): 0 Nein, 4 Ja $\Rightarrow$ Gini = $1 - (4/4)^2 = 0$
+                  \end{itemize}
         \end{itemize}
+        Der erste Split bei \texttt{Lernzeit > 5h?} hat einen Gini von 0.44, während der Split bei \texttt{Anwesenheit > 80\%?} einen Gini von 0 hat. Daher sind zwei Aufteilungen nötig, um einen reinen Baum zu erhalten. Der resultierende Baum könnte so aussehen:
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[
+                    sibling distance=12em,
+                    level distance=6em,
+                    every node/.style={draw, rounded corners, align=center, font=\small, inner sep=3pt}
+                ]
+                \node[label={[align=center,font=\scriptsize]below:Lernzeit > 5h?}] {Ja: 2, Nein: 3\\Gini = 0.44}
+                child { node {Ja: 0, Nein: 3\\Gini = 0.00} edge from parent node[midway, left, draw=none, fill=none, font=\scriptsize] {nein} }
+                child { node[label={[align=center,font=\scriptsize]below:Anwesenheit > 80\%?}] {Ja: 4, Nein: 4\\Gini = 0.5}
+                        child { node {Ja: 0, Nein: 4\\Gini = 0.00} edge from parent node[midway, left, draw=none, fill=none, font=\scriptsize] {nein} }
+                        child { node {Ja: 4, Nein: 0\\Gini = 0.00} edge from parent node[midway, right, draw=none, fill=none, font=\scriptsize] {ja} }
+                        edge from parent node[midway, right, draw=none, fill=none, font=\scriptsize] {ja} };
+            \end{tikzpicture}
+            \caption{Entscheidungsbaum für die Prüfungsvorhersage}
+            \label{fig:tree-15-answer}
+        \end{figure}
+
     \end{myanswer}
 \end{myexercise}
 
 \section{Overfitting}
+Angenommen, wir hätten in \cref{ex:tree-15} 200 weitere Datenpunkte hinzugefügt, die alle möglichen Kombinationen von \texttt{Lernzeit} und \texttt{Anwesenheit} abdecken. Ein Entscheidungsbaum ohne Einschränkungen könnte dann so tief werden, dass er jeden einzelnen Datenpunkt perfekt klassifiziert -- das heisst, er würde die Trainingsdaten auswendig lernen. Das Problem dabei ist, dass ein solcher Baum wahrscheinlich schlecht generalisiert und bei neuen, unbekannten Daten versagt. Dieses Phänomen nennt man \textbf{Overfitting}.
 
-\begin{myattention}
+\begin{myattention}[Overfitting]
     Ein Baum ohne Tiefenbeschränkung \enquote{lernt} die Trainingsdaten auswendig --
     er kann jeden einzelnen Punkt korrekt klassifizieren, versagt aber bei neuen Daten.
-    Dieses Phänomen heisst \textbf{Overfitting}.
+    Dieses Phänomen heisst \textbf{Overfitting}. Ein Beispiel von Overfitting ist in \cref{fig:overfitting} dargestellt, wo der Baum so komplex ist, dass er die Trainingsdaten perfekt trennt, aber bei Testdaten eine schlechte Performance zeigen würde, da er nur auf genau diesen Trainingsdaten basiert.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/decision_tree_overfitting.pdf}
+        \caption{Beispiel eines überangepassten Entscheidungsbaums}
+        \label{fig:overfitting}
+    \end{figure}
+\end{myattention}
+
+\begin{myattention}[Underfitting]
+    Auf der anderen Seite könnte ein Baum, der nur einen einzigen Split erlaubt, zu einfach sein, um die zugrundeliegenden Muster zu erfassen. Er könnte zum Beispiel nur nach \texttt{Lernzeit > 5h?} fragen und dabei die wichtige Rolle der \texttt{Anwesenheit} völlig ignorieren. In diesem Fall würde er viele Datenpunkte falsch klassifizieren, weil er die Komplexität des Problems nicht ausreichend modelliert. Dieses Problem nennt man \textbf{Underfitting}.
 \end{myattention}
 
 \begin{mydefinition}[Overfitting und Underfitting]
     \begin{itemize}
-        \item \textbf{Overfitting:} Modell ist zu komplex, lernt Rauschen im Trainingsset.
+        \item \textbf{Overfitting:} Modell ist zu komplex, lernt Rauschen im Trainingsset (beispielsweise Ausreisser) und generalisiert schlecht auf neue Daten.
         \item \textbf{Underfitting:} Modell ist zu einfach, erkennt echte Muster nicht.
     \end{itemize}
 \end{mydefinition}

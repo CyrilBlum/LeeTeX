@@ -27,9 +27,9 @@ def _load_classification_data():
     return X, y
 
 
-def plot_decision_tree() -> None:
+def plot_decision_tree(max_depth: int = 3) -> None:
     X, y = _load_classification_data()
-    model = DecisionTreeClassifier(max_depth=3, random_state=42)
+    model = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
     model.fit(X, y)
 
     plt.figure(figsize=(10, 6))
@@ -43,6 +43,25 @@ def plot_decision_tree() -> None:
     )
     plt.tight_layout()
     plt.savefig(FIG_DIR / "decision_tree_structure.pdf")
+    plt.close()
+
+
+def plot_decision_tree_overfitting() -> None:
+    X, y = _load_classification_data()
+    model = DecisionTreeClassifier(max_depth=None, random_state=42)
+    model.fit(X, y)
+
+    plt.figure(figsize=(15, 12))
+    plot_tree(
+        model,
+        feature_names=["Lernzeit_h", "Fehlzeiten"],
+        class_names=["Nicht bestanden", "Bestanden"],
+        filled=True,
+        rounded=True,
+        fontsize=7,
+    )
+    plt.tight_layout()
+    plt.savefig(FIG_DIR / "decision_tree_overfitting.pdf")
     plt.close()
 
 
@@ -264,7 +283,8 @@ def plot_regression_prediction() -> None:
 
 
 def main() -> None:
-    plot_decision_tree()
+    plot_decision_tree(max_depth=3)
+    plot_decision_tree_overfitting()
     plot_random_forest_importance()
     for margin in [0.1, 1.0, 10.0]:
         plot_svm_boundary(margin=margin)
