@@ -2,68 +2,86 @@
 \label{chap:knn}
 
 \begin{myremark}[Algorithmusart in diesem Kapitel]
-Funktionsart: \textbf{Klassifikation} (und Regression). \\
-Umsetzungsart: \textbf{selbstlernend}.
-\end{myremark}
-
-\begin{myremark}
-Dieses Kapitel setzt Kapitel~\cref{chap:einfuehrung} und Kapitel~\cref{chap:datenvorbereitung} voraus.
-KNN ist ein besonders intuitiver Algorithmus und eignet sich gut als Einstieg in
-datenbasiertes Denken.
+    Funktionsart: \textbf{Klassifikation} (und Regression).
+    Umsetzungsart: \textbf{selbstlernend}.
 \end{myremark}
 
 \section{Grundidee: Klassifizieren durch Ähnlichkeit}
 
 \begin{mydefinition}[k-Nearest Neighbors (KNN)]
-Beim \textbf{KNN}-Verfahren wird ein neuer Datenpunkt nicht durch ein gelerntes Modell,
-sondern durch die \textbf{$k$ ähnlichsten Punkte} (Nachbarn) im Trainingsset klassifiziert.
-Die häufigste Klasse in der Nachbarschaft bestimmt die Vorhersage.
+    Beim \textbf{KNN}-Verfahren wird ein neuer Datenpunkt nicht durch ein gelerntes Modell,
+    sondern durch die \textbf{$k$ ähnlichsten Punkte} (Nachbarn) im Trainingsset klassifiziert.
+    Die häufigste Klasse in der Nachbarschaft bestimmt die Vorhersage.
 \end{mydefinition}
 
 \begin{myexample}
-$k = 3$: Der neue Punkt hat zwei Nachbarn der Klasse \enquote{A} und einen der Klasse \enquote{B}.
-Vorhersage: \enquote{A}.
+    $k = 3$: Der neue Punkt hat zwei Nachbarn der Klasse \enquote{A} und einen der Klasse \enquote{B}.
+    Vorhersage: \enquote{A}.
 \end{myexample}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.72\textwidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/knn_boundary.pdf}
+    \foreach \k in {1, 5, 15, 50} {
+            \begin{subfigure}[H]{0.45\textwidth}
+                \includegraphics[width=\textwidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/knn_boundary_\k.pdf}
+                \caption{$k$ = \k}
+            \end{subfigure}
+        }
     \caption{KNN-Entscheidungsgrenze für verschiedene Werte von $k$}
     \label{fig:knn-boundary-15}
 \end{figure}
+
+\begin{myexercise}[KNN-Entscheidungsgrenze verstehen]
+    Betrachten Sie \cref{fig:knn-boundary-15}:
+    \begin{itemize}
+        \item Wie verändert sich die Entscheidungsgrenze mit steigendem $k$? Wo erkennen Sie Overfitting? Wo Underfitting?
+        \item Warum könnte $k=1$ zu Overfitting führen?
+        \item Warum könnte ein zu grosses $k$ zu Underfitting führen?
+    \end{itemize}
+    \begin{myanswer}
+        \begin{itemize}
+            \item Mit steigendem $k$ wird die Entscheidungsgrenze glatter. $k=1$ zeigt eine sehr unregelmässige Grenze, die stark auf Ausreisser reagiert (Overfitting). $k=50$ zeigt eine sehr glatte Grenze, die möglicherweise wichtige Strukturen übersieht (Underfitting).
+            \item $k=1$ führt zu Overfitting, weil jeder Punkt nur seinen nächsten Nachbarn betrachtet. Ein Ausreisser könnte also eine falsche Klasse vorhersagen.
+            \item Ein zu grosses $k$ führt zu Underfitting, weil es zu viele Nachbarn berücksichtigt und dadurch die Vorhersage zu allgemein wird. Es könnte wichtige lokale Muster übersehen.
+        \end{itemize}
+    \end{myanswer}
+\end{myexercise}
 
 \section{Distanzmasse}
 
 Die Ähnlichkeit wird über eine \textbf{Distanz} gemessen. Gängig ist die \textbf{euklidische Distanz}:
 \[
-d(a, b) = \sqrt{\sum_{i=1}^{n} (a_i - b_i)^2}
+    \begin{aligned}
+        d(a, b) &= \sqrt{(x_1^a - x_1^b)^2 + (x_2^a - x_2^b)^2 + \cdots + (x_n^a - x_n^b)^2 } \\
+                & = \sqrt{\sum_{i=1}^n (x_i^a - x_i^b)^2}
+    \end{aligned}
 \]
 
 \begin{mycaution}
-Wenn Features sehr unterschiedliche Wertebereiche haben (z.\,B. Alter vs.\ Einkommen),
-dominiert das Feature mit grösseren Werten die Distanz.
-\textbf{Normalisierung} (vgl. Kapitel~\cref{chap:datenvorbereitung}) ist daher bei KNN besonders wichtig.
+    Wenn Features sehr unterschiedliche Wertebereiche haben (z.\,B. Alter vs.\ Einkommen),
+    dominiert das Feature mit grösseren Werten die Distanz.
+    \textbf{Normalisierung} (vgl. Kapitel~\cref{chap:datenvorbereitung}) ist daher bei KNN besonders wichtig.
 \end{mycaution}
 
 \section{Wahl von \texorpdfstring{$k$}{k}}
 
 \begin{myexercise}[Einfluss von $k$]
-Beschreiben Sie den Unterschied zwischen kleinem und grossem $k$:
-\begin{itemize}
-    \item Wann reagiert KNN sehr empfindlich auf Ausreisser?
-    \item Wann wird die Entscheidungsgrenze sehr \enquote{glatt}?
-    \item Was passiert bei $k = 1$? Und bei $k = N$ (alle Trainingspunkte)?
-\end{itemize}
+    Beschreiben Sie den Unterschied zwischen kleinem und grossem $k$:
+    \begin{itemize}
+        \item Wann reagiert KNN sehr empfindlich auf Ausreisser?
+        \item Wann wird die Entscheidungsgrenze sehr \enquote{glatt}?
+        \item Was passiert bei $k = 1$? Und bei $k = N$ (alle Trainingspunkte)?
+    \end{itemize}
 \end{myexercise}
 
 \begin{mychallenge}[Optimales $k$ finden]
-Testen Sie im Notebook $k = 1, 3, 5, 9, 15$ und dokumentieren Sie:
-\begin{enumerate}
-    \item Trainingsgenauigkeit
-    \item Testgenauigkeit
-    \item Visualisierung der Entscheidungsgrenze
-\end{enumerate}
-Begründen Sie Ihre Wahl des besten $k$.
+    Testen Sie im Notebook $k = 1, 3, 5, 9, 15$ und dokumentieren Sie:
+    \begin{enumerate}
+        \item Trainingsgenauigkeit
+        \item Testgenauigkeit
+        \item Visualisierung der Entscheidungsgrenze
+    \end{enumerate}
+    Begründen Sie Ihre Wahl des besten $k$.
 \end{mychallenge}
 
 \section{KNN für Regression}
@@ -71,8 +89,41 @@ Begründen Sie Ihre Wahl des besten $k$.
 KNN kann auch für \textbf{Regression} eingesetzt werden:
 Anstelle der häufigsten Klasse wird der \textbf{Durchschnitt} der $k$ Nachbar-Ausgabewerte
 als Vorhersage verwendet.
+\section{Gesellschaftliche Aspekte: Normalisierungsbias und Datenqualität}
 
+\begin{mydefinition}[Stille Voraussetzungen von KNN]
+    KNN ist einfach und intuitiv, aber macht implizite Annahmen über Datenqualität und Merkmalsdefinition. Eine Normalisierung ist nicht optional -- sie ist unvermeidbar. Die Frage ist: Wer entscheidet, wie normalisiert wird?
+\end{mydefinition}
+
+\begin{myexample}[Normalisierung als Wertsetzung]
+    Betrachten Sie ein KNN-System zur Risikoeinschätzung bei Versicherungen. Merkmale: \enquote{Alter} und \enquote{Jahreseinkommen}. Min-Max-Normalisierung auf \([0,1]\):
+    \[
+        \text{Alter normalisiert: } \frac{30-18}{100-18} = 0.146
+    \]
+    \[
+        \text{Einkommen normalisiert: } \frac{50000-10000}{200000-10000} = 0.235
+    \]
+    Nach Normalisierung haben beide Merkmale gleich \enquote{Gewicht}. Aber ist ein Jahrzehnt Alter wirklich so riskant wie 40'000 CHF Einkommensdifferenz? Diese Entscheidung ist nicht objektiv, sondern Ergebnis von Wertsetzungen.
+
+    \textbf{Real-World-Risiko:} Wenn Einkommensunterschiede historisch mit Ethnizität oder Geschlecht korrelieren, verstärkt eine naive Normalisierung diese Disparität.
+\end{myexample}
+
+\begin{mychallenge}[Normalisierung und Fairness]
+    Sie trainieren ein KNN-System zur Früherkennung von Gesundheitsrisiken in einer Klinik. Merkmale sind u.a. BMI, Blutdruck und \enquote{Anzahl Arztbesuche im letzten Jahr}.
+    \begin{enumerate}
+        \item Warum könnten \enquote{Arztbesuche} ein biased Feature sein?
+        \item Wie könnte Normalisierung diese Verzerrung verstärken?
+        \item Welche Alternative würden Sie vorschlagen -- einfach das Feature weglassen oder die Datensammlung ändern?
+    \end{enumerate}
+    \begin{myanswer}
+        \begin{enumerate}
+            \item Menschen mit höherem Einkommen haben oft besseren Zugang zu Ärzt*innen. Häufige Besuche könnten also Wohlstand abbilden, nicht Krankenheit.
+            \item Wenn dieses Feature normalisiert und gleich gewichtet wird wie medizinische Parameter, wird Wohlstand direkt in eine \enquote{Risikoeinschätzung} übersetzt.
+            \item Idealerweise: Datensammlung diversifizieren und Zugangsbarrieren untersuchen. Aber realistisch erfordert das Zeit. Schnelle Lösung: Feature-Wichtigkeitstests durchführen, um zu sehen, ob \enquote{Arztbesuche} auch nach Kontrolle für Wohlstand noch prädiktiv ist.
+        \end{enumerate}
+    \end{myanswer}
+\end{mychallenge}
 \begin{myremark}[Notebook]
-Praktische Umsetzung inkl. Übungen:
-\href{\notebookbaseurl04_KNN_Classification.ipynb}{\texttt{04\_KNN.ipynb}}
+    Praktische Umsetzung inkl. Übungen:
+    \href{\notebookbaseurl04_KNN_Classification.ipynb}{\texttt{04\_KNN.ipynb}}
 \end{myremark}

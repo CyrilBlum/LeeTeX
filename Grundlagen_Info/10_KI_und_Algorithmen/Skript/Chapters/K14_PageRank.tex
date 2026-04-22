@@ -1,83 +1,5 @@
-\chapter{Priorisierung: Gewichtete Rankings und PageRank}
-\label{chap:priorisierung}
-
-\begin{myremark}[Algorithmusart in diesem Kapitel]
-    Funktionsart: \textbf{Priorisierung}. \\
-    Umsetzungsart: \textbf{regelbasiert und selbstlernend}.
-\end{myremark}
-
-\begin{myremark}
-    Dieses Kapitel behandelt Algorithmen, die nicht primär Kategorien
-    oder Zahlen vorhersagen, sondern Elemente in eine \textbf{Reihenfolge} bringen.
-\end{myremark}
-
-\section{Grundidee: Ordnen statt klassifizieren}
-
-Bei einer Priorisierung wird nicht gefragt \enquote{Welche Klasse?} oder \enquote{Welcher Wert?},
-sondern \enquote{Was soll zuerst kommen?}. Das Ergebnis ist eine \textbf{Rangliste}.
-
-Typische Beispiele sind Suchmaschinen, Newsfeeds, Lernplattformen oder Support-Tickets.
-Die Qualität eines Priorisierungsalgorithmus hängt davon ab, wie sinnvoll die Reihenfolge ist.
-
-\section{Gewichtete Priorisierung}
-Die gewichtete Priorisierung ist eine einfache Methode, um mehrere Kriterien zu einem Score zusammenzufassen. Dieser Algorithmus kommt zum Beispiel bei der Bewertung von Lernquellen (welches Buch, welcher Artikel, welches Video ist am besten geeignet?), bei der Auswahl von Support-Tickets (welches Problem soll zuerst gelöst werden?) oder bei der Priorisierung von Aufgaben (welche To-Do hat die höchste Dringlichkeit?) zum Einsatz.
-
-\begin{mydefinition}[Gewichtete Priorisierung]
-    Bei einer gewichteten Priorisierung bekommt jedes Kriterium ein \textbf{Gewicht}.
-    Aus den Teilwerten $z_1, z_2, \ldots, z_n$ und Gewichten $w_1, w_2, \ldots, w_n$ entsteht ein Score:
-    \[
-        \text{Score}(x) = w_1 z_1 + w_2 z_2 + \cdots + w_n z_n = \sum_{i=1}^n w_i z_i
-    \]
-    Oft gilt $\sum_i w_i = 1$ und alle Teilwerte sind auf $[0,1]$ normiert.
-\end{mydefinition}
-
-\begin{mycaution}
-    Wenn Merkmale unterschiedliche Skalen haben, verzerren grosse Zahlen die Rangliste.
-    Darum müssen die Werte vor dem Zusammenfassen oft normalisiert werden.
-    Für negative Kriterien wie \enquote{Aufwand} oder \enquote{Kosten} wird der Wert invertiert,
-    z.\,B. durch $1-z$.
-\end{mycaution}
-
-\begin{myexample}
-    Drei Quellen für ein Schulprojekt werden nach vier Kriterien bewertet:
-    Relevanz, Aktualität, Vertrauenswürdigkeit und geringer Aufwand.
-    Die Gewichte seien $0.40$, $0.25$, $0.25$ und $0.10$.
-\end{myexample}
-
-\begin{myexercise}[Gewichtete Scores berechnen]
-    Drei Lernquellen wurden bereits auf $[0,1]$ normiert:
-
-    \begin{center}
-        \begin{tabular}{lcccc}
-            \toprule
-            Quelle & Relevanz & Aktualität & Vertrauen & Aufwand \\
-            \midrule
-            A      & 0.85     & 0.50       & 0.75      & 0.30    \\
-            B      & 0.75     & 0.85       & 0.70      & 0.20    \\
-            C      & 0.80     & 0.65       & 0.95      & 0.60    \\
-            \bottomrule
-        \end{tabular}
-    \end{center}
-
-    Berechnen Sie den Score mit
-    \[
-        \text{Score} = 0.40\cdot R + 0.25\cdot A + 0.25\cdot V + 0.10\cdot(1-\text{Aufwand})
-    \]
-    und ordnen Sie die drei Quellen.
-    \begin{myanswer}
-        A: $0.40\cdot0.85 + 0.25\cdot0.50 + 0.25\cdot0.75 + 0.10\cdot0.70 = 0.7225$ \\
-        B: $0.40\cdot0.75 + 0.25\cdot0.85 + 0.25\cdot0.70 + 0.10\cdot0.80 = 0.7675$ \\
-        C: $0.40\cdot0.80 + 0.25\cdot0.65 + 0.25\cdot0.95 + 0.10\cdot0.40 = 0.7600$ \\
-        Rangfolge: B, C, A.
-    \end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}[Gewichte diskutieren]
-    Was verändert sich, wenn man Aktualität stärker gewichtet als Vertrauenswürdigkeit?
-    Nennen Sie ein Beispiel, in dem diese Entscheidung sinnvoll sein kann.
-\end{myexercise}
-
-\section{PageRank: Priorisierung im Netzwerk}
+\chapter{PageRank: Priorisierung im Netzwerk}
+\label{chap:pagerank}
 
 \begin{mydefinition}[PageRank]
     PageRank priorisiert Webseiten nicht nur nach der Anzahl eingehender Links,
@@ -146,6 +68,30 @@ mit $N$ Seiten und Dämpfungsfaktor $d$ (typisch: $0.85$). Mit outdeg$(q)$ ist d
         \end{aligned}
     \]
     Die Korrektheit der oben berechneten Werte kann überprüft werden, indem man die berechneten Werte summiert und sicherstellt, dass sie in etwa 1 ergeben (aufgrund von Rundungsfehlern kann es leicht abweichen). In diesem Fall ergibt die Summe $PR(A) + PR(B) + PR(C) + PR(D) = 0.25 + 0.14375 + 0.56875 + 0.0375 = 1.0$, was bestätigt, dass die Werte korrekt berechnet wurden.
+
+    \cref{fig:pagerank-iterations} illustriert alle iterativen Schritte der Berechnung, beginnend mit den Startwerten und endend mit den stabilen PageRank-Werten. In jeder Grafik sind die Seiten als Knoten dargestellt, wobei die Dicke der Pfeile die Stärke der Verlinkung repräsentiert. Die Zahlen neben den Knoten zeigen die aktuellen PageRank-Werte an, die sich mit jeder Iteration ändern, bis sie stabil bleiben.
+
+    \begin{figure}[H]
+        \foreach \step in {00, 01, 02, 03, 04, 05} {
+            \begin{subfigure}[H]{0.32\textwidth}
+                \centering
+                \includegraphics[width=\linewidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/pagerank_step_\step.pdf}
+                \caption{Iteration \step}
+            \end{subfigure}
+        }
+        \caption{Iterative Berechnung der PageRank-Werte für die Seiten A, B, C und D.}
+        \label{fig:pagerank-iterations}
+    \end{figure}
+
+    Wie \cref{fig:pagerank-final} zeigt, stabilisieren sich die Werte nach einigen Iterationen, wobei Seite C den höchsten PageRank-Wert von $0.56875$ erreicht, gefolgt von Seite A mit $0.25$, Seite B mit $0.14375$ und Seite D mit $0.0375$. Diese Ergebnisse spiegeln die Struktur des Netzwerks wider, in dem Seite C am meisten verlinkt ist und daher als die wichtigste Seite angesehen wird.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/pagerank_summary.pdf}
+        \caption{Zusammenfassung der finalen PageRank-Werte für die Seiten A, B, C und D.}
+        \label{fig:pagerank-final}
+    \end{figure}
+    
 \end{myexample}
 
 \begin{myexercise}[PageRank selber berechnen]

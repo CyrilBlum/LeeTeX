@@ -10,139 +10,171 @@ Bevor ein Modell trainiert werden kann, müssen die Daten vorbereitet werden. Au
     \item \textbf{Gütemasse}: Auswahl von Metriken, um die Leistung des Modells zu bewerten.
 \end{itemize}
 
-All diese Schritte werden in diesem Kapitel behandelt. 
+All diese Schritte werden in diesem Kapitel behandelt.
 
 \section{Trainings- und Testdaten}
 
 Selbstlernende Modelle müssen auf Daten trainiert werden, um Muster zu erkennen. Um die Leistung eines Modells realistisch zu bewerten, ist es wichtig, dass es auf \textbf{ungesehenen} Daten getestet wird. Daher teilen wir die verfügbaren Daten in zwei Teile auf: den \textbf{Trainingsdatensatz} und den \textbf{Testdatensatz}.
 
 \begin{mydefinition}[Train-Test-Split]
-Die Daten werden in einen \textbf{Trainings\-datensatz} und einen
-\textbf{Testdatensatz} aufgeteilt (typisch: 80\,\% / 20\,\%).
-Das Modell wird \emph{nur} mit den Trainingsdaten trainiert und
-anschliessend auf den \emph{ungesehenen} Testdaten bewertet.
+    Die Daten werden in einen \textbf{Trainings\-datensatz} und einen
+    \textbf{Testdatensatz} aufgeteilt (typisch: 80\,\% / 20\,\%).
+    Das Modell wird \emph{nur} mit den Trainingsdaten trainiert und
+    anschliessend auf den \emph{ungesehenen} Testdaten bewertet.
 \end{mydefinition}
 
 \begin{mycaution}
-Wer das Modell auch auf den Trainingsdaten bewertet, misst lediglich, wie gut das Modell \enquote{auswendig gelernt} hat -- das gibt keinen Aufschluss über die echte Leistung auf neuen Daten.
+    Wer das Modell auch auf den Trainingsdaten bewertet, misst lediglich, wie gut das Modell \enquote{auswendig gelernt} hat -- das gibt keinen Aufschluss über die echte Leistung auf neuen Daten.
 \end{mycaution}
 
 \begin{myexercise}[Train-Test-Split nachvollziehen]
-Ein Datensatz enthält 500 Zeilen.
-\begin{enumerate}
-    \item Wie viele Zeilen enthält der Trainings- bzw. der Testdatensatz bei einem 80/20-Split?
-    \item Warum darf man die Testdaten \emph{nicht} für die Modellentwicklung verwenden?
-    \item Was könnte in diesem Kontext mit \emph{data leakage} gemeint sein und warum wäre dies problematisch?
-\end{enumerate}
-\begin{myanswer}
-\begin{enumerate}
-    \item 400 Training / 100 Test \quad
-    \item Sonst misst man nur, ob das Modell die Testdaten auswendig kennt, nicht ob es generalisiert. \quad
-    \item Information aus dem Testset fliesst in das Training -- der gemessene Fehler unterschätzt den echten Fehler.
-\end{enumerate}
-\end{myanswer}
+    Ein Datensatz enthält 500 Zeilen.
+    \begin{enumerate}
+        \item Wie viele Zeilen enthält der Trainings- bzw. der Testdatensatz bei einem 80/20-Split?
+        \item Warum darf man die Testdaten \emph{nicht} für die Modellentwicklung verwenden?
+        \item Was könnte in diesem Kontext mit \emph{data leakage} gemeint sein und warum wäre dies problematisch?
+    \end{enumerate}
+    \begin{myanswer}
+        \begin{enumerate}
+            \item 400 Training / 100 Test \quad
+            \item Sonst misst man nur, ob das Modell die Testdaten auswendig kennt, nicht ob es generalisiert. \quad
+            \item Information aus dem Testset fliesst in das Training -- der gemessene Fehler unterschätzt den echten Fehler.
+        \end{enumerate}
+    \end{myanswer}
 \end{myexercise}
 
 \section{Merkmale und Zielvariable}
 Im maschinellen Lernen werden die Eingabedaten als \textbf{Features} (Merkmale) bezeichnet, während die vorherzusagende Variable als \textbf{Label} (Zielvariable) bezeichnet wird.
 \begin{mydefinition}[Features und Label]
     Essentielle Begriffe:
-\begin{itemize}
-    \item \textbf{Features} (Merkmale): die Eingabevariablen $x_1, x_2, \ldots, x_n$
-    \item \textbf{Label} (Zielvariable): der Ausgabewert $y$, den das Modell vorhersagen soll
-\end{itemize}
+    \begin{itemize}
+        \item \textbf{Features} (Merkmale): die Eingabevariablen $x_1, x_2, \ldots, x_n$
+        \item \textbf{Label} (Zielvariable): der Ausgabewert $y$, den das Modell vorhersagen soll
+    \end{itemize}
 \end{mydefinition}
 
 \begin{myexample}
-Beim Datensatz \texttt{learning\_style\_classifier.csv}:
-\begin{itemize}
-    \item Features: Lernzeit, Schlafstunden, Anzahl Wiederholungen
-    \item Label: Bestanden (1) oder nicht bestanden (0)
-\end{itemize}
+    Beim Datensatz \texttt{learning\_style\_classifier.csv}:
+    \begin{itemize}
+        \item Features: Lernzeit, Schlafstunden, Anzahl Wiederholungen
+        \item Label: Bestanden (1) oder nicht bestanden (0)
+    \end{itemize}
 \end{myexample}
 
 \section{Normalisierung}
 
 \begin{mydefinition}[Min-Max-Normalisierung]
-Features mit sehr unterschiedlichen Wertebereichen können Modelle verzerren.
-Die \textbf{Min-Max-Normalisierung} skaliert alle Werte auf $[0,\,1]$:
-\[
-x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}}
-\]
-Dies ist besonders wichtig für Algorithmen, die auf Abständen basieren (z.\,B. kNN, SVM). Ohne Normalisierung könnte ein Feature mit grösseren Werten die Distanzberechnung dominieren und somit die Modellleistung schmälern.
+    Features mit sehr unterschiedlichen Wertebereichen können Modelle verzerren.
+    Die \textbf{Min-Max-Normalisierung} skaliert alle Werte auf $[0,\,1]$:
+    \[
+        x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}}
+    \]
+    Dies ist besonders wichtig für Algorithmen, die auf Abständen basieren (z.\,B. kNN, SVM). Ohne Normalisierung könnte ein Feature mit grösseren Werten die Distanzberechnung dominieren und somit die Modellleistung schmälern.
 \end{mydefinition}
 
 \begin{myexercise}[Normalisierung berechnen]
-Gegeben: Lernzeiten $\{2, 4, 6, 8, 10\}$ Stunden.
-\begin{enumerate}
-    \item Normalisieren Sie alle Werte mit Min-Max. Sie können dazu das Python-Notebook verwenden: \href{\notebookbaseurl00_Datenvorbereitung.ipynb}{\texttt{00\_Datenvorbereitung.ipynb}}.
-    \item Welcher Wert entspricht nach der Normalisierung dem Wert 6?
-\end{enumerate}
-\begin{myanswer}
-$x_{\min}=2,\ x_{\max}=10$: 
-$\{0,\; 0.25,\; 0.5,\; 0.75,\; 1.0\}$. 
-Der Wert 6 wird zu $0.5$.
-\end{myanswer}
+    Gegeben: Lernzeiten $\{2, 4, 6, 8, 10\}$ Stunden.
+    \begin{enumerate}
+        \item Normalisieren Sie alle Werte mit Min-Max. Sie können dazu das Python-Notebook verwenden: \href{\notebookbaseurl00_Datenvorbereitung.ipynb}{\texttt{00\_Datenvorbereitung.ipynb}}.
+        \item Welcher Wert entspricht nach der Normalisierung dem Wert 6?
+    \end{enumerate}
+    \begin{myanswer}
+        $x_{\min}=2,\ x_{\max}=10$:
+        $\{0,\; 0.25,\; 0.5,\; 0.75,\; 1.0\}$.
+        Der Wert 6 wird zu $0.5$.
+    \end{myanswer}
 \end{myexercise}
 
 \section{Gütemasse für Klassifikation}
 
 \begin{mydefinition}[Konfusionsmatrix]
-Die \textbf{Konfusionsmatrix} zeigt, wie oft das Modell richtig und falsch klassifiziert hat:
+    Die \textbf{Konfusionsmatrix} zeigt, wie oft das Modell richtig und falsch klassifiziert hat:
 
-\begin{center}
-\begin{tabular}{cc|cc}
- & & \multicolumn{2}{c}{\textbf{Vorhergesagt}} \\
- & & Positiv & Negativ \\
-\hline
-\multirow{2}{*}{\textbf{Tatsächlich}} & Positiv & TP & FN \\
- & Negativ & FP & TN \\
-\end{tabular}
-\end{center}
+    \begin{center}
+        \begin{tabular}{cc|cc}
+                                                  &         & \multicolumn{2}{c}{\textbf{Vorhergesagt}} \\
+                                                  &         & Positiv                                      & Negativ \\
+            \hline
+            \multirow{2}{*}{\textbf{Tatsächlich}} & Positiv & TP                                           & FN \\
+                                                  & Negativ & FP                                           & TN \\
+        \end{tabular}
+    \end{center}
 \end{mydefinition}
 
 \begin{mydefinition}[Accuracy, Precision, Recall]
-\[
-\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
-\qquad
-\text{Precision} = \frac{TP}{TP + FP}
-\qquad
-\text{Recall} = \frac{TP}{TP + FN}
-\]
+    \[
+        \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+        \qquad
+        \text{Precision} = \frac{TP}{TP + FP}
+        \qquad
+        \text{Recall} = \frac{TP}{TP + FN}
+    \]
 
-Die \textbf{Accuracy} misst die Gesamtgenauigkeit des Modells.
-Die \textbf{Precision} misst, wie viele der als positiv vorhergesagten Fälle tatsächlich positiv sind.
-Der \textbf{Recall} misst, wie viele der tatsächlich positiven Fälle korrekt erkannt wurden.
+    Die \textbf{Accuracy} misst die Gesamtgenauigkeit des Modells.
+    Die \textbf{Precision} misst, wie viele der als positiv vorhergesagten Fälle tatsächlich positiv sind.
+    Der \textbf{Recall} misst, wie viele der tatsächlich positiven Fälle korrekt erkannt wurden.
 
-Die Begriffe \emph{Sensitivität} und \emph{Spezifizität} werden manchmal synonym zu Recall bzw. Precision verwendet.
+    Die Begriffe \emph{Sensitivität} und \emph{Spezifizität} werden manchmal synonym zu Recall bzw. Precision verwendet.
 \end{mydefinition}
 
 \begin{myexercise}[Metriken berechnen]
-Ein Spam-Filter klassifiziert 200 E-Mails.
-Die Konfusionsmatrix ergibt: 
-\begin{center}
-\begin{tabular}{cc|cc}
- & & \multicolumn{2}{c}{\textbf{Vorhergesagt}} \\
- & & Spam & Kein Spam \\
-\hline
-\multirow{2}{*}{\textbf{Tatsächlich}} & Spam & 80 & 20 \\
- & Kein Spam & 10 & 90 \\
-\end{tabular}
-\end{center}
+    Ein Spam-Filter klassifiziert 200 E-Mails.
+    Die Konfusionsmatrix ergibt:
+    \begin{center}
+        \begin{tabular}{cc|cc}
+                                                  &           & \multicolumn{2}{c}{\textbf{Vorhergesagt}} \\
+                                                  &           & Spam                                         & Kein Spam \\
+            \hline
+            \multirow{2}{*}{\textbf{Tatsächlich}} & Spam      & 80                                           & 20 \\
+                                                  & Kein Spam & 10                                           & 90 \\
+        \end{tabular}
+    \end{center}
 
-\begin{enumerate}
-    \item Berechnen Sie Accuracy, Precision und Recall. Sie können dazu das Python-Notebook verwenden: \href{\notebookbaseurl00_Datenvorbereitung.ipynb}{\texttt{00\_Datenvorbereitung.ipynb}}.
-    \item Warum ist Recall besonders wichtig, wenn es darum geht, keinen Spam zu verpassen?
-\end{enumerate}
-\begin{myanswer}
-\begin{enumerate}
-    \item Berechnungen:
-    \begin{itemize}
-        \item Accuracy = $\frac{80 + 90}{200} = 0.85$
-        \item Precision = $\frac{80}{80 + 10} = 0.89$
-        \item Recall = $\frac{80}{80 + 20} = 0.80$
-    \end{itemize}
-    \item Ein hoher Recall bedeutet, dass die meisten Spam-E-Mails korrekt erkannt werden. Wenn der Recall niedrig ist, könnte der Filter viele Spam-Nachrichten durchlassen, was unerwünscht ist.
-\end{enumerate}
-\end{myanswer}
+    \begin{enumerate}
+        \item Berechnen Sie Accuracy, Precision und Recall. Sie können dazu das Python-Notebook verwenden: \href{\notebookbaseurl00_Datenvorbereitung.ipynb}{\texttt{00\_Datenvorbereitung.ipynb}}.
+        \item Warum ist Recall besonders wichtig, wenn es darum geht, keinen Spam zu verpassen?
+    \end{enumerate}
+    \begin{myanswer}
+        \begin{enumerate}
+            \item Berechnungen:
+                  \begin{itemize}
+                      \item Accuracy = $\frac{80 + 90}{200} = 0.85$
+                      \item Precision = $\frac{80}{80 + 10} = 0.89$
+                      \item Recall = $\frac{80}{80 + 20} = 0.80$
+                  \end{itemize}
+            \item Ein hoher Recall bedeutet, dass die meisten Spam-E-Mails korrekt erkannt werden. Wenn der Recall niedrig ist, könnte der Filter viele Spam-Nachrichten durchlassen, was unerwünscht ist.
+        \end{enumerate}
+    \end{myanswer}
 \end{myexercise}
+% \section{Gesellschaftliche Aspekte: Datenschutz, Bias und Datenethik}
+
+% \begin{mydefinition}[Bias in Datensammlung]
+%     \textbf{Bias} entsteht nicht erst beim Training des Modells -- er beginnt bei der Datensammlung. Wenn Trainungsdaten strukturelle Ungleichheiten widerspiegeln (z.~B. historische Diskriminierung, ungleicher Zugang), wird der Algorithmus diese perpetuieren oder sogar verstärken.
+% \end{mydefinition}
+
+% \begin{myexample}[Data Privacy und Datenschutz]
+%     Beim Sammeln von Trainingsdaten müssen folgende Fragen gestellt werden:
+%     \begin{itemize}
+%         \item Wurden die Daten mit Zustimmung der betroffenen Personen gesammelt?
+%         \item Welche Datenschutzregeln gelten? (z.~B. DSGVO in der EU)
+%         \item Können Personen identifiziert werden (auch wenn explizit anonymisiert)?
+%         \item Wie lange sollten Daten gespeichert werden?
+%     \end{itemize}
+%     \textbf{Real-World-Link:} \href{https://gdpr-info.eu/}{DSGVO / GDPR -- Verordnung zum Datenschutz in der EU}
+% \end{myexample}
+
+% \begin{mychallenge}[Normalisierung und versteckte Annahmen]
+%     Sie bereiten einen Datensatz für ein Klassifikations-Modell zur Kreditvergabe vor. Features sind Alter, Einkommen, Schulden und \enquote{Anzahl Konten bei dieser Bank}.
+%     \begin{enumerate}
+%         \item Durch Min-Max-Normalisierung erhalten alle Features das gleiche \enquote{Gewicht}. Ist das fair?
+%         \item Welches Feature könnte versteckt nach Wohlstand fragen und darum indirekt diskriminierend wirken?
+%         \item Welche Informationen fehlen möglicherweise, was zu Verzerrung führen könnte?
+%     \end{enumerate}
+%     \begin{myanswer}
+%         \begin{enumerate}
+%             \item Nicht automatisch. Die Gewichtung ist eine Wertsetzung. Ein Jahr Lebenserfahrung != 40'000 CHF Einkommensdifferenz. Diese Entscheidung sollte dokumentiert sein.
+%             \item \enquote{Anzahl Konten bei dieser Bank} könnte Wohlstand oder Vertrauen abbilden, könnte aber auch Langzeit-Kundschaft oder schlicht geografische Nähe sein. Proxy-Variablen sind schwierig.
+%             \item Bildung, Beschäftigungsart, Migrationshintergrund, Eltern-Einkommen -- alles Dinge, die mit Einkommen korrelieren und eventuell versteckt im Datensatz sind.
+%         \end{enumerate}
+%     \end{myanswer}
+% \end{mychallenge}

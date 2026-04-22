@@ -1,153 +1,584 @@
-\newgeometry{margin=.5cm}
+% Komprehensives Data Science & KI-Algorithmen Cheatsheet (K01-K14)
+\scriptsize
+\newgeometry{margin=.4cm}
+\lstset{style=python, basicstyle=\ttfamily\tiny}
 \pagestyle{empty}
 \raggedcolumns
-\footnotesize
-\newcommand{\cheatSheetColor}{RoyalBlue}
+\tiny
+\providecommand{\cheatSheetColor}{ForestGreen}
 
 \newtcolorbox{cheatSheetBox}[1][]{
-    enhanced jigsaw,
-    % breakable,
-    colback=\cheatSheetColor!10,
-    colframe=\cheatSheetColor,
-    colbacktitle=\cheatSheetColor!30,
-    fonttitle=\bfseries,
-    parbox=false,
-    attach boxed title to top text left={yshift=-3mm,yshifttext=-3mm},
-    coltitle=black,
-    #1}
+	enhanced jigsaw,
+	colback=\cheatSheetColor!10,
+	colframe=\cheatSheetColor,
+	colbacktitle=\cheatSheetColor!30,
+	fonttitle=\bfseries,
+	parbox=false,
+	attach boxed title to top text left={yshift=-5mm,yshifttext=-3.5mm},
+	coltitle=black,
+	#1}
 
-\lstset{style=python, basicstyle=\ttfamily\footnotesize}
+\newcommand{\cheatSheetSubtitle}[2]{
+	\textcolor{\cheatSheetColor}{
+		\begin{centering}
+			\subsection*{#1}
+		\end{centering}
+		\vspace{0.3em}
+		\hrule
+		#2
+		\vspace{0.3em}
+	}
+}
 
 \begin{landscape}
-    \footnotesize
-    \begin{multicols*}{4}
-        \textcolor{\cheatSheetColor}{\begin{center}
-                \section{Cheatsheet}
-            \end{center}\hrule}
+	\tiny
+	\begin{multicols*}{4}
+		\textcolor{\cheatSheetColor}{
+			\begin{centering}
+				\section*{KI \& Algorithmen – Komprehensives Cheatsheet (K01--K14)}
+			\end{centering}
+			\hrule
+			Das folgende Cheatsheet deckt alle Themen ab: Einführung, Datenvorbereitung, Algorithmen (Baum, RF, SVM, KNN, Regression, NN), Assoziation (Apriori), Filterung (Naive Bayes), Ranking (gewichtet, PageRank), Markov-Ketten und Korrelation/Kausalität.
+			\vspace{0.2em}
+		}
 
-        \textcolor{\cheatSheetColor}{\subsection*{Orientierung}}
+		% === K01: EINFÜHRUNG ===
+		\cheatSheetSubtitle{K01: Einführung – Algorithmen-Arten}{Unterscheidung nach Funktionsart und Einsatzbereich}
+		
+		\begin{cheatSheetBox}[title=Algorithmen nach Funktionsart]
+			\textbf{1. Priorisierung} (Ranking): Gewichte, PageRank
+			\textbf{2. Klassifikation} (Kategorien): Baum, RF, KNN, SVM, Markov
+			\textbf{3. Assoziation} (Muster): Apriori
+			\textbf{4. Filterung} (Zuweisung): Naive Bayes
+			\textbf{5. Regression} (Zahlenwerte): Lin. Regression, NN
+		\end{cheatSheetBox}
 
-        \begin{cheatSheetBox}[title=Funktionsarten]
-            \begin{itemize}
-                \item \textbf{Priorisierung:} Elemente werden nach Relevanz oder Wichtigkeit geordnet.
-                \item \textbf{Klassifikation:} Ein Datenpunkt wird einer Kategorie zugeordnet.
-                \item \textbf{Assoziation:} Häufig gemeinsam auftretende Muster werden gefunden.
-                \item \textbf{Filterung:} Inhalte werden zugelassen, sortiert oder ausgeblendet.
-            \end{itemize}
-        \end{cheatSheetBox}
+		\begin{cheatSheetBox}[title=Klassifikation vs. Regression]
+			\textbf{Klassifikation}: Kategorie vorhersagen (diskret)
+			\begin{lstlisting}
+df = df[df['Note'] < 4]  # Filter nach Kategorie
+			\end{lstlisting}
+			\textbf{Regression}: Zahlenwert vorhersagen (kontinuierlich)
+			\begin{lstlisting}
+y = a0 + a1*x1 + a2*x2  # Lineare Gleichung
+			\end{lstlisting}
+		\end{cheatSheetBox}
 
-        \begin{cheatSheetBox}[title=Zentrale Formeln]
-            \[
-                \text{Score}(x)=\sum_{i=1}^{n} w_i z_i
-                \qquad
-                PR(p)=\frac{1-d}{N}+d\sum_{q\to p}\frac{PR(q)}{\text{outdeg}(q)}
-                \qquad
-                \text{Gini}(t)=1-\sum_k p_k^2
-            \]
-            Gewichte, Linkstruktur und Klassenanteile bestimmen die jeweilige Priorisierung oder Trennung.
-        \end{cheatSheetBox}
+		% === K02: DATENVORBEREITUNG ===
+		\cheatSheetSubtitle{K02: Datenvorbereitung \& Evaluation}{Preprocessing und Metriken}
 
-        \columnbreak\textcolor{\cheatSheetColor}{\subsection*{Klassifikation}}
+		\begin{cheatSheetBox}[title=Min-Max-Normalisierung]
+			\[x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}}\]
+			Bringt alle Features auf $[0, 1]$ — essentiell für KNN, SVM
+		\end{cheatSheetBox}
 
-        \begin{cheatSheetBox}[title=Entscheidungsbaum]
-            Ein Baum stellt nacheinander Fragen an die Daten und teilt sie durch Schwellenwerte auf.
-            Wichtige Begriffe sind Knoten, Kante, Blatt und Unreinheit.
+		\begin{cheatSheetBox}[title=Klassifikation-Metriken]
+			\[
+				\text{Accuracy} = \frac{TP + TN}{TP+TN+FP+FN}
+			\]
+			\[
+				\text{Precision} = \frac{TP}{TP+FP}, \quad
+				\text{Recall} = \frac{TP}{TP+FN}
+			\]
+			\textbf{TP}: Korrekt positiv, \textbf{FP}: Falsch positiv, \textbf{FN}: Falsch negativ
+		\end{cheatSheetBox}
 
-            \[
-                \text{Gini}(t)=1-\sum_k p_k^2
-            \]
+		\begin{cheatSheetBox}[title=Regression-Metriken]
+			\[
+				\text{MAE} = \frac{1}{n}\sum|y_i - \hat{y}_i|
+			\]
+			\[
+				\text{RMSE} = \sqrt{\frac{1}{n}\sum(y_i - \hat{y}_i)^2}
+			\]
+			RMSE bestraft große Fehler stärker (Quadrierung)
+		\end{cheatSheetBox}
 
-            Je reiner ein Knoten, desto kleiner ist der Gini-Wert.
-        \end{cheatSheetBox}
+		% === K03: ENTSCHEIDUNGSBAUM ===
+		\cheatSheetSubtitle{K03: Entscheidungsbaum}{Stufenweise Aufteilung mit Gini-Koeffizient}
 
-        \begin{cheatSheetBox}[title=Random Forest]
-            Random Forest kombiniert viele zufällige Bäume und entscheidet per Mehrheitsentscheid.
-            Wichtige Einstellungen sind die Anzahl der Bäume, die Tiefe und die Blattgrösse.
-            Er ist robuster als ein einzelner Baum, aber weniger direkt erklärbar.
-        \end{cheatSheetBox}
+		\begin{cheatSheetBox}[title=Gini-Reinheitsmass]
+			\[
+				\text{Gini}(t) = 1 - \sum_{k=1}^{K} p_k^2
+			\]
+			Gini=0: Rein, Gini=0.5: Maximal unrein. Baum minimiert Gini iterativ.
+		\end{cheatSheetBox}
 
-        \begin{cheatSheetBox}[title=KNN]
-            KNN vergleicht einen neuen Punkt mit seinen nächsten Nachbarn und übernimmt deren Mehrheitsklasse.
-            Wichtig ist die Normalisierung, weil Distanzen von der Skala der Features abhängen.
+		\begin{cheatSheetBox}[title=Overfitting-Prävention]
+			\texttt{max\_depth}, \texttt{min\_samples\_split}, \texttt{min\_samples\_leaf} limitieren Tiefe und Komplexität
+		\end{cheatSheetBox}
 
-            \[
-                d(a,b)=\sqrt{\sum_{i=1}^{n}(a_i-b_i)^2}
-            \]
+		% === K04: LINEARE REGRESSION ===
+		\cheatSheetSubtitle{K04: Lineare Regression}{Vorhersage kontinuierlicher Werte}
 
-            Kleines $k$ reagiert empfindlich, grosses $k$ glättet die Entscheidung.
-        \end{cheatSheetBox}
+		\begin{cheatSheetBox}[title=Einfache lineare Regression]
+			\[y = mx + q\]
+			Methode kleinster Quadrate:
+			\[
+				m = \frac{n\sum x_i y_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2}
+			\]
+			\[
+				q = \frac{\sum y_i - m\sum x_i}{n}
+			\]
+		\end{cheatSheetBox}
 
-        \begin{cheatSheetBox}[title=SVM als Bonus]
-            Eine SVM sucht eine Trennlinie mit möglichst grossem Margin zwischen den Klassen.
-            Der Parameter $C$ steuert die Fehlertoleranz: grosses $C$ für strenge Trennung, kleines $C$ für mehr Toleranz.
-            Mit Kernels lassen sich auch nichtlinear trennbare Daten behandeln.
-        \end{cheatSheetBox}
+		\begin{cheatSheetBox}[title=Multiple lineare Regression]
+			\[
+				y = a_0 + a_1 x_1 + a_2 x_2 + \cdots + a_n x_n
+			\]
+			\begin{lstlisting}
+model = smf.ols('Note ~ Schlaf + Lernaufwand', 
+                 data=df).fit()
+pred = model.predict({'Schlaf': [7], 'Lernaufwand': [3]})
+			\end{lstlisting}
+		\end{cheatSheetBox}
 
-        \columnbreak\textcolor{\cheatSheetColor}{\subsection*{Assoziation und Filterung}}
+		% === K05: SVM ===
+		\cheatSheetSubtitle{K05: SVM – Support Vector Machine}{Optimale Trennebene mit maximalem Margin}
 
-        \begin{cheatSheetBox}[title=Apriori]
-            Apriori sucht häufige Itemsets und daraus Assoziationsregeln.
+		\begin{cheatSheetBox}[title=SVM-Grundkonzept]
+			Findet Hyperebene mit größtem Abstand (Margin) zwischen Klassen
+			\begin{itemize}
+				\item \textbf{Linearer Kernel}: Einfach, erklärbar
+				\item \textbf{RBF-Kernel}: Flexibel, nichtlinear
+			\end{itemize}
+		\end{cheatSheetBox}
 
-            \[
-                \text{Support}(X\Rightarrow Y)=P(X\cup Y)
-                \qquad
-                \text{Confidence}(X\Rightarrow Y)=\frac{P(X\cup Y)}{P(X)}
-                \qquad
-                \text{Lift}(X\Rightarrow Y)=\frac{P(X\cup Y)}{P(X)P(Y)}
-            \]
+		\begin{cheatSheetBox}[title=Parameter C (Regularisierung)]
+			$C$ groß: Enger Margin, Overfitting-Risiko
+			$C$ klein: Breiter Margin, kann zu Underfitting führen
+		\end{cheatSheetBox}
 
-            Hohe Confidence allein genügt nicht; Support und Lift zeigen, ob die Regel wirklich sinnvoll ist.
-        \end{cheatSheetBox}
+		% === K06: KNN ===
+		\cheatSheetSubtitle{K06: k-Nearest Neighbors}{Mehrheitsabstimmung der k nächsten Nachbarn}
 
-        \begin{cheatSheetBox}[title=Naive Bayes]
-            Naive Bayes kombiniert Bayes' Theorem mit der Annahme bedingter Unabhängigkeit der Merkmale.
+		\begin{cheatSheetBox}[title=Euklidische Distanz]
+			\[
+				d(a, b) = \sqrt{\sum_{i=1}^n (a_i - b_i)^2}
+			\]
+			\textbf{Kritisch}: Normalisierung essentiell! Größere Features dominieren sonst.
+		\end{cheatSheetBox}
 
-            \[
-                P(C\mid x)=\frac{P(x\mid C)P(C)}{P(x)}
-                \qquad
-                P(x_1,\ldots,x_n\mid C)\approx\prod_{i=1}^{n}P(x_i\mid C)
-            \]
+		\begin{cheatSheetBox}[title=Hyperparameter k]
+			k=1: Sehr sensitiv, Overfitting
+			k=10--30: Balance
+			k groß: Glatte Grenzen, Underfitting-Risiko
+		\end{cheatSheetBox}
 
-            Laplace-Glättung verhindert Nullwahrscheinlichkeiten und ist besonders wichtig bei Textdaten.
-        \end{cheatSheetBox}
+		\columnbreak
 
-        \columnbreak\textcolor{\cheatSheetColor}{\subsection*{Regression und Evaluation}}
+		% === K07: NEURONALE NETZE ===
+		\cheatSheetSubtitle{K07-K08: Neuronale Netze}{Schichtenweise Funktionsapproximation}
 
-        \begin{cheatSheetBox}[title=Regression]
-            Regression sagt einen kontinuierlichen Zahlenwert vorher.
+		\begin{cheatSheetBox}[title=Perceptron (Einzelneuron)]
+			\[
+				\hat{y} = f\left(\sum_{i=1}^{n} w_i x_i + b\right)
+			\]
+			$f$ = Aktivierungsfunktion (Sigmoid, ReLU, Softmax)
+		\end{cheatSheetBox}
 
-            \[
-                y=a_0+a_1x_1+a_2x_2+\cdots+a_nx_n
-            \]
+		\begin{cheatSheetBox}[title=Aktivierungsfunktionen]
+			\textbf{Sigmoid}: $\sigma(z)=\frac{1}{1+e^{-z}}$ (0--1)
+			\textbf{ReLU}: $\max(0,z)$ (0--∞)
+			\textbf{Softmax}: $\frac{e^{z_k}}{\sum_j e^{z_j}}$ (Wahrscheinlichkeiten)
+		\end{cheatSheetBox}
 
-            \[
-                \text{MAE}=\frac{1}{n}\sum_{i=1}^{n}|y_i-\hat{y}_i|
-                \qquad
-                \text{RMSE}=\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}
-            \]
+		\begin{cheatSheetBox}[title=Backpropagation]
+			Fehler rückwärts propagieren, Gewichte durch Gradientenabstieg anpassen
+		\end{cheatSheetBox}
 
-            RMSE bestraft grosse Fehler stärker als MAE.
-        \end{cheatSheetBox}
+		\begin{cheatSheetBox}[title=NN-Grenzen]
+			Black-Box (unerklärbar), hoher Datenbedarf, langsames Training, Overfitting-anfällig
+		\end{cheatSheetBox}
 
-        \begin{cheatSheetBox}[title=Datenvorbereitung]
-            \begin{itemize}
-                \item Train-Test-Split: typischerweise 80/20.
-                \item Features sind Eingaben, das Label ist die Zielvariable.
-                \item Datenleckage verfälscht die Bewertung.
-                \item Klassifikation: Accuracy, Precision, Recall.
-                \item Regression: MAE, RMSE.
-            \end{itemize}
-        \end{cheatSheetBox}
+		% === K09: MODELLVERGLEICH ===
+		\cheatSheetSubtitle{K09: Modellvergleich-Übersicht}{Stärken, Grenzen, Einsatzbereiche}
 
-        \begin{cheatSheetBox}[title=Merksätze]
-            \begin{itemize}
-                \item Erst Daten sauber vorbereiten, dann trainieren.
-                \item Ein Modell ohne gute Evaluation ist wertlos.
-                \item Interpretierbarkeit und Güte müssen zusammen betrachtet werden.
-            \end{itemize}
-        \end{cheatSheetBox}
+		\begin{cheatSheetBox}[title=Algorithmen-Vergleich]
+			\textbf{Baum}: Interpretierbar, Overfitting, kein Normalisierungsnötig
+			\textbf{RF}: Robust, oft beste Accuracy, weniger erklärbar
+			\textbf{SVM}: Effektiv bei klaren Grenzen, Parameterwahl komplex
+			\textbf{KNN}: Einfach, keine Training, skalierungssensitiv
+			\textbf{Lin. Reg.}: Schnell, linear, unerklärbar bei Abweichungen
+			\textbf{NN}: Sehr mächtig, Black-Box, viele Daten nötig
+		\end{cheatSheetBox}
 
-    \end{multicols*}
+		% === K10: TRANSFERAUFGABE ===
+		\cheatSheetSubtitle{K10: Transferaufgabe}{Eigenes ML-Projekt-Checkliste}
+
+		\begin{cheatSheetBox}[title=Schritte]
+			1. Problem definieren (Klassifikation/Regression)
+			2. Mindestens 50 gelabelte Zeilen sammeln
+			3. Fehlende Werte, Normalisierung, 80/20-Split
+			4. Zwei Modelle trainieren
+			5. Metriken vergleichen, Visualisierung
+			6. Bias-Risiken reflektieren
+		\end{cheatSheetBox}
+
+		% === K11: APRIORI ===
+		\cheatSheetSubtitle{K11: Apriori – Assoziationsregeln}{Häufige Itemsets und Regeln}{K11: Apriori}
+
+		\begin{cheatSheetBox}[title=Zentrale Kennzahlen]
+			\[
+				\text{Support}(X \Rightarrow Y) = P(X \cup Y)
+			\]
+			\[
+				\text{Confidence}(X \Rightarrow Y) = \frac{P(X \cup Y)}{P(X)}
+			\]
+			\[
+				\text{Lift}(X \Rightarrow Y) = \frac{P(X \cup Y)}{P(X)P(Y)}
+			\]
+			Lift > 1: Positive Assoziation (stärker als Zufall)
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Apriori-Prinzip]
+			Häufiges Itemset $\Rightarrow$ alle Teilmengen häufig
+			Nicht-häufige Teilmenge $\Rightarrow$ keine häufige Obermenge
+		\end{cheatSheetBox}
+
+		% === K12: NAIVE BAYES ===
+		\cheatSheetSubtitle{K12: Naive Bayes – Filterung}{Wahrscheinlichkeitsbasierte Klassifikation}
+
+		\begin{cheatSheetBox}[title=Bayes-Theorem]
+			\[
+				P(C\mid x) = \frac{P(x\mid C) \, P(C)}{P(x)}
+			\]
+			Naive Annahme: Bedingte Unabhängigkeit der Features
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Laplace-Glättung]
+			\[
+				P(w\mid C) = \frac{\text{count}(w,C) + \alpha}{\sum_v \text{count}(v,C) + \alpha|V|}
+			\]
+			Verhindert Wahrscheinlichkeit 0 für unbekannte Features
+		\end{cheatSheetBox}
+
+		% === K13: GEWICHTETES RANKING ===
+		\cheatSheetSubtitle{K13: Gewichtetes Ranking}{Priorisierung durch Scoring}
+
+		\begin{cheatSheetBox}[title=Scoring-Formel]
+			\[
+				\text{Score}(x) = \sum_{i=1}^n w_i z_i
+			\]
+			Typisch: $\sum w_i = 1$, Features normiert auf $[0,1]$
+			\textbf{Warnung}: Gewichte sind Wertsetzungen, nicht objektiv!
+		\end{cheatSheetBox}
+
+		% === K14: PAGERANK ===
+		\cheatSheetSubtitle{K14: PageRank – Netzwerk-Ranking}{Wichtigkeit durch Backlinks}
+
+		\begin{cheatSheetBox}[title=PageRank-Formel]
+			\[
+				PR(p) = \frac{1-d}{N} + d\sum_{q \to p}\frac{PR(q)}{\text{outdeg}(q)}
+			\]
+			$d$ = Dämpfung (typisch 0.85), $N$ = Seiten, outdeg = ausgehende Links
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Iterativer Prozess]
+			Start: $PR = 1/N$ für alle. Dann iterativ aktualisieren bis konvergiert.
+		\end{cheatSheetBox}
+
+		\columnbreak
+
+		% === MARKOV-KETTEN ===
+		\cheatSheetSubtitle{Markov-Ketten}{Zustandsübergänge mit Wahrscheinlichkeiten}
+
+		\begin{cheatSheetBox}[title=Übergangsmatrix (Wetter)]
+			\[
+				P = \begin{pmatrix} 0.8 & 0.2 \\ 0.4 & 0.6 \end{pmatrix}
+			\]
+			Zeilen: Aktueller Zustand (Sonne/Regen)
+			Spalten: Nächster Zustand
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Vorhersage]
+			\[
+				\pi_1 = \pi_0 \times P
+			\]
+			Startvektor $\pi_0$ (z.B. $[1, 0]$ = Sonne) multipliziert mit Matrix
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Beispiel-Berechnung]
+			Start: Sonne $\pi_0 = [1, 0]$
+			Nach 1 Tag: $\pi_1 = [0.8, 0.2]$
+			Nach 2 Tagen: $\pi_2 = [0.72, 0.28]$
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Python: Matrix und Vorhersage]
+			\begin{lstlisting}
+import numpy as np
+P = np.array([[0.8, 0.2], [0.4, 0.6]])
+pi0 = np.array([1, 0])
+pi1 = pi0 @ P  # Nach 1 Tag
+pi2 = pi1 @ P  # Nach 2 Tagen
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Simulation mit Zufallszahlen]
+			\begin{lstlisting}
+import random
+zustand = "Sonne"
+for _ in range(20):
+    if zustand == "Sonne":
+        zustand = random.choices(
+            ["Sonne", "Regen"], 
+            weights=[0.8, 0.2]).pop()
+    else:
+        zustand = random.choices(
+            ["Sonne", "Regen"], 
+            weights=[0.4, 0.6]).pop()
+    print(zustand)
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		% === KORRELATION & KAUSALITÄT ===
+		\cheatSheetSubtitle{Korrelation \& Kausalität}{Unterscheidung, Irrtümer vermeiden}
+
+		\begin{cheatSheetBox}[title=Korrelationskoeffizient]
+			\[
+				r = \frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum(x_i - \bar{x})^2 \cdot \sum(y_i - \bar{y})^2}}
+			\]
+			$r=1$: Perfekt positiv, $r=-1$: Perfekt negativ, $r=0$: Keine Korrelation
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Fünf Arten von Kausalität]
+			1. \textbf{Koinzidenz}: Zufällige Korrelation (Mozzarella ↔ Doktortitel)
+			2. \textbf{Zyklisch}: A→B→A Verstärkung
+			3. \textbf{Gemeinsamer Grund}: C→A, C→B (Jahreszeit→Verkauf+Erkältung)
+			4. \textbf{Indirekt}: A→C→B (Sport→Schlaf→Noten)
+			5. \textbf{Direkt}: A→B
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Merksatz]
+			\textbf{Korrelation ≠ Kausalität!} Immer auf Confounder prüfen.
+		\end{cheatSheetBox}
+
+		\columnbreak
+
+		% === PRAKTISCHE PANDAS & PYTHON ===
+		\cheatSheetSubtitle{Praktische Datenanalyse mit pandas}{Code-Snippets}
+
+		\begin{cheatSheetBox}[title=CSV laden und inspizieren]
+			\begin{lstlisting}
+import pandas as pd
+df = pd.read_csv('daten.csv')
+df.head()       # Erste 5 Zeilen
+df.info()       # Datentypen, Fehlwerte
+df.describe()   # Statistiken
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Spalten filtern und manipulieren]
+			\begin{lstlisting}
+spalte = df['Name']          # Eine Spalte
+mehrere = df[['Name', 'Alter']]  # Mehrere
+df_gefiltert = df[df['Alter'] > 30]  # Filter
+df['BMI'] = df['Gewicht'] / (df['Grösse']/100)**2  # Neue Spalte
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Statistiken und Aggregation]
+			\begin{lstlisting}
+df['Alter'].mean()       # Mittelwert
+df['Alter'].sum()        # Summe
+df['Alter'].std()        # Standardabweichung
+df.groupby('Kategorie')['Wert'].mean()  # Gruppe aggregieren
+df['Kategorie'].value_counts()  # Häufigkeiten
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Visualisierung mit matplotlib]
+			\begin{lstlisting}
+import matplotlib.pyplot as plt
+df['Spalte'].plot.hist(bins=20)  # Histogramm
+df.plot.scatter(x='X', y='Y')  # Streudiagramm
+df['Kategorie'].value_counts().plot.bar()  # Balken
+df.plot.line(x='Zeit', y='Wert')  # Linie
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		% === SCIKIT-LEARN BEISPIELE ===
+		\cheatSheetSubtitle{ML-Modelle mit scikit-learn}{Train-Fit-Predict Pattern}
+
+		\begin{cheatSheetBox}[title=Train-Test-Split]
+			\begin{lstlisting}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Entscheidungsbaum]
+			\begin{lstlisting}
+from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier(max_depth=5)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+accuracy = model.score(X_test, y_test)
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Random Forest]
+			\begin{lstlisting}
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators=100, max_depth=8)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+print(model.feature_importances_)  # Feature-Gewichte
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=KNN]
+			\begin{lstlisting}
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=SVM]
+			\begin{lstlisting}
+from sklearn.svm import SVC
+model = SVC(C=1.0, kernel='rbf')
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Normalisierung]
+			\begin{lstlisting}
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		% === EVALUATIONSFUNKTIONEN ===
+		\cheatSheetSubtitle{Evaluation \& Metriken}{Genauigkeit überprüfen}
+
+		\begin{cheatSheetBox}[title=Klassifikations-Metriken]
+			\begin{lstlisting}
+from sklearn.metrics import (accuracy_score, 
+    precision_score, recall_score, f1_score)
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Regression-Metriken]
+			\begin{lstlisting}
+from sklearn.metrics import mean_absolute_error as mae
+from sklearn.metrics import mean_squared_error as mse
+mae_val = mae(y_test, y_pred)
+mse_val = mse(y_test, y_pred)
+rmse_val = np.sqrt(mse_val)
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\begin{cheatSheetBox}[title=Konfusionsmatrix visualisieren]
+			\begin{lstlisting}
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+cm = confusion_matrix(y_test, y_pred)
+plt.imshow(cm, cmap='Blues')
+plt.xlabel('Vorhergesagt')
+plt.ylabel('Tatsächlich')
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		\columnbreak
+
+		% === BONUS: APRIORI CODE ===
+		\cheatSheetSubtitle{Bonus: Apriori Implementation}{Assoziationsregeln finden}
+
+		\begin{cheatSheetBox}[title=Apriori mit MLxtend]
+			\begin{lstlisting}
+from mlxtend.frequent_patterns import apriori
+from mlxtend.frequent_patterns import association_rules
+import pandas as pd
+
+# Häufige Itemsets (Support > 0.1)
+freq_itemsets = apriori(data, 
+    min_support=0.1, use_colnames=True)
+
+# Regeln mit Confidence > 0.5
+rules = association_rules(freq_itemsets, 
+    metric="confidence", min_threshold=0.5)
+print(rules[['antecedents', 'consequents', 
+             'support', 'confidence', 'lift']])
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		% === BONUS: NAIVE BAYES CODE ===
+		\cheatSheetSubtitle{Bonus: Naive Bayes}{Text-Klassifikation}
+
+		\begin{cheatSheetBox}[title=Naive Bayes Classifier]
+			\begin{lstlisting}
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+vectorizer = TfidfVectorizer()
+X_tfidf = vectorizer.fit_transform(texts)
+model = MultinomialNB()
+model.fit(X_tfidf, labels)
+pred = model.predict(vectorizer.transform(new_texts))
+			\end{lstlisting}
+		\end{cheatSheetBox}
+
+		% === QUICK REFERENCE TABLE ===
+		\cheatSheetSubtitle{Schnellreferenz – Wann welcher Algorithmus?}{Entscheidungshilfe}
+
+		\begin{cheatSheetBox}[title=Algorithmus-Wahl nach Szenario]
+			\textbf{Hohe Interpretierbarkeit nötig} → Entscheidungsbaum
+			\textbf{Größte Genauigkeit gewünscht} → Random Forest
+			\textbf{Wenig Daten, schnell} → KNN oder Lin. Reg.
+			\textbf{Klare nichtlineare Grenzen} → SVM mit RBF-Kernel
+			\textbf{Text-Klassifikation} → Naive Bayes
+			\textbf{Assoziationen in Transaktionen} → Apriori
+			\textbf{Zustandsübergänge} → Markov-Ketten
+			\textbf{Komplexe nichtlineare Muster} → Neuronales Netz
+			\textbf{Seiten-Ranking} → PageRank
+		\end{cheatSheetBox}
+
+		% === COMMON PITFALLS ===
+		\cheatSheetSubtitle{Häufige Fehler vermeiden}{Best Practices}
+
+		\begin{cheatSheetBox}[title=Fehler]
+			1. \textbf{Datenleckage}: Test-Features in Training leaken
+			2. \textbf{Keine Normalisierung}: KNN/SVM leiden unter großen Wertebereichen
+			3. \textbf{Overfitting}: Zu komplexe Modelle, zu wenig Daten
+			4. \textbf{Korrelation=Kausalität}: Confounder übersehen
+			5. \textbf{Bias-Perpetuierung}: Historische Diskriminierung in Trainingsdaten
+			6. \textbf{Zu wenig Evaluierung}: Nur Accuracy reicht nicht
+		\end{cheatSheetBox}
+
+		% === KEY FORMULAS ===
+		\cheatSheetSubtitle{Zentrale Formeln Übersicht}{Referenz}
+
+		\begin{cheatSheetBox}[title=Zentrale Formeln]
+			\textbf{Lin. Regression}:
+			$y = a_0 + a_1x_1 + \cdots + a_nx_n$
+
+			\textbf{Gini}:
+			$1 - \sum p_k^2$
+
+			\textbf{Euklidische Distanz}:
+			$\sqrt{\sum(a_i - b_i)^2}$
+
+			\textbf{Bayes}:
+			$P(C|x) = \frac{P(x|C)P(C)}{P(x)}$
+
+			\textbf{PageRank}:
+			$\frac{1-d}{N} + d\sum\frac{PR(q)}{\text{outdeg}(q)}$
+
+			\textbf{Scoring}:
+			$\sum w_i z_i$ (mit $\sum w_i=1$)
+		\end{cheatSheetBox}
+
+	\end{multicols*}
 \end{landscape}
 \clearpage
 \restoregeometry

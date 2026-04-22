@@ -14,14 +14,19 @@ Diese Bonus-Vertiefung ist \textbf{optional}. Sie setzt Kapitel~\cref{chap:einfu
 
 \begin{mydefinition}[Support Vector Machine]
 Eine \textbf{SVM} sucht eine Trennlinie (in 2D) bzw. Trennebene (in höheren Dimensionen),
-die zwei Klassen mit möglichst \textbf{grossem Rand (Margin)} trennt.
+die zwei Klassen mit möglichst \textbf{grossem Rand (Margin)} trennt. Dieser Parameter (Margin) wird allgemein durch die Regularisierungskonstante $C$ gesteuert.
 Die Datenpunkte, die am nächsten an der Trennebene liegen, heissen \textbf{Support Vectors}.
 \end{mydefinition}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.72\textwidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/svm_boundary.pdf}
-    \caption{SVM-Entscheidungsgrenze mit Margin und Support Vectors}
+    \foreach \margin in {0.1, 1.0, 10.0} {
+            \begin{subfigure}[H]{0.32\textwidth}
+                \includegraphics[width=\textwidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/svm_boundary_\margin.pdf}
+                \caption{Margin = \margin}
+            \end{subfigure}
+        }
+    \caption{SVM-Entscheidungsgrenze mit Margin und Support Vectors für unterschiedliche Werte von $C$}
     \label{fig:svm-boundary-15}
 \end{figure}
 
@@ -54,11 +59,11 @@ ohne die Transformation explizit zu berechnen.
 Häufig verwendete Kernel: \textbf{RBF} (Radial Basis Function), Polynom.
 \end{mydefinition}
 
-\begin{myexercise}[Kernel und Dimensionserhöhung]
+\begin{mychallenge}[Kernel und Dimensionserhöhung]
 Recherchieren Sie den RBF-Kernel und erklären Sie an einem Beispiel,
 warum zwei Klassen, die im 2D-Raum nicht linear trennbar sind,
 in einem höherdimensionalen Raum trennbar sein können.
-\end{myexercise}
+\end{mychallenge}
 
 \begin{mychallenge}[SVM vs.\ Random Forest]
 Vergleichen Sie SVM und Random Forest bezüglich:
@@ -69,6 +74,21 @@ Vergleichen Sie SVM und Random Forest bezüglich:
 \end{itemize}
 Begründen Sie Ihre Aussagen mit Notebook-Experimenten.
 \end{mychallenge}
+
+\section{Gesellschaftliche Aspekte: Hyperparameter als verborgene Entscheidungen}
+
+\begin{mydefinition}[Hyperparameter sind Wertsetzungen]
+Der Kernel und die Regularisierungsparameter ($C$) sind nicht \enquote{optimal} im neutralen Sinne. Sie werden vom Menschen gewählt und spiegeln Wertsetzungen wider. Ein hoher $C$-Wert begünstigt Trainingsdaten-Accuracy, ein niedriger toleriert Fehler im Trainingsset -- es gibt keinen objektiven \enquote{besten\enquote} Wert.
+\end{mydefinition}
+
+\begin{myexample}[Kernel-Wahl und Fairness]
+Bei einem Klassifikator für Hiring könnte die Kernel-Wahl entscheidend sein:
+\begin{itemize}
+    \item \textbf{Linearer Kernel:} Findet nur lineare Grenzen. Kann zu Underfitting führen, ist aber transparent (man kann die Gewichte interpretieren).
+    \item \textbf{RBF-Kernel:} Sehr flexibel, kann komplexe Entscheidungsgrenzen finden. Aber diese sind völlig uninterpretierbar -- man kann nicht verstehen, warum ein Kandidat abgelehnt wurde.
+\end{itemize}
+\textbf{Frage:} Ist es fairer, ein transparentes Modell zu verwenden, das möglicherweise schlecht diskriminiert, oder ein genaues aber unerklärtes Modell? Die Antwort ist regulatorisch relevant (z.~B. GDPR Recht auf Erklärung).
+\end{myexample}
 
 \begin{myremark}[Notebook]
 Praktische Umsetzung inkl. Übungen:

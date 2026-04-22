@@ -1,20 +1,28 @@
 \chapter{Einführung: Von Daten zu Entscheidungen}
 \label{chap:einfuehrung}
 
-\begin{myremark}
-In diesem Skript lernen Sie zentrale Verfahren des \textbf{überwachten Maschinellen Lernens} kennen.
-Die Kapitel sind thematisch gegliedert und bauen inhaltlich aufeinander auf.
-\end{myremark}
+In diesem Skript lernen Sie einige zentralen Algorithmen sowie Verfahren des überwachten Maschinellen Lernens kennen.
 
-\section{Was ist Machine Learning?}
-
-\begin{mydefinition}[Machine Learning]
-\textbf{Machine Learning (ML)} ist ein Teilgebiet der Künstlichen Intelligenz.
-Anstatt explizite Regeln zu programmieren, \textbf{lernt} ein ML-Modell
-Muster direkt aus Daten.
+\begin{mydefinition}[Algorithmus]
+Ein \textbf{Algorithmus} ist eine eindeutige, endliche Abfolge von Anweisungen, die ein Problem lösen oder eine Aufgabe erfüllen. Er nimmt Eingabedaten, verarbeitet sie nach definierten Regeln und liefert eine Ausgabe.
 \end{mydefinition}
 
 \begin{myexample}
+\begin{itemize}
+    \item Ein Kochrezept ist ein Algorithmus, der Zutaten (Eingabe) in ein Gericht (Ausgabe) verwandelt.
+    \item Ein Navigationssystem verwendet Algorithmen, um die beste Route von A nach B zu berechnen.
+    \item Ein Spamfilter ist ein Algorithmus, der E-Mails (Eingabe) als \enquote{Spam} oder \enquote{kein Spam} klassifiziert (Ausgabe).
+\end{itemize}
+\end{myexample}
+
+\begin{mydefinition}[\acrfull{ML}]
+Maschinelles Lernen (\gls{ML}) ist ein Teilgebiet der \glslink{KI}{künstlichen Intelligenz}.
+Anstatt explizite Regeln zu programmieren, \textbf{lernt} ein \gls{ML}-Modell
+Muster direkt aus Daten.
+\end{mydefinition}
+
+\begin{myexample}[Beispiele von \gls{ML}]
+    Einige Beispiele, wie \gls{ML} im Alltag eingesetzt wird:
 \begin{itemize}
     \item Statt zu programmieren \enquote{Wenn Wort \texttt{Gewinn} vorkommt, dann Spam},
           lernt ein Modell selbst aus Tausenden von Beispiel-E-Mails.
@@ -67,30 +75,119 @@ Regression: 1, 3, 5 \hspace{1cm} Klassifikation: 2, 4, 6
 
 \textbf{Priorisierung} ist ebenfalls eine eigene Kategorie, da sie nicht nur klassifiziert oder regrediert, sondern auch eine Rangfolge erstellt (z.\,B. Google-Suchergebnisse). Dies kann sowohl regelbasiert als auch selbstlernend erfolgen und ist oft mit Klassifikation oder Regression kombiniert, aber die Hauptfunktion ist die Erstellung einer Prioritätenliste.
 
-\section{Überblick: Modelle in diesem Skript}
+Statt einer strikten Einteilung in Kategorien, ist es oft hilfreicher, Algorithmen entlang von zwei Dimensionen zu betrachten: \textbf{Funktionsart}, also was getan wird (z.\,B. Priorisierung, Klassifikation, Assoziation, Filterung) und \textbf{Umsetzungsart} (regelbasiert vs. selbstlernend). Dies ermöglicht eine flexiblere Einordnung und zeigt, dass viele Algorithmen mehrere Funktionen erfüllen können. 
+
+\begin{landscape}
+\section{Übersicht über die behandelten Algorithmen in diesem Skript}
+
+Die folgende Tabellenübersicht soll Ihnen helfen, die Vielzahl von Algorithmen in diesem Skript nach Funktionsart zu strukturieren. Sie ist nicht abschliessend, sondern dient als Orientierungshilfe.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l||p{3cm}p{2.7cm}p{2.6cm}p{1.6cm}p{1.7cm}p{3cm}l}
+\toprule
+\textbf{Funktionsart} & \textbf{Ziel / Frage} & \textbf{Typische\newline Anwendungen} & \textbf{Beispiel-Algorithmus} & \textbf{Regelbasiert möglich} & \textbf{Selbstlernend möglich} & \textbf{Typische\newline Risiken} &\textbf{Kapitel}\\
+\midrule\midrule
+\textbf{Priorisierung} & Was ist am wichtigsten? & Google-Ranking, Social Media Feed & gewichteter Ranking-Algorithmus & ja & ja & Manipulation, Verstärkung von Bias & \ref{chap:weighted-rankings}, \ref{chap:pagerank}, \ref{chap:markov}  \\
+\midrule
+\textbf{Klassifikation} & Zu welcher Kategorie gehört etwas? & Kredit-Scoring, Spam-Erkennung & Random Forest & ja & ja & Diskriminierung, Fehlklassifikation & \ref{chap:entscheidungsbaum}, \ref{chap:randomforest}, \ref{chap:knn}, (\ref{chap:svm})\\
+\midrule
+\textbf{Assoziation} & Was tritt häufig gemeinsam auf? & \enquote{Kunden kauften auch...}, Netflix & Apriori & selten & ja & Schein\-korrelationen & \ref{chap:apriori}\\
+\midrule
+\textbf{Filterung} & Was wird angezeigt / ausgeblendet? & Spamfilter, Content-Moderation & Naive Bayes & ja & ja & Filterblasen,\newline Intransparenz & \ref{chap:naivebayes}\\
+\bottomrule
+\end{tabular}
+\caption{Erste Dimension: Funktionsart eines Algorithmus}
+\label{tab:algorithmus-funktionsarten-15}
+\end{table}
+
+Einige Algorithmen können in mehreren Kategorien auftreten (z.\,B. Naive Bayes als Filterung und Klassifikation). Es gibt auch weitere Funktionsarten (z.\,B. Clustering, Generierung), die hier nicht behandelt werden.
+\end{landscape}
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3.0cm}p{5.1cm}p{2.5cm}p{3.0cm}}
+\toprule
+\textbf{Umsetzungsart} & \textbf{Beschreibung} & \textbf{Beispiel} & \textbf{Hauptprobleme} \\
+\midrule
+Regelbasiert & Feste, explizite Wenn-Dann-Regeln & Keyword-Spamfilter & unflexibel, schwer skalierbar \\
+\midrule
+Selbstlernend (ML) & Lernen aus Daten, implizite Regeln & Random Forest, Naive Bayes & Bias, geringe Erklärbarkeit \\
+\bottomrule
+\end{tabular}
+\caption{Zweite Dimension (orthogonal): Umsetzungsart}
+\label{tab:algorithmus-umsetzungsarten-15}
+\end{table}
+
+Auch hier gibt es Mischformen (z.\,B. regelbasierte Vorverarbeitung vor ML-Modellen) und weitere Umsetzungsarten (z.\,B. evolutionäre Algorithmen), welche hier nicht behandelt werden.
+
+\cref{tab:modelle-uebersicht-15} gibt einen Überblick über die Modelle, die in diesem Skript behandelt werden, und ihre Zuordnung zu den Funktionsarten.
 
 \begin{table}[H]
 \centering
 \small
-\begin{tabular}{p{3.8cm}p{2.4cm}l}
+\begin{tabular}{l|p{2.4cm}l}
 \toprule
-\textbf{Modell} & \textbf{Aufgabe} & \textbf{Kapitel im Skript} \\
+\textbf{Modell} & \textbf{Funktionsart} & \textbf{Kapitel im Skript} \\
 \midrule
-Priorisierungsalgorithmus & Priorisierung & \cref{chap:priorisierung}\\
-Entscheidungsbaum & Klassifikation & \cref{chap:entscheidungsbaum} \\
-Random Forest & Klassifikation & \cref{chap:randomforest} \\
-k-Nearest Neighbors & Klassifikation & \cref{chap:knn} \\
-Support Vector Machine & Klassifikation & \cref{chap:svm} \, (opt.) \\
-Apriori & Assoziation & \cref{chap:apriori} \\
-Naive Bayes & Filterung / Klassifikation & \cref{chap:naivebayes} \\
-Lineare Regression & Regression & \cref{chap:regression} \\
+Gewichteter Ranking-Algorithmus & \multirow{3}{*}{Priorisierung} & \cref{chap:weighted-rankings}\\
+PageRank-Algorithmus &  & \cref{chap:pagerank}\\
+Markov-Ketten &  & \cref{chap:markov} \\\midrule
+Entscheidungsbaum & \multirow{4}{*}{Klassifikation} & \cref{chap:entscheidungsbaum} \\
+Random Forest &  & \cref{chap:randomforest} \\
+k-Nearest Neighbors &  & \cref{chap:knn} \\
+Support Vector Machine &  & \cref{chap:svm} \, (opt.) \\\midrule
+Apriori & Assoziation & \cref{chap:apriori} \\\midrule
+Naive Bayes & Filterung / Klassifikation & \cref{chap:naivebayes} \\\midrule
+Lineare Regression & Regression & \cref{chap:regression} \\\midrule
 Neuronales Netz & Klassifikation / Regression & \cref{chap:neuronale-netze}\\
 \bottomrule
 \end{tabular}
-\caption{Modelle und ihre Kapitelzuordnung}
+\caption{Algorithmen und Funktionsarten in diesem Skript}
 \label{tab:modelle-uebersicht-15}
 \end{table}
 
+In diesem Skript werden wir besonderes Augenmerk auf Klassifikationsalgorithmen legen, da diese in vielen realen Anwendungen eine zentrale Rolle spielen. Priorisierungsalgorithmen werden ebenfalls behandelt, da sie in der heutigen Informationsgesellschaft allgegenwärtig sind. Assoziations- und Filterungsalgorithmen runden das Spektrum ab und zeigen die Vielfalt der Anwendungsfälle von Algorithmen im Alltag.
+
+
+\section{Gesellschaftliche Aspekte: Verantwortungsvolles Machine Learning}
+
+\begin{mydefinition}[Responsible AI]
+Je mehr Entscheidungen durch automatisierte Systeme getroffen werden, desto wichtiger werden Fragen nach Fairness, Transparenz und Rechenschaftspflicht. \textbf{Responsible AI} bedeutet, ML-Systeme so zu entwickeln, dass sie:
+\begin{itemize}
+    \item Die Auswirkungen auf betroffene Personen berücksichtigen
+    \item Bias und Diskriminierung vermeiden oder zumindest dokumentieren
+    \item Erklärbar sind (oder ihre Grenzen klar kommunizieren)
+    \item Regulatorische Anforderungen erfüllen
+\end{itemize}
+\end{mydefinition}
+
+\begin{myexample}[Auswirkungen von Modellen im echten Leben]
+Die Algorithmen in diesem Skript sind nicht nur Schulübungen. Sie werden täglich verwendet für:
+\begin{itemize}
+    \item \textbf{Kreditvergabe}: Entscheidungsbaum oder Random Forest bestimmen, wer einen Kredit erhält
+    \item \textbf{Stellenbesetzung}: Naive Bayes und KNN filtern Bewerbungen
+    \item \textbf{Medizinische Diagnose}: Klassifikatoren helfen, Krankheiten zu erkennen (oder nicht)
+    \item \textbf{Kriminaljustiz}: Prognose-Algorithmen beeinflussen Haftentscheidungen
+\end{itemize}
+Jede falsche Vorhersage kann eine echte Person negativ beeinflussen.
+\end{myexample}
+
+\begin{mychallenge}[Reflexion: Verantwortung und Abwägungen]
+Stellen Sie sich vor, Sie entwickeln einen Algorithmus für eine Krankenkasse, welche damit Versicherungskosten bestimmt.
+\begin{enumerate}
+    \item Wem sollte Sie gegenüber verantwortlich sein? Der Versicherung? Den Kundinnen? Der Öffentlichkeit?
+    \item Welche Art von Fehler ist schlimmer: False Positive (Mensch wird zu teuer eingestuft) oder False Negative (Risiko wird übersehen)?
+    \item Wie würden Sie testen, ob Ihr Modell Geschlecht oder ethnische Herkunft diskriminiert -- auch wenn diese Features nicht explizit im Datensatz sind?
+\end{enumerate}
+\begin{myanswer}
+    \begin{enumerate}
+        \item Idealerweise gegenüber allen: aber Interessenskonflikte sind real. Transparenz über Trade-offs ist wichtig.
+        \item Je nach Kontext. Versicherung könnte False Positives bevorzugen (höhere Prämien, aber weniger Ausfallrisiko). Menschen bevorzugen False Negatives (günstigere Prämien). Eine \enquote{neutrale} Entscheidung existiert nicht.
+        \item Durch Bias-Audits: Vergleiche Fehlerquoten zwischen Gruppen, prüfe auf Proxy-Variablen (z.~B. Wohnort als Proxy für Ethnizität), teste auf Performance-Unterschiede.
+    \end{enumerate}
+\end{myanswer}
+\end{mychallenge}
 
 \section{Datenbasis und Arbeitsumgebung}
 
@@ -100,6 +197,4 @@ Für dieses Skript stehen zwei Datensätze zur Verfügung:
     \item \texttt{apartment\_prices.csv} (Regression)
 \end{itemize}
 
-Die Jupyter-Notebooks befinden sich im Ordner
-\texttt{Grundlagen\_Info/15\_KI\_und\_Algorithmen/Code/}.
-Jede DL hat ein zugehöriges Notebook.
+Die Jupyter-Notebooks befinden sich im Ordner \texttt{Grundlagen\_Info/15\_KI\_und\_Algorithmen/Code/}.

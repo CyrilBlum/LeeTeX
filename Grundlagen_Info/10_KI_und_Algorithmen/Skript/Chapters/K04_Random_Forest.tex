@@ -1,4 +1,4 @@
-\chapter{Random Forest}
+\chapter{Random Forests}
 \label{chap:randomforest}
 
 \begin{myremark}[Algorithmusart in diesem Kapitel]
@@ -13,7 +13,7 @@ durch \enquote{Ensembling} deutlich robuster. Diese Methode setzt Kenntnisse aus
 
 \section{Grundidee: Viele Bäume, eine Entscheidung}
 
-\begin{mydefinition}[Random Forest]
+\begin{mydefinition}[Random Forests]
 Ein \textbf{Random Forest} kombiniert viele \textbf{zufällig variierte} Entscheidungsbäume.
 Die finale Klassifikation entsteht durch \textbf{Mehrheitsabstimmung} aller Bäume.
 \end{mydefinition}
@@ -60,6 +60,36 @@ Recherchieren und erklären Sie kurz:
 \end{itemize}
 Testen Sie im Notebook verschiedene Werte und dokumentieren Sie den Effekt
 auf Trainings- und Testgenauigkeit.
+\end{mychallenge}
+
+\section{Gesellschaftliche Aspekte: Black-Box-Problem und Bias-Verstärkung}
+
+\begin{mydefinition}[Ensemble-Risiken]
+Obwohl Random Forests durch Ensembling robuster werden, entsteht gleichzeitig ein \enquote{Black-Box}-Problem: Man kann nicht mehr nachvollziehen, warum eine konkrete Entscheidung getroffen wurde. Feature Importance gibt nur einen aggregierten Überblick, sagt aber nichts über einzelne Vorhersagen aus.
+\end{mydefinition}
+
+\begin{myexample}[Hiring-System mit Random Forest]
+Ein Unternehmen trainiert einen Random Forest auf 10 Jahren historischer Einstellungsdaten. Das Modell hat 99\% Accuracy auf den Testdaten und wird deployed. Feature Importance zeigt: \enquote{Berufserfahrung} und \enquote{Universität} sind am wichtigsten. Ein Kandidat wird abgelehnt. Das System kann nicht erklären, warum -- es ist eine Kombination von hunderten versteckten Regeln über hunderten Bäumen.
+
+\textbf{Problem:} Wenn die Trainingsdaten systematisch diskriminierend waren (z.~B. Frauen wurden weniger häufig eingestellt), lernt das Random Forest diese Verzerrung und verstärkt sie durch Skalierung und Black-Box-Natur.
+
+\textbf{Real-World-Link:} \href{https://www.reuters.com/article/world/insight-amazon-scraps-secret-ai-recruiting-tool-that-showed-bias-against-women-idUSKCN1MK0AG/}{Amazon stoppt KI-Hiring-System wegen Geschlechtsdiskriminierung (2018)}
+\end{myexample}
+
+\begin{mychallenge}[Interpretierbarkeit vs. Genauigkeit]
+Viele Unternehmen wählen Random Forests, weil sie genauer sind als Entscheidungsbäume. Diskutieren Sie:
+\begin{enumerate}
+    \item Warum ist Interpretierbarkeit in Hochrisiko-Entscheidungen (Kredite, Hiring, medizinische Diagnose) wichtiger als maximale Accuracy?
+    \item Wie würde man einen Random Forest in einem Hiring-System überprüfen, um sicherzustellen, dass er nicht diskriminiert?
+    \item Welche Rolle spielen externe Audits und Regulierung?
+\end{enumerate}
+\begin{myanswer}
+    \begin{enumerate}
+        \item Betroffene Personen haben ein Recht zu verstehen, warum Entscheidungen gegen sie getroffen wurden. Accuracy allein legitimiert keine Diskriminierung.
+        \item Demografische Parity-Tests, Analyse der Fehlerquoten über Gruppen hinweg, explizite Fairness-Metriken, externe Audits.
+        \item Regulierung (z.~B. EU-AI-Act) erzwingt Transparenz und Audit für High-Risk-Systeme, da Marktanreize allein oft nicht ausreichen.
+    \end{enumerate}
+\end{myanswer}
 \end{mychallenge}
 
 \begin{myremark}[Notebook]

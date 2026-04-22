@@ -88,6 +88,39 @@ Feature $\text{Fläche}^2$ hinzu (\emph{Polynomial Features}).
 \end{itemize}
 \end{mychallenge}
 
+\section{Gesellschaftliche Aspekte: Regression und Vorhersage-Fehlinterpretationen}
+
+\begin{mydefinition}[Regression sagt nicht die Zukunft voraus]
+Ein häufiger Missbrauch: Menschen interpretieren Regressionsmodelle als \enquote{Vorhersage der Zukunft}. Aber Regression findet nur \textbf{historische} Muster. Wenn sich die Bedingungen ändern (z.~B. neue Technologie, wirtschaftliche Krisen), ist die Vorhersage nutzlos -- oder schlimmer noch: irreführend und schädlich.
+\end{mydefinition}
+
+\begin{myexample}[Regression in Credit Scoring]
+Eine Bank trainiert ein Regressionsmodell auf 20 Jahren historischer Daten. Das Modell sagt Ausfallwahrscheinlichkeiten sehr genau voraus (RMSE = 0.05). Aber:
+\begin{itemize}
+    \item Diese Genauigkeit gilt nur für Bedingungen ähnlich der Vergangenheit.
+    \item Bei einem Schock (z.~B. COVID-19-Pandemie) waren alle Modelle plötzlich nutzlos.
+    \item Schlimmer: Die historischen Daten kodieren alte Diskriminierungsmuster. Wer wurde damals als \enquote{risikant} eingestuft? Menschen ohne Kredithistorie, Migranten, Frauen. Das Modell lernt diese Muster und perpetuiert sie.
+\end{itemize}
+\textbf{Real-World-Fallbeispiel:} \href{https://en.wikipedia.org/wiki/2008_financial_crisis}{Finanzielle Modelle vor der 2008-Krise -- alle waren völlig falsch}
+\end{myexample}
+
+\begin{mychallenge}[Vertrauenswürdigkeit vs. Genauigkeit]
+Sie sollen ein Modell zur Vorhersage von Hauspreisen entwickeln. Sie haben zwei Optionen:
+\begin{itemize}
+    \item \textbf{Modell A:} Einfache lineare Regression, RMSE = 45'000 CHF, sehr interpretierbar
+    \item \textbf{Modell B:} Neuronales Netz, RMSE = 35'000 CHF, völlig unerklärbar
+\end{itemize}
+Welches würden Sie für eine Bank empfehlen? Welche Fragen müssten geklärt werden?
+\begin{myanswer}
+    \begin{enumerate}
+        \item \textbf{Makler:} Vielleicht Modell B, weil der Fehler kleiner ist.
+        \item \textbf{Hypothekenbank für Privaten:} Modell A ist besser, da Kunden verstehen sollen, warum ihre Schätzung so ist.
+        \item \textbf{Was ist die Gewinnspanne?} Ein 10'000 CHF Fehler ist bei 500'000 CHF Häuser negligible, aber kritisch bei 80'000 CHF Häuser.
+        \item \textbf{Was passiert bei Modellfehlern?} Wer trägt das Risiko? Das Modell sollte transparent sein, damit klar ist, wer mit dem Fehler leben muss.
+    \end{enumerate}
+\end{myanswer}
+\end{mychallenge}
+
 \begin{myremark}[Notebook]
 Praktische Umsetzung inkl. Übungen:
 \href{\notebookbaseurl05_Regression_Prediction.ipynb}{\texttt{05\_Regression.ipynb}}
