@@ -858,14 +858,671 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 </details>
 
 <details class="pdf-tree-node">
-<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Aus Daten Lernen</span> <span class="pdf-tree-count">(6 PDFs)</span></summary>
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kompression</span> <span class="pdf-tree-count">(6 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <details class="pdf-tree-node">
 <summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
 <div class="pdf-tree-children">
 <ul class="pdf-tree-files">
-<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Skript_mit_loesungen/output_book_mit_loesungen_KI_und_Algorithmen.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Aus Daten Lernen</a></li>
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kompression/Skript_mit_loesungen/output_book_mit_loesungen_Kompression.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Kompression</a></li>
 </ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kompression/Skript_ohne_loesungen/output_book_ohne_loesungen_Kompression.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Kompression</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(4 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kompression L01 Intro</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kompression/Slides/Kompression_L01_Intro/output_beamer_Kompression_L01_Intro.pdf" target="_blank" rel="noopener">Folien: Kompression L01 Intro</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kompression L02 Max Bal</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kompression/Slides/Kompression_L02_Max_Bal/output_beamer_Kompression_L02_Max_Bal.pdf" target="_blank" rel="noopener">Folien: Kompression L02 Max Bal</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kompression L03 Huffman</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kompression/Slides/Kompression_L03_Huffman/output_beamer_Kompression_L03_Huffman.pdf" target="_blank" rel="noopener">Folien: Kompression L03 Huffman</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kompression L04 Arithm</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kompression/Slides/Kompression_L04_Arithm/output_beamer_Kompression_L04_Arithm.pdf" target="_blank" rel="noopener">Folien: Kompression L04 Arithm</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kryptologie</span> <span class="pdf-tree-count">(10 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Skript_mit_loesungen/output_book_mit_loesungen_Kryptologie.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Kryptologie</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Skript_ohne_loesungen/output_book_ohne_loesungen_Kryptologie.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Kryptologie</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(8 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Appendix</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/Appendix/output_beamer_Appendix.pdf" target="_blank" rel="noopener">Folien: Appendix</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kryptologie L01</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/Kryptologie_L01/output_beamer_Kryptologie_L01.pdf" target="_blank" rel="noopener">Folien: Kryptologie L01</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kryptologie L01prog</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/Kryptologie_L01prog/output_beamer_Kryptologie_L01prog.pdf" target="_blank" rel="noopener">Folien: Kryptologie L01prog</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">L02a Kryptoanalyse Caesar</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/L02a_Kryptoanalyse_Caesar/output_beamer_L02a_Kryptoanalyse_Caesar.pdf" target="_blank" rel="noopener">Folien: L02a Kryptoanalyse Caesar</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">L02b Kryptoanalyse Monoalph</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/L02b_Kryptoanalyse_Monoalph/output_beamer_L02b_Kryptoanalyse_Monoalph.pdf" target="_blank" rel="noopener">Folien: L02b Kryptoanalyse Monoalph</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">L02c Kryptoanalyse Vigenere</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/L02c_Kryptoanalyse_Vigenere/output_beamer_L02c_Kryptoanalyse_Vigenere.pdf" target="_blank" rel="noopener">Folien: L02c Kryptoanalyse Vigenere</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">L02d Kryptoanalyse Vigenere Kasiski</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/L02d_Kryptoanalyse_Vigenere_Kasiski/output_beamer_L02d_Kryptoanalyse_Vigenere_Kasiski.pdf" target="_blank" rel="noopener">Folien: L02d Kryptoanalyse Vigenere Kasiski</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">L02e Kryptoanalyse Vigenere Friedman</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/L02e_Kryptoanalyse_Vigenere_Friedman/output_beamer_L02e_Kryptoanalyse_Vigenere_Friedman.pdf" target="_blank" rel="noopener">Folien: L02e Kryptoanalyse Vigenere Friedman</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides Kryptologie Gf</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Kryptologie/Slides/Slides_Kryptologie_Gf/output_beamer_Slides_Kryptologie_Gf.pdf" target="_blank" rel="noopener">Folien: Slides Kryptologie Gf</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Netzwerke</span> <span class="pdf-tree-count">(5 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Netzwerke/Skript_mit_loesungen/output_book_mit_loesungen_Netzwerke.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Netzwerke</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Netzwerke/Skript_ohne_loesungen/output_book_ohne_loesungen_Netzwerke.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Netzwerke</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(3 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Netzwerke L00</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Netzwerke/Slides/Netzwerke_L00/output_beamer_Netzwerke_L00.pdf" target="_blank" rel="noopener">Folien: Netzwerke L00</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Netzwerke L01</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Netzwerke/Slides/Netzwerke_L01/output_beamer_Netzwerke_L01.pdf" target="_blank" rel="noopener">Folien: Netzwerke L01</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Netzwerke L02</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Netzwerke/Slides/Netzwerke_L02/output_beamer_Netzwerke_L02.pdf" target="_blank" rel="noopener">Folien: Netzwerke L02</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Programmieren</span> <span class="pdf-tree-count">(23 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Skript_mit_loesungen/output_book_mit_loesungen_Programmieren.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Programmieren</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Skript_ohne_loesungen/output_book_ohne_loesungen_Programmieren.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Programmieren</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(21 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K01K02Intro</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K01K02Intro/output_beamer_K01K02Intro.pdf" target="_blank" rel="noopener">Folien: K01K02Intro</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K03a Variablen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K03a_Variablen/output_beamer_K03a_Variablen.pdf" target="_blank" rel="noopener">Folien: K03a Variablen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K03b Input</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K03b_Input/output_beamer_K03b_Input.pdf" target="_blank" rel="noopener">Folien: K03b Input</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K03c Modulo</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K03c_Modulo/output_beamer_K03c_Modulo.pdf" target="_blank" rel="noopener">Folien: K03c Modulo</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K04a Funktionen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K04a_Funktionen/output_beamer_K04a_Funktionen.pdf" target="_blank" rel="noopener">Folien: K04a Funktionen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K04b Parameter</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K04b_Parameter/output_beamer_K04b_Parameter.pdf" target="_blank" rel="noopener">Folien: K04b Parameter</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K04c Funktionen Einzelne</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K04c_Funktionen_Einzelne/output_beamer_K04c_Funktionen_Einzelne.pdf" target="_blank" rel="noopener">Folien: K04c Funktionen Einzelne</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K04c Funktionen Mehrere</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K04c_Funktionen_Mehrere/output_beamer_K04c_Funktionen_Mehrere.pdf" target="_blank" rel="noopener">Folien: K04c Funktionen Mehrere</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K04Zeit Tabellen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K04Zeit_Tabellen/output_beamer_K04Zeit_Tabellen.pdf" target="_blank" rel="noopener">Folien: K04Zeit Tabellen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K05a If Elif Else</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K05a_If_Elif_Else/output_beamer_K05a_If_Elif_Else.pdf" target="_blank" rel="noopener">Folien: K05a If Elif Else</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K05b Logische Operatoren</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K05b_Logische_Operatoren/output_beamer_K05b_Logische_Operatoren.pdf" target="_blank" rel="noopener">Folien: K05b Logische Operatoren</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K05c Negation</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K05c_Negation/output_beamer_K05c_Negation.pdf" target="_blank" rel="noopener">Folien: K05c Negation</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K05d Break While</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K05d_Break_While/output_beamer_K05d_Break_While.pdf" target="_blank" rel="noopener">Folien: K05d Break While</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K06a Listen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K06a_Listen/output_beamer_K06a_Listen.pdf" target="_blank" rel="noopener">Folien: K06a Listen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K06b Bubble Sort</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K06b_Bubble_Sort/output_beamer_K06b_Bubble_Sort.pdf" target="_blank" rel="noopener">Folien: K06b Bubble Sort</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K06c Binary Search</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K06c_Binary_Search/output_beamer_K06c_Binary_Search.pdf" target="_blank" rel="noopener">Folien: K06c Binary Search</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K06d Listen Teil2</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K06d_Listen_Teil2/output_beamer_K06d_Listen_Teil2.pdf" target="_blank" rel="noopener">Folien: K06d Listen Teil2</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K06e Dictionaries</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K06e_Dictionaries/output_beamer_K06e_Dictionaries.pdf" target="_blank" rel="noopener">Folien: K06e Dictionaries</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K06f Sets</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K06f_Sets/output_beamer_K06f_Sets.pdf" target="_blank" rel="noopener">Folien: K06f Sets</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K07Klassen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/K07Klassen/output_beamer_K07Klassen.pdf" target="_blank" rel="noopener">Folien: K07Klassen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Turtle Grafik</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Programmieren/Slides/Turtle_Grafik/output_beamer_Turtle_Grafik.pdf" target="_blank" rel="noopener">Folien: Turtle Grafik</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Randomisierte Algorithmen</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Randomisierte_Algorithmen/Skript_mit_loesungen/output_book_mit_loesungen_Randomisierte_Algorithmen.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Randomisierte Algorithmen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Randomisierte_Algorithmen/Skript_ohne_loesungen/output_book_ohne_loesungen_Randomisierte_Algorithmen.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Randomisierte Algorithmen</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Tabellenkalkulation</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Tabellenkalkulation/Skript_mit_loesungen/output_book_mit_loesungen_Tabellenkalkulation.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Tabellenkalkulation</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Tabellenkalkulation/Skript_ohne_loesungen/output_book_ohne_loesungen_Tabellenkalkulation.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Tabellenkalkulation</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlendarstellungen und Kodierungen</span> <span class="pdf-tree-count">(6 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Skript_mit_loesungen/output_book_mit_loesungen_Zahlendarstellungen_und_Kodierungen.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Zahlendarstellungen und Kodierungen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Skript_ohne_loesungen/output_book_ohne_loesungen_Zahlendarstellungen_und_Kodierungen.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Zahlendarstellungen und Kodierungen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(4 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L01</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L01/output_beamer_Zahlensysteme_L01.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L01</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L02</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L02/output_beamer_Zahlensysteme_L02.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L02</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L03</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L03/output_beamer_Zahlensysteme_L03.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L03</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L04</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L04/output_beamer_Zahlensysteme_L04.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L04</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Zahlensysteme L05</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Zahlendarstellungen_und_Kodierungen/Slides/Zahlensysteme_L05/output_beamer_Zahlensysteme_L05.pdf" target="_blank" rel="noopener">Folien: Zahlensysteme L05</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Various</span> <span class="pdf-tree-count">(9 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">article</span> <span class="pdf-tree-count">(6 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Filme</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/article/Filme/output_article_Filme.pdf" target="_blank" rel="noopener">Artikel: Filme</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Fun Quotes</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/article/Fun_Quotes/output_article_Fun_Quotes.pdf" target="_blank" rel="noopener">Artikel: Fun Quotes</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">MA Thesis Guidelines</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/article/MA_Thesis_Guidelines/output_article_MA_Thesis_Guidelines.pdf" target="_blank" rel="noopener">Artikel: MA Thesis Guidelines</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">MA Thesis Guidelines de</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/article/MA_Thesis_Guidelines_de/output_article_MA_Thesis_Guidelines_de.pdf" target="_blank" rel="noopener">Artikel: MA Thesis Guidelines de</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">MA Thesis Ideas</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/article/MA_Thesis_Ideas/output_article_MA_Thesis_Ideas.pdf" target="_blank" rel="noopener">Artikel: MA Thesis Ideas</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Tabu</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/article/Tabu/output_article_Tabu.pdf" target="_blank" rel="noopener">Artikel: Tabu</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Wahlpflichtmodul Statistik</span> <span class="pdf-tree-count">(3 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/Wahlpflichtmodul_Statistik/Skript_mit_loesungen/output_book_mit_loesungen_Wahlpflichtmodul_Statistik.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Wahlpflichtmodul Statistik</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/Wahlpflichtmodul_Statistik/Skript_ohne_loesungen/output_book_ohne_loesungen_Wahlpflichtmodul_Statistik.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Wahlpflichtmodul Statistik</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">K01 Deskriptive Statistik</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Various/Wahlpflichtmodul_Statistik/Slides/K01_Deskriptive_Statistik/output_beamer_K01_Deskriptive_Statistik.pdf" target="_blank" rel="noopener">Folien: K01 Deskriptive Statistik</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
 
 </div>
 </details>
