@@ -34,6 +34,132 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <ul class="pdf-tree-files">
 <li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/article/Ergaenzungsfach_Ausschreibungstext/output_article_Ergaenzungsfach_Ausschreibungstext.pdf" target="_blank" rel="noopener">Artikel: Ergänzungsfach Ausschreibungstext</a></li>
 </ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Complexity</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">complexity</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/Complexity/Slides/complexity/output_beamer_complexity.pdf" target="_blank" rel="noopener">Folien: complexity</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Endliche Automaten</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/Endliche_Automaten/Skript_mit_loesungen/output_book_mit_loesungen_Endliche_Automaten.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Endliche Automaten</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/Endliche_Automaten/Skript_ohne_loesungen/output_book_ohne_loesungen_Endliche_Automaten.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Endliche Automaten</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Induktion und Rekursion</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/Induktion_und_Rekursion/Skript_mit_loesungen/output_book_mit_loesungen_Induktion_und_Rekursion.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Induktion und Rekursion</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/Induktion_und_Rekursion/Skript_ohne_loesungen/output_book_ohne_loesungen_Induktion_und_Rekursion.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Induktion und Rekursion</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kolmogorov Komplexität</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/Kolmogorov_Komplexitaet/Skript_mit_loesungen/output_book_mit_loesungen_Kolmogorov_Komplexitaet.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Kolmogorov Komplexität</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/Kolmogorov_Komplexitaet/Skript_ohne_loesungen/output_book_ohne_loesungen_Kolmogorov_Komplexitaet.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Kolmogorov Komplexität</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">La TeX</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">La TeX</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/La_Te_X/Slides/La_Te_X/output_beamer_La_Te_X.pdf" target="_blank" rel="noopener">Folien: La TeX</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">EF</span> <span class="pdf-tree-count">(9 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">article</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Ergänzungsfach Ausschreibungstext</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/EF/article/Ergaenzungsfach_Ausschreibungstext/output_article_Ergaenzungsfach_Ausschreibungstext.pdf" target="_blank" rel="noopener">Artikel: Ergänzungsfach Ausschreibungstext</a></li>
+</ul>
 
 </div>
 </details>
@@ -178,6 +304,422 @@ Hinweis: Ein Klick öffnet die jeweilige PDF-Datei in einem neuen Tab.
 <ul class="pdf-tree-files">
 <li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/FF/article/Freifach-Auftrag/output_article_Freifach-Auftrag.pdf" target="_blank" rel="noopener">Artikel: Freifach-Auftrag</a></li>
 </ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Freifach-Git Hub</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/FF/article/Freifach-Git_Hub/output_article_Freifach-Git_Hub.pdf" target="_blank" rel="noopener">Artikel: Freifach-Git Hub</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Geografie</span> <span class="pdf-tree-count">(4 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Geomorphologie</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Geografie/Geomorphologie/Skript_mit_loesungen/output_book_mit_loesungen_Geomorphologie.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Geomorphologie</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Geografie/Geomorphologie/Skript_ohne_loesungen/output_book_ohne_loesungen_Geomorphologie.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Geomorphologie</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Stadtgeografie</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Geografie/Stadtgeografie/Skript_mit_loesungen/output_book_mit_loesungen_Stadtgeografie.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Stadtgeografie</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Geografie/Stadtgeografie/Skript_ohne_loesungen/output_book_ohne_loesungen_Stadtgeografie.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Stadtgeografie</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Grundlagen Info</span> <span class="pdf-tree-count">(86 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">article</span> <span class="pdf-tree-count">(5 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Benotung</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/article/Benotung/output_article_Benotung.pdf" target="_blank" rel="noopener">Artikel: Benotung</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Excel-Projekte</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/article/Excel-Projekte/output_article_Excel-Projekte.pdf" target="_blank" rel="noopener">Artikel: Excel-Projekte</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Hannah Fry</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/article/Hannah_Fry/output_article_Hannah_Fry.pdf" target="_blank" rel="noopener">Artikel: Hannah Fry</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Semesterplanung</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/article/Semesterplanung/output_article_Semesterplanung.pdf" target="_blank" rel="noopener">Artikel: Semesterplanung</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Vertiefungsthema</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/article/Vertiefungsthema/output_article_Vertiefungsthema.pdf" target="_blank" rel="noopener">Artikel: Vertiefungsthema</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Datenbanken</span> <span class="pdf-tree-count">(8 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenbanken/Skript_mit_loesungen/output_book_mit_loesungen_Datenbanken.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Datenbanken</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenbanken/Skript_ohne_loesungen/output_book_ohne_loesungen_Datenbanken.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Datenbanken</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(6 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">02b Slides Subqueries</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenbanken/Slides/02b_Slides_Subqueries/output_beamer_02b_Slides_Subqueries.pdf" target="_blank" rel="noopener">Folien: 02b Slides Subqueries</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides DML</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenbanken/Slides/Slides_DML/output_beamer_Slides_DML.pdf" target="_blank" rel="noopener">Folien: Slides DML</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides Game</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenbanken/Slides/Slides_Game/output_beamer_Slides_Game.pdf" target="_blank" rel="noopener">Folien: Slides Game</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides Intro</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenbanken/Slides/Slides_Intro/output_beamer_Slides_Intro.pdf" target="_blank" rel="noopener">Folien: Slides Intro</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides JOIN</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenbanken/Slides/Slides_JOIN/output_beamer_Slides_JOIN.pdf" target="_blank" rel="noopener">Folien: Slides JOIN</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides SELECT</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenbanken/Slides/Slides_SELECT/output_beamer_Slides_SELECT.pdf" target="_blank" rel="noopener">Folien: Slides SELECT</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Datenintegrität</span> <span class="pdf-tree-count">(7 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenintegritaet/Skript_mit_loesungen/output_book_mit_loesungen_Datenintegritaet.pdf" target="_blank" rel="noopener">Skript mit Lösungen: Datenintegrität</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenintegritaet/Skript_ohne_loesungen/output_book_ohne_loesungen_Datenintegritaet.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: Datenintegrität</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(5 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Fehlererkennung</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenintegritaet/Slides/Fehlererkennung/output_beamer_Fehlererkennung.pdf" target="_blank" rel="noopener">Folien: Fehlererkennung</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Fehlerkorrektur</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenintegritaet/Slides/Fehlerkorrektur/output_beamer_Fehlerkorrektur.pdf" target="_blank" rel="noopener">Folien: Fehlerkorrektur</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Intro</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenintegritaet/Slides/Intro/output_beamer_Intro.pdf" target="_blank" rel="noopener">Folien: Intro</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Kartentrick</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenintegritaet/Slides/Kartentrick/output_beamer_Kartentrick.pdf" target="_blank" rel="noopener">Folien: Kartentrick</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">RAID</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Datenintegritaet/Slides/RAID/output_beamer_RAID.pdf" target="_blank" rel="noopener">Folien: RAID</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Graphen</span> <span class="pdf-tree-count">(5 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(5 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Abstraktion Durch Graphen Kapitel01</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Graphen/Slides/Abstraktion_Durch_Graphen_Kapitel01/output_beamer_Abstraktion_Durch_Graphen_Kapitel01.pdf" target="_blank" rel="noopener">Folien: Abstraktion Durch Graphen Kapitel01</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Abstraktion Durch Graphen Kapitel02</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Graphen/Slides/Abstraktion_Durch_Graphen_Kapitel02/output_beamer_Abstraktion_Durch_Graphen_Kapitel02.pdf" target="_blank" rel="noopener">Folien: Abstraktion Durch Graphen Kapitel02</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Graphen L01</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Graphen/Slides/Graphen_L01/output_beamer_Graphen_L01.pdf" target="_blank" rel="noopener">Folien: Graphen L01</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Graphen L02</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Graphen/Slides/Graphen_L02/output_beamer_Graphen_L02.pdf" target="_blank" rel="noopener">Folien: Graphen L02</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Graphen L03</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/Graphen/Slides/Graphen_L03/output_beamer_Graphen_L03.pdf" target="_blank" rel="noopener">Folien: Graphen L03</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">KI und Algorithmen</span> <span class="pdf-tree-count">(6 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Skript_mit_loesungen/output_book_mit_loesungen_KI_und_Algorithmen.pdf" target="_blank" rel="noopener">Skript mit Lösungen: KI und Algorithmen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Skript_ohne_loesungen/output_book_ohne_loesungen_KI_und_Algorithmen.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: KI und Algorithmen</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Slides</span> <span class="pdf-tree-count">(4 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">correlation causation</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Slides/correlation_causation/output_beamer_correlation_causation.pdf" target="_blank" rel="noopener">Folien: correlation causation</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">linear regression</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Slides/linear_regression/output_beamer_linear_regression.pdf" target="_blank" rel="noopener">Folien: linear regression</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">markov appendix</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Slides/markov_appendix/output_beamer_markov_appendix.pdf" target="_blank" rel="noopener">Folien: markov appendix</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">markov chains</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Algorithmen/Slides/markov_chains/output_beamer_markov_chains.pdf" target="_blank" rel="noopener">Folien: markov chains</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">KI und Prompting</span> <span class="pdf-tree-count">(2 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript mit Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Prompting/Skript_mit_loesungen/output_book_mit_loesungen_KI_und_Prompting.pdf" target="_blank" rel="noopener">Skript mit Lösungen: KI und Prompting</a></li>
+</ul>
+</div>
+</details>
+
+<details class="pdf-tree-node">
+<summary class="pdf-tree-summary"><span class="pdf-tree-folder">Skript ohne Lösungen</span> <span class="pdf-tree-count">(1 PDFs)</span></summary>
+<div class="pdf-tree-children">
+<ul class="pdf-tree-files">
+<li class="pdf-tree-file"><a href="https://files.in-form-atik.ch/Grundlagen_Info/KI_und_Prompting/Skript_ohne_loesungen/output_book_ohne_loesungen_KI_und_Prompting.pdf" target="_blank" rel="noopener">Skript ohne Lösungen: KI und Prompting</a></li>
+</ul>
+</div>
+</details>
+</div>
+</details>
 
 </div>
 </details>
