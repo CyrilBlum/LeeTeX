@@ -2,107 +2,248 @@
 \label{chap:naivebayes}
 
 \begin{myremark}[Algorithmusart in diesem Kapitel]
-Funktionsart: \textbf{Filterung} (und Klassifikation). \\
-Umsetzungsart: \textbf{selbstlernend}, in einfachen Fällen auch regelnah interpretierbar.
+    Funktionsart: \textbf{Filterung} (und Klassifikation). \\
+    Umsetzungsart: \textbf{selbstlernend}, in einfachen Fällen auch regelnah interpretierbar.
 \end{myremark}
 
 \begin{myremark}
-Naive Bayes ist ein klassischer,
-sehr schneller Algorithmus für Text- und Spam-Filterung.
-Er eignet sich besonders, wenn viele Merkmale vorliegen (z.\,B. Wörter).
+    Naive Bayes ist ein klassischer,
+    sehr schneller Algorithmus für Text- und Spam-Filterung.
+    Er eignet sich besonders, wenn viele Merkmale vorliegen (z.\,B. Wörter).
 \end{myremark}
 
 \section{Bayes-Idee in einem Satz}
 
 \begin{mydefinition}[Bayes-Theorem]
-Für Klasse $C$ und Merkmale $x$ gilt:
-\[
-P(C\mid x)=\frac{P(x\mid C)\,P(C)}{P(x)}
-\]
+    Für Klasse $C$ und Merkmale $x$ gilt:
+    \[
+        P(C\mid x)=\frac{P(x\mid C)\,P(C)}{P(x)}
+    \]
 
-Naive Bayes schätzt diese Wahrscheinlichkeit für jede Klasse und wählt
-die Klasse mit dem höchsten Posterior $P(C\mid x)$.
+    Naive Bayes schätzt diese Wahrscheinlichkeit für jede Klasse und wählt
+    die Klasse mit dem höchsten Posterior $P(C\mid x)$.
 \end{mydefinition}
 
 \section{Die \enquote{naive} Annahme}
 
 \begin{mydefinition}[Bedingte Unabhängigkeit]
-Naive Bayes nimmt an, dass die Merkmale innerhalb einer Klasse
-\textbf{bedingt unabhängig} sind:
-\[
-P(x_1,\ldots,x_n\mid C) \approx \prod_{i=1}^n P(x_i\mid C)
-\]
-Diese Annahme ist oft nicht exakt richtig, funktioniert in der Praxis
-aber erstaunlich gut.
+    Naive Bayes nimmt an, dass die Merkmale innerhalb einer Klasse
+    \textbf{bedingt unabhängig} sind:
+    \[
+        P(x_1,\ldots,x_n\mid C) \approx \prod_{i=1}^n P(x_i\mid C)
+    \]
+    Diese Annahme ist oft nicht exakt richtig, funktioniert in der Praxis
+    aber erstaunlich gut.
 \end{mydefinition}
 
 \begin{mycaution}
-Wenn Merkmale stark voneinander abhängen, können Wahrscheinlichkeiten
-systematisch verzerrt sein. Daher sollten Ergebnisse immer validiert werden
-(vgl. Kapitel~\cref{chap:datenvorbereitung} mit Train-Test-Split und Metriken).
+    Wenn Merkmale stark voneinander abhängen, können Wahrscheinlichkeiten
+    systematisch verzerrt sein. Daher sollten Ergebnisse immer validiert werden
+    (vgl. Kapitel~\cref{chap:datenvorbereitung} mit Train-Test-Split und Metriken).
 \end{mycaution}
 
 \section{Mini-Beispiel: Spamfilter}
 
-\begin{myexercise}[Posterior vergleichen]
-Angenommen:
-\[
-P(\text{Spam})=0.4,\quad P(\text{KeinSpam})=0.6
-\]
-und für das Wort \enquote{gratis}:
-\[
-P(\text{gratis}\mid\text{Spam})=0.5,\quad
-P(\text{gratis}\mid\text{KeinSpam})=0.1
-\]
+\begin{myexample}[Posterior vergleichen]
+    Angenommen, wir erhalten in unserem Posteingang 40\% Spam-Emails und 60\% Mails, welche nicht Spam sind. Wir möchten herausfinden, wie wahrscheinlich es ist, dass eine E-Mail Spam ist, wenn diese das Wort \enquote{gratis} enthält. Dazu müssen wir als erstes berechnen, welche der bisher erhaltenen Spam- und Nicht-Spam-Mails jeweils das Wort ``gratis'' enthalten:
 
-\begin{enumerate}
-    \item Berechnen Sie die unnormalisierten Werte
-          $P(\text{gratis}\mid\text{Spam})P(\text{Spam})$ und
-          $P(\text{gratis}\mid\text{KeinSpam})P(\text{KeinSpam})$.
-    \item Welche Klasse ist wahrscheinlicher?
-\end{enumerate}
-\begin{myanswer}
-Spam: $0.5\cdot0.4=0.20$. \\
-KeinSpam: $0.1\cdot0.6=0.06$. \\
-Damit ist \enquote{Spam} wahrscheinlicher.
-\end{myanswer}
+
+    \begin{table}[H]
+        \centering
+        \resizebox{\textwidth}{!}{%
+            \begin{tabular}{l*{20}{c}}
+                \textbf{E-Mail-Nr.}             & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 \\
+                \textbf{Spam/KeinSpam (1/0)}    & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1  & 0  & 0  & 1  & 0  & 0  & 1  & 0  & 0  & 1  & 0  \\
+                \textbf{gratis kommt vor (1/0)} & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0  & 0  & 0  & 1  & 0  & 0  & 0  & 0  & 0  & 1  & 0
+            \end{tabular}%
+        }
+    \end{table}
+
+
+
+    Zunächst benötigen wir die \textbf{Prior-Wahrscheinlichkeiten} für die Klassen Spam und Kein-Spam sowie die \textbf{bedingten Wahrscheinlichkeiten} für das Wort \enquote{gratis} in beiden Klassen.
+
+    Prior-Wahrscheinlichkeiten:
+    \[
+        \begin{aligned}
+            P(\text{Spam})     & = 8/20  & = 0.4 \\
+            P(\text{KeinSpam}) & = 12/20 & = 0.6
+        \end{aligned}
+    \]
+
+    Die Wahrscheinlichkeit, dass das Wort \enquote{gratis} in irgend einer Mail (Spam oder nicht-Spam) vorkommt, berechnet sich als:
+    \[
+        P(\text{gratis}) = 5/20 = 0.25
+    \]
+
+
+    Bedingte Wahrscheinlichkeiten für das Wort \enquote{gratis}:
+    \[
+        \begin{aligned}
+            P(\text{gratis}\mid\text{Spam})     & = 4/8  & = 0.5         \\
+            P(\text{gratis}\mid\text{KeinSpam}) & = 1/12 & \approx 0.083
+        \end{aligned}
+    \]
+
+    Nun können wir die Posterior-Wahrscheinlichkeiten für beide Klassen berechnen:
+    \[
+        \begin{aligned}
+            P(\text{Spam}\mid\text{gratis})     & =\frac{P(\text{gratis}\mid\text{Spam})\,P(\text{Spam})}{P(\text{gratis})}         \\
+            P(\text{KeinSpam}\mid\text{gratis}) & =\frac{P(\text{gratis}\mid\text{KeinSpam})\,P(\text{KeinSpam})}{P(\text{gratis})}
+        \end{aligned}
+    \]
+
+    \[
+        \begin{aligned}
+            P(\text{Spam}\mid\text{gratis})     & =\frac{0.5 \cdot 0.4}{0.25}   & =\underline{0.8}  \\
+            P(\text{KeinSpam}\mid\text{gratis}) & =\frac{0.083 \cdot 0.6}{0.25} & = \underline{0.2}
+        \end{aligned}
+    \]
+
+    Damit ist \enquote{Spam} wahrscheinlicher.
+\end{myexample}
+
+\begin{myremark}[Nenner der Berechnung]
+    In der Praxis muss man die Posterior-Wahrscheinlichkeiten nicht exakt berechnen, da der Nenner $P(x)$ für alle Klassen gleich ist. Es reicht, die Zähler $P(x\mid C) P(C)$ zu vergleichen, um die Klasse mit der höchsten Wahrscheinlichkeit zu bestimmen. Im obigen Beispiel hätte es also gereicht, die Werte $0.5 \cdot 0.4 = 0.2$ für Spam und $0.083 \cdot 0.6 \approx 0.05$ für Kein-Spam zu vergleichen, um zu sehen, dass Spam wahrscheinlicher ist. Da man hier nicht mehr echte Wahrscheinlichkeiten berechnet (diese müssen immer auf 1 summieren!), sondern nur Werte zum Vergleich, verwendet man nicht mehr das Gleich-Zeichen, sondern das Proportionalitätszeichen $\propto$:
+    \[
+        P(C\mid x) \propto P(x\mid C) P(C)
+    \]
+\end{myremark}
+
+\begin{myexercise}[Übung: Ticket Prioritization mit Naive Bayes]
+    \label{ex:ticket-prioritization}
+    Das Support-Team einer Firma möchte Support-Tickets automatisch nach Priorität klassifizieren. Sie haben 10 bisherige Tickets und wissen, ob diese eine hohe Priorität (1 = Beschwerde/Eskalation) oder normale Priorität (0 = Standardanfrage) haben:
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c|l}
+            \textbf{Ticket-Nr.} & \textbf{Priorität} & \textbf{Ticket-Text (Schlüsselwort)} \\
+            \midrule
+            1                   & 1                  & furchtbar                            \\
+            2                   & 1                  & beschwerde                           \\
+            3                   & 0                  & frage                                \\
+            4                   & 1                  & nicht funktioniert                   \\
+            5                   & 0                  & hilfe                                \\
+            6                   & 1                  & furchtbar                            \\
+            7                   & 0                  & frage                                \\
+            8                   & 1                  & beschwerde                           \\
+            9                   & 0                  & hilfe                                \\
+            10                  & 1                  & nicht funktioniert                   \\
+        \end{tabular}
+    \end{table}
+
+    Ein neues Ticket kommt herein mit dem Wort \enquote{\textit{furchtbar}}. Berechnen Sie mit Naive Bayes, ob dieses Ticket hohe oder normale Priorität hat. Bestimmen Sie $P(\text{HohePriorität}\mid\text{furchtbar})$ und $P(\text{NormalePriorität}\mid\text{furchtbar})$.
+
+    \begin{myanswer}
+        \textbf{Schritt 1: Prior-Wahrscheinlichkeiten}
+        \[
+            P(\text{HohePriorität}) = 6/10 = 0.6 \quad ; \quad P(\text{NormalePriorität}) = 4/10 = 0.4
+        \]
+
+        \textbf{Schritt 2: Häufigkeiten des Wortes \enquote{furchtbar} in jeder Klasse}
+
+        Hohe Priorität: Das Wort \enquote{furchtbar} kommt 2-mal vor (in 6 Tickets).
+
+        Normale Priorität: Das Wort \enquote{furchtbar} kommt 0-mal vor (in 4 Tickets).
+
+        \textbf{Schritt 3: Bedingte Wahrscheinlichkeiten}
+        \[
+            P(\text{furchtbar}\mid\text{HohePriorität}) = 2/6 \approx 0.33
+        \]
+        \[
+            P(\text{furchtbar}\mid\text{NormalePriorität}) = 0/4 = 0
+        \]
+
+        \textbf{Schritt 4: Naive Bayes Berechnung}
+
+        Für Hohe Priorität:
+        \[
+            P(\text{HohePriorität}\mid\text{furchtbar})  \propto P(\text{furchtbar}\mid\text{HohePriorität}) \cdot P(\text{HohePriorität})
+        \]
+        \[
+            = 0.33 \cdot 0.6 = 0.198
+        \]
+
+        Für Normale Priorität:
+        \[
+            P(\text{NormalePriorität}\mid\text{furchtbar}) \propto P(\text{furchtbar}\mid\text{NormalePriorität}) \cdot P(\text{NormalePriorität})
+        \]
+        \[
+            = 0 \cdot 0.4 = 0
+        \]
+
+        \textbf{Ergebnis:} Das Ticket wird als \textbf{hohe Priorität} klassifiziert.
+    \end{myanswer}
 \end{myexercise}
-
-\section{Laplace-Glättung}
-
 \begin{mydefinition}[Smoothing]
-Damit unbekannte Wörter nicht zu Wahrscheinlichkeit 0 führen,
-verwendet man oft \textbf{Laplace-Glättung}:
-\[
-P(w\mid C)=\frac{\text{count}(w,C)+\alpha}{\sum_v \text{count}(v,C)+\alpha\cdot |V|}
-\]
-mit $\alpha>0$ und Vokabulargrösse $|V|$.
+    Im obigen Beispiel führt das Wort \enquote{furchtbar} in der Klasse \textbf{Normale Priorität} zu einer bedingten Wahrscheinlichkeit von 0, was den gesamten Score für diese Klasse auf 0 setzt.
+
+    Um dieses Problem zu vermeiden, kann man eine Technik namens \textbf{Smoothing} (z.\,B. Laplace-Glättung) verwenden, um auch unbekannten Wörtern eine kleine Wahrscheinlichkeit zuzuweisen. Dadurch wird verhindert, dass ein einziges unbekanntes Wort die gesamte Klassifikation dominiert.
+
+    Die LaPlace-Glättung berechnet die bedingte Wahrscheinlichkeit für ein Wort $w$ in Klasse $C$ wie folgt:
+    \[
+        P(w\mid C)=\frac{\text{count}(w,C)+\alpha}{\sum_v \text{count}(v,C)+\alpha\cdot |V|}
+    \]
+    mit $\alpha>0$ und Vokabulargrösse $|V|$.
 \end{mydefinition}
 
+\begin{mychallenge}[LaPlace-Glättung einführen]
+    Berechnen Sie die Resultate aus \cref{ex:ticket-prioritization} erneut, aber verwenden Sie LaPlace-Glättung mit $\alpha=1$ und einem Vokabular von 5 Wörtern (furchtbar, beschwerde, frage, hilfe, nicht funktioniert).
+    \begin{myanswer}
+        \textbf{Schritt 1: Prior-Wahrscheinlichkeiten bleiben gleich}
+        \[
+            P(\text{HohePriorität}) = 0.6 \quad ; \quad P(\text{NormalePriorität}) = 0.4
+        \]
+        \textbf{Schritt 2: Bedingte Wahrscheinlichkeiten mit LaPlace-Glättung}
+        \[
+            P(\text{furchtbar}\mid\text{HohePriorität}) = \frac{2 + 1}{6 + 1 \cdot 5} = \frac{3}{11} \approx 0.27
+        \]
+        \[
+            P(\text{furchtbar}\mid\text{NormalePriorität}) = \frac{0 + 1}{4 + 1 \cdot 5} = \frac{1}{9} \approx 0.11
+        \]
+        \textbf{Schritt 3: Naive Bayes Berechnung mit Glättung}
+        Für Hohe Priorität:
+        \[
+            P(\text{HohePriorität}\mid\text{furchtbar}) \propto 0.27 \cdot 0.6 = 0.162
+        \]
+        Für Normale Priorität:
+        \[
+            P(\text{NormalePriorität}\mid\text{furchtbar}) \propto 0.11 \cdot 0.4 = 0.044
+        \]
+        \textbf{Ergebnis:} Das Ticket wird weiterhin als \textbf{hohe Priorität} klassifiziert, aber die Wahrscheinlichkeit für Normale Priorität ist jetzt nicht mehr 0, sondern 0.044.
+    \end{myanswer}
+\end{mychallenge}
+
 \begin{myexercise}[Warum Glättung?]
-Erklären Sie anhand einer konkreten Beispiels-Berechnung, weshalb ohne Glättung ein einziges unbekanntes Wort
-in einer E-Mail den gesamten Klassen-Score dominieren kann.
-\begin{myanswer}
-Ohne Glättung würde ein unbekanntes Wort $w$ in Klasse $C$ zu $P(w\mid C)=0$ führen. Da Naive Bayes die Wahrscheinlichkeiten multipliziert, würde dies den gesamten Score für Klasse $C$ auf 0 setzen, unabhängig von anderen starken Indikatoren. Mit Glättung wird stattdessen eine kleine Wahrscheinlichkeit zugewiesen, wodurch der Score nicht vollständig eliminiert wird.
-\end{myanswer}
+    Erklären Sie anhand einer konkreten Beispiels-Berechnung, weshalb ohne Glättung ein einziges unbekanntes Wort
+    in einer E-Mail den gesamten Klassen-Score dominieren kann.
+    \begin{myanswer}
+        Ohne Glättung würde ein unbekanntes Wort $w$ in Klasse $C$ zu $P(w\mid C)=0$ führen. Da Naive Bayes die Wahrscheinlichkeiten multipliziert, würde dies den gesamten Score für Klasse $C$ auf 0 setzen, unabhängig von anderen starken Indikatoren. Mit Glättung wird stattdessen eine kleine Wahrscheinlichkeit zugewiesen, wodurch der Score nicht vollständig eliminiert wird.
+    \end{myanswer}
 \end{myexercise}
 
 \section{Reflexion: Chancen und Risiken}
 
 \begin{mychallenge}[Naive Bayes im Moderationssystem]
-Ein soziales Netzwerk filtert problematische Kommentare mit Naive Bayes.
-Diskutieren Sie:
-\begin{enumerate}
-    \item Welche False-Positive- und False-Negative-Fälle sind kritisch?
-    \item Welche Metrik ist wichtiger: Precision oder Recall?
-    \item Wie könnte man Transparenz gegenüber Nutzenden erhöhen?
-\end{enumerate}
-
-\begin{myanswer}
-    \begin{enumerate}
-        \item Falsch positive Fälle (harmlos als problematisch klassifiziert) können zu Frustration führen, während falsch negative Fälle (problematisch als harmlos klassifiziert) Schaden anrichten können. Beide sind kritisch, aber falsch negative Fälle könnten schwerwiegender sein, da sie schädliche Inhalte durchlassen.
-        \item In diesem Kontext könnte Recall wichtiger sein, um sicherzustellen, dass möglichst viele problematische Kommentare erkannt werden, auch wenn das bedeutet, dass einige harmlose Kommentare fälschlicherweise blockiert werden.
-        \item Transparenz könnte durch klare Richtlinien, Erklärungen zu den Filterkriterien und Möglichkeiten für Nutzer, Entscheidungen anzufechten oder Feedback zu geben, erhöht werden.
-    \end{enumerate}
-\end{myanswer}
+    Ein Online-Forum möchte Beiträge automatisch moderieren, um beleidigende Inhalte zu erkennen. Sie verwenden Naive Bayes, um Beiträge als \textbf{beleidigend} oder \textbf{neutral} zu klassifizieren. Welche Chancen und Risiken sehen Sie bei diesem Ansatz? Wie könnte man die Risiken minimieren?
+    \begin{myanswer}
+        \textbf{Chancen:}
+        \begin{itemize}
+            \item Schnelle und skalierbare Moderation von Beiträgen.
+            \item Automatisierte Erkennung von beleidigenden Inhalten, die menschliche Moderatoren entlastet.
+            \item Möglichkeit, das Modell kontinuierlich mit neuen Daten zu verbessern.
+        \end{itemize}
+        \textbf{Risiken:}
+        \begin{itemize}
+            \item Falsch positive Klassifikationen, bei denen harmlose Beiträge fälschlicherweise als beleidigend markiert werden, was zu Frustration bei Nutzern führen kann.
+            \item Falsch negative Klassifikationen, bei denen beleidigende Beiträge nicht erkannt werden, was die Community schädigen könnte.
+            \item Bias im Trainingsdatensatz, der dazu führen kann, dass bestimmte Gruppen oder Themen überproportional als beleidigend klassifiziert werden.
+        \end{itemize}
+        \textbf{Risikominimierung:}
+        \begin{itemize}
+            \item Verwendung eines ausgewogenen und repräsentativen Trainingsdatensatzes, um Bias zu minimieren.
+            \item Implementierung eines Feedback-Mechanismus, bei dem Nutzer falsch klassifizierte Beiträge melden können, um das Modell zu verbessern.
+            \item Kombination von Naive Bayes mit anderen Moderationstechniken, wie z.\,B. menschlicher Überprüfung bei Grenzfällen oder der Einsatz von zusätzlichen Regeln, um die Genauigkeit zu erhöhen.
+        \end{itemize}
+    \end{myanswer}
 \end{mychallenge}

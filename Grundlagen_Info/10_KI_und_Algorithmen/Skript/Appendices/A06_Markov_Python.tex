@@ -1,0 +1,165 @@
+\chapter{Implementierung von Markov-Ketten in Python}
+\label{sec:appendixMarkovPython}
+\section{Python-Implementierung von Markov-Ketten}
+
+Markov-Ketten lassen sich mit Python sehr elegant implementieren und visualisieren. Im Folgenden zeigen wir eine einfache Implementation, die es erlaubt, Markov-Ketten zu simulieren und deren Eigenschaften zu analysieren.
+
+\begin{lstlisting}[language=Python, caption=Grundlegende Implementation einer Markov-Kette in Python]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Einfache Markov-Ketten Implementierung
+class MarkovChain:
+    def __init__(self, transition_matrix, states=None):
+        """
+        Initialisiert eine Markov-Kette mit einer Übergangsmatrix.
+
+        Args:
+            transition_matrix: Eine quadratische Matrix als numpy-Array
+            states: Optional - Liste mit Namen der Zustände
+        """
+        self.P = np.array(transition_matrix)
+        n = self.P.shape[0]
+        if states is None:
+            self.states = [str(i) for i in range(n)]
+        else:
+            self.states = states
+
+        # Überprüfen, ob die Übergangsmatrix gültig ist
+        row_sums = self.P.sum(axis=1)
+        if not np.allclose(row_sums, 1.0):
+            raise ValueError("Die Zeilen der Übergangsmatrix müssen sich zu 1 summieren.")
+
+    def simulate(self, steps, start_state=0):
+        """
+        Simuliert die Markov-Kette für eine bestimmte Anzahl von Schritten.
+
+        Args:
+            steps: Anzahl der Simulationsschritte
+            start_state: Anfangszustand (als Index)
+
+        Returns:
+            Liste der besuchten Zustände (als Indizes)
+        """
+        n = self.P.shape[0]
+        if start_state >= n:
+            raise ValueError(f"Startzustand muss kleiner als {n} sein")
+
+        # Simulation initialisieren
+        states = [start_state]
+        current = start_state
+
+        # Für jeden Schritt
+        for _ in range(steps):
+            # Übergangswahrscheinlichkeiten für den aktuellen Zustand
+            probs = self.P[current]
+
+            # Nächsten Zustand zufällig auswählen
+            current = np.random.choice(n, p=probs)
+            states.append(current)
+
+        return states
+
+    def compute_stationary_distribution(self):
+        """
+        Berechnet die stationäre Verteilung der Markov-Kette.
+
+        Returns:
+            Stationäre Verteilung als numpy-Array
+        """
+        # Eigenwerte und Eigenvektoren der transponierten Matrix
+        eigenvalues, eigenvectors = np.linalg.eig(self.P.T)
+
+        # Finde den Eigenvektor zum Eigenwert 1
+        one_eigenvector = eigenvectors[:, np.isclose(eigenvalues, 1.0)]
+
+        # Normalisieren, damit die Summe 1 ergibt
+        stationary = one_eigenvector[:, 0].real
+        stationary = stationary / stationary.sum()
+
+        return stationary
+\end{lstlisting}
+
+Mit dieser Klasse können wir nun einfach Markov-Ketten simulieren und analysieren. Zum Beispiel können wir unser Wetter-Beispiel implementieren:
+
+\begin{lstlisting}[language=Python, caption=Anwendung der MarkovChain-Klasse auf das Wetter-Beispiel]
+# Wetter-Markov-Kette
+weather_matrix = [
+    [0.8, 0.2],  # Sonnig -> Sonnig, Sonnig -> Regnerisch
+    [0.4, 0.6]   # Regnerisch -> Sonnig, Regnerisch -> Regnerisch
+]
+
+weather_chain = MarkovChain(weather_matrix, states=["Sonnig", "Regnerisch"])
+
+# Simulation für 20 Tage, beginnend mit sonnigem Wetter
+simulation = weather_chain.simulate(20, start_state=0)
+weather_states = [weather_chain.states[s] for s in simulation]
+
+print("Wettersimulation für 20 Tage:")
+print(weather_states)
+
+# Stationäre Verteilung berechnen
+stationary = weather_chain.compute_stationary_distribution()
+print("\nStationäre Verteilung:")
+for i, state in enumerate(weather_chain.states):
+    print(f"{state}: {stationary[i]:.2f}")
+\end{lstlisting}
+
+Eine mögliche Ausgabe könnte sein:
+\begin{verbatim}
+Wettersimulation für 20 Tage:
+['Sonnig', 'Sonnig', 'Sonnig', 'Regnerisch', 'Regnerisch', 'Sonnig', 
+'Sonnig', 'Sonnig', 'Sonnig', 'Sonnig', 'Sonnig', 'Regnerisch', 
+'Regnerisch', 'Regnerisch', 'Sonnig', 'Sonnig', 'Sonnig', 'Sonnig', 
+'Sonnig', 'Sonnig', 'Sonnig']
+
+Stationäre Verteilung:
+Sonnig: 0.67
+Regnerisch: 0.33
+\end{verbatim}
+
+Diese Python-Implementation erlaubt es uns, schnell verschiedene Markov-Ketten zu modellieren und zu simulieren. Besonders nützlich ist die Möglichkeit, die stationäre Verteilung zu berechnen und zu visualisieren, wie sich die Zustandsverteilung über die Zeit entwickelt.
+
+\begin{myexercise}[Python-Simulation]
+    Erweitern Sie den obigen Code, um die App-Nutzung aus unserem früheren Beispiel zu simulieren. Die Übergangsmatrix ist:
+    \[
+        P = \begin{pmatrix}
+            0{,}7 & {,}3 \\
+            {,}3  & {,}7 \\
+        \end{pmatrix}
+    \]
+
+    Führen Sie eine Simulation für 100 Schritte durch und berechnen Sie die stationäre Verteilung. Vergleichen Sie die stationäre Verteilung mit dem analytischen Ergebnis aus dem früheren Beispiel.
+
+    \begin{myanswer}
+        Hier ist der Code für die Simulation der App-Nutzung:
+
+        \begin{lstlisting}[language=Python]
+# App-Nutzungs-Markov-Kette
+app_matrix = [
+    [0.7, 0.3],  # WhatsApp -> WhatsApp, WhatsApp -> Instagram
+    [0.3, 0.7]   # Instagram -> WhatsApp, Instagram -> Instagram
+]
+
+app_chain = MarkovChain(app_matrix, states=["WhatsApp", "Instagram"])
+
+# Simulation für 100 Nutzungen, beginnend mit WhatsApp
+simulation = app_chain.simulate(100, start_state=0)
+
+# Zählen, wie oft jede App genutzt wurde
+whatsapp_count = simulation.count(0)
+instagram_count = simulation.count(1)
+print(f"WhatsApp wurde {whatsapp_count} mal genutzt")
+print(f"Instagram wurde {instagram_count} mal genutzt")
+print(f"Verhältnis WhatsApp/Instagram: {whatsapp_count/(whatsapp_count+instagram_count):.2f}")
+
+# Stationäre Verteilung berechnen
+stationary = app_chain.compute_stationary_distribution()
+print("\nStationäre Verteilung:")
+for i, state in enumerate(app_chain.states):
+    print(f"{state}: {stationary[i]:.2f}")
+\end{lstlisting}
+
+        Die stationäre Verteilung ist $\pi = (0.5, 0.5)$, was genau dem analytischen Ergebnis entspricht. Bei einer langen Simulation sollte sich das Verhältnis der App-Nutzung diesem Wert annähern.
+    \end{myanswer}
+\end{myexercise}

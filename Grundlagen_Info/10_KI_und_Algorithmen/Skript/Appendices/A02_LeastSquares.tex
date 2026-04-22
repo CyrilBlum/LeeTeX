@@ -1,0 +1,67 @@
+\chapter{Herleitung der Methode der kleinsten Quadrate}\label{sec:appendixKleinsteQuadrate}
+
+\section*{Definition der Zielfunktion}
+Das Ziel der linearen Regression besteht darin, die bestmögliche Gerade $y = mx + q$ zu finden, die die Summe der quadrierten Residuen zwischen den vorhergesagten Werten und den tatsächlichen Datenpunkten minimiert. Die Summe der quadrierten Abstände zwischen den Datenpunkten und der Geraden wird definiert als:
+$$
+S = \sum_{i=1}^n (y_i - (mx_i + q))^2
+$$
+
+\section*{Partielle Ableitungen}
+Um $S$ zu minimieren, nehmen wir die partiellen Ableitungen bezüglich $m$ und $q$ und setzen diese gleich Null.
+
+\subsection*{Partielle Ableitung nach $m$}
+$$
+\frac{\partial S}{\partial m} = \frac{\partial}{\partial m} \sum_{i=1}^n (y_i - mx_i - q)^2
+$$
+$$
+= \sum_{i=1}^n 2(y_i - mx_i - q)(-x_i)
+$$
+$$
+= -2 \sum_{i=1}^n x_i(y_i - mx_i - q)
+$$
+Auf Null setzen für die Minimierung:
+$$
+\sum x_iy_i - m\sum x_i^2 - q\sum x_i = 0
+$$
+$$
+\sum x_iy_i = m\sum x_i^2 + q\sum x_i \quad \text{(Gleichung 1)}
+$$
+
+\subsection*{Partielle Ableitung nach $q$}
+$$
+\frac{\partial S}{\partial q} = \frac{\partial}{\partial q} \sum_{i=1}^n (y_i - mx_i - q)^2
+$$
+$$
+= \sum_{i=1}^n 2(y_i - mx_i - q)(-1)
+$$
+$$
+= -2 \sum_{i=1}^n (y_i - mx_i - q)
+$$
+Auf Null setzen für die Minimierung:
+$$
+\sum y_i - m\sum x_i - nq = 0
+$$
+$$
+\sum y_i = m\sum x_i + nq \quad \text{(Gleichung 2)}
+$$
+
+\section*{Lösung der Gleichungen}
+Aus Gleichung 2:
+$$
+q = \frac{\sum y_i - m\sum x_i}{n} \quad \text{(Gleichung 3)}
+$$
+Einsetzen der Gleichung 3 in Gleichung 1:
+$$
+\sum x_iy_i = m\sum x_i^2 + \left(\frac{\sum y_i - m\sum x_i}{n}\right)\sum x_i
+$$
+$$
+\sum x_iy_i = m\sum x_i^2 + \frac{(\sum y_i)\sum x_i}{n} - \frac{m(\sum x_i)^2}{n}
+$$
+Auflösen nach $m$:
+$$
+m = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - (\sum x_i)^2}
+$$
+Bestimmen von $q$ über Einsetzen von $m$ in Gleichung 3:
+$$
+q = \frac{\sum y_i - m\sum x_i}{n}
+$$
