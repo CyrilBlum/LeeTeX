@@ -105,7 +105,7 @@
 		\vspace*{0.25\textheight}
 		\begin{center}
 			% logo
-			\iftoggle{includelogo}{\begin{figure}[H]\centering\includegraphics[width=\logosize]{\thelogo}
+			\iftoggle{includelogo}{\begin{figure}[H]\centering\href{https://github.com/CyrilBlum/LeeTeX}{\includegraphics[width=\logosize]{Logos/Logo GymForMATeCH Lines Black Text.pdf}}
 				\end{figure}}{}
 			\thesubject\\
 			\begin{tcolorbox}[enhanced,colframe=RoyalBlue!80,colback=RoyalBlue!20, hbox,lifted shadow={1mm}{-2mm}{3mm}{0.1mm}%
@@ -115,12 +115,12 @@
 						\ifblank{#2}{
 							% if no subtitle is given (#2 blank)
 							{\huge \textbf{#1}}\\
-							\makeSpiral
+							\iftoggle{emoji}{\makeSpiral}{}
 							{\large \textbf{Skript}}\\[0.2cm]
 						}{
 							% if #2 not blank
 							{\huge \textbf{#1}}\\[0.5cm]
-							\makeSpiral
+							\iftoggle{emoji}{\makeSpiral}{}
 							{\large \textbf{#2}}\\[0.2cm]
 						}
 					\end{center}
@@ -128,50 +128,7 @@
 			\end{tcolorbox}
 
 
-			% Author block logic:
-			\iftoggle{oneauthor}{
-				% Case 3: Only one main author (did 90%+)
-				% Case: Only one main author
-				\foreach \author/\mail in \mainauthors {
-					\href{mailto:\mail}{\color{black}{\author}}\\[0.5cm]
-				}
-			}{
-				\iftoggle{twomainauthors}{
-					% Case 2: Two main authors (contribution ~50/50)
-					% Print authors separated by commas (works with pgffor v3.1+)
-					\newcounter{mainauthorcount}
-					\setcounter{mainauthorcount}{0}
-					\foreach \a/\m in \mainauthors {
-						\stepcounter{mainauthorcount}
-					}
-					\foreach [count=\i] \author/\mail in \mainauthors {
-						\href{mailto:\mail}{\color{black}{\author}}%
-						\ifnum\i<\value{mainauthorcount},\fi
-					}
-				}{
-					% Case 1: One main author + major contributors (main did >70%)
-					\newcount\majorcontribcount
-					\majorcontribcount=0
-					\foreach \contrib/\mail in \majorcontributors {
-						\advance\majorcontribcount by 1
-					}
-					\begin{center}
-						\begin{tabular}{cc}
-							\textbf{Hauptautor}                                                                  & \textbf{Ko-Autor} \\
-							\foreach \author/\mail in \mainauthors {\href{mailto:\mail}{\color{black}{\author}}} &
-							\begin{tabular}[t]{c}
-								\newcount\currentcontrib
-								\currentcontrib=0
-								\foreach \contrib/\mail in \majorcontributors {\advance\currentcontrib by 1
-									\href{mailto:\mail}{\color{black}{\contrib}}%
-									\ifnum\currentcontrib<\majorcontribcount,\fi}
-							\end{tabular}
-						\end{tabular}\\[0.5cm]
-					\end{center}
-				}
-			}
-
-			{\large \textcopyleft{} \theplace, \today}
+			{\large \textcopyleft{}, \href{https://github.com/CyrilBlum/LeeTeX}{GymForMATeCH} \today}
 
 			%      \tikz[remember picture,overlay] \node[opacity=0.3,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{LeeLogo}};
 

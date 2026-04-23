@@ -1,20 +1,20 @@
 <div align="center">
-    <h3>LeeTeX</h3>
+    <a href="https://cyrilblum.github.io/LeeTeX/"><img src="Logos/Logo GymForMATeCH Lines.png" alt="GymForMATeCH Logo" width="300"/></a><br>
     <br>
     © Educational Resources<br>
     <br>
 </div>
 
-## Overview
+## About
 
-LeeTeX collects educational resources sharing a common typesetting setup.
+
 
 ## GitHub Page
 
 The project documentation is available on GitHub Pages:
 https://cyrilblum.github.io/LeeTeX/
 
-## Compiling LeeTeX
+## Compiling GymForMATeCH
 
 To compile this project, navigate to `main.tex` and chose to run either a `book`, `article`, `exam`, `beamer` or `flashcard` documentclass, using the toggles. Uncomment a line to compile a certain project. 
 
@@ -28,7 +28,7 @@ We recommend using VS Code for modifying the code.
 
 If you wish to add a git hash to the document, execute the following steps:
 
-- Navigate to the LeeTeX root directory
+- Navigate to the GymForMATeCH root directory
 - `cp -a Git_Internal_Files/. .git/hooks`
 - `cd .git/hooks/`
 - `chmod ug+x post-checkout post-commit post-merge`
