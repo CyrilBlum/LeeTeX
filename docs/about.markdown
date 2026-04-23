@@ -5,15 +5,20 @@ permalink: /about/
 ---
 
 <div align="center">
-	<h3>GymForMATeCH</h3>
+	<a href="https://cyrilblum.github.io/LeeTeX/"><img src="Logos/Logo GymForMATeCH Lines.png" alt="GymForMATeCH Logo" width="300"/></a><br>
 	<br>
 	© Educational Resources<br>
 	<br>
 </div>
 
-## Overview
+## About
 
-GymForMATeCH collects educational resources sharing a common typesetting setup.
+- “Gym” stands for (Swiss) Gymnasium. This project primarily provides open-source teaching materials at upper-secondary level.
+- “ymForMaTeCH” stands for the project’s informatics focus.
+- “ForM” stands for form, as the teaching materials are intended to meet high formal standards (see [README.md](README.md) and [GitHub Page](https://cyrilblum.github.io/LeeTeX/)).
+- “MA” stands for Maturität, but also for meta-analysis, as one goal of this project is to integrate existing teaching materials as effectively as possible.
+- “TeCH” stands for LaTeX as the technical foundation of this repository.
+- “CH” stands for the Swiss context of this repository.
 
 ## Compiling GymForMATeCH
 

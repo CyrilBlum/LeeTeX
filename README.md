@@ -7,7 +7,12 @@
 
 ## About
 
-
+- “Gym” stands for (Swiss) Gymnasium. This project primarily provides open-source teaching materials at upper-secondary level.
+- “ymForMaTeCH” stands for the project’s informatics focus.
+- “ForM” stands for form, as the teaching materials are intended to meet high formal standards (see [README.md](README.md) and [GitHub Page](https://cyrilblum.github.io/LeeTeX/)).
+- “MA” stands for Maturität, but also for meta-analysis, as one goal of this project is to integrate existing teaching materials as effectively as possible.
+- “TeCH” stands for LaTeX as the technical foundation of this repository.
+- “CH” stands for the Swiss context of this repository.
 
 ## GitHub Page
 
