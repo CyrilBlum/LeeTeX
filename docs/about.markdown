@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 <div align="center">
-	<a href="https://cyrilblum.github.io/LeeTeX/"><img src="Logos/Logo GymForMATeCH Lines.png" alt="GymForMATeCH Logo" width="300"/></a><br>
+	<a href="https://cyrilblum.github.io/LeeTeX/"><img src="assets/images/Logo GymForMATeCH Lines.png" alt="GymForMATeCH Logo" width="300"/></a><br>
 	<br>
 	© Educational Resources<br>
 	<br>
