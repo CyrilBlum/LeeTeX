@@ -1,10 +1,10 @@
 ---
 layout: home
-title: LeeTeX Docs
+title: GymForMATeCH Docs
 nav_exclude: true
 ---
 
-# LeeTeX Documentation
+# GymForMATeCH Documentation
 
 Welcome!
 

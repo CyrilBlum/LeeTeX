@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 <div align="center">
-	<h3>LeeTeX</h3>
+	<h3>GymForMATeCH</h3>
 	<br>
 	© Educational Resources<br>
 	<br>
@@ -13,9 +13,9 @@ permalink: /about/
 
 ## Overview
 
-LeeTeX collects educational resources sharing a common typesetting setup.
+GymForMATeCH collects educational resources sharing a common typesetting setup.
 
-## Compiling LeeTeX
+## Compiling GymForMATeCH
 
 To compile this project, navigate to `main.tex` and chose to run either a `book`, `article`, `exam`, `beamer` or `flashcard` documentclass, using the toggles. Uncomment a line to compile a certain project. 
 
@@ -29,7 +29,7 @@ We recommend using VS Code for modifying the code.
 
 If you wish to add a git hash to the document, execute the following steps:
 
-- Navigate to the LeeTeX root directory
+- Navigate to the GymForMATeCH root directory
 - `cp -a Git_Internal_Files/. .git/hooks`
 - `cd .git/hooks/`
 - `chmod ug+x post-checkout post-commit post-merge`
