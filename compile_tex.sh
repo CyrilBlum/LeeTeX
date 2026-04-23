@@ -207,7 +207,7 @@ book_topics=(
     "Zahlendarstellungen_und_Kodierungen:Grundlagen_Info/13_ZahlendarstellungenUndKodierungen/Skript/Skript.tex"
     "Kryptologie:Grundlagen_Info/03_Kryptologie/Skript/Skript.tex"
     "Kompression:Grundlagen_Info/04_Kompression/Skript.tex"
-    "Datenintegrität:Grundlagen_Info/05_Datenintegritaet/Skript/Skript"
+    "Datenintegrität:Grundlagen_Info/05_Datenintegritaet/Skript/Skript.tex"
     "Datenbanken:Grundlagen_Info/06_Datenbanken/Skript/Skript.tex"
     # "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
     "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
