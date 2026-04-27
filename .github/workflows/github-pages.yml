@@ -67,7 +67,7 @@ jobs:
           mkdir jupyter-dist
           jupyter lite build \
             --debug \
-            --contents "Jupyter Notebooks/10_KI_und_Algorithmen" \
+            --contents "Jupyter Notebooks" \
             --base-url "/LeeTeX/jupyter/" \
             --output-dir jupyter-dist
 
@@ -81,8 +81,9 @@ jobs:
       - name: Combine sites
         run: |
           mkdir -p dist
-          cp -r docs/_site/* dist/
-          cp -r jupyter-dist dist/jupyter
+          cp -a docs/_site/. dist/
+          mkdir -p dist/jupyter
+          cp -a jupyter-dist/. dist/jupyter/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
