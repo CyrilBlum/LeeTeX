@@ -15,8 +15,8 @@ parser.add_argument(
     "-n",
     "--rows",
     type=int,
-    default=50,
-    help="Anzahl zu generierender Zeilen (Default: 50)",
+    default=100,
+    help="Anzahl zu generierender Zeilen (Default: 100)",
 )
 parser.add_argument(
     "--seed",
@@ -124,7 +124,7 @@ parser.add_argument(
 parser.add_argument(
     "--noise-std",
     type=float,
-    default=0.55,
+    default=0.45,
     help="Rauschstaerke im Label-Score",
 )
 args = parser.parse_args()

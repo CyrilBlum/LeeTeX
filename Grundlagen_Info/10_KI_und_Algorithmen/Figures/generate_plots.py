@@ -13,30 +13,34 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier, plot_tree
+import seaborn as sns
+
 
 
 BASE = Path(__file__).resolve().parents[1]
 DATA_DIR = BASE / "Data"
 FIG_DIR = BASE / "Figures"
 
+X_COLS = ["Lernzeit_h", "Fehlzeiten", "Hausaufgabenquote", "Vorwissen_Test"]
+Y_COL = "Bestanden"
+CLASS_NAMES = ["Ja", "Nein"]
 
 def _load_classification_data():
     df = pd.read_csv(DATA_DIR / "learning_style_classifier.csv")
-    X = df[["Lernzeit_h", "Fehlzeiten"]]
-    y = df["Bestanden"]
-    return X, y
+    X = df[X_COLS]
+    y = df[Y_COL]
+    return X, y, df
 
 
-def plot_decision_tree(max_depth: int = 3) -> None:
-    X, y = _load_classification_data()
+def plot_decision_tree(X, y, max_depth: int = 3) -> None:
     model = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
     model.fit(X, y)
 
     plt.figure(figsize=(10, 6))
     plot_tree(
         model,
-        feature_names=["Lernzeit_h", "Fehlzeiten"],
-        class_names=["Nicht bestanden", "Bestanden"],
+        feature_names=X_COLS,
+        class_names=CLASS_NAMES,
         filled=True,
         rounded=True,
         fontsize=9,
@@ -46,16 +50,15 @@ def plot_decision_tree(max_depth: int = 3) -> None:
     plt.close()
 
 
-def plot_decision_tree_overfitting() -> None:
-    X, y = _load_classification_data()
+def plot_decision_tree_overfitting(X, y) -> None:
     model = DecisionTreeClassifier(max_depth=None, random_state=42)
     model.fit(X, y)
 
     plt.figure(figsize=(15, 12))
     plot_tree(
         model,
-        feature_names=["Lernzeit_h", "Fehlzeiten"],
-        class_names=["Nicht bestanden", "Bestanden"],
+        feature_names=X_COLS,
+        class_names=CLASS_NAMES,
         filled=True,
         rounded=True,
         fontsize=7,
@@ -65,14 +68,137 @@ def plot_decision_tree_overfitting() -> None:
     plt.close()
 
 
-def plot_random_forest_importance() -> None:
-    X, y = _load_classification_data()
+def plot_decision_tree_overfitting_issue() -> None:
+    """Erzeuge drei separate Boundary-Plots fuer flachen, moderaten und tiefen Baum."""
+
+    X_df, y_series, _ = _load_classification_data()
+    X = X_df[["Lernzeit_h", "Hausaufgabenquote"]].to_numpy()
+    y = y_series.to_numpy()
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.35, random_state=42, stratify=y
+    )
+
+    x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
+    y_min, y_max = X[:, 1].min() - 0.08, X[:, 1].max() + 0.08
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 350), np.linspace(y_min, y_max, 350))
+    grid = np.c_[xx.ravel(), yy.ravel()]
+
+    models = [
+        {
+            "key": "shallow",
+            "depth": 1,
+            "title": "Flacher Baum (max_depth=1)",
+            "subtitle": "Ein einzelner Split kann die Klassen nicht perfekt trennen.",
+            "out": "decision_tree_overfitting_shallow.pdf",
+        },
+        {
+            "key": "moderate",
+            "depth": 3,
+            "title": "Moderat tiefer Baum (max_depth=5)",
+            "subtitle": "Guter Kompromiss: flexible Grenze mit bester Test-Accuracy.",
+            "out": "decision_tree_overfitting_moderate.pdf",
+        },
+        {
+            "key": "deep",
+            "depth": None,
+            "title": "Sehr tiefer Baum (max_depth=None)",
+            "subtitle": "Perfektes Training, aber deutlich trainingsdatenspezifisch.",
+            "out": "decision_tree_overfitting_deep.pdf",
+        },
+    ]
+
+    test_scores = {}
+
+    for spec in models:
+        model = DecisionTreeClassifier(max_depth=spec["depth"], random_state=42)
+        model.fit(X_train, y_train)
+
+        # Exportiere den zugehoerigen Baum zur jeweiligen Boundary-Abbildung.
+        plt.figure(figsize=(9, 6))
+        plot_tree(
+            model,
+            feature_names=["Lernzeit_h", "Hausaufgabenquote"],
+            class_names=["Klasse 0", "Klasse 1"],
+            filled=True,
+            rounded=True,
+            fontsize=8,
+        )
+        plt.tight_layout()
+        plt.savefig(FIG_DIR / f"decision_tree_overfitting_{spec['key']}_tree.pdf")
+        plt.close()
+
+        Z = model.predict(grid).reshape(xx.shape)
+        train_acc = accuracy_score(y_train, model.predict(X_train))
+        test_acc = accuracy_score(y_test, model.predict(X_test))
+        test_scores[spec["key"]] = test_acc
+
+        plt.figure(figsize=(8, 6))
+        plt.contourf(xx, yy, Z, alpha=0.25, cmap="coolwarm")
+
+        plt.scatter(
+            X_train[y_train == 0, 0],
+            X_train[y_train == 0, 1],
+            c="#1f77b4",
+            edgecolor="k",
+            s=55,
+            marker="o",
+            label="Train Klasse 0",
+        )
+        plt.scatter(
+            X_train[y_train == 1, 0],
+            X_train[y_train == 1, 1],
+            c="#d62728",
+            edgecolor="k",
+            s=55,
+            marker="o",
+            label="Train Klasse 1",
+        )
+        plt.scatter(
+            X_test[y_test == 0, 0],
+            X_test[y_test == 0, 1],
+            c="#1f77b4",
+            edgecolor="k",
+            s=90,
+            marker="*",
+            label="Test Klasse 0",
+        )
+        plt.scatter(
+            X_test[y_test == 1, 0],
+            X_test[y_test == 1, 1],
+            c="#d62728",
+            edgecolor="k",
+            s=90,
+            marker="*",
+            label="Test Klasse 1",
+        )
+
+        plt.xlabel("Lernzeit (h)")
+        plt.ylabel("Hausaufgabenquote")
+        plt.title(
+            f"{spec['title']}\nTrain-Acc: {train_acc:.1%} | Test-Acc: {test_acc:.1%}\n{spec['subtitle']}",
+            fontsize=10,
+        )
+        plt.grid(True, alpha=0.25)
+        plt.legend(loc="best")
+        plt.tight_layout()
+        plt.savefig(FIG_DIR / spec["out"], dpi=150)
+        plt.close()
+
+    print(
+        "Decision-Tree-Test-Accuracies "
+        f"(shallow/moderate/deep): {test_scores['shallow']:.4f} / "
+        f"{test_scores['moderate']:.4f} / {test_scores['deep']:.4f}"
+    )
+
+
+def plot_random_forest_importance(X, y) -> None:
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X, y)
     importances = model.feature_importances_
 
     plt.figure(figsize=(6, 4))
-    plt.bar(["Lernzeit_h", "Fehlzeiten"], importances, color="#C44E52")
+    plt.bar(X_COLS, importances, color="#C44E52")
     plt.ylabel("Importance")
     plt.title("Random Forest: Feature-Importances")
     plt.tight_layout()
@@ -81,7 +207,8 @@ def plot_random_forest_importance() -> None:
 
 
 def _plot_decision_boundary(clf, title: str, out_file: str) -> None:
-    X, y = _load_classification_data()
+    X, y, _ = _load_classification_data()
+    X = X[["Lernzeit_h", "Fehlzeiten"]]
     clf.fit(X, y)
 
     x_min, x_max = X["Lernzeit_h"].min() - 0.5, X["Lernzeit_h"].max() + 0.5
@@ -91,6 +218,7 @@ def _plot_decision_boundary(clf, title: str, out_file: str) -> None:
         np.c_[xx.ravel(), yy.ravel()],
         columns=["Lernzeit_h", "Fehlzeiten"],
     )
+
     Z = clf.predict(grid).reshape(xx.shape)
 
     plt.figure(figsize=(7, 5))
@@ -104,9 +232,10 @@ def _plot_decision_boundary(clf, title: str, out_file: str) -> None:
     plt.close()
 
 
-def plot_svm_boundary(margin=1.0) -> None:
+def plot_svm_boundary(X, y, margin=1.0) -> None:
     """Visualisiere SVM mit Entscheidungsgrenze, Margin und Support Vectors."""
-    X, y = _load_classification_data()
+
+    X = X[["Lernzeit_h", "Fehlzeiten"]]
     
     # Trainiere SVM
     model = SVC(kernel="rbf", C=margin, gamma="scale")
@@ -132,7 +261,7 @@ def plot_svm_boundary(margin=1.0) -> None:
     plt.contourf(xx, yy, Z, alpha=0.25, cmap="coolwarm", levels=1)
     
     # Margin: Konturlinien bei decision_function = +1 und -1
-    plt.contour(xx, yy, Z_decision, levels=[0], linewidths=2, colors="black", label="Entscheidungsgrenze")
+    plt.contour(xx, yy, Z_decision, levels=[0], linewidths=2, colors="black")
     plt.contour(xx, yy, Z_decision, levels=[-1, 1], linewidths=1.5, colors="black", linestyles="--", alpha=0.5)
     
     # Datenpunkte
@@ -282,19 +411,32 @@ def plot_regression_prediction() -> None:
     plt.close()
 
 
-def main() -> None:
-    plot_decision_tree(max_depth=3)
-    plot_decision_tree_overfitting()
-    plot_random_forest_importance()
+def main():
+    # load data once and reuse for all plots
+    X, y, _ = _load_classification_data()
+
+    # Decision Trees mit verschiedenen Tiefen und Feature-Importances
+    plot_decision_tree(X, y, max_depth=3)
+    plot_decision_tree_overfitting(X, y)
+    plot_decision_tree_overfitting_issue()
+
+    # Random Forest Feature-Importances
+    plot_random_forest_importance(X, y)
+
+    # SVM 
     for margin in [0.1, 1.0, 10.0]:
-        plot_svm_boundary(margin=margin)
+        plot_svm_boundary(X, y, margin=margin)
+    plot_kernel_trick()
+
+    # kNN mit verschiedenen k-Werten
     for k in [1, 5, 15, 50]:
         plot_knn_boundary(n_neighbors=k)
-    plot_kernel_trick()
+    
+    # Regression Prediction
     plot_regression_prediction()
 
-    # quick sanity check on one model
-    X, y = _load_classification_data()
+    # # quick sanity check on one model
+    X, y, _ = _load_classification_data()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
     clf = RandomForestClassifier(n_estimators=100, random_state=42)
     clf.fit(X_train, y_train)
