@@ -41,9 +41,9 @@ wobei $p_k$ der Anteil der Klasse $k$ im Knoten $t$ ist.
 Ein Gini von 0 bedeutet: alle Datenpunkte gehören zur selben Klasse (\enquote{reiner} Knoten). Um den Gini-Koeffizienten an jeder möglichen Aufteilung zu berechnen, muss der Algorithmus alle Features und Schwellenwerte durchprobieren -- das kann bei vielen Features und Datenpunkten sehr rechenintensiv sein. Deshalb werden oft Heuristiken oder Einschränkungen (z.\,B. maximale Tiefe) verwendet, um die Suche zu beschleunigen.
 
 \tikzset{
-    decisionlabelleft/.style={midway, right, draw=none, fill=none, font=\scriptsize\bfseries, color=red, left, pos=0.7},
-    decisionlabelright/.style={midway, right, draw=none, fill=none, font=\scriptsize\bfseries, color=ForestGreen, right, pos=0.7},
-    decisionq/.style={font=\scriptsize\bfseries, color=blue},
+    decisionlabelleft/.style={midway, right, draw=none, fill=none, font=\scriptsize\bfseries\ttfamily, color=red, left, pos=0.7},
+    decisionlabelright/.style={midway, right, draw=none, fill=none, font=\scriptsize\bfseries\ttfamily, color=ForestGreen, right, pos=0.7},
+    decisionq/.style={font=\scriptsize\bfseries\ttfamily, color=blue},
     decisionnametag/.style={font=\tiny\bfseries, anchor=west, align=left, fill=gray!20, xshift=4pt}
 }
 
@@ -188,7 +188,7 @@ Ein Gini von 0 bedeutet: alle Datenpunkte gehören zur selben Klasse (\enquote{r
                     level distance=5em,
                     every node/.style={draw, rounded corners, align=center, font=\small, inner sep=3pt}
                 ]
-                \node[label={[decisionq]below:Lernzeit > 5h?}] {Ja: 2, Nein: 3\\Gini = 0.44}
+                \node[label={[decisionq]below:Lernzeit > 5h?}] {Ja: 2, Nein: 4\\Gini = 0.44}
                 child { node {Ja: 0, Nein: 2\\Gini = 0.00} edge from parent node[decisionlabelleft] {nein} }
                 child { node[label={[decisionq]below:Anwesenheit > 80\%?}] {Ja: 2, Nein: 2\\Gini = 0.50}
                         child { node {Ja: 0, Nein: 2\\Gini = 0.00} edge from parent node[decisionlabelleft] {nein} }
@@ -207,8 +207,8 @@ Angenommen, wir hätten in \cref{ex:tree-15} 200 weitere Datenpunkte hinzugefüg
 \begin{myattention}[Overfitting]
     Ein Baum ohne Tiefenbeschränkung \enquote{lernt} die Trainingsdaten auswendig --
     er kann jeden einzelnen Punkt korrekt klassifizieren, versagt aber bei neuen Daten.
-    Dieses Phänomen heisst \textbf{Overfitting}. 
-    
+    Dieses Phänomen heisst \textbf{Overfitting}.
+
     Overfitting kann dazu führen, dass der Baum sehr tiefe und komplexe Strukturen bildet, die nur auf den Trainingsdaten Sinn ergeben, aber bei neuen Daten völlig unlogisch sind. Dieses Problem ist in Abb. \cref{fig:overfitting_comparison} illustriert.
 
     \begin{figure}[H]
@@ -322,4 +322,104 @@ Angenommen, wir hätten in \cref{ex:tree-15} 200 weitere Datenpunkte hinzugefüg
 \begin{myremark}[Notebook]
     Praktische Umsetzung inkl. Übungen:
     \href{\notebookbaseurl01_Entscheidungsbaum_Classification.ipynb}{\texttt{01\_Entscheidungsbaum.ipynb}}
+\end{myremark}
+
+
+\section{Feature Importance}
+\begin{mydefinition}[Features]
+    Mit \textbf{Features} werden die Eingabevariablen bezeichnet, die der Entscheidungsbaum verwendet, um Vorhersagen zu treffen. In \cref{ex:tree-15} waren die Features beispielsweise \texttt{Lernzeit} und \texttt{Anwesenheit}.
+\end{mydefinition}
+
+\begin{mydefinition}[Feature Importance]
+    Der Entscheidungsbaum kann angeben, wie stark jedes Merkmal zur Klassifikation beiträgt, also wie wichtig jedes Mermal ist, um die Zielvariable vorherzusagen.
+
+    Ein Merkmal ist wichtig, wenn Splits auf ihm die Unreinheit, also den Gini-Wert, stark reduzieren. \cref{fig:rf-importance-15} zeigt die Feature-Importances eines Random-Forest-Modells auf einem Datensatz mit 4 Merkmalen. Je höher der Wert, desto wichtiger ist das Merkmal für die Vorhersage.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.72\textwidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/random_forest_feature_importance.pdf}
+        \caption{Feature-Importances eines Random-Forest-Modells}
+        \label{fig:rf-importance-15}
+    \end{figure}
+\end{mydefinition}
+
+\begin{myexample}[Berechnung der Feature Importances]
+    In \cref{ex:tree-15-example} haben wir einen Entscheidungsbaum erstellt, um vorherzusagen, ob eine Person ein Auto besitzt, basierend auf den Features \texttt{Einkommen} und \texttt{Alter}. Dabei haben wir folgenden Baum erhalten:
+
+    \begin{center}
+        \begin{tikzpicture}[
+                sibling distance=10em,
+                level distance=5em,
+                every node/.style={draw, rounded corners, align=center, font=\small, inner sep=3pt}
+            ]
+            \node[label={[decisionq]below:Einkommen > 50k?}] {Ja: 2, Nein: 2\\Gini = 0.50}
+            child { node[label={[decisionq]below:Alter > 25?}] {Ja: 1, Nein: 2\\Gini = 0.44}
+                    child { node {Ja: 0, Nein: 1\\Gini = 0.00} edge from parent node[decisionlabelleft] {nein} }
+                    child { node[label={[decisionq]below:Alter > 30?}] {Ja: 1, Nein: 1\\Gini = 0.50}
+                            child { node {Ja: 0, Nein: 1\\Gini = 0.00} edge from parent node[decisionlabelleft] {nein} }
+                            child { node {Ja: 1, Nein: 0\\Gini = 0.00} edge from parent node[decisionlabelright] {ja}
+                                }
+                            edge from parent node[decisionlabelright] {ja}
+                        }
+                    edge from parent node[decisionlabelleft] {nein}
+                }
+            child { node {Ja: 1, Nein: 0\\Gini = 0.00} edge from parent node[decisionlabelright] {ja} };
+        \end{tikzpicture}
+    \end{center}
+
+    Die Feature-Importances werden berechnet indem für jedes Feature die Summe der Gini-Reduktionen über alle Splits, die auf diesem Feature basieren, berechnet wird. Diese Wichtigkeiten (\textbf{I}mportances) der \textbf{F}eatures bezeichnen wir als $\text{I}_F = \sum_{\text{Splits auf Feature}} \text{Gini-Reduktion}$.
+    \begin{itemize}
+        \item Split bei \textcolor{blue}{\texttt{Einkommen > 50k?}} reduziert den Gini von 0.50 auf (0.44 + 0.00) / 2 = 0.22, was eine Reduktion von 0.50 - 0.22 = 0.28 bedeutet. Da alle 4 Datenpunkte an diesem Split beteiligt sind, wird die Reduktion mit 1 gewichtet, also 0.28 * (4/4) = \underline{0.28}.
+        \item Split bei \textcolor{blue}{\texttt{Alter > 25?}} reduziert den Gini von 0.44 auf (0.00 + 0.50) / 2 = 0.22, was eine Reduktion von 0.44 - 0.22 = 0.22 bedeutet. Diese Reduktion muss noch mit der Anzahl der Datenpunkte gewichtet werden, die von diesem Split betroffen sind. Hier wären es 3 von 4 Datenpunkte, also würde die gewichtete Reduktion 0.22 * (3/4) = \underline{0.165} betragen.
+        \item Split bei \textcolor{blue}{\texttt{Alter > 30?}} reduziert den Gini von 0.50 auf (0.00 + 0.00) / 2 = 0.00, was eine Reduktion von 0.50 - 0.00 = 0.50 bedeutet. Gewichtet mit 2 von 4 Datenpunkten, also 0.50 * (2/4) = \underline{0.25}.
+        \item Wir haben also:
+              \[
+                  \begin{aligned}
+                      I_\text{Einkommen} & = \sum \text{Gini-Reduktionen} & = & \underline{\underline{0.28}} &                                 \\
+                      I_\text{Alter}     & = \sum \text{Gini-Reduktionen} & = & \underline{0.165 + 0.25}     & = \underline{\underline{0.415}}
+                  \end{aligned}
+              \]
+    \end{itemize}
+    In diesem Fall wäre \texttt{Alter} das wichtigere Feature für die Vorhersage, ob eine Person ein Auto besitzt, da es insgesamt zu einer grösseren Reduktion des Gini-Koeffizienten führt (trotz der Tatsache, dass der erste Split auf \texttt{Einkommen} eine grössere einzelne Reduktion bewirkt).
+\end{myexample}
+
+\begin{myexercise}
+    Basierend auf Ihrer Lösung zu \cref{ex:tree-15}, welche der beiden Features (\texttt{Lernzeit} und \texttt{Anwesenheit}) wäre wichtiger für die Vorhersage, ob jemand die Prüfung besteht? Berechnen Sie die Feature-Importances basierend auf den Gini-Reduktionen, die durch die Splits in Ihrem Baum erzielt wurden.
+
+    Falls Sie Ihren Baum nicht vollständig gezeichnet haben, finden Sie hier die Vorlage aus den Musterlösungen:
+    \begin{center}
+        \begin{tikzpicture}[
+                sibling distance=10em,
+                level distance=5em,
+                every node/.style={draw, rounded corners, align=center, font=\small, inner sep=3pt}
+            ]
+            \node[label={[decisionq]below:Lernzeit > 5h?}] {Ja: 2, Nein: 4\\Gini = 0.44}
+            child { node {Ja: 0, Nein: 3\\Gini = 0.00} edge from parent node[decisionlabelleft] {nein} }
+            child { node[label={[decisionq]below:Anwesenheit > 80\%?}] {Ja: 2, Nein: 2\\Gini = 0.50}
+                    child { node {Ja: 0, Nein: 2\\Gini = 0.00} edge from parent node[decisionlabelleft] {nein} }
+                    child { node {Ja: 2, Nein: 0\\Gini = 0.00} edge from parent node[decisionlabelright] {ja} }
+                    edge from parent node[decisionlabelright] {ja}
+                };
+        \end{tikzpicture}
+    \end{center}
+
+    \begin{myanswer}
+        \begin{itemize}
+            \item Split bei \texttt{Lernzeit > 5h?} reduziert den Gini von 0.44 auf (0.00 + 0.50) / 2 = 0.25, was eine Reduktion von 0.44 - 0.25 = 0.19 bedeutet. Alle 6 Datenpunkte sind an diesem Split beteiligt, also ist die gewichtete Reduktion 0.19 * (6/6) = \underline{0.19}.
+            \item Split bei \texttt{Anwesenheit > 80\%?} reduziert den Gini von 0.50 auf (0.00 + 0.00) / 2 = 0.00, was eine Reduktion von 0.50 - 0.00 = 0.50 bedeutet. 4 von 6 Datenpunkten sind an diesem Split beteiligt, also ist die gewichtete Reduktion 0.50 * (4/6) = \underline{0.333}.
+            \item Wir haben also:
+                  \[
+                      \begin{aligned}
+                          I_\text{Lernzeit}    & = \sum \text{Gini-Reduktionen} & = & \underline{\underline{0.19}}  & \\
+                          I_\text{Anwesenheit} & = \sum \text{Gini-Reduktionen} & = & \underline{\underline{0.333}} &
+                      \end{aligned}
+                  \]
+        \end{itemize}
+        In diesem Fall wäre das Feature \texttt{Anwesenheit} wichtiger für die Vorhersage, ob jemand die Prüfung besteht, da es zu einer grösseren Reduktion des Gini-Koeffizienten führt.
+    \end{myanswer}
+\end{myexercise}
+
+\begin{myremark}[Aussagekraft von Feature Importances bei einem einzigen Baum]
+    Bei einem einzigen Entscheidungsbaum können die Feature-Importances stark von der spezifischen Struktur des Baums abhängen. Ein Split auf einem Feature könnte eine grosse Gini-Reduktion bewirken, aber wenn dieser Split nicht an der Wurzel des Baums liegt, könnte er weniger Einfluss auf die Gesamtvorhersage haben als ein anderer Split, der zwar eine kleinere Reduktion bewirkt, aber näher an der Wurzel liegt.
+
+    Daher sollten die Feature-Importances eines einzelnen Baums mit Vorsicht interpretiert werden. Es ist oft sinnvoller, die Importances über viele Bäume hinweg zu betrachten (z.\,B. in einem Random Forest), um ein stabileres und repräsentativeres Bild der Wichtigkeit der Features zu erhalten.
 \end{myremark}

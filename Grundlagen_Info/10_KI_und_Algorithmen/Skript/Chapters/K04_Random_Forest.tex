@@ -2,97 +2,127 @@
 \label{chap:randomforest}
 
 \begin{myremark}[Algorithmusart in diesem Kapitel]
-Funktionsart: \textbf{Klassifikation}. \\
-Umsetzungsart: \textbf{selbstlernend} (Ensembleverfahren).
+    Funktionsart: \textbf{Klassifikation}. \\
+    Umsetzungsart: \textbf{selbstlernend} (Ensembleverfahren).
 \end{myremark}
 
 \begin{myremark}
-Der \textbf{Random Forest} baut auf dem Entscheidungsbaum auf (Kapitel~\cref{chap:entscheidungsbaum}) und macht ihn
-durch \enquote{Ensembling} deutlich robuster. Diese Methode setzt Kenntnisse aus Kapitel~\cref{chap:entscheidungsbaum} voraus.
+    Der \textbf{Random Forest} baut auf dem Entscheidungsbaum auf (s. \cref{chap:entscheidungsbaum}) und macht ihn
+    durch \enquote{Ensembling} deutlich robuster. Diese Methode setzt Kenntnisse aus Kapitel \cref{chap:entscheidungsbaum} voraus.
 \end{myremark}
 
 \section{Grundidee: Viele Bäume, eine Entscheidung}
 
+Wie Sie bereits in \cref{chap:entscheidungsbaum} gesehen haben, kann ein einzelner Entscheidungsbaum schnell überfitten und auf neuen Daten schlecht generalisieren. Im Allgemeinen wird daher versucht, einen nicht allzu tiefen, aber auch nicht zu flachen Baum zu bauen. Allerdings ist die Wahl der Hyperparameter (z.~B. maximale Tiefe) oft schwierig und führt zu einem Kompromiss zwischen Bias und Varianz: Wenn der Baum zu tief ist, lernt er zu viele Details der Trainingsdaten (Overfitting, hohe Varianz). Wenn er zu flach ist, lernt er zu wenig (Underfitting, hoher Bias).
+
+Zudem kann ein einzelner Baum sehr empfindlich auf kleine Änderungen in den Trainingsdaten reagieren -- er könnte komplett andere Strukturen lernen, wenn nur wenige Datenpunkte anders sind.
+
+Um diese Probleme zu lösen, wurde die Idee des \textbf{Random Forests} entwickelt: Statt einen einzigen Baum zu bauen, werden viele Bäume trainiert, die jeweils auf leicht unterschiedlichen Datenpunkten und nicht auf allen Merkmalen basieren. Jeder Baum hat also nur Zugriff auf eine zufällige Teilmenge der Spalten und Zeilen der Trainingsdaten. Dadurch lernen die Bäume unterschiedliche Muster und Fehler. Die finale Vorhersage entsteht durch eine Mehrheitsabstimmung aller Bäume. Dadurch wird die Varianz stark reduziert, da Fehler einzelner Bäume durch die Mehrheit korrigiert werden. Bei genügend vielen Bäumen kann der Random Forest eine sehr hohe Genauigkeit erreichen, ohne zu überfitten.
+
 \begin{mydefinition}[Random Forests]
-Ein \textbf{Random Forest} kombiniert viele \textbf{zufällig variierte} Entscheidungsbäume.
-Die finale Klassifikation entsteht durch \textbf{Mehrheitsabstimmung} aller Bäume.
+    Ein \textbf{Random Forest} kombiniert viele \textbf{zufällig variierte} Entscheidungsbäume. Jeder Entscheidungsbaum wird auf einer zufälligen Stichprobe der Daten (=Zeilen) trainiert und betrachtet nur eine zufällige Teilmenge der Merkmale (=Spalten).
+
+    Die finale Klassifikation erfolgt, indem jeder Baum einzeln eine Vorhersage trifft und die Klasse mit den meisten Stimmen als Ergebnis zurückgegeben wird (\textbf{Mehrheitsabstimmung}, \textit{majority voting}).
 \end{mydefinition}
 
-Durch zwei Mechanismen wird jeder Baum bewusst \enquote{anders} gemacht:
-\begin{enumerate}
-    \item \textbf{Bagging:} Jeder Baum trainiert auf einer zufälligen Stichprobe der Daten
-          (mit Zurücklegen).
-    \item \textbf{Feature-Subsampling:} An jedem Knoten wird nur eine zufällige Teilmenge
-          der Merkmale betrachtet.
-\end{enumerate}
+\begin{mydefinition}[\textbf{Bagging} und \textbf{Feature Subsampling}]
+    Durch zwei Mechanismen wird jeder Baum bewusst \enquote{anders} gemacht:
+    \begin{enumerate}
+        \item \textbf{Bagging:} Jeder Baum trainiert auf einer zufälligen Stichprobe der Daten
+              (mit Zurücklegen).
+        \item \textbf{Feature-Subsampling:} An jedem Knoten wird nur eine zufällige Teilmenge
+              der Merkmale betrachtet.
+    \end{enumerate}
+\end{mydefinition}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.72\textwidth]{Grundlagen_Info/10_KI_und_Algorithmen/Figures/random_forest_feature_importance.pdf}
-    \caption{Feature-Importances eines Random-Forest-Modells}
-    \label{fig:rf-importance-15}
-\end{figure}
+Die Wichtigkeit jedes Merkmals kann durch die durchschnittliche Reduktion der Unreinheit (z.~B. Gini) über alle Bäume gemessen werden, wenn auf diesem Merkmal gesplittet wird. Merkmale, die häufig und effektiv zum Splitten verwendet werden, erhalten eine höhere Feature-Importance.
 
-\section{Feature Importance}
-
+\subsection{Feature Importance}
 \begin{mydefinition}[Feature Importance]
-Der Random Forest kann angeben, wie stark jedes Merkmal zur Entscheidung beiträgt.
-Ein Merkmal ist wichtig, wenn Splits auf ihm die Unreinheit (Gini) stark reduzieren.
+    Random Forests können ebenso wie Entscheidungsbäume die Wichtigkeit von Merkmalen bewerten. Im Gegensatz zu einem einzelnen Baum, der nur die Wichtigkeit für diesen einen Baum angibt, berechnet der Random Forest die durchschnittliche Wichtigkeit über alle Bäume hinweg. Dadurch erhält man eine robustere und stabilere Einschätzung, welche Merkmale insgesamt am wichtigsten für die Klassifikation sind.
 \end{mydefinition}
 
 \begin{myexercise}[Vergleich: Baum vs.\ Wald]
-Diskutieren Sie in Zweiergruppen:
-\begin{itemize}
-    \item Warum kann ein einzelner Baum schnell \enquote{auswendig lernen}?
-    \item Warum ist ein Wald oft robuster gegen Overfitting?
-    \item Welche Nachteile hat der Random Forest gegenüber einem einzelnen Baum?
-\end{itemize}
+    Diskutieren Sie in Zweiergruppen:
+    \begin{itemize}
+        \item Warum kann ein einzelner Baum schnell \enquote{auswendig lernen}?
+        \item Warum ist ein Wald oft robuster gegen Overfitting?
+        \item Welche Nachteile hat der Random Forest gegenüber einem einzelnen Baum?
+    \end{itemize}
 \end{myexercise}
 
 \section{Hyperparameter}
 
-\begin{mychallenge}[Hyperparameter verstehen und tunen]
-Recherchieren und erklären Sie kurz:
-\begin{itemize}
-    \item \texttt{n\_estimators} -- Anzahl Bäume
-    \item \texttt{max\_depth} -- maximale Tiefe je Baum
-    \item \texttt{min\_samples\_leaf} -- Mindestgrösse eines Blatts
-\end{itemize}
-Testen Sie im Notebook verschiedene Werte und dokumentieren Sie den Effekt
-auf Trainings- und Testgenauigkeit.
-\end{mychallenge}
+\begin{myexercise}[Hyperparameter verstehen und tunen]
+    Verwenden Sie das Notebook \texttt{02\_Random\_Forest.ipynb} und trainieren Sie einen Random Forest auf einem Datensatz Ihrer Wahl (z.~B. Iris, Wine, Breast Cancer, s. Beispiele im Notebook). Recherchieren Sie die Bedeutung der folgenden Hyperparameter (Link: \href{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html}{sklearn RandomForestClassifier}) und testen Sie verschiedene Werte:
+
+    \begin{itemize}
+        \item \texttt{n\_estimators} -- Anzahl Bäume
+        \item \texttt{max\_depth} -- maximale Tiefe je Baum
+        \item \texttt{min\_samples\_leaf} -- Mindestgrösse eines Blatts (bestimmt indirekt, wie spezifisch die Regeln werden, bzw. wie tief die Bäume wachsen können)
+    \end{itemize}
+    Testen Sie im Notebook verschiedene Werte und dokumentieren Sie den Effekt
+    auf Trainings- und Testgenauigkeit.
+
+    Füllen Sie folgende Tabelle mit \enquote{+} (positiver Einfluss) oder \enquote{-} (negativer Einfluss) aus:
+    \begin{center}
+        \begin{tabular}{l|c|c|c}
+            Hyperparameter & Trainingsgenauigkeit & Testgenauigkeit & Overfitting-Risiko \\
+            \hline
+            $\uparrow$ \texttt{n\_estimators} &  &  &  \\
+            $\uparrow$ \texttt{max\_depth} &  &  &  \\
+            $\uparrow$ \texttt{min\_samples\_leaf} &  &  &  
+        \end{tabular}
+    \end{center}
+    \begin{myanswer}
+        \begin{center}
+            \begin{tabular}{l|c|c|c}
+                Hyperparameter & Trainingsgenauigkeit & Testgenauigkeit & Overfitting-Risiko \\
+                \hline
+                $\uparrow$ \texttt{n\_estimators} & + & + & - \\
+                $\uparrow$ \texttt{max\_depth} & + & - & + \\
+                $\uparrow$ \texttt{min\_samples\_leaf} & - & + & - 
+            \end{tabular}
+        \end{center}
+        \begin{itemize}
+            \item \texttt{n\_estimators}: Mehr Bäume erhöhen die Trainingsgenauigkeit, da mehr Modelle kombiniert werden. Sie verbessern auch die Testgenauigkeit, da sie die Varianz reduzieren. Allerdings steigt der Rechenaufwand, was das Overfitting-Risiko indirekt erhöhen könnte, wenn man zu viele Bäume verwendet.
+            \item \texttt{max\_depth}: Eine grössere Tiefe ermöglicht es den Bäumen, komplexere Muster zu lernen, was die Trainingsgenauigkeit erhöht. Allerdings kann dies zu Overfitting führen, wodurch die Testgenauigkeit sinkt.
+            \item \texttt{min\_samples\_leaf}: Grössere Werte verhindern, dass Bäume zu spezifisch werden, was die Trainingsgenauigkeit verringern kann. Allerdings verbessert es die Testgenauigkeit, da es das Overfitting-Risiko reduziert.
+        \end{itemize}
+     \end{myanswer}
+\end{myexercise}
 
 \section{Gesellschaftliche Aspekte: Black-Box-Problem und Bias-Verstärkung}
 
 \begin{mydefinition}[Ensemble-Risiken]
-Obwohl Random Forests durch Ensembling robuster werden, entsteht gleichzeitig ein \enquote{Black-Box}-Problem: Man kann nicht mehr nachvollziehen, warum eine konkrete Entscheidung getroffen wurde. Feature Importance gibt nur einen aggregierten Überblick, sagt aber nichts über einzelne Vorhersagen aus.
+    Obwohl Random Forests durch Ensembling robuster werden, entsteht gleichzeitig ein \enquote{Black-Box}-Problem: Man kann nicht mehr nachvollziehen, warum eine konkrete Entscheidung getroffen wurde. Feature Importance gibt nur einen aggregierten Überblick, sagt aber nichts über einzelne Vorhersagen aus. Um genau zu verstehen, warum ein bestimmter Kandidat abgelehnt wurde, müsste man alle Regeln aller Bäume durchgehen, was bei Hunderten von Bäumen und Tausenden von Regeln praktisch unmöglich ist. Dadurch können Random Forests unverständliche Entscheidungen treffen, was in sensiblen Bereichen (z.~B. Hiring, Kreditvergabe) problematisch sein kann.
 \end{mydefinition}
 
 \begin{myexample}[Hiring-System mit Random Forest]
-Ein Unternehmen trainiert einen Random Forest auf 10 Jahren historischer Einstellungsdaten. Das Modell hat 99\% Accuracy auf den Testdaten und wird deployed. Feature Importance zeigt: \enquote{Berufserfahrung} und \enquote{Universität} sind am wichtigsten. Ein Kandidat wird abgelehnt. Das System kann nicht erklären, warum -- es ist eine Kombination von hunderten versteckten Regeln über hunderten Bäumen.
+    Ein Unternehmen trainiert einen Random Forest auf 10 Jahren historischer Einstellungsdaten. Das Modell hat 99\% Accuracy auf den Testdaten und wird veröffentlicht. Feature Importance zeigt: \enquote{Berufserfahrung} und \enquote{Universität} sind am wichtigsten. Eine Kandidatin wird abgelehnt. Das System kann nicht erklären, warum -- es ist eine Kombination von hunderten versteckten Regeln über hunderten Bäumen.
 
-\textbf{Problem:} Wenn die Trainingsdaten systematisch diskriminierend waren (z.~B. Frauen wurden weniger häufig eingestellt), lernt das Random Forest diese Verzerrung und verstärkt sie durch Skalierung und Black-Box-Natur.
+    \textbf{Problem:} Wenn die Trainingsdaten systematisch diskriminierend waren (z.~B. Frauen wurden weniger häufig eingestellt), lernt das Random Forest diese Verzerrung und verstärkt sie durch Skalierung und Black-Box-Natur.
 
-\textbf{Real-World-Link:} \href{https://www.reuters.com/article/world/insight-amazon-scraps-secret-ai-recruiting-tool-that-showed-bias-against-women-idUSKCN1MK0AG/}{Amazon stoppt KI-Hiring-System wegen Geschlechtsdiskriminierung (2018)}
+    \textbf{Real-World-Link:} \href{https://www.reuters.com/article/world/insight-amazon-scraps-secret-ai-recruiting-tool-that-showed-bias-against-women-idUSKCN1MK0AG/}{Amazon stoppt KI-Hiring-System wegen Geschlechtsdiskriminierung (2018)}
 \end{myexample}
 
 \begin{mychallenge}[Interpretierbarkeit vs. Genauigkeit]
-Viele Unternehmen wählen Random Forests, weil sie genauer sind als Entscheidungsbäume. Diskutieren Sie:
-\begin{enumerate}
-    \item Warum ist Interpretierbarkeit in Hochrisiko-Entscheidungen (Kredite, Hiring, medizinische Diagnose) wichtiger als maximale Accuracy?
-    \item Wie würde man einen Random Forest in einem Hiring-System überprüfen, um sicherzustellen, dass er nicht diskriminiert?
-    \item Welche Rolle spielen externe Audits und Regulierung?
-\end{enumerate}
-\begin{myanswer}
+    Viele Unternehmen wählen Random Forests, weil sie genauer sind als Entscheidungsbäume. Diskutieren Sie:
     \begin{enumerate}
-        \item Betroffene Personen haben ein Recht zu verstehen, warum Entscheidungen gegen sie getroffen wurden. Accuracy allein legitimiert keine Diskriminierung.
-        \item Demografische Parity-Tests, Analyse der Fehlerquoten über Gruppen hinweg, explizite Fairness-Metriken, externe Audits.
-        \item Regulierung (z.~B. EU-AI-Act) erzwingt Transparenz und Audit für High-Risk-Systeme, da Marktanreize allein oft nicht ausreichen.
+        \item Warum ist Interpretierbarkeit in Hochrisiko-Entscheidungen (Kredite, Hiring, medizinische Diagnose) wichtiger als maximale Accuracy?
+        \item Wie würde man einen Random Forest in einem Hiring-System überprüfen, um sicherzustellen, dass er nicht diskriminiert?
+        \item Welche Rolle spielen externe Audits und Regulierung?
     \end{enumerate}
-\end{myanswer}
+    \begin{myanswer}
+        \begin{enumerate}
+            \item Betroffene Personen haben ein Recht zu verstehen, warum Entscheidungen gegen sie getroffen wurden. Accuracy allein legitimiert keine Diskriminierung.
+            \item Demografische Parity-Tests, Analyse der Fehlerquoten über Gruppen hinweg, explizite Fairness-Metriken, externe Audits.
+            \item Regulierung (z.~B. EU-AI-Act) erzwingt Transparenz und Audit für High-Risk-Systeme, da Marktanreize allein oft nicht ausreichen.
+        \end{enumerate}
+    \end{myanswer}
 \end{mychallenge}
 
 \begin{myremark}[Notebook]
-Praktische Umsetzung inkl. Übungen:
-\href{\notebookbaseurl02_Random_Forest_Classification.ipynb}{\texttt{02\_Random\_Forest.ipynb}}
+    Praktische Umsetzung inkl. Übungen:
+    \href{\notebookbaseurl02_Random_Forest_Classification.ipynb}{\texttt{02\_Random\_Forest.ipynb}}
 \end{myremark}

@@ -195,7 +195,7 @@ def plot_decision_tree_overfitting_issue() -> None:
 def plot_random_forest_importance(X, y) -> None:
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X, y)
-    importances = model.feature_importances_
+    importances = pd.Series(model.feature_importances_, index=X.columns).sort_values(ascending=False)
 
     plt.figure(figsize=(6, 4))
     plt.bar(X_COLS, importances, color="#C44E52")
@@ -411,6 +411,182 @@ def plot_regression_prediction() -> None:
     plt.close()
 
 
+def plot_ensemble_voting_robustness() -> None:
+    """Zeige, wie einzelne Baum-Vorhersagen unterschiedlich sind (mit Ausreißern),
+    aber die Ensemble-Mehrheitsentscheidung robuster gegen diese Ausreißerstimmen ist."""
+    
+    X, y, _ = _load_classification_data()
+    X_subset = X[["Lernzeit_h", "Fehlzeiten"]].reset_index(drop=True)
+    y = y.reset_index(drop=True)
+    
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_subset, y, test_size=0.25, random_state=42, stratify=y
+    )
+    
+    # Konvertiere zu NumPy Arrays für einfachere Indexierung
+    X_train_np = X_train.values
+    X_test_np = X_test.values
+    y_train_np = y_train.values
+    y_test_np = y_test.values
+    
+    # Trainiere 9 unterschiedliche Decision Trees mit Bagging (Bootstrap-Samples)
+    # Echtes Bagging: Jeder Baum trainiert auf einer zufälligen Stichprobe MIT Zurücklegen
+    n_trees = 9
+    trees = []
+    np.random.seed(42)
+    
+    for i in range(n_trees):
+        # Bootstrap: Sample mit Zurücklegen aus Trainingsdaten
+        indices = np.random.choice(len(X_train_np), size=len(X_train_np), replace=True)
+        X_boot = X_train_np[indices]
+        y_boot = y_train_np[indices]
+        
+        # Trainiere Baum auf dieser Bootstrap-Sample
+        tree = DecisionTreeClassifier(max_depth=2, random_state=i)
+        tree.fit(X_boot, y_boot)
+        trees.append(tree)
+    
+    # Trainiere auch Random Forest für Vergleich
+    rf = RandomForestClassifier(n_estimators=9, max_depth=2, random_state=42)
+    rf.fit(X_train_np, y_train_np)
+    
+    # Erstelle Gitter für Entscheidungsgrenzen
+    x_min, x_max = X_subset["Lernzeit_h"].min() - 0.5, X_subset["Lernzeit_h"].max() + 0.5
+    y_min, y_max = X_subset["Fehlzeiten"].min() - 1, X_subset["Fehlzeiten"].max() + 1
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200), np.linspace(y_min, y_max, 200))
+    grid = np.c_[xx.ravel(), yy.ravel()]
+    
+    # Berechne Vorhersagen
+    fig, axes = plt.subplots(3, 4, figsize=(16, 12))
+    axes = axes.flatten()
+    
+    # Plotte die 9 einzelnen Bäume
+    for idx, tree in enumerate(trees):
+        ax = axes[idx]
+        Z = tree.predict(grid).reshape(xx.shape)
+        
+        # Decision Boundary
+        ax.contourf(xx, yy, Z, alpha=0.25, cmap="coolwarm", levels=1)
+        
+        # Datenpunkte
+        ax.scatter(X_train_np[y_train_np == 0, 0], X_train_np[y_train_np == 0, 1],
+                  c="#1f77b4", edgecolor="k", s=50, alpha=0.6, label="Train Klasse 0")
+        ax.scatter(X_train_np[y_train_np == 1, 0], X_train_np[y_train_np == 1, 1],
+                  c="#d62728", edgecolor="k", s=50, alpha=0.6, label="Train Klasse 1")
+        
+        train_acc = accuracy_score(y_train_np, tree.predict(X_train_np))
+        test_acc = accuracy_score(y_test_np, tree.predict(X_test_np))
+        
+        ax.set_xlabel("Lernzeit (h)")
+        ax.set_ylabel("Fehlzeiten")
+        ax.set_title(f"Baum {idx+1}\nTrain: {train_acc:.2%} | Test: {test_acc:.2%}", fontsize=9)
+        ax.grid(True, alpha=0.3)
+        ax.set_xlim(x_min, x_max)
+        ax.set_ylim(y_min, y_max)
+    
+    # Plotte die Ensemble-Mehrheitsentscheidung
+    ax_ensemble = axes[9]
+    
+    # Berechne Votingergebnisse (0-9 Stimmen für Klasse 1)
+    votes = np.zeros((len(grid), n_trees))
+    for i, tree in enumerate(trees):
+        votes[:, i] = tree.predict(grid)
+    
+    ensemble_pred = (votes.mean(axis=1) > 0.5).astype(int)
+    Z_ensemble = ensemble_pred.reshape(xx.shape)
+    
+    ax_ensemble.contourf(xx, yy, Z_ensemble, alpha=0.25, cmap="coolwarm", levels=1)
+    
+    ax_ensemble.scatter(X_train_np[y_train_np == 0, 0], X_train_np[y_train_np == 0, 1],
+                       c="#1f77b4", edgecolor="k", s=50, alpha=0.6, label="Train Klasse 0")
+    ax_ensemble.scatter(X_train_np[y_train_np == 1, 0], X_train_np[y_train_np == 1, 1],
+                       c="#d62728", edgecolor="k", s=50, alpha=0.6, label="Train Klasse 1")
+    
+    ensemble_test_acc = accuracy_score(y_test_np, rf.predict(X_test_np))
+    
+    ax_ensemble.set_xlabel("Lernzeit (h)")
+    ax_ensemble.set_ylabel("Fehlzeiten")
+    ax_ensemble.set_title(f"Ensemble-Mehrheitsentscheidung\nTest-Acc: {ensemble_test_acc:.1%}", 
+                         fontsize=11, fontweight="bold", color="green")
+    ax_ensemble.grid(True, alpha=0.3)
+    ax_ensemble.set_xlim(x_min, x_max)
+    ax_ensemble.set_ylim(y_min, y_max)
+    
+    # Voting-Histogramm im 10. Subplot
+    ax_voting = axes[10]
+    
+    # Zähle die Stimmen für einige Test-Punkte
+    n_test_points = min(5, len(X_test_np))
+    test_points_indices = np.random.choice(len(X_test_np), n_test_points, replace=False)
+    
+    for test_idx, point_idx in enumerate(test_points_indices):
+        point = X_test_np[point_idx:point_idx+1]
+        point_votes = []
+        for tree in trees:
+            point_votes.append(tree.predict(point)[0])
+        
+        vote_counts = [np.sum(np.array(point_votes) == 0), np.sum(np.array(point_votes) == 1)]
+        ensemble_decision = 1 if vote_counts[1] > vote_counts[0] else 0
+        true_label = y_test_np[point_idx]
+        
+        x_pos = test_idx * 2.5
+        colors = ["#1f77b4", "#d62728"]
+        bars = ax_voting.bar([x_pos, x_pos + 1], vote_counts, color=colors, alpha=0.7, edgecolor="k", width=0.8)
+        
+        # Markiere die Ensemble-Entscheidung mit grünem Rand
+        decision_bar_idx = 1 if ensemble_decision == 1 else 0
+        bars[decision_bar_idx].set_edgecolor("green")
+        bars[decision_bar_idx].set_linewidth(3)
+        
+        # Rot, wenn falsch
+        if ensemble_decision != true_label:
+            bars[decision_bar_idx].set_edgecolor("red")
+        
+        ax_voting.text(x_pos + 0.5, max(vote_counts) + 0.3, 
+                      f"Punkt {test_idx+1}", ha="center", fontsize=9)
+    
+    ax_voting.set_ylabel("Anzahl Stimmen")
+    ax_voting.set_title("Voting-Beispiele:\nGrün = Ensemble-Entscheidung", fontsize=10)
+    ax_voting.set_xticks([])
+    ax_voting.set_ylim(0, n_trees + 1)
+    ax_voting.legend(["Klasse 0", "Klasse 1"], loc="upper right", fontsize=8)
+    ax_voting.grid(True, alpha=0.3, axis="y")
+    
+    # Info-Subplot
+    ax_info = axes[11]
+    ax_info.axis("off")
+    info_text = (
+        f"Ensemble-Robustheit:\n\n"
+        f"• {n_trees} unterschiedliche Bäume\n"
+        f"  (unterschiedliche random_states)\n\n"
+        f"• Einzelne Bäume können 'ausreißen'\n"
+        f"  und falsche Grenzen zeichnen\n\n"
+        f"• Mehrheitsentscheidung unterdrückt\n"
+        f"  Ausreißerstimmen\n\n"
+        f"• Ensemble-Test-Accuracy:\n"
+        f"  {ensemble_test_acc:.1%}\n\n"
+        f"→ Robustheit durch Diversität"
+    )
+    ax_info.text(0.1, 0.5, info_text, fontsize=10, verticalalignment="center",
+                family="monospace", bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5))
+    
+    plt.tight_layout()
+    plt.savefig(FIG_DIR / "ensemble_voting_robustness.pdf", dpi=150)
+    plt.close()
+    
+    print(f"Ensemble Voting Robustness Plot erstellt")
+    accuracies = [accuracy_score(y_test_np, tree.predict(X_test_np)) for tree in trees]
+    predictions = [tree.predict(X_test_np) for tree in trees]
+    
+    # Zähle, wie viele Bäume unterschiedliche Vorhersagen treffen
+    n_disagreements = sum(1 for i in range(len(X_test_np)) if len(set(pred[i] for pred in predictions)) > 1)
+    
+    print(f"  Testmenge-Größe: {len(X_test_np)} Samples")
+    print(f"  Einzelne Bäume - Test-Accuracy: min={min(accuracies):.3f}, max={max(accuracies):.3f}, std={np.std(accuracies):.4f}")
+    print(f"  Anzahl Samples, wo Bäume uneins sind: {n_disagreements}/{len(X_test_np)}")
+    print(f"  Ensemble: Test-Acc {ensemble_test_acc:.3f}")
+
+
 def main():
     # load data once and reuse for all plots
     X, y, _ = _load_classification_data()
@@ -422,6 +598,9 @@ def main():
 
     # Random Forest Feature-Importances
     plot_random_forest_importance(X, y)
+    
+    # Ensemble Voting Robustness (Ausreißerstimmen in der Mehrheit)
+    plot_ensemble_voting_robustness()
 
     # SVM 
     for margin in [0.1, 1.0, 10.0]:

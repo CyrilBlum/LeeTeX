@@ -198,7 +198,7 @@ linear_score = (
 
 interaction_score = args.interaction_strength * (
     0.7 * x1 * x3
-    # - 0.8 * x2 * x4
+    - 0.8 * x2 * x4
     # + 0.45 * np.sin(1.8 * x1)
     # - 0.35 * (x2 ** 2)
 )
