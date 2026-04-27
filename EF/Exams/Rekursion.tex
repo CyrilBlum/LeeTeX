@@ -222,7 +222,7 @@ def f_it(n):
     # f(3) = f[3] = 0 (noch unbekannter Wert)
     f = [1, 1, 1, 0]
     for _ in range(n - 2):
-      f[3] = f[2] + 2 * f[0]  # f(n) = f(n-1) +2*f(n-3)
+      f[3] = f[2] + 2 * f[0] # f(n) = f(n - 1) + 2 * f(n - 3)
       res = f[3]  # Zwischenspeichern von f[3]
 
       # rücke Elemente der 4-Elementing Liste f um eins nach links
@@ -237,4 +237,89 @@ Die iterative Funktion wird sehr viel schneller arbeiten, da sie keine Werte meh
 \end{solution}
 \end{parts}
 \droptotalpoints
+
+\question \textbf{Merge Sort}
+
+Der Sortieralgorithmus \texttt{merge\_sort} basiert auf dem \textit{Divide and Conquer} Prinzip.
+
+\begin{parts}
+    \part[2] Gegeben ist die Liste $L = [12, 7, 1, 5]$. Skizziere den Ablauf von \texttt{merge\_sort}, indem du den Baum der Aufspaltungen und das anschliessende Zusammenführen (\textit{merge}) darstellst.
+    \begin{solution}
+        1. Divide: $[12, 7, 1, 5] \to [12, 7]$ und $[1, 5] \to [12], [7], [1], [5]$. \\
+        2. Merge: $[12]$ und $[7] \to [7, 12]$; $[1]$ und $[5] \to [1, 5]$. \\
+        3. Final Merge: $[7, 12]$ und $[1, 5] \to [1, 5, 7, 12]$.
+    \end{solution}
+
+    \part[2] Angenommen, die Funktion \texttt{merge(L, R)} benötigt für zwei Listen der Gesamtlänge $n$ genau $n$ Rechenschritte. Die Laufzeit $T(n)$ von \texttt{merge\_sort} lässt sich dann wie folgt beschreiben:
+    \[ T(n) = 2 \cdot T(n/2) + n \]
+    Welche asymptotische Laufzeit (in der Big-O Notation) ergibt sich daraus für \texttt{merge\_sort}?
+    \begin{solution}
+        Die Laufzeit beträgt $O(n \log n)$.
+    \end{solution}
+
+    \part[2] Warum ist \texttt{merge\_sort} für sehr grosse Listen in der Regel effizienter als einfache Sortieralgorithmen wie \textit{Bubble Sort} oder \textit{Insertion Sort}?
+    \begin{solution}
+        \textit{Bubble Sort} und \textit{Insertion Sort} haben eine quadratische Laufzeit $O(n^2)$. Da $n \log n$ für grosse $n$ viel langsamer wächst als $n^2$, ist \texttt{merge\_sort} deutlich schneller. Beispielsweise benötigt $n^2$ bei $n=10^6$ etwa $10^{12}$ Operationen, während $n \log n$ nur etwa $2 \cdot 10^7$ Operationen benötigt.
+    \end{solution}
+\end{parts}
+\droptotalpoints
+
+\question[2]\textbf{Effizienten Algorithmus}
+
+Beschreibe einen Algorithmus mit Laufzeit $\Theta(n\log(n))$, welcher, gegeben eine Menge $S$ von $n$ ganzen Zahlen und eine weitere ganze Zahl $x$, entscheidet, ob in $S$ zwei Elelemente existieren, deren Summe genau $x$ ergibt.
+
+Tipp: Verwende zuerst einen effizienten Sortieralgorithmus, um die Menge $S$ zu sortieren, und nutze dann die Vorteile der sortierten Struktur, um die Suche nach zwei Elementen mit der gewünschten Summe zu beschleunigen.
+
+\begin{solution}
+\begin{enumerate}
+    \item Sortiere die Menge $S$ in $\Theta(n\log(n))$.
+    \item Für jedes Element $a \in S$:
+    \begin{itemize}
+        \item Berechne $b = x - a$.
+        \item Durchsuche die sortierte Liste nach $b$ mittels Binärsuche in $\Theta(\log(n))$.
+    \end{itemize}
+    \item Falls ein solches $b$ gefunden wird, gibt es zwei Elemente, deren Summe $x$ ergibt.
+\end{enumerate}
+
+Die Gesamtlaufzeit beträgt $\Theta(n\log(n))$.
+
+alternativ:
+\begin{lstlisting}[language=Python,numbers=none]
+def check_sum_exists(S, x):
+    """
+    Determines if two elements in set S sum to exactly x.
+    Time Complexity: O(n log n) due to sorting.
+    Space Complexity: O(1) or O(n) depending on sort implementation.
+    """
+    # Step 1: Sort the list - O(n log n)
+    S.sort()
+    
+    # Step 2: Initialize two pointers - O(1)
+    left = 0
+    right = len(S) - 1
+    
+    # Step 3: Linear search using pointers - O(n)
+    while left < right:
+        current_sum = S[left] + S[right]
+        
+        if current_sum == x:
+            return True  # Pair found
+        elif current_sum < x:
+            left += 1    # Need a larger sum
+        else:
+            right -= 1   # Need a smaller sum
+            
+    return False # No such pair exists
+
+# Example Usage:
+nums = [10, 1, 5, 23, 18, 7]
+target = 12
+
+if check_sum_exists(nums, target):
+    print(f"Yes, a pair exists that sums to {target}.")
+else:
+    print(f"No pair exists that sums to {target}.")
+\end{lstlisting}
+\end{solution}
+
 \end{questions}
