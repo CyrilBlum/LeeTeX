@@ -1,11 +1,13 @@
-name: Deploy JupyterLite to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
     paths:
+      - "docs/**"
       - "Jupyter Notebooks/**"
+      - "_site/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -29,6 +31,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: false
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -37,7 +45,19 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Install dependencies
+      - name: Install Ruby dependencies
+        working-directory: docs
+        run: |
+          rm -f Gemfile.lock
+          bundle install
+
+      - name: Build Jekyll site
+        working-directory: docs
+        env:
+          JEKYLL_ENV: production
+        run: bundle exec jekyll build --trace
+
+      - name: Install Python dependencies
         run: |
           python -m pip install -r "Jupyter Notebooks/requirements.txt"
 
@@ -45,7 +65,13 @@ jobs:
         run: |
           jupyter lite build \
             --contents "Jupyter Notebooks" \
-            --output-dir dist
+            --output-dir jupyter-dist
+
+      - name: Combine sites
+        run: |
+          mkdir -p dist
+          cp -r docs/_site/* dist/
+          cp -r jupyter-dist dist/jupyter
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
