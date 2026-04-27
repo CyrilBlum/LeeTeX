@@ -64,9 +64,16 @@ jobs:
       - name: Build JupyterLite site
         run: |
           jupyter lite build \
-            --contents "Jupyter Notebooks" \
+            --contents "./Jupyter Notebooks" \
             --output-dir jupyter-dist
+      
+      - name: Debug JupyterLite build output
+        run: |
+          echo "=== Source notebooks (first 50) ==="
+          find "./Jupyter Notebooks" -type f -name "*.ipynb" | sed -n '1,50p'
 
+          echo "=== jupyter-dist tree (maxdepth 4) ==="
+          find jupyter-dist -maxdepth 4 -print | sed -n '1,200p'
       - name: Combine sites
         run: |
           mkdir -p dist
@@ -77,6 +84,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+      
 
   deploy:
     environment:
