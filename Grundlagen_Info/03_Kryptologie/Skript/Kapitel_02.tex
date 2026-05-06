@@ -7,43 +7,44 @@ Ein Kryptosystem wird \emph{symmetrisch} genannt, wenn die Information, die man 
 
 \begin{myexample}[symmetrische Kryptosysteme]
 Caesar, die allgemeine monoalphabetische Substitution sowie die Skytale sind Beispiele für symmetrische Kryptosysteme.
-In diesem Kapitel schauen wir uns zwei weitere bedeutende symmetrische Kryptosysteme an, nämlich Vigenère und One-Time-Pad.
 
 \par
 Caesar ist symmetrisch, da man zum Entschlüsseln die gleiche Information benötigt wie zum Verschlüsseln, nämlich die Anzahl der Verschiebungen.
 Wenn man beispielsweise weiss, dass der Text mit einer Verschiebung von 3 verschlüsselt worden ist, so kann man diesen Text mit einer Verschiebung von $-3$ wieder entschlüsseln.
 \end{myexample}
 
+In diesem Kapitel werden wir zwei weitere historisch bedeutende symmetrische Kryptosysteme kennen lernen: das Verfahren von Vigenère und das One-Time-Pad.
+
 \section{Das Kryptosystem \emph{Vigenère}}
-Wie wir in \cref{ex:caesar} gesehen haben, ist es extrem einfach, Texte, die mit Caesar verschlüsselt worden sind, anzugreifen, entweder mittels Buchstabenhäufigkeitsanalyse oder indem man einfach alle 25 möglichen Verschiebungen ausprobiert. Auch weitere monoalphabetische Substitutions-Verfahren wie \cref{fig:monoalph-subst} können durch etwas Knobeln relativ einfach geknackt werden.
+Wie wir in \cref{ex:caesar} gesehen haben, ist es einfach, Texte, die mit Caesar verschlüsselt worden sind, anzugreifen, entweder mittels Buchstabenhäufigkeitsanalyse oder indem man einfach alle 26 möglichen Verschiebungen ausprobiert (Brute-Force-Angriff). 
+Auch weitere monoalphabetische Substitutions-Verfahren wie das in \cref{fig:monoalph-subst} gezeigte Verfahren, können durch eine Häufigkeitsanalyse und etwas Knobeln relativ einfach geknackt werden.
 
-Vigenère hatte eine andere Idee: Statt den ganzen Text mit einem einzigen Schlüssel zu verschlüsseln, verwendete er ein Wort, mit welchem er den Text \emph{zyklisch}, also gruppenweise verschlüsselte.
+\begin{myidea}[Vigenère]
+Das zentrale Problem der allgeinen monoalphabetischen Substitution (und somit auch von Caesar) ist, dass jeder Buchstabe im Klartext stets in denselben Buchstaben im Kryptotext umgewandelt wird (e.g. aus einem \texttt{E} im Klartext wird im Kryptotext immer ein \texttt{M}).
 
-\begin{myexample}\label{ex:vigenere}
-Wenn der Schlüssel beispielsweise \texttt{KEY} war, wurden die Buchstaben folgendermassen verschlüsselt (siehe Beispiel unterhalb):
-\begin{itemize}
-	\item Buchstaben 1, 4, 7, 10 etc. mit \texttt{K}
-	\item Buchstaben 2, 5, 8, 11 etc. mit \texttt{E}
-	\item Buchstaben 3, 6, 9, 12 etc. mit \texttt{Y}
-\end{itemize}
+\par
+Die Grundidee von Vigenère ist es, dieses Problem zu umgehen, indem man als Schlüssel nicht nur einen einzigen Buchstaben, sondern ein ganzes Wort verwendet. 
+Das Vorgehen wird in \cref{mydefinition:vigenere} illustriert. 
 
-\begin{figure}[H]
-	\begin{verbatim}
-  Klartext: JEM|AND|MUS|STE|JOS|EFK|VER|LE...
- Schlüssel: KEY|KEY|KEY|KEY|KEY|KEY|KEY|KE...
-Kryptotext: TIK|KRB|WYQ|CXC|TSQ|OJI|FIP|VI...
-\end{verbatim}
-\end{figure}
+\end{myidea}
 
-Im Vergleich dazu wird bei Caesar jeder Buchstabe durch \emph{denselben} Schlüssel verschlüsselt, beispielsweise:
+\begin{mydefinition}[Vigenère-Verfahren]\label{mydefinition:vigenere}
+Angenommen wir verwenden den Vigenère-Schlüssel (das Wort) \texttt{KEY}, um den Klartext
+\begin{center}
+\texttt{INFORMATIKISTSOWASVONINTERESSANT}
+\end{center}
+zu verschlüsseln. Der Buchstabe \texttt{K} bewirkt eine Caesar-Verschiebung um $\text{Ord}(\texttt{A}) = 10$, der Buchstabe \texttt{E} eine Caesar-Verschiebung um $\text{Ord}(\texttt{E}) = 4$ und der Buchstabe \texttt{Y} schliesslich eine Caesar-Verschiebung um $\text{Ord}(\texttt{Y}) = 24$.
+Die Verschlüsselung erfolgt dabei wie folgt:
 \begin{verbatim}
-  Klartext: JEMANDMUSSTEJOSEFKVERLEUMDETHA...
- Schlüssel: GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG...
-Kryptotext: PKSGTJSAYYZKPUYKLQBKXRKASJKZNG...
+  Klartext: INF|ORM|ATI|KIS|TSO|WAS|VON|INT|ERE|SSA|NT
+ Schlüssel: KEY|KEY|KEY|KEY|KEY|KEY|KEY|KEY|KEY|KEY|KE
+Kryptotext: SRD|YVK|KXG|UMQ|DWM|GEQ|FSL|SRR|OVC|CWY|XX
 \end{verbatim}
-\end{myexample}
+Je nachdem, an welcher Position sich ein Buchstabe im Klartext befindet, wird dieser mit einem anderen Buchstaben des Schlüssels verschlüsselt. 
+Dadurch wird die Häufigkeit eines Buchstabens im Klartext auf mehrere Buchstaben im Kryptotext verteilt, was die Häufigkeitsanalyse deutlich erschwert.
 
-Wie Sie wissen, ist der Buchstabe \texttt{E} der häufigste Buchstabe in deutschen Texten. Diese Eigenschaft haben wir uns in \cref{ex:caesar} zunutze gemacht, um den Text zu knacken. Da bei Vigenère jedoch der Buchstabe nun nicht mehr immer mit demselben Schlüssel verschlüsselt ist, sondern je nach Position mit dem Schlüssel \texttt{K}, \texttt{E} oder \texttt{Y}, wird der Buchstabe \texttt{E} im Kryptotext nun breiter auf andere Buchstaben verteilt (siehe \cref{fig:ex-vigenere-e}). Anders gesagt, ein Buchstabe im Kryptotext repräsentiert nun nicht mehr immer den gleichen Buchstaben im Klartext, sondern kann einen von drei Buchstaben repräsentieren.
+\par
+Sie sehen sofort, dass beispielsweise der Buchstabe \texttt{I} im Klartext, je nach seiner relativen Position zum Schlüssel, in genau einen der drei verschiedenen Buchstaben \texttt{S}, \texttt{G} oder \texttt{M} im Kryptotext umgewandelt wird. Die Situation für den Buchstaben \texttt{E} ist in \cref{fig:ex-vigenere-e} dargestellt. 
 
 \begin{figure}[H]
 	\centering
@@ -78,23 +79,108 @@ Wie Sie wissen, ist der Buchstabe \texttt{E} der häufigste Buchstabe in deutsch
 			\node at (4, 0) {\textbf{O}};
 
 			% Verbindungspfeile mit Schlüsseln
-			\draw[->, thick] (0.3, 1.5) -- (3.7, 0) node[midway, above] {\textbf{K}};
+			\draw[->, thick] (0.3, 1.5) -- (3.7, 0.2) node[midway, above] {\textbf{K}};
 			\draw[->, thick] (0.3, 0) -- (3.7, 0) node[midway, above] {\textbf{E}};
-			\draw[->, thick] (0.3, -1.5) -- (3.7, 0) node[midway, above] {\textbf{Y}};
+			\draw[->, thick] (0.3, -1.5) -- (3.7, -0.2) node[midway, above] {\textbf{Y}};
 
 			% Labels Klartext und Kryptotext
 			\node[align=center] at (0, -2.5) {Klartext};
 			\node[align=center] at (4, -2.5) {Kryptotext};
 		\end{tikzpicture}
 	\end{subfigure}
-	\caption{Verschlüsselungs-Möglichkeiten mit Vigenère, mit dem Schlüssel \texttt{KEY} aus \cref{ex:vigenere}}
+	\caption{Verschlüsselungs-Möglichkeiten mit Vigenère, mit dem Schlüssel \texttt{KEY}}
 	\label{fig:ex-vigenere-e}
 \end{figure}
+\end{mydefinition}
 
-Diese Verschlüsselungsmethode galt während mehreren Jahrhunderten als sicher und war der Goldstandard in vielen militärischen Verschlüsselungs-Anwendungen. Um einen Text zu verschlüsseln, wurde jeder Buchstabe im Klartext einzeln verschlüsselt, und je nach Schlüssel (z.B. \texttt{K}, \texttt{E} oder \texttt{Y} in \cref{ex:vigenere}) wurde der entsprechende Buchstabe des Kryptotexts aus einer Tabelle herausgelesen (siehe \cref{tab:vigenere}).
+\begin{myremark}[Caesar ist ein Spezialfall von Vigenère]
+Im Vergleich zum Verfahren von Vigenère, wird bei Caesar aus einem Buchstaben im Klartext immer derselbe Buchstabe im Kryptotext. 
+Verwenden wir beispielsweise den Caesar-Schlüssel \texttt{K} (also eine Verschiebung von 10), so würde sich folgende Verschlüsselung ergeben:
+\begin{verbatim}
+  Klartext: I|N|F|O|R|M|A|T|I|K|I|S|T|S|O|W|A|S|V|O|N|I|N|T|E|R|E|S|S|A|N|T
+ Schlüssel: K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K|K
+Kryptotext: S|X|P|Y|B|W|K|D|S|U|S|C|D|C|Y|G|K|C|F|Y|X|S|X|D|O|B|O|C|C|K|X|D
+\end{verbatim}
+Aus dem Buchstaben \texttt{I} im Klartext wird also stets der Buchstabe \texttt{S} im Kryptotext, unabhängig von seiner Position relativ zum Schlüssel.
 
+\par
+Offensichtlich ist Caesar ein Spezialfall von Vigenère, bei dem der Schlüssel (das Wort) aus exakt einem einzigen Buchstaben besteht.
+\end{myremark}
 
-\cref{fig:langer-text-vig-caesar} zeigt die Buchstabenhäufigkeit im Kryptotext für einen langen Text, welcher einmal mit Caesar und einmal mit Vigenère verschlüsselt wurde.
+\begin{myexercise}\label{myexercise:vigenere-keys}
+	Welche Eigenschaft muss ein Vigenère-Schlüssel haben, damit (zumindest theoretisch) aus einem Buchstaben im Klartext exakt 10 verschiedene Buchstaben im Kryptotext werden können? Geben Sie ein Beispiel für einen solchen Schlüssel an.
+	\begin{myanswer}
+		Der Schlüssel muss exakt 10 verschiedene Buchstaben enthalten, damit aus einem Buchstaben im Klartext 10 verschiedene Buchstaben im Kryptotext werden können. Ein Beispiel für einen solchen Schlüssel ist \texttt{ABCDEFGHIJ} oder auch \mbox{\texttt{ABCDEFGHIJABFBE}}. Damit aus einem Buchstaben $\alpha$ im Klartext genau 10 verschiedene Buchstaben im Kryptotext entstehen, müssen der Klartext und der Schlüssel so beschaffen sein, dass jeder der 10 verschiedenen Buchstaben des Schlüssels mindestens einmal mit $\alpha$ im Klartext korrespondiert (unter dem Buchstaben $\alpha$ zu stehen kommt).
+	\end{myanswer}
+\end{myexercise}
+
+Das Verfahren von Vigenère galt während mehreren Jahrhunderten als sicher und wurde in zahlreichen vielen militärischen Anwendungen eingesetzt!
+
+\subsection{Vigenère-Tabelle und praktische Umsetzung}
+Wie bereits in \cref{mydefinition:vigenere} angesprochen, definiert jeder Buchstabe eines Vigenère-Schlüssels eine bestimmte Caesar-Verschiebung. 
+Es ist daher sinnvoll, eine Tabelle zu erstellen, welche jede der 26 möglichen Caesar-Verschiebungen auf einen Blick darstellt. 
+Diese Tabelle wird als \textbf{Vigenère-Tabelle} bezeichnet und ist in \cref{tab:vigenere} gegeben. 
+Jede der 26 Spalten der Vigenère-Tabelle entspricht einer möglichen Caesar-Verschiebung (Einstellung der Caesar-Drehscheibe), welche durch den entsprechenden Schlüsselbuchstaben definiert ist.
+\begin{table}[H]
+    \centering
+    \begin{tikzpicture}
+        \foreach \i in {0,...,25} {
+                % Blaue Klartextbuchstaben (links) mit Ordnung davor
+                \node at (-1.1,-\i*0.5) {\tiny (\i)}; % Ordnung links
+                \node at (-0.5,-\i*0.5) {\textcolor{Blue}{\strut\symbol{\numexpr`A+\i\relax}}};
+                
+                % Rote Schlüsselbuchstaben (oben) mit Ordnung darüber
+                \node at (\i*0.5,1.0) {\tiny (\i)}; % Ordnung oben
+                \node at (\i*0.5,0.5) {\textcolor{Red}{\strut\symbol{\numexpr`A+\i\relax}}};
+                
+                \foreach \j in {0,...,25} {
+                        \edef\k{\ifnum\numexpr\i+\j\relax>25
+                                \the\numexpr\i+\j-26\relax
+                            \else
+                                \the\numexpr\i+\j\relax
+                            \fi}
+                        \node[draw,minimum size=0.5cm,inner sep=0pt]
+                        at (\i*0.5,-\j*0.5) {\strut\symbol{\numexpr`A+\k\relax}};
+                    }
+            }
+        
+        % Markiertes Beispiel (hier angepasst auf den Buchstaben 'O')
+        \node[draw,minimum size=0.5cm,inner sep=0pt,fill=Green!20] at (5.0,-2.0) {\textcolor{Green}{O}};
+        
+        % Beschriftungen etwas weiter nach außen geschoben, damit sie nicht mit den Zahlen kollidieren
+        \node at (6.5,1.7) {\textcolor{Red}{Schlüsselbuchstabe}};
+        \node[rotate = 90] at (-1.8,-6.5)  {\textcolor{Blue}{Klartextbuchstabe}};
+    \end{tikzpicture}
+    \caption{Vigenère-Tabelle mit numerischer Ordnung}
+    \label{tab:vigenere}
+\end{table}
+
+\begin{description}
+	\item[Verschlüsselung]: Soll beispielsweise der Klartextbuchstabe \texttt{E} mit dem Schlüsselteil \texttt{K} verschlüsselt werden, so findet man in der Tabelle den entsprechenden Kryptotextbuchstaben \texttt{O}.
+	\item[Entschlüsselung]: Soll beispielsweise der Kryptotextbuchstabe \texttt{O} mit dem Schlüsselteil \texttt{K} entschlüsselt werden, so sucht man in der Tabelle nach dem Klartextbuchstaben, der mit \texttt{O} und \texttt{K} korrespondiert. Dies ist in diesem Fall der Buchstabe \texttt{E}.
+\end{description}
+
+\begin{myexercise}
+	\textbf{Verschlüsseln} Sie folgenden Text von Hand, mit dem Schlüssel \textcolor{red}{\texttt{YES}} und mit der Methode von Vigenère:
+	\begin{center}
+	\textcolor{blue}{\texttt{NIEMANDKANNDASLESEN}}
+	\end{center}
+	\begin{myanswer}
+		\texttt{LMWKEFBOSLRVYWDCWWL}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}
+	\textbf{Entschlüsseln} Sie folgenden Text von Hand, wenn Sie wissen, dass er mit dem Schlüssel \textcolor{red}{\texttt{TOP}} und mit der Methode von Vigenère verschlüsselt worden ist:
+	\begin{center}
+	\texttt{UFPOCVNHVXAPVVI}
+	\end{center}
+	\begin{myanswer}
+		\textcolor{blue}{\texttt{BRAVOGUTGEMACHT}}
+	\end{myanswer}
+\end{myexercise}
+
+Wir haben einen langen Klartext verwendet und diesen einmal mit Caesar (Schlüssel \texttt{C}, also Verschiebung 2)und einmal mit Vigenère (Schlüssel \texttt{ABCDEFG}) verschlüsselt und schliesslich die relativen Häufigkeit aller verschiedenen Buchstaben im Kryptotext in \cref{fig:langer-text-vig-caesar} dargestellt. Die relative Häufigkeit eines Buchstabens im Kryptotext ist definiert als die Anzahl der Vorkommen dieses Buchstabens geteilt durch die Gesamtanzahl aller Buchstaben im Kryptotext
 
 \begin{figure}[H]
 	\centering
@@ -109,95 +195,56 @@ Diese Verschlüsselungsmethode galt während mehreren Jahrhunderten als sicher u
 		\caption{Vigenère}
 
 	\end{subfigure}
-	\caption{Buchstabenhäufigkeit in einem langen Text, welcher mit unterschiedlichen Verfahren verschlüsselt wurde}
+	\caption{relative Häufigkeit der Buchstaben im Kryptotext eines langen Texts, einmal mit Caesar (Schlüssel: \texttt{C}) und einmal mit Vigenère (Schlüssel: \texttt{ABCDEFG}) verschlüsselt}
 	\label{fig:langer-text-vig-caesar}
 \end{figure}
 
-\cref{fig:langer-text-vig-caesar} zeigt, dass Vigenère zu einer insgesamt homogeneren Verteilung aller Buchstaben im Kryptotext führt. Dies kommt daher, dass bei Vigenère jeder Klartext-Buchstaben auf \emph{mehrere} Kryptotext-Buchstaben verteilt wird, währenddem bei Caesar jeder Klartext-Buchstaben durch genau \emph{einen} Buchstaben im Kryptotext kodiert wird. \cref{tab:vigenere} zeigt die Vigenère-Tabelle, mithilfe welcher man einen Text mit der Vigenère-Methode ver- sowie entschlüsseln kann, sofern der Schlüssel bekannt ist. Folgende zwei Beispiele zeigen auf, wie diese Tabelle genutzt werden kann:
-
-\begin{enumerate}
-	\item \textbf{Verschlüsselung}: Soll beispielsweise der Klartext-Buchstabe \texttt{E} mit dem Schlüsselteil \texttt{K} verschlüsselt werden, so findet man in der Tabelle den entsprechenden Kryptotext-Buchstaben \texttt{O}.
-	\item \textbf{Entschlüsselung}: Soll beispielsweise der Kryptotext-Buchstabe \texttt{O} mit dem Schlüsselteil \texttt{K} entschlüsselt werden, so sucht man in der Tabelle nach dem Klartext-Buchstaben, der mit \texttt{O} und \texttt{K} korrespondiert. Dies ist in diesem Fall der Buchstabe \texttt{E}.
-\end{enumerate}
-
-\begin{table}[H]
-	\centering
-	\begin{tikzpicture}
-		\foreach \i in {0,...,25} {
-				\node at (-0.5,-\i*0.5) {\textcolor{Blue}{\strut\symbol{\numexpr`A+\i\relax}}};
-				\node at (\i*0.5,0.5) {\textcolor{Red}{\strut\symbol{\numexpr`A+\i\relax}}};
-				\foreach \j in {0,...,25} {
-						\edef\k{\ifnum\numexpr\i+\j\relax>25
-								\the\numexpr\i+\j-26\relax
-							\else
-								\the\numexpr\i+\j\relax
-							\fi}
-						\node[draw,minimum size=0.5cm,inner sep=0pt]
-						at (\i*0.5,-\j*0.5) {\strut\symbol{\numexpr`A+\k\relax}};
-					}
-			}
-		\node[draw,minimum size=0.5cm,inner sep=0pt,fill=Green!20] at (5.0,-2.0) {\textcolor{Green}{O}};
-		\node at (6.5,1.2) {\textcolor{Red}{Schlüsselbuchstabe}};
-		\node[rotate = 90] at (-1.2,-6.5)  {\textcolor{Blue}{Klartextbuchstabe}};
-	\end{tikzpicture}
-	\caption{Vigenère-Tabelle}
-	\label{tab:vigenere}
-\end{table}
-
-
-\begin{myexercise}
-	\textbf{Entschlüsseln} Sie folgenden Text von Hand, wenn Sie wissen, dass er mit dem Schlüssel \textcolor{red}{\texttt{TOP}} und mit der Methode von Vigenère verschlüsselt worden ist:
-
-	\texttt{UFPOCVNHVXAPVVI}
-	\begin{myanswer}
-		\textcolor{blue}{\texttt{BRAVOGUTGEMACHT}}
-	\end{myanswer}
-\end{myexercise}
-
-\begin{myexercise}
-	\textbf{Verschlüsseln} Sie folgenden Text von Hand, mit dem Schlüssel \textcolor{red}{\texttt{YES}} und mit der Methode von Vigenère:
-
-	\textcolor{blue}{\texttt{NIEMANDKANNDASLESEN}}
-	\begin{myanswer}
-		\texttt{LMWKEFBOSLRVYWDCWWL}
-	\end{myanswer}
-\end{myexercise}
+\cref{fig:langer-text-vig-caesar} zeigt, dass Vigenère zu einer insgesamt homogeneren Verteilung der relativen Buchstabenhäufigkeiten im Kryptotext führt. 
+Dies kommt daher, dass bei Vigenère jeder Klartextbuchstaben auf \emph{mehrere} Kryptotext-Buchstaben verteilt wird, währenddem bei Caesar jeder Klartextbuchstaben stets auf denselben Kryptotextbuchstaben abgebildet wird.
 
 \subsection{Kryptoanalyse von Vigenère}\label{subsubsec:vigHack}
+Wenn die Schlüssellänge eines mit Vigenère verschlüsselten Texts bekannt ist, kann man den Klartext relativ einfach herausfinden. 
+Das Vorgehen ist exemplarisch in \cref{myexample:vigHaufigkeitGruppen} beschrieben.
 
-Wenn die Schlüssellänge eines mit Vigenère verschlüsselten Texts bekannt ist, ist dieser relativ einfach zu knacken: Man unterteilt den Text in diesem Fall einfach in Gruppen und geht für jede Gruppe gleich vor wie bei Caesar, um den Schlüssel zu finden.
-
-\begin{myexample}
-Angenommen, wir wüssten, dass folgender Text mit einem Schlüssel verschlüsselt worden ist, der drei Zeichen lang ist:
+\begin{myexample}[Häufigkeitsanalyse von Vigenère bei bekannter Schlüssellänge]\label{myexample:vigHaufigkeitGruppen}
+Angenommen, wir wüssten, dass folgender Kyrptotext durch die Verwendung eines  Vigenère-Schlüssels der Länge 3 entstanden ist:
 
 \texttt{\colorstring[ForestGreen,RoyalBlue,Crimson]{MKUMYBVFLZDHZGOMKAMTRMKAPCAUGPVGNIPGMULMNLMKUOGUWOTMPNTGPKJKMPZCGZAGUNTBMJSQPNAOVZILVFPMKJPOPBIHVBLUJLZBLVILVKLAULQEOJKUINSMKUCPKNTLCGTQEOUGPVGZTGIMPZQPKQGZMTNMILVFKQGMCGYAQSKJLAGLTGUOGZKJHNHLVKZBYPMFPMOLQPLQEOJKUAQNTWLKMSQEOUGPVDLAVLZUVOCUHKULGTOGMCGOTGCWPYCJPOGTLCZMKUDGYAWUSGULCZAOLQPLSWUAVKITBVVLZNLQFLBKJPMVMPUBGQMVGBPPKJAHGPKJUMPUQEOBGPVGUAVYQEOCPKJKUVKLMKUOTVMUZMTLZOHTGYOGDMULVCSAKULKLAGUIWNMPITKJSGUEGUVFHANPMDL}}
 
+Alle grünen Buchstaben entstanden durch eine Verschiebung entsprechende dem ersten Buchstaben des Vigenère-Schlüssels, alle blauen Buchstaben durch eine Verschiebung entsprechend dem zweiten Buchstaben des Vigenère-Schlüssels und alle roten Buchstaben durch eine Verschiebung entsprechend dem dritten Buchstaben des Vigenère-Schlüssels.
 
-Den Schlüssel selbst kennen wir nicht, wir wissen jedoch, dass jeder der grün markierten Buchstaben beispielsweise mit demselben Buchstaben verschlüsselt worden ist. Wir können also für jede der Gruppen (grün, blau, rot) die Häufigkeit der Buchstaben betrachten (siehe \cref{fig:vig-subgroup}).
+\par
+Wenn wir die grünen, blauen und roten blauen Buchstaben jeweils zu einem eigenen Kyrptotext zusammenfassen, erhalten wir drei verschiedene Kryptotexte, welche jeweils durch eine Caesar-Verschiebung entstanden.
+Damit können wir die auf jede der drei Gruppen (grün, blau, rot) die Häufigkeitsanalyse (genau analog zu \cref{sec:kryptoanalyse_caesar}) anwenden, um innerhalb der jeweiligen Gruppe die Verschiebung zu erraten, welche durch den entsprechenden Vigenère-Schlüsselbuchstaben definiert ist.
+
+\par
+In \cref{fig:vig-subgroup}) sind die relativen Häufigkeiten der Buchstaben für jede der drei Gruppen dargestellt.
 
 \begin{figure}[H]
 	\centering
-	\foreach \x in {1,...,3}{
-			\begin{subfigure}{.3\linewidth}
-				\centering
-				\includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/vigenere-len3-group\x}
-				\caption{Untergruppe \x}
-			\end{subfigure}
-		}
-	\caption{Buchstabenhäufigkeit in einem mit Vigenère verschlüsselten Text, pro Untergruppe}
+\foreach \n / \name in {1/grüne, 2/blaue, 3/rote}{
+    \begin{subfigure}{.3\linewidth}
+        \centering
+        % \n sorgt für ...group1, ...group2, ...group3
+        \includegraphics[width=\linewidth]{Grundlagen_Info/03_Kryptologie/Figures/vigenere-len3-group\n}
+        % \name sorgt für die korrekte Caption
+        \caption{\name{}-Gruppe}
+    \end{subfigure}
+}
+	\caption{relative Buchstabenhäufigkeit in einem durch Vigenère verschlüsselten Text pro Gruppe}
 	\label{fig:vig-subgroup}
 \end{figure}
-
-Dabei erkennen wir, dass die häufigsten Buchstaben pro Gruppe \textcolor{ForestGreen}{M}, \textcolor{RoyalBlue}{G}, bzw. \textcolor{Crimson}{L} sind. Wir haben es also mit folgenden Verschiebungen zu tun:
+Dabei erkennen wir, dass die häufigsten Buchstaben pro Gruppe \textcolor{ForestGreen}{\texttt{M}}, \textcolor{RoyalBlue}{\texttt{G}}, bzw. \textcolor{Crimson}{\texttt{L}} sind.
+Da \texttt{E} der häufigste Buchstabe im Deutschen ist, können wir annehmen, dass die häufigsten Buchstaben \textcolor{ForestGreen}{\texttt{M}}, \textcolor{RoyalBlue}{\texttt{G}}, bzw. \textcolor{Crimson}{\texttt{L}} jeweils aus \texttt{E} im Klartext entstanden sind.
+Dies entspricht den folgenden drei Caesar-Verschiebungen: \texttt{E}\rightarrow\texttt{M} entspricht einer Verschiebung von 8 (um \texttt{I}), \texttt{E}\rightarrow\texttt{G} einer Verschiebung von 2 (um \texttt{C}) und \texttt{E}\rightarrow\texttt{L} einer Verschiebung von 7 (um \texttt{H}).:
 \begin{figure}[H]
 	\centering
 	\resizebox{.65\textwidth}{!}{\caesar[8] \caesar[2] \caesar[7]}
 \end{figure}
-Der Schlüssel muss demnach \texttt{ICH} sein und wir können den Text somit entschlüsseln.
+Der Vigenère-Schlüssel wird also vermutlich \texttt{ICH} lauten, da $\text{ord}(\texttt{I}) = 8$, $\text{ord}(\texttt{C}) = 2$ und $\text{ord}(\texttt{H}) = 7$.
 \end{myexample}
 
 \begin{myexercise}
-
 	Kopieren Sie den folgenden Kryptotext und versuchen Sie, ihn mit dem \href{https://cryptbreaker.marcwidmer.xyz/solve}{Analysetool} zu entziffern, wenn Sie wissen, dass die Schlüssellänge drei ist. Schauen Sie sich die Buchstabenhäufigkeiten für jede der 3 Gruppen an, indem Sie unter \emph{Analysewerkzeug} die Häufigkeitsanalyse auswählen und \emph{stride} (Schrittgrösse) 3. Unterhalb der Grafiken kann man zwischen jeder der drei Gruppen hin- und herwechseln. Probieren Sie den wahrscheinlichsten Schlüssel aus, indem Sie beim \emph{Entschlüsselungswerkzeug} die Methode \emph{Vigenère} auswählen und den Schlüssel eingeben.
 
 	\texttt{\colorstring[black]{WORBHHHLUQOWWLDSYSQOWOUKSUDSNEGAAZAEBKISMRILHGPCVLIBZTRLMHYUSIEBILWJKULZSPGHCEFZUQOIQOWCOLSBCVKISZMOSFSZTNBHOSTSUFILHZPCVTEWUHSYZBVCVQEBLMKHHBNEBLIUAIVYDFHEBNTSBCVGUBBNUBTGVMCLGHPHFDAZAEBDISPHFHUGKUBZTIUDBLBSSUATIQOSHLIUAMSPNPBS}}

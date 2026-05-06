@@ -1,9 +1,15 @@
+from pathlib import Path
 from vigenere import *
 from caesar import *
 from friedman import *
 from monoalphabetic import *
 
 plt.style.use("ggplot")
+
+# Setup paths relative to this script
+BASE_DIR = Path(__file__).resolve().parent
+FIGURES_DIR = (BASE_DIR / "../../Figures").resolve()
+TEXTS_DIR = BASE_DIR / "Texts"
 
 
 def caesar_main():
@@ -12,17 +18,16 @@ def caesar_main():
     text_kurz_c = caesar(text_kurz, 4)
     print(text_kurz_c)
     fig, ax = show_letter_freq(text_kurz_c)
-    #    plt.show()
-    plt.savefig(
-        "../../Figures/caesar-freq-exercise.pdf", format="pdf", bbox_inches="tight"
-    )
 
-    text_lang = open("Texts/Kafka.txt").readlines()[0]
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+    plt.savefig(FIGURES_DIR / "caesar-freq-exercise.pdf", format="pdf", bbox_inches="tight")
+
+    text_lang = open(TEXTS_DIR / "Kafka.txt").readlines()[0]
     text_lang = preprocess_text(text_lang)
     text_lang_c = caesar(text_lang, 2)
     fig, ax = show_letter_freq(text_lang_c, ylim=(0, 20))
     # plt.show()
-    plt.savefig("../../Figures/caesar-freq.pdf", format="pdf", bbox_inches="tight")
+    plt.savefig(FIGURES_DIR / "caesar-freq.pdf", format="pdf", bbox_inches="tight")
 
 
 def vigenere_main():
@@ -32,12 +37,13 @@ def vigenere_main():
     text_kurz_v = vigenere(text_kurz, "SIEHABENESGESCH")
     print("V", text_kurz_v)
 
-    text_lang = open("Texts/Kafka.txt").readlines()[0]
-    text_lang_v = vigenere(text_lang, "ICH")
+    text_lang = open(TEXTS_DIR / "Kafka.txt").readlines()[0]
+    text_lang_v = vigenere(text_lang, "ABCDEFG")
     print("LANGER TEXT", text_lang_v[:400])
     fig, ax = show_letter_freq(text_lang_v, ylim=(0, 20))
     # plt.show()
-    plt.savefig("../../Figures/vigenere-freq.pdf", format="pdf", bbox_inches="tight")
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+    plt.savefig(FIGURES_DIR / "vigenere-freq.pdf", format="pdf", bbox_inches="tight")
 
     # vigenere frequencies by group
 
@@ -58,7 +64,7 @@ def vigenere_main():
 
 # generate friedman figures
 def friedman_main(savefig=True):
-    text_lang = open("Texts/Werther.txt").readlines()[0]
+    text_lang = open(TEXTS_DIR / "Werther.txt").readlines()[0]
     text_lang = preprocess_text(text_lang)
     key = "ICH"
     text = vigenere(text_lang, key)
@@ -82,16 +88,9 @@ def friedman_main(savefig=True):
                 fig, ax = show_letter_freq(text_slice, show_diff_to_avg=True)
                 ax.set_aspect(0.5)
                 if savefig:
-                    plt.savefig(
-                        "../../Figures/vigenere-"
-                        + "len"
-                        + str(keylen_test)
-                        + "-group"
-                        + str(i + 1)
-                        + "-avg.pdf",
-                        format="pdf",
-                        bbox_inches="tight",
-                    )
+                    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+                    filename = f"vigenere-len{keylen_test}-group{i+1}-avg.pdf"
+                    plt.savefig(FIGURES_DIR / filename, format="pdf", bbox_inches="tight")
                     plt.close()
                 else:
                     plt.show()
@@ -99,16 +98,9 @@ def friedman_main(savefig=True):
             fig, ax = show_letter_freq(text_slice, show_diff_to_avg=False)
             ax.set_title(f"$FC_T: {fc:.2%}%$%")
             if savefig:
-                plt.savefig(
-                    "../../Figures/vigenere-"
-                    + "len"
-                    + str(keylen_test)
-                    + "-group"
-                    + str(i + 1)
-                    + ".pdf",
-                    format="pdf",
-                    bbox_inches="tight",
-                )
+                FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+                filename = f"vigenere-len{keylen_test}-group{i+1}.pdf"
+                plt.savefig(FIGURES_DIR / filename, format="pdf", bbox_inches="tight")
                 plt.close()
             else:
                 plt.show()
@@ -116,7 +108,8 @@ def friedman_main(savefig=True):
     fc = get_friedman_vals(text, 15)
     fig, ax = draw_friedman(15, fc)
     if savefig:
-        plt.savefig("../../Figures/friedman.pdf", format="pdf", bbox_inches="tight")
+        FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+        plt.savefig(FIGURES_DIR / "friedman.pdf", format="pdf", bbox_inches="tight")
         plt.close()
     else:
         plt.show()
