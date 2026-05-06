@@ -43,8 +43,15 @@ If you wish to add a git hash to the document, execute the following steps:
 ## Contributing
 Please let the authors know if you'd like to contribute.
 
-## Terms of use
-Please let us know if you'd like to use contents of this project or yourself (see email addresses below).
+## Licensing
+
+Unless otherwise stated, all **educational content** in this repository (documents, slides, exercises, etc.) is licensed under the
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+See [`LICENSE-CC-BY-NC-SA`](LICENSE-CC-BY-NC-SA) for the full license text.
+
+**Source code, scripts, LaTeX classes/packages, and build tooling** are licensed under the
+[GNU General Public License v3.0 or later (GPL-3.0-or-later)](https://www.gnu.org/licenses/gpl-3.0.html).
+See [`LICENSE-GPL`](LICENSE-GPL) for the full license text.
 
 ## Contact
 - [Thomas Graf](mailto:thomas.grf@edu.zh.ch), Kantonsschule Im Lee (KLW)
