@@ -97,6 +97,72 @@
 	\end{center}
 }
 
+
+
+% Repo Logo
+\newcommand{\makeLogo}{
+	\begin{tikzpicture}[line width=0.25pt]
+		% resize entire logo to fit within a 10cm x 10cm bounding box
+		\begin{scope}[scale=0.5, transform shape]
+
+			% Center node
+			\node[draw=black, circle, minimum size=11pt, inner sep=0pt, fill=black!80] (C) at (0,0) {};
+
+
+			% Stem: a gentle curved stem going downwards
+			\draw[line width=1.2pt, green!50!black, line cap=round] (C) .. controls (-0.4,-3.6) and (0.4,-4.6) .. (0,-8);
+			% Left leaf
+			\begin{scope}[scale=1.1, shift={(0.1,-6.4)}, rotate=-20]
+				% The leaf shape is defined by a cubic Bezier curve. The control points are chosen to create a natural, slightly asymmetrical leaf shape. The fill color is a vibrant green, and the stroke is a darker green for contrast.
+				\fill[green!60!black] (0,0) .. controls (0.6,0.25) and (1.0,0.8) .. (1.1,1.4) .. controls (0.4,1.0) and (0.1,0.4) .. cycle;
+				% Middle vein of the leaf (right between left and right), drawn as a slightly darker line 
+				\draw[line width=0.8pt, green!70!black] (0,0) .. controls (0.0,0.0) and (1.0,0.8) .. (1.1,1.4);
+			\end{scope}
+			% Right leaf
+			\begin{scope}[scale=1.1, shift={(0.1,-6.0)}, rotate=80]
+				\fill[green!55!black] (0,0) .. controls (0.5,0.3) and (0.9,0.9) .. (1.0,1.5) .. controls (0.3,1.0) and (0.05,0.35) .. cycle;
+				\draw[line width=0.8pt, green!65!black] (0,0) .. controls (0.2,0.2) and (.3,0.75) .. (1.0,1.5);
+			\end{scope}
+
+			% Flower-like outer nodes: 3 rings x 12 nodes = 36 nodes
+			% Node diameter increases with distance from center.
+			% Compute a hue per petal and slightly reduce saturation/brightness by ring to
+			% get a harmonious, layered look.
+			\foreach \ring/\radius/\diam/\phase in {
+					1/1.8/10pt/7,
+					2/3.0/15pt/15,
+					3/4.2/25pt/30
+				} {
+					\foreach \i in {1,...,12} {
+							\pgfmathsetmacro{\ang}{(\i-1)*30 + \phase}
+							\pgfmathsetmacro{\hue}{mod((\i-1)*30 + \phase,360)/360}
+							\pgfmathsetmacro{\sat}{0.86 - 0.18*(\ring-1)}
+							\pgfmathsetmacro{\val}{0.95 - 0.12*(\ring-1)}
+							% Convert HSV/HSB to RGB (standard algorithm)
+							\pgfmathsetmacro{\hi}{int(floor(\hue*6))}
+							\pgfmathsetmacro{\f}{\hue*6 - \hi}
+							\pgfmathsetmacro{\p}{\val*(1-\sat)}
+							\pgfmathsetmacro{\q}{\val*(1-\sat*\f)}
+							\pgfmathsetmacro{\t}{\val*(1-\sat*(1-\f))}
+							\pgfmathsetmacro{\rr}{(\hi==0)?\val:(\hi==1)?\q:(\hi==2)?\p:(\hi==3)?\p:(\hi==4)?\t:\val}
+							\pgfmathsetmacro{\gg}{(\hi==0)?\t:(\hi==1)?\val:(\hi==2)?\val:(\hi==3)?\q:(\hi==4)?\p:\p}
+							\pgfmathsetmacro{\bb}{(\hi==0)?\p:(\hi==1)?\p:(\hi==2)?\t:(\hi==3)?\val:(\hi==4)?\val:\q}
+							\edef\colname{petal\ring\i}
+							\expandafter\definecolor\expandafter{\colname}{rgb}{\rr,\gg,\bb}
+
+							% Draw node and connecting line to center
+							\node[draw=black!20, fill=\colname, circle, minimum size=\diam, inner sep=0pt] (N\ring-\i) at (\ang:\radius) {};
+							% Draw a line from center to node with color matching the node, but slightly darker for contrast
+							\draw[draw=\colname!55!black] (C) -- (N\ring-\i);
+						}
+				}
+		\end{scope}
+
+		% add text "BloomGraph" right of the center of the logo
+		\node[anchor=west, align=left, font=\sffamily\bfseries\Huge] at ($(N3-12) + (.5,0)$)  {\textcolor{green!55!black}{Open}\textcolor{NavyBlue!60!white}{Flower}};
+	\end{tikzpicture}
+}
+
 % macro for creating a title page
 \newcommand{\maketitlepage}[2]{
 	% arg1: title
@@ -105,7 +171,7 @@
 		\vspace*{0.25\textheight}
 		\begin{center}
 			% logo
-			\iftoggle{includelogo}{\begin{figure}[H]\centering\href{https://github.com/CyrilBlum/LeeTeX}{\includegraphics[width=\logosize]{Logos/Logo GymForMATeCH Lines Black Text.pdf}}
+			\iftoggle{includelogo}{\begin{figure}[H]\centering\href{https://github.com/CyrilBlum/LeeTeX}{\makeLogo}
 				\end{figure}}{}
 			\thesubject\\
 			\begin{tcolorbox}[enhanced,colframe=RoyalBlue!80,colback=RoyalBlue!20, hbox,lifted shadow={1mm}{-2mm}{3mm}{0.1mm}%
@@ -128,7 +194,7 @@
 			\end{tcolorbox}
 
 
-			{\large \textcopyleft{}, \href{https://github.com/CyrilBlum/LeeTeX}{GymForMATeCH} \today}
+			{\large \textcopyleft{} \href{https://github.com/CyrilBlum/LeeTeX}{FreeFlower} \today}
 
 			%      \tikz[remember picture,overlay] \node[opacity=0.3,inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{LeeLogo}};
 
