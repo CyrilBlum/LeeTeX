@@ -6,6 +6,4 @@ def vergroessere_um_fuenf(liste):
 
     print(liste)
 
-
-daten = [20, -7, 8, 2, 1, 6]
-vergroessere_um_fuenf(daten)
+vergroessere_um_fuenf([20, -7, 8, 2, 1, 6])
