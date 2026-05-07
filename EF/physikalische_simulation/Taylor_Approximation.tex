@@ -1,15 +1,15 @@
 \chapter{Taylor-Approximation von Funktionen}\label{ch:Taylor}
 
 \section{Motivation und Intuition}
-Wir wollen später im \cref{ch:Dynamik} Methoden entwickeln, um Annäherungen (Approximationen) an die wahren Lösungen von Differentialgleichungen Schritt für Schritt zu berechnen. Damit ist es naheliegend, zunächst mal Methoden zur Approximation von Funktionen zu studieren (Lösungen von Differentialgleichungen sind schliesslich ebenfalls Funktionen). In diesem Kapitel werden wir die sehr wichtige und berühmte Taylor-Approximation von Funktionen kennenlernen.
+Wir wollen später im \cref{ch:Dynamik} Methoden entwickeln, um Annäherungen (Approximationen) an die wahren Lösungen von Differentialgleichungen Schritt für Schritt zu berechnen. Damit ist es naheliegend, zunächst Methoden zur Approximation von Funktionen zu studieren (Lösungen von Differentialgleichungen sind schliesslich ebenfalls Funktionen). In diesem Kapitel werden wir die sehr wichtige und berühmte Taylor-Approximation von Funktionen kennenlernen.
 
 Für \cref{fig:Taylor1} haben wir eine beliebige Funktion $f$ gewählt und dargestellt. Wir wollen eine Approximation von $f$ in der näheren Umgebung der Stelle $x_0 = -1$ finden. Wir können hoffen, dass sich $f$ in der Nähe von $x_0 = -1$ einigermassen gut durch die Tangente an $f$ durch den Punkt $(x_0, f(x_0)$ approximieren lässt. Diese Tangente haben wir in \cref{fig:Taylor1} eingezeichnet.
 
-Fall die Ableitung der Funktion $f$ an der Stelle $x_0$ existiert, so lautet die Funktionsgleichung der Tangente $t$ an $f$ durch den Punkt $(x_0, f(x_0))$:
+\par
+Falls die Ableitung der Funktion $f$ an der Stelle $x_0$ existiert, so lautet die Funktionsgleichung der Tangente $t$ an $f$ durch den Punkt $(x_0, f(x_0))$:
 \begin{align*}
   t(x) = f(x_0) + f'(x_0)(x-x_0).
 \end{align*}
-
 Beachte, dass an der Stelle $x_0$ die Tangente den Wert $f(x_0)$ annimmt und (zumindest) dort somit exakt mit dem wahren Funktionswert übereinstimmt.
 
 \begin{figure}[H]
@@ -38,15 +38,26 @@ Beachte, dass an der Stelle $x_0$ die Tangente den Wert $f(x_0)$ annimmt und (zu
 
         % Draw the tangent line at x = -1
         \addplot [thick, dashed, red] {5.9*(x + 1) + 4.9};
-        \addlegendentry{lineare Approx.}        % Plot the function f(x)
+        \addlegendentry{lineare Approx.} % Plot the function f(x)
       \end{axis}
     \end{tikzpicture}
   \end{center}
-  \caption{Approximation einer Funktion $f$ in der Nähe von $x_0 = -1$ mithilfe der Tangente an $f$ durch den Punkt $(x_0, f(x_0))$}\label{fig:Taylor1}
+  \caption{Approximation einer Funktion $f$ in der Nähe von $x_0 = -1$ mithilfe der Tangente an $f$ durch den Punkt $(x_0, f(x_0))$.}
+  \label{fig:Taylor1}
 \end{figure}
 
 \begin{myexercise}
-  Gegeben sei die Funktion $f(x) = e^{2x}$. Wie lautet die Funktionsgleichung der Tangente an $f$ durch den Punkt $(3, f(3))$? Skizziere die Situation.
+  Gegeben sei die Funktion $f(x) = e^{2x}$. 
+  Wie lautet die Funktionsgleichung der Tangente an $f$ durch den Punkt $(3, f(3))$? 
+  Skizziere die Situation.
+  \begin{myanswer}
+    Um die Funktionsgleichung der Tangente an $f$ durch den Punkt $(3, f(3))$ zu berechnen, benötigen wir zunächst den Funktionswert $f(3)$ und die Ableitung $f'(3)$. Die Funktion $f$ ist gegeben durch $f(x) = e^{2x}$. Die Ableitung von $f$ ist $f'(x) = 2e^{2x}$.
+    Daher ist $f(3) = e^{2 \cdot 3} = e^{6}$ und $f'(3) = 2e^{2 \cdot 3} = 2e^{6}$.
+    Die Funktionsgleichung der Tangente an $f$ durch den Punkt $(3, f(3))$ lautet also:
+    \begin{align*}
+      t(x) = f(3) + f'(3)(x-3)= e^{6} + 2e^{6}(x-3).
+    \end{align*}
+  \end{myanswer}
 \end{myexercise}
 
 Wir haben also eine Funktion $f$ lokal durch eine (affin) lineare Funktion (Tangente) der Form
@@ -55,16 +66,20 @@ Wir haben also eine Funktion $f$ lokal durch eine (affin) lineare Funktion (Tang
 \end{align*}
 approximiert. Dabei sind $b_0$ und $b_1$ irgendwelche (reelle) Konstanten (Koeffizienten). 
 
-\emoji{light-bulb} Warum sollten wir uns jedoch auf lineare Terme Beschränken? Wir könnten doch zusätzlich zum linearen Anteil einen quadratischen Anteil zu unserer Approximation hinzuzufügen und versuchen $f$ lokal durch einen Ausdruck der Form
+\begin{myidea}
+  Warum sollten wir uns auf lineare Terme beschränken?
+\end{myidea}
+
+Wir könnten zusätzlich zum linearen Anteil einen quadratischen Anteil zu unserer Approximation hinzuzufügen und versuchen $f$ lokal durch einen Ausdruck der Form
 \begin{align*}
   b_0 + b_1(x-x_0) + b_2(x-x_0)^2
 \end{align*}
-zu approximieren, wobei auch hier $b_0, b_1$ und $b_2$ Konstanten (Koeffizienten) sind. Dabei gibt $b_0$ intuitiv an, wie stark der konstante Anteil ist, $b_1$ wie stark der lineare Anteil ist und schliesslich $b_2$ wie stark der quadratische Anteil ist.   
+zu approximieren, wobei auch hier $b_0, b_1$ und $b_2$ Konstanten (Koeffizienten) sind. Dabei geben, intuitiv gesprochen, $b_0$ an, wie stark der konstante Anteil ist, $b_1$ wie stark der lineare Anteil ist und schliesslich $b_2$ wie stark der quadratische Anteil ist.   
 
 % \begin{myexercise}
 %   Warum machen wir es so kompliziert und suchen eine Approximation der Form \[b_0 + b_1(x-x_0) + b_2(x-x_0)^2\] und nicht eine der (simpleren) Form \[c_0 + c_1x + c_2x^2?\] Welche wünschenswerte Eigenschaft hat die Form $b_0 + b_1(x-x_0) + b_2(x-x_0)^2$?
 % \end{myexercise}
-Nun ist es nur natürlich die Idee weiterzuziehen und Ausdrücke der Form
+Nun ist es nur natürlich, die Idee weiterzuziehen und Ausdrücke der Form
 \begin{align*}
   g(x) := b_0 + b_1(x-x_0) + b_2(x-x_0)^2 + b_3(x-x_0)^3 + \ldots + b_n(x-x_0)^n = \sum_{k=0}^n b_k(x-x_0)^k
 \end{align*}
@@ -131,6 +146,37 @@ erfüllt ist, dass unsere Approximation $g$ also exakt (nicht nur ungefähr) der
     a_0 + a_1x + a_2x^2 = b_0 + b_1(x-x_0) + b_2(x-x_0)^2
   \end{align*}
   erfüllt ist. Gruppiere und vergleiche dazu immer Terme mit derselben Potenz von $x$ auf der linken und rechten Seite der Gleichung.
+  \begin{myanswer}
+    Um die Koeffizienten $b_0, b_1$ und $b_2$ zu bestimmen, müssen wir die rechte Seite der Gleichung so umformen, dass sie in der Form $a_0 + a_1x + a_2x^2$ vorliegt. Dazu verwenden wir die Binomische Formel:
+    \begin{align*}
+      (x-x_0)^2 = x^2 - 2x_0x + x_0^2.
+    \end{align*}
+    Wir können also die rechte Seite der Gleichung wie folgt umformen:
+    \begin{align*}
+      b_0 + b_1(x-x_0) + b_2(x-x_0)^2 &= b_0 + b_1(x-x_0) + b_2(x^2 - 2x_0x + x_0^2) \\
+      &= b_0 + b_1x - b_1x_0 + b_2x^2 - 2b_2x_0x + b_2x_0^2 \\
+      &= (b_0 - b_1x_0 + b_2x_0^2) + (b_1 - 2b_2x_0)x + b_2x^2.
+    \end{align*}
+    Nun können wir die Koeffizienten auf der linken und rechten Seite der Gleichung vergleichen:
+    \begin{align*}
+      a_0 &= b_0 - b_1x_0 + b_2x_0^2, \\
+      a_1 &= b_1 - 2b_2x_0, \\
+      a_2 &= b_2.
+    \end{align*}
+    Aus der dritten Gleichung erhalten wir direkt $b_2 = a_2$. Setzen wir dies in die zweite Gleichung ein, erhalten wir $b_1 = a_1 + 2a_2x_0$. Schliesslich setzen wir $b_1$ und $b_2$ in die erste Gleichung ein, um $b_0$ zu bestimmen:
+    \begin{align*}
+      b_0 &= a_0 + b_1x_0 - b_2x_0^2 \\
+      &= a_0 + (a_1 + 2a_2x_0)x_0 - a_2x_0^2 \\
+      &= a_0 + a_1x_0 + 2a_2x_0^2 - a_2x_0^2 \\
+      &= a_0 + a_1x_0 + a_2x_0^2.
+    \end{align*}
+    Zusammenfassend erhalten wir die Koeffizienten:
+    \begin{align*}
+      b_0 &= a_0 + a_1x_0 + a_2x_0^2, \\
+      b_1 &= a_1 + 2a_2x_0, \\
+      b_2 &= a_2.
+    \end{align*}
+  \end{myanswer}
 \end{myexercise}
 
 Taylor hat gewusst, dass jedes Polynom
@@ -219,8 +265,42 @@ Finde $b_0, b_1, b_2, b_3\in\R$, sodass
 \begin{align*}
   \sum_{k=0}^3 a_kx^k = \sum_{k=0}^3 b_k(x-x_0)^k.
 \end{align*}
+\begin{myanswer}
+  Um die Koeffizienten $b_0, b_1, b_2$ und $b_3$ zu bestimmen, müssen wir die rechte Seite der Gleichung so umformen, dass sie in der Form $a_0 + a_1x + a_2x^2 + a_3x^3$ vorliegt. Dazu verwenden wir die Binomische Formel:
+  \begin{align*}
+    (x-x_0)^2 &= x^2 - 2x_0x + x_0^2, \\
+    (x-x_0)^3 &= x^3 - 3x_0x^2 + 3x_0^2x - x_0^3.
+  \end{align*}
+  Wir können also die rechte Seite der Gleichung wie folgt umformen:
+  \begin{align*}
+    &b_0 + b_1(x-x_0) + b_2(x-x_0)^2 + b_3(x-x_0)^3 \\
+    =& b_0 + b_1(x-x_0) + b_2(x^2 - 2x_0x + x_0^2) + b_3(x^3 - 3x_0x^2 + 3x_0^2x - x_0^3) \\
+    =& b_0 + b_1(x-x_0) + b_2x^2 - 2b_2x_0x + b_2x_0^2 + b_3x^3 - 3b_3x_0x^2 + 3b_3x_0^2x - b_3x_0^3 \\
+    =& (b_0 - b_1x_0 + b_2x_0^2 - b_3x_0^3) + (b_1 - 2b_2x_0 + 3b_3x_0^2)x + (b_2 - 3b_3x)x^2 + b_3x^3.
+  \end{align*}
+  Nun können wir die Koeffizienten auf der linken und rechten Seite der Gleichung vergleichen:
+  \begin{align*}
+    a_{0} &= b_{0} - b_{1}x_{0} + b_{2}x_{0}^{2} - b_{3}x_{0}^{3}, \\
+    a_{1} &= b_{1} - 2b_{2}x_{0} + 3b_{3}x_{0}^{2}, \\
+    a_{2} &= b_{2} - 3b_{3}x_{0}, \\
+    a_{3} &= b_{3}.
+  \end{align*}
+  Aus der vierten Gleichung erhalten wir direkt $b_3 = a_3$. Setzen wir dies in die dritte Gleichung ein, erhalten wir $b_2 = a_2 + 3a_3x_0$. Setzen wir $b_2$ und $b_3$ in die zweite Gleichung ein, erhalten wir $b_1 = a_1 + 2(a_2 + 3a_3x_0)x_0 - 3a_3x_0^2 = a_1 + 2a_2x_0 + 3a_3x_0^2$. Schliesslich setzen wir $b_1, b_2$ und $b_3$ in die erste Gleichung ein, um $b_0$ zu bestimmen:
+  \begin{align*}
+    b_0 &= a_0 + b_1x_0 - b_2x_0^2 + b_3x_0^3 \\
+    &= a_0 + (a_1 + 2a_2x_0 + 3a_3x_0^2)x_0 - (a_2 + 3a_3x_0)x_0^2 + a_3x_0^3 \\
+    &= a_0 + a_1x_0 + 2a_2x_0^2 + 3a_3x_0^3 - (a_2 + 3a_3x_0)x_0^2 + a_3x_0^3 \\
+    &= a_0 + a_1x_0 + a_2x_0^2 + a_3x_0^3.
+  \end{align*}
+  Zusammenfassend erhalten wir die Koeffizienten:
+  \begin{align*}
+    b_0 &= a_0 + a_1x_0 + a_2x_0^2 + a_3x_0^3, \\
+    b_1 &= a_1 + 2a_2x_0 + 3a_3x_0^2, \\
+    b_2 &= a_2 + 3a_3x_0, \\
+    b_3 &= a_3.
+  \end{align*}
+  \end{myanswer}
 \end{mychallenge}
 
 \clearpage
 \section{Berechnung der Koeffizienten mithilfe von Ableitungen}
-
