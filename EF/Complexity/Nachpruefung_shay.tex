@@ -1,0 +1,333 @@
+\newtoggle{withbonus} \toggletrue{withbonus} % set true to show bonus points in grade table
+
+% setting underlying course name (Grundlagenfach Mathematik, §-Unterricht, \ldots)
+\newcommand{\mycourse}{Ergänzungsfach Informatik}
+% name of the class
+\newcommand{\myclass}{4. Klassen}
+% set date
+\newcommand{\mydate}{11.05.2026}
+
+\title{\textbf{Komplexitätstheorie}}
+\author{Thomas Graf\\
+	\mycourse, \myclass}
+\date{\mydate}
+\maketitle
+\thispagestyle{headandfoot}
+
+\begin{center}
+	\fbox{\parbox{140mm}{\centering
+			\begin{itemize}
+				\item Dauer der Prüfung: $45$ Minuten
+				      %\item \textbf{Zeige in jeder Aufgabe unbedingt Deine Schritte!}
+				\item Erlaubte Hilfsmittel:
+				      \begin{itemize}
+					      \item Schreibzeug
+					            % \item Taschenrechner
+				      \end{itemize}
+			\end{itemize}}}
+\end{center}
+\vspace{10mm}
+
+\begin{center}
+	Vorname: \rule{45mm}{0.8pt}\qquad Nachname: \rule{45mm}{0.8pt}
+\end{center}
+\vspace{20mm}
+
+\begin{center}
+	\iftoggle{withbonus} {
+		\combinedgradetable[h][questions]
+	} {
+		\gradetable[h][questions]
+	}
+\end{center}
+\vspace{15mm}
+\begin{center}
+	Note:
+	\vspace{10mm}
+
+	\rule{8mm}{1.2pt}
+\end{center}
+
+\clearpage
+
+
+\begin{questions}
+
+	\question
+	Begründe oder widerlege:
+	\begin{parts}
+        \part[1] $\lr{\frac{4}{n} + \frac{7}{n^2}} \in O\lr{\frac{1}{n}}$
+        \begin{solution}
+            Es gilt
+            \begin{align*}
+                \limsup_{n\to\infty}
+                \frac{\abs{\frac{4}{n}+\frac{7}{n^2}}}{\abs{\frac{1}{n}}}
+                &=
+                \limsup_{n\to\infty}
+                n\lr{\frac{4}{n}+\frac{7}{n^2}} \\
+                &=
+                \limsup_{n\to\infty}
+                \lr{4+\frac{7}{n}} \\
+                &=4<\infty.
+            \end{align*}
+            Die Behauptung ist wahr.
+        \end{solution}
+
+        \part[1] $\lr{n^3+5n^2+1} \in O\lr{n^2}$
+        \begin{solution}
+            Es gilt
+            \begin{align*}
+                \limsup_{n\to\infty}
+                \frac{\abs{n^3+5n^2+1}}{\abs{n^2}}
+                &=
+                \limsup_{n\to\infty}
+                \lr{n+5+\frac{1}{n^2}} \\
+                &=\infty.
+            \end{align*}
+            Die Behauptung ist falsch.
+        \end{solution}
+
+        \part[1] $\lr{2^n+n^5} \in O\lr{2^n}$
+        \begin{solution}
+            Es gilt
+            \begin{align*}
+                \limsup_{n\to\infty}
+                \frac{\abs{2^n+n^5}}{\abs{2^n}}
+                &=
+                \limsup_{n\to\infty}
+                \lr{1+\frac{n^5}{2^n}} \\
+                &=1<\infty.
+            \end{align*}
+            Da $2^n$ schneller wächst als jedes Polynom, ist die Behauptung wahr.
+        \end{solution}
+
+        \part[1] $\lr{4^n} \in O\lr{3^n}$
+        \begin{solution}
+            Es gilt
+            \begin{align*}
+                \limsup_{n\to\infty}
+                \frac{\abs{4^n}}{\abs{3^n}}
+                &=
+                \limsup_{n\to\infty}
+                \lr{\frac{4}{3}}^n \\
+                &=\infty.
+            \end{align*}
+            Die Behauptung ist falsch.
+        \end{solution}
+
+        \part[1] $\lr{\sqrt{n}+n\log(n)} \in O\lr{n\log(n)}$
+        \begin{solution}
+            Es gilt
+            \begin{align*}
+                \limsup_{n\to\infty}
+                \frac{\abs{\sqrt{n}+n\log(n)}}{\abs{n\log(n)}}
+                &=
+                \limsup_{n\to\infty}
+                \lr{
+                    \frac{1}{\sqrt{n}\log(n)}+1
+                } \\
+                &=1<\infty.
+            \end{align*}
+            Die Behauptung ist wahr.
+        \end{solution}
+
+		\droptotalpoints
+	\end{parts}
+
+
+    \question Gegeben sei der folgende Suchalgorithmus:
+    \begin{lstlisting}[language=Python]
+def count_until_greater(arr, n, limit):
+    count = 0
+    for i in range(n):
+        count += 1
+        if arr[i] > limit:
+            return count
+    return count
+    \end{lstlisting}
+    Der Algorithmus durchsucht ein Array von links nach rechts und bricht ab, sobald ein Eintrag grösser als \lstinline|limit| gefunden wird.
+
+    \begin{parts}
+        \part[1] Bestimme die Laufzeit im best-case.
+        \begin{solution}
+            Im best-case ist bereits der erste Eintrag grösser als \lstinline|limit|. Dann wird die Schleife nur einmal ausgeführt. Die Laufzeit ist $\Theta(1)$.
+        \end{solution}
+
+        \part[1] Die Laufzeit des Algorithmus im worst-case ist:
+        \begin{checkboxes}
+            \choice $\Theta(1)$
+            \correctchoice $\Theta(n)$
+            \choice $\Theta(n^2)$
+            \choice $\Theta(\log(n))$
+            \choice keine der obigen Antworten ist richtig
+        \end{checkboxes}
+    \end{parts} 
+    \droptotalpoints
+
+
+    \question Bestimme jeweils die Laufzeit der folgenden Algorithmen in Abhängigkeit von $n\in\N$.
+    \begin{parts}
+
+        \part[1] \leavevmode
+        \begin{lstlisting}[language=Python]
+result = 0
+for i in range(n):
+    for j in range(n):
+        result += i + j
+        \end{lstlisting}
+        \begin{checkboxes}
+            \choice $\Theta(n)$
+            \choice $\Theta(\sqrt{n})$
+            \choice $\Theta(\log(n))$
+            \correctchoice $\Theta(n^2)$
+            \choice $\Theta(n \log(n))$
+            \choice keine der obigen Antworten ist richtig
+        \end{checkboxes}
+        \begin{solution}
+            Beide Schleifen laufen jeweils $n$-mal. Insgesamt gibt es also $n\cdot n=n^2$ Durchläufe. Die Laufzeit ist $\Theta(n^2)$.
+        \end{solution}
+
+        \part[1] \leavevmode
+        \begin{lstlisting}[language=Python]
+result = 0
+i = n
+while i >= 1:
+    result += i
+    i //= 3
+        \end{lstlisting}
+        \begin{checkboxes}
+            \choice $\Theta(1)$
+            \choice $\Theta(\sqrt{n})$
+            \choice $\Theta(n)$
+            \choice $\Theta(n^2)$
+            \correctchoice $\Theta(\log(n))$
+            \choice keine der obigen Antworten ist richtig
+        \end{checkboxes}
+        \begin{solution}
+            Die Variable $i$ wird in jedem Schritt durch $3$ geteilt. Daher gibt es ungefähr $\log_3(n)$ Durchläufe. Die Laufzeit ist $\Theta(\log(n))$.
+        \end{solution}
+
+        \part[1] \leavevmode
+        \begin{lstlisting}[language=Python]
+result = 0
+for i in range(n):
+    j = 1
+    while j <= n:
+        result += 1
+        j *= 2
+        \end{lstlisting}
+        \begin{checkboxes}
+            \choice $\Theta(n)$
+            \choice $\Theta(\sqrt{n})$
+            \choice $\Theta(\log(n))$
+            \choice $\Theta(n^2)$
+            \correctchoice $\Theta(n \log(n))$
+            \choice keine der obigen Antworten ist richtig
+        \end{checkboxes}
+        \begin{solution}
+            Die äussere Schleife läuft $n$-mal. Die innere Schleife verdoppelt $j$ in jedem Schritt und läuft deshalb $\Theta(\log(n))$-mal. Insgesamt ergibt sich $\Theta(n\log(n))$.
+        \end{solution}
+
+    \end{parts} 
+    \droptotalpoints
+
+
+    \question Der Algorithmus \lstinline|selection_sort| ist gegeben durch:
+    \begin{lstlisting}[language=Python]
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+    \end{lstlisting}
+
+    \begin{parts}
+        \part[2] Bestimme die worst-case Laufzeit von \lstinline|selection_sort|. Zeige deine Schritte.
+        \begin{solution}
+            Die äussere Schleife läuft $n$-mal. Für jedes $i$ läuft die innere Schleife von $i+1$ bis $n-1$, also ungefähr $n-i-1$-mal.
+
+            Insgesamt ergibt sich
+            \begin{align*}
+                \sum_{i=0}^{n-1} (n-i-1)
+                &=
+                (n-1)+(n-2)+\dots+1+0 \\
+                &=
+                \frac{n(n-1)}{2}
+                \in \Theta(n^2).
+            \end{align*}
+
+            Die worst-case Laufzeit ist also $\Theta(n^2)$.
+        \end{solution}
+
+        \part[2] Bestimme ebenso die best-case Laufzeit von \lstinline|selection_sort|. Erkläre deine Überlegungen.
+        \begin{solution}
+            Auch im best-case muss für jede Position $i$ das restliche Array durchsucht werden, um das Minimum zu finden. Die innere Schleife läuft also gleich oft wie im worst-case.
+
+            Daher ist auch die best-case Laufzeit
+            \[
+                \Theta(n^2).
+            \]
+        \end{solution}
+    \end{parts}
+    \droptotalpoints
+
+
+    \question[2] Analysiere die Laufzeit des folgenden Algorithmus:
+    \begin{lstlisting}[language=Python]
+def strange_sum(n):
+    result = 0
+    i = 1
+    while i <= n:
+        for j in range(n):
+            result += 1
+        i *= 2
+    return result
+    \end{lstlisting}
+
+    Bestimme die Laufzeit des Algorithmus. Erkläre deine Überlegungen.
+    \begin{solution}
+        Die while-Schleife verdoppelt $i$ in jedem Schritt. Deshalb läuft sie $\Theta(\log(n))$-mal.
+
+        Für jeden Durchlauf der while-Schleife läuft die for-Schleife $n$-mal.
+
+        Insgesamt ergibt sich daher
+        \[
+            \Theta(\log(n))\cdot \Theta(n)
+            =
+            \Theta(n\log(n)).
+        \]
+
+        Die Laufzeit ist also $\Theta(n\log(n))$.
+    \end{solution}
+
+
+	\clearpage
+	\begin{center}
+	Es seien $f$ und $g$ Folgen reeller Zahlen.\\
+    \end{center}
+	\vspace{0.5cm}
+	\centering
+	\small
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Notation} & \textbf{Definition}                                              & \textbf{Bedeutung}                                  \\
+		\hline
+		$f \in o(g)$      & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = 0$         & $f$ wächst langsamer als $g$                        \\
+		\hline
+		$f \in O(g)$      & $\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$ & $f$ wächst höchstens so schnell wie $g$             \\
+		\hline
+		$f \in \Omega(g)$ & $\liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} > 0$      & \makecell{$f$ wächst mindestens so schnell wie $g$, \\$g\in O(f)$}                          \\
+		\hline
+		$f \in \Theta(g)$ & \makecell{$f \in O(g)\cap \Omega(g)$,                                                                                  \\ $0 < \liminf\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} \leq$ \\ $\leq\limsup\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} < \infty$} & \makecell{$f$ wächst gleich schnell wie $g$,        \\sowohl $f\in O(g)$ als auch $f\in\Omega(g)$} \\
+		\hline
+		$f \in \omega(g)$ & $\lim\limits_{n \to \infty} \abs{\frac{f(n)}{g(n)}} = \infty$    & \makecell{$f$ wächst schneller als $g$,             \\$g\in o(f)$}                                      \\
+		\hline
+	\end{tabular}
+
+	(Wir werden meist nur $\lim$ anstelle von $\limsup$ oder $\liminf$ betrachten müssen.)
+
+
+\end{questions}
