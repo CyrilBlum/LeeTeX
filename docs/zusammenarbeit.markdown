@@ -6,7 +6,7 @@ nav_order: 4
 
 # Regeln für die Zusammenarbeit
 
-Wenn Sie am GymForMATeCH-Repository mitarbeiten möchten, beachten Sie bitte die folgenden Regeln.
+Wenn Sie am FreeFlower-Repository mitarbeiten möchten, beachten Sie bitte die folgenden Regeln.
 
 Repository-Link: [github.com/CyrilBlum/LeeTeX](https://github.com/CyrilBlum/LeeTeX)
 

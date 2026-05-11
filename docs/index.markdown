@@ -1,10 +1,10 @@
 ---
 layout: home
-title: GymForMATeCH Docs
+title: FreeFlower Docs
 nav_exclude: true
 ---
 
-# GymForMATeCH Documentation
+# FreeFlower Documentation
 
 Welcome!
 

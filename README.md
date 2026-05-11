@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="Logos/FreeFlower.png" alt="GymForMATeCH Logo" width="300"/><br>
+	<img src="Logos/FreeFlower.png" alt="FreeFlower Logo" width="300"/><br>
 	<br>
 	© Educational Resources<br>
 	<br>
@@ -28,7 +28,7 @@ We recommend using VS Code for modifying the code.
 
 If you wish to add a git hash to the document, execute the following steps:
 
-- Navigate to the GymForMATeCH root directory
+- Navigate to the FreeFlower root directory
 - `cp -a Git_Internal_Files/. .git/hooks`
 - `cd .git/hooks/`
 - `chmod ug+x post-checkout post-commit post-merge`
