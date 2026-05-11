@@ -3,3 +3,57 @@
 \section{Velocity-Verlet Methode}
 In der klassischen Mechanik ist es möglich die Position und Geschwindigkeit eines Teilchens gleichzeitig zu kennen. 
 Sind die Position und die Geschwindigkeit eines Teilchens zu irgendeinem Zeitpunkt bekannt, so diktiert die Bewegungsgleichung sowohl die Zukunft als auch die Vergangenheit des Zustands dieses Teilchens --- vorausgesetzt die Kräfte, welche auf das Teilchen wirken, sind bekannt.
+
+
+% Die Velocity-Verlet Methode ist ein numerisches Verfahren zur Integration von Bewegungsgleichungen, das insbesondere in der Molekulardynamik und anderen physikalischen Simulationen weit verbreitet ist. Sie bietet eine effiziente Möglichkeit, die Position und Geschwindigkeit eines Teilchens über die Zeit zu aktualisieren, während sie gleichzeitig eine gute Energieerhaltung gewährleistet.
+% \section{Problemstellung}
+% Wir betrachten ein physikalisches System, das durch eine Differentialgleichung zweiter Ordnung (Newtonsches Bewegungsgesetz) beschrieben wird:
+% \begin{equation}
+%     \ddot{x}(t) = a(x(t), t)
+% \end{equation}
+% Hierbei hängt die Beschleunigung $a$ nur von der Position $x$ und der Zeit $t$ ab, jedoch \textbf{nicht} von der Geschwindigkeit $v$. Die Anfangswerte zum Zeitpunkt $t_n$ sind gegeben als $x(t_n) = x_n$ und $v(t_n) = v_n$. Gesucht sind die Werte $x_{n+1}$ und $v_{n+1}$ zum Zeitpunkt $t_{n+1} = t_n + \Delta t$.
+
+% \section{Herleitung der Position $x_{n+1}$}
+% Die Position wird mittels einer Taylor-Entwicklung zweiten Grades um den Zeitpunkt $t_n$ bestimmt:
+% \begin{equation}
+%     x(t_n + \Delta t) = x(t_n) + \dot{x}(t_n)\Delta t + \frac{1}{2}\ddot{x}(t_n)\Delta t^2 + \mathcal{O}(\Delta t^3)
+% \end{equation}
+% In diskreter Notation ergibt dies den Update-Schritt für die Position:
+% \begin{equation}
+%     x_{n+1} = x_n + v_n \Delta t + \frac{1}{2} a_n \Delta t^2
+% \end{equation}
+% wobei $a_n = a(x_n, t_n)$.
+
+% \section{Herleitung der Geschwindigkeit $v_{n+1}$}
+% Um die Geschwindigkeit $v_{n+1}$ zu erhalten, nutzen wir den Mittelwertsatz der Integralrechnung für die Beschleunigung:
+% \begin{equation}
+%     v_{n+1} = v_n + \int_{t_n}^{t_{n+1}} a(x(t), t) \, dt
+% \end{equation}
+% Die Velocity-Verlet-Methode nähert dieses Integral durch die Trapezregel an:
+% \begin{equation}
+%     v_{n+1} \approx v_n + \frac{a(x_n, t_n) + a(x_{n+1}, t_{n+1})}{2} \Delta t
+% \end{equation}
+% Dies lässt sich kompakt schreiben als:
+% \begin{equation}
+%     v_{n+1} = v_n + \frac{1}{2}(a_n + a_{n+1}) \Delta t
+% \end{equation}
+
+% \section{Der Algorithmus in Einzelschritten}
+% Für eine numerische Implementierung wird das Verfahren meist in drei aufeinanderfolgende Schritte unterteilt, um die Recheneffizienz zu maximieren:
+
+% \begin{enumerate}
+%     \item \textbf{Positions-Update:} 
+%     \[ x_{n+1} = x_n + v_n \Delta t + \frac{1}{2} a_n \Delta t^2 \]
+%     \item \textbf{Berechnung der neuen Beschleunigung:} 
+%     \[ a_{n+1} = a(x_{n+1}, t_{n+1}) \]
+%     \item \textbf{Geschwindigkeits-Update:} 
+%     \[ v_{n+1} = v_n + \frac{1}{2} (a_n + a_{n+1}) \Delta t \]
+% \end{enumerate}
+
+% \section{Eigenschaften}
+% \begin{itemize}
+%     \item \textbf{Ordnung:} Die Methode ist global von der Ordnung $\mathcal{O}(\Delta t^2)$.
+%     \item \textbf{Symplektizität:} Sie ist ein symplektischer Integrator, was eine hervorragende Energieerhaltung in konservativen Systemen garantiert.
+%     \item \textbf{Reversibilität:} Die Methode ist zeitumkehrinvariant.
+% \end{itemize}
+
