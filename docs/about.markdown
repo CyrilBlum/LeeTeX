@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 <div align="center">
-	<img src="../assets/images/Logo FreeFlower.png" alt="FreeFlower Logo" width="300"/><br>
+	<img src="../assets/images/FreeFlower.png" alt="FreeFlower Logo" width="300"/><br>
 	<br>
 	© Educational Resources<br>
 	<br>
