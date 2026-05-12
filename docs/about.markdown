@@ -13,7 +13,7 @@ permalink: /about/
 
 ## About
 
-FreeFlower is an open-source project providing high-quality teaching materials for Swiss upper-secondary education (Gymnasium) with a focus on informatics. It integrates existing educational resources with a focus on informatics, meeting rigorous formal standards (see [Rules for Contribution](https://cyrilblum.github.io/LeeTeX/zusammenarbeit.html)). Built on LaTeX, this repository aims to support Swiss educational institutions through meta-analysis and effective material integration.
+FreeFlower is an open-source project providing high-quality teaching materials for Swiss upper-secondary education (Gymnasium) with a focus on informatics. It integrates existing educational resources with a focus on informatics, meeting rigorous formal standards (see [Rules for Contribution](https://cyrilblum.github.io/FreeFlower/zusammenarbeit.html)). Built on LaTeX, this repository aims to support Swiss educational institutions through meta-analysis and effective material integration.
 
 ## Compiling FreeFlower
 

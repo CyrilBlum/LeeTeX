@@ -8,7 +8,7 @@ nav_order: 4
 
 Wenn Sie am FreeFlower-Repository mitarbeiten möchten, beachten Sie bitte die folgenden Regeln.
 
-Repository-Link: [github.com/CyrilBlum/LeeTeX](https://github.com/CyrilBlum/LeeTeX)
+Repository-Link: [github.com/CyrilBlum/FreeFlower](https://github.com/CyrilBlum/FreeFlower)
 
 - Bitte nehmen Sie zuerst Kontakt mit den Autorinnen und Autoren auf, damit Sie eine kurze Einführung erhalten (s. Seite [About]({{ '/about/' | relative_url }}))
 - Bitte pushen Sie niemals direkt auf `main`, sondern erstellen Sie immer einen Branch und arbeiten Sie mit Pull Requests.
