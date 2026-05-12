@@ -11,6 +11,10 @@ FreeFlower is an open-source project providing high-quality teaching materials f
 
 ## GitHub Page
 
+[![Compile TeX Files](https://github.com/CyrilBlum/FreeFlower/actions/workflows/compile.yml/badge.svg)](https://github.com/CyrilBlum/FreeFlower/actions/workflows/compile.yml)
+
+[![Publish Docs](https://github.com/CyrilBlum/FreeFlower/actions/workflows/github-pages.yml/badge.svg)](https://github.com/CyrilBlum/FreeFlower/actions/workflows/github-pages.yml)
+
 The project documentation is available on GitHub Pages:
 https://cyrilblum.github.io/FreeFlower/
 
