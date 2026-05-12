@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 <div align="center">
-	<img src="../assets/images/Logo GymForMATeCH Lines.png" alt="GymForMATeCH Logo" width="300"/><br>
+	<img src="../assets/images/Logo FreeFlower.png" alt="FreeFlower Logo" width="300"/><br>
 	<br>
 	© Educational Resources<br>
 	<br>
@@ -13,14 +13,9 @@ permalink: /about/
 
 ## About
 
-- “Gym” stands for (Swiss) Gymnasium. This project primarily provides open-source teaching materials at upper-secondary level.
-- “ymForMaTeCH” stands for the project’s informatics focus.
-- “ForM” stands for form, as the teaching materials are intended to meet high formal standards (see [Rules for Contribution](https://cyrilblum.github.io/LeeTeX/zusammenarbeit.html)).
-- “MA” stands for Maturität, but also for meta-analysis, as one goal of this project is to integrate existing teaching materials as effectively as possible.
-- “TeCH” stands for LaTeX as the technical foundation of this repository.
-- “CH” stands for the Swiss context of this repository.
+FreeFlower is an open-source project providing high-quality teaching materials for Swiss upper-secondary education (Gymnasium) with a focus on informatics. It integrates existing educational resources with a focus on informatics, meeting rigorous formal standards (see [Rules for Contribution](https://cyrilblum.github.io/LeeTeX/zusammenarbeit.html)). Built on LaTeX, this repository aims to support Swiss educational institutions through meta-analysis and effective material integration.
 
-## Compiling GymForMATeCH
+## Compiling FreeFlower
 
 To compile this project, navigate to `main.tex` and chose to run either a `book`, `article`, `exam`, `beamer` or `flashcard` documentclass, using the toggles. Uncomment a line to compile a certain project. 
 
@@ -34,7 +29,7 @@ We recommend using VS Code for modifying the code.
 
 If you wish to add a git hash to the document, execute the following steps:
 
-- Navigate to the GymForMATeCH root directory
+- Navigate to the FreeFlower root directory
 - `cp -a Git_Internal_Files/. .git/hooks`
 - `cd .git/hooks/`
 - `chmod ug+x post-checkout post-commit post-merge`
