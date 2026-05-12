@@ -4,51 +4,65 @@
 In der klassischen Mechanik ist es möglich die Position und Geschwindigkeit eines Teilchens gleichzeitig zu kennen. 
 Sind die Position und die Geschwindigkeit eines Teilchens zu irgendeinem Zeitpunkt bekannt, so diktiert die Bewegungsgleichung sowohl die Zukunft als auch die Vergangenheit des Zustands dieses Teilchens --- vorausgesetzt die Kräfte, welche auf das Teilchen wirken, sind bekannt.
 
+\par
+Die Velocity-Verlet Methode ist ein numerisches Verfahren zum näherungsweisen Lösen von Bewegungsgleichungen, das insbesondere in der Molekulardynamik und anderen physikalischen Simulationen weit verbreitet ist. Sie bietet eine effiziente Möglichkeit, die Position und Geschwindigkeit eines Teilchens über die Zeit zu aktualisieren, während sie gleichzeitig eine gute Energieerhaltung gewährleistet.
 
-% Die Velocity-Verlet Methode ist ein numerisches Verfahren zur Integration von Bewegungsgleichungen, das insbesondere in der Molekulardynamik und anderen physikalischen Simulationen weit verbreitet ist. Sie bietet eine effiziente Möglichkeit, die Position und Geschwindigkeit eines Teilchens über die Zeit zu aktualisieren, während sie gleichzeitig eine gute Energieerhaltung gewährleistet.
-% \section{Problemstellung}
-% Wir betrachten ein physikalisches System, das durch eine Differentialgleichung zweiter Ordnung (Newtonsches Bewegungsgesetz) beschrieben wird:
-% \begin{equation}
-%     \ddot{x}(t) = a(x(t), t)
-% \end{equation}
-% Hierbei hängt die Beschleunigung $a$ nur von der Position $x$ und der Zeit $t$ ab, jedoch \textbf{nicht} von der Geschwindigkeit $v$. Die Anfangswerte zum Zeitpunkt $t_n$ sind gegeben als $x(t_n) = x_n$ und $v(t_n) = v_n$. Gesucht sind die Werte $x_{n+1}$ und $v_{n+1}$ zum Zeitpunkt $t_{n+1} = t_n + \Delta t$.
+\section{Problemstellung}
+Wir betrachten ein physikalisches System, das durch eine Differentialgleichung zweiter Ordnung (Newtonsches Bewegungsgesetz) beschrieben wird:
+\begin{equation}
+    \ddot{x}(t) = a(x(t), t)
+\end{equation}
+Hierbei hängt die Beschleunigung $a$ nur von der Position $x$ und der Zeit $t$ ab, jedoch \textbf{nicht} von der Geschwindigkeit $v$. 
+Bitte beachten Sie, dass \cref{eq:pendel} (Pendelgleichung) ein Beispiel für eine solche Bewegungsgleichung ist, da die Beschleunigung nur von der Position, nicht aber von der Geschwindigkeit abhängt. Wir können nämlich
+\begin{align*}
+  \ddot{\varphi} (t) = -\frac{g}{L}\cdot\sin(\varphi (t)),
+\end{align*}
+mit den Bennenungen $x(t) = \varphi(t)$ und $a(\varphi, t) = -\frac{g}{L}\cdot\sin(\varphi)$ in der Form $\ddot{x}(t) = a(x(t), t)$ schreiben.
 
-% \section{Herleitung der Position $x_{n+1}$}
-% Die Position wird mittels einer Taylor-Entwicklung zweiten Grades um den Zeitpunkt $t_n$ bestimmt:
-% \begin{equation}
-%     x(t_n + \Delta t) = x(t_n) + \dot{x}(t_n)\Delta t + \frac{1}{2}\ddot{x}(t_n)\Delta t^2 + \mathcal{O}(\Delta t^3)
-% \end{equation}
-% In diskreter Notation ergibt dies den Update-Schritt für die Position:
-% \begin{equation}
-%     x_{n+1} = x_n + v_n \Delta t + \frac{1}{2} a_n \Delta t^2
-% \end{equation}
-% wobei $a_n = a(x_n, t_n)$.
+\par
+Die Anfangswerte zum Zeitpunkt $t_n$ sind gegeben als $x(t_n) = x_n$ und $v(t_n) = v_n$. Gesucht sind die Werte $x_{n+1}$ und $v_{n+1}$ zum Zeitpunkt $t_{n+1} = t_n + \Delta t$.
 
-% \section{Herleitung der Geschwindigkeit $v_{n+1}$}
-% Um die Geschwindigkeit $v_{n+1}$ zu erhalten, nutzen wir den Mittelwertsatz der Integralrechnung für die Beschleunigung:
-% \begin{equation}
-%     v_{n+1} = v_n + \int_{t_n}^{t_{n+1}} a(x(t), t) \, dt
-% \end{equation}
-% Die Velocity-Verlet-Methode nähert dieses Integral durch die Trapezregel an:
-% \begin{equation}
-%     v_{n+1} \approx v_n + \frac{a(x_n, t_n) + a(x_{n+1}, t_{n+1})}{2} \Delta t
-% \end{equation}
-% Dies lässt sich kompakt schreiben als:
-% \begin{equation}
-%     v_{n+1} = v_n + \frac{1}{2}(a_n + a_{n+1}) \Delta t
-% \end{equation}
+\section{Herleitung der Position $x_{n+1}$}
+Die Position wird mittels einer Taylor-Entwicklung zweiten Grades um den Zeitpunkt $t_n$ bestimmt:
+\begin{equation}
+    x(t_n + \Delta t) = x(t_n) + \dot{x}(t_n)\Delta t + \frac{1}{2}\ddot{x}(t_n)\Delta t^2 + \mathcal{O}(\Delta t^3)
+\end{equation}
+In diskreter Notation ergibt dies den Update-Schritt für die Position:
+\begin{equation}
+    x_{n+1} = x_n + v_n \Delta t + \frac{1}{2} a_n \Delta t^2
+\end{equation}
+wobei $a_n = a(x_n, t_n)$.
 
-% \section{Der Algorithmus in Einzelschritten}
-% Für eine numerische Implementierung wird das Verfahren meist in drei aufeinanderfolgende Schritte unterteilt, um die Recheneffizienz zu maximieren:
+\section{Herleitung der Geschwindigkeit $v_{n+1}$}
+Um die Geschwindigkeit $v_{n+1}$ zu erhalten, nutzen wir den Mittelwertsatz der Integralrechnung für die Beschleunigung:
+\begin{equation}
+    v_{n+1} = v_n + \int_{t_n}^{t_{n+1}} a(x(t), t) \, dt
+\end{equation}
+Die Velocity-Verlet-Methode nähert dieses Integral durch die Trapezregel an:
+\begin{equation}
+    v_{n+1} \approx v_n + \frac{a(x_n, t_n) + a(x_{n+1}, t_{n+1})}{2} \Delta t
+\end{equation}
+Dies lässt sich kompakt schreiben als:
+\begin{equation}
+    v_{n+1} = v_n + \frac{1}{2}(a_n + a_{n+1}) \Delta t
+\end{equation}
 
-% \begin{enumerate}
-%     \item \textbf{Positions-Update:} 
-%     \[ x_{n+1} = x_n + v_n \Delta t + \frac{1}{2} a_n \Delta t^2 \]
-%     \item \textbf{Berechnung der neuen Beschleunigung:} 
-%     \[ a_{n+1} = a(x_{n+1}, t_{n+1}) \]
-%     \item \textbf{Geschwindigkeits-Update:} 
-%     \[ v_{n+1} = v_n + \frac{1}{2} (a_n + a_{n+1}) \Delta t \]
-% \end{enumerate}
+\section{Der Algorithmus in Einzelschritten}
+Für eine numerische Implementierung wird das Verfahren meist in drei aufeinanderfolgende Schritte unterteilt, um die Recheneffizienz zu maximieren:
+
+\begin{enumerate}
+    \item \textbf{Update der Position:} 
+    \[ x_{n+1} = x_n + v_n \Delta t + \frac{1}{2} a_n \Delta t^2 \]
+    \item \textbf{Update der Beschleunigung:} 
+    \[ a_{n+1} = a(x_{n+1}, t_{n+1}) \]
+    \item \textbf{Update der Geschwindigkeit:} 
+    \[ v_{n+1} = v_n + \frac{1}{2} (a_n + a_{n+1}) \Delta t \]
+\end{enumerate}
+
+\clearpage
+\lstinputlisting[language=Python,caption=\texttt{velocity\_verlet\_integrator.py},label=listing:vvi]{EF/physikalische_simulation/Code/velocity_verlet_integrator.py}
+
+
 
 % \section{Eigenschaften}
 % \begin{itemize}
