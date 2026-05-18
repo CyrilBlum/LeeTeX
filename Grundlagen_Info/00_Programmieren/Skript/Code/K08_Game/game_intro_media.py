@@ -39,7 +39,7 @@ except Exception:
 background_color = (50, 80, 120)
 clock = pg.time.Clock()  # Clock für Zeitsteuerung erstellen
 
-running = True  #  Hauptschleife
+running = True  #  Hauptschleife
 collided = False
 speed = 5
 

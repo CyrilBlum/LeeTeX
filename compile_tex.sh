@@ -209,6 +209,7 @@ book_topics=(
     "Kompression:Grundlagen_Info/04_Kompression/Skript.tex"
     "Datenintegrität:Grundlagen_Info/05_Datenintegritaet/Skript/Skript.tex"
     "Datenbanken:Grundlagen_Info/06_Datenbanken/Skript/Skript.tex"
+    "Datenbanken_Cheatsheet:Grundlagen_Info/06_Datenbanken/Skript/Skript_Cheatsheet.tex"
     # "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
     "Netzwerke:Grundlagen_Info/07_Netzwerke/Skript/Skript.tex"
     "Tabellenkalkulation:Grundlagen_Info/09_Tabellenkalkulation/skript_tabellenkalkulation.tex"
