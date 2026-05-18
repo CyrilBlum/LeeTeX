@@ -1,19 +1,17 @@
 def finde_min_max_und_index(liste):
-    if not liste:
-        return None  # Leere Liste
 
     min_wert = max_wert = liste[0]
     min_index = max_index = 0
 
-    for i, zahl in enumerate(liste):
-        if zahl < min_wert:
-            min_wert = zahl
+    for i in range(len(liste)):
+        if liste[i] < min_wert:
+            min_wert = liste[i]
             min_index = i
-        if zahl > max_wert:
-            max_wert = zahl
+        if liste[i] > max_wert:
+            max_wert = liste[i]
             max_index = i
 
-    return min_wert, min_index, max_wert, max_index
+    return [min_wert, min_index, max_wert, max_index]
 
 
 # Beispielaufruf:
