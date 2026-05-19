@@ -1,5 +1,5 @@
 \chapter{Schlüsseltausch-Verfahren}\label{ch:schluesseltausch}
-\begin{figure}[H]
+ \begin{figure}[H]
 	\centering
 
 	\newcommand{\closedlock}[2]{%
@@ -43,7 +43,7 @@
 
 	\newcommand{\lockbox}[3]{%
 		\begin{tikzpicture}[x=1cm,y=1cm]
-			\draw[gray,line width=.7pt] (0,0) rectangle (3.15,1.62);
+			% \draw[gray,line width=.7pt] (0,0.2) rectangle (2.85,1.42);
 
 			\ring{(.58,1.15)}{.27}
 			\ring{(1.76,1.15)}{.27}
@@ -65,7 +65,8 @@
 	}
 
 	\newcommand{\xortable}[6]{%
-		\begin{tabular}{r@{\hspace{1.2cm}}l}
+		\small
+		\begin{tabular}{rll}
 			#1               & \texttt{#2} \\
 			$\oplus\quad$ #3 & \texttt{#4} \\
 			\midrule
@@ -73,9 +74,20 @@
 		\end{tabular}
 	}
 
-	\begin{tabular}{c@{\hspace{2.2cm}}c}
+	\newcommand{\messagearrow}[3]{%
+		\begin{tikzpicture}[x=1cm,y=1cm]
+			\node[font=\small] at (0,.32) {#1};
+			\draw[->,line width=.65pt] (#2,0) -- (#3,0);
+		\end{tikzpicture}
+	}
 
-		\begin{minipage}{3.8cm}
+	\begin{tabular}{c@{\hspace{.3cm}}c@{\hspace{.3cm}}c}
+		\textbf{Absender} &
+		&
+		\textbf{Empfänger}
+		\\
+
+		\begin{minipage}{4.3cm}
 			\centering
 			\lockbox{c}{o}{%
 				\draw[->,line width=.45pt] (.88,-.28) -- (.88,.18);
@@ -83,15 +95,48 @@
 
 			\vspace{.25em}
 			Absender schliesst
-		\end{minipage}
-		 &
-		\xortable
-		{\textcolor{RoyalBlue}{Klartext}}{\textcolor{RoyalBlue}{101011}}
-		{\textcolor{red}{Absender-Schlüssel}}{\textcolor{red}{011011}}
-		{Erster Krypto-Text}{110000}
-		\\[2.2cm]
 
-		\begin{minipage}{3.8cm}
+			\vspace{.8em}
+			\xortable
+			{\textcolor{RoyalBlue}{Klartext}}{\textcolor{RoyalBlue}{101011}}
+			{\textcolor{red}{Absender-Schlüssel}}{\textcolor{red}{011011}}
+			{Erster Krypto-Text}{110000}
+		\end{minipage}
+		&
+		\messagearrow{Erster Krypto-Text: \texttt{110000}}{-1.75}{1.75}
+		&
+		\begin{minipage}{4.3cm}
+			\centering
+			\phantom{\lockbox{o}{o}{}}
+
+			\vspace{.25em}
+			\phantom{Empfänger wartet}
+
+			\vspace{.8em}
+			\phantom{\xortable
+			{Erster Krypto-Text}{110000}
+			{\textcolor{ForestGreen}{Empfänger-Schlüssel}}{\textcolor{ForestGreen}{101010}}
+			{Zweiter Krypto-Text}{011010}}
+		\end{minipage}
+		\\[1.2cm]
+
+		\begin{minipage}{4.3cm}
+			\centering
+			\phantom{\lockbox{o}{o}{}}
+
+			\vspace{.25em}
+			\phantom{Absender wartet}
+
+			\vspace{.8em}
+			\phantom{\xortable
+			{Zweiter Krypto-Text}{011010}
+			{\textcolor{red}{Absender-Schlüssel}}{\textcolor{red}{011011}}
+			{Dritter Krypto-Text}{000001}}
+		\end{minipage}
+		&
+		\messagearrow{Zweiter Krypto-Text: \texttt{011010}}{1.75}{-1.75}
+		&
+		\begin{minipage}{4.3cm}
 			\centering
 			\lockbox{c}{c}{%
 				\draw[->,line width=.45pt] (2.06,-.28) -- (2.06,.18);
@@ -99,15 +144,16 @@
 
 			\vspace{.25em}
 			Empfänger schliesst
-		\end{minipage}
-		 &
-		\xortable
-		{Erster Krypto-Text}{110000}
-		{\textcolor{ForestGreen}{Empfänger-Schlüssel}}{\textcolor{ForestGreen}{101010}}
-		{Zweiter Krypto-Text}{011010}
-		\\[2.2cm]
 
-		\begin{minipage}{3.8cm}
+			\vspace{.8em}
+			\xortable
+			{Erster Krypto-Text}{110000}
+			{\textcolor{ForestGreen}{Empfänger-Schlüssel}}{\textcolor{ForestGreen}{101010}}
+			{Zweiter Krypto-Text}{011010}
+		\end{minipage}
+		\\[1.2cm]
+
+		\begin{minipage}{4.3cm}
 			\centering
 			\lockbox{o}{c}{%
 				\draw[->,line width=.45pt] (.88,-.28) -- (.88,.18);
@@ -115,15 +161,50 @@
 
 			\vspace{.25em}
 			Absender öffnet
-		\end{minipage}
-		 &
-		\xortable
-		{Zweiter Krypto-Text}{011010}
-		{\textcolor{red}{Absender-Schlüssel}}{\textcolor{red}{011011}}
-		{Dritter Krypto-Text}{000001}
-		\\[2.2cm]
 
-		\begin{minipage}{3.8cm}
+			\vspace{.8em}
+			\xortable
+			{Zweiter Krypto-Text}{011010}
+			{\textcolor{red}{Absender-Schlüssel}}{\textcolor{red}{011011}}
+			{Dritter Krypto-Text}{000001}
+		\end{minipage}
+		&
+		\messagearrow{Dritter Krypto-Text: \texttt{000001}}{-1.75}{1.75}
+		&
+		\begin{minipage}{4.3cm}
+			\centering
+			\phantom{\lockbox{o}{o}{}}
+
+			\vspace{.25em}
+			\phantom{Empfänger wartet}
+
+			\vspace{.8em}
+			\phantom{\xortable
+			{Dritter Krypto-Text}{000001}
+			{\textcolor{ForestGreen}{Empfänger-Schlüssel}}{\textcolor{ForestGreen}{101010}}
+			{\textcolor{RoyalBlue}{Klartext}}{\textcolor{RoyalBlue}{101011}}}
+		\end{minipage}
+		\\[1.2cm]
+
+		\begin{minipage}{4.3cm}
+			\centering
+			\phantom{\lockbox{o}{o}{}}
+
+			\vspace{.25em}
+			\phantom{Absender fertig}
+
+			\vspace{.8em}
+			\phantom{\xortable
+			{\textcolor{RoyalBlue}{Klartext}}{\textcolor{RoyalBlue}{101011}}
+			{\textcolor{red}{Absender-Schlüssel}}{\textcolor{red}{011011}}
+			{Erster Krypto-Text}{110000}}
+		\end{minipage}
+		&
+		\begin{tikzpicture}[x=1cm,y=1cm]
+			\node[font=\small] at (0,0) {Empfänger erhält den Klartext};
+		\end{tikzpicture}
+		&
+		\begin{minipage}{4.3cm}
 			\centering
 			\lockbox{o}{o}{%
 				\draw[->,line width=.45pt] (2.06,-.28) -- (2.06,.18);
@@ -131,16 +212,159 @@
 
 			\vspace{.25em}
 			Empfänger öffnet
+
+			\vspace{.8em}
+			\xortable
+			{Dritter Krypto-Text}{000001}
+			{\textcolor{ForestGreen}{Empfänger-Schlüssel}}{\textcolor{ForestGreen}{101010}}
+			{\textcolor{RoyalBlue}{Klartext}}{\textcolor{RoyalBlue}{101011}}
 		\end{minipage}
-		 &
-		\xortable
-		{Dritter Krypto-Text}{000001}
-		{\textcolor{ForestGreen}{Empfänger-Schlüssel}}{\textcolor{ForestGreen}{101010}}
-		{\textcolor{RoyalBlue}{Klartext}}{\textcolor{RoyalBlue}{101011}}
 	\end{tabular}
 
-	\caption{Schlüsseltausch}
+	\caption{Schlüsseltausch mit öffentlichen Schlüsseln}
 \end{figure}
+% \begin{figure}[H]
+% 	\centering
+
+% 	\newcommand{\closedlock}[2]{%
+% 		\begin{scope}[shift={#1},scale=#2]
+% 			% Bügel
+% 			\draw[line width=.5pt]
+% 			(-.22,.25) -- (-.22,.58)
+% 			arc[start angle=180,end angle=0,radius=.22]
+% 			-- (.22,.25);
+
+% 			% Schlosskörper
+% 			\draw[rounded corners=.035cm,line width=.5pt]
+% 			(-.32,-.18) rectangle (.32,.30);
+
+% 			% Schlüsselloch
+% 			\fill (0,.09) circle (.045);
+% 			\fill (-.045,-.12) -- (.045,-.12) -- (.025,.08) -- (-.025,.08) -- cycle;
+% 		\end{scope}
+% 	}
+
+% 	\newcommand{\openlock}[2]{%
+% 		\begin{scope}[shift={#1},scale=#2]
+% 			% geöffneter Bügel
+% 			\draw[line width=.5pt]
+% 			(-.22,.25) -- (-.22,.58)
+% 			arc[start angle=180,end angle=20,radius=.22];
+
+% 			% Schlosskörper
+% 			\draw[rounded corners=.035cm,line width=.5pt]
+% 			(-.32,-.18) rectangle (.32,.30);
+
+% 			% Schlüsselloch
+% 			\fill (0,.09) circle (.045);
+% 			\fill (-.045,-.12) -- (.045,-.12) -- (.025,.08) -- (-.025,.08) -- cycle;
+% 		\end{scope}
+% 	}
+
+% 	\newcommand{\ring}[2]{%
+% 		\draw[line width=.55pt] #1 circle [radius=#2];
+% 	}
+
+% 	\newcommand{\lockbox}[3]{%
+% 		\begin{tikzpicture}[x=1cm,y=1cm]
+% 			\draw[gray,line width=.7pt] (0,0) rectangle (3.15,1.62);
+
+% 			\ring{(.58,1.15)}{.27}
+% 			\ring{(1.76,1.15)}{.27}
+
+% 			\ifx#1c
+% 				\closedlock{(.88,.58)}{.72}
+% 			\else
+% 				\openlock{(.88,.58)}{.72}
+% 			\fi
+
+% 			\ifx#2c
+% 				\closedlock{(2.06,.58)}{.72}
+% 			\else
+% 				\openlock{(2.06,.58)}{.72}
+% 			\fi
+
+% 			#3
+% 		\end{tikzpicture}
+% 	}
+
+% 	\newcommand{\xortable}[6]{%
+% 		\begin{tabular}{r@{\hspace{1.2cm}}l}
+% 			#1               & \texttt{#2} \\
+% 			$\oplus\quad$ #3 & \texttt{#4} \\
+% 			\midrule
+% 			#5               & \texttt{#6}
+% 		\end{tabular}
+% 	}
+
+% 	\begin{tabular}{c@{\hspace{2.2cm}}c}
+
+% 		\begin{minipage}{3.8cm}
+% 			\centering
+% 			\lockbox{c}{o}{%
+% 				\draw[->,line width=.45pt] (.88,-.28) -- (.88,.18);
+% 			}
+
+% 			\vspace{.25em}
+% 			Absender schliesst
+% 		\end{minipage}
+% 		 &
+% 		\xortable
+% 		{\textcolor{RoyalBlue}{Klartext}}{\textcolor{RoyalBlue}{101011}}
+% 		{\textcolor{red}{Absender-Schlüssel}}{\textcolor{red}{011011}}
+% 		{Erster Krypto-Text}{110000}
+% 		\\[2.2cm]
+
+% 		\begin{minipage}{3.8cm}
+% 			\centering
+% 			\lockbox{c}{c}{%
+% 				\draw[->,line width=.45pt] (2.06,-.28) -- (2.06,.18);
+% 			}
+
+% 			\vspace{.25em}
+% 			Empfänger schliesst
+% 		\end{minipage}
+% 		 &
+% 		\xortable
+% 		{Erster Krypto-Text}{110000}
+% 		{\textcolor{ForestGreen}{Empfänger-Schlüssel}}{\textcolor{ForestGreen}{101010}}
+% 		{Zweiter Krypto-Text}{011010}
+% 		\\[2.2cm]
+
+% 		\begin{minipage}{3.8cm}
+% 			\centering
+% 			\lockbox{o}{c}{%
+% 				\draw[->,line width=.45pt] (.88,-.28) -- (.88,.18);
+% 			}
+
+% 			\vspace{.25em}
+% 			Absender öffnet
+% 		\end{minipage}
+% 		 &
+% 		\xortable
+% 		{Zweiter Krypto-Text}{011010}
+% 		{\textcolor{red}{Absender-Schlüssel}}{\textcolor{red}{011011}}
+% 		{Dritter Krypto-Text}{000001}
+% 		\\[2.2cm]
+
+% 		\begin{minipage}{3.8cm}
+% 			\centering
+% 			\lockbox{o}{o}{%
+% 				\draw[->,line width=.45pt] (2.06,-.28) -- (2.06,.18);
+% 			}
+
+% 			\vspace{.25em}
+% 			Empfänger öffnet
+% 		\end{minipage}
+% 		 &
+% 		\xortable
+% 		{Dritter Krypto-Text}{000001}
+% 		{\textcolor{ForestGreen}{Empfänger-Schlüssel}}{\textcolor{ForestGreen}{101010}}
+% 		{\textcolor{RoyalBlue}{Klartext}}{\textcolor{RoyalBlue}{101011}}
+% 	\end{tabular}
+
+% 	\caption{Schlüsseltausch}
+% \end{figure}
 
 \clearpage
 \section{Drei-Wege-Schlüsseltausch}
