@@ -194,7 +194,7 @@ jobs:
           else
             echo "culprit=Unknown" >> $GITHUB_OUTPUT
           fi
-      - name: Send email (NAS connection lost)
+      - name: Send email (Runner issue)
         if: ${{ steps.culprit.outputs.culprit == 'Unknown' }}
         uses: dawidd6/action-send-mail@v5
         with:
@@ -202,12 +202,12 @@ jobs:
           server_port: 465
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          subject: "🛑 GitHub CI Failed: NAS connection lost or Bash script failed"
+          subject: "🛑 GitHub CI Failed: Runner issue or Bash script failed"
           to: c@cblum.ch, thomas.graf.numerics@gmail.com
           from: GitHub Actions <${{ secrets.GMAIL_USERNAME }}>
           body: |
             The GitHub Actions pipeline failed and no culprit file was found.
-            This likely indicates the connection to the NAS was lost during the run or that the Bash script failed.
+            This likely indicates a runner issue during the run or that the Bash script failed.
             Please check the server status and the latest commit changes.
             Workflow: ${{ github.workflow }}
             Branch: ${{ github.ref }}

@@ -106,24 +106,24 @@ derive_collection_folder() {
     normalize_folder_segment "$second_segment"
 }
 
-# Helper to check if PDF exists on remote server using sshpass and ls -l
-remote_pdf_exists() {
-    local remote_pdf_path="$1"
+# Helper to check if PDF exists in target folder
+target_pdf_exists() {
+    local target_pdf_path="$1"
     # Only check on Linux (not macOS)
     if [[ "$OSTYPE" == *darwin* ]]; then
-        echo "::notice::Skipping remote PDF check on macOS."
+        echo "::notice::Skipping target folder PDF check on macOS."
         return 1 # Always "not found" on macOS
     fi
-    # Convert remote_pdf_path to absolute path on server
-    local abs_remote_path="/home/leetex/PDFs/$remote_pdf_path"
-    echo "::group::Checking remote PDF existence"
-    echo "::notice:: abs_remote_path: $abs_remote_path"
-    if [ -f "$abs_remote_path" ]; then
-        echo "::notice:: File $abs_remote_path exists on server."
+    # Convert target_pdf_path to absolute path
+    local abs_target_path="/home/leetex/PDFs/$target_pdf_path"
+    echo "::group::Checking target folder PDF existence"
+    echo "::notice:: abs_target_path: $abs_target_path"
+    if [ -f "$abs_target_path" ]; then
+        echo "::notice:: File $abs_target_path exists in target folder."
         echo "::endgroup::"
         return 0
     else
-        echo "::notice:: File $abs_remote_path does not exist on server."
+        echo "::notice:: File $abs_target_path does not exist in target folder."
         echo "::endgroup::"
         return 1
     fi
@@ -132,12 +132,12 @@ remote_pdf_exists() {
 # Function to determine if a topic should be built based on changed files in latest commit
 should_build_topic() {
     local input_path="$1"
-    local remote_pdf_path="$2"
+    local target_pdf_path="$2"
     local root_tex_file dep_file
     echo "::group::Check if topic should be built (PDF does not exist or input changed)"
     echo "::notice::should_build_topic called with:"
     echo "::notice::  input_path: $input_path"
-    echo "::notice::  remote_pdf_path: $remote_pdf_path"
+    echo "::notice::  target_pdf_path: $target_pdf_path"
     echo "::notice::  CHANGED_FILES_CSV: $CHANGED_FILES_CSV"
     echo "::notice::  CHANGED_FILES array: ${CHANGED_FILES[*]}"
     # If no changed files are specified, always build
@@ -166,13 +166,13 @@ should_build_topic() {
         fi
     done < <(collect_direct_tex_dependencies "$root_tex_file")
 
-    # If not in changed files, check if PDF exists on remote
-    if remote_pdf_exists "$remote_pdf_path"; then
-        echo "::notice::  PDF exists on remote, skipping build."
+    # If not in changed files, check if PDF exists in target folder
+    if target_pdf_exists "$target_pdf_path"; then
+        echo "::notice::  PDF exists in target folder, skipping build."
         echo "::endgroup::"
         return 1
     else
-        echo "::notice::  PDF does not exist on remote, will build."
+        echo "::notice::  PDF does not exist in target folder, will build."
         echo "::endgroup::"
         return 0
     fi
@@ -415,18 +415,18 @@ for i in "${!classes[@]}"; do
         # Uncomment the necessary input line
         sed "${SED_INPLACE[@]}" "s|[[:space:]]*%*[[:space:]]*\\\\input{$input_path}|\\\\input{$input_path}|" "$output_file"
 
-        # Determine expected PDF name and remote path for remote existence check
+        # Determine expected PDF name and target path for target folder existence check
         pdf_name="$(basename "$output_file" .tex).pdf"
         if [ "$class" = "book" ]; then
-            remote_pdf_path="${LEVEL}/${topic_folder}/Skript_${book_variant}/$pdf_name"
+            target_pdf_path="${LEVEL}/${topic_folder}/Skript_${book_variant}/$pdf_name"
         elif [ "$class" = "beamer" ]; then
-            remote_pdf_path="${LEVEL}/${collection_folder}/Slides/${topic_folder}/$pdf_name"
+            target_pdf_path="${LEVEL}/${collection_folder}/Slides/${topic_folder}/$pdf_name"
         else
-            remote_pdf_path="${LEVEL}/${class}/${topic_folder}/$pdf_name"
+            target_pdf_path="${LEVEL}/${class}/${topic_folder}/$pdf_name"
         fi
 
-        # Only build if the topic's input_path matches a changed file or PDF is missing on remote
-        should_build_topic "$input_path" "$remote_pdf_path" || continue
+        # Only build if the topic's input_path matches a changed file or PDF is missing in target folder
+        should_build_topic "$input_path" "$target_pdf_path" || continue
 
         # Create a temporary directory for biber
         mkdir -p ~/tmp_exec
