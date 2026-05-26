@@ -2,7 +2,7 @@
 \fboxsep=.6pt
 
 % default settings for listings
-\lstset{style=python}
+\lstset{style=Python,escapeinside={(*@}{@*)}}
 
 \title[Programmieren]{Programmieren: Datenstrukturen}
 
@@ -26,43 +26,43 @@
 \frame{\titlepage}
 
 \begin{frame}[fragile]{Beispiel: Tram}
-Sie leiten die Entwicklung des Tram-Fahrplans in der Stadt Zürich. Die aktuelle Glatttalbahn (Tram 12) fährt von Stettbach, bzw. Oerlikon, bis zum Flughafen (siehe folgende Abbildungen). Ignorieren Sie die blaue Linie, die bei \enquote{Glattpark} nach rechts abbiegt.
+	Sie leiten die Entwicklung des Tram-Fahrplans in der Stadt Zürich. Die aktuelle Glatttalbahn (Tram 12) fährt von Stettbach, bzw. Oerlikon, bis zum Flughafen (siehe folgende Abbildungen). Ignorieren Sie die blaue Linie, die bei \enquote{Glattpark} nach rechts abbiegt.
 \end{frame}
 \begin{frame}[fragile]{Beispiel: Tram}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=.6\linewidth]{Grundlagen_Info/00_Programmieren/Figures/Glattalbahn_vbg}
-\end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.6\linewidth]{Grundlagen_Info/00_Programmieren/Figures/Glattalbahn_vbg}
+	\end{figure}
 
 \end{frame}
 \begin{frame}[fragile]{Beispiel: Tram}
 
-Sie haben sich folgende Stationen und die Fahrzeit von der Anfangs-Station \enquote{Sternen Oerlikon} zu jeder folgenden Station bis und mit \enquote{Zürich Flughafen Fracht} in Sekunden notiert:
+	Sie haben sich folgende Stationen und die Fahrzeit von der Anfangs-Station \enquote{Sternen Oerlikon} zu jeder folgenden Station bis und mit \enquote{Zürich Flughafen Fracht} in Sekunden notiert:
 
-\begin{lstlisting}
+	\begin{lstlisting}
 stationen = ["Sternen", "Messe", "Leutschenbach", "Oerlikerhus", "Glattpark", "Lindbergh", "Glattbrugg", "Bäuler", "Unterriet", "Kloten", "Flughafen", "Flughafen Fracht"]
 dauer = [0, 60, 122, 185, 241, 363, 543, 603, 666, 729, 786, 845]
 \end{lstlisting}
 
-Die Glattal-Tramlinie soll nun erweitert werden um die folgenden Stationen:
+	Die Glattal-Tramlinie soll nun erweitert werden um die folgenden Stationen:
 \end{frame}
 
 \begin{frame}[fragile]{Beispiel: Tram}
-\begin{figure}
-\centering
-\includegraphics[width=\linewidth]{Grundlagen_Info/00_Programmieren/Figures/GTB_Karte_mit_Legende_Web_v02}
-\end{figure}
-Was könnten wir im Code ändern, falls wir die Liste erweitern wollen?
+	\begin{figure}
+		\centering
+		\includegraphics[width=\linewidth]{Grundlagen_Info/00_Programmieren/Figures/GTB_Karte_mit_Legende_Web_v02}
+	\end{figure}
+	Was könnten wir im Code ändern, falls wir die Liste erweitern wollen?
 \end{frame}
-    
+
 
 
 \begin{frame}[fragile]{Datenstrukturen: Stapel \emoji{books}}
 	\begin{itemize}
 		\item \lstinline|meineliste.append(neu)|: Fügt ein Element \lstinline|neu| (einzelne Zahl oder Text) am Ende der Liste \lstinline|meineliste| hinzu
 		\item \lstinline|meineliste.pop()|: Entfernt das letzte Element von \lstinline|meineliste|
-		\item \lstinline|meineliste.pop(2)|: Entfernt das Element an dritter Stelle von \lstinline|meineliste| 
+		\item \lstinline|meineliste.pop(2)|: Entfernt das Element an dritter Stelle von \lstinline|meineliste|
 	\end{itemize}
 	\pause
 	Beispiel:
@@ -89,23 +89,45 @@ Was könnten wir im Code ändern, falls wir die Liste erweitern wollen?
 	\end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Auf Listen zugreifen}{Von hinten}
-Gegeben sei folgende Liste: \lstinline|x=[3, 10, 33, 2, 220, 11]|.\\
+\begin{frame}[fragile]{Methoden}
+	\begin{lstlisting}
+meine_liste = [1, 2, 3]
+(*@\only<1>{meine\_liste}\only<2->{\textcolor{ForestGreen}{meine\_\tikzmark{arrowFrom}liste}}@*).append((*@\only<3->{ \tikzmark{boxStart}\textcolor{ForestGreen}{\textit{meine}\tikzmark{arrowTo}\textit{\_liste},}\tikzmark{boxEnd} }@*)4)
 
-Wie können wir auf das letzte Element von \lstinline|x| (= die Zahl \lstinline|11|) zugreifen?
-\begin{itemize}
-\item \lstinline|x[len(x)-1]|
-\item Einfacher: \lstinline|x[-1]|
-\item Vorletztes Element: \lstinline|x[-2]|
-\item Etc.
-\end{itemize}
+
+
+print(meine_liste)  # Ausgabe: [1, 2, 3, 4]	
+	\end{lstlisting}
+	\begin{tikzpicture}[overlay,remember picture]
+		% Wert übergeben
+		\only<3->{\draw[ForestGreen,-stealth, thick] (arrowFrom.south) to[bend right] node[align=left, pos=.5, below, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners] {als Parameter übergeben} (arrowTo.south);}
+		\only<3->{\draw[ForestGreen,thick,rounded corners, fill=ForestGreen,fill opacity=.5] (boxStart.south west) rectangle (boxEnd.north east);}
+	\end{tikzpicture}
+	\begin{itemize}
+		\item<4-> Methoden beziehen sich auf das Objekt, auf dem sie aufgerufen werden (hier: \lstinline|meine_liste|)
+		\item<5-> Methoden können Werte verändern, die in diesem Objekt gespeichert sind, ohne Gleichzeichen
+		\item<6-> Erster Parameter einer Methode ist immer das Objekt, auf dem die Methode aufgerufen wird (hier: \lstinline|meine_liste|)
+		\item<7-> Weitere Parameter können zusätzlich übergeben werden (hier: \lstinline|4|)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Auf Listen zugreifen}{Von hinten}
+	Gegeben sei folgende Liste: \lstinline|x=[3, 10, 33, 2, 220, 11]|.\\
+
+	Wie können wir auf das letzte Element von \lstinline|x| (= die Zahl \lstinline|11|) zugreifen?
+	\begin{itemize}
+		\item \lstinline|x[len(x)-1]|
+		\item Einfacher: \lstinline|x[-1]|
+		\item Vorletztes Element: \lstinline|x[-2]|
+		\item Etc.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Fibonacci-Serie}
-\begin{itemize}[<+->]
-\item Was ist die Fortsetzung folgender Zahlen? 1, 1, 2, 3, 5, ...?
-\item Wie würden wir einen Code dafür schreiben?
-	\begin{lstlisting}
+	\begin{itemize}[<+->]
+		\item Was ist die Fortsetzung folgender Zahlen? 1, 1, 2, 3, 5, ...?
+		\item Wie würden wir einen Code dafür schreiben?
+		      \begin{lstlisting}
 fib = [1, 1]
 for _ in range(100):
 	# berechne nächste Zahl
@@ -113,22 +135,22 @@ for _ in range(100):
 	fib.append(fib_neu)
 print(fib)
 	\end{lstlisting}
-\end{itemize}
-\def\spiral#1{%
-  \pgfmathparse{int(#1)}%
-  \ifnum\pgfmathresult>0
-    \draw [help lines] (0,0) rectangle ++(1,1);
-    \begin{scope}[shift={(1,1)}, rotate=90, scale=1/1.6180339887]
-      \spiral{#1-1}
-    \end{scope}
-    \draw [red] (0,0) arc (270:360:1);
-  \fi
-}
+	\end{itemize}
+	\def\spiral#1{%
+		\pgfmathparse{int(#1)}%
+		\ifnum\pgfmathresult>0
+			\draw [help lines] (0,0) rectangle ++(1,1);
+			\begin{scope}[shift={(1,1)}, rotate=90, scale=1/1.6180339887]
+				\spiral{#1-1}
+			\end{scope}
+			\draw [red] (0,0) arc (270:360:1);
+		\fi
+	}
 
-\begin{figure}[H]
-\centering
-\tikz[scale=2]{\spiral{12}}
-\end{figure}
+	\begin{figure}[H]
+		\centering
+		\tikz[scale=2]{\spiral{12}}
+	\end{figure}
 \end{frame}
 
 
@@ -146,10 +168,10 @@ print(fib)
 
 
 % \begin{frame}[fragile]{Appendix: Überprüfen, ob etwas in einer Liste ist}{Mani Matter (\href{https://youtu.be/gQbF9Ck1ccc?feature=shared}{Link})}
-	
+
 % 	\begin{lstlisting}
 % 		zutaten_sandwich = ["brot", "fleisch", "anke", "brot"]
-		
+
 % 		if "brot" not in zutaten_sandwich:
 % 			print("Was isch es Sandwich ohni Brot? S'isch nume Fleisch!")
 % 		elif "fleisch" not in zutaten_sandwich:
@@ -159,7 +181,7 @@ print(fib)
 % \end{frame}
 
 % \begin{frame}[fragile]{Appendix: Überprüfen, an welcher Position in einer Liste ein Element ist}
-	
+
 % \begin{lstlisting}
 % stationen = ["Bern", "Zürich", "Zürich Oerlikon", "Zürich Flughafen", "Winterthur", "St. Gallen"]
 % station = "Zürich Flughafen"
