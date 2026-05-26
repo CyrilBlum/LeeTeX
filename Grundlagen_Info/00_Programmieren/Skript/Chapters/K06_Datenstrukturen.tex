@@ -262,12 +262,12 @@ Der Algorithmus hat eine Zeitkomplexität von $O(n^2)$, was bedeutet, dass die L
 \end{itemize}
 
 \begin{myremark}[Beweis der Laufzeit der optimierten Version]
-	
+
 	Die Summe alles natürlichen Zahlen von 1 bis $k$ lässt sich folgendermassen als Formel ausdrücken:
 	\begin{align*}
 		\displaystyle\sum_{m=1}^{k} m & = \textcolor{blue}{1} + \textcolor{red}{2} + \textcolor{ForestGreen}{3} + \ldots + \textcolor{ForestGreen}{(k-2)} + \textcolor{red}{(k-1)} + \textcolor{blue}{k} \\
-		                              & = \textcolor{blue}{(1 + k)} + \textcolor{red}{(2 + (k-1))} + \textcolor{ForestGreen}{(3 + (k-2))} + \ldots \\
-		                              & = \textcolor{blue}{(k + 1)} + \textcolor{red}{(k + 1)} + \textcolor{ForestGreen}{(k + 1)} + \ldots         \\
+		                              & = \textcolor{blue}{(1 + k)} + \textcolor{red}{(2 + (k-1))} + \textcolor{ForestGreen}{(3 + (k-2))} + \ldots                                                       \\
+		                              & = \textcolor{blue}{(k + 1)} + \textcolor{red}{(k + 1)} + \textcolor{ForestGreen}{(k + 1)} + \ldots                                                               \\
 		                              & = \frac{k \cdot (k + 1)}{2}
 	\end{align*}
 
@@ -278,10 +278,10 @@ Der Algorithmus hat eine Zeitkomplexität von $O(n^2)$, was bedeutet, dass die L
 	Die Laufzeit eines Algorithmus wird oft mit der sogenannten \textbf{Big O-Notation} angegeben, die die Wachstumsrate der Laufzeit in Bezug auf die Eingabegrösse beschreibt. Dabei wird die Laufzeit in der Form $O(f(n))$ angegeben, wobei $f(n)$ eine Funktion ist, die die Anzahl der Schritte beschreibt, die der Algorithmus benötigt, um eine Eingabe der Grösse $n$ zu verarbeiten.
 	\begin{itemize}
 		\item \textbf{nicht optimierte Version:} Die Anzahl der Vergleiche beträgt \[(n-1)^2 = n^2 - 2n + 1\]
-	      In der Big O-Notation wird dies als $O(n^2)$ ausgedrückt, da die quadratische Komponente $n^2$ dominiert, wenn $n$ sehr gross wird.
-		\item \textbf{optimierte Version:} Die Anzahl der Vergleiche entspricht der Summe der Zahlen von 1 bis $n-1$, was durch die Formel $\frac{(n-1) \cdot n}{2}$ gegeben ist. 
-		\[\frac{n-1}{2} \cdot n = \frac{1}{2}n^2 - \frac{1}{2}n\]
-	      Auch hier dominiert die quadratische Komponente $\frac{1}{2}n^2$, wenn $n$ sehr gross wird, sodass die Laufzeit ebenfalls als $O(n^2)$ ausgedrückt wird.
+		      In der Big O-Notation wird dies als $O(n^2)$ ausgedrückt, da die quadratische Komponente $n^2$ dominiert, wenn $n$ sehr gross wird.
+		\item \textbf{optimierte Version:} Die Anzahl der Vergleiche entspricht der Summe der Zahlen von 1 bis $n-1$, was durch die Formel $\frac{(n-1) \cdot n}{2}$ gegeben ist.
+		      \[\frac{n-1}{2} \cdot n = \frac{1}{2}n^2 - \frac{1}{2}n\]
+		      Auch hier dominiert die quadratische Komponente $\frac{1}{2}n^2$, wenn $n$ sehr gross wird, sodass die Laufzeit ebenfalls als $O(n^2)$ ausgedrückt wird.
 	\end{itemize}
 	Wir sehen also, dass die Optimierung die Anzahl der Vergleiche reduziert, aber die grundsätzliche Komplexität des Algorithmus bleibt $O(n^2)$.
 \end{myremark}
@@ -420,10 +420,10 @@ meine_(*@\tikzmark{arrowFrom}@*)liste.append((*@\tikzmark{arrowTo}@*)4)  # fügt
 print(meine_liste)  # Ausgabe: [1, 2, 3, 4]	
 	\end{lstlisting}
 	\begin{tikzpicture}[overlay,remember picture]
-			% Wert übergeben
-			\draw[ForestGreen,-stealth, thick] (arrowFrom.south) to[bend right] node[align=left, pos=.5, below, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners] {als Parameter übergeben} (arrowTo.south);
-		\end{tikzpicture}
-	Eine Methode hat als ersten Parameter immer das Objekt, auf dem sie angewendet wird (in diesem Fall \lstinline|meine_liste|), obschon dieser Parameter in der Methode nicht explizit (in einer Klammmer) übergeben wird. Weitere Parameter können zusätzlich übergeben werden, wie zum Beispiel die Zahl \lstinline|4| in diesem Fall. Im obigen Beispiel wären die Parameter der \lstinline|append|-Methode also \lstinline|meine_liste| und \lstinline|4|. 
+		% Wert übergeben
+		\draw[ForestGreen,-stealth, thick] (arrowFrom.south) to[bend right] node[align=left, pos=.5, below, fill=ForestGreen,fill opacity=.5, text opacity=1, text=black,rounded corners] {als Parameter übergeben} (arrowTo.south);
+	\end{tikzpicture}
+	Eine Methode hat als ersten Parameter immer das Objekt, auf dem sie angewendet wird (in diesem Fall \lstinline|meine_liste|), obschon dieser Parameter in der Methode nicht explizit (in einer Klammmer) übergeben wird. Weitere Parameter können zusätzlich übergeben werden, wie zum Beispiel die Zahl \lstinline|4| in diesem Fall. Im obigen Beispiel wären die Parameter der \lstinline|append|-Methode also \lstinline|meine_liste| und \lstinline|4|.
 
 	Speziell an Methoden ist, dass sie das Objekt, auf dem sie angewendet werden, verändern können, ohne dass ein Gleichzeichen benötigt wird.
 \end{mydefinition}
@@ -484,29 +484,35 @@ print(zahlen)  # [1, 2, 4, 5]
 \begin{myexercise}
 	Gegeben sei eine Liste \texttt{A} von ganzen Zahlen.
 
-	Schreiben Sie eine Python-Funktion \lstinline|entferne_duplikate(A)|, welche systematisch eine Liste \texttt{B} aufbaut, welche genau die Elemente von \texttt{A} enthält aber ohne Duplikate (mehr als einmal vorkommende Elemente). Die Liste \texttt{B} soll schliesslich durch einen \lstinline|print|-Befehl ausgegeben werden.
+	Schreiben Sie eine Python-Funktion \lstinline|entferne_duplikate(A)|, welche eine neue Liste \texttt{B} erstellt, welche genau die Elemente von \texttt{A} enthält aber ohne Duplikate (mehr als einmal vorkommende Elemente). Die Liste \texttt{B} soll schliesslich durch einen \lstinline|print|-Befehl ausgegeben werden.
 
 	Zum Beispiel:
 	\begin{lstlisting}
 		# Beispiel-Aufrufe:
-		entferne_duplikate([1, 2, 3, 2, 4, 1]) # Ausgabe: [1, 2, 3, 4]
+		entferne_duplikate([4, -2, 3, -2, 4, 1]) # Ausgabe: [4, -2, 3, 1]
 		entferne_duplikate([5, 5, 5]) # Ausgabe: [5]
 	\end{lstlisting}
 
 	\textbf{Tipps}: %
 	\begin{itemize}
-		\item Verwenden Sie zwei ineinander geschachtelte Schleifen, um zu überprüfen, ob ein Element bereits in der Liste \texttt{B} enthalten ist.
-		\item Verwenden Sie eine bool'sche Variable, um zu verfolgen, ob ein Element bereits in der Liste \texttt{B} vorhanden ist:
-		      \begin{lstlisting}
-# Wir wollen für ein Element A[i] überprüfen, ob es bereits in B vorhanden ist. Falls nein, soll es am Ende von B angehängt werden.
-ist_vorhanden = False
-for element_B in B:
+		\item Erstellen Sie eine leere Liste \texttt{B}, in der die Elemente von \texttt{A} ohne Duplikate gespeichert werden sollen.
+		\item Gehen Sie jedes Element von \texttt{A} mit einer Schleife durch.
+		\item Für jedes Element von \texttt{A} überprüfen Sie, ob es bereits in der Liste \texttt{B} enthalten ist. Wenn nicht, fügen Sie es am Ende von \texttt{B} hinzu. Dazu benötigen eine innere Schleife, um die Elemente von \texttt{B} zu überprüfen.
+		\item Verwenden Sie eine bool'sche Variable (\lstinline|True| oder \lstinline|False|), um zu verfolgen, ob ein Element bereits in der Liste \texttt{B} vorhanden ist.
+	\end{itemize}
+	\begin{minipage}{\textwidth}
+			      \begin{lstlisting}
+# Hier sind wir in der inneren Schleife. Wir wollen für ein Element A[i] überprüfen, ob es bereits in B vorhanden ist. Falls nein, soll es am Ende von B angehängt werden.
+ist_vorhanden = False # Wir nehmen an, dass A[i] noch nicht in B vorhanden ist
+for element_B in B: # Nun überprüfen wir jedes Element von B, um zu sehen, ob es mit A[i] übereinstimmt
 	if element_B == A[i]:
 		ist_vorhanden = True
+
+# Am Schluss der inneren Schleife wissen wir, ob A[i] bereits in B vorhanden ist oder nicht. Wenn es nicht vorhanden ist, fügen wir es am Ende von B hinzu.
 if not ist_vorhanden:
 	B.append(A[i])
 		\end{lstlisting}
-	\end{itemize}
+		      \end{minipage}
 
 	\begin{myanswer}
 		\lstinputlisting[language=Python,caption=\texttt{remove\_duplicates.py},label=listing:remove_duplicates]{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/remove_duplicates.py}
