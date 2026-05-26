@@ -114,21 +114,16 @@ remote_pdf_exists() {
         echo "::notice::Skipping remote PDF check on macOS."
         return 1 # Always "not found" on macOS
     fi
-    # Convert remote_pdf_path (PDFs/...) to absolute path on server
-    local abs_remote_path="/volume1/$remote_pdf_path"
+    # Convert remote_pdf_path to absolute path on server
+    local abs_remote_path="/home/leetex/PDFs/$remote_pdf_path"
     echo "::group::Checking remote PDF existence"
     echo "::notice:: abs_remote_path: $abs_remote_path"
-    ssh_output=$(ssh synology "ls -l '$abs_remote_path'")
-    ssh_exit=$?
-    echo "::notice:: ssh exit code: $ssh_exit"
-    echo "::notice:: ssh output:"
-    echo "$ssh_output"
-    if [ $ssh_exit -eq 0 ]; then
-        echo "::notice:: File $abs_remote_path exists on server (ssh)."
+    if [ -f "$abs_remote_path" ]; then
+        echo "::notice:: File $abs_remote_path exists on server."
         echo "::endgroup::"
         return 0
     else
-        echo "::notice:: File $abs_remote_path does not exist on server (ssh)."
+        echo "::notice:: File $abs_remote_path does not exist on server."
         echo "::endgroup::"
         return 1
     fi
@@ -423,11 +418,11 @@ for i in "${!classes[@]}"; do
         # Determine expected PDF name and remote path for remote existence check
         pdf_name="$(basename "$output_file" .tex).pdf"
         if [ "$class" = "book" ]; then
-            remote_pdf_path="web/PDFs/${LEVEL}/${topic_folder}/Skript_${book_variant}/$pdf_name"
+            remote_pdf_path="${LEVEL}/${topic_folder}/Skript_${book_variant}/$pdf_name"
         elif [ "$class" = "beamer" ]; then
-            remote_pdf_path="web/PDFs/${LEVEL}/${collection_folder}/Slides/${topic_folder}/$pdf_name"
+            remote_pdf_path="${LEVEL}/${collection_folder}/Slides/${topic_folder}/$pdf_name"
         else
-            remote_pdf_path="web/PDFs/${LEVEL}/${class}/${topic_folder}/$pdf_name"
+            remote_pdf_path="${LEVEL}/${class}/${topic_folder}/$pdf_name"
         fi
 
         # Only build if the topic's input_path matches a changed file or PDF is missing on remote
@@ -496,10 +491,10 @@ for i in "${!classes[@]}"; do
         # Remove any folders in the root directory starting with luatex*
         find "$root_dir" -maxdepth 1 -type d -name 'luatex*' -exec rm -rf {} +
 
-        # Copy all files and folders from PDFs to Cyril's Synology NAS
+        # Copy all files and folders from PDFs to local server
         if [[ "$OSTYPE" != *darwin* ]]; then
-            # Use sshpass to provide the password non-interactively
-            rsync -av --chmod=ugo=rwX -e ssh "${root_dir}/PDFs/" synology:/volume1/web/PDFs/
+            mkdir -p /home/leetex/PDFs
+            rsync -av --chmod=ugo=rwX "${root_dir}/PDFs/" /home/leetex/PDFs/
 
             if [ $? -ne 0 ]; then
                 echo "::error::rsync failed. Aborting."
