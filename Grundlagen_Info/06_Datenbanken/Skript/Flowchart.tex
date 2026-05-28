@@ -1,0 +1,119 @@
+\newgeometry{margin=.5cm}
+\centering
+\section*{Flowchart: Logische Reihenfolge der SQL-Klauseln}
+\pagestyle{empty}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      font=\sffamily,
+      node distance=4mm,
+      box/.style={rectangle, rounded corners=3pt, draw=#1!80, fill=#1!10,
+          very thick, text width=75mm, minimum height=13mm, align=left, inner sep=6pt},
+      decision/.style={diamond, aspect=2.2, draw=#1!80, fill=#1!10,
+          very thick, align=center, inner sep=1pt},
+      num/.style={circle, draw=#1!80, fill=#1!80, text=white,
+          font=\bfseries\large, minimum size=8mm},
+      arr/.style={->, >=stealth, thick},
+      skip/.style={->, >=stealth, thick, rounded corners=5pt},
+      small/.style={font=\small}
+    ]
+
+    \node[box=gray, minimum height=10mm, align=center] (start)
+    {\faIcon{play} \textbf{START}\\SQL-Abfrage beginnt};
+
+    \node[box=blue, below=of start] (select)
+    {\faIcon{columns} \lstinline|SELECT|\\Wählt die Spalten / Ausdrücke aus, die zurückgegeben werden.};
+
+    \node[box=blue, below=of select] (from)
+    {\faIcon{database} \lstinline|FROM|\\Bestimmt die Tabelle(n) oder Datenquelle(n).};
+
+    \node[box=green, below=of from] (where)
+    {\faIcon{filter} \lstinline|WHERE| (optional)\\Filtert die Zeilen nach Bedingungen vor der Gruppierung.};
+
+    \node[decision=orange, below=of where] (dgroup)
+    {\textbf{Gruppierung}\\\textbf{erforderlich?}};
+
+    \node[box=orange, below=of dgroup] (group)
+    {\faIcon{layer-group} \lstinline|GROUP BY| (optional)\\Gruppiert die Zeilen nach einer oder mehreren Spalten.};
+
+    \node[box=orange, below=of group] (having)
+    {\faIcon{filter} \lstinline|HAVING| (optional)\\Filtert Gruppen nach Bedingungen nach der Gruppierung.};
+
+    \node[decision=purple, below=of having] (dorder)
+    {\textbf{Sortierung}\\\textbf{erforderlich?}};
+
+    \node[box=purple, below=of dorder] (order)
+    {\faIcon{sort-amount-down} \lstinline|ORDER BY| (optional)\\Sortiert das Ergebnis nach einer oder mehreren Spalten.};
+
+    \node[decision=red, below=of order] (dlimit)
+    {\textbf{Begrenzung}\\\textbf{erforderlich?}};
+
+    \node[box=red, below=of dlimit] (limit)
+    {\faIcon{list-ol} \lstinline|LIMIT| (optional)\\Beschränkt die Anzahl der zurückgegebenen Zeilen.};
+
+    \node[box=teal, below=of limit, align=center] (result)
+    {\faIcon{check-circle} \textbf{Ergebnis}\\Die gefilterten, gruppierten, sortierten und ggf. begrenzten Zeilen.};
+
+    % Nummern
+    \node[num=blue, left=8mm of select] {1};
+    \node[num=blue, left=8mm of from] {2};
+    \node[num=green, left=8mm of where] {3};
+    \node[num=orange, left=8mm of group] {4};
+    \node[num=orange, left=8mm of having] {5};
+    \node[num=purple, left=8mm of order] {6};
+    \node[num=red, left=8mm of limit] {7};
+
+    % Hauptfluss
+    \draw[arr] (start) -- (select);
+    \draw[arr] (select) -- (from);
+    \draw[arr] (from) -- (where);
+    \draw[arr] (where) -- (dgroup);
+    \draw[arr] (dgroup) -- node[right, text=orange!80!black] {\textbf{JA}} (group);
+    \draw[arr] (group) -- (having);
+    \draw[arr] (having) -- (dorder);
+    \draw[arr] (dorder) -- node[right, text=purple!80!black] {\textbf{JA}} (order);
+    \draw[arr] (order) -- (dlimit);
+    \draw[arr] (dlimit) -- node[right, text=red!80!black] {\textbf{JA}} (limit);
+    \draw[arr] (limit) -- (result);
+
+    % Überspringen
+    \draw[skip] (dgroup.east) -- ++(25mm,0)
+    node[above, text=green!60!black] {\textbf{NEIN}}
+    |- (dorder.east);
+
+    \draw[skip] (dorder.east) -- ++(25mm,0)
+    node[above, text=green!60!black] {\textbf{NEIN}}
+    |- (dlimit.east);
+
+    \draw[skip] (dlimit.east) -- ++(25mm,0)
+    node[above, text=green!60!black] {\textbf{NEIN}}
+    |- (result.east);
+
+    % Rechte Infoboxen
+    \node[box=gray, right=22mm of from, text width=42mm] (legend)
+    {\textbf{Legende}\\[2mm]
+      \textcolor{blue!80}{\textbf{\textbullet}} Pflichtbestandteil\\
+      \textcolor{green!70!black}{\textbf{\textbullet}} Optionaler Bestandteil\\
+      $\rightarrow$ Fluss der Ausführung\\
+      $\dashrightarrow$ übersprungen, falls unnötig};
+
+    \node[box=gray, below=13mm of legend, text width=42mm] (summary)
+    {\textbf{Logische Reihenfolge}\\[1mm]
+      1.\ \lstinline|SELECT|\\
+      2.\ \lstinline|FROM|\\
+      3.\ \lstinline|WHERE|\\
+      4.\ \lstinline|GROUP BY|\\
+      5.\ \lstinline|HAVING|\\
+      6.\ \lstinline|ORDER BY|\\
+      7.\ \lstinline|LIMIT|\\[1mm]
+      \small Die Datenbank verarbeitet die Abfrage
+      logisch in dieser Reihenfolge.};
+
+    \node[box=teal, below=38mm of summary, text width=42mm] (hint)
+    {\textbf{Hinweis}\\
+      In der SQL-Abfrage schreiben Sie die Klauseln
+      normalerweise in genau dieser Reihenfolge.};
+
+  \end{tikzpicture}
+\end{figure}
+\restoregeometry
