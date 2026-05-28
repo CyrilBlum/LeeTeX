@@ -55,10 +55,69 @@ print(a) # gibt [10, 2, 3, 4, 5] aus
 \end{myexample}
 
 Listen erfüllen vielfältige Aufgaben in der Informatik. Sie können verwendet werden, um Daten zu speichern, zu sortieren, zu filtern und zu analysieren. In Python gibt es viele eingebaute Funktionen und Methoden, die speziell für Listen entwickelt wurden, um diese Aufgaben zu erleichtern.
-\begin{myexample}[Zahlen-Liste summieren]
+\begin{myexample}[Zahlen-Liste summieren]\label{myexample:summe}
 	Folgendes Beispiel zeigt auf, wie eine Liste in einer Funktion verwendet werden kann, um eine Summe zu berechnen. Die Funktion \lstinline|berechne_summe| nimmt eine Liste von Zahlen als Eingabe und gibt die Summe dieser Zahlen zurück.
-	\lstinputlisting[language=Python,caption=\texttt{summe.py},label=listing:summe]{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/summe.py}
+
+	\begin{minipage}{\linewidth}
+		\lstinputlisting[language=Python,caption=\texttt{summe.py},label=listing:summe]{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/summe.py}
+	\end{minipage}
 \end{myexample}
+
+\begin{myexercise}[Zeit-Tabelle]
+	Notieren Sie die Werte der Variablen \lstinline|i|, \lstinline|daten[i]| und \lstinline|summe| am Anfang und am Ende jedes Durchlaufs der Schleife in einer Tabelle:
+
+	\begin{minipage}{\linewidth}
+		\lstinputlisting[language=Python,caption=\texttt{summe\_table.py},label=listing:summe, numbers=left]{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/summe_table.py}
+	\end{minipage}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c|c|c|c}
+			\textbf{Durchlauf} & \lstinline|i| & \lstinline|daten[i]| & \lstinline|summe|\\\midrule\midrule
+			1. Durchlauf (Anfang)      & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule
+			1. Durchlauf (Ende)      & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule\midrule
+			2. Durchlauf (Anfang)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule
+			2. Durchlauf (Ende)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule\midrule
+			3. Durchlauf (Anfang)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule
+			3. Durchlauf (Ende)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule\midrule
+			4. Durchlauf (Anfang)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule
+			4. Durchlauf (Ende)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule\midrule
+			5. Durchlauf (Anfang)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule
+			5. Durchlauf (Ende)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule\midrule
+			6. Durchlauf (Anfang)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\\midrule
+			6. Durchlauf (Ende)       & \smallField{1cm}             &\smallField{1cm}&\smallField{1cm}\\
+		\end{tabular}
+	\end{table}
+
+	\begin{myanswer}
+		Die Liste ist \lstinline|[4, 2, -6, 17, 5, 12]|.
+		\begin{table}[H]
+			\centering
+		
+			\begin{tabular}{c|c|c|c}
+				\textbf{Durchlauf} & \lstinline|i| & \lstinline|daten[i]| & \lstinline|summe|\\\midrule\midrule
+				1. Durchlauf (Anfang)      & 0             & 4                    & 0              \\\midrule
+				1. Durchlauf (Ende)      & 1             & 2                    & 4              \\\midrule\midrule
+				2. Durchlauf (Anfang)       & 1             & 2                    & 4              \\\midrule
+				2. Durchlauf (Ende)       & 2             & -6                   & 6              \\\midrule\midrule
+				3. Durchlauf (Anfang)       & 2             & -6                   & 6              \\\midrule
+				3. Durchlauf (Ende)       & 3             & 17                   & 0              \\\midrule\midrule
+				4. Durchlauf (Anfang)       & 3             & 17                   & 0              \\\midrule
+				4. Durchlauf (Ende)       & 4             & 5                    & 17             \\\midrule\midrule
+				5. Durchlauf (Anfang)       & 4             & 5                    & 17             \\\midrule
+				5. Durchlauf (Ende)       & 5             & 12                   & 22             \\\midrule\midrule
+				6. Durchlauf (Anfang)       & 5             & 12                   & 22             \\\midrule
+				6. Durchlauf (Ende)       & 6             & \textcolor{red}{\texttt{Error!}}                    & 34             \\
+			\end{tabular}
+		\end{table}
+	\end{myanswer}
+\end{myexercise}
+
+\begin{myexercise}[Index am Ende der Schleife]
+	Am Ende des Codes in \cref{myexample:summe} hat die Variable \lstinline|i| den Wert 6, obschon die Liste nur 6 Elemente hat. Erklären Sie, weshalb dies so ist. Ist das ein Problem? Warum oder warum nicht?
+	\begin{myanswer}
+		Die Variable \lstinline|i| wird in der Schleife von 0 bis 5 erhöht, um auf die Indizes der Liste zuzugreifen. Nachdem die Schleife den letzten Index (5) erreicht hat, wird \lstinline|i| erneut um 1 erhöht, wodurch sie den Wert 6 annimmt. Dies ist kein Problem, da die Schleife bereits alle Elemente der Liste durchlaufen hat und der Wert von \lstinline|i| nach der Schleife nicht mehr verwendet wird.
+	\end{myanswer}
+\end{myexercise}
 
 \begin{myexample}[Schleifen ohne Index]
 	Etwas effizienter kann auf jedes Element der Liste mit dem Befehl \lstinline|for zahl in liste| zugegriffen werden. Dabei wird die Variable \lstinline|zahl| nacheinander auf jedes Element der Liste gesetzt.
@@ -72,6 +131,8 @@ Listen erfüllen vielfältige Aufgaben in der Informatik. Sie können verwendet 
 		\lstinputlisting[language=Python,caption=\texttt{vergroessere\_um\_fuenf.py},label=listing:vergroessere_um_fuenf]{Grundlagen_Info/00_Programmieren/Skript/Code/K06_Datenstrukturen/vergroessere_um_fuenf.py}
 	\end{myanswer}
 \end{myexercise}
+
+
 
 \begin{myexercise}
 	Entwickeln Sie eine Funktion \lstinline|berechne_durchschnitt(liste)|, die für die Liste (z.B. \lstinline|[5, 0, -2, 3, 51, 8, 13, -100, -10, -1]|) den Durchschnittswert der Beträge aller Elemente berechnet und mit \lstinline|print()| ausgibt.
