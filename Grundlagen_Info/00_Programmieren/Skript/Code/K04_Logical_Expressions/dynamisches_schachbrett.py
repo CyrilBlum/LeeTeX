@@ -1,12 +1,16 @@
-def dynamisches_schachbrett(anzahl_felder, feld_groesse, upper_left):
-    if anzahl_felder <= 0 or anzahl_felder % 2 != 0 or feld_groesse < 1:
-        print(
-            "anzahl_felder muss eine positive gerade Zahl sein und feld_groesse muss >= 1 sein."
-        )
-        return
-
+anzahl_felder = int(input("Anzahl Felder (muss eine positive gerade Zahl sein): "))
+feld_groesse = int(input("Feldgröße (muss >= 1 sein): "))
+upper_left = input("Obere linke Ecke (black oder white): ")
+if anzahl_felder <= 0 or anzahl_felder % 2 != 0 or feld_groesse < 1:
+    print(
+        "anzahl_felder muss eine positive gerade Zahl sein und feld_groesse muss >= 1 sein."
+    )
+else:
     # Bestimme die Startfarbe
-    startfarbe = 1 if upper_left == "black" else 0
+    if upper_left == "black":
+        startfarbe = 1
+    else:
+        startfarbe = 0
 
     # Erzeuge das Schachbrettmuster
     for zeile in range(anzahl_felder):
@@ -18,7 +22,3 @@ def dynamisches_schachbrett(anzahl_felder, feld_groesse, upper_left):
                 zellenfarbe = (zeilenstartfarbe + spalte) % 2
                 zeile_muster += str(zellenfarbe) * feld_groesse
             print(zeile_muster)
-
-
-# Beispielaufruf
-dynamisches_schachbrett(4, 1, "black")

@@ -1,8 +1,6 @@
-def maxzahl(x1, x2):
-    if x1 > x2:
-        return x1
-    else:
-        return x2
-
-
-print(maxzahl(5, 10))
+x1 = input("Zahl 1: ")
+x2 = input("Zahl 2: ")
+if x1 > x2:
+    print(x1)
+else:
+    print(x2)
